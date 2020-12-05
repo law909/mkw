@@ -184,6 +184,24 @@
                             </div>
                         {/if}
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="DefaultTermekEdit">{at('Termék')}:</label></span>
+                            <select id="defaultTermekEdit" name="defaulttermek">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $defaulttermeklist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="DefaultpartnerEdit">{at('Partner')}:</label></span>
+                            <select id="DefaultpartnerEdit" name="defaultpartner">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $defaultpartnerlist as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="RaktarEdit">{at('Raktár')}:</label></span>
                             <select id="RaktarEdit" name="raktar">
                                 <option value="">{at('válasszon')}</option>

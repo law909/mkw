@@ -2,6 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
+use Entities\Partner;
+use Entities\Statlap;
+use Entities\Szallitasimod;
+use Entities\Termek;
+use Entities\Uzletkoto;
+
 class setupController extends \mkwhelpers\Controller {
 
     public function __construct($params) {
@@ -686,6 +693,14 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::MugenraceFooldalSzoveg);
         $view->setVar(\mkw\consts::MugenraceFooldalSzoveg, ($p ? $p->getErtek() : ''));
 
+        $partner = new partnerController($this->params);
+        $p = $repo->find(\mkw\consts::DefaultPartner);
+        $view->setVar('defaultpartnerlist', $partner->getSelectList(($p ? $p->getErtek() : '')));
+
+        $tc = $repo->find(\mkw\consts::DefaultTermek);
+        $termek = new termekController($this->params);
+        $view->setVar('defaulttermeklist', $termek->getSelectList(($tc ? $tc->getErtek() : 0)));
+
         $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
         $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
         $view->setVar('stopreinteximporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
@@ -760,7 +775,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::TulajKontaktEmail, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktEmail));
         $this->setObj(\mkw\consts::TulajKontaktTelefon, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktTelefon));
         $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
-        $tulajpartner = \mkw\store::getEm()->getRepository('Entities\Partner');
+
+        $tulajpartner = \mkw\store::getEm()->getRepository(Partner::class);
         $x = $this->params->getIntRequestParam('tulajpartner', 0);
         $partner = $tulajpartner->find($x);
         if ($partner) {
@@ -768,6 +784,15 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::Tulajpartner, '');
+        }
+
+        $x = $this->params->getIntRequestParam('defaultpartner', 0);
+        $partner = $tulajpartner->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::DefaultPartner, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::DefaultPartner, '');
         }
 
         if ($this->params->getStringRequestParam('tulajcrc')) {
@@ -800,12 +825,23 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::SzallitasiKtg3Ig, $this->params->getStringRequestParam('szallitasiktg3ig'));
         $this->setObj(\mkw\consts::SzallitasiKtg3Ertek, $this->params->getStringRequestParam('szallitasiktg3ertek'));
 
-        $szkt = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
+        $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
         }
+        else {
+            $this->setObj(\mkw\consts::SzallitasiKtgTermek, '');
+        }
 
-        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('foxpostszallmod', 0));
+        $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('defaulttermek', 0));
+        if ($szkt) {
+            $this->setObj(\mkw\consts::DefaultTermek, $szkt->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::DefaultTermek, '');
+        }
+
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('foxpostszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
         }
@@ -813,7 +849,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
         }
 
-        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('tofszallmod', 0));
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('tofszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::TOFSzallitasiMod, $szm->getId());
         }
@@ -821,7 +857,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::TOFSzallitasiMod, '');
         }
 
-        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('glsszallmod', 0));
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('glsszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, $szm->getId());
         }
@@ -829,7 +865,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, '');
         }
 
-        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('glsfutarszallmod', 0));
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('glsfutarszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, $szm->getId());
         }
@@ -837,7 +873,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, '');
         }
 
-        $belsouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouk', 0));
+        $belsouk = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouk', 0));
         if ($belsouk) {
             $this->setObj(\mkw\consts::BelsoUzletkoto, $belsouk->getId());
         }
@@ -845,7 +881,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::BelsoUzletkoto, '');
         }
 
-        $szallfeltsablon = \mkw\store::getEm()->getRepository('Entities\Statlap')->find($this->params->getIntRequestParam('szallitasifeltetelsablon', 0));
+        $szallfeltsablon = \mkw\store::getEm()->getRepository(Statlap::class)->find($this->params->getIntRequestParam('szallitasifeltetelsablon', 0));
         if ($szallfeltsablon) {
             $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, $szallfeltsablon->getId());
         }
@@ -918,56 +954,56 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
         $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
         $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('tanarelszamolassablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('tanarelszamolassablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('nemjonsenkisablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjonsenkisablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjonsenkiSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaNemjonsenkiSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('nemjelentkeztekelegentanarnaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjelentkeztekelegentanarnaksablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjelenteztekelegenTanarnakSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaNemjelenteztekelegenTanarnakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('nemjelentkeztekelegengyakorlonaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjelentkeztekelegengyakorlonaksablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjelentkeztekelegenGyakorlonakSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaNemjelentkeztekelegenGyakorlonakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('elegenjelentkeztektanarnaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('elegenjelentkeztektanarnaksablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('jogabejelentkezeskoszonosablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('jogabejelentkezeskoszonosablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('jogaelmaradaskonyveloneksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('jogaelmaradaskonyveloneksablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, $tanarelszsablon->getId());
         }
         else {
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, '');
         }
-        $szamlalevelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
+        $szamlalevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
         if ($szamlalevelsablon) {
             $this->setObj(\mkw\consts::SzamlalevelSablon, $szamlalevelsablon->getId());
         }
@@ -975,7 +1011,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::SzamlalevelSablon, '');
         }
 
-        $konyvelolevelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('konyvelolevelsablon', 0));
+        $konyvelolevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('konyvelolevelsablon', 0));
         if ($konyvelolevelsablon) {
             $this->setObj(\mkw\consts::KonyvelolevelSablon, $konyvelolevelsablon->getId());
         }
@@ -983,7 +1019,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::KonyvelolevelSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonregkoszono', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonregkoszono', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, $levelsablon->getId());
         }
@@ -991,7 +1027,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonregertesito', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonregertesito', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonRegErtesito, $levelsablon->getId());
         }
@@ -1001,7 +1037,7 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::RendezvenyRegErtesitoEmail, $this->params->getStringRequestParam(\mkw\consts::RendezvenyRegErtesitoEmail));
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablondijbekero', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablondijbekero', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonDijbekero, $levelsablon->getId());
         }
@@ -1009,7 +1045,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::RendezvenySablonDijbekero, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonkezdesemlekezteto', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonkezdesemlekezteto', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, $levelsablon->getId());
         }
@@ -1017,7 +1053,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonfizeteskoszono', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonfizeteskoszono', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, $levelsablon->getId());
         }
@@ -1025,7 +1061,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletFelszolitoSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletFelszolitoSablon, 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, $levelsablon->getId());
         }
@@ -1033,7 +1069,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLefogjarniSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLefogjarniSablon, 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletLefogjarniSablon, $levelsablon->getId());
         }
@@ -1041,7 +1077,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::JogaBerletLefogjarniSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLejartSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLejartSablon, 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletLejartSablon, $levelsablon->getId());
         }
@@ -1057,19 +1093,19 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));
 
-        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
+        $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::VasarlasiUtalvanyTermek, $vut->getId());
         }
-        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaorajegytermek', 0));
+        $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaorajegytermek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaOrajegyTermek, $vut->getId());
         }
-        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaberlet4termek', 0));
+        $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet4termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet4Termek, $vut->getId());
         }
-        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaberlet10termek', 0));
+        $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet10termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
         }

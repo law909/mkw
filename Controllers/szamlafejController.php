@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class SzamlafejController extends bizonylatfejController {
+class szamlafejController extends bizonylatfejController {
 
     public function __construct($params) {
         $this->biztipus = 'szamla';

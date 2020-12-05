@@ -1,6 +1,19 @@
 <?php
 namespace Controllers;
 
+use Entities\Afa;
+use Entities\Apiconsumer;
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
+use Entities\Fizmod;
+use Entities\ME;
+use Entities\Partner;
+use Entities\Raktar;
+use Entities\Termek;
+use Entities\TermekFa;
+use Entities\Valutanem;
+use Entities\Vtsz;
 use mkwhelpers\FilterDescriptor;
 
 class a2aController extends \mkwhelpers\Controller {
@@ -10,7 +23,7 @@ class a2aController extends \mkwhelpers\Controller {
     private $pr;
 
     protected function Auth($nev, $kulcs) {
-        $r = $this->getRepo('Entities\Apiconsumer')->findOneBy(array('nev' => $nev, 'kulcs' => $kulcs));
+        $r = $this->getRepo(Apiconsumer::class)->findOneBy(array('nev' => $nev, 'kulcs' => $kulcs));
         return $r;
     }
 
@@ -153,6 +166,68 @@ class a2aController extends \mkwhelpers\Controller {
         return $partneradat;
     }
 
+    protected function createRaktar($nev) {
+        $raktar = $this->getRepo(Raktar::class)->findOneBy(['nev' => $nev]);
+        if (!$raktar) {
+            $raktar = new Raktar();
+            $raktar->setNev($nev);
+            $this->getEm()->persist($raktar);
+            $this->getEm()->flush($raktar);
+        }
+        return $raktar;
+    }
+
+    protected function createFizmod($nev, $tipus, $navtipus) {
+        $fizmod = $this->getRepo(Fizmod::class)->findOneBy(['nev' => $nev]);
+        if (!$fizmod) {
+            $fizmod = new Fizmod();
+            $fizmod->setNev($nev);
+            $fizmod->setTipus($tipus);
+            $fizmod->setNavtipus($navtipus);
+            $this->getEm()->persist($fizmod);
+            $this->getEm()->flush($fizmod);
+        }
+        return $fizmod;
+    }
+
+    protected function createVtsz($nev, $afa = null) {
+        $vtsz = $this->getRepo(Vtsz::class)->findOneBy(['szam' => $nev]);
+        if (!$vtsz) {
+            $vtsz = new Vtsz();
+            $vtsz->setSzam($nev);
+            if ($afa) {
+                $vtsz->setAfa($afa);
+            }
+            $this->getEm()->persist($vtsz);
+            $this->getEm()->flush($vtsz);
+        }
+        return $vtsz;
+    }
+
+    protected function createAFA($nev) {
+        $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $nev]);
+        if (!$afa) {
+            $afa = new Afa();
+            $afa->setNev($nev . ' %');
+            $afa->setErtek($nev);
+            $this->getEm()->persist($afa);
+            $this->getEm()->flush($afa);
+        }
+        return $afa;
+    }
+
+    protected function createME($nev, $navtipus) {
+        $me = $this->getRepo(ME::class)->findOneBy(['nev' => $nev]);
+        if (!$me) {
+            $me = new ME();
+            $me->setNev($nev);
+            $me->setNavtipus($navtipus);
+            $this->getEm()->persist($me);
+            $this->getEm()->flush($me);
+        }
+        return $me;
+    }
+
     public function processCmd() {
         $pelda = array(
             'auth' => array(
@@ -213,6 +288,7 @@ class a2aController extends \mkwhelpers\Controller {
                         'hazszam' => '',
                         'adoszam' => '',
                         'fizmodnev' => '',
+                        'fizmodtipus' => '',
                         'fizmodnavkod' => '',
                         'megjegyzes' => '',
                         'tetelek' => array(
@@ -235,9 +311,9 @@ class a2aController extends \mkwhelpers\Controller {
             )
         );
 
-        $this->tr = \mkw\store::getEm()->getRepository('Entities\Termek');
-        $this->tkr = \mkw\store::getEm()->getRepository('Entities\TermekFa');
-        $this->pr = \mkw\store::getEm()->getRepository('Entities\Partner');
+        $this->tr = \mkw\store::getEm()->getRepository(Termek::class);
+        $this->tkr = \mkw\store::getEm()->getRepository(TermekFa::class);
+        $this->pr = \mkw\store::getEm()->getRepository(Partner::class);
 
         $result = array();
         $results = array();
@@ -327,8 +403,83 @@ class a2aController extends \mkwhelpers\Controller {
                     case 'szamla':
                         if (array_key_exists('createraw', $cmd)) {
 
-                            $results['szamlaszam'] = 'tesztszamlaszam';
-                            $results['pdfurl'] = 'tesztpdfurl';
+                            $results['success'] = 0;
+                            $results['msg'] = '';
+
+                            $data = $cmd['createraw'];
+
+                            $biztipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
+                            if (!$biztipus) {
+                                $results['msg'] .= ' Nincs számla biz.tipus.';
+                            }
+                            $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                            if (!$valutanem) {
+                                $results['msg'] .= ' Nincs valutanem.';
+                            }
+                            $defapartner = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::DefaultPartner));
+                            if (!$defapartner) {
+                                $results['msg'] .= ' Nincs default partner';
+                            }
+                            $defatermek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::DefaultTermek));
+                            if (!$defatermek) {
+                                $results['msg'] .= ' Nincs default termék.';
+                            }
+                            if ($results['msg'] === '') {
+                                $szamlafej = new Bizonylatfej();
+                                $szamlafej->setPersistentData();
+
+                                $szamlafej->setBizonylattipus($biztipus);
+                                $szamlafej->setValutanem($valutanem);
+                                $szamlafej->setArfolyam(1);
+
+                                $fizmod = $this->createFizmod($data['fizmodnev'], $data['fizmodtipus'], $data['fizmodnavkod']);
+                                $szamlafej->setFizmod($fizmod);
+
+                                $raktar = $this->createRaktar($data['telephelykod']);
+                                $szamlafej->setRaktar($raktar);
+
+                                $szamlafej->setKelt();
+                                $szamlafej->setTeljesites();
+                                $szamlafej->setEsedekesseg();
+
+                                $szamlafej->setPartner($defapartner);
+                                $szamlafej->setPartnernev($data['nev']);
+                                $szamlafej->setPartnerirszam($data['irszam']);
+                                $szamlafej->setPartnervaros($data['varos']);
+                                $szamlafej->setPartnerutca($data['utca']);
+                                $szamlafej->setPartnerhazszam($data['hazszam']);
+                                $szamlafej->setPartneradoszam($data['adoszam']);
+
+                                $szamlafej->setMegjegyzes($data['megjegyzes']);
+
+                                foreach ($data['tetelek'] as $tetel) {
+                                    $szamlatetel = new Bizonylattetel();
+                                    $szamlafej->addBizonylattetel($szamlatetel);
+                                    $szamlatetel->setBizonylatfej($szamlafej);
+
+                                    $szamlatetel->setTermek($defatermek);
+                                    $szamlatetel->setTermeknev($tetel['termeknev']);
+                                    $szamlatetel->setCikkszam($tetel['cikkszam']);
+                                    $szamlatetel->setIdegencikkszam($tetel['szallitoicikkszam']);
+                                    $afa = $this->createAFA($tetel['afakulcs']);
+                                    $vtsz = $this->createVtsz($tetel['vtsz'], $afa);
+                                    $me = $this->createME($tetel['me'], $tetel['menavkod']);
+                                    $szamlatetel->setVtsz($vtsz);
+                                    $szamlatetel->setAfa($afa);
+                                    $szamlatetel->setMekod($me);
+                                    $szamlatetel->setMennyiseg($tetel['mennyiseg']);
+                                    $szamlatetel->setNettoegysar($tetel['nettoegysar']);
+
+                                    $this->getEm()->persist($szamlatetel);
+                                }
+                                $szamlafej->calcOsszesen();
+                                $this->getEm()->persist($szamlafej);
+                                $this->getEm()->flush();
+
+                                $results['success'] = 1;
+                                $results['szamlaszam'] = $szamlafej->getId();
+                                $results['pdfurl'] = \mkw\store::getRouter()->generate('szamlapdf', true, [], ['id' => $szamlafej->getId()]);
+                            }
                         }
                         break;
                 }
@@ -346,7 +497,7 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     public function teszt() {
-        $this->tkr = \mkw\store::getEm()->getRepository('Entities\TermekFa');
+        $this->tkr = \mkw\store::getEm()->getRepository(TermekFa::class);
 
         $result = array();
 

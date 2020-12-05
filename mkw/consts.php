@@ -339,4 +339,7 @@ class consts {
     const NAVOnlineEnv = 'NAVOnlineEnv';
     const NAVOnlineErtekhatar = 'NAVOnlineErtekhatar';
     const NAVOnline2_0StartDate = 'NAVOnline2_0StartDate';
+
+    const DefaultPartner = 'defaultpartner';
+    const DefaultTermek = 'defaulttermek';
 }
