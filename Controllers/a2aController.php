@@ -408,18 +408,22 @@ class a2aController extends \mkwhelpers\Controller {
 
                             $data = $cmd['createraw'];
 
+                            /** @var Bizonylattipus $biztipus */
                             $biztipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
                             if (!$biztipus) {
                                 $results['msg'] .= ' Nincs számla biz.tipus.';
                             }
+                            /** @var Valutanem $valutanem */
                             $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                             if (!$valutanem) {
                                 $results['msg'] .= ' Nincs valutanem.';
                             }
+                            /** @var Partner $defapartner */
                             $defapartner = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::DefaultPartner));
                             if (!$defapartner) {
                                 $results['msg'] .= ' Nincs default partner';
                             }
+                            /** @var Termek $defatermek */
                             $defatermek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::DefaultTermek));
                             if (!$defatermek) {
                                 $results['msg'] .= ' Nincs default termék.';
