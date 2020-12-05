@@ -501,8 +501,7 @@ class a2aController extends \mkwhelpers\Controller {
 
                                 $results['success'] = 1;
                                 $results['szamlaszam'] = $szamlafej->getId();
-                                $results['pdfurl'] = \mkw\store::getRouter()->generate('szamlapdf', true, [], ['id' => $szamlafej->getId()]);
-                                $results['printedurl'] = \mkw\store::getRouter()->generate('szamlafejsetnyomtatva', true, [], ['id' => $szamlafej->getId(), 'printed' => true]);
+                                $results['pdfurl'] = \mkw\store::getRouter()->generate('szamlapdf', true, [], ['id' => $szamlafej->getId(), 'printed' => true]);
                             }
                         }
                         break;

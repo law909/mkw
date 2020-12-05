@@ -129,7 +129,6 @@ $router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 
 $router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint');
 $router->map('GET', '/szamlapdf', 'szamlafejController#doPDF', 'szamlapdf');
-$router->map('GET', '/setnyomtatva', 'szamlafejController#setNyomtatva', 'szamlafejsetnyomtatva');
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
 $router->map('GET', '/export/vatera', 'exportController#VateraExport', 'vateraexport');

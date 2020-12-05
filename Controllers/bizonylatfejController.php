@@ -1053,6 +1053,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     public function doPDF() {
         if (\mkw\store::isPDF()) {
             $id = $this->params->getStringRequestParam('id');
+            $printed = $this->params->getBoolRequestParam('printed', false);
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
@@ -1061,6 +1062,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $pdf = new Pdf($html);
                 $pdf->setOptions(array('encoding' => 'UTF-8'));
                 $pdf->send(\mkw\store::urlize($id) . '.pdf');
+                if ($printed !== false) {
+                    $this->setNyomtatva($id, true);
+                }
             }
         }
     }
