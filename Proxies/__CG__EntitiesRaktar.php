@@ -66,10 +66,10 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -255,6 +255,28 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArchiv', [$archiv]);
 
         return parent::setArchiv($archiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdegenkod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegenkod', []);
+
+        return parent::getIdegenkod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdegenkod($idegenkod): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', [$idegenkod]);
+
+        parent::setIdegenkod($idegenkod);
     }
 
 }

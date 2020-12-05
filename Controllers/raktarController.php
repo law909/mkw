@@ -11,14 +11,23 @@ class raktarController extends \mkwhelpers\JQGridController {
         parent::__construct($params);
     }
 
+    /**
+     * @param \Entities\Raktar $obj
+     * @return mixed
+     */
     protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getMozgat(), $obj->getArchiv());
+        return array($obj->getNev(), $obj->getMozgat(), $obj->getArchiv(), $obj->getIdegenkod());
     }
 
+    /**
+     * @param \Entities\Raktar $obj
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
         $obj->setArchiv($this->params->getBoolRequestParam('archiv'));
+        $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod', $obj->getIdegenkod()));
         return $obj;
     }
 

@@ -662,7 +662,12 @@ $().ready(
                         edittype: 'checkbox',
                         editoptions: {value: '1:0'},
                         editrules: {},
-                        formoptions: {rowpos: 3, label: 'Archív:'}}],
+                        formoptions: {rowpos: 3, label: 'Archív:'}},
+                    {name: 'idegenkod', index: 'idegenkod', label: 'Idegen kód', width: 160,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 50},
+                        formoptions: {rowpos: 4, label: 'Idegen kód:'}}
+                        ],
                 rowNum: 100000,
                 rowList: [10, 20, 30],
                 pager: _rkt.pager,

@@ -167,10 +167,11 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function createRaktar($nev) {
-        $raktar = $this->getRepo(Raktar::class)->findOneBy(['nev' => $nev]);
+        $raktar = $this->getRepo(Raktar::class)->findOneBy(['idegenkod' => $nev]);
         if (!$raktar) {
             $raktar = new Raktar();
             $raktar->setNev($nev);
+            $raktar->setIdegenkod($nev);
             $this->getEm()->persist($raktar);
             $this->getEm()->flush($raktar);
         }
