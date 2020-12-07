@@ -1128,7 +1128,7 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . $valt->getSzin() . '"',
                         '"' . $valt->getMeret() . '"',
                         '"' . $t->getInaktiv() . '"',
-                        '"' . $valt->getElerheto3() . '"',
+                        '"' . ($t->getLathato3() && $valt->getLathato3()) . '"',
                         '"' . $keszlet . '"',
                         '"' . (string)$valt->getVonalkod() . '"',
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
