@@ -463,7 +463,7 @@ class a2aController extends \mkwhelpers\Controller {
 
                                 $szamlafej->setKelt();
                                 $szamlafej->setTeljesites();
-                                $szamlafej->setEsedekesseg();
+                                $szamlafej->setEsedekesseg($data['esedekesseg']);
 
                                 $szamlafej->setPartnernev($data['nev']);
                                 $szamlafej->setPartnerirszam($data['irszam']);
