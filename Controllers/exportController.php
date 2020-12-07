@@ -1079,7 +1079,7 @@ class exportController extends \mkwhelpers\Controller {
             'Article Name IT',
             'Color',
             'Size',
-            'Active',
+            'Inactive',
             'Visible',
             'Stock',
             'EAN Code',
