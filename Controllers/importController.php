@@ -2323,9 +2323,10 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                 }
                                 else {
-                                    if ($termek && $termek->getKeszlet() <= 0) {
+                                    $keszlet = $termek->getKeszlet();
+                                    if ($termek && $keszlet <= 0) {
                                         if (!$termek->getInaktiv()) {
-                                            \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
+                                            \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'] . ' (készlet: ' . $keszlet . ': ' . gettype($keszlet) . ')', 'reintex_fuggoben.txt');
                                             $lettfuggoben = true;
                                             $termek->setInaktiv(true);
                                             \mkw\store::getEm()->persist($termek);
@@ -2433,93 +2434,6 @@ class importController extends \mkwhelpers\Controller {
 
                 fclose($fh);
                 \unlink(\mkw\store::storagePath('reintex.csv'));
-            }
-            $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
-        }
-        else {
-            echo json_encode(array('msg' => 'Már fut ilyen import.'));
-        }
-    }
-
-    public function reintexOLDImport() {
-
-        if (!$this->checkRunningImport(\mkw\consts::RunningReintexImport)) {
-
-            $this->setRunningImport(\mkw\consts::RunningReintexImport, 1);
-
-            $sep = ';';
-
-            $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
-            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
-            $dbig = $this->params->getIntRequestParam('dbig', 0);
-            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
-            $createuj = $this->params->getBoolRequestParam('createuj', false);
-            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
-            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
-            move_uploaded_file($_FILES['toimport']['tmp_name'], 'reinteximport.csv');
-
-            $fh = fopen('reinteximport.csv', 'r');
-            if ($fh) {
-                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
-                $termekdb = 0;
-                fgetcsv($fh, 0, $sep, '"');
-                while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
-                    $termekdb++;
-                }
-                while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
-                    $termekdb++;
-                    if ($data[$this->n('a')]) {
-                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
-                        if (!$termek) {
-
-                            if ($createuj) {
-
-                                $termeknev = $data[$this->n('b')];
-
-                                $termek = new \Entities\Termek();
-                                $termek->setFuggoben(true);
-                                $termek->setMekod($this->getME('darab'));
-                                $termek->setNev($termeknev);
-                                $termek->setCikkszam($data[$this->n('a')]);
-                                $termek->setTermekfa1($parent);
-                                $termek->setVtsz($vtsz[0]);
-                                $termek->setHparany(3);
-                                if ($gyarto) {
-                                    $termek->setGyarto($gyarto);
-                                }
-                            }
-                        }
-                        else {
-                            $termek = $termek[0];
-                            if ($editleiras) {
-                                //$hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setLeiras($hosszuleiras);
-                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                            }
-                        }
-                        if ($termek) {
-                            if (!$termek->getAkcios()) {
-                                $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
-                            }
-                            \mkw\store::getEm()->persist($termek);
-                        }
-                    }
-                    if (($termekdb % $batchsize) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
-                    }
-                }
-                \mkw\store::getEm()->flush();
-                \mkw\store::getEm()->clear();
-                fclose($fh);
-                \unlink('reinteximport.csv');
             }
             $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
         }
