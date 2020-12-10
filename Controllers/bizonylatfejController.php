@@ -1898,7 +1898,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
             else {
                 $noerrors = $no->getErrors();
-                \mkw\store::writelog($bizszam, 'navonline.log');
+                \mkw\store::writelog($bizszam . ' sendToNAV', 'navonline.log');
                 \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
                 return $no->getErrorsAsHtml();
             }
@@ -1915,15 +1915,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             if ($no->validate($xml)) {
                 if ($no->getResult() !== 'OK') {
                     $noerrors = $no->getErrors();
-                    \mkw\store::writelog($bizszam, 'navonline.log');
-                    \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+                    \mkw\store::writelog($bizszam . ' validateWithNAV result', 'navonline.log');
+                    \mkw\store::writelog(print_r($no->getResult(), true), 'navonline.log');
                     return $no->getErrorsAsHtml();
                 }
                 return true;
             }
             else {
                 $noerrors = $no->getErrors();
-                \mkw\store::writelog($bizszam, 'navonline.log');
+                \mkw\store::writelog($bizszam . ' validateWithNAV kapcsolat hiba', 'navonline.log');
                 \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
                 return $no->getErrorsAsHtml();
             }
