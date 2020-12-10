@@ -1093,6 +1093,7 @@ class exportController extends \mkwhelpers\Controller {
                     $sor[] = [
                         'categoryId' => $t->getTermekfa1Id(),
                         'category' => $t->getTermekfa1()->getTeljesNev(),
+                        'categoryVisible' => 1,
                         'articleNumber' => $t->getCikkszam(),
                         'articleName' => $t->getNev(),
                         'articleNameEN' => $ford['en_us']['nev'],
@@ -1125,6 +1126,7 @@ class exportController extends \mkwhelpers\Controller {
                 $sor[] = [
                     'categoryId' => $t->getTermekfa1Id(),
                     'category' => $t->getTermekfa1()->getTeljesNev(),
+                    'categoryVisible' => 1,
                     'articleNumber' => $t->getCikkszam(),
                     'articleName' => $t->getNev(),
                     'articleNameEN' => $ford['en_us']['nev'],
