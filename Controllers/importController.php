@@ -2829,7 +2829,8 @@ class importController extends \mkwhelpers\Controller {
                                     if (!$termek->getAkcios()) {
                                         $ar = $data[$this->n('g')] * 1 * $arszaz / 100;
                                         $ar = round($ar, -1);
-                                        $valtozat->setBrutto($ar - $termek->getBrutto());
+                                        $termek->setBrutto($ar);
+                                        //$valtozat->setBrutto($ar - $termek->getBrutto());
                                     }
                                 }
                                 if (!$kaphato) {
