@@ -19,7 +19,10 @@ class TypeConverter {
     }
 
     public function toNum($value) {
-        return $value * 1;
+        if (is_numeric($value)) {
+            return $value * 1;
+        }
+        return 0;
     }
 
     public function toInt($value) {
