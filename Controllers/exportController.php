@@ -1065,35 +1065,6 @@ class exportController extends \mkwhelpers\Controller {
             }
         }
 
-        header("Content-type: text/csv");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        header("Content-Disposition: attachment; filename=superzone.csv");
-
-        $sor = array(
-            'Category ID',
-            'Category',
-            'Article Number',
-            'Article Name',
-            'Article Name EN',
-            'Article Name IT',
-            'Color',
-            'Size',
-            'Inactive',
-            'Visible',
-            'Stock',
-            'EAN Code',
-            'Description',
-            'Description EN',
-            'Description IT',
-            'Image URL',
-            'Price',
-            'Discount price',
-            'Article ID',
-            'Variant ID'
-        );
-        echo implode(";", $sor) . "\n";
-
         $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -1102,6 +1073,7 @@ class exportController extends \mkwhelpers\Controller {
 
 //        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
 
+        $sor = [];
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
 
@@ -1118,29 +1090,28 @@ class exportController extends \mkwhelpers\Controller {
                     if ($maxstock > 0) {
                         $keszlet = min($keszlet, $maxstock);
                     }
-                    $sor = array(
-                        '"' . $t->getTermekfa1Id() . '"',
-                        '"' . $t->getTermekfa1()->getTeljesNev() . '"',
-                        '"' . $t->getCikkszam() . '"',
-                        '"' . $t->getNev() . '"',
-                        '"' . $ford['en_us']['nev'] . '"',
-                        '"' . $ford['it_it']['nev'] . '"',
-                        '"' . $valt->getSzin() . '"',
-                        '"' . $valt->getMeret() . '"',
-                        '"' . $t->getInaktiv() . '"',
-                        '"' . ($t->getLathato3() && $valt->getLathato3()) . '"',
-                        '"' . $keszlet . '"',
-                        '"' . (string)$valt->getVonalkod() . '"',
-                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                        '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']) . '"',
-                        '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
-                        '"' . ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '') . '"',
-                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
-                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"',
-                        '"' . $t->getId() . '"',
-                        '"' . $valt->getId() . '"'
-                    );
-                    echo implode(";", $sor) . "\n";
+                    $sor[] = [
+                        'categoryId' => $t->getTermekfa1Id(),
+                        'category' => $t->getTermekfa1()->getTeljesNev(),
+                        'articleNumber' => $t->getCikkszam(),
+                        'articleName' => $t->getNev(),
+                        'articleNameEN' => $ford['en_us']['nev'],
+                        'articleNameIT' => $ford['it_it']['nev'],
+                        'color' => $valt->getSzin(),
+                        'size' => $valt->getMeret(),
+                        'inactive' => $t->getInaktiv(),
+                        'visible' => ($t->getLathato3() && $valt->getLathato3()),
+                        'stock' => $keszlet,
+                        'EANcode' => (string)$valt->getVonalkod(),
+                        'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
+                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                        'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
+                        'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
+                        'price' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
+                        'discountPrice' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)),
+                        'articleId' => $t->getId(),
+                        'variantId' => $valt->getId()
+                    ];
                 }
             }
             else {
@@ -1151,30 +1122,35 @@ class exportController extends \mkwhelpers\Controller {
                 if ($maxstock > 0) {
                     $keszlet = min($keszlet, $maxstock);
                 }
-                $sor = array(
-                    '"' . $t->getTermekfa1Id() . '"',
-                    '"' . $t->getTermekfa1()->getTeljesNev() . '"',
-                    '"' . $t->getCikkszam() . '"',
-                    '"' . $t->getNev() . '"',
-                    '"' . $ford['en_us']['nev'] . '"',
-                    '"' . $ford['it_it']['nev'] . '"',
-                    '""',
-                    '"' . $t->getInaktiv() . '"',
-                    '"' . $t->getLathato3() . '"',
-                    '"' . $keszlet . '"',
-                    '"' . (string)$t->getVonalkod() . '"',
-                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                    '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']) . '"',
-                    '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
-                    '"' . ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ). '"',
-                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
-                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"',
-                    '"' . $t->getId() . '"',
-                    '""'
-                );
-                echo implode(";", $sor) . "\n";
+                $sor[] = [
+                    'categoryId' => $t->getTermekfa1Id(),
+                    'category' => $t->getTermekfa1()->getTeljesNev(),
+                    'articleNumber' => $t->getCikkszam(),
+                    'articleName' => $t->getNev(),
+                    'articleNameEN' => $ford['en_us']['nev'],
+                    'articleNameIT' => $ford['it_it']['nev'],
+                    'color' => '',
+                    'size' => '',
+                    'inactive' => $t->getInaktiv(),
+                    'visible' => $t->getLathato3(),
+                    'stock' => $keszlet,
+                    'EANcode' => (string)$t->getVonalkod(),
+                    'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                    'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
+                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ),
+                    'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
+                    'discountPrice' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)),
+                    'articleId' => $t->getId(),
+                    'variantId' => ''
+                ];
             }
         }
+        header("Content-type: application/json");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=superzone.json");
+        echo json_encode($sor);
     }
 
     public function DepoExport() {
