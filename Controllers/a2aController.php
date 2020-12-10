@@ -465,12 +465,12 @@ class a2aController extends \mkwhelpers\Controller {
                                 $szamlafej->setTeljesites();
                                 $szamlafej->setEsedekesseg($data['esedekesseg']);
 
-                                $szamlafej->setPartnernev($data['nev']);
-                                $szamlafej->setPartnerirszam($data['irszam']);
-                                $szamlafej->setPartnervaros($data['varos']);
-                                $szamlafej->setPartnerutca($data['utca']);
-                                $szamlafej->setPartnerhazszam($data['hazszam']);
-                                $szamlafej->setPartneradoszam($data['adoszam']);
+                                $szamlafej->setPartnernev(trim($data['nev']));
+                                $szamlafej->setPartnerirszam(trim($data['irszam']));
+                                $szamlafej->setPartnervaros(trim($data['varos']));
+                                $szamlafej->setPartnerutca(trim($data['utca']));
+                                $szamlafej->setPartnerhazszam(trim($data['hazszam']));
+                                $szamlafej->setPartneradoszam(trim($data['adoszam']));
 
                                 $szamlafej->setMegjegyzes($data['megjegyzes']);
                                 $szamlafej->setBelsomegjegyzes($data['idegenbizszam']);
@@ -478,8 +478,8 @@ class a2aController extends \mkwhelpers\Controller {
 
                                 foreach ($data['tetelek'] as $tetel) {
                                     $afa = $this->createAFA($tetel['afakulcs']);
-                                    $vtsz = $this->createVtsz($tetel['vtsz'], $afa);
-                                    $me = $this->createME($tetel['me'], $tetel['menavkod']);
+                                    $vtsz = $this->createVtsz(trim($tetel['vtsz']), $afa);
+                                    $me = $this->createME(trim($tetel['me']), $tetel['menavkod']);
 
                                     $szamlatetel = new Bizonylattetel();
                                     $szamlafej->addBizonylattetel($szamlatetel);

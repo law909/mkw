@@ -1229,8 +1229,8 @@ class Bizonylatfej {
         $result = $result . $this->getPartnerorszagiso3166();
         $result = $result . '</countryCode>';
         $result = $result . '<postalCode>';
-        if ($this->getPartnerirszam()) {
-            $result = $result . \mkw\store::CData($this->getPartnerirszam());
+        if (trim($this->getPartnerirszam())) {
+            $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
         }
         else {
             $result = $result . '0000';
