@@ -45,6 +45,26 @@ class PartnerRepository extends \mkwhelpers\Repository {
         );
     }
 
+    public function getVatstatusList($sel) {
+	    return array(
+	        array(
+	            'id' => 1,
+                'caption' => 'Belföldi adóalany',
+                'selected' => ($sel == 1)
+            ),
+            array(
+                'id' => 2,
+                'caption' => 'Magánszemély',
+                'selected' => ($sel == 2)
+            ),
+            array(
+                'id' => 3,
+                'caption' => 'Egyéb',
+                'selected' => ($sel == 3)
+            ),
+        );
+    }
+
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a . ',fm,uk'
