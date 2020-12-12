@@ -58,6 +58,9 @@ class Partner {
 	/** @ORM\Column(type="string",length=30,nullable=true) */
 	private $euadoszam = '';
 
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $thirdadoszam = '';
+
 	/** @ORM\Column(type="string",length=20,nullable=true) */
 	private $mukengszam = '';
 
@@ -385,6 +388,9 @@ class Partner {
     /** @ORM\Column(type="boolean") */
     private $mennyisegetlathat = false;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $vatstatus = 0;
+
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -404,6 +410,9 @@ class Partner {
         $this->mijsztanitas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->partnerdokok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
+
+	public function calcVatstatus() {
+    }
 
 	public function doAnonym() {
         $this->vezeteknev = \mkw\store::generateRandomStr(strlen($this->vezeteknev));
@@ -1874,6 +1883,34 @@ class Partner {
      */
     public function setMennyisegetlathat($mennyisegetlathat) {
         $this->mennyisegetlathat = $mennyisegetlathat;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVatstatus() {
+        return $this->vatstatus;
+    }
+
+    /**
+     * @param int $vatstatus
+     */
+    public function setVatstatus(int $vatstatus): void {
+        $this->vatstatus = $vatstatus;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThirdadoszam() {
+        return $this->thirdadoszam;
+    }
+
+    /**
+     * @param string $thirdadoszam
+     */
+    public function setThirdadoszam(string $thirdadoszam): void {
+        $this->thirdadoszam = $thirdadoszam;
     }
 
 }

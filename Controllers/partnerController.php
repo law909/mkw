@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Partner;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -37,6 +38,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['idegenkod'] = $t->getIdegenkod();
         $x['adoszam'] = $t->getAdoszam();
         $x['euadoszam'] = $t->getEuadoszam();
+        $x['thirdadoszam'] = $t->getThirdadoszam();
         $x['mukengszam'] = $t->getMukengszam();
         $x['jovengszam'] = $t->getJovengszam();
         $x['ostermszam'] = $t->getOstermszam();
@@ -117,6 +119,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['szamlalevelmegszolitas'] = $t->getSzamlalevelmegszolitas();
         $x['kulsos'] = $t->getKulsos();
         $x['mennyisegetlathat'] = $t->isMennyisegetlathat();
+        $x['vatstatus'] = $t->getVatstatus();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -183,6 +186,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
             $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
             $obj->setEuadoszam($this->params->getStringRequestParam('euadoszam'));
+            $obj->setThirdadoszam($this->params->getStringRequestParam('thirdadoszam'));
             $obj->setMukengszam($this->params->getStringRequestParam('mukengszam'));
             $obj->setJovengszam($this->params->getStringRequestParam('jovengszam'));
             $obj->setOstermszam($this->params->getStringRequestParam('ostermszam'));
@@ -216,6 +220,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setSzamlalevelmegszolitas($this->params->getStringRequestParam('szamlalevelmegszolitas'));
             $obj->setKulsos($this->params->getBoolRequestParam('kulsos'));
             $obj->setMennyisegetlathat($this->params->getBoolRequestParam('mennyisegetlathat'));
+            $obj->setVatstatus($this->params->getIntRequestParam('vatstatus'));
             if ($this->params->getIntRequestParam('minicrmprojectid')) {
                 $obj->setMinicrmprojectid($this->params->getIntRequestParam('minicrmprojectid'));
             }
@@ -322,141 +327,6 @@ class partnerController extends \mkwhelpers\MattableController {
             }
             $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
             $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
-        }
-
-        if (\mkw\store::isMIJSZ() && $subject === 'pubreg') {
-            $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::FelvetelAlattCimke));
-            if ($cimke) {
-                $obj->addCimke($cimke);
-            }
-            $ptipus = $this->getEm()->getRepository('Entities\Partnertipus')->find(\mkw\store::getParameter(\mkw\consts::FelvetelAlattTipus));
-            if ($ptipus) {
-                $obj->setPartnertipus($ptipus);
-            }
-        }
-
-        if (\mkw\store::isMIJSZ() && ($subject === 'oklevelek' || $subject === 'minden')) {
-            $okids = $this->params->getArrayRequestParam('mijszoklevelid');
-            foreach ($okids as $okid) {
-                $oper = $this->params->getStringRequestParam('mijszokleveloper_' . $okid);
-                $kibo = $this->getEm()->getRepository('Entities\MIJSZOklevelkibocsajto')->find($this->params->getIntRequestParam('mijszokleveloklevelkibocsajto_' . $okid));
-                $szint = $this->getEm()->getRepository('Entities\MIJSZOklevelszint')->find($this->params->getIntRequestParam('mijszokleveloklevelszint_' . $okid));
-                if ($kibo && $szint) {
-                    if ($oper === 'add') {
-                        $kedv = new \Entities\PartnerMIJSZOklevel();
-                        $kedv->setPartner($obj);
-                        $kedv->setMIJSZOklevelkibocsajto($kibo);
-                        $kedv->setMIJSZOklevelszint($szint);
-                        $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
-                        $this->getEm()->persist($kedv);
-                    }
-                    elseif ($oper === 'edit') {
-                        $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZOklevel')->find($okid);
-                        if ($kedv) {
-                            $kedv->setPartner($obj);
-                            $kedv->setMIJSZOklevelkibocsajto($kibo);
-                            $kedv->setMIJSZOklevelszint($szint);
-                            $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
-                            $this->getEm()->persist($kedv);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (\mkw\store::isMIJSZ() && ($subject === 'pune' || $subject === 'minden')) {
-            $okids = $this->params->getArrayRequestParam('mijszpuneid');
-            foreach ($okids as $okid) {
-                $oper = $this->params->getStringRequestParam('mijszpuneoper_' . $okid);
-                if ($oper === 'add') {
-                    $kedv = new \Entities\PartnerMIJSZPune();
-                    $kedv->setPartner($obj);
-                    $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
-                    $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
-                    $kedv->setTol($this->params->getStringRequestParam('mijszpunetol_' . $okid));
-                    $kedv->setIg($this->params->getStringRequestParam('mijszpuneig_' . $okid));
-                    $kedv->setNapszam($this->params->getIntRequestParam('mijszpunenapszam_' . $okid));
-                    $this->getEm()->persist($kedv);
-                }
-                elseif ($oper === 'edit') {
-                    $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZPune')->find($okid);
-                    if ($kedv) {
-                        $kedv->setPartner($obj);
-                        $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
-                        $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
-                        $kedv->setTol($this->params->getStringRequestParam('mijszpunetol_' . $okid));
-                        $kedv->setIg($this->params->getStringRequestParam('mijszpuneig_' . $okid));
-                        $kedv->setNapszam($this->params->getIntRequestParam('mijszpunenapszam_' . $okid));
-                        $this->getEm()->persist($kedv);
-                    }
-                }
-            }
-        }
-
-        if (\mkw\store::isMIJSZ() && ($subject === 'oralatogatasok' || $subject === 'minden')) {
-            $okids = $this->params->getArrayRequestParam('mijszoralatogatasid');
-            foreach ($okids as $okid) {
-                $oper = $this->params->getStringRequestParam('mijszoralatogatasoper_' . $okid);
-                $tanar = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('mijszoralatogatastanar_' . $okid));
-                if ($tanar || $this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid)) {
-                    if ($oper === 'add') {
-                        $kedv = new \Entities\PartnerMIJSZOralatogatas();
-                        $kedv->setPartner($obj);
-                        $kedv->setTanar($tanar);
-                        $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
-                        $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
-                        $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
-                        $kedv->setOraszam($this->params->getNumRequestParam('mijszoralatogatasoraszam_' . $okid));
-                        $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
-                        $this->getEm()->persist($kedv);
-                    }
-                    elseif ($oper === 'edit') {
-                        $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZOralatogatas')->find($okid);
-                        if ($kedv) {
-                            $kedv->setPartner($obj);
-                            $kedv->setTanar($tanar);
-                            $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
-                            $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
-                            $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
-                            $kedv->setOraszam($this->params->getNumRequestParam('mijszoralatogatasoraszam_' . $okid));
-                            $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
-                            $this->getEm()->persist($kedv);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (\mkw\store::isMIJSZ() && ($subject === 'tanitas' || $subject === 'minden')) {
-            $okids = $this->params->getArrayRequestParam('mijsztanitasid');
-            foreach ($okids as $okid) {
-                $oper = $this->params->getStringRequestParam('mijsztanitasoper_' . $okid);
-                $szint = $this->getEm()->getRepository('Entities\MIJSZGyakorlasszint')->find($this->params->getIntRequestParam('mijsztanitasszint_' . $okid));
-                if ($szint || $this->params->getStringRequestParam('mijsztanitasszintegyeb_' . $okid)) {
-                    if ($oper === 'add') {
-                        $kedv = new \Entities\PartnerMIJSZTanitas();
-                        $kedv->setPartner($obj);
-                        $kedv->setSzint($szint);
-                        $kedv->setSzintegyeb($this->params->getStringRequestParam('mijsztanitasszintegyeb_' . $okid));
-                        $kedv->setHelyszin($this->params->getStringRequestParam('mijsztanitashelyszin_' . $okid));
-                        $kedv->setMikor($this->params->getStringRequestParam('mijsztanitasmikor_' . $okid));
-                        $kedv->setNap($this->params->getIntRequestParam('mijsztanitasnap_' . $okid));
-                        $this->getEm()->persist($kedv);
-                    }
-                    elseif ($oper === 'edit') {
-                        $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZTanitas')->find($okid);
-                        if ($kedv) {
-                            $kedv->setPartner($obj);
-                            $kedv->setSzint($szint);
-                            $kedv->setSzintegyeb($this->params->getStringRequestParam('mijsztanitasszintegyeb_' . $okid));
-                            $kedv->setHelyszin($this->params->getStringRequestParam('mijsztanitashelyszin_' . $okid));
-                            $kedv->setMikor($this->params->getStringRequestParam('mijsztanitasmikor_' . $okid));
-                            $kedv->setNap($this->params->getIntRequestParam('mijsztanitasnap_' . $okid));
-                            $this->getEm()->persist($kedv);
-                        }
-                    }
-                }
-            }
         }
 
         if ($subject === 'bankiadatok' || $subject === 'minden') {
@@ -568,6 +438,10 @@ class partnerController extends \mkwhelpers\MattableController {
             if ($szallmod) {
                 $obj->setSzallitasimod($szallmod);
             }
+        }
+
+        if (!$obj->getVatstatus()) {
+            $obj->calcVatstatus();
         }
         return $obj;
     }
@@ -732,8 +606,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Partner'));
         $view->setVar('oper', $oper);
 
+        /** @var Partner $partner */
         $partner = $this->getRepo()->findWithJoins($id);
         $view->setVar('szamlatipuslist', $this->getRepo()->getSzamlatipusList(($partner ? $partner->getSzamlatipus() : 0)));
+        $view->setVar('vatstatuslist', \mkw\store::getVatstatusSelectList(($partner ? $partner->getVatstatus() : 0)));
         // loadVars utan nem abc sorrendben adja vissza
         $tcc = new partnercimkekatController($this->params);
         $cimkek = $partner ? $partner->getCimkek() : null;
