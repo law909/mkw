@@ -49,7 +49,7 @@ class adminController extends mkwhelpers\Controller {
         }
         $filter->clear();
         $filter->addFilter('ertek', '=', 0);
-        $filter->addFilter('navcase', '=', '');
+        $filter->addSql('(navcase=\'\') OR (navcase IS NULL)');
         $hibasdb = $this->getRepo(Entities\Afa::class)->getCount($filter);
         if ($hibasdb) {
             $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
