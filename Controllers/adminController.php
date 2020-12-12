@@ -47,6 +47,13 @@ class adminController extends mkwhelpers\Controller {
         if ($hibasdb) {
             $nohibasbeallitas[] = 'Nincs minden mennyiségi egységnek NAV típus megadva.';
         }
+        $filter->clear();
+        $filter->addFilter('ertek', '=', 0);
+        $filter->addFilter('navcase', '=', '');
+        $hibasdb = $this->getRepo(Entities\Afa::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
+        }
         $view->setVar('nohibalista', $nohibasbeallitas);
 
         $raktar = new raktarController($this->params);
