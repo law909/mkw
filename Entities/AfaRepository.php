@@ -54,4 +54,14 @@ class AfaRepository extends \mkwhelpers\Repository {
             )
         );
     }
+
+    public function getNavReason($case) {
+	    $tomb = $this->getNavcaseList();
+        foreach ($tomb as $item) {
+            if ($item['id'] === $case) {
+                return $item['reason'];
+            }
+	    }
+        return '';
+    }
 }
