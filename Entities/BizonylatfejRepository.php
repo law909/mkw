@@ -199,7 +199,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     'bruttohuf' => 0,
                     'afakulcs' => $tetel->getAfakulcs(),
                     'caption' => $tetel->getAfanev(),
-                    'rlbkod' => ($a ? $a->getRLBkod() : 0)
+                    'rlbkod' => ($a ? $a->getRLBkod() : 0),
+                    'navcase' => ($a ? $a->getNavcase() : '')
                 );
             }
             $ret[$tetel->getAfaId()]['netto'] += $tetel->getNetto();

@@ -310,6 +310,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $partnereuadoszam;
 
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $partnerthirdadoszam = '';
+
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnermukengszam;
 
@@ -1036,8 +1039,10 @@ class Bizonylatfej {
         $ret['szallitasiidodatum'] = $this->getSzallitasiidoDatumStr();
         $ret['adoszam'] = $this->getPartneradoszam();
         $ret['euadoszam'] = $this->getPartnereuadoszam();
+        $ret['thirdadoszam'] = $this->getPartnerthirdadoszam();
         $ret['partneradoszam'] = $this->getPartneradoszam();
         $ret['partnereuadoszam'] = $this->getPartnereuadoszam();
+        $ret['partnerthirdadoszam'] = $this->getPartnerthirdadoszam();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
@@ -1170,18 +1175,320 @@ class Bizonylatfej {
     }
 
     public function toNAVOnlineXML() {
-        $nover = store::getParameter(\mkw\consts::NAVOnlineVersion, '1_1');
+        $nover = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
         switch ($nover) {
-            case '1_1':
-                return $this->toNAVOnlineXML1_1();
-                break;
             case '2_0':
                 return $this->toNAVOnlineXML2_0();
-                break;
+            case '3_0':
+                return $this->toNAVOnlineXML3_0();
             default:
                 return $this->toNAVOnlineXML2_0();
-                break;
         }
+    }
+
+    private function toNAVOnlineXML3_0() {
+        $result = '<?xml version="1.0" encoding="UTF-8"?>';
+        $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/3.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/3.0/data invoiceData.xsd">';
+        $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
+        $result = $result . '<invoiceIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</invoiceIssueDate>';
+        $result = $result . '<completenessIndicator>false</completenessIndicator>';
+        $result = $result . '<invoiceMain>';
+        $result = $result . '<invoice>';
+        if ($this->getStorno()) {
+            $result = $result . '<invoiceReference>';
+            $result = $result . '<originalInvoiceNumber>' . $this->getParbizonylatfejId() . '</originalInvoiceNumber>';
+            $pb = $this->getParbizonylatfej();
+            if ($pb->getNaveredmeny() === 'DONE') {
+                $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
+            }
+            else {
+                $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
+            }
+            $result = $result . '<modificationIndex>1</modificationIndex>';
+            $result = $result . '</invoiceReference>';
+        }
+        $result = $result . '<invoiceHead>';
+
+        $result = $result . '<supplierInfo>';
+        $s = explode('-', $this->getTulajadoszam());
+        $result = $result . '<supplierTaxNumber><base:taxpayerId>' . $s[0] . '</base:taxpayerId><base:vatCode>' . $s[1] . '</base:vatCode><base:countyCode>' . $s[2] . '</base:countyCode></supplierTaxNumber>';
+        $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
+        $result = $result . '<supplierAddress><base:simpleAddress>';
+        $result = $result . '<base:countryCode>HU</base:countryCode><base:postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</base:postalCode><base:city>' . \mkw\store::CData($this->getTulajvaros()) . '</base:city><base:additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</base:additionalAddressDetail>';
+        $result = $result . '</base:simpleAddress></supplierAddress>';
+        if ($this->getTulajjovengszam()) {
+            $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
+        }
+        $result = $result . '</supplierInfo>';
+
+        $result = $result . '<customerInfo>';
+        if ($this->getPartner()->getVatstatus() == 1) {
+            $result = $result . '<customerVatStatus>DOMESTIC</customerVatStatus>';
+            $result = $result . '<customerVatData>';
+            $s = explode('-', $this->getPartneradoszam());
+            if ($s) {
+                $result = $result . '<customerTaxNumber><base:taxpayerId>' . $s[0] . '</base:taxpayerId><base:vatCode>' . $s[1] . '</base:vatCode><base:countyCode>' . $s[2] . '</base:countyCode></customerTaxNumber>';
+            }
+            $result = $result . '</customerVatData>';
+            $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
+            $result = $result . '<customerAddress><base:simpleAddress>';
+            $result = $result . '<base:countryCode>';
+            $result = $result . $this->getPartnerorszagiso3166();
+            $result = $result . '</base:countryCode>';
+            $result = $result . '<base:postalCode>';
+            if (trim($this->getPartnerirszam())) {
+                $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
+            }
+            else {
+                $result = $result . '0000';
+            }
+            $result = $result . '</base:postalCode>';
+            $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
+            $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+            $result = $result . '</base:simpleAddress></customerAddress>';
+        }
+        elseif ($this->getPartner()->getVatstatus() == 2) {
+            $result = $result . '<customerVatStatus>PRIVATE_PERSON</customerVatStatus>';
+        }
+        elseif ($this->getPartner()->getVatstatus() == 3) {
+            $result = $result . '<customerVatStatus>OTHER</customerVatStatus>';
+            if ($this->getPartnereuadoszam() || ($this->getPartnerSzamlatipus() == 1)) { // EUn beluli
+                if ($this->getPartnereuadoszam()) {
+                    $result = $result . '<customerVatData>';
+                    $result = $result . '<communityVatNumber>' . $this->getPartnereuadoszam() . '</communityVatNumber>';
+                    $result = $result . '</customerVatData>';
+                }
+                $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
+                $result = $result . '<customerAddress><base:simpleAddress>';
+                $result = $result . '<base:countryCode>';
+                $result = $result . $this->getPartnerorszagiso3166();
+                $result = $result . '</base:countryCode>';
+                $result = $result . '<base:postalCode>';
+                if (trim($this->getPartnerirszam())) {
+                    $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
+                }
+                else {
+                    $result = $result . '0000';
+                }
+                $result = $result . '</base:postalCode>';
+                $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
+                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+                $result = $result . '</base:simpleAddress></customerAddress>';
+            }
+            elseif ($this->getPartnerthirdadoszam() || ($this->getPartnerSzamlatipus() == 2)) { // EUn kivuli
+                if ($this->getPartnerthirdadoszam()) {
+                    $result = $result . '<customerVatData>';
+                    $result = $result . '<thirdStateTaxId>' . $this->getPartnerthirdadoszam() . '</thirdStateTaxId>';
+                    $result = $result . '</customerVatData>';
+                }
+                $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
+                $result = $result . '<customerAddress><base:simpleAddress>';
+                $result = $result . '<base:countryCode>';
+                $result = $result . $this->getPartnerorszagiso3166();
+                $result = $result . '</base:countryCode>';
+                $result = $result . '<base:postalCode>';
+                if (trim($this->getPartnerirszam())) {
+                    $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
+                }
+                else {
+                    $result = $result . '0000';
+                }
+                $result = $result . '</base:postalCode>';
+                $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
+                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+                $result = $result . '</base:simpleAddress></customerAddress>';
+            }
+        }
+        $result = $result . '</customerInfo>';
+
+        $result = $result . '<invoiceDetail>';
+        $result = $result . '<invoiceCategory>';
+        if ($this->getGyujtoszamla()) {
+            $result = $result . 'AGGREGATE';
+        }
+        else {
+            $result = $result . 'NORMAL';
+        }
+        $result = $result . '</invoiceCategory>';
+        $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
+        if ($this->getGyujtoszamla()) {
+            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
+                '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
+        }
+        $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
+        if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
+            $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
+        }
+        else {
+            $result = $result . '<exchangeRate>1</exchangeRate>';
+        }
+        $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
+        $result = $result . '<paymentDate>' . $this->getEsedekesseg()->format(\mkw\store::$SQLDateFormat) . '</paymentDate>';
+        $result = $result . '<invoiceAppearance>PAPER</invoiceAppearance>';
+        $result = $result . '</invoiceDetail>';
+        $result = $result . '</invoiceHead>';
+
+        $result = $result . '<invoiceLines>';
+        $result = $result . '<mergedItemIndicator>false</mergedItemIndicator>';
+        $tetelsorszam = 1;
+        /** @var \Entities\Bizonylattetel $bt */
+        foreach ($this->getBizonylattetelek() as $bt) {
+            $result = $result . '<line>';
+            $result = $result . '<lineNumber>' . $tetelsorszam . '</lineNumber>';
+            if ($this->getStorno()) {
+                $result = $result . '<lineModificationReference>';
+                $result = $result . '<lineNumberReference>' . $tetelsorszam . '</lineNumberReference>';
+                $result = $result . '<lineOperation>MODIFY</lineOperation>';
+                $result = $result . '</lineModificationReference>';
+            }
+            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
+                $result = $result . '<productCodes><productCode>';
+                $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
+                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
+                $result = $result . '</productCode></productCodes>';
+            }
+            $result = $result . '<lineExpressionIndicator>true</lineExpressionIndicator>';
+            $result = $result . '<lineDescription>' . \mkw\store::CData($bt->getTermeknev()) . '</lineDescription>';
+            $result = $result . '<quantity>' . \mkw\store::NAVNum($bt->getMennyiseg()) . '</quantity>';
+
+            if ($bt->getMekodNavtipus()) {
+                $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getMekodNavtipus()) . '</unitOfMeasure>';
+                $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
+            }
+            else {
+                $result = $result . '<unitOfMeasure>' . \mkw\store::CData('OWN') . '</unitOfMeasure>';
+                if ($bt->getME()) {
+                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
+                }
+                else {
+                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
+                }
+            }
+            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
+            $result = $result . '<unitPriceHUF>' . \mkw\store::NAVNum($bt->getNettoegysarhuf()) . '</unitPriceHUF>';
+            $result = $result . '<lineAmountsNormal>';
+
+            $result = $result . '<lineNetAmountData>';
+            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
+            $result = $result . '<lineNetAmountHUF>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmountHUF>';
+            $result = $result . '</lineNetAmountData>';
+
+            $result = $result . '<lineVatRate>';
+            if ($this->isForditottadozas()) {
+                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
+            }
+            else {
+                $afak = $bt->getAfa();
+                if ($afak->getErtek() == 0) {
+                    $result = $result . '<vatExemption>';
+                    $result = $result . '<case>' . $afak->getNavcase() . '</case>';
+                    $result = $result . '<reason>' . \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase()) . '</reason>';
+                    $result = $result . '</vatExemption>';
+                }
+                else {
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage>';
+                }
+            }
+            $result = $result . '</lineVatRate>';
+
+            $result = $result . '<lineVatData>';
+            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
+            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
+            $result = $result . '</lineVatData>';
+
+            $result = $result . '<lineGrossAmountData>';
+            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
+            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum($bt->getBruttohuf()) . '</lineGrossAmountNormalHUF>';
+            $result = $result . '</lineGrossAmountData>';
+
+            $result = $result . '</lineAmountsNormal>';
+            if ($this->getGyujtoszamla()) {
+                $result = $result . '<aggregateInvoiceLineData>';
+                $result = $result . '<lineExchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</lineExchangeRate>';
+                $result = $result . '<lineDeliveryDate>' . $bt->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</lineDeliveryDate>';
+                $result = $result . '</aggregateInvoiceLineData>';
+            }
+
+            // KTD
+
+            if ($this->getGyujtoszamla()) {
+                /*
+                $result = $result . '<additionalLineData>';
+                $result = $result . '<dataName>X00001_SZSZ</dataName>';
+                $result = $result . '<dataDescription>' . \mkw\store::CData('Szállítólevél száma') . '</dataDescription>';
+                $result = $result . '<dataValue>' . \mkw\store::CData() . '</dataValue>';
+                $result = $result . '</additionalLineData>';
+                */
+            }
+            $result = $result . '</line>';
+            $tetelsorszam++;
+        }
+        $result = $result . '</invoiceLines>';
+
+        // KTD SUMMARY
+
+        $result = $result . '<invoiceSummary>';
+        $result = $result . '<summaryNormal>';
+        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
+        foreach($afasum as $as) {
+            $result = $result . '<summaryByVatRate>';
+            $result = $result . '<vatRate>';
+            if ($this->isForditottadozas()) {
+                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
+            }
+            else {
+                if ($as['afakulcs'] == 0) {
+                    $result = $result . '<vatExemption>';
+                    $result = $result . '<case>' . $as['navcase'] . '</case>';
+                    $result = $result . '<reason>' . \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase']) . '</reason>';
+                    $result = $result . '</vatExemption>';
+                }
+                else {
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage>';
+                }
+            }
+            $result = $result . '</vatRate>';
+
+            $result = $result . '<vatRateNetData>';
+            $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
+            $result = $result . '<vatRateNetAmountHUF>' . \mkw\store::NAVNum($as['nettohuf']) . '</vatRateNetAmountHUF>';
+            $result = $result . '</vatRateNetData>';
+
+            $result = $result . '<vatRateVatData>';
+            $result = $result . '<vatRateVatAmount>' . \mkw\store::NAVNum($as['afa']) . '</vatRateVatAmount>';
+            $result = $result . '<vatRateVatAmountHUF>' . \mkw\store::NAVNum($as['afahuf']) . '</vatRateVatAmountHUF>';
+            $result = $result . '</vatRateVatData>';
+
+            $result = $result . '<vatRateGrossData>';
+            $result = $result . '<vatRateGrossAmount>' . \mkw\store::NAVNum($as['brutto']) . '</vatRateGrossAmount>';
+            $result = $result . '<vatRateGrossAmountHUF>' . \mkw\store::NAVNum($as['bruttohuf']) . '</vatRateGrossAmountHUF>';
+            $result = $result . '</vatRateGrossData>';
+
+            $result = $result . '</summaryByVatRate>';
+        }
+        $result = $result . '<invoiceNetAmount>' . \mkw\store::NAVNum($this->getNetto()) . '</invoiceNetAmount>';
+        $result = $result . '<invoiceNetAmountHUF>' . \mkw\store::NAVNum($this->getNettohuf()) . '</invoiceNetAmountHUF>';
+        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa()) . '</invoiceVatAmount>';
+        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf()) . '</invoiceVatAmountHUF>';
+        $result = $result . '</summaryNormal>';
+        $result = $result . '<summaryGrossData>';
+        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto()) . '</invoiceGrossAmount>';
+        $result = $result . '<invoiceGrossAmountHUF>' . \mkw\store::NAVNum($this->getBruttohuf()) . '</invoiceGrossAmountHUF>';
+        $result = $result . '</summaryGrossData>';
+        $result = $result . '</invoiceSummary>';
+        $result = $result . '</invoice>';
+        $result = $result . '</invoiceMain>';
+        $result = $result . '</InvoiceData>';
+
+        $b64 = str_replace('+', '$', base64_encode($result)); // a Delphi miatt az API igy várja az adatot
+
+        if ($this->getStorno()) {
+            $result = 'STORNO' . $b64;
+        }
+        else {
+            $result = 'CREATE' . $b64;
+        }
+        return $result;
     }
 
     private function toNAVOnlineXML2_0() {
@@ -1421,694 +1728,6 @@ class Bizonylatfej {
             $result = 'CREATE' . $b64;
         }
         return $result;
-    }
-
-    private function toNAVOnlineXML1_1() {
-        $result = '<?xml version="1.0" encoding="UTF-8"?><Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData.xsd">';
-        $result = $result . '<invoiceExchange>';
-        if ($this->getStorno()) {
-            $result = $result . '<invoiceReference>';
-            $result = $result . '<originalInvoiceNumber>' . $this->getParbizonylatfejId() . '</originalInvoiceNumber>';
-            $result = $result . '<modificationIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</modificationIssueDate>';
-            $utcmost = strtotime($this->getCreated()->format(\mkw\store::$sqlDateTimeFormat));
-            $result = $result . '<modificationTimestamp>' . gmdate(\mkw\store::$sqlDateTimeFormat, $utcmost) . '.000Z</modificationTimestamp>';
-            $pb = $this->getParbizonylatfej();
-            if ($pb->getKelt()->format(\mkw\store::$SQLDateFormat) >= '2018-07-01') {
-                $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
-            }
-            else {
-                $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
-            }
-            $result = $result . '</invoiceReference>';
-        }
-        $result = $result . '<invoiceHead>';
-
-        $result = $result . '<supplierInfo>';
-        $s = explode('-', $this->getTulajadoszam());
-        $result = $result . '<supplierTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></supplierTaxNumber>';
-        $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
-        $result = $result . '<supplierAddress><simpleAddress>';
-        $result = $result . '<countryCode>HU</countryCode><postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</postalCode><city>' . \mkw\store::CData($this->getTulajvaros()) . '</city><additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</additionalAddressDetail>';
-        $result = $result . '</simpleAddress></supplierAddress>';
-        if ($this->getTulajjovengszam()) {
-            $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
-        }
-        $result = $result . '</supplierInfo>';
-
-        $result = $result . '<customerInfo>';
-        $s = explode('-', $this->getPartneradoszam());
-        if ($s) {
-            $result = $result . '<customerTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></customerTaxNumber>';
-        }
-        $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
-        $result = $result . '<customerAddress><simpleAddress>';
-        $result = $result . '<countryCode>';
-        $result = $result . $this->getPartnerorszagiso3166();
-        $result = $result . '</countryCode>';
-        $result = $result . '<postalCode>';
-        if ($this->getPartnerirszam()) {
-            $result = $result . \mkw\store::CData($this->getPartnerirszam());
-        }
-        else {
-            $result = $result . '0000';
-        }
-        $result = $result . '</postalCode>';
-        $result = $result . '<city>' . \mkw\store::CData($this->getPartnervaros()) . '</city>';
-        $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</additionalAddressDetail>';
-        $result = $result . '</simpleAddress></customerAddress>';
-        $result = $result . '</customerInfo>';
-
-        $result = $result . '<invoiceData>';
-        $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
-        $result = $result . '<invoiceCategory>';
-        if ($this->getGyujtoszamla()) {
-            $result = $result . 'AGGREGATE';
-        }
-        else {
-            $result = $result . 'NORMAL';
-        }
-        $result = $result . '</invoiceCategory>';
-        $result = $result . '<invoiceIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</invoiceIssueDate>';
-        $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
-        if ($this->getGyujtoszamla()) {
-            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
-                '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
-        }
-        $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
-        if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
-            $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
-        }
-        else {
-            $result = $result . '<exchangeRate>1</exchangeRate>';
-        }
-        $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
-        $result = $result . '<invoiceAppearance>PAPER</invoiceAppearance>';
-        $result = $result . '</invoiceData>';
-        $result = $result . '</invoiceHead>';
-
-        $result = $result . '<invoiceLines>';
-        $tetelsorszam = 1;
-        /** @var \Entities\Bizonylattetel $bt */
-        foreach ($this->getBizonylattetelek() as $bt) {
-            $result = $result . '<line>';
-            $result = $result . '<lineNumber>' . $tetelsorszam . '</lineNumber>';
-            if ($this->getStorno()) {
-                $result = $result . '<lineModificationReference>';
-                $result = $result . '<lineNumberReference>' . $tetelsorszam . '</lineNumberReference>';
-                $result = $result . '<lineOperation>MODIFY</lineOperation>';
-                $result = $result . '</lineModificationReference>';
-            }
-            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
-                $result = $result . '<productCodes><productCode>';
-                $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
-                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
-                $result = $result . '</productCode></productCodes>';
-            }
-            $result = $result . '<lineExpressionIndicator>true</lineExpressionIndicator>';
-            $result = $result . '<lineDescription>' . \mkw\store::CData($bt->getTermeknev()) . '</lineDescription>';
-            $result = $result . '<quantity>' . \mkw\store::NAVNum($bt->getMennyiseg()) . '</quantity>';
-
-            if ($bt->getMekodNavtipus()) {
-                $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getMekodNavtipus()) . '</unitOfMeasure>';
-                $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-            }
-            else {
-                $result = $result . '<unitOfMeasure>' . \mkw\store::CData('OWN') . '</unitOfMeasure>';
-                if ($bt->getME()) {
-                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-                }
-                else {
-                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
-                }
-            }
-            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
-            $result = $result . '<lineAmountsNormal>';
-            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
-            $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
-            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
-            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
-            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
-            $result = $result . '</lineAmountsNormal>';
-            if ($this->getGyujtoszamla()) {
-                $result = $result . '<aggregateInvoiceLineData>';
-                $result = $result . '<lineExchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</lineExchangeRate>';
-                $result = $result . '<lineDeliveryDate>' . $bt->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</lineDeliveryDate>';
-                $result = $result . '</aggregateInvoiceLineData>';
-            }
-
-            // KTD
-
-            if ($this->getGyujtoszamla()) {
-                /*
-                $result = $result . '<additionalLineData>';
-                $result = $result . '<dataName>X00001_SZSZ</dataName>';
-                $result = $result . '<dataDescription>' . \mkw\store::CData('Szállítólevél száma') . '</dataDescription>';
-                $result = $result . '<dataValue>' . \mkw\store::CData() . '</dataValue>';
-                $result = $result . '</additionalLineData>';
-                */
-            }
-            $result = $result . '</line>';
-            $tetelsorszam++;
-        }
-        $result = $result . '</invoiceLines>';
-
-        // KTD SUMMARY
-
-        $result = $result . '<invoiceSummary>';
-        $result = $result . '<summaryNormal>';
-        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
-        foreach($afasum as $as) {
-            $result = $result . '<summaryByVatRate>';
-            $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
-            $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
-            $result = $result . '<vatRateVatAmount>' . \mkw\store::NAVNum($as['afa']) . '</vatRateVatAmount>';
-            $result = $result . '<vatRateVatAmountHUF>' . \mkw\store::NAVNum($as['afahuf']) . '</vatRateVatAmountHUF>';
-            $result = $result . '<vatRateGrossAmount>' . \mkw\store::NAVNum($as['brutto']) . '</vatRateGrossAmount>';
-            $result = $result . '</summaryByVatRate>';
-        }
-        $result = $result . '<invoiceNetAmount>' . \mkw\store::NAVNum($this->getNetto()) . '</invoiceNetAmount>';
-        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa()) . '</invoiceVatAmount>';
-        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf()) . '</invoiceVatAmountHUF>';
-        $result = $result . '</summaryNormal>';
-        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto()) . '</invoiceGrossAmount>';
-        $result = $result . '</invoiceSummary>';
-        $result = $result . '</invoiceExchange>';
-        $result = $result . '</Invoice>';
-
-        $b64 = base64_encode($result);
-
-        $result = '<invoiceOperations>';
-        $result = $result . '<technicalAnnulment>false</technicalAnnulment>';
-        $result = $result . '<compressedContent>false</compressedContent>';
-        if ($this->getStorno()) {
-            $result = $result . '<invoiceOperation><index>1</index><operation>STORNO</operation>';
-        }
-        else {
-            $result = $result . '<invoiceOperation><index>1</index><operation>CREATE</operation>';
-        }
-        $result = $result . '<invoice>' . $b64 . '</invoice>';
-        $result = $result . '</invoiceOperation>';
-        $result = $result . '</invoiceOperations>';
-
-        return $result;
-    }
-
-    private function toNAVOnlineXML1_0() {
-        $result = '<?xml version="1.0" encoding="UTF-8"?><Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData.xsd">';
-        $result = $result . '<invoiceExchange>';
-        if ($this->getStorno()) {
-            $result = $result . '<invoiceReference>';
-            $result = $result . '<originalInvoiceNumber>' . $this->getParbizonylatfejId() . '</originalInvoiceNumber>';
-            $result = $result . '<modificationIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</modificationIssueDate>';
-            $utcmost = strtotime($this->getCreated()->format(\mkw\store::$sqlDateTimeFormat));
-            $result = $result . '<modificationTimestamp>' . gmdate(\mkw\store::$sqlDateTimeFormat, $utcmost) . '.000Z</modificationTimestamp>';
-            $pb = $this->getParbizonylatfej();
-            if ($pb->getKelt()->format(\mkw\store::$SQLDateFormat) >= '2018-07-01') {
-                $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
-            }
-            else {
-                $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
-            }
-            $result = $result . '</invoiceReference>';
-        }
-        $result = $result . '<invoiceHead>';
-
-        $result = $result . '<supplierInfo>';
-        $s = explode('-', $this->getTulajadoszam());
-        $result = $result . '<supplierTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></supplierTaxNumber>';
-        $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
-        $result = $result . '<supplierAddress><simpleAddress>';
-        $result = $result . '<countryCode>HU</countryCode><postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</postalCode><city>' . \mkw\store::CData($this->getTulajvaros()) . '</city><additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</additionalAddressDetail>';
-        $result = $result . '</simpleAddress></supplierAddress>';
-        if ($this->getTulajjovengszam()) {
-            $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
-        }
-        $result = $result . '</supplierInfo>';
-
-        $result = $result . '<customerInfo>';
-        $s = explode('-', $this->getPartneradoszam());
-        if ($s) {
-            $result = $result . '<customerTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></customerTaxNumber>';
-        }
-        $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
-        $result = $result . '<customerAddress><simpleAddress>';
-        $result = $result . '<countryCode>';
-        $result = $result . $this->getPartnerorszagiso3166();
-        $result = $result . '</countryCode>';
-        $result = $result . '<postalCode>';
-        if ($this->getPartnerirszam()) {
-            $result = $result . \mkw\store::CData($this->getPartnerirszam());
-        }
-        else {
-            $result = $result . '0000';
-        }
-        $result = $result . '</postalCode>';
-        $result = $result . '<city>' . \mkw\store::CData($this->getPartnervaros()) . '</city>';
-        $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</additionalAddressDetail>';
-        $result = $result . '</simpleAddress></customerAddress>';
-        $result = $result . '</customerInfo>';
-
-        $result = $result . '<invoiceData>';
-        $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
-        $result = $result . '<invoiceCategory>';
-        if ($this->getGyujtoszamla()) {
-            $result = $result . 'AGGREGATE';
-        }
-        else {
-            $result = $result . 'NORMAL';
-        }
-        $result = $result . '</invoiceCategory>';
-        $result = $result . '<invoiceIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</invoiceIssueDate>';
-        $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
-        if ($this->getGyujtoszamla()) {
-            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
-                '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
-        }
-        $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
-        if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
-            $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
-
-        }
-        $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
-        $result = $result . '<invoiceAppearance>PAPER</invoiceAppearance>';
-        $result = $result . '</invoiceData>';
-        $result = $result . '</invoiceHead>';
-
-        $result = $result . '<invoiceLines>';
-        $tetelsorszam = 1;
-        /** @var \Entities\Bizonylattetel $bt */
-        foreach ($this->getBizonylattetelek() as $bt) {
-            $result = $result . '<line>';
-            $result = $result . '<lineNumber>' . $tetelsorszam . '</lineNumber>';
-            if ($this->getStorno()) {
-                $result = $result . '<lineModificationReference>';
-                $result = $result . '<lineNumberReference>' . $tetelsorszam . '</lineNumberReference>';
-                $result = $result . '<lineOperation>MODIFY</lineOperation>';
-                $result = $result . '</lineModificationReference>';
-            }
-            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
-                $result = $result . '<productCodes><productCode>';
-                $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
-                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
-                $result = $result . '</productCode></productCodes>';
-            }
-            $result = $result . '<lineDescription>' . \mkw\store::CData($bt->getTermeknev()) . '</lineDescription>';
-            $result = $result . '<quantity>' . \mkw\store::NAVNum($bt->getMennyiseg()) . '</quantity>';
-            if ($bt->getME()) {
-                $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasure>';
-            }
-            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
-            $result = $result . '<lineAmountsNormal>';
-            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
-            $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
-            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
-            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
-            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
-            $result = $result . '</lineAmountsNormal>';
-            if ($this->getGyujtoszamla()) {
-                $result = $result . '<aggregateInvoiceLineData>';
-                $result = $result . '<lineExchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</lineExchangeRate>';
-                $result = $result . '<lineDeliveryDate>' . $bt->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</lineDeliveryDate>';
-                $result = $result . '</aggregateInvoiceLineData>';
-            }
-
-            // KTD
-
-            if ($this->getGyujtoszamla()) {
-                /*
-                $result = $result . '<additionalLineData>';
-                $result = $result . '<dataName>X00001_SZSZ</dataName>';
-                $result = $result . '<dataDescription>' . \mkw\store::CData('Szállítólevél száma') . '</dataDescription>';
-                $result = $result . '<dataValue>' . \mkw\store::CData() . '</dataValue>';
-                $result = $result . '</additionalLineData>';
-                */
-            }
-            $result = $result . '</line>';
-            $tetelsorszam++;
-        }
-        $result = $result . '</invoiceLines>';
-
-        // KTD SUMMARY
-
-        $result = $result . '<invoiceSummary>';
-        $result = $result . '<summaryNormal>';
-        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
-        foreach($afasum as $as) {
-            $result = $result . '<summaryByVatRate>';
-            $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
-            $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
-            $result = $result . '<vatRateVatAmount>' . \mkw\store::NAVNum($as['afa']) . '</vatRateVatAmount>';
-            $result = $result . '<vatRateVatAmountHUF>' . \mkw\store::NAVNum($as['afahuf']) . '</vatRateVatAmountHUF>';
-            $result = $result . '<vatRateGrossAmount>' . \mkw\store::NAVNum($as['brutto']) . '</vatRateGrossAmount>';
-            $result = $result . '</summaryByVatRate>';
-        }
-        $result = $result . '<invoiceNetAmount>' . \mkw\store::NAVNum($this->getNetto()) . '</invoiceNetAmount>';
-        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa()) . '</invoiceVatAmount>';
-        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf()) . '</invoiceVatAmountHUF>';
-        $result = $result . '</summaryNormal>';
-        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto()) . '</invoiceGrossAmount>';
-        $result = $result . '</invoiceSummary>';
-        $result = $result . '</invoiceExchange>';
-        $result = $result . '</Invoice>';
-
-        $b64 = base64_encode($result);
-
-        $result = '<invoiceOperations>';
-        $result = $result . '<technicalAnnulment>false</technicalAnnulment>';
-        $result = $result . '<compressedContent>false</compressedContent>';
-        if ($this->getStorno()) {
-            $result = $result . '<invoiceOperation><index>1</index><operation>STORNO</operation>';
-        }
-        else {
-            $result = $result . '<invoiceOperation><index>1</index><operation>CREATE</operation>';
-        }
-        $result = $result . '<invoice>' . $b64 . '</invoice>';
-        $result = $result . '</invoiceOperation>';
-        $result = $result . '</invoiceOperations>';
-
-        return $result;
-
-
-        /*
-  vanktdcsk = false;
-  vanneta = false;
-
-    if _Param.ReadInteger(pTulajNETAAlany,0)=1
-    then begin
-      if (navseged2.FieldByName('csk1').AsInteger<>0) or (navseged2.FieldByName('csk2').AsInteger<>0) or
-        (navseged2.FieldByName('csk3').AsInteger<>0) or (navseged2.FieldByName('csk4').AsInteger<>0) or (navseged2.FieldByName('csk5').AsInteger<>0) or
-        (navseged2.FieldByName('csk6').AsInteger<>0)
-      then begin
-        result = result+'<obligatedForProductFee>true</obligatedForProductFee>';
-        if (navseged2.FieldByName('ktd').AsInteger<>0)
-        then begin
-          result = result+'<netaDeclaration>true</netaDeclaration>';
-          vanneta = true;
-        end;
-        if (navseged2.FieldByName('csk1').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk1nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk1menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk1bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk1brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk2').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk2nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk2menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk2bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk2brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk3').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk3nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk3menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk3bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk3brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk4').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk4nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk4menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk4bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk4brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk5').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk5nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk5menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk5bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk5brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk6').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk6nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk6menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk6bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk6brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-      end
-      else begin
-        result = result+'<obligatedForProductFee>false</obligatedForProductFee>';
-        if (navseged2.FieldByName('ktd').AsInteger<>0)
-        then begin
-          result = result+'<netaDeclaration>true</netaDeclaration>';
-          vanneta = true;
-        end;
-      end;
-    end
-    else begin
-      if (navseged2.FieldByName('ktd').AsInteger<>0) or (navseged2.FieldByName('csk1').AsInteger<>0) or (navseged2.FieldByName('csk2').AsInteger<>0) or
-        (navseged2.FieldByName('csk3').AsInteger<>0) or (navseged2.FieldByName('csk4').AsInteger<>0) or (navseged2.FieldByName('csk5').AsInteger<>0) or
-        (navseged2.FieldByName('csk6').AsInteger<>0)
-      then begin
-        result = result+'<obligatedForProductFee>true</obligatedForProductFee>';
-        if (navseged2.FieldByName('ktd').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>KT</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('ktdnev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('ktdmenny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('ktdbruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('ktdbrutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk1').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk1nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk1menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk1bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk1brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk2').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk2nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk2menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk2bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk2brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk3').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk3nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk3menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk3bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk3brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk4').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk4nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk4menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk4bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk4brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk5').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk5nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk5menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk5bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk5brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-        if (navseged2.FieldByName('csk6').AsInteger<>0)
-        then begin
-          vanktdcsk = true;
-          result = result+'<lineProductFeeContent>';
-          result = result+'<productFeeCode>';
-          result = result+'<productCodeCategory>CSK</productCodeCategory>';
-          result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged2.FieldByName('csk6nev').AsString,' ')))+'</productCodeValue>';
-          result = result+'</productFeeCode>';
-          result = result+'<productFeeQuantity>'+FloatToCSV(navseged2.FieldByName('csk6menny').AsFloat,'0000')+'</productFeeQuantity>';
-          result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-          result = result+'<productFeeRate>'+FloatToCSV(navseged2.FieldByName('csk6bruttoear').AsFloat)+'</productFeeRate>';
-          result = result+'<productFeeAmount>'+FloatToCSV(navseged2.FieldByName('csk6brutto').AsFloat)+'</productFeeAmount>';
-          result = result+'</lineProductFeeContent>';
-        end;
-      end
-      else result = result+'<obligatedForProductFee>false</obligatedForProductFee>';
-    end;
-  end;
-
-  if vanktdcsk or vanneta
-  then
-    if _Param.ReadInteger(pTulajNETAAlany,0)=1
-    then begin
-      result = result+'<productFeeSummary>';
-      if navseged.FieldByName('kulfoldipartner').AsInteger=1
-      then result = result+'<productFeeOperation>REFUND</productFeeOperation>'
-      else result = result+'<productFeeOperation>DEPOSIT</productFeeOperation>';
-
-      prodfeesum = 0;
-
-      navseged3.RunQuery(Format('SELECT vcs.termek,vcs.csk,vcs.csknev AS nev,'+
-        'vcs.cskbruttoear AS bruttoear,SUM(vcs.cskmenny) AS menny,SUM(vcs.cskbrutto) AS brutto '+
-        'FROM vcsklista vcs '+
-        'WHERE vcs.kod=''%s'' '+
-        'GROUP BY vcs.kod,vcs.csk '+
-        'HAVING SUM(vcs.cskmenny)<>0',[bizkod]));
-      while not navseged3.Eof do begin
-        result = result+'<productFeeData>';
-        result = result+'<productFeeCode>';
-        result = result+'<productCodeCategory>CSK</productCodeCategory>';
-        result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged3.FieldByName('nev').AsString,' ')))+'</productCodeValue>';
-        result = result+'</productFeeCode>';
-        result = result+'<productFeeQuantity>'+FloatToCSV(navseged3.FieldByName('menny').AsFloat,'0000')+'</productFeeQuantity>';
-        result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-        result = result+'<productFeeRate>'+FloatToCSV(navseged3.FieldByName('bruttoear').AsFloat)+'</productFeeRate>';
-        result = result+'<productFeeAmount>'+FloatToCSV(navseged3.FieldByName('brutto').AsFloat)+'</productFeeAmount>';
-        result = result+'</productFeeData>';
-        prodfeesum = prodfeesum+navseged3.FieldByName('brutto').AsFloat;
-        navseged3.Next;
-      end;
-      result = result+'<productChargeSum>'+FloatToCSV(prodfeesum)+'</productChargeSum>';
-      result = result+'</productFeeSummary>';
-    end
-    else begin
-      result = result+'<productFeeSummary>';
-      if navseged.FieldByName('kulfoldipartner').AsInteger=1
-      then result = result+'<productFeeOperation>REFUND</productFeeOperation>'
-      else result = result+'<productFeeOperation>DEPOSIT</productFeeOperation>';
-
-      prodfeesum = 0;
-
-      navseged3.RunQuery(Format('SELECT vcs.termek,vcs.csk,vcs.csknev AS nev,'+
-        'vcs.cskbruttoear AS bruttoear,SUM(vcs.cskmenny) AS menny,SUM(vcs.cskbrutto) AS brutto '+
-        'FROM vcsklista vcs '+
-        'WHERE vcs.kod=''%s'' '+
-        'GROUP BY vcs.kod,vcs.csk '+
-        'HAVING SUM(vcs.cskmenny)<>0',[bizkod]));
-      while not navseged3.Eof do begin
-        result = result+'<productFeeData>';
-        result = result+'<productFeeCode>';
-        result = result+'<productCodeCategory>CSK</productCodeCategory>';
-        result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged3.FieldByName('nev').AsString,' ')))+'</productCodeValue>';
-        result = result+'</productFeeCode>';
-        result = result+'<productFeeQuantity>'+FloatToCSV(navseged3.FieldByName('menny').AsFloat,'0000')+'</productFeeQuantity>';
-        result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-        result = result+'<productFeeRate>'+FloatToCSV(navseged3.FieldByName('bruttoear').AsFloat)+'</productFeeRate>';
-        result = result+'<productFeeAmount>'+FloatToCSV(navseged3.FieldByName('brutto').AsFloat)+'</productFeeAmount>';
-        result = result+'</productFeeData>';
-        prodfeesum = prodfeesum+navseged3.FieldByName('brutto').AsFloat;
-        navseged3.Next;
-      end;
-      navseged3.RunQuery(Format('SELECT bt.termek,bt.ktd AS kod,bt.ktdnev AS nev,'+
-        'bt.ktdbruttoear AS bruttoear,SUM(bt.ktdmenny) AS menny,SUM(bt.ktdbrutto) AS brutto '+
-        'FROM bizonylattetel bt '+
-        'WHERE (bt.ktd IS NOT NULL) AND (bt.ktd<>0) AND (bt.bizonylat=''%s'') '+
-        'GROUP BY bt.bizonylat,bt.ktd',[bizkod]));
-      while not navseged3.Eof do begin
-        result = result+'<productFeeData>';
-        result = result+'<productFeeCode>';
-        result = result+'<productCodeCategory>KT</productCodeCategory>';
-        result = result+'<productCodeValue>'+cdata(UpperCase(MyExtractWord(1,navseged3.FieldByName('nev').AsString,' ')))+'</productCodeValue>';
-        result = result+'</productFeeCode>';
-        result = result+'<productFeeQuantity>'+FloatToCSV(navseged3.FieldByName('menny').AsFloat,'0000')+'</productFeeQuantity>';
-        result = result+'<productFeeMeasuringUnit>KG</productFeeMeasuringUnit>';
-        result = result+'<productFeeRate>'+FloatToCSV(navseged3.FieldByName('bruttoear').AsFloat)+'</productFeeRate>';
-        result = result+'<productFeeAmount>'+FloatToCSV(navseged3.FieldByName('brutto').AsFloat)+'</productFeeAmount>';
-        result = result+'</productFeeData>';
-        prodfeesum = prodfeesum+navseged3.FieldByName('brutto').AsFloat;
-        navseged3.Next;
-      end;
-      result = result+'<productChargeSum>'+FloatToCSV(prodfeesum)+'</productChargeSum>';
-      result = result+'</productFeeSummary>';
-    end;
-
-  if _devel=1
-  then LogToFile(RS(bizkod,'/','-')+'invoice.xml',result);
-
-  b64 = IdEncoderMIME1.Encode(result);
-
-  result = '<invoiceOperations>';
-  result = result+'<technicalAnnulment>false</technicalAnnulment>';
-  result = result+'<compressedContent>false</compressedContent>';
-  if (navseged.FieldByName('storno').AsInteger=1)
-  then result = result+'<invoiceOperation><index>1</index><operation>STORNO</operation>'
-  else result = result+'<invoiceOperation><index>1</index><operation>CREATE</operation>';
-  result = result+'<invoice>'+b64+'</invoice>';
-  result = result+'</invoiceOperation>';
-  result = result+'</invoiceOperations>';
-
- */
     }
 
     public function setPersistentData() {
@@ -2839,6 +2458,7 @@ class Bizonylatfej {
         $this->setPartneradoszam($val->getAdoszam());
         $this->setPartnercjszam($val->getCjszam());
         $this->setPartnereuadoszam($val->getEuadoszam());
+        $this->setPartnerthirdadoszam($val->getThirdadoszam());
         $this->setPartnerfvmszam($val->getFvmszam());
         $this->setPartnerirszam($val->getIrszam());
         $this->setPartnerjovengszam($val->getJovengszam());
@@ -2919,6 +2539,7 @@ class Bizonylatfej {
                 $this->partneradoszam = '';
                 $this->partnercjszam = '';
                 $this->partnereuadoszam = '';
+                $this->partnerthirdadoszam = '';
                 $this->partnerfvmszam = '';
                 $this->partnerirszam = '';
                 $this->partnerjovengszam = '';
@@ -4975,6 +4596,20 @@ class Bizonylatfej {
      */
     public function setForditottadozas($forditottadozas) {
         $this->forditottadozas = $forditottadozas;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerthirdadoszam(): string {
+        return $this->partnerthirdadoszam;
+    }
+
+    /**
+     * @param string $partnerthirdadoszam
+     */
+    public function setPartnerthirdadoszam(string $partnerthirdadoszam): void {
+        $this->partnerthirdadoszam = $partnerthirdadoszam;
     }
 
 }
