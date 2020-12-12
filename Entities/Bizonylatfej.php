@@ -633,11 +633,17 @@ class Bizonylatfej {
 
     public function calcNAVBekuldendo() {
         if (!$this->isNavbekuldve()) {
-            $this->setNavbekuldendo(
-                $this->getBizonylattipusNavbekuldendo()
-                && $this->getPartneradoszam()
-                && $this->getPartner()->isDefaultOrszag()
-            );
+            $nov = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
+            if ($nov = '2_0') {
+                $this->setNavbekuldendo(
+                    $this->getBizonylattipusNavbekuldendo()
+                    && $this->getPartneradoszam()
+                    && $this->getPartner()->isDefaultOrszag()
+                );
+            }
+            else {
+                $this->setNavbekuldendo($this->getBizonylattipusNavbekuldendo());
+            }
         }
     }
 
