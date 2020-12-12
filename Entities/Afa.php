@@ -25,6 +25,8 @@ class Afa {
     private $emagid;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $navcase;
 
 	public function getId() {
 	    return $this->id;
@@ -88,6 +90,20 @@ class Afa {
      */
     public function setEmagid($emagid) {
         $this->emagid = $emagid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNavcase() {
+        return $this->navcase;
+    }
+
+    /**
+     * @param mixed $navcase
+     */
+    public function setNavcase($navcase): void {
+        $this->navcase = $navcase;
     }
 
 }

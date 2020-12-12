@@ -8,6 +8,7 @@ $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'admi
 $router->map('GET', '/admin/afa/jsonlist', 'afaController#jsonlist', 'adminafajsonlist');
 $router->map('GET', '/admin/afa/htmllist', 'afaController#htmllist', 'adminafahtmllist');
 $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
+$router->map('GET', '/admin/afa/navcaselist', 'afaController#navcaselist', 'adminafanavcaselist');
 $router->map('GET', '/admin/arfolyam/jsonlist', 'arfolyamController#jsonlist', 'adminarfolyamjsonlist');
 $router->map('GET', '/admin/arfolyam/htmllist', 'arfolyamController#htmllist', 'adminarfolyamhtmllist');
 $router->map('POST', '/admin/arfolyam/save', 'arfolyamController#save', 'adminarfolyamsave');

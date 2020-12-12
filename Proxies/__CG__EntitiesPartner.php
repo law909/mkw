@@ -2911,7 +2911,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getVatstatus(): int
+    public function getVatstatus()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVatstatus', []);
@@ -2933,7 +2933,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getThirdadoszam(): string
+    public function getThirdadoszam()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getThirdadoszam', []);

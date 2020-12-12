@@ -66,10 +66,10 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'emagid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'emagid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'emagid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'emagid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase'];
     }
 
     /**
@@ -321,6 +321,28 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmagid', [$emagid]);
 
         return parent::setEmagid($emagid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNavcase()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNavcase', []);
+
+        return parent::getNavcase();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNavcase($navcase): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNavcase', [$navcase]);
+
+        parent::setNavcase($navcase);
     }
 
 }

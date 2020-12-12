@@ -16,7 +16,7 @@ class afaController extends \mkwhelpers\JQGridController {
      * @return mixed
      */
     protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getErtek(), $sor->getRLBkod(), $sor->getEmagid());
+        return array($sor->getNev(), $sor->getErtek(), $sor->getNavcase(), $sor->getRLBkod(), $sor->getEmagid());
     }
 
     /**
@@ -28,6 +28,7 @@ class afaController extends \mkwhelpers\JQGridController {
         $obj->setErtek($this->params->getIntRequestParam('ertek', $obj->getErtek()));
         $obj->setRLBkod($this->params->getIntRequestParam('rlbkod', $obj->getRLBkod()));
         $obj->setEmagid($this->params->getIntRequestParam('emagid', $obj->getEmagid()));
+        $obj->setNavcase($this->params->getStringRequestParam('navcase', $obj->getNavcase()));
         return $obj;
     }
 
@@ -69,4 +70,13 @@ class afaController extends \mkwhelpers\JQGridController {
         echo $ret;
     }
 
+    public function navcaselist() {
+        $cases = $this->getRepo()->getNavcaseList();
+        $ret = '<select>';
+        foreach ($cases as $case) {
+            $ret .= '<option value="' . $case['id'] . '">' . $case['caption'] . '</option>';
+        }
+        $ret .= '</select>';
+        echo $ret;
+    }
 }
