@@ -4607,14 +4607,14 @@ class Bizonylatfej {
     /**
      * @return string
      */
-    public function getPartnerthirdadoszam(): string {
+    public function getPartnerthirdadoszam() {
         return $this->partnerthirdadoszam;
     }
 
     /**
      * @param string $partnerthirdadoszam
      */
-    public function setPartnerthirdadoszam(string $partnerthirdadoszam): void {
+    public function setPartnerthirdadoszam($partnerthirdadoszam) {
         $this->partnerthirdadoszam = $partnerthirdadoszam;
     }
 
