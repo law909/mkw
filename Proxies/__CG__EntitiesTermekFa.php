@@ -66,10 +66,10 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato15'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lathato15'];
     }
 
     /**
@@ -948,6 +948,347 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmagid', [$emagid]);
 
         return parent::setEmagid($emagid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
+
+        return parent::getLathato();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato($lathato): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$lathato]);
+
+        parent::setLathato($lathato);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato2', []);
+
+        return parent::getLathato2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato2($lathato2): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato2', [$lathato2]);
+
+        parent::setLathato2($lathato2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato3', []);
+
+        return parent::getLathato3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato3($lathato3): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$lathato3]);
+
+        parent::setLathato3($lathato3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato4', []);
+
+        return parent::getLathato4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato4($lathato4): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato4', [$lathato4]);
+
+        parent::setLathato4($lathato4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato5', []);
+
+        return parent::getLathato5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato5($lathato5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato5', [$lathato5]);
+
+        parent::setLathato5($lathato5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato6', []);
+
+        return parent::getLathato6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato6($lathato6): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato6', [$lathato6]);
+
+        parent::setLathato6($lathato6);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato7', []);
+
+        return parent::getLathato7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato7($lathato7): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato7', [$lathato7]);
+
+        parent::setLathato7($lathato7);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato8', []);
+
+        return parent::getLathato8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato8($lathato8): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato8', [$lathato8]);
+
+        parent::setLathato8($lathato8);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato9', []);
+
+        return parent::getLathato9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato9($lathato9): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato9', [$lathato9]);
+
+        parent::setLathato9($lathato9);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato10', []);
+
+        return parent::getLathato10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato10($lathato10): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato10', [$lathato10]);
+
+        parent::setLathato10($lathato10);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato11()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato11', []);
+
+        return parent::getLathato11();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato11($lathato11): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato11', [$lathato11]);
+
+        parent::setLathato11($lathato11);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato12()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato12', []);
+
+        return parent::getLathato12();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato12($lathato12): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato12', [$lathato12]);
+
+        parent::setLathato12($lathato12);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato13()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato13', []);
+
+        return parent::getLathato13();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato13($lathato13): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato13', [$lathato13]);
+
+        parent::setLathato13($lathato13);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato14()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato14', []);
+
+        return parent::getLathato14();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato14($lathato14): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato14', [$lathato14]);
+
+        parent::setLathato14($lathato14);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato15()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato15', []);
+
+        return parent::getLathato15();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato15($lathato15): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato15', [$lathato15]);
+
+        parent::setLathato15($lathato15);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getXLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXLathato', []);
+
+        return parent::getXLathato();
     }
 
 }

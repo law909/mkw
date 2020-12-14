@@ -49,6 +49,22 @@ class termekfaController extends \mkwhelpers\MattableController {
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         $x['emagid'] = $t->getEmagid();
+        $x['lathato'] = $t->getLathato();
+        $x['lathato1'] = $t->getLathato();
+        $x['lathato2'] = $t->getLathato2();
+        $x['lathato3'] = $t->getLathato3();
+        $x['lathato4'] = $t->getLathato4();
+        $x['lathato5'] = $t->getLathato5();
+        $x['lathato6'] = $t->getLathato6();
+        $x['lathato7'] = $t->getLathato7();
+        $x['lathato8'] = $t->getLathato8();
+        $x['lathato9'] = $t->getLathato9();
+        $x['lathato10'] = $t->getLathato10();
+        $x['lathato11'] = $t->getLathato11();
+        $x['lathato12'] = $t->getLathato12();
+        $x['lathato13'] = $t->getLathato13();
+        $x['lathato14'] = $t->getLathato14();
+        $x['lathato15'] = $t->getLathato15();
         if (\mkw\store::isMultilang()) {
             $translations = array();
             $translationsCtrl = new termekfatranslationController($this->params);
@@ -84,6 +100,21 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setEmagid($this->params->getIntRequestParam('emagid'));
+        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
+        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
+        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
+        $obj->setLathato4($this->params->getBoolRequestParam('lathato4'));
+        $obj->setLathato5($this->params->getBoolRequestParam('lathato5'));
+        $obj->setLathato6($this->params->getBoolRequestParam('lathato6'));
+        $obj->setLathato7($this->params->getBoolRequestParam('lathato7'));
+        $obj->setLathato8($this->params->getBoolRequestParam('lathato8'));
+        $obj->setLathato9($this->params->getBoolRequestParam('lathato9'));
+        $obj->setLathato10($this->params->getBoolRequestParam('lathato10'));
+        $obj->setLathato11($this->params->getBoolRequestParam('lathato11'));
+        $obj->setLathato12($this->params->getBoolRequestParam('lathato12'));
+        $obj->setLathato13($this->params->getBoolRequestParam('lathato13'));
+        $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
+        $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
         if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             $_tf = \Entities\TermekFa::getTranslatedFields();

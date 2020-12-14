@@ -41,6 +41,16 @@
 			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($egyed.menu3lathato)}checked="checked"{/if}>{at('Top kategória')}</input>
 			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($egyed.menu4lathato)}checked="checked"{/if}>{at('Kategória lista')}</input>
 			<table><tbody>
+                <tr>
+                    <input id="LathatoCheck" name="lathato" type="checkbox"
+                           {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
+                    {if ($setup.multishop)}
+                        {for $cikl = 2 to $enabledwebshops}
+                            <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"
+                                   {if ($egyed["lathato$cikl"])}checked="checked"{/if}>{at('Látható')} {$webshop{$cikl}name}
+                        {/for}
+                    {/if}
+                </tr>
 			<tr>
 				<td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
 				<td><input id="OldalCimEdit" name="oldalcim" type="text" size="100" maxlength="255" value="{$egyed.oldalcim}"></td>
