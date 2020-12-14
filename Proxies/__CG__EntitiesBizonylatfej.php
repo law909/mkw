@@ -4847,7 +4847,7 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getPartnerthirdadoszam(): string
+    public function getPartnerthirdadoszam()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerthirdadoszam', []);
@@ -4858,12 +4858,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setPartnerthirdadoszam(string $partnerthirdadoszam): void
+    public function setPartnerthirdadoszam($partnerthirdadoszam)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerthirdadoszam', [$partnerthirdadoszam]);
 
-        parent::setPartnerthirdadoszam($partnerthirdadoszam);
+        return parent::setPartnerthirdadoszam($partnerthirdadoszam);
     }
 
 }
