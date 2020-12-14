@@ -5378,7 +5378,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                         $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto, true);
-                        foreach ($termekek as $item) {
+                        foreach ($termekek as $t) {
                             if (in_array($t['idegencikkszam'], $idegencikkszamok)) {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
