@@ -5370,7 +5370,7 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek && $termek->getKeszlet() <= 0) {
                                     $lettfuggoben = true;
-                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'netpresso_fuggoben.txt');
+                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam() . ' (szállítói cikkszám: ' . $termek->getIdegencikkszam() . ')', 'netpresso_fuggoben.txt');
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
@@ -5384,7 +5384,7 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek) {
                                     $lettfuggoben = true;
-                                    \mkw\store::writelog('vissza rakott cikkszám: ' . $termek->getCikkszam(), 'netpresso_fuggoben.txt');
+                                    \mkw\store::writelog('vissza rakott cikkszám: ' . $termek->getCikkszam() . ' (szállítói cikkszám: ' . $termek->getIdegencikkszam() . ')', 'netpresso_fuggoben.txt');
                                     $termek->setInaktiv(false);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
