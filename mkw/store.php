@@ -3,6 +3,7 @@
 namespace mkw;
 
 use Doctrine\ORM\EntityManager;
+use http\Params;
 
 class store {
 
@@ -457,6 +458,7 @@ class store {
         }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
+        $p = new \mkwhelpers\ParameterHandler();
         $oc = new \Controllers\orszagController($p);
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
         if (self::isMugenrace()) {

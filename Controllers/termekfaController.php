@@ -254,6 +254,36 @@ class termekfaController extends \mkwhelpers\MattableController {
     public function getformenu($menunum, $almenunum = 0) {
         switch (true) {
             case \mkw\store::isMindentkapni():
+                $repo = $this->getRepo();
+                $f = $repo->getForMenu($menunum);
+                $t = array();
+                foreach ($f as $o) {
+                    $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
+                    $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
+                    $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
+                    if ($almenunum > 0) { // mkw lebegő menüje
+                        $o['children'] = array();
+                        $children = $repo->getForParent($o['id'], $almenunum);
+                        foreach ($children as $child) {
+                            $child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);
+                            $child['kiskepurl'] = \mkw\store::createSmallImageUrl($child['kepurl']);
+                            $child['kepurl'] = \mkw\store::createBigImageUrl($child['kepurl']);
+                            $chchildren = $repo->getForParent($child['id'], $almenunum);
+                            $child['childcount'] = count($chchildren);
+                            foreach ($chchildren as $chchild) {
+                                $chchild['kozepeskepurl'] = \mkw\store::createMediumImageUrl($chchild['kepurl']);
+                                $chchild['kiskepurl'] = \mkw\store::createSmallImageUrl($chchild['kepurl']);
+                                $chchild['kepurl'] = \mkw\store::createBigImageUrl($chchild['kepurl']);
+                                $chchild['childcount'] = 0;
+                                $child['children'][] = $chchild;
+                            }
+                            $o['children'][] = $child;
+                        }
+                        $o['childcount'] = count($o['children']);
+                    }
+                    $t[] = $o;
+                }
+                return $t;
             case \mkw\store::isMugenrace():
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
