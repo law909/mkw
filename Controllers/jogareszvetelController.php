@@ -214,6 +214,14 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 break;
         }
 
+        $tanar = $this->params->getIntRequestParam('tanarfilter');
+        if ($tanar) {
+            $ts = $this->getRepo(Dolgozo::class)->find($tanar);
+            if ($ts) {
+                $filter->addFilter('tanar', '=', $ts);
+            }
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -245,6 +253,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->setVar('penztarlist', $penztar->getSelectList());
         $termek = new termekController($this->params);
         $view->setVar('termeklist', $termek->getSelectList());
+        $tanarc = new dolgozoController($this->params);
+        $view->setVar('tanarlist', $tanarc->getSelectList());
         $view->printTemplateResult(false);
     }
 
@@ -262,6 +272,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
         $penztar = new penztarController($this->params);
         $view->setVar('penztarlist', $penztar->getSelectList());
+        $tanarc = new dolgozoController($this->params);
+        $view->setVar('tanarlist', $tanarc->getSelectList());
         $view->printTemplateResult(false);
     }
 

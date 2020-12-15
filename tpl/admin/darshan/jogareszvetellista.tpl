@@ -26,6 +26,16 @@
     </div>
     <div class="matt-hseparator"></div>
     <div>
+        <label for="tanarfilter">{at('Tanár')}:</label>
+        <select id="tanarfilter" name="tanarfilter">
+            <option value="0">{at('válasszon')}</option>
+            {foreach $tanarlist as $t}
+                <option value="{$t.id}"{if ($t.selected)} selected="selected"{/if}>{$t.caption}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
         <select id="tisztaznikellfilter" name="tisztaznikellfilter">
             <option value="0">{at('Rendben')}</option>
             <option value="1">{at('Tisztázni kell')}</option>
