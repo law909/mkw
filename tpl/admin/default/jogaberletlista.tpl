@@ -45,7 +45,7 @@
             <option value="1"{if ($lejartfilter === 1)} selected="selected"{/if}>{at('nem')}</option>
             <option value="2"{if ($lejartfilter === 2)} selected="selected"{/if}>{at('igen')}</option>
         </select>
-        <label for="nincsfizetvefilter">{at('Lejárt')}:</label>
+        <label for="nincsfizetvefilter">{at('Fizetve')}:</label>
         <select id="nincsfizetvefilter" name="nincsfizetvefilter">
             <option value="0">{at('Mindegy')}</option>
             <option value="1"{if ($nincsfizetvefilter === 1)} selected="selected"{/if}>{at('ki van fizetve')}</option>
