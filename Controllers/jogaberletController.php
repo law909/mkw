@@ -46,7 +46,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('berlet', '=', $t);
+        $filter->addFilter('jogaberlet', '=', $t);
         $latogatasok = $this->getRepo(JogaReszvetel::class)->getWithJoins($filter, ['datum' => 'ASC']);
         $l = [];
         /** @var JogaReszvetel $latog */
