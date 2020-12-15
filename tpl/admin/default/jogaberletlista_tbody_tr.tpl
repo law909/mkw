@@ -13,7 +13,10 @@
         </table>
     </td>
     <td class="cell">
-        {$_egyed.termeknev} ({$_egyed.elfogyottalkalom + $_egyed.offlineelfogyottalkalom} alkalom lejárva) ({$_egyed.id})
+        {$_egyed.termeknev} <span class="mattable-important">({$_egyed.elfogyottalkalom + $_egyed.offlineelfogyottalkalom} alkalom lejárva)</span> ({$_egyed.id})
+        {foreach $_egyed.latogatasok as $latogatas}
+        <div>{$latogatas.datum} {$latogatas.nap}, {$latogatas.tanar} {$latogatas.oratipus}</div>
+        {/foreach}
     </td>
     <td class="cell">{$_egyed.bruttoar}</td>
     <td class="cell">{$_egyed.vasarlasnapja}</td>
