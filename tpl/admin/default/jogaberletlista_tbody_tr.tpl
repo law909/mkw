@@ -5,6 +5,9 @@
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.partnernev}</a>
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        {if ($_egyed.partneremail)}
+        <div><a href="mailto:{$_egyed.partneremail}">{$_egyed.partneremail}</a></div>
+        {/if}
         <table>
             <tbody>
                 <tr><td>{at('Létrehozva')}:</td><td>{$_egyed.createdby} {$_egyed.createdstr}</td></tr>
