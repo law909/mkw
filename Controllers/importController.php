@@ -2665,7 +2665,7 @@ class importController extends \mkwhelpers\Controller {
                             $kisleiras = '';
                         }
 
-                        $kaphato = (strpos($data[$this->n('h')], 'szleten') === false);
+                        $kaphato = (strpos($data[$this->n('h')], 'szleten') !== false);
 
                         if (!$termek) {
 
