@@ -384,6 +384,9 @@ class Bizonylatfej {
      */
     private $partnerfeketelistaok;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $partnervatstatus = 0;
+
     /**
      * @ORM\ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -1049,6 +1052,7 @@ class Bizonylatfej {
         $ret['partneradoszam'] = $this->getPartneradoszam();
         $ret['partnereuadoszam'] = $this->getPartnereuadoszam();
         $ret['partnerthirdadoszam'] = $this->getPartnerthirdadoszam();
+        $ret['partnervatstatus'] = $this->getPartnervatstatus();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
@@ -1228,7 +1232,7 @@ class Bizonylatfej {
         $result = $result . '</supplierInfo>';
 
         $result = $result . '<customerInfo>';
-        if ($this->getPartner()->getVatstatus() == 1) {
+        if ($this->getPartnervatstatus() == 1) {
             $result = $result . '<customerVatStatus>DOMESTIC</customerVatStatus>';
             $result = $result . '<customerVatData>';
             $s = explode('-', $this->getPartneradoszam());
@@ -1253,10 +1257,10 @@ class Bizonylatfej {
             $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
             $result = $result . '</base:simpleAddress></customerAddress>';
         }
-        elseif ($this->getPartner()->getVatstatus() == 2) {
+        elseif ($this->getPartnervatstatus() == 2) {
             $result = $result . '<customerVatStatus>PRIVATE_PERSON</customerVatStatus>';
         }
-        elseif ($this->getPartner()->getVatstatus() == 3) {
+        elseif ($this->getPartnervatstatus() == 3) {
             $result = $result . '<customerVatStatus>OTHER</customerVatStatus>';
             if ($this->getPartnereuadoszam() || ($this->getPartnerSzamlatipus() == 1)) { // EUn beluli
                 if ($this->getPartnereuadoszam()) {
@@ -2480,6 +2484,7 @@ class Bizonylatfej {
         $this->setPartnervalligszam($val->getValligszam());
         $this->setPartnervaros($val->getVaros());
         $this->setPartnerhazszam($val->getHazszam());
+        $this->setPartnervatstatus($val->getVatstatus());
 
         $this->setSzallnev($val->getSzallnev());
         $this->setSzallirszam($val->getSzallirszam());
@@ -2571,6 +2576,7 @@ class Bizonylatfej {
                 $this->partnerktdatalany = false;
                 $this->partnerktdatvallal = false;
                 $this->partnerktdszerzszam = '';
+                $this->partnervatstatus = 0;
                 $this->removeUzletkoto();
                 $this->removeFizmod();
                 $this->removeValutanem();
@@ -4616,6 +4622,20 @@ class Bizonylatfej {
      */
     public function setPartnerthirdadoszam($partnerthirdadoszam) {
         $this->partnerthirdadoszam = $partnerthirdadoszam;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPartnervatstatus() {
+        return $this->partnervatstatus;
+    }
+
+    /**
+     * @param int $partnervatstatus
+     */
+    public function setPartnervatstatus($partnervatstatus): void {
+        $this->partnervatstatus = $partnervatstatus;
     }
 
 }

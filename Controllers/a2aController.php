@@ -471,6 +471,18 @@ class a2aController extends \mkwhelpers\Controller {
                                 $szamlafej->setPartnerutca(trim($data['utca']));
                                 $szamlafej->setPartnerhazszam(trim($data['hazszam']));
                                 $szamlafej->setPartneradoszam(trim($data['adoszam']));
+                                if (array_key_exists('vatstatus', $data)) {
+                                    $szamlafej->setPartnervatstatus($data['vatstatus']);
+                                    if (!$szamlafej->getPartneradoszam()) {
+                                        $szamlafej->setPartnervatstatus(2);
+                                    }
+                                }
+                                elseif ($szamlafej->getPartneradoszam()) {
+                                    $szamlafej->setPartnervatstatus(1);
+                                }
+                                else {
+                                    $szamlafej->setPartnervatstatus(2);
+                                }
 
                                 $szamlafej->setMegjegyzes($data['megjegyzes']);
                                 $szamlafej->setBelsomegjegyzes($data['idegenbizszam']);

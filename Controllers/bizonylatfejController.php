@@ -354,6 +354,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['partneremail'] = $t->getPartneremail();
         $x['partneradoszam'] = $t->getPartneradoszam();
         $x['partnereuadoszam'] = $t->getPartnereuadoszam();
+        $x['partnerthirdadoszam'] = $t->getPartnerthirdadoszam();
+        $x['partnervatstatus'] = $t->getPartnervatstatus();
         $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
         $x['partnerfeketelistas'] = $t->getPartnerfeketelistas();
         $x['partnerfeketelistaok'] = $t->getPartnerfeketelistaok();
