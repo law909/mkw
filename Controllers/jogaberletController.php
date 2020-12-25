@@ -26,8 +26,10 @@ class jogaberletController extends \mkwhelpers\MattableController {
     }
 
     protected function loadVars($t) {
+        $uj = false;
         $x = array();
         if (!$t) {
+            $uj = true;
             $t = new \Entities\JogaBerlet();
             $this->getEm()->detach($t);
         }
@@ -46,20 +48,22 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $x['createdstr'] = $t->getCreatedStr();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('jogaberlet', '=', $t);
-        $latogatasok = $this->getRepo(JogaReszvetel::class)->getWithJoins($filter, ['datum' => 'ASC']);
-        $l = [];
-        /** @var JogaReszvetel $latog */
-        foreach ($latogatasok as $latog) {
-            $l[] = [
-                'datum' => $latog->getDatumStr(),
-                'nap' => $latog->getDatumNapnev(),
-                'tanar' => $latog->getTanarnev(),
-                'oratipus' => $latog->getJogaoratipusNev()
-            ];
+        if (!$uj) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('jogaberlet', '=', $t);
+            $latogatasok = $this->getRepo(JogaReszvetel::class)->getWithJoins($filter, ['datum' => 'ASC']);
+            $l = [];
+            /** @var JogaReszvetel $latog */
+            foreach ($latogatasok as $latog) {
+                $l[] = [
+                    'datum' => $latog->getDatumStr(),
+                    'nap' => $latog->getDatumNapnev(),
+                    'tanar' => $latog->getTanarnev(),
+                    'oratipus' => $latog->getJogaoratipusNev()
+                ];
+            }
+            $x['latogatasok'] = $l;
         }
-        $x['latogatasok'] = $l;
         return $x;
     }
 
