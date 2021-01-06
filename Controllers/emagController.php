@@ -7,20 +7,15 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class emagController extends \mkwhelpers\Controller {
 
-    protected function calcHash($data) {
-        return sha1(http_build_query($data) . sha1(\mkw\store::getParameter(\mkw\consts::EmagPassword)));
-    }
-
     protected function sendRequest($resource, $action, $data) {
         $requestData = array(
-            'code' => \mkw\store::getParameter(\mkw\consts::EmagUsercode),
-            'username' => \mkw\store::getParameter(\mkw\consts::EmagUsername),
-            'data' => $data,
-            'hash' => $this->calcHash($data));
+            'data' => $data
+        );
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, \mkw\store::getParameter(\mkw\consts::EmagAPIUrl) . '/' . $resource . '/' . $action);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, \mkw\store::getParameter(\mkw\consts::EmagUsername) . ":" . \mkw\store::getParameter(\mkw\consts::EmagPassword));
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -30,6 +25,9 @@ class emagController extends \mkwhelpers\Controller {
     }
 
     protected function checkResult($res) {
+        if (array_key_exists('isError', $res) && $res['isError']) {
+            \mkw\store::writelog(print_r($res['messages'], true), 'emag.txt');
+        }
         return array_key_exists('isError', $res) && !$res['isError'];
     }
 
@@ -72,9 +70,6 @@ class emagController extends \mkwhelpers\Controller {
                         $cats[] = $elem;
                     }
                 }
-                else {
-                    \mkw\store::writelog('ERROR: ' . print_r($r['messages'], true), 'emag.txt');
-                }
             }
         }
         return $cats;
@@ -103,22 +98,31 @@ class emagController extends \mkwhelpers\Controller {
             ->setCellValue('A1', 'Id')
             ->setCellValue('B1', 'Parent Id')
             ->setCellValue('C1', 'Name')
-            ->setCellValue('D1', 'Allowed');
+            ->setCellValue('D1', 'Allowed')
+            ->setCellValue('E1', 'EAN mandatory')
+            ->setCellValue('F1', 'Warranty mandatory')
+        ;
 
         $t = $this->getCategories();
         $sor = 2;
         foreach ($t as $elem) {
+
+            \mkw\store::writelog(print_r($elem, true), 'emag.txt');
+
             $excel->setActiveSheetIndex(0)
                 ->setCellValue(x(0) . $sor, $elem['id'])
                 ->setCellValue(x(1) . $sor, $elem['parent_id'])
                 ->setCellValue(x(2) . $sor, $elem['name'])
-                ->setCellValue(x(3) . $sor, $elem['is_allowed']);
-
+                ->setCellValue(x(3) . $sor, $elem['is_allowed'])
+                ->setCellValue(x(4) . $sor, $elem['is_ean_mandatory'])
+                ->setCellValue(x(5) . $sor, $elem['is_warranty_mandatory'])
+            ;
             $sor++;
         }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('emag_categories_') . '.xlsx');
+        $filename = uniqid('emag_categories_') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -127,7 +131,7 @@ class emagController extends \mkwhelpers\Controller {
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 
