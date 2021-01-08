@@ -89,7 +89,7 @@ class emagController extends \mkwhelpers\Controller {
     }
 
     public function sendProduct($data) {
-        $ret = $this->sendRequest('product_offer', 'save', $data);
+        $ret = $this->sendRequest('product_offer', 'save', json_encode($data));
         if ($this->checkResult($ret)) {
             return $ret['results'];
         }
