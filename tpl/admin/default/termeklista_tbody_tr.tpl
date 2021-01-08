@@ -33,8 +33,8 @@
                                     <td>{at('ME')}:</td><td colspan="3">{$_termek.me}</td>
                                 </tr>
                                 <tr>
-                                    <td>{at('Min. bolti készlet')}:</td><td colspan="3">{number_format($_termek.minboltikeszlet, 2, '.', ' ')}</td>
-                                    <td>{at('Garancia')}:</td><td colspan="3">{$_termek.garancia}</td>
+                                    <td>{at('Min. bolti készlet')}:</td><td>{number_format($_termek.minboltikeszlet, 2, '.', ' ')}</td>
+                                    <td>{at('Garancia')}:</td><td>{$_termek.garancia}</td>
                                 </tr>
                                 {if (!$setup.arsavok)}
                                 <tr>
