@@ -619,7 +619,7 @@ class Termek {
         $x['description'] = $this->getLeiras();
 
         /** @var Termekcimketorzs $marka */
-        $marka = $this->getCimkeByCategory(\mkw\consts::MarkaCs);
+        $marka = $this->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
         if ($marka) {
             $x['brand'] = $marka->getNev();
         }
