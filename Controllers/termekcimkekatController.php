@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Termekcimkekat;
 use mkw\store;
 
 class termekcimkekatController extends \mkwhelpers\JQGridController {
@@ -14,10 +15,14 @@ class termekcimkekatController extends \mkwhelpers\JQGridController {
     }
 
     protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getSorrend(), $obj->getTermeklaponlathato(), $obj->getTermekszurobenlathato(),
+        return array($obj->getNev(), $obj->getSorrend(), $obj->getEmagid(), $obj->getTermeklaponlathato(), $obj->getTermekszurobenlathato(),
             $obj->getTermeklistabanlathato(), $obj->getTermekakciodobozbanlathato());
     }
 
+    /**
+     * @param $obj Termekcimkekat
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
@@ -25,6 +30,7 @@ class termekcimkekatController extends \mkwhelpers\JQGridController {
         $obj->setTermekszurobenlathato($this->params->getBoolRequestParam('termekszurobenlathato'));
         $obj->setTermeklistabanlathato($this->params->getBoolRequestParam('termeklistabanlathato'));
         $obj->setTermekakciodobozbanlathato($this->params->getBoolRequestParam('termekakciodobozbanlathato'));
+        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         return $obj;
     }
 
