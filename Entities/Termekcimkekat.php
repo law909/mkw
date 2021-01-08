@@ -19,6 +19,8 @@ class Termekcimkekat extends Cimkekat {
 	private $slug;
 	/** @ORM\OneToMany(targetEntity="Termekcimketorzs", mappedBy="kategoria", cascade={"persist"}) */
 	private $cimkek;
+	/** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
 
 	public function getCimkek() {
 		return $this->cimkek;
@@ -58,4 +60,19 @@ class Termekcimkekat extends Cimkekat {
 	public function setSlug($slug) {
 		$this->slug=$slug;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
+    }
+
 }

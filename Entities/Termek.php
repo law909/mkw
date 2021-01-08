@@ -410,6 +410,9 @@ class Termek {
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minboltikeszlet;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $garancia;
+
 
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
@@ -603,6 +606,95 @@ class Termek {
             */
         }
         return 0;
+    }
+
+
+    public function toEmag() {
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['category_id'] = $this->getTermekfa1()->getEmagid();
+        // $x['part_number_key'] = ??
+        $x['name'] = $this->getNev();
+        $x['part_number'] = 'MKWT' . $this->getId();
+        $x['description'] = $this->getLeiras();
+
+        /** @var Termekcimketorzs $marka */
+        $marka = $this->getCimkeByCategory(\mkw\consts::MarkaCs);
+        if ($marka) {
+            $x['brand'] = $marka->getNev();
+        }
+        else {
+            $x['brand'] = 'Noname';
+        }
+
+        $images = array();
+        $disptype = 1;
+        if ($this->getKepurl()) {
+            $images[] = array(
+                'display_type' => $disptype,
+                'url' => $this->getKepurl()
+            );
+            $disptype = 2;
+        }
+        /** @var TermekKep $kep */
+        foreach ($this->getTermekKepek(true) as $kep) {
+            $images[] = array(
+                'display_type' => $disptype,
+                'url' => $kep->getUrl()
+            );
+            if ($disptype == 1) {
+                $disptype = 2;
+            }
+            else {
+                $disptype = 0;
+            }
+        }
+        $x['images'] = $images;
+
+        $charac = array();
+        /** @var Termekcimketorzs $item */
+        foreach ($this->getCimkek() as $item) {
+            $kat = $item->getKategoria();
+            if ($kat->getEmagid()) {
+                $charac[] = array(
+                    'id' => $kat->getEmagid(),
+                    'value' => $item->getNev()
+                );
+            }
+        }
+        $x['characteristics'] = $charac;
+        if ($this->getGarancia()) {
+            $x['warranty'] = $this->getGarancia();
+        }
+        else {
+            $x['warranty'] = 12;
+        }
+        $x['ean'] = $this->getVonalkod();
+        if ($this->getInaktiv()) {
+            $x['status'] = 0;
+        }
+        else {
+            $x['status'] = 1;
+        }
+        $x['sale_price'] = $this->getNettoAr() * 110 / 100;
+        $x['min_sale_price'] = $x['sale_price'];
+        $x['max_sale_price'] = $x['min_sale_price'] * 120 / 100;
+        $x['stock'] = array(
+            array(
+                'warehouse_id' => 1,
+                'value' => $this->getKeszlet()
+            )
+        );
+        $x['handling_time'] = array(
+            array(
+                'warehouse_id' => 1,
+                'value' => 1
+            )
+        );
+        $x['supply_lead_time'] = 7;
+        $x['vat_id'] = $this->getAfa()->getEmagid();
+
+        return $x;
     }
 
     public function toA2a() {
@@ -2853,6 +2945,20 @@ class Termek {
      */
     public function setMinboltikeszlet($minboltikeszlet) {
         $this->minboltikeszlet = $minboltikeszlet;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGarancia() {
+        return $this->garancia;
+    }
+
+    /**
+     * @param mixed $garancia
+     */
+    public function setGarancia($garancia): void {
+        $this->garancia = $garancia;
     }
 
 }

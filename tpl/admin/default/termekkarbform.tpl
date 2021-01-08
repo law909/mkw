@@ -147,6 +147,8 @@
                 <tr>
                     <td><label for="MinboltikeszletEdit">{at('Min. bolti készlet')}:</label></td>
                     <td><input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any" value="{$egyed.minboltikeszlet}"></td>
+                    <td><label for="GaranciaEdit">{at('Garancia')}:</label></td>
+                    <td><input id="GaranciaEdit" name="garancia" type="number" step="any" value="{$egyed.garancia}"></td>
                 </tr>
                 {if (!$setup.arsavok)}
                     <tr>

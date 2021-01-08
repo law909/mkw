@@ -190,6 +190,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function toEmag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toEmag', []);
+
+        return parent::toEmag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMozgasDb($datum = NULL, $raktarid = NULL)
     {
 

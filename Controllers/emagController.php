@@ -43,6 +43,18 @@ class emagController extends \mkwhelpers\Controller {
         return false;
     }
 
+    public function getHandlingTime() {
+        $params = array(
+            'currentPage' => 1,
+            'itemsPerPage' => 10
+        );
+        $r = $this->sendRequest('handling_time', 'read', $params);
+        if ($this->checkResult($r)) {
+            return $r['results'];
+        }
+        return false;
+    }
+
     public function countCategories() {
         $ret = $this->sendRequest('category', 'count', array());
         if ($this->checkResult($ret)) {
@@ -75,6 +87,14 @@ class emagController extends \mkwhelpers\Controller {
         return $cats;
     }
 
+    public function sendProduct($data) {
+        $ret = $this->sendRequest('product_offer', 'save', $data);
+        if ($this->checkResult($ret)) {
+            return $ret['results'];
+        }
+        return false;
+    }
+
     public function printVAT() {
         $t = $this->getVAT();
         if ($t) {
@@ -86,6 +106,23 @@ class emagController extends \mkwhelpers\Controller {
                 echo '</tr>';
             }
             echo '</tbody></table>';
+        }
+    }
+
+    public function printHandlingTime() {
+        $t = $this->getHandlingTime();
+        if ($t) {
+            print_r($t);
+            /*
+            echo '<table><thead><tr><td>Id</td><td>Handling time</td></tr></thead><tbody>';
+            foreach ($t as $vat) {
+                echo '<tr>';
+                echo '<td>' . $vat['id'] . '</td>';
+                echo '<td>' . $vat['vat_rate'] . '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+            */
         }
     }
 
@@ -138,3 +175,22 @@ class emagController extends \mkwhelpers\Controller {
         \unlink($filepath);
     }
 }
+
+/*
+product mezők
+- part number = cikkszám nem jó, egyedinek kell lennie
+- warranty, integer hónapok száma
+- vonalkod terméknek és változatnak is kell; importáláskor is kell generálni új felvitelkopr
+- sale price = eladási ár + 10%
+- min sale price = sale price
+- max sale price = min sale price + 20%
+- handling time = value:1
+- supply lead time = 7
+
+
+
+    Mi az a product family? példa? dokumentáció?
+    Kötött characteristic értékeit honnan tudjuk meg?
+    part_number_key erteke mi?
+    EMAG documentation standard/EMAG product documentation standard emlitve van API doksiban, de hol talalhato?
+*/

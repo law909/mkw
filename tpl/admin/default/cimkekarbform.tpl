@@ -28,23 +28,27 @@
 				<td><input id="SorrendEdit" name="sorrend" type="number" size="10" maxlength="10" value="{$cimke.sorrend}"></td>
 			</tr>
             {if ($cimketipus === 'termek')}
-            <tr>
-                <td><label for="GyartoEdit">{at('Gyártó')}:</label></td>
-                <td colspan="3"><select id="GyartoEdit" name="gyarto">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $gyartolist as $_gyarto}
-                            <option
-                                value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                        {/foreach}
-                    </select></td>
-            </tr>
-            <tr>
-                <td><label for="SzinkodEdit">{at('Színkód')}:</label></td>
-                <td><input id="SzinkodEdit" name="szinkod" type="text" maxlength="7" value="{$cimke.szinkod}"></td>
-            </tr>
-			<tr>
-			{include 'cimkeimagekarb.tpl'}
-			</tr>
+                <tr>
+                    <td><label for="EmagidEdit">{at('EMAG id')}:</label></td>
+                    <td><input id="EmagidEdit" name="emagid" type="number" size="10" maxlength="10" value="{$cimke.emagid}"></td>
+                </tr>
+                <tr>
+                    <td><label for="GyartoEdit">{at('Gyártó')}:</label></td>
+                    <td colspan="3"><select id="GyartoEdit" name="gyarto">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $gyartolist as $_gyarto}
+                                <option
+                                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><label for="SzinkodEdit">{at('Színkód')}:</label></td>
+                    <td><input id="SzinkodEdit" name="szinkod" type="text" maxlength="7" value="{$cimke.szinkod}"></td>
+                </tr>
+                <tr>
+                {include 'cimkeimagekarb.tpl'}
+                </tr>
             {/if}
 			</tbody></table>
 		</div>

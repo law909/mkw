@@ -137,6 +137,39 @@ class TermekValtozat {
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	public function toEmag() {
+        $termek = $this->getTermek();
+        $x = $termek->toEmag();
+        $x['id'] = $this->getId();
+        $x['name'] = $x['name'] . ' ' . $this->getNev();
+        $x['part_number'] = 'MKWV' . $this->getId();
+        $x['ean'] = $this->getVonalkod();
+
+        if (!$this->getTermekfokep()) {
+            if ($this->getKep()) {
+                foreach ($x['images'] as $key => $image) {
+                    if ($image['display_type'] == 1) {
+                        $x['images'][$key]['url'] = $this->getKepurl();
+                    }
+                }
+            }
+        }
+
+        if ($this->getLathato()) {
+            $x['status'] = 1;
+        }
+        else {
+            $x['status'] = 0;
+        }
+        $x['stock'] = array(
+            array(
+                'warehouse_id' => 1,
+                'value' => $this->getKeszlet()
+            )
+        );
+        return $x;
+    }
+
     protected function calcKeszletInfo($datum = null, $raktarid = null) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');

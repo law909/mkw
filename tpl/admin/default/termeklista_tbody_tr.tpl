@@ -34,6 +34,7 @@
                                 </tr>
                                 <tr>
                                     <td>{at('Min. bolti készlet')}:</td><td colspan="3">{number_format($_termek.minboltikeszlet, 2, '.', ' ')}</td>
+                                    <td>{at('Garancia')}:</td><td colspan="3">{$_termek.garancia}</td>
                                 </tr>
                                 {if (!$setup.arsavok)}
                                 <tr>
