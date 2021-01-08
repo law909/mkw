@@ -229,11 +229,23 @@ class emagController extends \mkwhelpers\Controller {
 
     public function printTermek() {
         $tid = $this->params->getIntRequestParam('tid');
+        /** @var Termek $termek */
         $termek = $this->getRepo(Termek::class)->find($tid);
         if ($termek) {
-            echo '<pre>';
-            print_r($termek->toEmag());
-            echo '</pre>';
+            $valtozatok = $termek->getValtozatok();
+            if (count($valtozatok)) {
+                foreach ($valtozatok as $valt) {
+                    echo '<pre>';
+                    print_r($valt->toEmag());
+                    echo '</pre>';
+                    echo '<br><br><br>';
+                }
+            }
+            else {
+                echo '<pre>';
+                print_r($termek->toEmag());
+                echo '</pre>';
+            }
         }
     }
 }
