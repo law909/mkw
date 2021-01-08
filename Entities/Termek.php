@@ -632,7 +632,7 @@ class Termek {
         if ($this->getKepurl()) {
             $images[] = array(
                 'display_type' => $disptype,
-                'url' => $this->getKepurl()
+                'url' => \mkw\store::getFullUrl($this->getKepurl())
             );
             $disptype = 2;
         }
@@ -640,7 +640,7 @@ class Termek {
         foreach ($this->getTermekKepek(true) as $kep) {
             $images[] = array(
                 'display_type' => $disptype,
-                'url' => $kep->getUrl()
+                'url' => \mkw\store::getFullUrl($kep->getUrl())
             );
             if ($disptype == 1) {
                 $disptype = 2;

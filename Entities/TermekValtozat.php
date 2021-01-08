@@ -149,7 +149,7 @@ class TermekValtozat {
             if ($this->getKep()) {
                 foreach ($x['images'] as $key => $image) {
                     if ($image['display_type'] == 1) {
-                        $x['images'][$key]['url'] = $this->getKepurl();
+                        $x['images'][$key]['url'] = \mkw\store::getFullUrl($this->getKepurl());
                     }
                 }
             }
