@@ -166,6 +166,65 @@ class emagController extends \mkwhelpers\Controller {
 
         \unlink($filepath);
     }
+
+    public function printCharacteristics() {
+        function x($o) {
+            return \mkw\store::getExcelCoordinate($o, '');
+        }
+
+        $chars = array();
+        $t = $this->getCategories();
+        foreach ($t as $cat) {
+            foreach ($cat['characteristics'] as $char) {
+                $chars[$char['id']] = $char;
+            }
+        }
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Id')
+            ->setCellValue('B1', 'Name')
+            ->setCellValue('C1', 'Type id')
+            ->setCellValue('D1', 'Display order')
+            ->setCellValue('E1', 'Is mandatory')
+            ->setCellValue('F1', 'Is mandatory for mktp')
+            ->setCellValue('G1', 'Allow new value')
+            ->setCellValue('H1', 'Is filter')
+        ;
+
+        $sor = 2;
+        foreach ($chars as $elem) {
+
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue(x(0) . $sor, $elem['id'])
+                ->setCellValue(x(1) . $sor, $elem['name'])
+                ->setCellValue(x(2) . $sor, $elem['type_id'])
+                ->setCellValue(x(3) . $sor, $elem['display_order'])
+                ->setCellValue(x(4) . $sor, $elem['is_mandatory'])
+                ->setCellValue(x(5) . $sor, $elem['is_mandatory_for_mktp'])
+                ->setCellValue(x(6) . $sor, $elem['allow_new_value'])
+                ->setCellValue(x(7) . $sor, $elem['is_filter'])
+            ;
+            $sor++;
+        }
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('emag_characteristics_') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
 }
 
 /*
