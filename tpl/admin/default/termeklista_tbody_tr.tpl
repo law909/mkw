@@ -20,7 +20,8 @@
                                     <td colspan="3"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td>
                                 </tr>
                                 <tr>
-                                    <td>{at('Gyártó')}:</td><td colspan="3">{$_termek.gyartonev}</td>
+                                    <td>Id:</td><td>{$_termek.id}</td>
+                                    <td>{at('Gyártó')}:</td><td>{$_termek.gyartonev}</td>
                                 </tr>
                                 <tr>
                                     <td>{at('Megtekintve')}:</td><td>{$_termek.megtekintesdb}</td>

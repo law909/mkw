@@ -232,19 +232,24 @@ class emagController extends \mkwhelpers\Controller {
         /** @var Termek $termek */
         $termek = $this->getRepo(Termek::class)->find($tid);
         if ($termek) {
-            $valtozatok = $termek->getValtozatok();
-            if (count($valtozatok)) {
-                foreach ($valtozatok as $valt) {
-                    echo '<pre>';
-                    print_r($valt->toEmag());
-                    echo '</pre>';
-                    echo '<br><br><br>';
-                }
+            if ($termek->getEmagtiltva()) {
+                echo 'EMAG tiltva';
             }
             else {
-                echo '<pre>';
-                print_r($termek->toEmag());
-                echo '</pre>';
+                $valtozatok = $termek->getValtozatok();
+                if (count($valtozatok)) {
+                    foreach ($valtozatok as $valt) {
+                        echo '<pre>';
+                        print_r($valt->toEmag());
+                        echo '</pre>';
+                        echo '<br><br><br>';
+                    }
+                }
+                else {
+                    echo '<pre>';
+                    print_r($termek->toEmag());
+                    echo '</pre>';
+                }
             }
         }
     }
