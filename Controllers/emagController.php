@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Termek;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -224,6 +225,16 @@ class emagController extends \mkwhelpers\Controller {
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+    public function printTermek() {
+        $tid = $this->params->getIntRequestParam('tid');
+        $termek = $this->getRepo(Termek::class)->find($tid);
+        if ($termek) {
+            echo '<pre>';
+            print_r($termek->toEmag());
+            echo '</pre>';
+        }
     }
 }
 

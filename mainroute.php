@@ -151,6 +151,8 @@ $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
 $router->map('GET', '/t/emag/printhandlingtime', 'emagController#printHandlingTime', 'printhandlingtime');
 $router->map('GET', '/t/emag/printcharacteristics', 'emagController#printCharacteristics', 'printcharacteristics');
+$router->map('GET', '/t/emag/printtermek', 'emagController#printTermek', 'printtermek');
+
 $router->map('GET', '/t/reintexdownload', 'toolController#reintexDownload', 'reintexdownload');
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
