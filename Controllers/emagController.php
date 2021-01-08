@@ -112,17 +112,9 @@ class emagController extends \mkwhelpers\Controller {
     public function printHandlingTime() {
         $t = $this->getHandlingTime();
         if ($t) {
+            echo '<pre>';
             print_r($t);
-            /*
-            echo '<table><thead><tr><td>Id</td><td>Handling time</td></tr></thead><tbody>';
-            foreach ($t as $vat) {
-                echo '<tr>';
-                echo '<td>' . $vat['id'] . '</td>';
-                echo '<td>' . $vat['vat_rate'] . '</td>';
-                echo '</tr>';
-            }
-            echo '</tbody></table>';
-            */
+            echo '</pre>';
         }
     }
 

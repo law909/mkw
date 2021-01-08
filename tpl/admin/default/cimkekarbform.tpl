@@ -29,10 +29,6 @@
 			</tr>
             {if ($cimketipus === 'termek')}
                 <tr>
-                    <td><label for="EmagidEdit">{at('EMAG id')}:</label></td>
-                    <td><input id="EmagidEdit" name="emagid" type="number" size="10" maxlength="10" value="{$cimke.emagid}"></td>
-                </tr>
-                <tr>
                     <td><label for="GyartoEdit">{at('Gyártó')}:</label></td>
                     <td colspan="3"><select id="GyartoEdit" name="gyarto">
                             <option value="">{at('válasszon')}</option>
