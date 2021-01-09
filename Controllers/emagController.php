@@ -119,7 +119,7 @@ class emagController extends \mkwhelpers\Controller {
                             $this->getEm()->persist($valt);
                             $this->getEm()->flush();
                         }
-                        $eredmeny[] = $this->sendProduct($valt->toEmag());
+                        $eredmeny[$valt->getId()] = $this->sendProduct($valt->toEmag());
                     }
                 }
                 else {
@@ -128,7 +128,7 @@ class emagController extends \mkwhelpers\Controller {
                         $this->getEm()->persist($termek);
                         $this->getEm()->flush();
                     }
-                    $eredmeny = $this->sendProduct($termek->toEmag());
+                    $eredmeny[$termek->getId()] = $this->sendProduct($termek->toEmag());
                 }
             }
         }
