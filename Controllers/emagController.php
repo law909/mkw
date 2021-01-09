@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Termek;
 use Entities\TermekValtozat;
+use mkw\store;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -23,6 +24,13 @@ class emagController extends \mkwhelpers\Controller {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($requestData));
         $result = curl_exec($ch);
+        if (($result !== false) && (!\curl_errno($ch))) {
+            \mkw\store::writelog(print_r(\curl_getinfo($ch), true), 'emag.txt');
+        }
+        else {
+            \mkw\store::writelog(print_r($result, true), 'emag.txt');
+        }
+        \curl_close($ch);
         return json_decode($result, true);
     }
 
