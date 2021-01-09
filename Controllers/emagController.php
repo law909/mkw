@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Termek;
+use Entities\TermekValtozat;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -88,12 +89,52 @@ class emagController extends \mkwhelpers\Controller {
         return $cats;
     }
 
-    public function sendProduct($data) {
+    protected function sendProduct($data) {
         $ret = $this->sendRequest('product_offer', 'save', json_encode($data));
+        return $ret;
+        /*
         if ($this->checkResult($ret)) {
             return $ret['results'];
         }
         return false;
+        */
+    }
+
+    public function uploadTermek() {
+        $eredmeny = array();
+        $tid = $this->params->getIntRequestParam('tid');
+        /** @var Termek $termek */
+        $termek = $this->getRepo(Termek::class)->find($tid);
+        if ($termek) {
+            if ($termek->getEmagtiltva()) {
+                echo 'EMAG tiltva';
+            }
+            else {
+                $valtozatok = $termek->getValtozatok();
+                if (count($valtozatok)) {
+                    /** @var TermekValtozat $valt */
+                    foreach ($valtozatok as $valt) {
+                        if (!$valt->getVonalkod()) {
+                            $valt->generateVonalkod();
+                            $this->getEm()->persist($valt);
+                            $this->getEm()->flush();
+                        }
+                        $eredmeny[] = $this->sendProduct($valt->toEmag());
+                    }
+                }
+                else {
+                    if (!$termek->getVonalkod()) {
+                        $termek->generateVonalkod();
+                        $this->getEm()->persist($termek);
+                        $this->getEm()->flush();
+                    }
+                    $eredmeny = $this->sendProduct($termek->toEmag());
+                }
+            }
+        }
+        echo '<pre>';
+        print_r($eredmeny);
+        echo '</pre>';
     }
 
     public function printVAT() {
