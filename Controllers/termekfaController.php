@@ -414,13 +414,23 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $keresoszo = $this->params->getStringRequestParam('keresett');
                 $arfiltertomb = explode(';', $this->params->getStringRequestParam('arfilter'));
                 if (count($arfiltertomb) > 0) {
-                    $minarfilter = $arfiltertomb[0] * 1;
+                    if (!is_numeric($arfiltertomb[0])) {
+                        $minarfilter = 0;
+                    }
+                    else {
+                        $minarfilter = $arfiltertomb[0];
+                    }
                 }
                 else {
                     $minarfilter = 0;
                 }
                 if (count($arfiltertomb) > 1) {
-                    $maxarfilter = $arfiltertomb[1] * 1;
+                    if (!is_numeric($arfiltertomb[1])) {
+                        $maxarfilter = 0;
+                    }
+                    else {
+                        $maxarfilter = $arfiltertomb[1];
+                    }
                 }
                 else {
                     $maxarfilter = 0;
