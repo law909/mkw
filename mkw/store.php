@@ -1430,7 +1430,7 @@ class store {
     public static function strpos_array($haystack, $needles) {
         if ($haystack && $needles && is_array($needles)) {
             foreach ($needles as $word) {
-                if (strpos($haystack, $word) !== false) {
+                if ($word && strpos($haystack, $word) !== false) {
                     return true;
                 }
             }
