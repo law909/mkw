@@ -24,12 +24,10 @@ class emagController extends \mkwhelpers\Controller {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($requestData));
         $result = curl_exec($ch);
-        if (($result !== false) && (!\curl_errno($ch))) {
-            \mkw\store::writelog(print_r(\curl_getinfo($ch), true), 'emag.txt');
-        }
-        else {
-            \mkw\store::writelog(print_r($result, true), 'emag.txt');
-        }
+        \mkw\store::writelog(print_r(\curl_errno($ch), true), 'emag.txt');
+        \mkw\store::writelog(print_r(\curl_error($ch), true), 'emag.txt');
+        \mkw\store::writelog(print_r(\curl_getinfo($ch), true), 'emag.txt');
+        \mkw\store::writelog(print_r($result, true), 'emag.txt');
         \curl_close($ch);
         return json_decode($result, true);
     }
@@ -98,6 +96,7 @@ class emagController extends \mkwhelpers\Controller {
     }
 
     protected function sendProduct($data) {
+        \mkw\store::writelog(print_r(json_encode($data), true), 'emag.txt');
         $ret = $this->sendRequest('product_offer', 'save', json_encode($data));
         return $ret;
         /*
@@ -140,6 +139,7 @@ class emagController extends \mkwhelpers\Controller {
                 }
             }
         }
+        \mkw\store::writelog(print_r($eredmeny, true), 'emag.txt');
         echo '<pre>';
         print_r($eredmeny);
         echo '</pre>';
