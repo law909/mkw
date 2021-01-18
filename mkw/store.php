@@ -197,7 +197,11 @@ class store {
     }
 
     public static function getIntParameter($par, $default = null) {
-        return self::getParameter($par, $default) * 1;
+        $er = self::getParameter($par, $default);
+        if (is_numeric($er)) {
+            return $er * 1;
+        }
+        return $default;
     }
 
     public static function getParameter($par, $default = null) {
