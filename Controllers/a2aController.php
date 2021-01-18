@@ -458,6 +458,7 @@ class a2aController extends \mkwhelpers\Controller {
 
                                 $szamlafej->setRaktar($raktar);
                                 $szamlafej->setValutanem($valutanem);
+                                $szamlafej->setBankszamla($valutanem->getBankszamla());
                                 $szamlafej->setArfolyam(1);
                                 $szamlafej->setFizmod($fizmod);
 
