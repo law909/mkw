@@ -135,6 +135,35 @@ class listaController extends \mkwhelpers\Controller {
         }
         $ret['napijelentes'] = $napijelentes;
 
+        $napijelentes = array();
+        foreach($focsoportok as $csoport) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter
+                ->addFilter('bf.teljesites', '>=', $datum)
+                ->addFilter('bf.teljesites', '<=', $ig)
+                ->addFilter('bf.rontott', '=', false)
+                ->addFilter('f.tipus', '=', 'B')
+                ->addFilter('bf.mese', '=', false)
+                ->addFilter('bf.raktar_id', '=', 3)
+                ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')
+                ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'garancialevel'));
+
+            if ($kiskercimke) {
+                $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
+            }
+
+            $k = $termekrepo->calcNapijelentes($filter);
+            $k = $k[0];
+            if ($k['mennyiseg'] || $k['nettohuf'] || $k['bruttohuf']) {
+                $elem = $csoport;
+                $elem['mennyiseg'] = $k['mennyiseg'];
+                $elem['netto'] = $k['nettohuf'];
+                $elem['brutto'] = $k['bruttohuf'];
+                $napijelentes[] = $elem;
+            }
+        }
+        $ret['napijelentesnemkp'] = $napijelentes;
+
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('bf.teljesites', '>=', $datum)
