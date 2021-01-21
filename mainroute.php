@@ -11,8 +11,8 @@ if (\mkw\store::isMindentkapni()) {
 
 if (\mkw\store::isSuperzoneB2B()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
-    $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
-    $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
+//    $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
+//    $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
 }
 
 if (\mkw\store::isB2B()) {

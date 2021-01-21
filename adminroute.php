@@ -790,7 +790,7 @@ if (\mkw\store::isDarshan()) {
 
 if (\mkw\store::isSuperzoneB2B()) {
     if (haveJog(99)) {
-        $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
+        //$router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
     }
 }
 
