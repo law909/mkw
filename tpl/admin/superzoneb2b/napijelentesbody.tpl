@@ -36,7 +36,6 @@
         </tfoot>
         {$sumsum = $sumsum + $sumbrutto}
     </table>
-    {$sumsum = 0}
     <div>Kisker nem KP forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
         <thead>
@@ -100,35 +99,6 @@
                 <td></td>
                 <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
             </tr>
-        </tfoot>
-        {$sumsum = $sumsum + $sumbrutto}
-    </table>
-    <div>Utánvétes forgalom</div>
-    <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-        <thead>
-        <tr>
-            <th class="headercell">Partner</th>
-            <th class="headercell">Partner cím</th>
-            <th class="headercell">Bruttó HUF</th>
-        </tr>
-        </thead>
-        <tbody>
-        {$sumbrutto = 0}
-        {foreach $napijelentes['utanvetesforgalom'] as $elem}
-            {$sumbrutto = $sumbrutto + $elem.bruttohuf}
-            <tr>
-                <td class="datacell">{$elem.partnernev}</td>
-                <td class="datacell">{$elem.partnerirszam} {$elem.partnervaros}, {$elem.partnerutca} {$elem.partnerhazszam}</td>
-                <td class="textalignright datacell">{bizformat($elem.bruttohuf)}</td>
-            </tr>
-        {/foreach}
-        </tbody>
-        <tfoot>
-        <tr>
-            <td class="headercell">Utánvét összesen</td>
-            <td></td>
-            <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
-        </tr>
         </tfoot>
         {$sumsum = $sumsum + $sumbrutto}
     </table>

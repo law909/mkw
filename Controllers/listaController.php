@@ -175,6 +175,7 @@ class listaController extends \mkwhelpers\Controller {
         $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
         $ret['nagykerforgalom'] = $nagykerforg;
 
+        /*
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('bf.teljesites', '>=', $datum)
@@ -185,6 +186,7 @@ class listaController extends \mkwhelpers\Controller {
 
         $utanvetesforg = $this->getRepo('Entities\Bizonylatfej')->calcUtanvetesForgalom($filter);
         $ret['utanvetesforgalom'] = $utanvetesforg;
+        */
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
