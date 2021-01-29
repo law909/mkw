@@ -102,7 +102,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
     protected function getData() {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
-        $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
+        $rsm->addScalarResult('id', 'termekvaltozat_id');
         $rsm->addScalarResult('termeknev', 'termeknev');
         $rsm->addScalarResult('keszlet', 'keszlet');
         $rsm->addScalarResult('ertek1', 'ertek1');
