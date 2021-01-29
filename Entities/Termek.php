@@ -2155,6 +2155,64 @@ class Termek {
         }
     }
 
+    public function getNettoUtolsoBeszar($valtozatid = null) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('teljesites', 'teljesites');
+        $rsm->addScalarResult('nettoegysarhuf', 'nettoegysarhuf');
+        $rsm->addScalarResult('bruttoegysarhuf', 'bruttoegysarhuf');
+        $rsm->addScalarResult('nettoegysar', 'nettoegysar');
+        $rsm->addScalarResult('bruttoegysar', 'bruttoegysar');
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bf.irany', '>', 0);
+        $filter->addFilter('bf.rontott', '=', false);
+        $filter->addFilter('bf.storno', '=', false);
+        $filter->addFilter('bf.stornozott', '=', false);
+        if ($valtozatid) {
+            $filter->addFilter('bt.termekvaltozat_id', '=', $valtozatid);
+        }
+        else {
+            $filter->addFilter('bt.termek_id', '=', $this->getId());
+        }
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
+            . 'FROM bizonylattetel bt '
+            . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' ORDER BY bf.teljesites DESC', $rsm);
+        $q->setParameters($filter->getQueryParameters());
+        $res = $q->getScalarResult();
+        return $res[0]['nettoegysarhuf'];
+    }
+
+    public function getBruttoUtolsoBeszar($valtozatid = null) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('teljesites', 'teljesites');
+        $rsm->addScalarResult('nettoegysarhuf', 'nettoegysarhuf');
+        $rsm->addScalarResult('bruttoegysarhuf', 'bruttoegysarhuf');
+        $rsm->addScalarResult('nettoegysar', 'nettoegysar');
+        $rsm->addScalarResult('bruttoegysar', 'bruttoegysar');
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bf.irany', '>', 0);
+        $filter->addFilter('bf.rontott', '=', false);
+        $filter->addFilter('bf.storno', '=', false);
+        $filter->addFilter('bf.stornozott', '=', false);
+        if ($valtozatid) {
+            $filter->addFilter('bt.termekvaltozat_id', '=', $valtozatid);
+        }
+        else {
+            $filter->addFilter('bt.termek_id', '=', $this->getId());
+        }
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
+            . 'FROM bizonylattetel bt '
+            . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' ORDER BY bf.teljesites DESC', $rsm);
+        $q->setParameters($filter->getQueryParameters());
+        $res = $q->getScalarResult();
+        return $res[0]['bruttoegysarhuf'];
+    }
+
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
         $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
 

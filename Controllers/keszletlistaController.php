@@ -27,7 +27,15 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
         $tac = new termekarController($this->params);
-        $view->setVar('arsavlist', $tac->getSelectList());
+        $tacok = $tac->getSelectList();
+        $tacok[] = array(
+            'id' => '---utolsobeszar',
+            'caption' => 'Utolsó besz.ár',
+            'selected' => false,
+            'valutanemid' => 1,
+            'valutanem' => 'HUF'
+        );
+        $view->setVar('arsavlist', $tacok);
 
         $view->printTemplateResult();
     }
@@ -173,16 +181,31 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 /** @var \Entities\Termek $t */
                 $t = $this->getRepo('Entities\Termek')->find($sor['termek_id']);
                 if ($t) {
-                    switch ($nettobrutto) {
-                        case 'netto':
-                            $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
-                            break;
-                        case 'brutto':
-                            $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsav);
-                            break;
-                        default:
-                            $sor['ar'] = 0;
-                            break;
+                    if ($arsav === '---utolsobeszar') {
+                        switch ($nettobrutto) {
+                            case 'netto':
+                                $sor['ar'] = $t->getNettoUtolsoBeszar($sor['id']);
+                                break;
+                            case 'brutto':
+                                $sor['ar'] = $t->getBruttoUtolsoBeszar($sor['id']);
+                                break;
+                            default:
+                                $sor['ar'] = 0;
+                                break;
+                        }
+                    }
+                    else {
+                        switch ($nettobrutto) {
+                            case 'netto':
+                                $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
+                                break;
+                            case 'brutto':
+                                $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsav);
+                                break;
+                            default:
+                                $sor['ar'] = 0;
+                                break;
+                        }
                     }
                 }
             }
