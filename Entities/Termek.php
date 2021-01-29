@@ -2175,13 +2175,16 @@ class Termek {
         else {
             $filter->addFilter('bt.termek_id', '=', $this->getId());
         }
-        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bf.arfolyam,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
             . 'FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
             . ' ORDER BY bf.teljesites DESC', $rsm);
         $q->setParameters($filter->getQueryParameters());
         $res = $q->getScalarResult();
+        if ($res[0]['nettoegysarhuf'] == 0) {
+            return $res[0]['nettoegysar'] * $res[0]['arfolyam'];
+        }
         return $res[0]['nettoegysarhuf'];
     }
 
@@ -2204,13 +2207,16 @@ class Termek {
         else {
             $filter->addFilter('bt.termek_id', '=', $this->getId());
         }
-        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT bf.teljesites,bf.arfolyam,bt.nettoegysarhuf,bt.bruttoegysarhuf,bt.nettoegysar,bt.bruttoegysar '
             . 'FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
             . ' ORDER BY bf.teljesites DESC', $rsm);
         $q->setParameters($filter->getQueryParameters());
         $res = $q->getScalarResult();
+        if ($res[0]['bruttoegysarhuf'] == 0) {
+            return $res[0]['bruttoegysar'] * $res[0]['arfolyam'];
+        }
         return $res[0]['bruttoegysarhuf'];
     }
 

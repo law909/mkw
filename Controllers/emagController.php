@@ -95,6 +95,20 @@ class emagController extends \mkwhelpers\Controller {
         return $cats;
     }
 
+    protected function getCategory($id) {
+        $cat = null;
+        $r = $this->sendRequest(
+            'category',
+            'read',
+            array(
+                'id' => $id
+            )
+        );
+        if ($this->checkResult($r)) {
+            $cat =
+        }
+    }
+
     protected function sendProduct($data) {
         \mkw\store::writelog(print_r(json_encode($data), true), 'emag.txt');
         $ret = $this->sendRequest('product_offer', 'save', json_encode($data));
