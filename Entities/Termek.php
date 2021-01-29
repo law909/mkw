@@ -2155,7 +2155,7 @@ class Termek {
         }
     }
 
-    public function getNettoUtolsoBeszar($valtozatid = null) {
+    public function getNettoUtolsoBeszar($valtozatid = null, $datum = null) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('teljesites', 'teljesites');
@@ -2171,6 +2171,9 @@ class Termek {
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bf.storno', '=', false);
         $filter->addFilter('bf.stornozott', '=', false);
+        if ($datum) {
+            $filter->addFilter('bf.teljesites', '<=', $datum);
+        }
         if ($valtozatid) {
             $filter->addFilter('bt.termekvaltozat_id', '=', $valtozatid);
         }
@@ -2196,7 +2199,7 @@ class Termek {
         return $ret;
     }
 
-    public function getBruttoUtolsoBeszar($valtozatid = null) {
+    public function getBruttoUtolsoBeszar($valtozatid = null, $datum = null) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('teljesites', 'teljesites');
@@ -2211,6 +2214,9 @@ class Termek {
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bf.storno', '=', false);
         $filter->addFilter('bf.stornozott', '=', false);
+        if ($datum) {
+            $filter->addFilter('bf.teljesites', '<=', $datum);
+        }
         if ($valtozatid) {
             $filter->addFilter('bt.termekvaltozat_id', '=', $valtozatid);
         }

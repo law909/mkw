@@ -184,12 +184,12 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                     if ($arsav === '---utolsobeszar') {
                         switch ($nettobrutto) {
                             case 'netto':
-                                $_x = $t->getNettoUtolsoBeszar($sor['id']);
+                                $_x = $t->getNettoUtolsoBeszar($sor['id'], $this->datumstr);
                                 $sor['ar'] = $_x['ertek'];
                                 $sor['bizid'] = $_x['id'];
                                 break;
                             case 'brutto':
-                                $_x = $t->getBruttoUtolsoBeszar($sor['id']);
+                                $_x = $t->getBruttoUtolsoBeszar($sor['id'], $this->datumstr);
                                 $sor['ar'] = $_x['ertek'];
                                 $sor['bizid'] = $_x['id'];
                                 break;
@@ -199,6 +199,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                         }
                     }
                     else {
+                        $sor['bizid'] = '';
                         switch ($nettobrutto) {
                             case 'netto':
                                 $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
@@ -247,7 +248,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             ->setCellValue('C1', t('Változat 1'))
             ->setCellValue('D1', t('Változat 2'))
             ->setCellValue('E1', t('Készlet'))
-            ->setCellValue('F1', t('Ár'));
+            ->setCellValue('F1', t('Ár'))
+            ->setCellValue('G1', t('Bizonylat'));
 
         $mind = $this->getData();
 
@@ -259,7 +261,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 ->setCellValue('C' . $sor, $item['ertek1'])
                 ->setCellValue('D' . $sor, $item['ertek2'])
                 ->setCellValue('E' . $sor, $item['keszlet'])
-                ->setCellValue('F' . $sor, $item['ar']);
+                ->setCellValue('F' . $sor, $item['ar'])
+                ->setCellValue('G' . $sor, $item['bizid']);
             $sor++;
         }
 
