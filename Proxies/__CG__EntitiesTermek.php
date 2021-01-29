@@ -1965,6 +1965,28 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getNettoUtolsoBeszar($valtozatid = NULL, $datum = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoUtolsoBeszar', [$valtozatid, $datum]);
+
+        return parent::getNettoUtolsoBeszar($valtozatid, $datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBruttoUtolsoBeszar($valtozatid = NULL, $datum = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoUtolsoBeszar', [$valtozatid, $datum]);
+
+        return parent::getBruttoUtolsoBeszar($valtozatid, $datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL, $arsavazon = NULL)
     {
 
