@@ -184,10 +184,14 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                     if ($arsav === '---utolsobeszar') {
                         switch ($nettobrutto) {
                             case 'netto':
-                                $sor['ar'] = $t->getNettoUtolsoBeszar($sor['id']);
+                                $_x = $t->getNettoUtolsoBeszar($sor['id']);
+                                $sor['ar'] = $_x['ertek'];
+                                $sor['bizid'] = $_x['id'];
                                 break;
                             case 'brutto':
-                                $sor['ar'] = $t->getBruttoUtolsoBeszar($sor['id']);
+                                $_x = $t->getBruttoUtolsoBeszar($sor['id']);
+                                $sor['ar'] = $_x['ertek'];
+                                $sor['bizid'] = $_x['id'];
                                 break;
                             default:
                                 $sor['ar'] = 0;

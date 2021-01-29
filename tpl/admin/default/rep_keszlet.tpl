@@ -15,6 +15,7 @@
             <th>Változat</th>
             <th class="textalignright">Készlet</th>
             <th class="textalignright">Ár</th>
+            <th>Bizonylat</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
                 <td class="cell">{$elem.ertek1} {$elem.ertek2}</td>
                 <td class="cell textalignright nowrap">{$elem.keszlet}</td>
                 <td class="cell textalignright nowrap">{$elem.ar}</td>
+                <td class="cell">{$elem.bizid}</td>
             </tr>
             {$sum = $sum + $elem.keszlet}
         {/foreach}
@@ -36,6 +38,7 @@
             <td></td>
             <td>Összesen:</td>
             <td class="textalignright">{$sum}</td>
+            <td></td>
             <td></td>
         </tr>
         </tfoot>
