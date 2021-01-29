@@ -2164,7 +2164,8 @@ class Termek {
         $rsm->addScalarResult('bruttoegysar', 'bruttoegysar');
 
         $filter = new FilterDescriptor();
-        $filter->addFilter('bf.irany', '>', 0);
+        $filter->addFilter('bf.bizonylattipus_id', '=', 'bevet');
+        $filter->addSql('bf.partner_id NOT IN (8390,12291)');
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bf.storno', '=', false);
         $filter->addFilter('bf.stornozott', '=', false);
