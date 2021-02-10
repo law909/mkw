@@ -119,6 +119,14 @@ if ($DBVersion < '0035') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0035');
 }
 
+if ($DBVersion < '0036') {
+
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(4, "Számla XML export","/admin/pdfszamlaexport/view","/admin/pdfszamlaexport",20,1,890, "")');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0036');
+}
 
 
 /*********************************************************
