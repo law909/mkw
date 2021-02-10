@@ -159,6 +159,8 @@ class consts {
     const RLBCSVUtolsoSzamlaszam = 'rlbcsvutolsoszamlaszam';
     const PDFUtolsoSzamlaszam = 'pdfutolsoszamlaszam';
     const PDFUtolsoEsetiSzamlaszam = 'pdfutolsoesetiszamlaszam';
+    const XMLUtolsoSzamlaszam = 'xmlutolsoszamlaszam';
+    const XMLUtolsoEsetiSzamlaszam = 'xmlutolsoesetiszamlaszam';
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 

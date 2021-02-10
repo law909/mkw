@@ -665,6 +665,10 @@ $router->map('GET', '/admin/pdfszamlaexport/view', 'pdfszamlaexportController#vi
 $router->map('POST', '/admin/pdfszamlaexport/sendemail', 'pdfszamlaexportController#sendEmail', 'adminpdfszamlasendemail');
 $router->map('GET', '/admin/pdfszamlaexport/download', 'pdfszamlaexportController#download', 'adminpdfszamladownload');
 
+$router->map('GET', '/admin/xmlszamlaexport/view', 'xmlszamlaexportController#view', 'adminxmlszamlaexportview');
+$router->map('POST', '/admin/xmlszamlaexport/sendemail', 'xmlszamlaexportController#sendEmail', 'adminxmlszamlasendemail');
+$router->map('GET', '/admin/xmlszamlaexport/download', 'xmlszamlaexportController#download', 'adminxmlszamladownload');
+
 $router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
 $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
 $router->map('POST', '/admin/fifo/calc', 'fifoController#calculate', 'adminfifocalc');

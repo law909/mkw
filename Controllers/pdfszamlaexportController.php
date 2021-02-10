@@ -34,11 +34,12 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
-            $filenev = \mkw\store::storagePath(\mkw\store::urlize($mar) . '.pdf');
+            $filenev = \mkw\store::urlize($mar) . '.pdf';
+            $filepath = \mkw\store::storagePath($filenev);
             $html = $bizctrl->getBizonylatHTML($mar);
             $pdf = new Pdf($html);
             $pdf->setOptions(array('encoding' => 'UTF-8'));
-            $pdf->saveAs($filenev);
+            $pdf->saveAs($filepath);
             $this->files[] = $filenev;
         }
         return $mar;
