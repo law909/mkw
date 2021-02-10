@@ -1184,19 +1184,19 @@ class Bizonylatfej {
         return $ret;
     }
 
-    public function toNAVOnlineXML() {
+    public function toNAVOnlineXML($rawreturn = false) {
         $nover = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
         switch ($nover) {
             case '2_0':
-                return $this->toNAVOnlineXML2_0();
+                return $this->toNAVOnlineXML2_0($rawreturn);
             case '3_0':
-                return $this->toNAVOnlineXML3_0();
+                return $this->toNAVOnlineXML3_0($rawreturn);
             default:
-                return $this->toNAVOnlineXML2_0();
+                return $this->toNAVOnlineXML2_0($rawreturn);
         }
     }
 
-    private function toNAVOnlineXML3_0() {
+    private function toNAVOnlineXML3_0($rawreturn = false) {
         $result = '<?xml version="1.0" encoding="UTF-8"?>';
         $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/3.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/3.0/data invoiceData.xsd">';
         $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
@@ -1490,6 +1490,10 @@ class Bizonylatfej {
         $result = $result . '</invoiceMain>';
         $result = $result . '</InvoiceData>';
 
+        if ($rawreturn) {
+            return $result;
+        }
+
         $b64 = str_replace('+', '$', base64_encode($result)); // a Delphi miatt az API igy várja az adatot
 
         if ($this->getStorno()) {
@@ -1501,7 +1505,7 @@ class Bizonylatfej {
         return $result;
     }
 
-    private function toNAVOnlineXML2_0() {
+    private function toNAVOnlineXML2_0($rawreturn = false) {
         $result = '<?xml version="1.0" encoding="UTF-8"?>';
         $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/2.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/2.0/data invoiceData.xsd">';
         $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
@@ -1728,6 +1732,10 @@ class Bizonylatfej {
         $result = $result . '</invoice>';
         $result = $result . '</invoiceMain>';
         $result = $result . '</InvoiceData>';
+
+        if ($rawreturn) {
+            return $result;
+        }
 
         $b64 = str_replace('+', '$', base64_encode($result)); // a Delphi miatt az API igy várja az adatot
 

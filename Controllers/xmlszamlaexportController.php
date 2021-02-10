@@ -35,7 +35,7 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
             $filenev = \mkw\store::urlize($mar) . '.xml';
             $filepath = \mkw\store::storagePath($filenev);
 
-            $xml = $bizonylat->toNAVOnlineXML();
+            $xml = $bizonylat->toNAVOnlineXML(true);
             $fh = fopen($filepath, 'w');
             if ($fh) {
                 fwrite($fh, $xml);
