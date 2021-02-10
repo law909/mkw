@@ -4,7 +4,7 @@ namespace Controllers;
 
 use mikehaertl\wkhtmlto\Pdf;
 
-class pdfszamlaexportController extends \mkwhelpers\MattableController {
+class xmlszamlaexportController extends \mkwhelpers\MattableController {
 
     private $files = array();
     private $mar;
@@ -13,13 +13,13 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('pdfszamlaexport.tpl');
 
-        $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam));
-        $view->setVar('utolsoesetiszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam));
+        $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::XMLUtolsoSzamlaszam));
+        $view->setVar('utolsoesetiszamla', \mkw\store::getParameter(\mkw\consts::XMLUtolsoEsetiSzamlaszam));
 
         $view->printTemplateResult();
     }
 
-    private function getPDFs($biztipus, $utolsoszamla) {
+    private function getXMLs($biztipus, $utolsoszamla) {
         $bizrepo = $this->getEm()->getRepository('Entities\Bizonylatfej');
         $bizctrl = bizonylatfejController::factory($biztipus, $this->params);
         $bt = \mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find($biztipus);
@@ -34,24 +34,27 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
-            $filenev = \mkw\store::urlize($mar) . '.pdf';
+            $filenev = \mkw\store::urlize($mar) . '.xml';
             $filepath = \mkw\store::storagePath($filenev);
-            $html = $bizctrl->getBizonylatHTML($mar);
-            $pdf = new Pdf($html);
-            $pdf->setOptions(array('encoding' => 'UTF-8'));
-            $pdf->saveAs($filepath);
+
+            $xml = $bizonylat->toNAVOnlineXML();
+            $fh = fopen($filepath, 'w');
+            if ($fh) {
+                fwrite($fh, $xml);
+                fclose($fh);
+            }
             $this->files[] = $filenev;
         }
         return $mar;
     }
 
     protected function createZip() {
-        $this->mar = $this->getPDFs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
-        $this->esetimar = $this->getPDFs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
+        $this->mar = $this->getXMLs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
+        $this->esetimar = $this->getXMLs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
 
         if ($this->files) {
 
-            $zipname = 'konyvelonek.zip';
+            $zipname = 'xmlkonyvelonek.zip';
             $zippath = \mkw\store::storagePath($zipname);
             $zip = new \ZipArchive();
             $zip->open($zippath, \ZipArchive::CREATE);
@@ -94,8 +97,8 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
                     $mailer->send();
 
 
-                    \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
-                    \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
+                    \mkw\store::setParameter(\mkw\consts::XMLUtolsoSzamlaszam, $this->mar);
+                    \mkw\store::setParameter(\mkw\consts::XMLUtolsoEsetiSzamlaszam, $this->esetimar);
                     $res['msg'] = at('Az email sikeresen elküldve.');
                 }
                 else {
