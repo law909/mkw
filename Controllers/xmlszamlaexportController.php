@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mikehaertl\wkhtmlto\Pdf;
-
 class xmlszamlaexportController extends \mkwhelpers\MattableController {
 
     private $files = array();
@@ -11,7 +9,7 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
     private $esetimar;
 
     public function view() {
-        $view = $this->createView('pdfszamlaexport.tpl');
+        $view = $this->createView('xmlszamlaexport.tpl');
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::XMLUtolsoSzamlaszam));
         $view->setVar('utolsoesetiszamla', \mkw\store::getParameter(\mkw\consts::XMLUtolsoEsetiSzamlaszam));
