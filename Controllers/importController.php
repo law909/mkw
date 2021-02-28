@@ -2178,7 +2178,7 @@ class importController extends \mkwhelpers\Controller {
                 $cikkszamok = array();
                 fgetcsv($fh, 0, $sep, '"');
                 while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                    if (($data[$this->n('c')] != 2) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
+                    if (($data[$this->n('c')] != 3) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
                         $minden[] = $data;
                         $cikkszamok[] = trimCikkszam($data[$this->n('a')]);
                         $kats = explode('|', $data[$this->n('k')]);
