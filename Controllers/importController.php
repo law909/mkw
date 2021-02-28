@@ -4171,21 +4171,13 @@ class importController extends \mkwhelpers\Controller {
 
     }
 
-    public function szSIIKerPartnerImport() {
+    public function SIIKerPartnerImport() {
         $sep = ',';
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
 //        move_uploaded_file($_FILES['toimport']['tmp_name'], 'siikerpartnerek.csv');
         $fh = fopen('siikerpartnerek.csv', 'r');
         if ($fh) {
-            $tipuskat = \mkw\store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
-            if (!$tipuskat) {
-                $tipuskat = new \Entities\Partnercimkekat();
-                $tipuskat->setLathato(true);
-                $tipuskat->setNev('Típus');
-                \mkw\store::getEm()->persist($tipuskat);
-                \mkw\store::getEm()->flush();
-            }
             $termekdb = 0;
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
@@ -4194,23 +4186,29 @@ class importController extends \mkwhelpers\Controller {
                 $termekdb++;
                 $me = new \Entities\Partner();
                 $me->setVendeg(false);
+                if ($data[$this->n('a')] != '') {
+                    $me->setIdegenkod($data[$this->n('a')]);
+                }
+                if ($data[$this->n('b')] != '') {
+                    $me->setNev($data[$this->n('b')]);
+                }
                 if ($data[$this->n('c')] != '') {
-                    $me->setNev($data[$this->n('c')]);
+                    $me->setIrszam($data[$this->n('c')]);
                 }
                 if ($data[$this->n('d')] != '') {
-                    $me->setIrszam($data[$this->n('d')]);
+                    $me->setVaros($data[$this->n('d')]);
                 }
                 if ($data[$this->n('e')] != '') {
-                    $me->setVaros($data[$this->n('e')]);
+                    $me->setUtca($data[$this->n('e')]);
                 }
                 if ($data[$this->n('f')] != '') {
-                    $me->setUtca($data[$this->n('f')]);
+                    $me->setAdoszam($data[$this->n('f')]);
                 }
                 if ($data[$this->n('g')] != '') {
-                    $me->setAdoszam($data[$this->n('g')]);
+                    $me->setEuadoszam($data[$this->n('g')]);
                 }
                 if ($data[$this->n('h')] != '') {
-                    $me->setEuadoszam($data[$this->n('h')]);
+                    $me->setCjszam($data[$this->n('h')]);
                 }
                 if ($data[$this->n('i')] != '') {
                     $me->setTelefon($data[$this->n('i')]);
@@ -4224,9 +4222,11 @@ class importController extends \mkwhelpers\Controller {
                 if ($data[$this->n('l')] != '') {
                     $me->setHonlap($data[$this->n('l')]);
                 }
-                $marka = $this->createPartnerCimke($tipuskat, 'Kiskereskedelmi vevők');
-                if ($marka) {
-                    $me->addCimke($marka);
+                if ($data[$this->n('m')] != '') {
+                    $me->setFizhatido($data[$this->n('m')]);
+                }
+                if ($data[$this->n('n')] != '') {
+                    $me->setVatstatus($data[$this->n('n')]);
                 }
                 \mkw\store::getEm()->persist($me);
                 \mkw\store::getEm()->flush();
@@ -4234,6 +4234,7 @@ class importController extends \mkwhelpers\Controller {
         }
         fclose($fh);
 //        \unlink('siikerpartnerek.csv');
+        echo 'Kész';
     }
 
     public function legavenueSzotar() {

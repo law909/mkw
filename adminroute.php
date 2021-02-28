@@ -636,7 +636,7 @@ $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'ad
 $router->map('POST','/admin/import/szimport', 'importController#szImport', 'adminszimport');
 $router->map('POST','/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
 $router->map('POST','/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
-$router->map('GET','/admin/import/szpartnerimport', 'importController#szSIIKerPartnerImport', 'adminszsiikerpartnerimport');
+$router->map('GET','/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
 
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
