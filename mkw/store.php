@@ -1543,4 +1543,12 @@ class store {
         }
         return self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0) * 1;
     }
+
+    public static function isMagyarAdoszam($adoszam) {
+        preg_match('/\d{8}-\d{1}-\d{2}/gm', $adoszam, $out);
+        if ($out) {
+            return $out[0] == $adoszam;
+        }
+        return false;
+    }
 }

@@ -637,7 +637,7 @@ class Bizonylatfej {
     public function calcNAVBekuldendo() {
         if (!$this->isNavbekuldve()) {
             $nov = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
-            if ($nov = '2_0') {
+            if ($nov == '2_0') {
                 $this->setNavbekuldendo(
                     $this->getBizonylattipusNavbekuldendo()
                     && $this->getPartneradoszam()
@@ -1392,7 +1392,7 @@ class Bizonylatfej {
                 if ($afak->getErtek() == 0) {
                     $result = $result . '<vatExemption>';
                     $result = $result . '<case>' . $afak->getNavcase() . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase()) . '</reason>';
+                    $result = $result . '<reason>' . \mkw\store::CData(\mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase())) . '</reason>';
                     $result = $result . '</vatExemption>';
                 }
                 else {
@@ -1450,7 +1450,7 @@ class Bizonylatfej {
                 if ($as['afakulcs'] == 0) {
                     $result = $result . '<vatExemption>';
                     $result = $result . '<case>' . $as['navcase'] . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase']) . '</reason>';
+                    $result = $result . '<reason>' . \mkw\store::CData(\mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase'])) . '</reason>';
                     $result = $result . '</vatExemption>';
                 }
                 else {
