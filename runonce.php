@@ -193,7 +193,7 @@ if ($no->version()) {
 
 // magánszemélyek
 \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=2'
-    . ' WHERE (vatstatus IS NULL) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
+    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
 );
 
 // belföldi
@@ -210,12 +210,12 @@ foreach ($ps as $p) {
 }
 
 \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=1'
-    . ' WHERE (vatstatus IS NULL) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
+    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
 );
 
 // egyeb
 \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=3'
-    . ' WHERE (vatstatus IS NULL)'
+    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0))'
 );
 
 $rsm = new ResultSetMapping();
