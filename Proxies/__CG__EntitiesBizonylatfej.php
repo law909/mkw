@@ -311,12 +311,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function toNAVOnlineXML()
+    public function toNAVOnlineXML($rawreturn = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toNAVOnlineXML', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toNAVOnlineXML', [$rawreturn]);
 
-        return parent::toNAVOnlineXML();
+        return parent::toNAVOnlineXML($rawreturn);
     }
 
     /**

@@ -4636,6 +4636,9 @@ class Bizonylatfej {
      * @return int
      */
     public function getPartnervatstatus() {
+        if (!$this->partnervatstatus) {
+            return $this->partner->getVatstatus();
+        }
         return $this->partnervatstatus;
     }
 
