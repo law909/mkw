@@ -597,6 +597,8 @@ var bizonylathelper = function($) {
         $('input[name="partnerutca"]').val(d.utca);
         $('input[name="partnerhazszam"]').val(d.hazszam);
         $('input[name="partneradoszam"]').val(d.adoszam);
+        $('input[name="partnereuadoszam"]').val(d.euadoszam);
+        $('input[name="partnerthirdadoszam"]').val(d.thirdadoszam);
         $('input[name="szallnev"]').val(d.szallnev);
         $('input[name="szallirszam"]').val(d.szallirszam);
         $('input[name="szallvaros"]').val(d.szallvaros);
@@ -604,6 +606,13 @@ var bizonylathelper = function($) {
         $('input[name="szallhazszam"]').val(d.szallhazszam);
         $('input[name="partnertelefon"]').val(d.telefon);
         $('input[name="partneremail"]').val(d.email);
+        if (d.orszag) {
+            $('#OrszagEdit').val(d.orszag);
+        }
+        if (d.vatstatus) {
+            $('#VatstatusEdit').val(d.vatstatus);
+        }
+        $('#SzamlatipusEdit').val(d.szamlatipus);
         $('#PartnerEdit').data('afa', d.afa).data('afakulcs', d.afakulcs);
         setDates();
         valutanemChange();

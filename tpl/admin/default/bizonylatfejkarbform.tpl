@@ -30,20 +30,14 @@
                 <td><input id="BizonylatStatuszErtesitoEdit" type="checkbox" name="bizonylatstatuszertesito"></td>
 			</tr>
             {/if}
-            {if ($setup.fanta || $setup.fakekintlevoseg)}
+            {if ($setup.fakekintlevoseg)}
             <tr>
-                {if ($setup.fanta)}
-    				<td class="mattable-important"><label for="FixEdit">{at('Fix')}:</label></td>
-                    <td><input id="FixEdit" type="checkbox" name="fix"{if ($egyed.fix)} checked{/if}></td>
-                {/if}
-                {if ($setup.fakekintlevoseg)}
-                    <td><label for="FakekintlevosegEdit">{at('Fake kintlévőség')}:</label></td>
-                    <td><input id="FakekintlevosegEdit" type="checkbox" name="fakekintlevoseg"{if ($egyed.fakekintlevoseg)} checked{/if}></td>
-                    <td><label for="FakekifizetveEdit">{at('Fake kifizetve')}:</label></td>
-                    <td><input id="FakekifizetveEdit" type="checkbox" name="fakekifizetve"{if ($egyed.fakekifizetve)} checked{/if}></td>
-                    <td><label for="FakeKifizetesdatumEdit">{at('Fake kifiz.dátum')}:</label></td>
-                    <td><input id="FakeKifizetesdatumEdit" name="fakekifizetesdatum" type="text" size="12" data-datum="{$egyed.fakekifizetesdatumstr}"></td>
-                {/if}
+                <td><label for="FakekintlevosegEdit">{at('Fake kintlévőség')}:</label></td>
+                <td><input id="FakekintlevosegEdit" type="checkbox" name="fakekintlevoseg"{if ($egyed.fakekintlevoseg)} checked{/if}></td>
+                <td><label for="FakekifizetveEdit">{at('Fake kifizetve')}:</label></td>
+                <td><input id="FakekifizetveEdit" type="checkbox" name="fakekifizetve"{if ($egyed.fakekifizetve)} checked{/if}></td>
+                <td><label for="FakeKifizetesdatumEdit">{at('Fake kifiz.dátum')}:</label></td>
+                <td><input id="FakeKifizetesdatumEdit" name="fakekifizetesdatum" type="text" size="12" data-datum="{$egyed.fakekifizetesdatumstr}"></td>
             </tr>
             {/if}
             {if ($showfelhasznalo)}
@@ -102,10 +96,25 @@
 			</tr>
             <tr>
                 <td><label for="OrszagEdit">{at('Ország')}:</label></td>
-                <td colspan="7"><select id="OrszagEdit" name="partnerorszag">
+                <td><select id="OrszagEdit" name="partnerorszag" required="required">
                         <option value="">{at('válasszon')}</option>
                         {foreach $orszaglist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td><label for="SzamlatipusEdit">{at('Származás')}:</label></td>
+                <td><select id="SzamlatipusEdit" name="partnerszamlatipus" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $szamlatipuslist as $_szt}
+                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                        {/foreach}
+                    </select></td>
+                <td><label for="VatstatusEdit">{at('NAV státusz')}:</label></td>
+                <td><select id="VatstatusEdit" name="partnervatstatus" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $vatstatuslist as $_szt}
+                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
                         {/foreach}
                     </select>
                 </td>
@@ -116,9 +125,13 @@
 					<input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
 				</td>
 				<td><label for="EUAdoszamEdit">{at('EU adószám')}:</label></td>
-				<td colspan="5">
+				<td>
 					<input id="EUAdoszamEdit" name="partnereuadoszam" value="{$egyed.partnereuadoszam}">
 				</td>
+                <td><label for="ThirdAdoszamEdit">{at('Harmadik ország adószáma')}:</label></td>
+                <td>
+                    <input id="ThirdAdoszamEdit" name="partnerthirdadoszam" value="{$egyed.partnerthirdadoszam}">
+                </td>
 			</tr>
             {if ($showszallitasicim)}
 			<tr>

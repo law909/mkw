@@ -685,9 +685,11 @@ class partnerController extends \mkwhelpers\MattableController {
         $pid = $this->params->getIntRequestParam('partnerid');
         $email = $this->params->getStringRequestParam('email');
         if ($pid) {
+            /** @var Partner $partner */
             $partner = $this->getRepo()->find($pid);
         }
         elseif ($email) {
+            /** @var Partner $partner */
             $partner = $this->getRepo()->findOneBy(array('email' => $email));
         }
         $ret = array();
@@ -709,12 +711,17 @@ class partnerController extends \mkwhelpers\MattableController {
                 'szallutca' => $partner->getSzallutca(),
                 'szallhazszam' => $partner->getSzallhazszam(),
                 'adoszam' => $partner->getAdoszam(),
+                'euadoszam' => $partner->getEuadoszam(),
+                'thirdadoszam' => $partner->getThirdadoszam(),
                 'telefon' => $partner->getTelefon(),
                 'email' => $partner->getEmail(),
                 'szallitasimod' => $partner->getSzallitasimodId(),
                 'valutanem' => $partner->getValutanemId(),
                 'uzletkoto' => $partner->getUzletkotoId(),
-                'bizonylatnyelv' => $partner->getBizonylatnyelv()
+                'bizonylatnyelv' => $partner->getBizonylatnyelv(),
+                'orszag' => $partner->getOrszagId(),
+                'vatstatus' => $partner->getVatstatus(),
+                'szamlatipus' => $partner->getSzamlatipus()
             );
             if ($partner->getSzamlatipus() > 0) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));

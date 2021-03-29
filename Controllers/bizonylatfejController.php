@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylattetel;
+use Entities\Partner;
 use mikehaertl\wkhtmlto\Pdf;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -508,6 +509,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
             $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
             $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+            $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
             $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
             $partnerobj->setNev($this->params->getStringRequestParam('partnernev'));
@@ -530,6 +532,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
             $partnerobj->setSzallutca($this->params->getStringRequestParam('szallutca'));
             $partnerobj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
+            $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
+            $partnerobj->setSzamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
             $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
             if ($ck) {
                 $partnerobj->setSzallitasimod($ck);
@@ -1272,6 +1276,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
             $orszagc = new orszagController($this->params);
             $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
+
+            if ($record) {
+                $partner = $record->getPartner();
+            }
+            $view->setVar('szamlatipuslist', $this->getRepo(Partner::class)->getSzamlatipusList(($partner ? $partner->getSzamlatipus() : 0)));
+            $view->setVar('vatstatuslist', $this->getRepo(Partner::class)->getVatstatusList(($partner ? $partner->getVatstatus() : 0)));
 
             if (method_exists($this, 'onGetKarb')) {
                 $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
