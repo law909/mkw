@@ -161,85 +161,73 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineME1_1Kesz, 1);
 }
 
-$now = \Carbon\Carbon::now()->format(\mkw\store::$SQLDateFormat);
-
-/*********************************************************
- *
- * NAV ONLINE 2.0 (2020.07.01)
- *
- */
-$NAV2_0Date = \Carbon\Carbon::create(2020, 6, 17)->format(\mkw\store::$SQLDateFormat);
-$NAVNincsErtekhatarDate = \Carbon\Carbon::create(2020, 7, 1)->format(\mkw\store::$SQLDateFormat);
-if ($now >= $NAV2_0Date) {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '2_0');
-    \mkw\store::setParameter(\mkw\consts::NAVOnline2_0StartDate, $NAV2_0Date);
-}
-if ($now >= $NAVNincsErtekhatarDate) {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
-}
-if (!\mkw\store::getNAVOnlineEnv()) {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
-}
 /*********************************************************
  *
  * NAV ONLINE 3.0 (2021.03.31)
  *
  */
+if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
+// magánszemélyek
+    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=2'
+        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
+    );
+
+// belföldi
+    $rsm = new ResultSetMapping();
+    $rsm->addScalarResult('id', 'id');
+    $rsm->addScalarResult('adoszam', 'adoszam');
+    $q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam'
+        . ' FROM partner WHERE (adoszam IS NOT NULL) AND (adoszam <> \'\')', $rsm);
+    $ps = $q->getScalarResult();
+    foreach ($ps as $p) {
+        if (\mkw\store::isMagyarAdoszam($p['adoszam'])) {
+            \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET szamlatipus=0 WHERE id=' . $p['id']);
+        }
+    }
+
+    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=1'
+        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
+    );
+
+// egyeb
+    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=3'
+        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0))'
+    );
+
+    $rsm = new ResultSetMapping();
+    $rsm->addScalarResult('id', 'id');
+    $rsm->addScalarResult('adoszam', 'adoszam');
+    $rsm->addScalarResult('euadoszam', 'euadoszam');
+    $rsm->addScalarResult('thirdadoszam', 'thirdadoszam');
+    $rsm->addScalarResult('szamlatipus', 'szamlatipus');
+    $q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam,euadoszam,thirdadoszam,szamlatipus'
+        . ' FROM partner WHERE vatstatus=3', $rsm);
+    $ps = $q->getScalarResult();
+    foreach ($ps as $p) {
+        if ($p['szamlatipus'] == 1) {
+            if (!$p['euadoszam']) {
+                \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET euadoszam=adoszam WHERE id=' . $p['id']);
+            }
+        }
+        if ($p['szamlatipus'] == 2) {
+            if (!$p['thirdadoszam']) {
+                \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET thirdadoszam=adoszam WHERE id=' . $p['id']);
+            }
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 1);
+}
+
+$now = \Carbon\Carbon::now()->format(\mkw\store::$SQLDateFormat);
+
+if (!\mkw\store::getNAVOnlineEnv()) {
+    \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
+}
 $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
 if ($no->version()) {
     $nover = $no->getResult();
     \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, $nover);
 }
-
-// magánszemélyek
-\mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=2'
-    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
-);
-
-// belföldi
-$rsm = new ResultSetMapping();
-$rsm->addScalarResult('id', 'id');
-$rsm->addScalarResult('adoszam', 'adoszam');
-$q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam'
-    . ' FROM partner WHERE (adoszam IS NOT NULL) AND (adoszam <> \'\')', $rsm);
-$ps = $q->getScalarResult();
-foreach ($ps as $p) {
-    if (\mkw\store::isMagyarAdoszam($p['adoszam'])) {
-        \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET szamlatipus=0 WHERE id=' . $p['id']);
-    }
-}
-
-\mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=1'
-    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
-);
-
-// egyeb
-\mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=3'
-    . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0))'
-);
-
-$rsm = new ResultSetMapping();
-$rsm->addScalarResult('id', 'id');
-$rsm->addScalarResult('adoszam', 'adoszam');
-$rsm->addScalarResult('euadoszam', 'euadoszam');
-$rsm->addScalarResult('thirdadoszam', 'thirdadoszam');
-$rsm->addScalarResult('szamlatipus', 'szamlatipus');
-$q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam,euadoszam,thirdadoszam,szamlatipus'
-    . ' FROM partner WHERE vatstatus=3', $rsm);
-$ps = $q->getScalarResult();
-foreach ($ps as $p) {
-    if ($p['szamlatipus'] == 1) {
-        if (!$p['euadoszam']) {
-            \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET euadoszam=adoszam WHERE id=' . $p['id']);
-        }
-    }
-    if ($p['szamlatipus'] == 2) {
-        if (!$p['thirdadoszam']) {
-            \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET thirdadoszam=adoszam WHERE id=' . $p['id']);
-        }
-    }
-}
-
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

@@ -341,6 +341,7 @@ class consts {
     const NAVOnlineEnv = 'NAVOnlineEnv';
     const NAVOnlineErtekhatar = 'NAVOnlineErtekhatar';
     const NAVOnline2_0StartDate = 'NAVOnline2_0StartDate';
+    const NAVOnlinePartner3_0Kesz = 'NAVOnlinePartner3_0Kesz';
 
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
