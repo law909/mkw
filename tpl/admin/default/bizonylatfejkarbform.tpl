@@ -96,7 +96,7 @@
 			</tr>
             <tr>
                 <td><label for="OrszagEdit">{at('Ország')}:</label></td>
-                <td><select id="OrszagEdit" name="partnerorszag" required="required">
+                <td><select id="OrszagEdit" name="partnerorszag">
                         <option value="">{at('válasszon')}</option>
                         {foreach $orszaglist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
