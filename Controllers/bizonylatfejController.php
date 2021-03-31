@@ -633,12 +633,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
         $obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
         $obj->setPartnereuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+        $obj->setPartnerthirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
         $obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
         $obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
         $obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
         $obj->setPartnerhazszam($this->params->getStringRequestParam('partnerhazszam'));
         $obj->setPartnertelefon($this->params->getStringRequestParam('partnertelefon'));
         $obj->setPartneremail($this->params->getStringRequestParam('partneremail'));
+        $obj->setPartnervatstatus($this->params->getIntRequestParam('partnervatstatus'));
+        $obj->setPartnerSzamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
 
         $obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
         $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
