@@ -1198,8 +1198,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $bt->setTemplateVars($view);
 
             if (!\mkw\store::isPartnerAutocomplete()) {
-                $partner = new partnerController($this->params);
-                $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+                $partnerc = new partnerController($this->params);
+                $view->setVar('partnerlist', $partnerc->getSelectList(($record ? $record->getPartnerId() : 0)));
             }
 
             $raktar = new raktarController($this->params);
