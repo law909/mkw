@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\Emailtemplate;
 use Entities\Partner;
 use mikehaertl\wkhtmlto\Pdf;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -81,6 +83,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $felh = new dolgozoController($this->params);
         $view->setVar('felhasznalolist', $felh->getSelectList());
+
+        $emailtpl = new emailtemplateController($this->params);
+        $view->setVar('emailsablonlist', $emailtpl->getSelectList());
 
         $bsc = new bizonylatstatuszController($this->params);
         switch (true) {
@@ -2008,6 +2013,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($biz) {
             $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
             $no->requeryFromNAV($id);
+        }
+    }
+
+    public function sendEmailSablon() {
+        /** @var Bizonylatfej $bf */
+        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($bf) {
+            $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
+            if ($sablon) {
+                    $bf->sendEmailSablon($sablon);
+            }
         }
     }
 }

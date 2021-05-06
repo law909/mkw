@@ -941,7 +941,7 @@ var bizonylathelper = function($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email').button();
 
                 $('.js-inheritbizonylat').each(function() {
                     var $this = $(this);
@@ -1071,8 +1071,8 @@ var bizonylathelper = function($) {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
-                            '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, '+
-                            '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf').button();
+                            '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, ' +
+                            '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1609,6 +1609,38 @@ var bizonylathelper = function($) {
                                             }
                                         });
                                     }
+                                }
+                            });
+                        },
+                        'Mégsem': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            })
+            .on('click', '.js-email', function(e) {
+                var $this = $(this),
+                    $dia = $('#emailsablondialog');
+                e.preventDefault();
+                $dia.dialog({
+                    title: 'Email sablon',
+                    resizable: true,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var dial = $(this),
+                                sablon = $('select[name="emailsablon"]').val();
+                            $('select[name="emailsablon"]').val('');
+                            $.ajax({
+                                url: '/admin/bizonylatfej/sendemailsablon',
+                                type: 'POST',
+                                data: {
+                                    id: $this.data('egyedid'),
+                                    sablon: sablon
+                                },
+                                success: function() {
+                                    dial.dialog('close');
                                 }
                             });
                         },

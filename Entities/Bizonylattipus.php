@@ -85,6 +85,8 @@ class Bizonylattipus {
     private $showpdf = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $navbekuldendo = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showemailbutton = false;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -117,6 +119,7 @@ class Bizonylattipus {
         $view->setVar('showpdf', $this->getShowpdf());
         $view->setVar('shownavallapot', $this->getNavbekuldendo());
         $view->setVar('showforditottadozas', $this->getId() === 'szamla' || $this->getId() === 'esetiszamla');
+        $view->setVar('showemailbutton', $this->getShowemailbutton());
     }
 
     public function getId() {
@@ -467,6 +470,20 @@ class Bizonylattipus {
      */
     public function setNavbekuldendo($navbekuldendo) {
         $this->navbekuldendo = $navbekuldendo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShowemailbutton() {
+        return $this->showemailbutton;
+    }
+
+    /**
+     * @param bool $showemailbutton
+     */
+    public function setShowemailbutton($showemailbutton): void {
+        $this->showemailbutton = $showemailbutton;
     }
 
 }

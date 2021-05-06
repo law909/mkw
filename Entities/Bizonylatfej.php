@@ -809,6 +809,7 @@ class Bizonylatfej {
         }
         return $db;
     }
+
     /**
      * @param \Entities\Emailtemplate $emailtpl
      * @param \Entities\Bizonylatfej|null $bf
@@ -843,6 +844,39 @@ class Bizonylatfej {
                 else {
                     $mailer->send(true);
                 }
+            }
+        }
+    }
+
+    /**
+     * @param \Entities\Emailtemplate $emailtpl
+     * @param \Entities\Bizonylatfej|null $bf
+     * @param bool|true $topartner
+     */
+    public function sendEmailSablon($emailtpl, $bf = null, $topartner = true) {
+        if (!$bf) {
+            $bf = $this;
+        }
+        if ($emailtpl) {
+            $tpldata = $bf->toLista();
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('rendeles', $tpldata);
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body->setVar('rendeles', $tpldata);
+            if (\mkw\store::getConfigValue('developer')) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
+            }
+            else {
+                $mailer = \mkw\store::getMailer();
+                if ($topartner) {
+                    $mailer->addTo($bf->getPartneremail());
+                    $m = explode(',', $bf->getUzletkotoemail());
+                    $mailer->addTo($m);
+                }
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+                $mailer->send();
             }
         }
     }

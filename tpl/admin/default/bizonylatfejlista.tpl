@@ -220,6 +220,15 @@
 </div>
 <div id="naverrordialog" class="hidden">
 </div>
+<div id="emailsablondialog" class="hidden">
+    <label>{at('Sablon')}:</label>
+    <select name="emailsablon">
+        <option value="">válasszon</option>
+        {foreach $emailsablonlist as $emailsablon}
+            <option value="{$emailsablon.id}">{$emailsablon.caption}</option>
+        {/foreach}
+    </select>
+</div>
 <div id="mattkarb">
 </div>
 {/block}

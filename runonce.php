@@ -128,6 +128,10 @@ if ($DBVersion < '0036') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0036');
 }
 
+if ($DBVersion < '0037') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE bizonylattipus SET showemailbutton = 1 WHERE (id = "kolcsonzes")');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0037');
+}
 
 /*********************************************************
  *

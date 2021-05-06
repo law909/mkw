@@ -278,6 +278,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function sendEmailSablon($emailtpl, $bf = NULL, $topartner = true)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendEmailSablon', [$emailtpl, $bf, $topartner]);
+
+        return parent::sendEmailSablon($emailtpl, $bf, $topartner);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toGLSAPI()
     {
 

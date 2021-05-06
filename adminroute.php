@@ -184,6 +184,7 @@ $router->map('POST', '/admin/bizonylatfej/emailpdf', 'bizonylatfejController#sen
 $router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejController#getFolyoszamla', 'admingetfolyoszamla');
 $router->map('POST', '/admin/bizonylatfej/navonline', 'bizonylatfejController#navonline', 'adminbizonylatfejnavonline');
 $router->map('POST', '/admin/bizonylatfej/navstat', 'bizonylatfejController#requeryNavEredmeny', 'adminbizonylatfejnavstat');
+$router->map('POST', '/admin/bizonylatfej/sendemailsablon', 'bizonylatfejController#sendEmailSablon', 'adminbizonylatfejsendemailsablon');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');

@@ -24,6 +24,9 @@
                 <a class="js-pdf" href="#" data-egyedid="{$_egyed.id}" data-oper="pdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{at('PDF letöltés')}" target="_blank">PDF</a>
                 <a class="js-emailpdf" href="#" data-egyedid="{$_egyed.id}" data-oper="emailpdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{at('Küldés emailben')}" target="_blank"><span class="ui-icon ui-icon-mail-closed"></span></a>
             {/if}
+            {if ($showemailbutton)}
+                <a class="js-email" href="#" data-egyedid="{$_egyed.id}" title="{at('Email sablon küldése a partnernek')}"><span class="ui-icon ui-icon-mail-open"></span></a>
+            {/if}
             {if ($shownavallapot && $_egyed.navbekuldendo)}
                 <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV beküldés')}" target="_blank">NAV</a>
                 <a class="js-navstat" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV állapot lekérdezés')}" target="_blank">NAV stat</a>
