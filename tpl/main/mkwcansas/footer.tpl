@@ -3,7 +3,6 @@
 		<div class="span3">
 			<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo-small.png" alt="Mindent Kapni Webáruház" title="Mindent Kapni Webáruház"></a>
 			<h4>Sok jó dolog egy helyen!</h4>
-            <a href="/statlap/fogyaszto-barat" rel="nofollow"><img src="/themes/main/mkwcansas/img/fogyaszto-barat.png" class="fogyaszto-barat" alt="Mindent Kapni fogyasztó barát webáruház" title="Mindent Kapni fogyasztó barát webáruház"></a>
 		</div>
 		<nav class="span3">
 			<h5>Hasznos információk</h5>
@@ -46,7 +45,7 @@
                 <div class="copyright">
                     Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.
                     <br>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.
-                    <br>Copyright &copy; 2007-2015, Quixoft Informatikai Szolgáltató Bt.
+                    <br>Copyright &copy; 2007-{'Y'|date}, Quixoft Informatikai Szolgáltató Bt.
                 </div>
             </div>
         </div>
