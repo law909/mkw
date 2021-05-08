@@ -34,6 +34,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['rovidleiras'] = $t->getRovidleiras();
 		$x['leiras'] = $t->getLeiras();
 		$x['leiras2'] = $t->getLeiras2();
+        $x['leiras3'] = $t->getLeiras3();
 		$x['seodescription'] = $t->getSeodescription();
 		$x['menu1lathato'] = $t->getMenu1lathato();
 		$x['menu2lathato'] = $t->getMenu2lathato();
@@ -86,6 +87,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
+        $obj->setLeiras3($this->params->getOriginalStringRequestParam('leiras3'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->m1lchanged = $obj->getMenu1lathato() !== $this->params->getBoolRequestParam('menu1lathato');
         $obj->m2lchanged = $obj->getMenu2lathato() !== $this->params->getBoolRequestParam('menu2lathato');
@@ -639,13 +641,15 @@ class termekfaController extends \mkwhelpers\MattableController {
                     if ($parent) {
                         $ret['kategoria'] = array(
                             'nev' => $parent->getNev(),
-                            'leiras2' => $parent->getLeiras2()
+                            'leiras2' => $parent->getLeiras2(),
+                            'leiras3' => $parent->getLeiras3()
                         );
                     }
                     else {
                         $ret['kategoria'] = array(
                             'nev' => '',
-                            'leiras2' => ''
+                            'leiras2' => '',
+                            'leiras3' => ''
                         );
                     }
                 }
@@ -934,13 +938,15 @@ class termekfaController extends \mkwhelpers\MattableController {
                     if ($parent) {
                         $ret['kategoria'] = array(
                             'nev' => $parent->getNev(),
-                            'leiras2' => $parent->getLeiras2()
+                            'leiras2' => $parent->getLeiras2(),
+                            'leiras3' => $parent->getLeiras3()
                         );
                     }
                     else {
                         $ret['kategoria'] = array(
                             'nev' => '',
-                            'leiras2' => ''
+                            'leiras2' => '',
+                            'leiras3' => ''
                         );
                     }
                 }

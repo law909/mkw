@@ -67,6 +67,10 @@
 				<td><label for="Leiras2Edit">{at('Leírás 2')}:</label></td>
 				<td><textarea id="Leiras2Edit" name="leiras2">{$egyed.leiras2}</textarea></td>
 			</tr>
+                <tr>
+                    <td><label for="Leiras3Edit">{at('Leírás 3')}:</label></td>
+                    <td><textarea id="Leiras3Edit" name="leiras3">{$egyed.leiras3}</textarea></td>
+                </tr>
 			<tr>
 				<td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>
 				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$egyed.seodescription}</textarea></td>

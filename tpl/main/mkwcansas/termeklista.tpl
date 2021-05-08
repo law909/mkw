@@ -9,11 +9,11 @@
                 {if ($navigator|default)}
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}
-                {if ($_navi@last)}<h1 class="termeklista"{else}<span{/if} typeof="v:Breadcrumb">
+                <span typeof="v:Breadcrumb">
 				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
 					{$_navi.caption}
 				</a>
-                {if ($_navi@last)}</h1>{else}</span>{/if}
+                </span>
 				/
 			{else}
 				{$_navi.caption}
@@ -54,6 +54,7 @@
 			</form>
 		</div>
 		<div class="span9">
+            <h1>{$kategoria.nev}</h1>
 			<div>
 				{$kategoria.leiras2}
 			</div>
@@ -375,8 +376,11 @@
 					</tr></tbody></table>
 				</form>
 			</div>
-		</div>
+            <div class="kat">
+                {$kategoria.leiras3}
+            </div>
+        </div>
 	</div>
-</div>
+
 {include 'termekertesitomodal.tpl'}
 {/block}

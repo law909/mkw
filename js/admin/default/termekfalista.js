@@ -46,6 +46,7 @@ $(document).ready(function(){
 							CKFinder.setupCKEditor( null, '/ckfinder/' );
 							$('#LeirasEdit').ckeditor();
 							$('#Leiras2Edit').ckeditor();
+                            $('#Leiras3Edit').ckeditor();
 						}
 						$('#AltalanosTab').on('click','#KepDelButton',function(e) {
 							e.preventDefault();
@@ -159,6 +160,10 @@ $(document).ready(function(){
 							if (editor) {
 								editor.destroy();
 							}
+                            editor=$('#Leiras3Edit').ckeditorGet();
+                            if (editor) {
+                                editor.destroy();
+                            }
 						}
 					},
 					onSubmit:function(data) {

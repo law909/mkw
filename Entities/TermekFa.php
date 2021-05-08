@@ -23,7 +23,8 @@ class TermekFa {
         'nev' => array('caption' => 'Név', 'type' => 1),
         'rovidleiras' => array('caption' => 'Rövid leírás', 'type' => 1),
         'leiras' => array('caption' => 'Leírás', 'type' => 2),
-        'leiras2' => array('caption' => 'Leírás 2', 'type' => 2)
+        'leiras2' => array('caption' => 'Leírás 2', 'type' => 2),
+        'leiras3' => array('caption' => 'Leírás 3', 'type' => 2)
     );
 
     private $gtnev;
@@ -97,6 +98,12 @@ class TermekFa {
      * @ORM\Column(type="text",nullable=true)
      */
     private $leiras2;
+
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $leiras3;
 
     /** @ORM\Column(type="boolean",nullable=true) */
     private $menu1lathato = true;
@@ -245,6 +252,9 @@ class TermekFa {
         $x['leiras2'] = $this->getLeiras2();
         $x['leiras2_en'] = $ford['en_us']['leiras2'];
         $x['leiras2_it'] = $ford['it_it']['leiras2'];
+        $x['leiras3'] = $this->getLeiras3();
+        $x['leiras3_en'] = $ford['en_us']['leiras3'];
+        $x['leiras3_it'] = $ford['it_it']['leiras3'];
         $x['karkod'] = $this->getKarkod();
         $x['sorrend'] = $this->getSorrend();
         if ($this->getKepurl()) {
@@ -401,6 +411,14 @@ class TermekFa {
 
     public function setLeiras2($leiras) {
         $this->leiras2 = $leiras;
+    }
+
+    public function getLeiras3() {
+        return $this->leiras3;
+    }
+
+    public function setLeiras3($leiras) {
+        $this->leiras3 = $leiras;
     }
 
     public function getKarkod() {
