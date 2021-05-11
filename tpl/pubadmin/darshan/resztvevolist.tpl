@@ -27,7 +27,7 @@
             {else}
                 <button class="col-md-1 btn btn-danger js-megjegyzes" data-id="{$resztvevo.id}">{if ($resztvevo.megjegyzes)}*{/if}M{if ($resztvevo.megjegyzes)}*{/if}</button>
             {/if}
-            <button class="col-md-5{if ($resztvevo.new)} text-danger{/if} btn js-partneredit" data-id="{$resztvevo.id}">
+            <button class="col-md-4{if ($resztvevo.new)} text-danger{/if} btn js-partneredit" data-id="{$resztvevo.id}">
                 {$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
             </button>
             <div class="col-md-4">
@@ -52,6 +52,16 @@
                         <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}" data-price="{$resztvevo.type2price}">
                             4-es bérlet
                         </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="row top-margin-10">
+                    <div class="col">
+                        <input id="OnlineOnlineEdit" type="radio" name="online" value="1"{if ($resztvevo.online == "1")} checked="checked"{/if}><label for="OnlineOnlineEdit">Online</label>
+                    </div>
+                    <div class="col">
+                        <input id="OnlineEloEdit" type="radio" name="online" value="2"{if ($resztvevo.online == "2")} checked="checked"{/if}><label for="OnlineEloEdit">Élő</label>
                     </div>
                 </div>
             </div>

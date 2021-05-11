@@ -60,24 +60,33 @@ $(document).ready(
             })
             .on('click', '.js-setmegjelent', function(e) {
                 e.preventDefault();
-                if ($(this).data('mustbuy')) {
-                    $('#mustbuyModal')
+                if (!$('input[name="online"]:checked').val()) {
+                    $('#mustsetOnlineModal')
                         .modal({
                             backdrop: 'static'
                         });
                 }
                 else {
-                    var rid = $(this).data('id');
-                    $.ajax({
-                        method: 'POST',
-                        url: '/pubadmin/resztvevomegjelent',
-                        data: {
-                            id: rid
-                        },
-                        success: function () {
-                            refreshResztvevoList();
-                        }
-                    });
+                    if ($(this).data('mustbuy')) {
+                        $('#mustbuyModal')
+                            .modal({
+                                backdrop: 'static'
+                            });
+                    } else {
+                        var rid = $(this).data('id'),
+                            online = $('input[name="online"]:checked').val();
+                        $.ajax({
+                            method: 'POST',
+                            url: '/pubadmin/resztvevomegjelent',
+                            data: {
+                                id: rid,
+                                online: online
+                            },
+                            success: function () {
+                                refreshResztvevoList();
+                            }
+                        });
+                    }
                 }
             })
             .on('click', '.js-buy', function(e) {

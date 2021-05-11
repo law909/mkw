@@ -74,6 +74,21 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="mustsetOnlineModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Élő vagy online?</h5>
+                </div>
+                <div class="modal-body">
+                    Állítsd be, hogy a gyakorló élőben vagy online vett részt!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="partnerModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

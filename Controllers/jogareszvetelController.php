@@ -70,6 +70,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $x['jogaberletnev'] = $t->getJogaberlet() ? $t->getJogaberlet()->getFullNev() : '';
 
         $x['tisztaznikell'] = $t->isTisztaznikell();
+        $x['online'] = $t->getOnline();
 
         if ($forKarb) {
             $fizmod = new fizmodController($this->params);
@@ -169,6 +170,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $obj->removeJogaberlet();
         }
         $obj->setTisztaznikell($this->params->getBoolRequestParam('tisztaznikell'));
+        $obj->setOnline($this->params->getIntRequestParam('online'));
         return $obj;
     }
 
@@ -211,6 +213,16 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 break;
             case 1:
                 $filter->addFilter('tisztaznikell', '=', true);
+                break;
+        }
+
+        $online = $this->params->getIntRequestParam('onlinefilter');
+        switch ($online) {
+            case 1:
+                $filter->addFilter('online', '=', 1);
+                break;
+            case 2:
+                $filter->addFilter('online', '=', 2);
                 break;
         }
 

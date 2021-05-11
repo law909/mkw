@@ -66,10 +66,10 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online'];
     }
 
     /**
@@ -618,6 +618,28 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$megjegyzes]);
 
         return parent::setMegjegyzes($megjegyzes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOnline()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOnline', []);
+
+        return parent::getOnline();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOnline($online): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOnline', [$online]);
+
+        parent::setOnline($online);
     }
 
 }

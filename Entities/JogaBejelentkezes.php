@@ -78,6 +78,9 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $online = 0;
+
     public function createJogaReszvetel() {
         $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
@@ -91,6 +94,7 @@ class JogaBejelentkezes {
         }
         $jr = new JogaReszvetel();
         $jr->setPartner($rvpartner);
+        $jr->setOnline($this->getOnline());
         $jr->setDatum($this->getDatum());
         $jr->setJogaoratipus($this->getOrarend()->getJogaoratipus());
         $jr->setJogaterem($this->getOrarend()->getJogaterem());
@@ -382,6 +386,20 @@ class JogaBejelentkezes {
      */
     public function setMegjegyzes($megjegyzes) {
         $this->megjegyzes = $megjegyzes;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOnline() {
+        return $this->online;
+    }
+
+    /**
+     * @param integer $online
+     */
+    public function setOnline($online): void {
+        $this->online = $online;
     }
 
 }

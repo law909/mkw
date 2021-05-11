@@ -43,6 +43,14 @@
         </select>
     </div>
     <div class="matt-hseparator"></div>
+    <div>
+        <select id="onlinefilter" name="onlinefilter">
+            <option value="0">{at('Mind')}</option>
+            <option value="1">{at('Online')}</option>
+            <option value="2">{at('Élő')}</option>
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
@@ -67,6 +75,7 @@
 	<tr>
         <th><input class="js-maincheckbox" type="checkbox"></th>
         <th>{at('Tisztázni kell')}</th>
+        <th>{at('Online')}</th>
         <th>{at('Dátum')}</th>
         <th>{at('Tanár')}</th>
         <th>{at('Óra')}</th>

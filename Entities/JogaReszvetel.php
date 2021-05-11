@@ -127,6 +127,9 @@ class JogaReszvetel {
     /** @ORM\Column(type="boolean",nullable=true,options={"default": 0}) */
     private $tisztaznikell = false;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $online = 0;
+
     public function getId() {
         return $this->id;
     }
@@ -634,6 +637,20 @@ class JogaReszvetel {
      */
     public function setTisztaznikell($tisztaznikell) {
         $this->tisztaznikell = $tisztaznikell;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOnline() {
+        return $this->online;
+    }
+
+    /**
+     * @param int $online
+     */
+    public function setOnline($online): void {
+        $this->online = $online;
     }
 
 }

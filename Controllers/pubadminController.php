@@ -109,6 +109,7 @@ class pubadminController extends mkwhelpers\Controller {
                 $rvtomb['megjegyzes'] = $resztvevo->getMegjegyzes();
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
                 $rvtomb['mustbuy'] = !$rvtomb['tipus'];
+                $rvtomb['online'] = $resztvevo->getOnline();
                 /** @var Entities\Termek $termek */
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 if ($termek) {
@@ -133,10 +134,17 @@ class pubadminController extends mkwhelpers\Controller {
 
     public function setResztvevoMegjelent() {
         /** @var \Entities\JogaBejelentkezes $rv */
+        $online = $this->params->getIntRequestParam('online');
         $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
         if ($rv) {
             $megje = $rv->isMegjelent();
             $rv->setMegjelent(!$rv->isMegjelent());
+            if (!$rv->isMegjelent()) {
+                $rv->setOnline(0);
+            }
+            else {
+                $rv->setOnline($online);
+            }
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
             if ($megje) {
