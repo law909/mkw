@@ -22,6 +22,8 @@
             </tr>
         {/foreach}
     </table>
+    <div>Online résztvevők: {$onlinecount}</div>
+    <div>Élőben résztvevők: {$elocount}</div>
 </div>
 <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
     <div class="mattable-important">Pénztár egyenlegek {$ma}</div>

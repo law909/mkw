@@ -255,6 +255,18 @@ class adminController extends mkwhelpers\Controller {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('datum', '>=', $tol);
         $filter->addFilter('datum', '<=', $ig);
+        $filter->addFilter('online', '=', 1);
+        $view->setVar('onlinecount', $reszvetrepo->getCount($filter));
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
+        $filter->addFilter('online', '=', 2);
+        $view->setVar('elocount', $reszvetrepo->getCount($filter));
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
         $filter->addFilter('uresterem', '=', false);
         $filter->addFilter('tisztaznikell', '=', false);
         $rvk = $reszvetrepo->getTermekOsszesito($filter);
