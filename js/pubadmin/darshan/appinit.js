@@ -60,7 +60,7 @@ $(document).ready(
             })
             .on('click', '.js-setmegjelent', function(e) {
                 e.preventDefault();
-                if (!$('input[name="online"]:checked').val()) {
+                if (!$('input[name="online-' + $(this).data('id') + '"]:checked').val()) {
                     $('#mustsetOnlineModal')
                         .modal({
                             backdrop: 'static'
@@ -74,7 +74,7 @@ $(document).ready(
                             });
                     } else {
                         var rid = $(this).data('id'),
-                            online = $('input[name="online"]:checked').val();
+                            online = $('input[name="online-'+ rid + '"]:checked').val();
                         $.ajax({
                             method: 'POST',
                             url: '/pubadmin/resztvevomegjelent',

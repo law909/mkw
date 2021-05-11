@@ -58,10 +58,10 @@
             <div class="col-md-1">
                 <div class="row top-margin-10">
                     <div class="col">
-                        <input id="OnlineOnlineEdit" type="radio" name="online" value="1"{if ($resztvevo.online == "1")} checked="checked"{/if}><label for="OnlineOnlineEdit">Online</label>
+                        <input id="OnlineOnlineEdit{$resztvevo.id}" type="radio" name="online-{$resztvevo.id}" value="1"{if ($resztvevo.online == "1")} checked="checked"{/if}><label for="OnlineOnlineEdit{$resztvevo.id}">Online</label>
                     </div>
                     <div class="col">
-                        <input id="OnlineEloEdit" type="radio" name="online" value="2"{if ($resztvevo.online == "2")} checked="checked"{/if}><label for="OnlineEloEdit">Élő</label>
+                        <input id="OnlineEloEdit{$resztvevo.id}" type="radio" name="online-{$resztvevo.id}" value="2"{if ($resztvevo.online == "2")} checked="checked"{/if}><label for="OnlineEloEdit{$resztvevo.id}">Élő</label>
                     </div>
                 </div>
             </div>
