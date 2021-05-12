@@ -349,7 +349,7 @@ $router->map('GET', '/admin/bizsablonfej/getkarb', 'bizsablonfejController#getka
 $router->map('GET', '/admin/bizsablonfej/viewkarb', 'bizsablonfejController#viewkarb', 'adminbizsablonfejviewkarb');
 $router->map('POST', '/admin/bizsablonfej/save', 'bizsablonfejController#save', 'adminbizsablonfejsave');
 $router->map('GET', '/admin/bizsablonfej/print', 'bizsablonfejController#doPrint', 'adminbizsablonfejprint');
-$router->map('GET', '/admin/bizsablonfej/ront', 'bizsablonfejController#ront', 'adminbizsablonfejront');
+$router->map('POST', '/admin/bizsablonfej/ront', 'bizsablonfejController#ront', 'adminbizsablonfejront');
 $router->map('POST', '/admin/bizsablonfej/fejexport', 'bizsablonfejController#fejexport', 'adminbizsablonfejfejexport');
 $router->map('POST', '/admin/bizsablonfej/tetelexport', 'bizsablonfejController#tetelexport', 'adminbizsablonfejtetelexport');
 $router->map('GET', '/admin/bizsablonfej/navonline', 'bizsablonfejController#navonline', 'adminbizsablonfejnavonline');
@@ -360,7 +360,7 @@ $router->map('GET', '/admin/kolcsonzesfej/getkarb', 'kolcsonzesfejController#get
 $router->map('GET', '/admin/kolcsonzesfej/viewkarb', 'kolcsonzesfejController#viewkarb', 'adminkolcsonzesfejviewkarb');
 $router->map('POST', '/admin/kolcsonzesfej/save', 'kolcsonzesfejController#save', 'adminkolcsonzesfejsave');
 $router->map('GET', '/admin/kolcsonzesfej/print', 'kolcsonzesfejController#doPrint', 'adminkolcsonzesfejprint');
-$router->map('GET', '/admin/kolcsonzesfej/ront', 'kolcsonzesfejController#ront', 'adminkolcsonzesfejront');
+$router->map('POST', '/admin/kolcsonzesfej/ront', 'kolcsonzesfejController#ront', 'adminkolcsonzesfejront');
 $router->map('POST', '/admin/kolcsonzesfej/fejexport', 'kolcsonzesfejController#fejexport', 'adminkolcsonzesfejfejexport');
 $router->map('POST', '/admin/kolcsonzesfej/tetelexport', 'kolcsonzesfejController#tetelexport', 'adminkolcsonzesfejtetelexport');
 
