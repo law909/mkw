@@ -29,7 +29,7 @@
                         <input id="aredit" name="ar" type="text" class="form-control">
                     </div>
                     <div class="form-group form-check">
-                        <input id="lateredit" name="later" type="checkbox" class="form-check-input" checked="checked">
+                        <input id="lateredit" name="later" type="checkbox" class="form-check-input">
                         <label for="lateredit" class="form-check-label">Később fizet</label>
                     </div>
                 </div>
