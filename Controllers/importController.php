@@ -1279,6 +1279,9 @@ class importController extends \mkwhelpers\Controller {
                                     break;
                                 }
                             }
+                            if (!$valtozat) {
+                                $termek = false;
+                            }
                         }
                         else {
                             $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['parent'], 'gyarto' => $gyartoid));
@@ -2392,6 +2395,9 @@ class importController extends \mkwhelpers\Controller {
                                             break;
                                         }
                                     }
+                                    if (!$valtozat) {
+                                        $termek = false;
+                                    }
                                 }
 
                                 if (!$valtozat) {
@@ -2641,6 +2647,9 @@ class importController extends \mkwhelpers\Controller {
                                     $valtozat = $v;
                                     break;
                                 }
+                            }
+                            if (!$valtozat) {
+                                $termek = false;
                             }
                         }
                         else {
