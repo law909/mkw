@@ -2617,7 +2617,7 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
                     }
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
-                        $katnev = $data[$this->n('b')];
+                        $katnev = $data[$this->n('c')];
                         $parent = $this->createKategoria($katnev, $parentid);
                     }
 
@@ -2646,8 +2646,8 @@ class importController extends \mkwhelpers\Controller {
                         else {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                         }
-                        if ($data[$this->n('j')]) {
-                            $ch = \curl_init($data[$this->n('j')]);
+                        if ($data[$this->n('k')]) {
+                            $ch = \curl_init($data[$this->n('k')]);
                             \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                             $le = \curl_exec($ch);
@@ -2665,16 +2665,16 @@ class importController extends \mkwhelpers\Controller {
                             $kisleiras = '';
                         }
 
-                        $kaphato = (strpos($data[$this->n('h')], 'szleten') !== false);
+                        $kaphato = (strpos($data[$this->n('i')], 'szleten') !== false);
 
                         if (!$termek) {
 
                             if ($createuj && $kaphato) {
-                                $katnev = $data[$this->n('b')];
+                                $katnev = $data[$this->n('c')];
                                 $urlkatnev = \mkw\store::urlize($katnev);
                                 \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                 $parent = $this->createKategoria($katnev, $parentid);
-                                $termeknev = $data[$this->n('d')];
+                                $termeknev = $data[$this->n('e')];
 
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
@@ -2690,9 +2690,9 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setGyarto($gyarto);
                                 }
                                 $termek->setNemkaphato(false);
-                                $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
+                                $termek->setBrutto(round($data[$this->n('h')] * 1 * $arszaz / 100, -1));
                                 // kepek
-                                $imagelist = explode(',', $data[$this->n('i')]);
+                                $imagelist = explode(',', $data[$this->n('j')]);
                                 $imgcnt = 0;
                                 foreach ($imagelist as $imgurl) {
                                     $imgcnt++;
@@ -2741,7 +2741,7 @@ class importController extends \mkwhelpers\Controller {
                             if ($valtozat) {
                                 if ($termek) {
                                     if (!$termek->getAkcios()) {
-                                        $ar = $data[$this->n('g')] * 1 * $arszaz / 100;
+                                        $ar = $data[$this->n('h')] * 1 * $arszaz / 100;
                                         $ar = round($ar, -1);
                                         $termek->setBrutto($ar);
                                         //$valtozat->setBrutto($ar - $termek->getBrutto());
@@ -2779,7 +2779,7 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setNemkaphato(false);
                                     }
                                     if (!$termek->getAkcios()) {
-                                        $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
+                                        $termek->setBrutto(round($data[$this->n('h')] * 1 * $arszaz / 100, -1));
                                     }
                                     \mkw\store::getEm()->persist($termek);
                                 }
