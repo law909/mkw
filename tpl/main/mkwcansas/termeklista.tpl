@@ -376,7 +376,7 @@
 					</tr></tbody></table>
 				</form>
 			</div>
-            <div class="kat">
+            <div>
                 {$kategoria.leiras3}
             </div>
         </div>
