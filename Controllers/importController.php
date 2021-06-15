@@ -4683,19 +4683,19 @@ class importController extends \mkwhelpers\Controller {
     public function evonaImport() {
 
         function toArray($sheet, $row) {
-            $kepek = $sheet->getCell('F' . $row)->getValue();
+            $kepek = $sheet->getCell('Q' . $row)->getValue();
             $kepek = array_filter(explode('|||', $kepek));
 
             $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
                 'HTML.Allowed' => 'p,ul,li,b,strong,br'
             ));
-            $hosszuleiras = $puri->sanitize(trim($sheet->getCell('E' . $row)->getValue()));
+            $hosszuleiras = $puri->sanitize(trim($sheet->getCell('F' . $row)->getValue()));
 
             $puri2 = \mkw\store::getSanitizer();
-            $rovidleiras = $puri2->sanitize(trim($sheet->getCell('D' . $row)->getValue()));
+            $rovidleiras = $puri2->sanitize(trim($sheet->getCell('E' . $row)->getValue()));
             $rovidleiras = mb_substr($rovidleiras, 0, 100, 'UTF8') . '...';
 
-            $nev = $sheet->getCell('C' . $row)->getValue();
+            $nev = $sheet->getCell('D' . $row)->getValue();
             $nev = ltrim($nev, '- ');
             $nev = 'Evona ' . \mkw\store::mb_ucfirst($nev);
 
@@ -4705,18 +4705,19 @@ class importController extends \mkwhelpers\Controller {
                 'rovidleiras' => $rovidleiras,
                 'leiras' => $hosszuleiras,
                 'termekkepek' => $kepek,
-                'termekkep' => $sheet->getCell('M' . $row)->getValue(),
-                'suly' => $sheet->getCell('P' . $row)->getValue(),
-                'hossz' => $sheet->getCell('Q' . $row)->getValue(),
-                'szelesseg' => $sheet->getCell('R' . $row)->getValue(),
-                'magassag' => $sheet->getCell('S' . $row)->getValue(),
-                'statusz' => $sheet->getCell('T' . $row)->getValue(),
-                'netto' => $sheet->getCell('AC' . $row)->getValue(),
-                'szin' => trim($sheet->getCell('AI' . $row)->getValue()),
-                'meret' => trim($sheet->getCell('AJ' . $row)->getValue()),
-                'kategoria' => trim($sheet->getCell('AK' . $row)->getValue()),
-                'den' => $sheet->getCell('AL' . $row)->getValue(),
-                'kaphato' => $sheet->getCell('T' . $row)->getValue() == 1
+                'termekkep' => $sheet->getCell('Y' . $row)->getValue(),
+                'suly' => $sheet->getCell('AB' . $row)->getValue(),
+                'hossz' => $sheet->getCell('AC' . $row)->getValue(),
+                'szelesseg' => $sheet->getCell('AD' . $row)->getValue(),
+                'magassag' => $sheet->getCell('AE' . $row)->getValue(),
+                'statusz' => $sheet->getCell('AF' . $row)->getValue(),
+                'netto' => $sheet->getCell('AW' . $row)->getValue(),
+                'szin' => trim($sheet->getCell('BQ' . $row)->getValue()),
+                'meret' => trim($sheet->getCell('BR' . $row)->getValue()),
+                'kategoria' => \mkw\store::mb_ucfirst($sheet->getCell('BS' . $row)->getValue()),
+                'den' => $sheet->getCell('BT' . $row)->getValue(),
+                'kaphato' => $sheet->getCell('AF' . $row)->getValue() == 1,
+                'szulocikkszam' => trim($sheet->getCell('BP' . $row)->getValue())
             );
         }
 
@@ -4758,8 +4759,8 @@ class importController extends \mkwhelpers\Controller {
             $katnevek = array();
             $szulocikkszamok = array();
             for ($row = 2; $row <= $maxrow; ++$row) {
-                $szulocikkszam = $sheet->getCell('AH' . $row)->getValue();
-                $af = \mkw\store::mb_ucfirst($sheet->getCell('AK' . $row)->getValue());
+                $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
+                $af = \mkw\store::mb_ucfirst($sheet->getCell('BS' . $row)->getValue());
                 $katnevek[$af] = $af;
                 if ($szulocikkszam) {
                     $szulocikkszamok[] = $szulocikkszam;
@@ -4777,7 +4778,7 @@ class importController extends \mkwhelpers\Controller {
             }
 
             for ($row = 2; $row <= $maxrow; ++$row) {
-                $szulocikkszam = $sheet->getCell('AH' . $row)->getValue();
+                $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
                 if ($szulocikkszam) {
                     $szulok[$szulocikkszam]['gyerekek'][] = toArray($sheet, $row);
                 }
