@@ -26,6 +26,13 @@ class importController extends \mkwhelpers\Controller {
         return ord($mit) - 97;
     }
 
+    private function urlkatnev($nev) {
+        if ($nev) {
+            return $nev . DIRECTORY_SEPARATOR;
+        }
+        return '';
+    }
+
     private function parse_csv($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true) {
         $a = array_map(
             function ($line) use ($delimiter, $trim_fields) {
@@ -463,7 +470,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($imagelist[$data[$this->n('a')]] as $imgurl) {
                                             $imgcnt++;
 
-                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
+                                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegenkod);
                                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
                                             if (count($imagelist[$data[$this->n('a')]]) > 1) {
                                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -486,13 +493,13 @@ class importController extends \mkwhelpers\Controller {
                                                 \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                             }
                                             if (((count($imagelist[$data[$this->n('a')]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[$this->n('a')]]) == 1)) {
-                                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                                 $termek->setKepleiras($termeknev);
                                             }
                                             else {
                                                 $kep = new \Entities\TermekKep();
                                                 $termek->addTermekKep($kep);
-                                                $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                                 $kep->setLeiras($termeknev);
                                                 \mkw\store::getEm()->persist($kep);
                                             }
@@ -742,7 +749,7 @@ class importController extends \mkwhelpers\Controller {
                                     if (!strpos($imgurl, 'http://')) {
                                         $imgurl = 'http://' . $imgurl;
                                     }
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
+                                    $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegenkod);
                                     $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
 
                                     $extension = \mkw\store::getExtension($imgurl);
@@ -760,7 +767,7 @@ class importController extends \mkwhelpers\Controller {
                                         $matches = explode('x', $size);
                                         \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                     }
-                                    $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                    $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                     $termek->setKepleiras($termeknev);
                                 }
                             }
@@ -1031,7 +1038,7 @@ class importController extends \mkwhelpers\Controller {
                                 $imgurl = trim($data['photo']);
                                 $imgurl = str_replace('http://', 'http:/', $imgurl);
                                 $imgurl = str_replace('http:/', 'http://', $imgurl);
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
                                 $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
 
                                 $extension = \mkw\store::getExtension($imgurl);
@@ -1049,7 +1056,7 @@ class importController extends \mkwhelpers\Controller {
                                     $matches = explode('x', $size);
                                     \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                 }
-                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                 $termek->setKepleiras($data['name']);
                             }
                         }
@@ -1156,7 +1163,7 @@ class importController extends \mkwhelpers\Controller {
                                 $imgurl = trim($data['photo']);
                                 $imgurl = str_replace('http://', 'http:/', $imgurl);
                                 $imgurl = str_replace('http:/', 'http://', $imgurl);
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
                                 $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
 
                                 $extension = \mkw\store::getExtension($imgurl);
@@ -1175,7 +1182,7 @@ class importController extends \mkwhelpers\Controller {
                                     $matches = explode('x', $size);
                                     \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                 }
-                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                 $termek->setKepleiras($data['name']);
 
                                 $valtozat = new \Entities\TermekValtozat();
@@ -1318,7 +1325,7 @@ class importController extends \mkwhelpers\Controller {
                                     $imgurl = trim($data['photo']);
                                     $imgurl = str_replace('http://', 'http:/', $imgurl);
                                     $imgurl = str_replace('http:/', 'http://', $imgurl);
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                    $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
                                     $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
 
                                     $extension = \mkw\store::getExtension($imgurl);
@@ -1338,14 +1345,14 @@ class importController extends \mkwhelpers\Controller {
                                         \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                     }
                                     if (!$termek->getKepurl()) {
-                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $termek->setKepleiras($data['name']);
                                         $valtozat->setTermekfokep(true);
                                     }
                                     else {
                                         $tkep = new \Entities\TermekKep();
                                         $termek->addTermekKep($tkep);
-                                        $tkep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $tkep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $tkep->setLeiras($data['name']);
                                         $valtozat->setKep($tkep);
                                         \mkw\store::getEm()->persist($tkep);
@@ -1645,7 +1652,7 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($data['images'] as $i) {
 
                                 $imgurl = trim($i);
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['number']);
+                                $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['number']);
                                 $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['number']);
 
                                 $parsedpath = parse_url($imgurl, PHP_URL_PATH);
@@ -1673,7 +1680,7 @@ class importController extends \mkwhelpers\Controller {
                                                     \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                                 }
                                                 if ($elso) {
-                                                    $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                    $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                                     $termek->setKepleiras($data['name']);
                                                 }
                                                 $elso = false;
@@ -1968,7 +1975,7 @@ class importController extends \mkwhelpers\Controller {
                             // kepek
 
                             $imgurl = $data['imageurl'];
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
                             $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
 
                             $parsedpath = parse_url($imgurl, PHP_URL_PATH);
@@ -1996,7 +2003,7 @@ class importController extends \mkwhelpers\Controller {
                                                 $matches = explode('x', $size);
                                                 \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                             }
-                                            $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                             $termek->setKepleiras($data['name']);
                                             break;
                                         default:
@@ -2706,7 +2713,7 @@ class importController extends \mkwhelpers\Controller {
                                 foreach ($imagelist as $imgurl) {
                                     $imgcnt++;
 
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                    $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                     $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                     if (count($imagelist) > 1) {
                                         $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -2729,13 +2736,13 @@ class importController extends \mkwhelpers\Controller {
                                         \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                     }
                                     if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
-                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $termek->setKepleiras($termeknev);
                                     }
                                     else {
                                         $kep = new \Entities\TermekKep();
                                         $termek->addTermekKep($kep);
-                                        $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $kep->setLeiras($termeknev);
                                         \mkw\store::getEm()->persist($kep);
                                     }
@@ -3207,6 +3214,8 @@ class importController extends \mkwhelpers\Controller {
                             if (!$termek) {
                                 if ($createuj && $kaphato) {
 
+                                    $urlkatnev = '';
+
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
                                     $termek->setMekod($this->getME('db'));
@@ -3230,7 +3239,7 @@ class importController extends \mkwhelpers\Controller {
                                     foreach ($imagelist as $imgurl) {
                                         $imgcnt++;
 
-                                        $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $cikkszam);
+                                        $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $cikkszam);
                                         $kepnev = \mkw\store::urlize($termeknev . '_' . $cikkszam);
                                         if (count($imagelist) > 1) {
                                             $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -3253,13 +3262,13 @@ class importController extends \mkwhelpers\Controller {
                                             \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                         }
                                         if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
-                                            $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                             $termek->setKepleiras($termeknev);
                                         }
                                         else {
                                             $kep = new \Entities\TermekKep();
                                             $termek->addTermekKep($kep);
-                                            $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                             $kep->setLeiras($termeknev);
                                             \mkw\store::getEm()->persist($kep);
                                         }
@@ -4425,7 +4434,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($imagelist as $imgurl) {
                                             $imgcnt++;
 
-                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                             if (count($imagelist) > 1) {
                                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -4449,7 +4458,7 @@ class importController extends \mkwhelpers\Controller {
                                             }
                                             $kep = new \Entities\TermekKep();
                                             $termek->addTermekKep($kep);
-                                            $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                             $kep->setLeiras($termeknev);
                                             if ($imgcnt === 1) {
                                                 $valtozat->setKep($kep);
@@ -4493,7 +4502,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($imagelist as $imgurl) {
                                             $imgcnt++;
 
-                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                             if (count($imagelist) > 1) {
                                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -4516,14 +4525,14 @@ class importController extends \mkwhelpers\Controller {
                                                 \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                             }
                                             if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
-                                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                                 $termek->setKepleiras($termeknev);
                                                 $valtozat->setTermekfokep(true);
                                             }
                                             else {
                                                 $kep = new \Entities\TermekKep();
                                                 $termek->addTermekKep($kep);
-                                                $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                                 $kep->setLeiras($termeknev);
                                                 $valtozat->setKep($kep);
                                                 \mkw\store::getEm()->persist($kep);
@@ -4759,33 +4768,39 @@ class importController extends \mkwhelpers\Controller {
             $katnevek = array();
             $szulocikkszamok = array();
             for ($row = 2; $row <= $maxrow; ++$row) {
-                $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
-                $af = \mkw\store::mb_ucfirst($sheet->getCell('BS' . $row)->getValue());
-                $katnevek[$af] = $af;
-                if ($szulocikkszam) {
-                    $szulocikkszamok[] = $szulocikkszam;
+                if ($sheet->getCell('Y' . $row)->getValue()) {
+                    $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
+                    $af = \mkw\store::mb_ucfirst($sheet->getCell('BS' . $row)->getValue());
+                    $katnevek[$af] = $af;
+                    if ($szulocikkszam) {
+                        $szulocikkszamok[] = $szulocikkszam;
+                    }
                 }
             }
             $szulok = array();
             $termekek = array();
             for ($row = 2; $row <= $maxrow; ++$row) {
-                $cikkszam = $sheet->getCell('A' . $row)->getValue();
-                if ($cikkszam && in_array($cikkszam, $szulocikkszamok)) {
-                    $x = toArray($sheet, $row);
-                    $x['gyerekek'] = array();
-                    $szulok[$cikkszam] = $x;
+                if ($sheet->getCell('Y' . $row)->getValue()) {
+                    $cikkszam = $sheet->getCell('A' . $row)->getValue();
+                    if ($cikkszam && in_array($cikkszam, $szulocikkszamok)) {
+                        $x = toArray($sheet, $row);
+                        $x['gyerekek'] = array();
+                        $szulok[$cikkszam] = $x;
+                    }
                 }
             }
 
             for ($row = 2; $row <= $maxrow; ++$row) {
-                $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
-                if ($szulocikkszam) {
-                    $szulok[$szulocikkszam]['gyerekek'][] = toArray($sheet, $row);
-                }
-                else {
-                    $cikkszam = $sheet->getCell('A' . $row)->getValue();
-                    if ($cikkszam && !in_array($cikkszam, $szulocikkszamok)) {
-                        $termekek[] = toArray($sheet, $row);
+                if ($sheet->getCell('Y' . $row)->getValue()) {
+                    $szulocikkszam = $sheet->getCell('BP' . $row)->getValue();
+                    if ($szulocikkszam) {
+                        $szulok[$szulocikkszam]['gyerekek'][] = toArray($sheet, $row);
+                    }
+                    else {
+                        $cikkszam = $sheet->getCell('A' . $row)->getValue();
+                        if ($cikkszam && !in_array($cikkszam, $szulocikkszamok)) {
+                            $termekek[] = toArray($sheet, $row);
+                        }
                     }
                 }
             }
@@ -4848,7 +4863,7 @@ class importController extends \mkwhelpers\Controller {
                         $imgcnt = 1;
                         if ($data['termekkep']) {
                             // fokep
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                             if (count($data['termekkepek']) >= 1) {
                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -4871,7 +4886,7 @@ class importController extends \mkwhelpers\Controller {
                                 $matches = explode('x', $size);
                                 \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                             }
-                            $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
                         }
 
@@ -4880,7 +4895,7 @@ class importController extends \mkwhelpers\Controller {
                         foreach ($imagelist as $imgurl) {
                             $imgcnt++;
 
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
+                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
 
                             $extension = \mkw\store::getExtension($imgurl);
@@ -4900,7 +4915,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $kep = new \Entities\TermekKep();
                             $termek->addTermekKep($kep);
-                            $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $kep->setLeiras($termeknev);
                             \mkw\store::getEm()->persist($kep);
                         }
@@ -4994,7 +5009,7 @@ class importController extends \mkwhelpers\Controller {
                         $imgcnt = 1;
                         if ($data['termekkep']) {
                             // fokep
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                             if (count($data['termekkepek']) >= 1) {
                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
@@ -5017,9 +5032,9 @@ class importController extends \mkwhelpers\Controller {
                                 $matches = explode('x', $size);
                                 \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                             }
-                            $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
-                            $termekkepszotar[$data['termekkep']] = $urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension;
+                            $termekkepszotar[$data['termekkep']] = $urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension;
                         }
 
                         // kepek
@@ -5027,7 +5042,7 @@ class importController extends \mkwhelpers\Controller {
                         foreach ($imagelist as $imgurl) {
                             $imgcnt++;
 
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
+                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
                             $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
 
                             $extension = \mkw\store::getExtension($imgurl);
@@ -5047,10 +5062,10 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $kep = new \Entities\TermekKep();
                             $termek->addTermekKep($kep);
-                            $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $kep->setLeiras($termeknev);
                             $termekkeplista[] = $kep;
-                            $termekkepszotar[$imgurl] = $urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension;
+                            $termekkepszotar[$imgurl] = $urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension;
                             \mkw\store::getEm()->persist($kep);
                         }
 /*
@@ -5105,7 +5120,7 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                 }
                                 else {
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
+                                    $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
                                     $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam) . '_' . $imgcnt;
 
                                     $imgurl = \mkw\store::getParameter(\mkw\consts::KepUrlEvona) . $gyerekdata['termekkep'];
@@ -5126,11 +5141,11 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     $kep = new \Entities\TermekKep();
                                     $termek->addTermekKep($kep);
-                                    $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                    $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                     $valtozat->setKep($kep);
                                     \mkw\store::getEm()->persist($kep);
                                     $termekkeplista[] = $kep;
-                                    $termekkepszotar[$gyerekdata['termekkep']] = $urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension;
+                                    $termekkepszotar[$gyerekdata['termekkep']] = $urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension;
                                 }
                             }
                             \mkw\store::getEm()->persist($valtozat);
@@ -5314,7 +5329,7 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     // kepek
                                     if ($data[$this->n('i')]) {
-                                        $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                        $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                         $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
 
                                         $extension = \mkw\store::getExtension($data[$this->n('i')]);
@@ -5332,7 +5347,7 @@ class importController extends \mkwhelpers\Controller {
                                             $matches = explode('x', $size);
                                             \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                         }
-                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $termek->setKepleiras($termeknev);
                                     }
                                 }
