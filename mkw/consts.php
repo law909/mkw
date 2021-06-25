@@ -204,6 +204,7 @@ class consts {
     const GyartoNika = 'gyartonika';
     const GyartoHaffner24 = 'gyartohaffner24';
     const GyartoEvona = 'gyartoevona';
+    const GyartoEvonaXML = 'gyartoevonaxml';
     const GyartoNetpresso = 'gyartonetpresso';
 
     const PathKreativ = 'pathkreativ';
@@ -231,6 +232,7 @@ class consts {
     const UrlHaffner24 = 'urlhaffner24';
     const UrlReintex = 'urlreintex';
     const UrlNetpresso = 'urlnetpresso';
+    const UrlEvonaXML = 'urlevonaxml';
 
     const KepUrlEvona = 'kepurlevona';
 
@@ -250,6 +252,7 @@ class consts {
     const RunningNikaImport = 'runningnikaimport';
     const RunningHaffner24Import = 'runninghaffner24import';
     const RunningEvonaImport = 'runningevonaimport';
+    const RunningEvonaXMLImport = 'runningevonaxmlimport';
     const RunningNetpressoImport = 'runningnetpressoimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';

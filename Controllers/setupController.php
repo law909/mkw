@@ -611,6 +611,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartohaffner24list', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoEvona);
         $view->setVar('gyartoevonalist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoEvonaXML);
+        $view->setVar('gyartoevonaxmllist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoNetpresso);
         $view->setVar('gyartonetpressolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
@@ -663,6 +665,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::UrlReintex, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UrlNetpresso);
         $view->setVar(\mkw\consts::UrlNetpresso, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlEvonaXML);
+        $view->setVar(\mkw\consts::UrlEvonaXML, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::KepUrlEvona);
         $view->setVar(\mkw\consts::KepUrlEvona, ($p ? $p->getErtek() : ''));
@@ -715,6 +719,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopnikaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'nika')));
         $view->setVar('stophaffner24importurl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'haffner24')));
         $view->setVar('stopevonaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evona')));
+        $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evonaxml')));
         $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
@@ -730,6 +735,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairnikaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'nika')));
         $view->setVar('repairhaffner24importurl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'haffner24')));
         $view->setVar('repairevonaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evona')));
+        $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evonaxml')));
         $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
         $view->printTemplateResult();
     }
@@ -1530,6 +1536,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoEvona, '');
         }
+        $x = $this->params->getIntRequestParam('gyartoevonaxml', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoEvonaXML, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoEvonaXML, '');
+        }
         $x = $this->params->getIntRequestParam('gyartonetpresso', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
@@ -1564,6 +1578,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UrlHaffner24, $this->params->getStringRequestParam('urlhaffner24', ''), true);
         $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
         $this->setObj(\mkw\consts::UrlNetpresso, $this->params->getStringRequestParam('urlnetpresso', ''), true);
+        $this->setObj(\mkw\consts::UrlEvonaXML, $this->params->getStringRequestParam('urlevonaxml', ''), true);
 
         $this->setObj(\mkw\consts::KepUrlEvona, $this->params->getStringRequestParam('kepurlevona', ''));
 

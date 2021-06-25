@@ -98,6 +98,7 @@
             <div class="matt-hseparator"></div>
             <div>
                 <a href="/admin/import/evona" class="js-evonaimport">Evona</a>
+                <a href="/admin/import/evonaxml" class="js-evonaxmlimport">Evona XML</a>
                 <a href="/admin/import/netpresso" class="js-netpressoimport">Netpresso</a>
             </div>
     <div class="matt-hseparator"></div>

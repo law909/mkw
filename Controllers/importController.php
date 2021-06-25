@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Termek;
+use Entities\TermekValtozat;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\DomCrawler\Crawler;
@@ -264,6 +266,9 @@ class importController extends \mkwhelpers\Controller {
                 break;
             case 'evona':
                 $imp = \mkw\consts::RunningEvonaImport;
+                break;
+            case 'evonaxml':
+                $imp = \mkw\consts::RunningEvonaXMLImport;
                 break;
             case 'netpresso':
                 $imp = \mkw\consts::RunningNetpressoImport;
@@ -5189,6 +5194,179 @@ class importController extends \mkwhelpers\Controller {
             $excel->disconnectWorksheets();
             \unlink($filenev);
             $this->setRunningImport(\mkw\consts::RunningEvonaImport, 0);
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+
+    }
+
+    public function evonaxmlImport() {
+
+        function toArr($obj) {
+            return array(
+                'product_id' => (string)$obj->product_id,
+                'manufacturer' => (string)$obj->manufacturer,
+                'sku' => (string)$obj->sku,
+                'ean' => (string)$obj->ean,
+                'name' => (string)$obj->name,
+                'price' => (int)$obj->price,
+                'price_special' => (int)$obj->price_special,
+                'category' => (string)$obj->category,
+                'product_url' => (string)$obj->product_url,
+                'description' => (string)$obj->description,
+                'delivery_time' => (int)$obj->delivery_time,
+                'termekkod' => (int)$obj->termekkod,
+                'stock' => (int)$obj->stock
+            );
+        }
+
+        if (!$this->checkRunningImport(\mkw\consts::RunningEvonaXMLImport)) {
+            $this->setRunningImport(\mkw\consts::RunningEvonaXMLImport, 1);
+
+            $parentid = $this->params->getIntRequestParam('katid', 0);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoEvona);
+            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+            $dbig = $this->params->getIntRequestParam('dbig', 0);
+            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlEvonaXML));
+            $fh = fopen(\mkw\store::storagePath('evona.xml'), 'w');
+            \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            \curl_exec($ch);
+            fclose($fh);
+            \curl_close($ch);
+
+            @unlink(\mkw\store::logsPath('evona_fuggoben.txt'));
+
+            $lettfuggoben = false;
+
+            $xml = simplexml_load_file(\mkw\store::storagePath("evona.xml"));
+            if ($xml) {
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+                $products = $xml->product;
+                if (!$dbig) {
+                    $dbig = count($products);
+                }
+
+                $termekdb = $dbtol;
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $termekdb++;
+                    $data = toArr($products[$termekdb]);
+
+                    $termek = false;
+                    $valtozat = false;
+                    $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $data['termekkod']));
+                    if ($valtozatok) {
+                        foreach ($valtozatok as $v) {
+                            $termek = $v->getTermek();
+                            if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                /** @var TermekValtozat $valtozat */
+                                $valtozat = $v;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        /** @var Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['termekkod'], 'gyarto' => $gyartoid));
+                    }
+
+                    if (is_array($termek)) {
+                        $termek = $termek[0];
+                    }
+                    if ($valtozat) {
+                        if ($data['stock'] <= 0) {
+                            if ($valtozat->getKeszlet() <= 0) {
+                                $valtozat->setElerheto(false);
+                                \mkw\store::writelog('VÁLTOZAT STOCK <= 0: idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'evona_fuggoben.txt');
+                                $lettfuggoben = true;
+                            }
+                        }
+                        else {
+                            $valtozat->setElerheto(true);
+                        }
+                        \mkw\store::getEm()->persist($valtozat);
+                        if ($termek) {
+                            $egysemkaphato = true;
+                            foreach ($termek->getValtozatok() as $valt) {
+                                if ($valt->getElerheto()) {
+                                    $egysemkaphato = false;
+                                }
+                            }
+                            $termek->setNemkaphato($egysemkaphato);
+                            if ($egysemkaphato) {
+                                \mkw\store::writelog('TERMÉK EGY VÁLTOZATA SEM ELÉRHETŐ: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
+                                $lettfuggoben = true;
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    else {
+                        if ($termek) {
+                            if ($data['stock'] <= 0) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(true);
+                                    \mkw\store::writelog('TERMÉK STOCK <= 0: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
+                                    $lettfuggoben = true;
+                                }
+                            }
+                            else {
+                                $termek->setNemkaphato(false);
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    }
+
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+                $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
+                $termekdb = 0;
+                /** @var \Entities\Termek $termek */
+                foreach ($termekek as $termek) {
+                    $vanelerheto = false;
+                    $vanvaltozat = false;
+                    $valtozatok = $termek->getValtozatok();
+                    /** @var \Entities\TermekValtozat $valtozat */
+                    foreach ($valtozatok as $valtozat) {
+                        $vanvaltozat = true;
+                        if ($valtozat->getElerheto()) {
+                            $vanelerheto = true;
+                        }
+                    }
+                    if ($vanvaltozat && !$vanelerheto) {
+                        $termekdb++;
+                        \mkw\store::writelog('NINCS ELÉRHETŐ VÁLTOZAT: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
+                        $lettfuggoben = true;
+                        $termek->setNemkaphato(true);
+                        \mkw\store::getEm()->persist($termek);
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\store::getEm()->flush();
+//                            \mkw\store::getEm()->clear();
+                        }
+                    }
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+            }
+            if ($lettfuggoben) {
+                echo json_encode(array('url' => \mkw\store::logsUrl('evona_fuggoben.txt')));
+            }
+
+            $this->setRunningImport(\mkw\consts::RunningEvonaXMLImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));

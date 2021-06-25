@@ -1308,6 +1308,22 @@
                         <div class="matt-hseparator"></div>
                         <div>
                             <div>
+                                <label for="EvonaXMLEdit">Evona XML:</label>
+                                <select id="EvonaXMLEdit" name="gyartoevonaxml">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartoevonaxmllist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="UrlEvonaXMLEdit">XML URL:</label>
+                                <input id="UrlEvonaXMLEdit" name="urlevonaxml" value="{$urlevonaxml}">
+                                <a href="#" class="js-stopimport" data-href="{$stopevonaxmlimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairevonaxmlimporturl}">Javít</a>
+                            </div>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
                                 <label for="NetpressoEdit">Netpresso:</label>
                                 <select id="NetpressoEdit" name="gyartonetpresso">
                                     <option value="">{at('válasszon')}</option>
