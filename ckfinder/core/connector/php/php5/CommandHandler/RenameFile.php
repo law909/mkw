@@ -121,8 +121,8 @@ class CKFinder_Connector_CommandHandler_RenameFile extends CKFinder_Connector_Co
             $oRenamedFileNode->addAttribute("newName", CKFinder_Connector_Utils_FileSystem::convertToConnectorEncoding($newFileName));
 			//+law
 			$this->renameThumbs($filePath, $newFilePath);
-			require_once('ckmysql.php');
-			ckmysql::RenameFile($fileName, $newFileName);
+			//require_once('ckmysql.php');
+			//ckmysql::RenameFile($fileName, $newFileName);
 			//-law
             $thumbPath = CKFinder_Connector_Utils_FileSystem::combinePaths($this->_currentFolder->getThumbsServerPath(), $fileName);
             CKFinder_Connector_Utils_FileSystem::unlink($thumbPath);

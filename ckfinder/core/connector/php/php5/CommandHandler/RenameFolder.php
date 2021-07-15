@@ -96,8 +96,8 @@ class CKFinder_Connector_CommandHandler_RenameFolder extends CKFinder_Connector_
             $this->_errorHandler->throwError(CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED);
         } else {
 			//+law
-			require_once('ckmysql.php');
-			ckmysql::RenameFolder($this->_currentFolder->getUrl(),dirname($this->_currentFolder->getUrl()).'/'.$newFolderName.'/');
+			//require_once('ckmysql.php');
+			//ckmysql::RenameFolder($this->_currentFolder->getUrl(),dirname($this->_currentFolder->getUrl()).'/'.$newFolderName.'/');
 			//-law
             $newThumbsServerPath = dirname($this->_currentFolder->getThumbsServerPath()) . '/' . $newFolderName . '/';
             if (!@rename($this->_currentFolder->getThumbsServerPath(), $newThumbsServerPath)) {

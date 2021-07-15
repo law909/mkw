@@ -70,8 +70,8 @@ class CKFinder_Connector_CommandHandler_DeleteFolder extends CKFinder_Connector_
             $this->_errorHandler->throwError(CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED);
         }
 		//+law
-		require_once('ckmysql.php');
-		ckmysql::DeleteFolder($this->_currentFolder->getUrl());
+		//require_once('ckmysql.php');
+		//ckmysql::DeleteFolder($this->_currentFolder->getUrl());
 		//-law
 
         CKFinder_Connector_Utils_FileSystem::unlink($this->_currentFolder->getThumbsServerPath());

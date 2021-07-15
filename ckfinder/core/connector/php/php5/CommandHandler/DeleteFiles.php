@@ -139,8 +139,8 @@ class CKFinder_Connector_CommandHandler_DeleteFiles extends CKFinder_Connector_C
 			continue;
 		  }
 		  else {
-			  require_once 'ckmysql.php';
-			  ckmysql::DeleteFiles($path.$name);
+			  //require_once 'ckmysql.php';
+			  //ckmysql::DeleteFiles($path.$name);
 		  //-law
 			$thumbPath = CKFinder_Connector_Utils_FileSystem::combinePaths($this->_currentFolder->getThumbsServerPath(), $name);
             @unlink($thumbPath);
