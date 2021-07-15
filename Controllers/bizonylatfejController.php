@@ -556,6 +556,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
             $this->getEm()->persist($partnerobj);
         }
+        else {
+            $partnerobj = $this->getRepo('Entities\Partner')->find($partnerkod);
+            if ($partnerobj) {
+                $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
+                $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+                $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
+                $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
+                $this->getEm()->persist($partnerobj);
+            }
+        }
 
         $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
 
@@ -1289,7 +1299,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partner = $record->getPartner();
             }
             $view->setVar('szamlatipuslist', $this->getRepo(Partner::class)->getSzamlatipusList(($partner ? $partner->getSzamlatipus() : 0)));
-            $view->setVar('vatstatuslist', $this->getRepo(Partner::class)->getVatstatusList(($partner ? $partner->getVatstatus() : 0)));
+            $view->setVar('vatstatuslist', $this->getRepo(Partner::class)->getVatstatusList(($record ? $record->getPartnervatstatus() : ($partner ? $partner->getVatstatus() : 0))));
 
             if (method_exists($this, 'onGetKarb')) {
                 $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
