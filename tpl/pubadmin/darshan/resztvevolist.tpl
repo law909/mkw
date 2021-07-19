@@ -50,7 +50,12 @@
                     </div>
                     <div class="col">
                         <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}" data-price="{$resztvevo.type2price}">
-                            4-es bérlet
+                            5-ös bérlet
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-darshan js-buy" data-type="3" data-id="{$resztvevo.id}" data-price="{$resztvevo.type3price}">
+                            10-es bérlet
                         </button>
                     </div>
                 </div>
