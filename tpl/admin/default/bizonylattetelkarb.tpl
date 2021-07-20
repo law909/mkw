@@ -120,8 +120,8 @@
                 {/if}
             </tr>
             <tr>
-                <td><label for="KedvezmenyEdit">{at('Kedvezmény %')}:</label></td>
-                <td><input id="KedvezmenyEdit" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
+                <td><label for="KedvezmenyEdit{$tetel.id}">{at('Kedvezmény %')}:</label></td>
+                <td><input id="KedvezmenyEdit{$tetel.id}" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
             </tr>
             <tr>
                 <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
