@@ -189,22 +189,6 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('toldatum', $ma->format(\mkw\store::$DateFormat));
                 $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
-                $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllKeszpenzes());
-                $fmfilter = new mkwhelpers\FilterDescriptor();
-                $fmfilter->addSql('bf.fizmod_id IN (' . implode(',', $fmarr) . ')');
-                $kint = new kintlevoseglistaController($this->params);
-                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt', null, null, null, null, $fmfilter);
-                $kintadatnew = array();
-                foreach($kintadat as $key => $ka) {
-                    $bizfej = $this->getRepo('Entities\Bizonylatfej')->find($ka['bizonylatfej_id']);
-                    if ($bizfej) {
-                        $ka['printurl'] = \mkw\store::getRouter()->generate('admin' . $bizfej->getBizonylattipusId() . 'fejprint', false, array(), array(
-                            'id' => $bizfej->getId()
-                        ));
-                    }
-                    $kintadatnew[$key] = $ka;
-                }
-                $view->setVar('kintlevoseglista', $kintadatnew);
                 break;
             default:
                 break;

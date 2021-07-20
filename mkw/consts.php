@@ -206,6 +206,7 @@ class consts {
     const GyartoEvona = 'gyartoevona';
     const GyartoEvonaXML = 'gyartoevonaxml';
     const GyartoNetpresso = 'gyartonetpresso';
+    const GyartoGulf = 'gyartogulf';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -254,6 +255,7 @@ class consts {
     const RunningEvonaImport = 'runningevonaimport';
     const RunningEvonaXMLImport = 'runningevonaxmlimport';
     const RunningNetpressoImport = 'runningnetpressoimport';
+    const RunningGulfImport = 'runninggulfimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';
