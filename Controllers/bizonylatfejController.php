@@ -563,6 +563,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
                 $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
                 $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
+
+                $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+                $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+                $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+                if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                    $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
+                }
+                $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+                $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+                $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
                 $this->getEm()->persist($partnerobj);
             }
         }
@@ -1633,6 +1644,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             /** @var \Entities\Partner $partnerobj */
             $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
             if ($partnerobj) {
+
+                $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
+                $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+                $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
+                $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
 
                 $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
