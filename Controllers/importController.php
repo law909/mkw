@@ -1549,6 +1549,7 @@ class importController extends \mkwhelpers\Controller {
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
             @unlink(\mkw\store::logsPath('nikaimport.txt'));
+            @unlink(\mkw\store::storagePath('nikaproducts.xml'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
             $fh = fopen(\mkw\store::storagePath('nikaproducts.xml'), 'w');
@@ -1799,7 +1800,6 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => \mkw\store::logsUrl('nikaimport.txt')));
                 }
             }
-            \unlink(\mkw\store::storagePath('nikaproducts.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 0);
         }
