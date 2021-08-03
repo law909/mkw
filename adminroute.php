@@ -631,6 +631,7 @@ $router->map('POST','/admin/import/btech', 'importController#btechImport', 'admi
 $router->map('POST','/admin/import/kressgep', 'importController#kressgepImport', 'adminkressgepimport');
 $router->map('POST','/admin/import/kresstartozek', 'importController#kresstartozekImport', 'adminkresstartozekimport');
 $router->map('POST','/admin/import/netpresso', 'importController#netpressoImport', 'adminnetpressoimport');
+$router->map('POST','/admin/import/gulf', 'importController#gulfImport', 'admingulfimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
 //$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
 //$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');

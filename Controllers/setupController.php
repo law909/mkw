@@ -615,6 +615,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartoevonaxmllist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoNetpresso);
         $view->setVar('gyartonetpressolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoGulf);
+        $view->setVar('gyartogulflist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -721,6 +723,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopevonaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evona')));
         $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evonaxml')));
         $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
+        $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'gulf')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
@@ -737,6 +740,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairevonaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evona')));
         $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evonaxml')));
         $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
+        $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'gulf')));
+
         $view->printTemplateResult();
     }
 
@@ -1551,6 +1556,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::GyartoNetpresso, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartogulf', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoGulf, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoGulf, '');
         }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));

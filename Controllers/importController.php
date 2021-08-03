@@ -273,6 +273,9 @@ class importController extends \mkwhelpers\Controller {
             case 'netpresso':
                 $imp = \mkw\consts::RunningNetpressoImport;
                 break;
+            case 'gulf':
+                $imp = \mkw\consts::RunningGulfImport;
+                break;
             default:
                 $imp = false;
                 break;
@@ -329,6 +332,9 @@ class importController extends \mkwhelpers\Controller {
                 break;
             case 'netpresso':
                 $imp = \mkw\consts::GyartoNetpresso;
+                break;
+            case 'gulf':
+                $imp = \mkw\consts::GyartoGulf;
                 break;
             default:
                 $imp = false;
@@ -5617,10 +5623,6 @@ class importController extends \mkwhelpers\Controller {
     public function gulfImport() {
 
         if (!$this->checkRunningImport(\mkw\consts::RunningGulfImport)) {
-            function isTermeksor($adat) {
-                return trim($adat, '\'') * 1 > 0;
-            }
-
             $this->setRunningImport(\mkw\consts::RunningGulfImport, 1);
 
             $volthiba = false;
@@ -5631,8 +5633,8 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            if ($dbtol < 3) {
-                $dbtol = 3;
+            if ($dbtol < 1) {
+                $dbtol = 1;
             }
 
             $filenev = $_FILES['toimport']['name'];
@@ -5649,247 +5651,41 @@ class importController extends \mkwhelpers\Controller {
                 $dbig = $maxrow;
             }
 
-            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-
-            for ($row = $dbtol; $row <= $dbig; ++$row) {
-                $adat = $sheet->getCell('A' . $row)->getValue();
-                if ($adat && !isTermeksor($adat)) {
-                    $katnev = $adat;
-                    $parent = $this->createKategoria($katnev, $parentid);
-                }
-            }
-
-            @unlink('btechimport.error');
-
-            $letezocikkszamok = array();
 
             $termekdb = 0;
             for ($row = $dbtol; $row <= $dbig; ++$row) {
-                $adat = $sheet->getCell('A' . $row)->getValue();
-                if ($adat) {
-                    if (isTermeksor($adat)) {
-                        $letezocikkszamok[] = $adat;
-                        $termekdb++;
+                $cikkszam = $sheet->getCell('A' . $row)->getValue();
+                if ($cikkszam) {
+                    $termekdb++;
 
-                        $kaphato = true;
-                        $cikkszam = $sheet->getCell('A' . $row)->getValue();
-                        $termeknev = $sheet->getCell('B' . $row)->getValue();
-                        $link = $sheet->getCell('D' . $row)->getValue();
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
-                        if ($link) {
-                            $ch = \curl_init();
-                            \curl_setopt($ch, CURLOPT_URL, $link);
-                            \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                            \curl_setopt($ch, CURLOPT_USERAGENT, 'MKW Webshop Import');
-                            \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-                            \curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                            $termekpage = \curl_exec($ch);
-                            $curlerror = \curl_error($ch);
-                            $curlerrno = \curl_errno($ch);
-                            \curl_close($ch);
-                        }
-                        else {
-                            $volthiba = true;
-                            $termekpage = false;
-                            \mkw\store::writelog($cikkszam . ': empty url', 'btechimport.error');
-                        }
-
-                        if ($termekpage) {
-
-                            $crawler = new Crawler($termekpage);
-
-                            $ar = 0;
-
-                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.old-price');
-                            if ($nodelist->count()) {
-                                $ar = $nodelist->text();
-                                $ar = str_replace(array(' ', 'Ft'), '', $ar);
-                                $ar = $ar * 1;
-                            }
-                            else {
-                                $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
-                                if ($nodelist->count()) {
-                                    $ar = $nodelist->text();
-                                    $ar = str_replace(array(' ', 'Ft'), '', $ar);
-                                    $ar = $ar * 1;
-                                }
-                            }
-
-                            if (!$ar) {
-                                \mkw\store::writelog($cikkszam . ': nem akcios, de nincs ar');
-                            }
-
-                            $nodelist = $crawler->filter('div#item-page > div.left > h1');
-                            if ($nodelist->count()) {
-                                $termeknev = $nodelist->text();
-                            }
-
-                            $nodelist = $crawler->filter('div#item-page > div.description');
-                            $le = '';
-                            if ($nodelist->count()) {
-                                $le = $nodelist->html();
-                            }
-                            $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
-                                'HTML.Allowed' => 'p,ul,li,b,strong,br'
-                            ));
-                            $leiras = str_replace("\t", '', $puri->sanitize($le));
-                            $puri2 = \mkw\store::getSanitizer();
-                            $kisleiras = str_replace("\t", '', $puri2->sanitize($le));
-
-                            $nodelist = $crawler->filter('div#item-page > div.right > div.item-image a');
-                            $imagelist = $nodelist->each(function (Crawler $node, $i) {
-                                return 'http://btech.hu' . $node->attr('href');
-                            });
-
-                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
-
-                            if (!$termek) {
-                                if ($createuj && $kaphato) {
-
-                                    $urlkatnev = '';
-
-                                    $termek = new \Entities\Termek();
-                                    $termek->setFuggoben(true);
-                                    $termek->setMekod($this->getME('db'));
-                                    $termek->setNev($termeknev);
-                                    $termek->setLeiras($leiras);
-                                    $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
-                                    $termek->setCikkszam($cikkszam);
-                                    $termek->setIdegencikkszam($cikkszam);
-                                    $termek->setTermekfa1($parent);
-                                    $termek->setVtsz($vtsz[0]);
-                                    $termek->setHparany(3);
-                                    if ($gyarto) {
-                                        $termek->setGyarto($gyarto);
-                                    }
-                                    $termek->setNemkaphato(false);
-                                    if ($ar) {
-                                        $termek->setBrutto($ar);
-                                    }
-
-                                    $imgcnt = 0;
-                                    foreach ($imagelist as $imgurl) {
-                                        $imgcnt++;
-
-                                        $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $cikkszam);
-                                        $kepnev = \mkw\store::urlize($termeknev . '_' . $cikkszam);
-                                        if (count($imagelist) > 1) {
-                                            $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
-                                            $kepnev = $kepnev . '_' . $imgcnt;
-                                        }
-
-                                        $extension = \mkw\store::getExtension($imgurl);
-                                        $imgpath = $nameWithoutExt . '.' . $extension;
-
-                                        $ch = \curl_init($imgurl);
-                                        $ih = fopen($imgpath, 'w');
-                                        \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                                        \curl_exec($ch);
-                                        fclose($ih);
-
-                                        foreach ($this->settings['sizes'] as $k => $size) {
-                                            $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                            $matches = explode('x', $size);
-                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
-                                        }
-                                        if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
-                                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
-                                            $termek->setKepleiras($termeknev);
-                                        }
-                                        else {
-                                            $kep = new \Entities\TermekKep();
-                                            $termek->addTermekKep($kep);
-                                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
-                                            $kep->setLeiras($termeknev);
-                                            \mkw\store::getEm()->persist($kep);
-                                        }
-                                    }
-
-                                    \mkw\store::getEm()->persist($termek);
-                                }
-                            }
-                            else {
-                                if (is_array($termek)) {
-                                    $termek = $termek[0];
-                                }
-                                if ($editleiras) {
-                                    $termek->setLeiras($leiras);
-                                }
-                                if (!$kaphato) {
-                                    if ($termek->getKeszlet() <= 0) {
-                                        $termek->setNemkaphato(true);
-                                    }
-                                }
-                                else {
-                                    $termek->setNemkaphato(false);
-                                }
-                                if ($ar && !$termek->getAkcios()) {
-                                    $termek->setBrutto($ar);
-                                }
-                                \mkw\store::getEm()->persist($termek);
-                            }
-
-                            if (($termekdb % $batchsize) === 0) {
-                                \mkw\store::getEm()->flush();
-                                \mkw\store::getEm()->clear();
-                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                                $parent = $this->createKategoria($katnev, $parentid);
-                            }
-                        }
-                        else {
-                            $volthiba = true;
-                            if ($termekpage === false) {
-                                \mkw\store::writelog($cikkszam . ': ' . $curlerrno . ' - ' . $curlerror, 'btechimport.error');
-                            }
-                            else {
-                                \mkw\store::writelog($cikkszam . ': ' . gettype($termekpage) . ' = ' . $termekpage, 'btechimport.error');
-                            }
+                    if (is_array($termek)) {
+                        $termek = $termek[0];
+                    }
+                    if ($termek) {
+                        $ar = $sheet->getCell('M' . $row)->getValue();
+                        if ($ar && !$termek->getAkcios()) {
+                            $termek->setBrutto(round($ar, -1));
+                            \mkw\store::getEm()->persist($termek);
                         }
                     }
-                    else {
-                        $katnev = $sheet->getCell('A' . $row)->getValue();
-                        $parent = $this->createKategoria($katnev, $parentid);
-                        $urlkatnev = \mkw\store::urlize($katnev);
-                        \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
                 }
             }
             \mkw\store::getEm()->flush();
             \mkw\store::getEm()->clear();
 
-            if ($gyarto && $letezocikkszamok) {
-                $termekdb = 0;
-                $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
-                foreach ($termekek as $t) {
-                    if (!in_array($t['cikkszam'], $letezocikkszamok)) {
-                        /** @var \Entities\Termek $termek */
-                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                        if ($termek && $termek->getKeszlet() <= 0) {
-                            $termekdb++;
-                            $termek->setInaktiv(true);
-                            \mkw\store::getEm()->persist($termek);
-                            if (($termekdb % $batchsize) === 0) {
-                                \mkw\store::getEm()->flush();
-                                \mkw\store::getEm()->clear();
-                            }
-                        }
-                    }
-                }
-                \mkw\store::getEm()->flush();
-                \mkw\store::getEm()->clear();
-            }
-
             $excel->disconnectWorksheets();
             \unlink($filenev);
 
-            if ($volthiba) {
-                echo json_encode(array('url' => '/btechimport.error'));
-            }
-            $this->setRunningImport(\mkw\consts::RunningBtechImport, 0);
+            $this->setRunningImport(\mkw\consts::RunningGulfImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));

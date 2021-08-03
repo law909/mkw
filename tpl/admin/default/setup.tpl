@@ -1339,6 +1339,20 @@
                                 <a href="#" class="js-repairimport" data-href="{$repairnetpressoimporturl}">Javít</a>
                             </div>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="GulfEdit">Gulf:</label>
+                                <select id="GulfEdit" name="gyartogulf">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartogulflist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <a href="#" class="js-stopimport" data-href="{$stopgulfimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairgulfimporturl}">Javít</a>
+                            </div>
+                        </div>
 
                     </div>
                 {/if}
