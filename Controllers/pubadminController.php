@@ -12,6 +12,7 @@ class pubadminController extends mkwhelpers\Controller {
     public function view() {
         $view = $this->createPubAdminView('main.tpl');
         $view->setVar('pagetitle', t('Főoldal'));
+        $view->setVar('tanarnev', \mkw\store::getPubAdminSession()->loggedinuser['name']);
 
         $view->printTemplateResult();
     }
