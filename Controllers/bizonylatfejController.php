@@ -567,7 +567,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
                 $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
                 $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
-                if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                if (!$partnerobj->getNev() && ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev())) {
                     $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
                 }
                 $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
@@ -1654,7 +1654,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
                 $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
                 $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
-                if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                if (!$partnerobj->getNev() && ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev())) {
                     $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
                 }
                 $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
@@ -1683,7 +1683,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
             $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
             $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
-            if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+            if (!$partnerobj->getNev() && ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev())) {
                 $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
             }
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
