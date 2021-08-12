@@ -98,7 +98,14 @@ class JogaBejelentkezes {
         $jr->setDatum($this->getDatum());
         $jr->setJogaoratipus($this->getOrarend()->getJogaoratipus());
         $jr->setJogaterem($this->getOrarend()->getJogaterem());
-        $jr->setTanar($this->getOrarend()->getDolgozo());
+        $hr = \mkw\store::getEm()->getRepository(Orarendhelyettesites::class);
+        $helyettesito = $hr->getHelyettesito($this->getOrarend(), $this->getDatum());
+        if ($helyettesito) {
+            $jr->setTanar($helyettesito);
+        }
+        else {
+            $jr->setTanar($this->getOrarend()->getDolgozo());
+        }
         switch (true) {
             case $this->getTipus() == 1:
                 /** @var \Entities\Termek $termek */

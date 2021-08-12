@@ -48,4 +48,13 @@ class OrarendhelyettesitesRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getHelyettesito($orarend, $datum) {
+        /** @var Orarendhelyettesites $obj */
+        $obj = $this->findOneBy(['orarend' => $orarend, 'datum' => $datum]);
+        if ($obj && $obj->getHelyettesito()) {
+            return $obj->getHelyettesito();
+        }
+        return null;
+    }
+
 }

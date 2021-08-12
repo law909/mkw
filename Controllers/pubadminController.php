@@ -44,7 +44,7 @@ class pubadminController extends mkwhelpers\Controller {
             /** @var Entities\Orarendhelyettesites $helyett*/
             foreach ($helyettek as $helyett) {
                 $oralista[] = [
-                    'id' => $helyett->getId(),
+                    'id' => $helyett->getOrarendId(),
                     'nev' => $helyett->getOrarendNev()
                 ];
             }
