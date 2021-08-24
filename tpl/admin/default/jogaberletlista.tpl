@@ -87,7 +87,6 @@
         <th>{at('Vásárlás dátuma')}</th>
         <th>{at('Lejárat dátuma')}</th>
         <th></th>
-        <th></th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

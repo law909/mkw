@@ -127,6 +127,33 @@ $(document).ready(function(){
 		$('#maincheckbox').change(function(){
 			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
 		});
+        $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
+            function doit(succ) {
+                var id = $this.attr('data-id'),
+                    flag = $this.attr('data-flag'),
+                    kibe = !$this.is('.ui-state-hover');
+                if (succ) {
+                    succ();
+                }
+                $.ajax({
+                    url: '/admin/jogaberlet/setflag',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        flag: flag,
+                        kibe: kibe
+                    },
+                    success: function () {
+                        $this.toggleClass('ui-state-hover');
+                    }
+                });
+            }
+
+            e.preventDefault();
+            var $this = $(this);
+            doit();
+        });
+
 	}
 	else {
 		if ($.fn.mattkarb) {

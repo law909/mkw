@@ -397,4 +397,24 @@ class jogaberletController extends \mkwhelpers\MattableController {
 
         }
     }
+
+    public function setflag() {
+        $id = $this->params->getIntRequestParam('id');
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        $flag = $this->params->getStringRequestParam('flag');
+        /** @var \Entities\JogaBerlet $obj */
+        $obj = $this->getRepo()->find($id);
+        if ($obj) {
+            switch ($flag) {
+                case 'lejart':
+                    $obj->setLejart($kibe);
+                    break;
+                case 'nincsfizetve':
+                    $obj->setNincsfizetve($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }

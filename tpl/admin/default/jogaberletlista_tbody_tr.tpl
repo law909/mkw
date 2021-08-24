@@ -24,6 +24,12 @@
     <td class="cell">{$_egyed.bruttoar}</td>
     <td class="cell">{$_egyed.vasarlasnapja}</td>
     <td class="cell">{$_egyed.lejaratdatum}</td>
-    <td class="cell">{if ($_egyed.lejart)}LEJÁRT{/if}</td>
-    <td class="cell">{if ($_egyed.nincsfizetve)}NINCS KIFIZETVE{/if}</td>
+    <td class="cell">
+        <table>
+            <tbody>
+            <tr><td><a href="#" data-id="{$_egyed.id}" data-flag="lejart" class="js-flagcheckbox{if ($_egyed.lejart)} ui-state-hover{/if}">{at('Lejárt')}</a></td></tr>
+            <tr><td><a href="#" data-id="{$_egyed.id}" data-flag="nincsfizetve" class="js-flagcheckbox{if ($_egyed.nincsfizetve)} ui-state-hover{/if}">{at('Nincs kifizetve')}</a></td></tr>
+            </tbody>
+        </table>
+    </td>
 </tr>

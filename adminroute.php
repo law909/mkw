@@ -659,6 +659,7 @@ $router->map('GET', '/admin/jogaberlet/viewkarb', 'jogaberletController#viewkarb
 $router->map('POST', '/admin/jogaberlet/save', 'jogaberletController#save', 'adminjogaberletsave');
 $router->map('GET', '/admin/jogaberlet/getselect', 'jogaberletController#getSelectHtml', 'adminjogaberletgetselect');
 $router->map('GET', '/admin/jogaberlet/getar', 'jogaberletController#getar', 'adminjogaberletgetar');
+$router->map('POST', '/admin/jogaberlet/setflag', 'jogaberletController#setflag', 'adminjogaberletsetflag');
 
 $router->map('GET', '/admin/rlbexport', 'exportController#RLBExport', 'adminrlbexport');
 $router->map('GET', '/admin/rlbcsvexport/view', 'rlbexportController#view', 'adminrlbcsvexportview');
