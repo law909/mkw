@@ -39,6 +39,11 @@
     </div>
     <div class="matt-hseparator"></div>
     <div>
+        <label for="utolsohasznalatfilter">{at('Utolsó használat napja')}:</label>
+        <input id="utolsohasznalatfilter" name="utolsohasznalatfilter" type="text" size="12" data-datum="{$utolsohasznalatfilter|default}">
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
         <label for="lejartfilter">{at('Lejárt')}:</label>
         <select id="lejartfilter" name="lejartfilter">
             <option value="0">{at('Mindegy')}</option>

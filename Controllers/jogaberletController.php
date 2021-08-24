@@ -137,7 +137,11 @@ class jogaberletController extends \mkwhelpers\MattableController {
                 $filter->addFilter('nincsfizetve', '=', true);
                 break;
         }
-
+        $f = $this->params->getStringRequestParam('utolsohasznalatfilter');
+        if ($f) {
+            $uhdatum = $f;
+            $filter->addSql('(SELECT COUNT(*) FROM jogareszvetel jr WHERE (_xx.id=jr.jogaberlet_id) AND (jr.datum>=\'' . $uhdatum . '\')) = 0');
+        }
         $this->initPager(
             $this->getRepo()->getCountWithJoins($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
 

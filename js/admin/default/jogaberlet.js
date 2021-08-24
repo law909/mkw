@@ -104,6 +104,7 @@ $(document).ready(function(){
         mkwcomp.datumEdit.init('#datumigfilter');
         mkwcomp.datumEdit.init('#lejarattolfilter');
         mkwcomp.datumEdit.init('#lejaratigfilter');
+        mkwcomp.datumEdit.init('#utolsohasznalatfilter');
 		$('#mattable-select').mattable({
 			filter:{
 				fields:[
@@ -114,7 +115,8 @@ $(document).ready(function(){
                     '#lejarattolfilter',
                     '#lejaratigfilter',
                     '#lejartfilter',
-                    '#nincsfizetvefilter'
+                    '#nincsfizetvefilter',
+                    '#utolsohasznalatfilter'
                 ]
 			},
 			tablebody:{
