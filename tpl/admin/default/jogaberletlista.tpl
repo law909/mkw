@@ -39,8 +39,9 @@
     </div>
     <div class="matt-hseparator"></div>
     <div>
-        <label for="utolsohasznalatfilter">{at('Utolsó használat napja')}:</label>
+        <label for="utolsohasznalatfilter">{at('Utolsó használat napja')}</label>
         <input id="utolsohasznalatfilter" name="utolsohasznalatfilter" type="text" size="12" data-datum="{$utolsohasznalatfilter|default}">
+        <label>{at('előtt')}</label>
     </div>
     <div class="matt-hseparator"></div>
     <div>
