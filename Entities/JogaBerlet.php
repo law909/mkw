@@ -370,10 +370,9 @@ class JogaBerlet {
             $this->lejaratdatum = $adat;
         }
         else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$DateFormat);
+            if ($adat != '') {
+                $this->lejaratdatum = new \DateTime(\mkw\store::convDate($adat));
             }
-            $this->lejaratdatum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 

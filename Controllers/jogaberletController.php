@@ -84,6 +84,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
             $obj->removePartner();
         }
         $obj->setVasarlasnapja($this->params->getStringRequestParam('vasarlasnapja'));
+        $obj->setLejaratdatum($this->params->getStringRequestParam('lejaratdatum'));
         $obj->setElfogyottalkalom($this->params->getIntRequestParam('elfogyottalkalom'));
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
         $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));

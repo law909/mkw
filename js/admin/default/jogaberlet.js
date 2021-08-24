@@ -84,6 +84,7 @@ $(document).ready(function(){
                 $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
                 mkwcomp.datumEdit.init('#VasarlasDatumEdit');
+                mkwcomp.datumEdit.init('#LejaratDatumEdit');
             $('#mattkarb-form').on('change', '.js-termekedit', function(e) {
                     setTermekAr($(this).data('id'));
                 })

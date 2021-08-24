@@ -46,6 +46,10 @@
 				<td><label for="VasarlasDatumEdit">{at('Vásárlás dátuma')}:</label></td>
                 <td><input id="VasarlasDatumEdit" name="vasarlasnapja" type="text" size="12" data-datum="{$egyed.vasarlasnapja}" class="mattable-important"></td>
 			</tr>
+            <tr>
+                <td><label for="LejaratDatumEdit">{at('Lejárat dátuma')}:</label></td>
+                <td><input id="LejaratDatumEdit" name="lejaratdatum" type="text" size="12" data-datum="{$egyed.lejaratdatum}" class="mattable-important"></td>
+            </tr>
 			<tr>
 				<td><label for="ElfogyottAlkalomEdit">{at('Elfogyott alkalom')}:</label></td>
 				<td><input id="ElfogyottAlkalomEdit" name="elfogyottalkalom" type="text" value="{$egyed.elfogyottalkalom}"></td>
