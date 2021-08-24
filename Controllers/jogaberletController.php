@@ -140,7 +140,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $f = $this->params->getStringRequestParam('utolsohasznalatfilter');
         if ($f) {
             $uhdatum = \mkw\store::convDate($f);
-            $filter->addSql('(SELECT COUNT(jr) FROM Entities\JogaReszvetel jr WHERE (_xx.id=jr.jogaberlet) AND (jr.datum>=\'' . $uhdatum . '\')) = 0');
+            $filter->addSql('(SELECT COUNT(jr) FROM Entities\JogaReszvetel jr WHERE (p.id=jr.partner) AND (jr.datum>=\'' . $uhdatum . '\')) = 0');
         }
         $this->initPager(
             $this->getRepo()->getCountWithJoins($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
