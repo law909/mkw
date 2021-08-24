@@ -120,6 +120,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['kulsos'] = $t->getKulsos();
         $x['mennyisegetlathat'] = $t->isMennyisegetlathat();
         $x['vatstatus'] = $t->getVatstatus();
+        $x['lastmodstr'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
+        $x['updatedby'] = $t->getUpdatedbyNev();
+        $x['createdby'] = $t->getCreatedbyNev();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {

@@ -35,6 +35,12 @@
                 {/if}
             </tbody>
         </table>
+        <table>
+            <tbody>
+            <tr><td>{at('Létrehozva')}:</td><td>{$_partner.createdby} {$_partner.createdstr}</td></tr>
+            <tr><td>{at('Módosítva')}:</td><td>{$_partner.updatedby} {$_partner.lastmodstr}</td></tr>
+            </tbody>
+        </table>
     </td>
     <td class="cell">{$_partner.orszagnev}<br />{$_partner.cim}<br />{if ($_partner.lcim!=='')}({at('Levélcím')}: {$_partner.lcim}){/if}</td>
     <td class="cell">
