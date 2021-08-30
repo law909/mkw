@@ -437,6 +437,15 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::DENCs);
         $dencs = new termekcimkekatController($this->params);
         $view->setVar('dencslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::EpitoelemszamCs);
+        $dencs = new termekcimkekatController($this->params);
+        $view->setVar('epitoelemszamcslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::CsomagoltmeretCs);
+        $dencs = new termekcimkekatController($this->params);
+        $view->setVar('csomagoltmeretcslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::AjanlottkorosztalyCs);
+        $dencs = new termekcimkekatController($this->params);
+        $view->setVar('ajanlottkorosztalycslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $partnercimkec = new partnercimkeController($this->params);
         $p = $repo->find(\mkw\consts::KiskerCimke);
@@ -617,6 +626,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartonetpressolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoGulf);
         $view->setVar('gyartogulflist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoQman);
+        $view->setVar('gyartoqmanlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -724,6 +735,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evonaxml')));
         $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
         $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'gulf')));
+        $view->setVar('stopqmanimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'qman')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
@@ -741,6 +753,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evonaxml')));
         $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
         $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'gulf')));
+        $view->setVar('repairqmanimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'qman')));
 
         $view->printTemplateResult();
     }
@@ -1247,6 +1260,27 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::DENCs, '');
         }
+        $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('epitoelemszamcs', 0));
+        if ($dencs) {
+            $this->setObj(\mkw\consts::EpitoelemszamCs, $dencs->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::EpitoelemszamCs, '');
+        }
+        $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('csomagoltmeretcs', 0));
+        if ($dencs) {
+            $this->setObj(\mkw\consts::CsomagoltmeretCs, $dencs->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::CsomagoltmeretCs, '');
+        }
+        $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('ajanlottkorosztalycs', 0));
+        if ($dencs) {
+            $this->setObj(\mkw\consts::AjanlottkorosztalyCs, $dencs->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::AjanlottkorosztalyCs, '');
+        }
 
         $kiskercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kiskercimke', 0));
         if ($kiskercimke) {
@@ -1564,6 +1598,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::GyartoGulf, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartoqman', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoQman, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoQman, '');
         }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));

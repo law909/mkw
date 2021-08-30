@@ -101,6 +101,7 @@
                 <a href="/admin/import/evonaxml" class="js-evonaxmlimport">Evona XML</a>
                 <a href="/admin/import/netpresso" class="js-netpressoimport">Netpresso</a>
                 <a href="/admin/import/gulf" class="js-gulfimport">Gulf árazás</a>
+                <a href="/admin/import/qman" class="js-qmanimport">Qman</a>
             </div>
     <div class="matt-hseparator"></div>
             <div>

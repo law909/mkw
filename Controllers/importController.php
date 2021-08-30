@@ -3,7 +3,9 @@
 namespace Controllers;
 
 use Entities\Termek;
+use Entities\TermekFa;
 use Entities\TermekValtozat;
+use Entities\Vtsz;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\DomCrawler\Crawler;
@@ -276,6 +278,9 @@ class importController extends \mkwhelpers\Controller {
             case 'gulf':
                 $imp = \mkw\consts::RunningGulfImport;
                 break;
+            case 'qman':
+                $imp = \mkw\consts::RunningQmanImport;
+                break;
             default:
                 $imp = false;
                 break;
@@ -335,6 +340,9 @@ class importController extends \mkwhelpers\Controller {
                 break;
             case 'gulf':
                 $imp = \mkw\consts::GyartoGulf;
+                break;
+            case 'qman':
+                $imp = \mkw\consts::GyartoQman;
                 break;
             default:
                 $imp = false;
@@ -5686,6 +5694,130 @@ class importController extends \mkwhelpers\Controller {
             \unlink($filenev);
 
             $this->setRunningImport(\mkw\consts::RunningGulfImport, 0);
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+
+    }
+
+    public function qmanImport() {
+
+        if (!$this->checkRunningImport(\mkw\consts::RunningQmanImport)) {
+            $this->setRunningImport(\mkw\consts::RunningQmanImport, 1);
+
+            $volthiba = false;
+
+            $parentid = $this->params->getIntRequestParam('katid', 0);
+            $parent = $this->getEm()->getRepository(TermekFa::class)->find($parentid);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoQman);
+            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+            $dbig = $this->params->getIntRequestParam('dbig', 0);
+            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+            $createuj = $this->params->getBoolRequestParam('createuj', false);
+
+            $epitoelemszamcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
+            $csomagoltmeretcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
+            $ajanlottkorosztalycs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
+            /** @var Vtsz $vtsz */
+            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+            $vtsz = $vtsz[0];
+            $afa = $vtsz->getAfa();
+
+            if ($dbtol < 2) {
+                $dbtol = 2;
+            }
+
+            $filenev = $_FILES['toimport']['name'];
+            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            //pathinfo
+
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
+            $reader->setReadDataOnly(true);
+            $excel = $reader->load($filenev);
+            $sheet = $excel->getActiveSheet();
+            $maxrow = $sheet->getHighestRow() * 1;
+            if (!$dbig) {
+                $dbig = $maxrow;
+            }
+
+            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+            $termekdb = 0;
+            for ($row = $dbtol; $row <= $dbig; ++$row) {
+                $cikkszam = $sheet->getCell('A' . $row)->getValue();
+                if ($cikkszam) {
+                    $termekdb++;
+
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+
+                    if (is_array($termek)) {
+                        $termek = $termek[0];
+                    }
+                    if (!$termek) {
+                        if ($createuj) {
+                            $t = new Termek();
+                            $t->setIdegencikkszam($cikkszam);
+                            $t->setCikkszam($cikkszam);
+                            $t->setGyarto($gyarto);
+                            $t->setVtsz($vtsz);
+                            $t->setTermekfa1($parent);
+                            $t->setNev(trim($sheet->getCell('B' . $row)->getValue()));
+                            $t->setRovidleiras(mb_substr(trim($sheet->getCell('C' . $row)->getValue()), 0, 100, 'UTF8') . '...');
+                            $t->setLeiras(trim($sheet->getCell('D' . $row)->getValue()));
+                            $t->setSuly($sheet->getCell('E' . $row)->getValue());
+                            $ar = $sheet->getCell('G' . $row)->getValue();
+                            $t->setBrutto(round($ar, -1));
+                            $tc = $this->createTermekCimke($epitoelemszamcs, $sheet->getCell('K' . $row)->getValue());
+                            if ($tc) {
+                                $t->addCimke($tc);
+                            }
+                            $adat = $sheet->getCell('M' . $row)->getValue();
+                            $adat = str_replace('\\', '', $adat);
+                            $tc = $this->createTermekCimke($csomagoltmeretcs, $adat);
+                            if ($tc) {
+                                $t->addCimke($tc);
+                            }
+                            $adat = $sheet->getCell('O' . $row)->getValue();
+                            $adat = str_replace('\\', '', $adat);
+                            $tc = $this->createTermekCimke($ajanlottkorosztalycs, $adat);
+                            if ($tc) {
+                                $t->addCimke($tc);
+                            }
+                            \mkw\store::getEm()->persist($t);
+                        }
+                    }
+                    else {
+                        $ar = $sheet->getCell('G' . $row)->getValue();
+                        if ($ar && !$termek->getAkcios()) {
+                            $termek->setBrutto(round($ar, -1));
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                        $epitoelemszamcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
+                        $csomagoltmeretcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
+                        $ajanlottkorosztalycs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $vtsz = $vtsz[0];
+                        $afa = $vtsz->getAfa();
+                        $parent = $this->getEm()->getRepository(TermekFa::class)->find($parentid);
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
+            $excel->disconnectWorksheets();
+            \unlink($filenev);
+
+            $this->setRunningImport(\mkw\consts::RunningQmanImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));

@@ -129,6 +129,9 @@ class consts {
 
     const MarkaCs = 'markacs';
     const DENCs = 'dencs';
+    const EpitoelemszamCs = 'epitoelemszamcs';
+    const CsomagoltmeretCs = 'csomagoltmeretcs';
+    const AjanlottkorosztalyCs = 'ajanlottkorosztalycs';
     const KuponElotag = 'kuponelotag';
     const VasarlasiUtalvanyTermek = 'vasarlasiutalvanytermek';
     const AdminRole = 'adminrole';
@@ -207,6 +210,7 @@ class consts {
     const GyartoEvonaXML = 'gyartoevonaxml';
     const GyartoNetpresso = 'gyartonetpresso';
     const GyartoGulf = 'gyartogulf';
+    const GyartoQman = 'gyartoqman';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -256,6 +260,7 @@ class consts {
     const RunningEvonaXMLImport = 'runningevonaxmlimport';
     const RunningNetpressoImport = 'runningnetpressoimport';
     const RunningGulfImport = 'runninggulfimport';
+    const RunningQmanImport = 'runningqmanimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';

@@ -1353,6 +1353,50 @@
                                 <a href="#" class="js-repairimport" data-href="{$repairgulfimporturl}">Javít</a>
                             </div>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="QManEdit">QMan:</label>
+                                <select id="QManEdit" name="gyartoqman">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartoqmanlist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <a href="#" class="js-stopimport" data-href="{$stopqmanimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairqmanimporturl}">Javít</a>
+                            </div>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="EpitoelemszamCsEdit">{at('Építőelemek száma csoport')}:</label></span>
+                            <select id="EpitoelemszamCsEdit" name="epitoelemszamcs">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $epitoelemszamcslist as $_dencs}
+                                    <option value="{$_dencs.id}"{if ($_dencs.selected)} selected="selected"{/if}>{$_dencs.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="CsomagoltmeretCsEdit">{at('Csomagolt méret csoport')}:</label></span>
+                            <select id="CsomagoltmeretCsEdit" name="csomagoltmeretcs">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $csomagoltmeretcslist as $_dencs}
+                                    <option value="{$_dencs.id}"{if ($_dencs.selected)} selected="selected"{/if}>{$_dencs.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="AjanlottkorosztalyCsEdit">{at('Ajánlott korosztály csoport')}:</label></span>
+                            <select id="AjanlottkorosztalyCsEdit" name="ajanlottkorosztalycs">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $ajanlottkorosztalycslist as $_dencs}
+                                    <option value="{$_dencs.id}"{if ($_dencs.selected)} selected="selected"{/if}>{$_dencs.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
 
                     </div>
                 {/if}
