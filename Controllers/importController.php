@@ -5767,6 +5767,7 @@ class importController extends \mkwhelpers\Controller {
                             $t->setGyarto($gyarto);
                             $t->setFuggoben(true);
                             $t->setHparany(1);
+                            $t->setMekod($this->getME('készlet'));
                             $t->setVtsz($vtsz);
                             $t->setTermekfa1($parent);
                             $t->setNev(trim($sheet->getCell('B' . $row)->getValue()));
