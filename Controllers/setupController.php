@@ -1125,13 +1125,22 @@ class setupController extends \mkwhelpers\Controller {
         if ($vut) {
             $this->setObj(\mkw\consts::JogaOrajegyTermek, $vut->getId());
         }
+        else {
+            $this->setObj(\mkw\consts::JogaOrajegyTermek, null);
+        }
         $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet4termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet4Termek, $vut->getId());
         }
+        else {
+            $this->setObj(\mkw\consts::JogaBerlet4Termek, null);
+        }
         $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet10termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::JogaBerlet10Termek, null);
         }
 
         // alapertelmezes
