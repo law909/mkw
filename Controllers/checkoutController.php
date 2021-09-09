@@ -152,6 +152,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
                 $szl['novelo'] = $x->getOsszeg();
             }
+            $szl['biztonsagikerdeskell'] = $szl['bankkartyas'];
 		    $adat[] = $szl;
         }
 		$view->setVar('fizmodlist', $adat);

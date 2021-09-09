@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Fizmod;
+
 class fizmodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -218,6 +220,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $res = array();
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = \mkw\store::getTheme() !== 'mkwcansas';
+        /** @var Fizmod $sor */
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),
@@ -228,7 +231,8 @@ class fizmodController extends \mkwhelpers\MattableController {
                 'szepkartya' => $sor->getId() == $szepfm,
                 'sportkartya' => $sor->getId() == $sportfm,
                 'aycm' => $sor->getId() == $aycmfm,
-                'nincspenzmozgas' => $sor->getNincspenzmozgas()
+                'nincspenzmozgas' => $sor->getNincspenzmozgas(),
+                'bankkartyas' => $sor->getNavtipus() == 'CARD'
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

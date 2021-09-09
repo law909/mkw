@@ -60,6 +60,13 @@ var mkw = (function($) {
                     }
                 }]
         };
+        // Merge the users options with our defaults
+        for ( var i in options) {
+            if (options.hasOwnProperty(i)) {
+                opts[i] = options[i];
+            }
+        }
+
         if (opts.header) {
             dlgheader.append('<h4>' + opts.header + '</h4>');
         }
@@ -67,12 +74,12 @@ var mkw = (function($) {
             dlgbody.append('<p>' + msg + '</p>');
         }
         for (var i = 0; i < opts.buttons.length; i++) {
-            if (opts.buttons[i]._class) {
-                classes = classes + ' ' + opts.buttons[i]._class;
-            }
-            $('<button class="' + classes + '">' + opts.buttons[i].caption + '</button>')
+            $('<button class="' + opts.buttons[i]._class + '">' + opts.buttons[i].caption + '</button>')
                     .appendTo(dlgfooter)
                     .on('click', opts.buttons[i].click);
+        }
+        for (var i = 0; i < opts.events.length; i++) {
+            dlgcenter.on(opts.events[i].name, opts.events[i].fn);
         }
         return dlgcenter.modal();
     }
@@ -768,6 +775,51 @@ var checkout = (function($, guid) {
         });
     }
 
+    function updateSubmitButton() {
+        var fizmodi = $('input[name="fizetesimod"]:checked');
+        if (fizmodi && fizmodi.data('biztonsagikerdeskell')) {
+            $('.js-chksendorderbtn').attr('type', 'button');
+            $('.js-chksendorderbtn').click(function(e) {
+                e.preventDefault();
+                if (checkSubmitData(e)) {
+                    mkw.showDialog('Önt most átirányítjuk a Barionhoz az online kártyás fizetéshez.', {
+                        buttons: [
+                            {
+                                caption: 'Fizetek a bankkártyámmal',
+                                _class: 'cartbtn margin-right-5',
+                                click: function (e) {
+                                    e.preventDefault();
+                                    mkw.closeDialog();
+                                    checkoutform.submit();
+                                }
+                            },
+                            {
+                                caption: 'Másik fizetési módot választok',
+                                _class: 'okbtn margin-right-5',
+                                click: function (e) {
+                                    e.preventDefault();
+                                    mkw.closeDialog();
+                                }
+                            }
+                        ],
+                        events: [
+                            {
+                                name: 'hide.bs.modal',
+                                fn: function(e) {
+                                    $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+        }
+        else {
+            $('.js-chksendorderbtn').attr('type', 'submit');
+            $('.js-chksendorderbtn').unbind('click');
+        }
+    }
+
 	function refreshAttekintes() {
         var $szallmodchk = $('input[name="szallitasimod"]:checked');
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
@@ -810,6 +862,8 @@ var checkout = (function($, guid) {
 		$('.js-chkfizetesimod').text($('input[name="fizetesimod"]:checked').data('caption'));
 		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
 		$('.js-chkcouriermessage').text(couriermessageinput.val());
+
+		updateSubmitButton();
 	}
 
 	function openDataContainer(obj) {
@@ -827,7 +881,215 @@ var checkout = (function($, guid) {
         return re.test(email);
     }
 
-	function initUI() {
+    function checkSubmitData(e) {
+        var hibas = false, tofocus = false, hibauzenet;
+
+        $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
+        hibauzenet = mkwmsg.ChkHiba;
+
+        if (!$('input[name="szallitasimod"]:checked').val()) {
+            tofocus = $('input[name="szallitasimod"]');
+            hibas = true;
+            hibauzenet = mkwmsg.ChkSzallmodHiba;
+        }
+        if (!vezeteknevinput.val()) {
+            vezeteknevinput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(vezeteknevinput);
+                tofocus = vezeteknevinput;
+            }
+            hibas = true;
+        }
+        else {
+            vezeteknevinput.removeClass('hibas');
+        }
+
+        if (!keresztnevinput.val()) {
+            keresztnevinput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(keresztnevinput);
+                tofocus = keresztnevinput;
+            }
+            hibas = true;
+        }
+        else {
+            keresztnevinput.removeClass('hibas');
+        }
+
+        var telkorzetsel = $('option:checked', telkorzetinput);
+
+        telkorzetinput.removeClass('hibas');
+        if (!telkorzetsel.val()) {
+            telkorzetinput.addClass('hibas');
+            if (!hibas) {
+                tofocus = telkorzetinput;
+            }
+            hibas = true;
+        }
+
+        telszaminput.removeClass('hibas');
+        if (telkorzetsel.val()) {
+            if (telszaminput[0].value.length !== telkorzetsel.data('hossz')) {
+                telszaminput.addClass('hibas');
+                if (!hibas) {
+                    tofocus = telszaminput;
+                }
+                hibas = true;
+            }
+        }
+
+        if (!kapcsemailinput.val() || !checkEmail(kapcsemailinput.val())) {
+            kapcsemailinput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(kapcsemailinput);
+                tofocus = kapcsemailinput;
+            }
+            hibas = true;
+        }
+        else {
+            kapcsemailinput.removeClass('hibas');
+        }
+
+        var jelszo1input = $('input[name="jelszo1"]'),
+            jelszo2input = $('input[name="jelszo2"]');
+        if (jelszo1input.length && jelszo2input.length) {
+            if ((!jelszo1input.val() || !jelszo2input.val()) || (jelszo1input.val() != jelszo2input.val())) {
+                jelszo1input.addClass('hibas');
+                jelszo2input.addClass('hibas');
+                if (!hibas) {
+                    openDataContainer(jelszo1input);
+                    tofocus = jelszo1input;
+                }
+                hibas = true;
+            }
+            else {
+                jelszo1input.removeClass('hibas');
+                jelszo2input.removeClass('hibas');
+            }
+        }
+
+        if (!szallnevinput.val()) {
+            szallnevinput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(szallnevinput);
+                tofocus = szallnevinput;
+            }
+            hibas = true;
+        }
+        else {
+            szallnevinput.removeClass('hibas');
+        }
+
+        if (!szallirszaminput.val()) {
+            szallirszaminput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(szallirszaminput);
+                tofocus = szallirszaminput;
+            }
+            hibas = true;
+        }
+        else {
+            szallirszaminput.removeClass('hibas');
+        }
+
+        if (!szallvarosinput.val()) {
+            szallvarosinput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(szallvarosinput);
+                tofocus = szallvarosinput;
+            }
+            hibas = true;
+        }
+        else {
+            szallvarosinput.removeClass('hibas');
+        }
+
+        if (!szallutcainput.val()) {
+            szallutcainput.addClass('hibas');
+            if (!hibas) {
+                openDataContainer(szallutcainput);
+                tofocus = szallutcainput;
+            }
+            hibas = true;
+        }
+        else {
+            szallutcainput.removeClass('hibas');
+        }
+
+        if (!szamlaeqszall.prop('checked')) {
+            if (!szamlanevinput.val()) {
+                szamlanevinput.addClass('hibas');
+                if (!hibas) {
+                    openDataContainer(szamlanevinput);
+                    tofocus = szamlanevinput;
+                }
+                hibas = true;
+            }
+            else {
+                szamlanevinput.removeClass('hibas');
+            }
+
+            if (!szamlairszaminput.val()) {
+                szamlairszaminput.addClass('hibas');
+                if (!hibas) {
+                    openDataContainer(szamlairszaminput);
+                    tofocus = szamlairszaminput;
+                }
+                hibas = true;
+            }
+            else {
+                szamlairszaminput.removeClass('hibas');
+            }
+
+            if (!szamlavarosinput.val()) {
+                szamlavarosinput.addClass('hibas');
+                if (!hibas) {
+                    openDataContainer(szamlavarosinput);
+                    tofocus = szamlavarosinput;
+                }
+                hibas = true;
+            }
+            else {
+                szamlavarosinput.removeClass('hibas');
+            }
+
+            if (!szamlautcainput.val()) {
+                szamlautcainput.addClass('hibas');
+                if (!hibas) {
+                    openDataContainer(szamlautcainput);
+                    tofocus = szamlautcainput;
+                }
+                hibas = true;
+            }
+            else {
+                szamlautcainput.removeClass('hibas');
+            }
+        }
+
+        if (hibas) {
+            $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
+            $('#dialogcenter').on('hidden', function() {
+                $('#dialogcenter').off('hidden');
+                if (tofocus) {
+                    tofocus.focus();
+                }
+            });
+            mkw.showDialog(hibauzenet);
+            e.preventDefault();
+            return false;
+        }
+        else {
+            if (!$('input[name="aszfready"]').prop('checked')) {
+                $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
+                e.preventDefault();
+                mkw.showDialog(mkwmsg.ChkASZF);
+                return false;
+            }
+            return true;
+        }
+    }
+
+    function initUI() {
 		var $checkout = $('.js-checkout');
 
 		if ($checkout.length) {
@@ -872,11 +1134,11 @@ var checkout = (function($, guid) {
             .on('change', 'select[name="glscsoport"]', function() {
                 loadGLSTerminalData();
             })
-			.on('change', 'input[name="szallitasimod"]', function() {
+			.on('change', 'input[name="szallitasimod"]', function(e) {
 				loadFizmodList();
                 loadCsomagterminalData(true);
 			})
-            .on('change', 'input[name="fizetesimod"]', function() {
+            .on('change', 'input[name="fizetesimod"]', function(e) {
                 loadTetelList();
             })
             .on('blur', 'input[name="kupon"]', function() {
@@ -953,215 +1215,11 @@ var checkout = (function($, guid) {
             });
 
             checkoutform.on('submit', function(e) {
-                var hibas = false, tofocus = false, hibauzenet;
-
-                hibauzenet = mkwmsg.ChkHiba;
-
-                $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
-
-                if (!$('input[name="szallitasimod"]:checked').val()) {
-                    tofocus = $('input[name="szallitasimod"]');
-                    hibas = true;
-                    hibauzenet = mkwmsg.ChkSzallmodHiba;
+                var x = checkSubmitData(e);
+                if (x) {
+                    mkw.showMessage(mkwmsg.ChkSave);
                 }
-                if (!vezeteknevinput.val()) {
-                    vezeteknevinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(vezeteknevinput);
-                        tofocus = vezeteknevinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    vezeteknevinput.removeClass('hibas');
-                }
-
-                if (!keresztnevinput.val()) {
-                    keresztnevinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(keresztnevinput);
-                        tofocus = keresztnevinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    keresztnevinput.removeClass('hibas');
-                }
-
-                var telkorzetsel = $('option:checked', telkorzetinput);
-
-                telkorzetinput.removeClass('hibas');
-                if (!telkorzetsel.val()) {
-                    telkorzetinput.addClass('hibas');
-                    if (!hibas) {
-                        tofocus = telkorzetinput;
-                    }
-                    hibas = true;
-                }
-
-                telszaminput.removeClass('hibas');
-                if (telkorzetsel.val()) {
-                    if (telszaminput[0].value.length !== telkorzetsel.data('hossz')) {
-                        telszaminput.addClass('hibas');
-                        if (!hibas) {
-                            tofocus = telszaminput;
-                        }
-                        hibas = true;
-                    }
-                }
-
-                if (!kapcsemailinput.val() || !checkEmail(kapcsemailinput.val())) {
-                    kapcsemailinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(kapcsemailinput);
-                        tofocus = kapcsemailinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    kapcsemailinput.removeClass('hibas');
-                }
-
-                var jelszo1input = $('input[name="jelszo1"]'),
-                    jelszo2input = $('input[name="jelszo2"]');
-                if (jelszo1input.length && jelszo2input.length) {
-                    if ((!jelszo1input.val() || !jelszo2input.val()) || (jelszo1input.val() != jelszo2input.val())) {
-                        jelszo1input.addClass('hibas');
-                        jelszo2input.addClass('hibas');
-                        if (!hibas) {
-                            openDataContainer(jelszo1input);
-                            tofocus = jelszo1input;
-                        }
-                        hibas = true;
-                    }
-                    else {
-                        jelszo1input.removeClass('hibas');
-                        jelszo2input.removeClass('hibas');
-                    }
-                }
-
-                if (!szallnevinput.val()) {
-                    szallnevinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szallnevinput);
-                        tofocus = szallnevinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szallnevinput.removeClass('hibas');
-                }
-
-                if (!szallirszaminput.val()) {
-                    szallirszaminput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szallirszaminput);
-                        tofocus = szallirszaminput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szallirszaminput.removeClass('hibas');
-                }
-
-                if (!szallvarosinput.val()) {
-                    szallvarosinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szallvarosinput);
-                        tofocus = szallvarosinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szallvarosinput.removeClass('hibas');
-                }
-
-                if (!szallutcainput.val()) {
-                    szallutcainput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szallutcainput);
-                        tofocus = szallutcainput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szallutcainput.removeClass('hibas');
-                }
-
-                if (!szamlaeqszall.prop('checked')) {
-                    if (!szamlanevinput.val()) {
-                        szamlanevinput.addClass('hibas');
-                        if (!hibas) {
-                            openDataContainer(szamlanevinput);
-                            tofocus = szamlanevinput;
-                        }
-                        hibas = true;
-                    }
-                    else {
-                        szamlanevinput.removeClass('hibas');
-                    }
-
-                    if (!szamlairszaminput.val()) {
-                        szamlairszaminput.addClass('hibas');
-                        if (!hibas) {
-                            openDataContainer(szamlairszaminput);
-                            tofocus = szamlairszaminput;
-                        }
-                        hibas = true;
-                    }
-                    else {
-                        szamlairszaminput.removeClass('hibas');
-                    }
-
-                    if (!szamlavarosinput.val()) {
-                        szamlavarosinput.addClass('hibas');
-                        if (!hibas) {
-                            openDataContainer(szamlavarosinput);
-                            tofocus = szamlavarosinput;
-                        }
-                        hibas = true;
-                    }
-                    else {
-                        szamlavarosinput.removeClass('hibas');
-                    }
-
-                    if (!szamlautcainput.val()) {
-                        szamlautcainput.addClass('hibas');
-                        if (!hibas) {
-                            openDataContainer(szamlautcainput);
-                            tofocus = szamlautcainput;
-                        }
-                        hibas = true;
-                    }
-                    else {
-                        szamlautcainput.removeClass('hibas');
-                    }
-                }
-
-                if (hibas) {
-                    $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
-                    $('#dialogcenter').on('hidden', function() {
-                        $('#dialogcenter').off('hidden');
-                        if (tofocus) {
-                            tofocus.focus();
-                        }
-                    });
-                    mkw.showDialog(hibauzenet);
-                    e.preventDefault();
-                    return false;
-                }
-                else {
-                    if (!$('input[name="aszfready"]').prop('checked')) {
-                        $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
-                        e.preventDefault();
-                        mkw.showDialog(mkwmsg.ChkASZF);
-                        return false;
-                    }
-                    else {
-                        mkw.showMessage(mkwmsg.ChkSave);
-                        return true;
-                    }
-                }
+                return x;
             });
 		}
 	}

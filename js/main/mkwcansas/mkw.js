@@ -39,6 +39,13 @@ var mkw = (function($) {
                     }
                 }]
         };
+        // Merge the users options with our defaults
+        for ( var i in options) {
+            if (options.hasOwnProperty(i)) {
+                opts[i] = options[i];
+            }
+        }
+
         if (opts.header) {
             dlgheader.append('<h4>' + opts.header + '</h4>');
         }
@@ -46,12 +53,12 @@ var mkw = (function($) {
             dlgbody.append('<p>' + msg + '</p>');
         }
         for (var i = 0; i < opts.buttons.length; i++) {
-            if (opts.buttons[i]._class) {
-                classes = classes + ' ' + opts.buttons[i]._class;
-            }
-            $('<button class="' + classes + '">' + opts.buttons[i].caption + '</button>')
+            $('<button class="' + opts.buttons[i]._class + '">' + opts.buttons[i].caption + '</button>')
                     .appendTo(dlgfooter)
                     .on('click', opts.buttons[i].click);
+        }
+        for (var i = 0; i < opts.events.length; i++) {
+            dlgcenter.on(opts.events[i].name, opts.events[i].fn);
         }
         return dlgcenter.modal();
     }

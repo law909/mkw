@@ -886,6 +886,7 @@ span.aktualislap {
 .chk-helpcontainer {
   margin-top: 20px;
 }
+input[type="button"].chk-sendorderbtn,
 input[type="submit"].chk-sendorderbtn {
   width: 100%;
 }
@@ -1060,6 +1061,9 @@ h5.termeklista {
 }
 .nomargin {
   margin-left: 0 !important;
+}
+.margin-right-5 {
+  margin-right: 5px;
 }
 .fogyaszto-barat {
   margin-left: auto;
