@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Partner;
 use Entities\Termek;
+use Entities\Termekcimkekat;
 use Entities\TermekFa;
 use Entities\TermekValtozat;
 use Entities\Vtsz;
@@ -5717,11 +5719,12 @@ class importController extends \mkwhelpers\Controller {
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
             $createuj = $this->params->getBoolRequestParam('createuj', false);
 
-            $epitoelemszamcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
-            $csomagoltmeretcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
-            $ajanlottkorosztalycs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
+            $epitoelemszamcs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
+            $csomagoltmeretcs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
+            $ajanlottkorosztalycs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
+            $markacs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
             /** @var Vtsz $vtsz */
-            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+            $vtsz = \mkw\store::getEm()->getRepository(Vtsz::class)->findBySzam('-');
             $vtsz = $vtsz[0];
             $afa = $vtsz->getAfa();
 
@@ -5743,7 +5746,7 @@ class importController extends \mkwhelpers\Controller {
                 $dbig = $maxrow;
             }
 
-            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $gyarto = \mkw\store::getEm()->getRepository(Partner::class)->find($gyartoid);
 
             $termekdb = 0;
             for ($row = $dbtol; $row <= $dbig; ++$row) {
@@ -5751,7 +5754,7 @@ class importController extends \mkwhelpers\Controller {
                 if ($cikkszam) {
                     $termekdb++;
 
-                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                    $termek = \mkw\store::getEm()->getRepository(Termek::class)->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                     if (is_array($termek)) {
                         $termek = $termek[0];
@@ -5762,14 +5765,20 @@ class importController extends \mkwhelpers\Controller {
                             $t->setIdegencikkszam($cikkszam);
                             $t->setCikkszam($cikkszam);
                             $t->setGyarto($gyarto);
+                            $t->setFuggoben(true);
+                            $t->setHparany(1);
                             $t->setVtsz($vtsz);
                             $t->setTermekfa1($parent);
                             $t->setNev(trim($sheet->getCell('B' . $row)->getValue()));
                             $t->setRovidleiras(mb_substr(trim($sheet->getCell('C' . $row)->getValue()), 0, 100, 'UTF8') . '...');
-                            $t->setLeiras(trim($sheet->getCell('D' . $row)->getValue()));
+                            $t->setLeiras(trim($sheet->getCell('C' . $row)->getValue()) . ' ' . trim($sheet->getCell('D' . $row)->getValue()));
                             $t->setSuly($sheet->getCell('E' . $row)->getValue());
                             $ar = $sheet->getCell('G' . $row)->getValue();
                             $t->setBrutto(round($ar, -1));
+                            $cimke = $this->createTermekCimke($markacs, 'Qman');
+                            if ($cimke) {
+                                $t->addCimke($cimke);
+                            }
                             $tc = $this->createTermekCimke($epitoelemszamcs, $sheet->getCell('K' . $row)->getValue());
                             if ($tc) {
                                 $t->addCimke($tc);
@@ -5800,11 +5809,12 @@ class importController extends \mkwhelpers\Controller {
                     if (($termekdb % $batchsize) === 0) {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
-                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                        $epitoelemszamcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
-                        $csomagoltmeretcs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
-                        $ajanlottkorosztalycs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
-                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository(Partner::class)->find($gyartoid);
+                        $epitoelemszamcs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::EpitoelemszamCs));
+                        $csomagoltmeretcs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::CsomagoltmeretCs));
+                        $ajanlottkorosztalycs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::AjanlottkorosztalyCs));
+                        $markacs = $this->getRepo(Termekcimkekat::class)->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+                        $vtsz = \mkw\store::getEm()->getRepository(Vtsz::class)->findBySzam('-');
                         $vtsz = $vtsz[0];
                         $afa = $vtsz->getAfa();
                         $parent = $this->getEm()->getRepository(TermekFa::class)->find($parentid);
