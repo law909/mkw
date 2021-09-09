@@ -43,21 +43,27 @@
                     </div>
                 </div>
                 <div class="row">
+                    {if ($resztvevo.type1price > 0)}
                     <div class="col">
                         <button class="btn btn-darshan js-buy" data-type="1" data-id="{$resztvevo.id}" data-price="{$resztvevo.type1price}">
                             Órajegy
                         </button>
                     </div>
+                    {/if}
+                    {if ($resztvevo.type2price > 0)}
                     <div class="col">
                         <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}" data-price="{$resztvevo.type2price}">
                             5-ös bérlet
                         </button>
                     </div>
+                    {/if}
+                    {if ($resztvevo.type3price > 0)}
                     <div class="col">
                         <button class="btn btn-darshan js-buy" data-type="3" data-id="{$resztvevo.id}" data-price="{$resztvevo.type3price}">
                             10-es bérlet
                         </button>
                     </div>
+                    {/if}
                 </div>
             </div>
             <div class="col-md-1">
