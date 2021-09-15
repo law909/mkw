@@ -7,7 +7,15 @@ $(document).ready(function () {
     }
 
     function calcOsszesen() {
+        var osszeg = 0;
+        $('input[name^="tetelosszeg_"]').each(function() {
+            var $this = $(this),
+                tetelid = $this.attr('name').split('_')[1];
+                tetelertek = $('input[name="tetelirany_' + tetelid + '"]:checked').val() * 1 * $this.val();
+            osszeg = osszeg + tetelertek;
+        });
 
+        $('.js-osszegsum').text(accounting.formatNumber(tools.round(osszeg, -2), 2, ' '));
     }
 
     var bankbizonylat = {
@@ -30,6 +38,12 @@ $(document).ready(function () {
             });
 
             $('#AltalanosTab')
+                .on('change', '.js-osszegedit', function(e) {
+                    calcOsszesen();
+                })
+                .on('change', '.js-iranyedit', function(e) {
+                    calcOsszesen();
+                })
                 .on('click', '.js-tetelnewbutton', function(e) {
                     var $this = $(this);
                     e.preventDefault();

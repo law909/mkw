@@ -30,8 +30,8 @@
             <tr>
                 <td><label>{at('Irány')}:</label></td>
                 <td>
-                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="1"{if ($tetel.irany >= 0)} checked="checked"{/if}>Be
-                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="-1"{if ($tetel.irany < 0)} checked="checked"{/if}>Ki
+                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" class="js-iranyedit" value="1"{if ($tetel.irany >= 0)} checked="checked"{/if}>Be
+                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" class="js-iranyedit" value="-1"{if ($tetel.irany < 0)} checked="checked"{/if}>Ki
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
             </tr>
             <tr>
                 <td><label for="OsszegEdit{$tetel.id}">{at('Összeg')}:</label></td>
-                <td><input id="OsszegEdit{$tetel.id}" name="tetelosszeg_{$tetel.id}" type="number" required="required" step="any" value="{$tetel.brutto}"></td>
+                <td><input id="OsszegEdit{$tetel.id}" name="tetelosszeg_{$tetel.id}" class="js-osszegedit" type="number" required="required" step="any" value="{$tetel.brutto}"></td>
             </tr>
         </tbody>
     </table>
