@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    function isPartnerAutocomplete() {
+        return $('#mattkarb-header').data('partnerautocomplete') == '1';
+    }
+
     function valutanemChange(firstrun) {
         if (!firstrun || $('input[name="oper"]').val()==='add') {
             $('#BankszamlaEdit').val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
@@ -16,6 +20,28 @@ $(document).ready(function () {
         });
 
         $('.js-osszegsum').text(accounting.formatNumber(tools.round(osszeg, -2), 2, ' '));
+    }
+
+    function partnerAutocompleteRenderer(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.value + '</a>')
+            .appendTo( ul );
+    }
+
+    function partnerAutocompleteConfig() {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylatfej/getpartnerlist',
+            select: function(event, ui) {
+                var partner = ui.item,
+                    pi = $('input[name="tetelpartner_' + $(this).data('tetelid') + '"]');
+                if (partner) {
+                    pi.val(partner.id);
+                    pi.change();
+                }
+            }
+        };
     }
 
     var bankbizonylat = {
@@ -36,6 +62,9 @@ $(document).ready(function () {
             $('input[name^="teteldatum_"]').each(function() {
                 mkwcomp.datumEdit.init($(this));
             });
+
+            $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
+                .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
 
             $('#AltalanosTab')
                 .on('change', '.js-osszegedit', function(e) {
@@ -58,6 +87,9 @@ $(document).ready(function () {
 
                             $('.js-bizonylatosszesito').before(d.html);
                             mkwcomp.datumEdit.init('#DatumEdit' + d.id);
+
+                            $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
+                                .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
 
                             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                             $this.remove();
@@ -149,6 +181,9 @@ $(document).ready(function () {
                         }
                     });
                 });
+
+            calcOsszesen();
+
             dialogcenter.on('click', 'tr', function(e) {
                 e.preventDefault();
                 $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');

@@ -18,14 +18,29 @@
             </tr>
             <tr>
                 <td class="mattable-important"><label for="PartnerEdit{$tetel.id}">{at('Partner')}:</label></td>
+                {if ($setup.partnerautocomplete)}
+                <td colspan="7">
+                    <input id="PartnerEdit{$tetel.id}" type="text" name="partnerautocomlete_{$tetel.id}" class="js-partnerautocomplete mattable-important"
+                           value="{$tetel.partnernev}"
+                           size=90 autofocus
+                           data-tetelid="{$tetel.id}"
+                           {if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}
+                    >
+                    <input class="js-partnerid" name="tetelpartner_{$tetel.id}" type="hidden" value="{$tetel.partner}">
+                </td>
+                {else}
                 <td>
-                    <select id="PartnerEdit{$tetel.id}" name="tetelpartner_{$tetel.id}" class="mattable-important" required="required" autofocus{if ($tetel.partnerafa)} data-afa="{$tetel.partnerafa}" data-afakulcs="{$tetel.partnerafakulcs}"{/if}>
+                    <select id="PartnerEdit{$tetel.id}" name="tetelpartner_{$tetel.id}" class="mattable-important" required="required"
+                            autofocus
+                            {if ($tetel.partnerafa)} data-afa="{$tetel.partnerafa}" data-afakulcs="{$tetel.partnerafakulcs}"{/if}
+                    >
                         <option value="">{at('válasszon')}</option>
                         {foreach $tetel.partnerlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                         {/foreach}
                     </select>
                 </td>
+                {/if}
             </tr>
             <tr>
                 <td><label>{at('Irány')}:</label></td>

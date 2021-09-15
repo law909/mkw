@@ -1,4 +1,4 @@
-<div id="mattkarb-header">
+<div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
 	<h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
