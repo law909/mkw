@@ -11,7 +11,7 @@ use mkw\store;
  * @ORM\Table(name="dokumentumtar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @ORM\DiscriminatorMap({"rendezveny"="RendezvenyDok", "partner"="PartnerDok", "termek"="TermekDok"})
+ * @ORM\DiscriminatorMap({"rendezveny"="RendezvenyDok", "partner"="PartnerDok", "termek"="TermekDok", "bizonylat"="BizonylatDok"})
  */
 abstract class Dokumentumtar {
     /**

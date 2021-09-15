@@ -137,7 +137,7 @@ $(document).ready(function () {
                     var $this = $(this);
                     e.preventDefault();
                     $.ajax({
-                        url: '/admin/rendezvenydok/getemptyrow',
+                        url: '/admin/termekdok/getemptyrow',
                         type: 'GET',
                         success: function (data) {
                             doktab.append(data);
@@ -156,7 +156,7 @@ $(document).ready(function () {
                         buttons: {
                             'Igen': function () {
                                 $.ajax({
-                                    url: '/admin/rendezvenydok/del',
+                                    url: '/admin/termekdok/del',
                                     type: 'POST',
                                     data: {
                                         id: $this.attr('data-id')

@@ -364,6 +364,9 @@ $router->map('POST', '/admin/kolcsonzesfej/ront', 'kolcsonzesfejController#ront'
 $router->map('POST', '/admin/kolcsonzesfej/fejexport', 'kolcsonzesfejController#fejexport', 'adminkolcsonzesfejfejexport');
 $router->map('POST', '/admin/kolcsonzesfej/tetelexport', 'kolcsonzesfejController#tetelexport', 'adminkolcsonzesfejtetelexport');
 
+$router->map('GET', '/admin/bizonylatdok/getemptyrow', 'bizonylatdokController#getemptyrow', 'adminbizonylatdokgetemptyrow');
+$router->map('POST', '/admin/bizonylatdok/del', 'bizonylatdokController#del', 'adminbizonylatdokdel');
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');

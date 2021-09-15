@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Emailtemplate;
@@ -311,7 +312,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
     protected function loadVars($t, $forKarb = false, $oper = false) {
         $tetelCtrl = new bizonylattetelController($this->params);
+        $dokCtrl = new termekdokController($this->params);
         $tetel = array();
+        $dok = array();
         $x = array();
         if (!$t) {
             $t = new \Entities\Bizonylatfej();
@@ -463,6 +466,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId(), $t->getFizmodId(), $t->getSzallitasimodId());
         if ($forKarb) {
+            foreach ($t->getBizonylatDokok() as $kepje) {
+                $dok[] = $dokCtrl->loadVars($kepje);
+            }
+            $x['dokok'] = $dok;
+
             if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 $x['partnerafa'] = $afa->getId();
@@ -707,6 +715,31 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $obj->setKellszallitasikoltsegetszamolni($this->params->getBoolRequestParam('szallitasiktgkell'));
         $obj->setSzallitasikoltsegbrutto(0);
+
+        $dokids = $this->params->getArrayRequestParam('dokid');
+        foreach ($dokids as $dokid) {
+            if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
+                ($this->params->getStringRequestParam('dokpath_' . $dokid, '') !== '')) {
+                $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+                if ($dokoper === 'add') {
+                    $dok = new \Entities\BizonylatDok();
+                    $obj->addBizonylatDok($dok);
+                    $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                    $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                    $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                    $this->getEm()->persist($dok);
+                }
+                elseif ($dokoper === 'edit') {
+                    $dok = \mkw\store::getEm()->getRepository(BizonylatDok::class)->find($dokid);
+                    if ($dok) {
+                        $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                        $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                        $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                        $this->getEm()->persist($dok);
+                    }
+                }
+            }
+        }
 
         switch ($parancs) {
             case $this->inheritOperation:

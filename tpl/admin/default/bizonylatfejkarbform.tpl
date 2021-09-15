@@ -8,6 +8,7 @@
 	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
@@ -404,6 +405,12 @@
                 </tbody>
             </table>
 		</div>
+        <div id="DokTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.dokok as $dok}
+                {include 'dokumentumtarkarb.tpl'}
+            {/foreach}
+            <a class="js-doknewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+        </div>
 	</div>
     <input name="quick" type="hidden" value="{$quick}">
 	<input name="oper" type="hidden" value="{$oper}">

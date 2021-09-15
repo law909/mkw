@@ -630,6 +630,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $forditottadozas = false;
 
+    /** @ORM\OneToMany(targetEntity="BizonylatDok", mappedBy="bizonylat", cascade={"persist", "remove"}) */
+    private $bizonylatdokok;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -781,6 +784,7 @@ class Bizonylatfej {
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bizonylatdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setPersistentData();
     }
 
@@ -4683,6 +4687,23 @@ class Bizonylatfej {
      */
     public function setPartnervatstatus($partnervatstatus): void {
         $this->partnervatstatus = $partnervatstatus;
+    }
+
+    public function getBizonylatDokok() {
+        return $this->bizonylatdokok;
+    }
+
+    public function addBizonylatDok(BizonylatDok $dok) {
+        $this->bizonylatdokok->add($dok);
+        $dok->setBizonylat($this);
+    }
+
+    public function removeBizonylatDok(BizonylatDok $dok) {
+        if ($this->bizonylatdokok->removeElement($dok)) {
+            $dok->removeBizonylat($this);
+            return true;
+        }
+        return false;
     }
 
 }
