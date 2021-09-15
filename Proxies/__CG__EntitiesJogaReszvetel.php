@@ -66,10 +66,10 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'id', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'created', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tanar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'penztar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jutalek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'uresterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaberlet', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tisztaznikell'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'id', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'created', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tanar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'penztar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jutalek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'uresterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaberlet', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tisztaznikell', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'online'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'id', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'created', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tanar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'penztar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jutalek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'uresterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaberlet', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tisztaznikell'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'id', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'created', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tanar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'penztar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jutalek', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'uresterem', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'jogaberlet', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'tisztaznikell', '' . "\0" . 'Entities\\JogaReszvetel' . "\0" . 'online'];
     }
 
     /**
@@ -981,6 +981,28 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTisztaznikell', [$tisztaznikell]);
 
         return parent::setTisztaznikell($tisztaznikell);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOnline()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOnline', []);
+
+        return parent::getOnline();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOnline($online): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOnline', [$online]);
+
+        parent::setOnline($online);
     }
 
 }
