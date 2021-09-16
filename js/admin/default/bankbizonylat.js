@@ -76,6 +76,7 @@ $(document).ready(function () {
                 .on('click', '.js-tetelnewbutton', function(e) {
                     var $this = $(this);
                     e.preventDefault();
+                    calcOsszesen();
                     $.ajax({
                         url: '/admin/bankbizonylattetel/getemptyrow',
                         data: {
@@ -179,6 +180,7 @@ $(document).ready(function () {
                                         $('input[name="tetelhivatkozottbizonylat_' + tid + '"]').val(sor.data('bizszam'));
                                         $('input[name="tetelhivatkozottdatum_' + tid + '"]').val(sor.data('datum'));
                                         $('input[name="tetelosszeg_' + tid + '"]').val(sor.data('egyenleg'));
+                                        calcOsszesen();
                                         $(this).dialog('close');
                                     },
                                     'Bezár': function() {
