@@ -148,13 +148,21 @@ $(document).ready(function () {
                 .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
                     e.preventDefault();
                     var $this = $(this),
-                        tid = $this.data('id');
+                        tid = $this.data('id'),
+                        partner;
+
+                    if (isPartnerAutocomplete()) {
+                        partner = $('input[name="tetelpartner_' + tid + '"]').val();
+                    }
+                    else {
+                        partner = $('select[name="tetelpartner_' + tid + '"]').val();
+                    }
 
                     $.ajax({
                         type: 'POST',
                         url: '/admin/partner/getkiegyenlitetlenbiz',
                         data: {
-                            partner: $('select[name="tetelpartner_' + tid + '"]').val(),
+                            partner: partner,
                             irany: $('input[name="tetelirany_' + tid +'"]:checked').val()
                         },
                         success: function(d) {
