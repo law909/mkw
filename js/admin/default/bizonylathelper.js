@@ -641,7 +641,7 @@ var bizonylathelper = function($) {
                             type: 'GET',
                             success: function (data) {
                                 doktab.append(data);
-                                $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton').button();
+                                $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton,.js-dokopen2button').button();
                                 $this.remove();
                             }
                         });
@@ -687,7 +687,7 @@ var bizonylathelper = function($) {
                         };
                         finder.popup();
                     });
-                $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton').button();
+                $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton,.js-dokopen2button').button();
 
                 $('#EmailEdit').change(function() {
                     var partner,
