@@ -294,7 +294,7 @@ class megrendelesfejController extends bizonylatfejController {
                     $result = 0;
                     if ($ujdb == 0) {
                         $regibiz->setBizonylatstatusz($teljesitheto);
-                        foreach($regibiz->getBizonlattetelek() AS $regitetel) {
+                        foreach($regibiz->getBizonylattetelek() AS $regitetel) {
                             $regitetel->fillEgysar();
                             $regitetel->calc();
                             $this->getEm()->persist($regitetel);
