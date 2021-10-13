@@ -294,6 +294,11 @@ class megrendelesfejController extends bizonylatfejController {
                     $result = 0;
                     if ($ujdb == 0) {
                         $regibiz->setBizonylatstatusz($teljesitheto);
+                        foreach($regibiz->getBizonlattetelek() AS $regitetel) {
+                            $regitetel->fillEgysar();
+                            $regitetel->calc();
+                            $this->getEm()->persist($regitetel);
+                        }
                     }
                     elseif ($regidb == 0) {
                         $regibiz->setBizonylatstatusz($backorder);
@@ -349,6 +354,7 @@ class megrendelesfejController extends bizonylatfejController {
                             }
                             else {
                                 $regitetel->setMennyiseg($keszlet);
+                                $regitetel->fillEgysar();
                                 $regitetel->calc();
                                 $this->getEm()->persist($regitetel);
                             }
