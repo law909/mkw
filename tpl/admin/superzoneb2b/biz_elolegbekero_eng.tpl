@@ -102,7 +102,7 @@
                         <td class="textalignright dashedline">{bizformat($tetel.mennyiseg)}</td>
                         <td class="dashedline">{$tetel.me}</td>
                         {if ($egyed.kedvezmenycount > 0)}
-                            <td class="textalignright dashedline">{bizformat($tetel.enettoegysar)}</td>
+                            <td class="textalignright dashedline">{bizformat($tetel.ebruttoegysar)}</td>
                             <td class="textalignright dashedline">{bizformat($tetel.kedvezmeny)}</td>
                         {/if}
                         <td class="textalignright dashedline">{bizformat($tetel.nettoegysar)}</td>
