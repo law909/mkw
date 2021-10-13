@@ -359,6 +359,11 @@ class megrendelesfejController extends bizonylatfejController {
                                 $this->getEm()->persist($regitetel);
                             }
                         }
+                        else {
+                            $regitetel->fillEgysar();
+                            $regitetel->calc();
+                            $this->getEm()->persist($regitetel);
+                        }
                     }
                     $regibiz->setBizonylatstatusz($teljesitheto);
                     $this->getEm()->persist($regibiz);
