@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Carbon\Carbon;
+use Doctrine\DBAL\Statement;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 use mkwhelpers, Entities;
@@ -523,19 +524,20 @@ class adminController extends mkwhelpers\Controller {
             $res2 = $q2->getScalarResult();
             $kedv = $res2[0]['kedvezmeny'] * 1;
 
+            $conn = \mkw\store::getEm()->getConnection();
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-                $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 8, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 9, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 12, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)');
-                $q3->execute();
+                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 8, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 9, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 12, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)', $conn);
+                $st->executeStatement();
             }
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $rsm2);
             $res2 = $q2->getScalarResult();
@@ -543,16 +545,16 @@ class adminController extends mkwhelpers\Controller {
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-                $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 13, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 14, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 16, ' . $kedv . ')');
-                $q3->execute();
-                $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)');
-                $q3->execute();
+                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 13, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 14, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 16, ' . $kedv . ')', $conn);
+                $st->executeStatement();
+                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $conn);
+                $st->executeStatement();
             }
         }
     }
