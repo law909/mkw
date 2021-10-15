@@ -526,7 +526,6 @@ class adminController extends mkwhelpers\Controller {
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-/**
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))');
                 $q3->execute();
                 $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 8, ' . $kedv . ')');
@@ -537,7 +536,6 @@ class adminController extends mkwhelpers\Controller {
                 $q3->execute();
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)');
                 $q3->execute();
- */
             }
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $rsm2);
             $res2 = $q2->getScalarResult();
@@ -545,7 +543,6 @@ class adminController extends mkwhelpers\Controller {
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-                /**
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))');
                 $q3->execute();
                 $q3 = \mkw\store::getEm()->createNativeQuery('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 13, ' . $kedv . ')');
@@ -556,7 +553,6 @@ class adminController extends mkwhelpers\Controller {
                 $q3->execute();
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)');
                 $q3->execute();
-                 */
             }
         }
     }
