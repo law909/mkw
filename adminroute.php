@@ -814,3 +814,4 @@ $router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenea
 $router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');
 $router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas', 'adminrepairfoglalas');
 //$router->map('GET', '/admin/t/emailcheck', 'adminController#checkEmail', 'adminemailcheck');
+$router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
