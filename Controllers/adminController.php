@@ -522,7 +522,7 @@ class adminController extends mkwhelpers\Controller {
             \mkw\store::writelog(print_r($partnerid, true));
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)', $rsm2);
             $res2 = $q2->getScalarResult();
-            \mkw\store::writelog(print_r($res2, true));
+            \mkw\store::writelog(print_r($res2[0]['kedvezmeny'], true));
 /**
             if ($res2 > 0) {
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))');
@@ -539,7 +539,7 @@ class adminController extends mkwhelpers\Controller {
  */
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $rsm2);
             $res2 = $q2->getScalarResult();
-            \mkw\store::writelog(print_r($res2, true));
+            \mkw\store::writelog(print_r($res2[0]['kedvezmeny'], true));
 /**
             if ($res2 > 0) {
                 $q3 = \mkw\store::getEm()->createNativeQuery('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))');
