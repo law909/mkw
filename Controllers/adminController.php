@@ -521,7 +521,7 @@ class adminController extends mkwhelpers\Controller {
             $partnerid = $sor['partner_id'];
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)', $rsm2);
             $res2 = $q2->getScalarResult();
-            $kedv = $res2[0]['kedvezmeny'];
+            $kedv = $res2[0]['kedvezmeny'] * 1;
 
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
@@ -541,7 +541,7 @@ class adminController extends mkwhelpers\Controller {
             }
             $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $rsm2);
             $res2 = $q2->getScalarResult();
-            $kedv = $res2[0]['kedvezmeny'];
+            $kedv = $res2[0]['kedvezmeny'] * 1;
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
