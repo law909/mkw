@@ -94,6 +94,9 @@ class Orarend {
     /** @ORM\OneToMany(targetEntity="JogaBejelentkezes", mappedBy="orarend",cascade={"persist"}) */
     private $bejelentkezesek;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $lemondhato = false;
+
     public function __construct() {
         $this->bejelentkezesek = new ArrayCollection();
     }
@@ -405,6 +408,20 @@ class Orarend {
      */
     public function setMinbejelentkezes($minbejelentkezes) {
         $this->minbejelentkezes = $minbejelentkezes;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLemondhato() {
+        return $this->lemondhato;
+    }
+
+    /**
+     * @param bool $lemondhato
+     */
+    public function setLemondhato($lemondhato) {
+        $this->lemondhato = $lemondhato;
     }
 
 }

@@ -42,6 +42,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['onlineurl'] = $t->getOnlineurl();
 		$x['bejelentkezeskell'] = $t->isBejelentkezeskell();
 		$x['minbejelentkezes'] = $t->getMinbejelentkezes();
+		$x['lemondhato'] = $t->getLemondhato();
 		return $x;
 	}
 
@@ -82,6 +83,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $obj->setOnlineurl($this->params->getOriginalStringRequestParam('onlineurl'));
         $obj->setBejelentkezeskell($this->params->getBoolRequestParam('bejelentkezeskell'));
         $obj->setMinbejelentkezes($this->params->getIntRequestParam('minbejelentkezes'));
+        $obj->setLemondhato($this->params->getBoolRequestParam('lemondhato'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -223,6 +225,9 @@ class orarendController extends \mkwhelpers\MattableController {
                 case 'multilang':
                     $obj->setMultilang($kibe);
                     break;
+                case 'lemondhato':
+                    $obj->setLemondhato($kibe);
+                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
@@ -264,7 +269,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'elmarad' => false,
                 'multilang' => $item->getMultilang(),
                 'onlineurl' => $item->getOnlineurl(),
-                'bejelentkezeskell' => $item->isBejelentkezeskell()
+                'bejelentkezeskell' => $item->isBejelentkezeskell(),
+                'lemondhato' => $item->getLemondhato()
             );
             $xdatum = clone $startdatum;
             $napdatum = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'));
@@ -319,7 +325,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'bejelentkezeskell' => false,
                 'datum' => '',
                 'bejelentkezesdb' => 0,
-                'maxbejelentkezes' => 0
+                'maxbejelentkezes' => 0,
+                'lemondhato' => false
             );
             if (!array_key_exists($item->getNap(), $orarend)) {
                 $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());

@@ -14,6 +14,8 @@
                    {if ($egyed.multilang)}checked="checked"{/if}>{at('Több nyelvű')}
             <input id="BejelentkezeskellCheck" name="bejelentkezeskell" type="checkbox"
                    {if ($egyed.bejelentkezeskell)}checked="checked"{/if}>{at('Bejelentkezés kell')}
+            <input id="LemondhatoCheck" name="lemondhato" type="checkbox"
+                   {if ($egyed.lemondhato)}checked="checked"{/if}>{at('Lemondható')}
             <table>
                 <tbody>
                 <tr>
