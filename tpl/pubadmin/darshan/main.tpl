@@ -74,6 +74,21 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="lemondokModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kész!</h5>
+                </div>
+                <div class="modal-body">
+                    Az óra lemondása kész. A bejelentkezett gyakorlók kaptak egy emailt, az órarendben ki van írva, hogy az óra elmarad.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="mustsetOnlineModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -1,6 +1,7 @@
 <div class="row top-margin-10 bottom-margin-10">
     <div class="col">
         <button class="btn btn-darshan js-refresh">Frissít <i class="fas fa-sync-alt"></i></button>
+        {if ($lemondhato)}<button class="btn btn-darshan js-lemond" data-oraid="{$oraid}" data-oradatum="{$oradatum}">Lemond <i class="fas fa-archive"></i></button>{/if}
     </div>
 </div>
 {$sorszam = 1}

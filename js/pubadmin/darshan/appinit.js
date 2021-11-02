@@ -241,5 +241,24 @@ $(document).ready(
                 refreshResztvevoList();
                 resetPartnerModal();
             })
+            .on('click', '.js-lemond', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    method: 'POST',
+                    url: '/pubadmin/lemond',
+                    data: {
+                        oraid: $this.data('oraid'),
+                        datum: $this.data('oradatum')
+                    },
+                    success: function() {
+                        $('#lemondokModal')
+                            .modal({
+                                backdrop: 'static'
+                            });
+                        refreshResztvevoList();
+                    }
+                });
+            })
     }
 );
