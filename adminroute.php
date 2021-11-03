@@ -731,12 +731,12 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/sitemap/view', 'sitemapController#view', 'adminsitemapview');
 $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'adminsitemapcreate');
 
+$router->map('POST', '/admin/import/stop/[:impname]', 'importController#stop', 'adminimportstop');
+$router->map('POST', '/admin/import/repair/[:impname]', 'importController#repair', 'adminimportrepair');
 if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
     $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
 
-    $router->map('POST', '/admin/import/stop/[:impname]', 'importController#stop', 'adminimportstop');
-    $router->map('POST', '/admin/import/repair/[:impname]', 'importController#repair', 'adminimportrepair');
     $router->map('GET', '/admin/import/view', 'importController#view', 'adminimportview');
     $router->map('POST', '/admin/import/kreativ', 'importController#kreativpuzzleImport', 'adminkreativpuzzleimport');
     $router->map('POST', '/admin/import/delton', 'importController#deltonImport', 'admindeltonimport');
