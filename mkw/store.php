@@ -1551,4 +1551,8 @@ class store {
         }
         return false;
     }
+
+    public static function isClosed() {
+        return self::getConfigValue('closed', false);
+    }
 }
