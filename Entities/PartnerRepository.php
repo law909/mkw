@@ -22,6 +22,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
         $btch['megjegyzesexport'] = 'Megjegyzés export';
         $btch['hirlevelexport'] = 'Hírlevél export';
         $btch['roadrecordexport'] = 'Roadrecord export';
+        $btch['arsavcsere'] = 'Ársáv csere';
+        $btch['termekcsoportkedvezmenyedit'] = 'Termékcsoport kedvezmény módosítás';
 		$this->setBatches($btch);
 	}
 

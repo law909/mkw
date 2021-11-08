@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Partner;
+use Entities\PartnerTermekcsoportKedvezmeny;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -599,6 +600,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('orszaglist', $orszag->getSelectList(0, true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
+        $arsav = new termekarController($this->params);
+        $view->setVar('arsavlist', $arsav->getSelectList());
+        $tcs = new termekcsoportController($this->params);
+        $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
         $view->printTemplateResult();
     }
 
@@ -1609,6 +1614,49 @@ class partnerController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
+
+    }
+
+    public function arsavcsere() {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $arsav = $this->params->getStringRequestParam('arsav');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($ids) {
+            $filter->addFilter('id', 'IN', $ids);
+        }
+
+        $partnerek = $this->getRepo()->getAll($filter);
+
+        /** @var Partner $partner */
+        foreach ($partnerek as $partner) {
+            $partner->setTermekarazonosito($arsav);
+            $this->getEm()->persist($partner);
+            $this->getEm()->flush();
+        }
+
+    }
+
+    public function tcskedit() {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $tcs = $this->params->getStringRequestParam('tcs');
+        $kedvvalt = $this->params->getNumRequestParam('kedv');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($ids) {
+            $filter->addFilter('id', 'IN', $ids);
+        }
+        $partnerek = $this->getRepo()->getAll($filter);
+        /** @var Partner $partner */
+        foreach ($partnerek as $partner) {
+            /** @var PartnerTermekcsoportKedvezmeny $tcsk */
+            foreach ($partner->getTermekcsoportkedvezmenyek() as $tcsk) {
+                if ($tcsk->getTermekcsoportId() == $tcs) {
+                    $tcsk->setKedvezmeny($tcsk->getKedvezmeny() + $kedvvalt);
+                    $this->getEm()->persist($tcsk);
+                    $this->getEm()->flush();
+                }
+            }
+        }
 
     }
 }

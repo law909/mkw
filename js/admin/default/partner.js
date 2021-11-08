@@ -452,105 +452,124 @@ $(document).ready(function(){
         $('.mattable-batchbtn').on('click', function(e) {
             var cbs;
             e.preventDefault();
-            switch ($('.mattable-batchselect').val()) {
-                case 'mijszexportin':
-                    cbs = $('.js-egyedcheckbox:checked');
-                    if (cbs.length) {
-                        var tomb = [],
-                            $exportform = $('#exportform');
-                        cbs.closest('tr').each(function(index, elem) {
-                            tomb.push($(elem).data('egyedid'));
-                        });
+            cbs = $('.js-egyedcheckbox:checked');
+            if (cbs.length) {
+                var tomb = [], $exportform, $sel;
+                cbs.closest('tr').each(function(index, elem) {
+                    tomb.push($(elem).data('egyedid'));
+                });
+                switch ($('.mattable-batchselect').val()) {
+                    case 'mijszexportin':
+                        $exportform = $('#exportform');
                         $exportform.attr('action', '/admin/partner/mijszexport');
                         $('input[name="ids"]', $exportform).val(tomb);
                         $('input[name="country"]', $exportform).val('in');
                         $exportform.submit();
-                    }
-                    else {
-                        dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'OK': function() {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    break;
-                case 'mijszexportus':
-                    cbs = $('.js-egyedcheckbox:checked');
-                    if (cbs.length) {
-                        var tomb = [],
-                            $exportform = $('#exportform');
-                        cbs.closest('tr').each(function(index, elem) {
-                            tomb.push($(elem).data('egyedid'));
-                        });
+                        break;
+                    case 'mijszexportus':
+                        $exportform = $('#exportform');
                         $exportform.attr('action', '/admin/partner/mijszexport');
                         $('input[name="ids"]', $exportform).val(tomb);
                         $('input[name="country"]', $exportform).val('us');
                         $exportform.submit();
-                    }
-                    else {
-                        dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'OK': function() {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    break;
-                case 'megjegyzesexport':
-                    cbs = $('.js-egyedcheckbox:checked');
-                    if (cbs.length) {
-                        var tomb = [],
-                            $exportform = $('#exportform');
-                        cbs.closest('tr').each(function(index, elem) {
-                            tomb.push($(elem).data('egyedid'));
-                        });
+                        break;
+                    case 'megjegyzesexport':
+                        $exportform = $('#exportform');
                         $exportform.attr('action', '/admin/partner/megjegyzesexport');
                         $('input[name="ids"]', $exportform).val(tomb);
                         $exportform.submit();
-                    }
-                    else {
-                        dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
+                        break;
+                    case 'hirlevelexport':
+                        $exportform = $('#exportform');
+                        $exportform.attr('action', '/admin/partner/hirlevelexport');
+                        $exportform.submit();
+                        break;
+                    case 'roadrecordexport':
+                        $exportform = $('#exportform');
+                        $exportform.attr('action', '/admin/partner/roadrecordexport');
+                        if (tomb) {
+                            $('input[name="ids"]', $exportform).val(tomb);
+                        }
+                        $exportform.submit();
+                        break;
+                    case 'arsavcsere':
+                        $sel = $('select.js-arsavselect');
+                        dialogcenter.html($('#arsavcsere').show()).dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
+                                    var $this = $(this);
+                                    $.ajax({
+                                        url: '/admin/partner/arsavcsere',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb,
+                                            arsav: $('option:selected', $sel).val()
+                                        },
+                                        success: function (data) {
+                                            $('option:selected', $sel).val(data);
+                                            $this.dialog('close');
+                                            $('#arsavcsere').hide();
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Mégsem': function () {
                                     $(this).dialog('close');
+                                    $('#arsavcsere').hide();
                                 }
                             }
                         });
-                    }
-                    break;
-                case 'hirlevelexport':
-                    var $exportform = $('#exportform');
-                    $exportform.attr('action', '/admin/partner/hirlevelexport');
-                    $exportform.submit();
-                    break;
-                case 'roadrecordexport':
-                    var tomb = [],
-                        $exportform = $('#exportform');
-                    cbs = $('.js-egyedcheckbox:checked');
-                    if (cbs.length) {
-                        cbs.closest('tr').each(function (index, elem) {
-                            tomb.push($(elem).data('egyedid'));
+                        break;
+                    case 'termekcsoportkedvezmenyedit':
+                        $sel = $('select[name="tcsktermekcsoport"]');
+                        dialogcenter.html($('#termekcsoportkedvezmenyedit').show()).dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    var $this = $(this);
+                                    $.ajax({
+                                        url: '/admin/partner/tcskedit',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb,
+                                            tcs: $('option:selected', $sel).val(),
+                                            kedv: $('input.js-tcskkedvvaltozas').val()
+                                        },
+                                        success: function (data) {
+                                            $('option:selected', $sel).val(data);
+                                            $this.dialog('close');
+                                            $('#termekcsoportkedvezmenyedit').hide();
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Mégsem': function () {
+                                    $(this).dialog('close');
+                                    $('#termekcsoportkedvezmenyedit').hide();
+                                }
+                            }
                         });
-                    }
-                    $exportform.attr('action', '/admin/partner/roadrecordexport');
-                    if (tomb) {
-                        $('input[name="ids"]', $exportform).val(tomb);
-                    }
-                    $exportform.submit();
-                    break;
+                        break;
+                }
             }
+            else {
+                dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+
         });
         $('#mattable-body').on('click', '.js-anonym', function(e) {
             var $this = $(this);

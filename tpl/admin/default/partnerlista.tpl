@@ -122,6 +122,30 @@
 	</div>
 </div>
 </div>
+<div id="arsavcsere" class="hidden">
+    <label>Ársáv: </label>
+    <select class="js-arsavselect">
+        <option value="">{at('válasszon')}</option>
+        {foreach $arsavlist as $_tcs}
+            <option value="{$_tcs.id}">{$_tcs.caption} {$_tcs.valutanem}</option>
+        {/foreach}
+    </select>
+</div>
+<div id="termekcsoportkedvezmenyedit" class="hidden">
+    <div>
+        <label>Termék csoport:</label>
+        <select id="tcskTermekcsoportEdit{$kd.id}" name="tcsktermekcsoport">
+                <option value="">{at('válasszon')}</option>
+                {foreach $tcsktermekcsoportlist as $_valuta}
+                    <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
+                {/foreach}
+            </select>
+    </div>
+    <div>
+        <label>Kedvezmény változás:</label>
+        <input class="js-tcskkedvvaltozas" type="number" step="any" />
+    </div>
+</div>
 <div id="mattkarb">
 </div>
 {/block}

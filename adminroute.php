@@ -693,6 +693,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/roadrecordexport', 'partnerController#roadrecordExport', 'adminroadrecordexport');
     $router->map('POST', '/admin/partnerdok/del', 'partnerdokController#del', 'adminpartnerdokdel');
     $router->map('POST', '/admin/partner/anonym/do', 'partnerController#doAnonym', 'adminpartnerdoanonym');
+    $router->map('POST', '/admin/partner/arsavcsere', 'partnerController#arsavcsere', 'adminpartnerarsavcsere');
+    $router->map('POST', '/admin/partner/tcskedit', 'partnerController#tcskedit', 'adminpartnertcskedit');
 }
 
 $router->map('GET', '/admin/termekfa/getkarb', 'termekfaController#getkarb', 'admintermekfagetkarb');
