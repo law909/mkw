@@ -1305,6 +1305,7 @@ class Termek {
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
                 $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $result);
                 $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
+                $result = str_replace('[rovidleiras]', $this->getRovidleiras(), $result);
                 return $result;
             }
             else {
@@ -1332,6 +1333,7 @@ class Termek {
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
                 $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $result);
                 $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
+                $result = str_replace('[rovidleiras]', $this->getRovidleiras(), $result);
                 return $result;
             }
             else {

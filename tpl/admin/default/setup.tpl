@@ -886,7 +886,7 @@
                             <td colspan="3">{at('Termék oldal')}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">[termeknev] [bruttoar] [kategorianev] [global]</td>
+                            <td colspan="3">[termeknev] [bruttoar] [kategorianev] [global] [rovidleiras]</td>
                         </tr>
                         <tr>
                             <td><label for="TOldalCimEdit">{at('Lap címe')}:</label></td>
