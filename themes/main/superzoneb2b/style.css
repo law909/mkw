@@ -456,6 +456,10 @@ thead.acc-megrendelestetellist td {
     min-width: 120px;
 }
 
+.onroad {
+    color: #a45b13;
+}
+
 @media (min-width: 480px) {
 }
 

@@ -52,7 +52,15 @@
                         </td>
                         {else}
                         <td class="valtozatkeszlet textaligncenter">
-                            <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzoneb2b/nincs.jpg{else}/themes/main/superzoneb2b/van.jpg{/if}">
+                            {if ($_valt.keszlet > 0)}
+                                <img src="/themes/main/superzoneb2b/van.jpg">
+                            {else}
+                                {if ($_valt.bejon)}
+                                    <span class="onroad">on road</span>
+                                {else}
+                                    <img src="/themes/main/superzoneb2b/nincs.jpg">
+                                {/if}
+                            {/if}
                         </td>
                         {/if}
                         <td class="valtozatmenny">
