@@ -318,15 +318,23 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
         		return $t;
             case \mkw\store::isSuperzoneB2B():
+                $partner = \mkw\store::getLoggedInUser();
+                if ($partner) {
+                    $cimkek = $partner->getCimkek();
+                    // b2b beegetve ideiglenesen: kulf.nagyker, spanyol ugynok, ugynok
+                    $kulfoldi = $cimkek->containsKey(2) || $cimkek->containsKey(14) || $cimkek->containsKey(32);
+                }
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
                 $x = array();
                 foreach ($f as $o) {
-                    $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
-                    $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
-                    $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
-                    $o['children'] = $this->gettermeklistaforparent($o);
-                    $x[] = $o;
+                    if (!$kulfoldi || ($kulfoldi && (strncmp($o['karkod'], '0000100032', strlen('0000100032')) === 0))) {
+                        $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
+                        $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
+                        $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
+                        $o['children'] = $this->gettermeklistaforparent($o);
+                        $x[] = $o;
+                    }
                 }
         		return $x;
         }

@@ -71,8 +71,9 @@ class TermekFaRepository extends \mkwhelpers\Repository {
             $rsm->addScalarResult('kepurl', 'kepurl');
             $rsm->addScalarResult('kepleiras', 'kepleiras');
     //		$rsm->addScalarResult('termekdarab', 'termekdarab');
+            $rsm->addScalarResult('karkod', 'karkod');
             $rsm->addScalarResult('sorrend', 'sorrend');
-            $q = $this->_em->createNativeQuery('SELECT id,nev,slug,leiras,rovidleiras,kepurl,kepleiras,'
+            $q = $this->_em->createNativeQuery('SELECT id,nev,slug,leiras,rovidleiras,kepurl,kepleiras,karkod,'
     //			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
                     . 'sorrend '
                     . 'FROM termekfa f '
@@ -87,6 +88,7 @@ class TermekFaRepository extends \mkwhelpers\Repository {
             }
             $res = $q->getResult();
             $ret = array();
+            /** @var TermekFa $r */
             foreach($res as $r) {
                 $ret[] = array(
                     'id' => $r->getId(),
@@ -96,7 +98,8 @@ class TermekFaRepository extends \mkwhelpers\Repository {
                     'rovidleiras' => $r->getRovidleiras(),
                     'kepurl' => $r->getKepurl(),
                     'kepleiras' => $r->getKepleiras(),
-                    'sorrend' => $r->getSorrend()
+                    'sorrend' => $r->getSorrend(),
+                    'karkod' => $r->getKarkod()
                 );
             }
             return $ret;
