@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Partnercimketorzs;
 use mkwhelpers\FilterDescriptor;
 
 class termekfaController extends \mkwhelpers\MattableController {
@@ -322,7 +323,10 @@ class termekfaController extends \mkwhelpers\MattableController {
                 if ($partner) {
                     $cimkek = $partner->getCimkek();
                     // b2b beegetve ideiglenesen: kulf.nagyker, spanyol ugynok, ugynok
-                    $kulfoldi = $cimkek->containsKey(2) || $cimkek->containsKey(14) || $cimkek->containsKey(32);
+                    $cimke1 = $this->getRepo(Partnercimketorzs::class)->find(2);
+                    $cimke2 = $this->getRepo(Partnercimketorzs::class)->find(14);
+                    $cimke3 = $this->getRepo(Partnercimketorzs::class)->find(32);
+                    $kulfoldi = $cimkek->contains($cimke1) || $cimkek->contains($cimke2) || $cimkek->contains($cimke3);
                 }
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
