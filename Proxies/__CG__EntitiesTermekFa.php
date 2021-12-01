@@ -304,12 +304,12 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getTeljesNev($elval = '|')
+    public function getTeljesNev($elval = '|', $selfname = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesNev', [$elval]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesNev', [$elval, $selfname]);
 
-        return parent::getTeljesNev($elval);
+        return parent::getTeljesNev($elval, $selfname);
     }
 
     /**
