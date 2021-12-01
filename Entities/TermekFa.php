@@ -208,6 +208,9 @@ class TermekFa {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato15 = 1;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $arukeresoid;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -924,6 +927,20 @@ class TermekFa {
             default:
                 return $this->getLathato();
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArukeresoid() {
+        return $this->arukeresoid;
+    }
+
+    /**
+     * @param mixed $arukeresoid
+     */
+    public function setArukeresoid($arukeresoid) {
+        $this->arukeresoid = $arukeresoid;
     }
 
 }

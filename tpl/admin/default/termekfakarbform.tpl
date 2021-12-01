@@ -23,6 +23,10 @@
                 <td><label for="EmagidEdit">{at('eMAG id')}:</label></td>
                 <td><input id="EmagidEdit" name="emagid" type="number" size="10" maxlength="10" value="{$egyed.emagid}"></td>
             </tr>
+            <tr>
+                <td><label for="ArukeresoidEdit">{at('Árukereső id')}:</label></td>
+                <td><input id="ArukeresoidEdit" name="arukeresoid" type="text" value="{$egyed.arukeresoid}"></td>
+            </tr>
 			</tbody></table>
 			{include 'termekfaimagekarb.tpl'}
 		</div>

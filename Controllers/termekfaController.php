@@ -51,6 +51,7 @@ class termekfaController extends \mkwhelpers\MattableController {
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         $x['emagid'] = $t->getEmagid();
+        $x['arukeresoid'] = $t->getArukeresoid();
         $x['lathato'] = $t->getLathato();
         $x['lathato1'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();
@@ -103,6 +104,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setEmagid($this->params->getIntRequestParam('emagid'));
+        $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
         $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
