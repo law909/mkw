@@ -342,8 +342,11 @@ class TermekFa {
         }
     }
 
-    public function getTeljesNev($elval = '|') {
-        $this->gtnev = $this->getNev();
+    public function getTeljesNev($elval = '|', $selfname = null) {
+        if (!$selfname) {
+            $selfname = $this->getNev();
+        }
+        $this->gtnev = $selfname;
         $this->gtn($this->getParent(), $elval);
         return $this->gtnev;
     }

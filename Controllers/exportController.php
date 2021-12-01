@@ -661,7 +661,8 @@ class exportController extends \mkwhelpers\Controller {
             'description',
             'delivery_time',
             'identifier',
-            'net_price'
+            'net_price',
+            'ean'
         );
         echo implode("\t", $sor) . "\n";
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -697,14 +698,15 @@ class exportController extends \mkwhelpers\Controller {
                 $sor = array(
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
-                    '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ') : '') . '"',
+                    '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ', $t->getTermekfa1()->getArukeresoid()) : '') . '"',
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                     '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . $leiras . '"',
                     '"' . ($szallitasiido ? $szallitasiido . ' munkanap' : '') . '"',
                     '"' . $t->getId() . '"',
-                    '"' . number_format($t->getNettoAr(), 0, ',', '') . '"'
+                    '"' . number_format($t->getNettoAr(), 0, ',', '') . '"',
+                    '"' . $t->getVonalkod() . '"'
                 );
                 echo implode("\t", $sor) . "\n";
             }
