@@ -482,6 +482,7 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setTermekfa1($parent);
                                     $termek->setVtsz($vtsz[0]);
                                     $termek->setHparany(3);
+                                    $termek->setVonalkod($data[$this->n('o')]);
                                     if ($gyarto) {
                                         $termek->setGyarto($gyarto);
                                     }
@@ -530,6 +531,9 @@ class importController extends \mkwhelpers\Controller {
                             }
                             else {
                                 $termek = $termek[0];
+                                if (!$termek->getVonalkod()) {
+                                    $termek->setVonalkod($data[$this->n('o')]);
+                                }
                                 if ($editleiras) {
                                     $hosszuleiras = $this->toutf(trim($data[$this->n('n')]));
                                     $termek->setLeiras($hosszuleiras);
@@ -552,6 +556,10 @@ class importController extends \mkwhelpers\Controller {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                             if ($termek) {
                                 $termek = $termek[0];
+                                if (!$termek->getVonalkod()) {
+                                    $termek->setVonalkod($data[$this->n('o')]);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
                                     $termek->setLathato(false);
@@ -1500,6 +1508,7 @@ class importController extends \mkwhelpers\Controller {
             foreach ($xmlkepek as $xk) {
                 $kepek[] = $xk;
             }
+            $xmleans = (array)$obj->eanCodes;
             return array(
                 'number' => (string)$obj->number,
                 'name' => (string)$obj->name,
@@ -1524,7 +1533,8 @@ class importController extends \mkwhelpers\Controller {
                 'stockAvailableDate' => (string)$obj->stockAvailableDate,
                 'stockOuterType' => (string)$obj->stockOuterType,
                 'priceMembership' => (string)$obj->prices->priceMembership,
-                'images' => $kepek
+                'images' => $kepek,
+                'ean' => $xmleans[0]
             );
         }
 
@@ -1650,6 +1660,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setIdegenkod($data['number']);
                             $termek->setIdegencikkszam($data['manufacturerNumber']);
                             $termek->setCikkszam($data['manufacturerNumber']);
+                            $termek->setVonalkod($data['ean']);
                             if ($gyarto) {
                                 $termek->setGyarto($gyarto);
                             }
@@ -1731,6 +1742,9 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         /** @var \Entities\Termek $termek */
                         $termek = $termek[0];
+                        if (!$termek->getVonalkod()) {
+                            $termek->setVonalkod($data['ean']);
+                        }
                         if ($editleiras) {
                             $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
                                 'HTML.Allowed' => 'p,ul,li,b,strong,br'
@@ -3436,6 +3450,9 @@ class importController extends \mkwhelpers\Controller {
                             if (is_array($termek)) {
                                 $termek = $termek[0];
                             }
+                            if (!$termek->getVonalkod()) {
+                                $termek->setVonalkod('4000649' . str_replace(' ', '', $sheet->getCell('D' . $row)->getValue()));
+                            }
                             if ($ar && !$termek->getAkcios()) {
                                 $termek->setBrutto($ar);
                             }
@@ -3512,6 +3529,9 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek) {
                             if (is_array($termek)) {
                                 $termek = $termek[0];
+                            }
+                            if (!$termek->getVonalkod()) {
+                                $termek->setVonalkod('4000649' . str_replace(array(' ', '.'), '', $sheet->getCell('C' . $row)->getValue()));
                             }
                             if ($ar && !$termek->getAkcios()) {
                                 $termek->setBrutto($ar);
@@ -4406,6 +4426,7 @@ class importController extends \mkwhelpers\Controller {
                         $ar = round($ar, -1);
                         $idegencikkszam = (string)$data->sku;
                         $style = (string)$data->Style;
+                        $vonalkod = (string)$data->ean_barcode;
 
                         if ($idegencikkszam) {
                             $termek = false;
@@ -4446,6 +4467,7 @@ class importController extends \mkwhelpers\Controller {
                                         $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
                                         $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Size))));
                                         $valtozat->setIdegencikkszam($idegencikkszam);
+                                        $valtozat->setVonalkod($vonalkod);
                                         // kepek
                                         $imagelist = (array)$data->images;
                                         if (is_array($imagelist['image'])) {
@@ -4512,6 +4534,7 @@ class importController extends \mkwhelpers\Controller {
                                         $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
                                         $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Size))));
                                         $valtozat->setIdegencikkszam($idegencikkszam);
+                                        $valtozat->setVonalkod($vonalkod);
                                         $valtozat->setTermek($termek);
 
                                         // kepek
@@ -4569,6 +4592,9 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $termek[0];
                                 }
                                 if ($valtozat) {
+                                    if (!$valtozat->getVonalkod()) {
+                                        $valtozat->setVonalkod($vonalkod);
+                                    }
                                     if ($termek && !$termek->getAkcios()) {
                                         //$valtozat->setBrutto($ar - $termek->getBrutto());
                                     }
@@ -5306,6 +5332,9 @@ class importController extends \mkwhelpers\Controller {
                         else {
                             $valtozat->setElerheto(true);
                         }
+                        if (!$valtozat->getVonalkod()) {
+                            $valtozat->setVonalkod($data['ean']);
+                        }
                         \mkw\store::getEm()->persist($valtozat);
                         if ($termek) {
                             $egysemkaphato = true;
@@ -5324,6 +5353,9 @@ class importController extends \mkwhelpers\Controller {
                     }
                     else {
                         if ($termek) {
+                            if (!$termek->getVonalkod()) {
+                                $termek->setVonalkod($data['ean']);
+                            }
                             if ($data['stock'] <= 0) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
@@ -5512,6 +5544,7 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setTermekfa1($parent);
                                     $termek->setVtsz($vtsz[0]);
                                     $termek->setHparany(3);
+                                    $termek->setVonalkod($data[$this->n('j')]);
                                     if ($gyarto) {
                                         $termek->setGyarto($gyarto);
                                     }
@@ -5548,6 +5581,9 @@ class importController extends \mkwhelpers\Controller {
                             }
                             else {
                                 $termek = $termek[0];
+                                if (!$termek->getVonalkod()) {
+                                    $termek->setVonalkod($data[$this->n('j')]);
+                                }
                                 if ($editleiras) {
                                     $hosszuleiras = trim($data[$this->n('h')]);
                                     $termek->setLeiras($hosszuleiras);
