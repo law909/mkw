@@ -696,10 +696,21 @@ class exportController extends \mkwhelpers\Controller {
 
                 $szallitasiido = $t->calcSzallitasiido();
 
+                $termekfanev = '';
+                if ($t->getTermekfa1()) {
+                    if ($t->getArukeresofanev()) {
+                        $levelnev = $t->getArukeresofanev();
+                    }
+                    else {
+                        $levelnev = $t->getTermekfa1()->getArukeresoid();
+                    }
+                    $termekfanev = $t->getTermekfa1()->getTeljesNev(' > ', $levelnev);
+                }
+
                 $sor = array(
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
-                    '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ', $t->getTermekfa1()->getArukeresoid()) : '') . '"',
+                    '"' . $termekfanev . '"',
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                     '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',

@@ -413,6 +413,9 @@ class Termek {
     /** @ORM\Column(type="integer",nullable=true) */
     private $garancia;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $arukeresofanev;
+
 
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
@@ -3046,8 +3049,22 @@ class Termek {
     /**
      * @param mixed $garancia
      */
-    public function setGarancia($garancia): void {
+    public function setGarancia($garancia) {
         $this->garancia = $garancia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArukeresofanev() {
+        return $this->arukeresofanev;
+    }
+
+    /**
+     * @param mixed $arukeresofanev
+     */
+    public function setArukeresofanev($arukeresofanev) {
+        $this->arukeresofanev = $arukeresofanev;
     }
 
 }

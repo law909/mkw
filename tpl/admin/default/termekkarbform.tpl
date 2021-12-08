@@ -53,6 +53,10 @@
                               data-name="termekfa3"
                               data-value="{$egyed.termekfa3}">{if ($egyed.termekfa3nev)}{$egyed.termekfa3nev}{else}{at('válasszon')}{/if}</span>
                     </td>
+                    <td>
+                        <label for="ArukeresofanevEdit">{at('Árukereső kategória')}:</label>
+                        <input id="ArukeresofanevEdit" name="arukeresofanev" maxlength=255 value="{$egyed.arukeresofanev}">
+                    </td>
                 </tr>
                 </tbody>
             </table>

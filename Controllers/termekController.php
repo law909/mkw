@@ -91,6 +91,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['cimkek'] = $t->getCimkeNevek();
 		$x['minboltikeszlet'] = $t->getMinboltikeszlet();
 		$x['garancia'] = $t->getGarancia();
+		$x['arukeresofanev'] = $t->getArukeresofanev();
         if (!\mkw\store::isArsavok()) {
             $x['netto'] = $t->getNetto();
             $x['brutto'] = $t->getBrutto();
@@ -310,6 +311,7 @@ class termekController extends \mkwhelpers\MattableController {
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
         $obj->setMinboltikeszlet($this->params->getFloatRequestParam('minboltikeszlet'));
         $obj->setGarancia($this->params->getIntRequestParam('garancia'));
+        $obj->setArukeresofanev($this->params->getStringRequestParam('arukeresofanev'));
 
         if (\mkw\store::isDarshan()) {
             $obj->setJogaalkalom($this->params->getIntRequestParam('jogaalkalom'));
