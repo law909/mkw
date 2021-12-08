@@ -38,6 +38,7 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function gettermek_id($id) {
+        /** @var Termek $termek */
         $termek = $this->tr->find($id);
         $termekadat = null;
         if ($termek) {
@@ -51,6 +52,7 @@ class a2aController extends \mkwhelpers\Controller {
         $filter = new FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
         $termekek = $this->tr->getWithJoins($filter);
+        /** @var Termek $termek */
         foreach ($termekek as $termek) {
             $termekadat = $termek->toA2a();
             $ret[] = $termekadat;
@@ -61,6 +63,7 @@ class a2aController extends \mkwhelpers\Controller {
     protected function gettermek_all() {
         $ret = array();
         $termekek = $this->tr->getWithJoins(null);
+        /** @var Termek $termek */
         foreach ($termekek as $termek) {
             $termekadat = $termek->toA2a();
             $ret[] = $termekadat;
@@ -527,7 +530,8 @@ class a2aController extends \mkwhelpers\Controller {
         }
         else {
             $result['auth'] = 0;
-            $result['authmsg'] = 'API authentication failed';
+            $result['authmsg'] = 'API authentication failed: ' . $auth['name'] . '/' . $auth['key'] . '|';
+            $this->writelog($consumer, $rawdata, json_encode($result));
         }
 
         $result['results'] = $results;
