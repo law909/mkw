@@ -2,6 +2,7 @@
 namespace Controllers;
 
 use Entities\Termek;
+use Entities\TermekKep;
 use mkwhelpers\FilterDescriptor;
 
 class exportController extends \mkwhelpers\Controller {
@@ -1081,6 +1082,15 @@ class exportController extends \mkwhelpers\Controller {
 
             $ford = $t->getTranslationsArray();
 
+            $termekkepek = $t->getTermekKepek();
+            $kepek = array();
+            /** @var TermekKep $kep */
+            foreach ($termekkepek as $kep) {
+                if ($kep->getUrl()) {
+                    $kepek[] = \mkw\store::getFullUrl($kep->getUrl(), \mkw\store::getConfigValue('mainurl'));
+                }
+            }
+
             $valtozatok = $t->getValtozatok();
             if ($valtozatok) {
                 /** @var \Entities\TermekValtozat $valt */
@@ -1110,6 +1120,7 @@ class exportController extends \mkwhelpers\Controller {
                         'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
                         'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
                         'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
+                        'images' => $kepek,
                         'price' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
                         'discountPrice' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)),
                         'articleId' => $t->getId(),
@@ -1143,6 +1154,7 @@ class exportController extends \mkwhelpers\Controller {
                     'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
                     'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ),
+                    'images' => $kepek,
                     'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
                     'discountPrice' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)),
                     'articleId' => $t->getId(),
