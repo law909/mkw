@@ -52,13 +52,17 @@ var mkw = (function($) {
         if (msg) {
             dlgbody.append('<p>' + msg + '</p>');
         }
-        for (var i = 0; i < opts.buttons.length; i++) {
-            $('<button class="' + opts.buttons[i]._class + '">' + opts.buttons[i].caption + '</button>')
+        if (opts.buttons) {
+            for (var i = 0; i < opts.buttons.length; i++) {
+                $('<button class="' + opts.buttons[i]._class + '">' + opts.buttons[i].caption + '</button>')
                     .appendTo(dlgfooter)
                     .on('click', opts.buttons[i].click);
+            }
         }
-        for (var i = 0; i < opts.events.length; i++) {
-            dlgcenter.on(opts.events[i].name, opts.events[i].fn);
+        if (opts.events) {
+            for (var i = 0; i < opts.events.length; i++) {
+                dlgcenter.on(opts.events[i].name, opts.events[i].fn);
+            }
         }
         return dlgcenter.modal();
     }
