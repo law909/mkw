@@ -3,6 +3,7 @@ namespace Controllers;
 
 use Entities\Termek;
 use Entities\TermekKep;
+use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
 
 class exportController extends \mkwhelpers\Controller {
@@ -707,6 +708,17 @@ class exportController extends \mkwhelpers\Controller {
                     $termekfanev = $t->getTermekfa1()->getTeljesNev(' > ', $levelnev);
                 }
 
+                $vonalkod = $t->getVonalkod();
+                if (!$vonalkod) {
+                    $valtozatok = $t->getValtozatok();
+                    /** @var TermekValtozat $valt */
+                    foreach ($valtozatok as $valt) {
+                        if (!$vonalkod && $valt->getVonalkod()) {
+                            $vonalkod = $valt->getVonalkod();
+                        }
+                    }
+                }
+
                 $sor = array(
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
@@ -718,7 +730,7 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . ($szallitasiido ? $szallitasiido . ' munkanap' : '') . '"',
                     '"' . $t->getId() . '"',
                     '"' . number_format($t->getNettoAr(), 0, ',', '') . '"',
-                    '"' . $t->getVonalkod() . '"'
+                    '"' . $vonalkod . '"'
                 );
                 echo implode("\t", $sor) . "\n";
             }
