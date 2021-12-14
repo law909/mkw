@@ -179,7 +179,7 @@
                             <div class="controls controls-row chk-controloffset">
                                 <div class="span3 nomargin chk-relative">
                                     <label class="span3 nomargin">Adószám</label>
-                                    <input name="adoszam" type="text" class="span3 nomargin js-chkrefresh" value="{$adoszam|default}">
+                                    <input name="adoszam" type="text" class="span3 nomargin js-chkrefresh" data-inputmask="'mask': '99999999-9-99'" value="{$adoszam|default}">
                                     <i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
                                 </div>
                             </div>

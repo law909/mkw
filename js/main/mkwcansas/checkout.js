@@ -615,6 +615,8 @@ var checkout = (function($, guid) {
 			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
+			$('input[name="adoszam"]').inputmask();
+
 			$('.js-chkaszf, .js-chkhelp').magnificPopup({
 				type: 'ajax',
                 closeBtnInside: false
