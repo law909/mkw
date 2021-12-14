@@ -1185,4 +1185,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 
         $view->printTemplateResult(false);
     }
+
+    public function saveTerminalSelection() {
+	    $szmid = $this->params->getIntRequestParam('szmid');
+	    $cs = $this->params->getStringRequestParam('cs');
+	    $t = $this->params->getIntRequestParam('t');
+	    \mkw\store::getMainSession()->lsszallmod = $szmid;
+	    \mkw\store::getMainSession()->lscsoport = $cs;
+	    \mkw\store::getMainSession()->lsterminal = $t;
+    }
 }

@@ -172,6 +172,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
+        $elozocsoport = \mkw\store::getMainSession()->lscsoport;
+
         $rec = $this->getRepo('Entities\CsomagTerminal')->getCsoportok($tipus);
         $res = array();
         $vanvalasztott = false;
@@ -180,7 +182,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                 'id' => $sor['csoport'],
                 'caption' => $sor['csoport']
             );
-            if (!$vanvalasztott) {
+            if ((!$elozocsoport && !$vanvalasztott) || ($elozocsoport && ($sor['csoport'] == $elozocsoport))) {
                 $r['selected'] = true;
                 $vanvalasztott = true;
             }
@@ -205,6 +207,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
+        $elozoterminal = \mkw\store::getMainSession()->lsterminal;
+
         $rec = $this->getRepo('Entities\CsomagTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus);
         $res = array();
         $vanvalasztott = false;
@@ -214,7 +218,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                 'caption' => $sor->getNev(),
                 'cim' => $sor->getCim()
             );
-            if (!$vanvalasztott) {
+            if ((!$elozoterminal && !$vanvalasztott) || ($elozoterminal && ($sor->getId() == $elozoterminal))) {
                 $r['selected'] = true;
                 $vanvalasztott = true;
             }

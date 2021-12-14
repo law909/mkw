@@ -142,6 +142,36 @@ var checkout = (function($, guid) {
         })
     }
 
+    function saveFoxpostTerminalSelection() {
+        var cs = $('select[name="foxpostcsoport"]').val(),
+            t = $('select[name="foxpostterminal"]').val(),
+            $szallmodchk = $('input[name="szallitasimod"]:checked');
+        $.ajax({
+            type: 'POST',
+            url: '/checkout/saveterminalselection',
+            data: {
+                cs: cs,
+                t: t,
+                szmid: $szallmodchk.val()
+            }
+        })
+    }
+
+    function saveGLSTerminalSelection() {
+        var cs = $('select[name="glscsoport"]').val(),
+            t = $('select[name="glsterminal"]').val(),
+            $szallmodchk = $('input[name="szallitasimod"]:checked');
+        $.ajax({
+            type: 'POST',
+            url: '/checkout/saveterminalselection',
+            data: {
+                cs: cs,
+                t: t,
+                szmid: $szallmodchk.val()
+            }
+        })
+    }
+
     function loadKosarHash() {
         $.ajax({
             url: '/kosar/gethash',
@@ -527,8 +557,14 @@ var checkout = (function($, guid) {
             .on('change', 'select[name="foxpostcsoport"]', function() {
                 loadFoxpostTerminalData();
             })
+            .on('change', 'select[name="foxpostterminal"]', function() {
+                saveFoxpostTerminalSelection();
+            })
             .on('change', 'select[name="glscsoport"]', function() {
                 loadGLSTerminalData();
+            })
+            .on('change', 'select[name="glsterminal"]', function() {
+                saveGLSTerminalSelection();
             })
 			.on('change', 'input[name="szallitasimod"]', function(e) {
 				loadFizmodList();

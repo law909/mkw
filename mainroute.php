@@ -119,6 +119,7 @@ $router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalControlle
 $router->map('GET', '/checkout/getglscsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetglscsoportlist');
 $router->map('GET', '/checkout/getglsterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetglsterminallist');
 $router->map('GET', '/checkout/getcsomagterminalid', 'csomagterminalController#getTerminalId', 'checkoutgetcsomagterminalid');
+$router->map('POST', '/checkout/saveterminalselection', 'checkoutController#saveTerminalSelection', 'checkoutsaveterminalselection');
 
 $router->map('GET', '/irszam', 'irszamController#typeaheadList', 'irszamtypeahead');
 $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypeahead');
