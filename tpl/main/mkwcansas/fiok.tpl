@@ -142,7 +142,13 @@
 									<td>{$megr.kelt}</td>
 									<td>{$megr.allapotnev|default:"ismeretlen"}</td>
 									<td class="textalignright">{number_format($megr.brutto,0,'',' ')} Ft</td>
-									<td></td>
+                                    <td>
+                                        {if ($megr.csomagkovetolink)}
+                                            <a href="{$megr.csomagkovetolink}" target="_blank">{$megr.fuvarlevelszam}</a>
+                                        {else}
+                                            {$megr.fuvarlevelszam}
+                                        {/if}
+                                    </td>
                                     <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
 								</tr>
 								<tr class="notvisible acc-megrendelesborderbottom">

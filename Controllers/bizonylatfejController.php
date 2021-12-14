@@ -337,6 +337,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['bizonylatnev'] = $t->getBizonylatnev();
         $x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['fuvarlevelszam'] = $t->getFuvarlevelszam();
+        if (\mkw\store::isFoxpostSzallitasimod($t->getSzallitasimodId())) {
+            $x['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $t->getFuvarlevelszam();
+        }
+        elseif (\mkw\store::isGLSSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
+            $x['csomagkovetolink'] = $t->getGlsparcellabelurl();
+        }
         $x['keltstr'] = $t->getKeltStr();
         $x['teljesitesstr'] = $t->getTeljesitesStr();
         $x['esedekessegstr'] = $t->getEsedekessegStr();

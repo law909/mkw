@@ -1096,6 +1096,9 @@ class Bizonylatfej {
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
+        if (\mkw\store::isFoxpostSzallitasimod($this->getSzallitasimodId())) {
+            $ret['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $this->getFuvarlevelszam();
+        }
         $ret['erbizonylatszam'] = $this->getErbizonylatszam();
         $ret['valutanemnev'] = $this->getValutanemnev();
         $ret['arfolyam'] = $this->getArfolyam();
