@@ -60,14 +60,14 @@ class store {
     public static function getJSVersion() {
         switch (self::getTheme()) {
             case 'mkwcansas':
-                return 32;
+                return 33;
         }
     }
 
     public static function getBootstrapJSVersion() {
         switch (self::getTheme()) {
             case 'mkwcansas':
-                return 7;
+                return 8;
         }
     }
 
