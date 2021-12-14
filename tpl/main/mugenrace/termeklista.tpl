@@ -113,8 +113,8 @@
 							<option value="nevdesc"{if ($order=='nevdesc')} selected="selected"{/if}>{t('Név szerint csökkenő')}</option>
 							<option value="arasc"{if ($order=='arasc')} selected="selected"{/if}>{t('Legolcsóbb elől')}</option>
 							<option value="ardesc"{if ($order=='ardesc')} selected="selected"{/if}>{t('Legdrágább elől')}</option>
-							<option value="idasc"{if ($order=='idasc')} selected="selected"{/if}>{t('Legújabb elől')}</option>
-							<option value="iddesc"{if ($order=='iddesc')} selected="selected"{/if}>{t('Legrégebbi elől')}</option>
+							<option value="idasc"{if ($order=='idasc')} selected="selected"{/if}>{t('Legrégebbi elől')}</option>
+							<option value="iddesc"{if ($order=='iddesc')} selected="selected"{/if}>{t('Legújabb elől')}</option>
 						</select>
 						<input class="KeresettEdit" type="hidden" name="keresett" value="{$keresett}">
 						<input id="ListviewEdit" type="hidden" name="vt" value="{$vt}">
