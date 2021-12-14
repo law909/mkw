@@ -179,7 +179,7 @@
                                         {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
-                                            <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$_termek.id}-{$_termek.valtozatid|default}">{$_termek.szallitasiido}</span> munkanap</div>
+                                            <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$_termek.id}-{$_termek.valtozatid|default}">{if ($_termek.minszallitasiido)}{$_termek.minszallitasiido} - {/if}{$_termek.szallitasiido}</span> munkanap</div>
                                         {/if}
                                         <div class="termekjelzok">
                                             {foreach $_termek.cimkelistaban as $_jelzo}

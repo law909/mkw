@@ -372,6 +372,7 @@ class mainController extends \mkwhelpers\Controller {
         $ret = array();
 
         $ret['szallitasiido'] = $termek->calcSzallitasiido($valtozat);
+        $ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
 		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
@@ -405,6 +406,7 @@ class mainController extends \mkwhelpers\Controller {
 		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
 
 		$ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
+		$ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
         $ret['price'] = number_format($termek->getBruttoAr(
             $termekvaltozat,
             \mkw\store::getLoggedInUser(),

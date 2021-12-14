@@ -803,6 +803,7 @@ class Termek {
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
 
         $x['szallitasiido'] = $this->calcSzallitasiido($valtozat);
+        $x['minszallitasiido'] = intdiv($x['szallitasiido'], 2);
 
         $listaban = array();
         foreach ($this->getCimkek() as $cimke) {
@@ -983,6 +984,7 @@ class Termek {
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
 
         $x['szallitasiido'] = $this->calcSzallitasiido($valtozat);
+        $x['minszallitasiido'] = intdiv($x['szallitasiido'], 2);
 
         $altomb = array();
         foreach ($this->getTermekKepek(true) as $kep) {
@@ -1139,6 +1141,7 @@ class Termek {
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['szallitasiido'] = $this->calcSzallitasiido();
+        $x['minszallitasiido'] = intdiv($x['szallitasiido'], 2);
         return $x;
     }
 

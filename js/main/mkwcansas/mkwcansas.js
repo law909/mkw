@@ -6,7 +6,13 @@ $(document).ready(function() {
 
     function changeTermekAdat(id, d) {
         $('#termekprice' + id).text(d['price']);
-        $('#termekszallitasiido' + id).text(d['szallitasiido']);
+        if (d['minszallitasiido']) {
+            szidotext = d['minszallitasiido'] + ' - ' + d['szallitasiido'];
+        }
+        else {
+            szidotext = d['szallitasiido'];
+        }
+        $('#termekszallitasiido' + id).text(szidotext);
         if ('kepurllarge' in d) {
             $('#termekkeplink' + id).attr('href', d['kepurllarge']);
         }

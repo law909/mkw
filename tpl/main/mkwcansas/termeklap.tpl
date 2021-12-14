@@ -77,7 +77,7 @@
                             <div><span class="bold">Kiszerelés:</span> {$termek.me}</div>
                             {/if}
                             {if ($termek.szallitasiido && (!$termek.nemkaphato))}
-                                <div><span class="bold">Szállítási idő:</span> max. <span id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> munkanap</div>
+                                <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$termek.id}">{if ($termek.minszallitasiido)}{$termek.minszallitasiido} - {/if}{$termek.szallitasiido}</span> munkanap</div>
                             {/if}
                             <div>
                                 <ul class="simalista">
