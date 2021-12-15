@@ -955,3 +955,4 @@ $router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#co
 $router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas', 'adminrepairfoglalas');
 //$router->map('GET', '/admin/t/emailcheck', 'adminController#checkEmail', 'adminemailcheck');
 $router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
+$router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');

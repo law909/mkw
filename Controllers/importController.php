@@ -5895,4 +5895,89 @@ class importController extends \mkwhelpers\Controller {
 
     }
 
+    public function makszutovIdCsere() {
+
+        $sep = ';';
+
+        $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoMaxutov);
+        $batchsize = 20;
+
+        $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
+        $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
+        \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        \curl_exec($ch);
+        fclose($fh);
+
+        $linecount = 0;
+        $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'r');
+        if ($fh) {
+            while (($linecount < 10) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $linecount++;
+            }
+        }
+        fclose($fh);
+
+        if ($linecount > 1) {
+            $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'r');
+            if ($fh) {
+
+                $termekdb = 0;
+                fgetcsv($fh, 0, $sep, '"');
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    $regiidegencikkszam = (string)$data[$this->n('a')];
+                    $ujidegencikkszam = (string)$data[$this->n('b')];
+                    $termekdb++;
+                    /** @var Termek $termek */
+                    $termek = false;
+                    /** @var TermekValtozat $valtozat */
+                    $valtozat = false;
+                    $valtozatok = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $regiidegencikkszam));
+                    if ($valtozatok) {
+                        foreach ($valtozatok as $v) {
+                            $termek = $v->getTermek();
+                            if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                $valtozat = $v;
+                                break;
+                            }
+                        }
+                        if (!$valtozat) {
+                            $termek = false;
+                        }
+                    }
+                    else {
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $regiidegencikkszam, 'gyarto' => $gyartoid));
+                    }
+
+                    if (is_array($termek)) {
+                        $termek = $termek[0];
+                    }
+                    if ($valtozat) {
+                        $valtozat->setIdegencikkszam($ujidegencikkszam);
+                        if ($termek && $termek->getIdegencikkszam() == $regiidegencikkszam) {
+                            $termek->setIdegencikkszam($ujidegencikkszam);
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                        \mkw\store::getEm()->persist($valtozat);
+                    }
+                    else {
+                        if ($termek) {
+                            $termek->setIdegencikkszam($ujidegencikkszam);
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+            }
+            fclose($fh);
+        }
+    }
+
 }
