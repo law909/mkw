@@ -2741,7 +2741,17 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setGyarto($gyarto);
                                 }
                                 $termek->setNemkaphato(false);
-                                $termek->setBrutto(round($data[$this->n('h')] * 1 * $arszaz / 100, -1));
+
+                                $kiskerar = $data[$this->n('h')] * 1;
+                                $nagykerar = $data[$this->n('g')] * 1;
+                                if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
+                                    $termek->setBrutto($nagykerar * 115 / 100);
+                                }
+                                else {
+                                    $termek->setBrutto($kiskerar * $arszaz / 100);
+                                }
+                                $termek->setBrutto(round($termek->getBrutto(), -1));
+
                                 // kepek
                                 $imagelist = explode(',', $data[$this->n('j')]);
                                 $imgcnt = 0;
@@ -2792,10 +2802,15 @@ class importController extends \mkwhelpers\Controller {
                             if ($valtozat) {
                                 if ($termek) {
                                     if (!$termek->getAkcios()) {
-                                        $ar = $data[$this->n('h')] * 1 * $arszaz / 100;
-                                        $ar = round($ar, -1);
-                                        $termek->setBrutto($ar);
-                                        //$valtozat->setBrutto($ar - $termek->getBrutto());
+                                        $kiskerar = $data[$this->n('h')] * 1;
+                                        $nagykerar = $data[$this->n('g')] * 1;
+                                        if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
+                                            $termek->setBrutto($nagykerar * 115 / 100);
+                                        }
+                                        else {
+                                            $termek->setBrutto($kiskerar * $arszaz / 100);
+                                        }
+                                        $termek->setBrutto(round($termek->getBrutto(), -1));
                                     }
                                 }
                                 if (!$kaphato) {
@@ -2830,7 +2845,15 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setNemkaphato(false);
                                     }
                                     if (!$termek->getAkcios()) {
-                                        $termek->setBrutto(round($data[$this->n('h')] * 1 * $arszaz / 100, -1));
+                                        $kiskerar = $data[$this->n('h')] * 1;
+                                        $nagykerar = $data[$this->n('g')] * 1;
+                                        if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
+                                            $termek->setBrutto($nagykerar * 115 / 100);
+                                        }
+                                        else {
+                                            $termek->setBrutto($kiskerar * $arszaz / 100);
+                                        }
+                                        $termek->setBrutto(round($termek->getBrutto(), -1));
                                     }
                                     \mkw\store::getEm()->persist($termek);
                                 }
