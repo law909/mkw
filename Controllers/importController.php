@@ -2677,7 +2677,7 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
                     }
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
-                        $idegencikkszam = (string)$data[$this->n('a')];
+                        $idegencikkszam = (string)$data[$this->n('b')];
                         $termekdb++;
                         $termek = false;
                         $valtozat = false;
@@ -2875,7 +2875,7 @@ class importController extends \mkwhelpers\Controller {
                         fgetcsv($fh, 0, $sep, '"');
                         $idegenkodok = array();
                         while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                            $idegenkodok[] = (string)$data[0];
+                            $idegenkodok[] = (string)$data[1];
                         }
                         if ($idegenkodok) {
                             $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
