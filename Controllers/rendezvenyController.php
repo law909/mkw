@@ -270,6 +270,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
             $v->setVar('uid', $rendezveny->getUid());
             $v->setVar('kellszamlazasiadat', $rendezveny->getKellszamlazasiadat());
+            $v->setVar('rendezvenynev', $rendezveny->getTeljesNev() . ' - ' . $rendezveny->getTanarNev());
             echo $v->getTemplateResult();
         }
     }

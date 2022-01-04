@@ -9,6 +9,7 @@
         <div class="row">
             <div class="col">
                 <h4 class="color-darshan">JELENTKEZÉS</h4>
+                <div class="color-darshan">{$rendezvenynev}</div>
             </div>
         </div>
         <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">
