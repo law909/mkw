@@ -97,6 +97,9 @@ class Orarend {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $lemondhato = false;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $jutalekszazalek = 0;
+
     public function __construct() {
         $this->bejelentkezesek = new ArrayCollection();
     }
@@ -422,6 +425,20 @@ class Orarend {
      */
     public function setLemondhato($lemondhato) {
         $this->lemondhato = $lemondhato;
+    }
+
+    /**
+     * @return int
+     */
+    public function getJutalekszazalek() {
+        return $this->jutalekszazalek;
+    }
+
+    /**
+     * @param int $jutalekszazalek
+     */
+    public function setJutalekszazalek($jutalekszazalek) {
+        $this->jutalekszazalek = $jutalekszazalek;
     }
 
 }

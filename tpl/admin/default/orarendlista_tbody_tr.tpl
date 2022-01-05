@@ -22,10 +22,13 @@
                                     <td>{$_orarend.kezdet} - {$_orarend.veg}</td>
                                 </tr>
                                 <tr>
-                                    <td>Átl.résztvevő: {$_orarend.atlagresztvevoszam}</td>
+                                    <td>Max.férőhely: {$_orarend.maxferohely}</td>
                                 </tr>
                                 <tr>
                                     <td>Min.bejelentkezés: {$_orarend.minbejelentkezes}</td>
+                                </tr>
+                                <tr>
+                                    <td>Jutalék: {$_orarend.jutalekszazalek} %</td>
                                 </tr>
                             </tbody>
                         </table>

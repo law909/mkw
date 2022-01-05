@@ -129,7 +129,7 @@ class JogaBejelentkezes {
                 }
                 break;
         }
-        $jr->calcJutalek();
+        $jr->calcJutalek($this->getOrarend()->getJutalekszazalek());
         \mkw\store::getEm()->persist($jr);
         \mkw\store::getEm()->flush();
         $this->setJogareszvetelid($jr->getId());

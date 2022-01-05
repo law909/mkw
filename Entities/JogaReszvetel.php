@@ -579,7 +579,7 @@ class JogaReszvetel {
         $this->uresterem = $uresterem;
     }
 
-    public function calcJutalek() {
+    public function calcJutalek($jutalekszazalek = null) {
         if ($this->getUresterem()) {
             $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaUresTeremJutalek, 3000));
         }
@@ -588,7 +588,10 @@ class JogaReszvetel {
                 $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
             }
             else {
-                $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
+                $jutalekszaz = $jutalekszazalek;
+                if (!$jutalekszaz) {
+                    $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
+                }
                 $this->setJutalek($this->getBruttoegysar() * $jutalekszaz / 100);
             }
         }

@@ -43,6 +43,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['bejelentkezeskell'] = $t->isBejelentkezeskell();
 		$x['minbejelentkezes'] = $t->getMinbejelentkezes();
 		$x['lemondhato'] = $t->getLemondhato();
+		$x['jutalekszazalek'] = $t->getJutalekszazalek();
 		return $x;
 	}
 
@@ -84,6 +85,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $obj->setBejelentkezeskell($this->params->getBoolRequestParam('bejelentkezeskell'));
         $obj->setMinbejelentkezes($this->params->getIntRequestParam('minbejelentkezes'));
         $obj->setLemondhato($this->params->getBoolRequestParam('lemondhato'));
+        $obj->setJutalekszazalek($this->params->getIntRequestParam('jutalekszazalek'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
