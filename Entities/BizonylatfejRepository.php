@@ -1100,7 +1100,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         $filter = new FilterDescriptor();
         $filter
-            ->addFilter('bizonylattipus', 'IN', array('szamla', 'keziszamla', 'egyeb'))
+            ->addFilter('bizonylattipus', 'IN', array('szamla', 'keziszamla', 'egyeb', 'garancialevel'))
             ->addFilter('rontott', '=', false)
             ->addFilter('storno', '=', false)
             ->addFilter('stornozott', '=', false)
