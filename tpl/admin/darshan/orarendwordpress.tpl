@@ -337,7 +337,7 @@
                 </div>
             </div>
             <div class="dtttanar">
-                {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
+                {if (!$ora['elmarad'] && $ora['bejelentkezeskell'] && $ora['megvanhely'])}
                     <div>
                         <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
                             {if ($ora['onlineurl'])}1. {/if}Bejelentkezek
