@@ -82,17 +82,25 @@ $(document).ready(function() {
             $('.js-exportbutton').on('click', function(e) {
                 var fak, fafilter, $ff, partnercimkefilter;
                 e.preventDefault();
+                $ff = $('#bizonylattetel');
 
                 fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                 if (fak.length > 0) {
                     fafilter = fak;
                 }
-                $('#FaFilter').val(fafilter);
+                arrayLength = fafilter.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                }
+//                $('#FaFilter').val(fafilter);
 
                 partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
-                $('#PartnerCimkeFilter').val(partnercimkefilter);
+                arrayLength = partnercimkefilter.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                }
+//                $('#PartnerCimkeFilter').val(partnercimkefilter);
 
-                $ff = $('#bizonylattetel');
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
@@ -100,17 +108,24 @@ $(document).ready(function() {
             $('.js-print').on('click', function(e) {
                 var fak, fafilter, $ff, partnercimkefilter;
                 e.preventDefault();
+                $ff = $('#bizonylattetel');
 
                 fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                 if (fak.length > 0) {
                     fafilter = fak;
                 }
-                $('#FaFilter').val(fafilter);
-
+                arrayLength = fafilter.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                }
+                //$('#FaFilter').val(fafilter);
                 partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
-                $('#PartnerCimkeFilter').val(partnercimkefilter);
+                arrayLength = partnercimkefilter.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                }
+                //$('#PartnerCimkeFilter').val(partnercimkefilter);
 
-                $ff = $('#bizonylattetel');
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
