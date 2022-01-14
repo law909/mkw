@@ -101,8 +101,6 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
-                <input id="FaFilter" type="hidden" name="fafilter[]">
-                <input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]">
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
                 <a href="/admin/bizonylattetellista/export" class="js-exportbutton">{at('Export')}</a>
                 <a href="/admin/bizonylattetellista/print" class="js-print">{at('Nyomtat')}</a>

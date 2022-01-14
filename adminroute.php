@@ -411,6 +411,31 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatdok/del', 'bizonylatdokController#del', 'adminbizonylatdokdel');
 }
 
+$router->map('GET', '/admin/mnrstatic/viewlist', 'mnrstaticController#viewlist', 'adminmnrstaticviewlist');
+$router->map('GET', '/admin/mnrstatic/htmllist', 'mnrstaticController#htmllist', 'adminmnrstatichtmllist');
+$router->map('GET', '/admin/mnrstatic/getlistbody', 'mnrstaticController#getlistbody', 'adminmnrstaticgetlistbody');
+$router->map('GET', '/admin/mnrstatic/getkarb', 'mnrstaticController#getkarb', 'adminmnrstaticgetkarb');
+$router->map('GET', '/admin/mnrstatic/viewkarb', 'mnrstaticController#viewkarb', 'adminmnrstaticviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrstatic/save', 'mnrstaticController#save', 'adminmnrstaticsave');
+}
+
+$router->map('GET', '/admin/mnrstatictranslation/getemptyrow', 'mnrstatictranslationController#getemptyrow', 'adminmnrstatictranslationgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrstatictranslation/save', 'mnrstatictranslationController#save', 'adminmnrstatictranslationsave');
+}
+
+$router->map('GET', '/admin/mnrstaticpage/getemptyrow', 'mnrstaticpageController#getemptyrow', 'adminmnrstaticpagegetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrstaticpage/save', 'mnrstaticpageController#save', 'adminmnrstaticpagesave');
+    $router->map('POST', '/admin/mnrstaticpage/delall', 'mnrstaticpageController#delall', 'adminmnrstaticpagedelall');
+}
+
+$router->map('GET', '/admin/mnrstaticpagetranslation/getemptyrow', 'mnrstaticpagetranslationController#getemptyrow', 'adminmnrstaticpagetranslationgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrstaticpagetranslation/save', 'mnrstaticpagetranslationController#save', 'adminmnrstaticpagetranslationsave');
+}
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
