@@ -13,8 +13,10 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        {if ($resztvevo.berlet)}
+                        {if ($resztvevo.tipus == 'berlet')}
                             Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}
+                        {elseif ($resztvevo.tipus == 'orajegy')}
+                            Órajegyet vett
                         {else}
                             NINCS bérlete
                         {/if}
@@ -36,7 +38,7 @@
                     <div class="col">
                 {if ($resztvevo.tipus == 'berlet')}
                     Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}
-                {elseif ($resztvevo.tipus) == 'orajegy'}
+                {elseif ($resztvevo.tipus == 'orajegy')}
                     Órajegyet vett
                 {else}
                     NINCS bérlete
