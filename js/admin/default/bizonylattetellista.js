@@ -88,16 +88,20 @@ $(document).ready(function() {
                 if (fak.length > 0) {
                     fafilter = fak;
                 }
-                arrayLength = fafilter.length;
-                for (var i = 0; i < arrayLength; i++) {
-                    $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                if (fafilter) {
+                    arrayLength = fafilter.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                    }
                 }
 //                $('#FaFilter').val(fafilter);
 
                 partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
-                arrayLength = partnercimkefilter.length;
-                for (var i = 0; i < arrayLength; i++) {
-                    $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                if (partnercimkefilter) {
+                    arrayLength = partnercimkefilter.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                    }
                 }
 //                $('#PartnerCimkeFilter').val(partnercimkefilter);
 
@@ -114,15 +118,19 @@ $(document).ready(function() {
                 if (fak.length > 0) {
                     fafilter = fak;
                 }
-                arrayLength = fafilter.length;
-                for (var i = 0; i < arrayLength; i++) {
-                    $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                if (fafilter) {
+                    arrayLength = fafilter.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        $ff.append('<input id="FaFilter" type="hidden" name="fafilter[]" value="' + fafilter[i] + '">');
+                    }
                 }
                 //$('#FaFilter').val(fafilter);
-                partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
-                arrayLength = partnercimkefilter.length;
-                for (var i = 0; i < arrayLength; i++) {
-                    $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                if (partnercimkefilter) {
+                    partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
+                    arrayLength = partnercimkefilter.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
+                    }
                 }
                 //$('#PartnerCimkeFilter').val(partnercimkefilter);
 
