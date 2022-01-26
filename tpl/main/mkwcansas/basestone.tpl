@@ -91,6 +91,14 @@
         </script>
         <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=522099121505135&ev=PageView&noscript=1"/></noscript>
         <!-- End Facebook Pixel Code -->
+        <script id="barat_hud_sr_script">
+            var hst = document.createElement("script");
+            hst.src = "//admin.fogyasztobarat.hu/h-api.js";
+            hst.type ="text/javascript";hst.setAttribute("data-id", "M6CJIN2L");
+            hst.setAttribute("id", "fbarat");
+            var hs = document.getElementById("barat_hud_sr_script");
+            hs.parentNode.insertBefore(hst, hs);
+        </script>
 	</head>
 	<body class="bgimg">
         {block "body"}
