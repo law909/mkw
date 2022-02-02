@@ -60,7 +60,14 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function getForMenu($menunum) {
+    public function getForMenu($menunum, $webshopnum = null) {
+        $webshopfilter = '';
+        if ($webshopnum) {
+            if ($webshopnum == 1) {
+                $webshopfilter = ' AND (f.lathato=1) ';
+            }
+            else $webshopfilter = ' AND (f.lathato' . $webshopnum . '=1) ';
+        }
         if (!\mkw\store::isMultilang()) {
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
@@ -77,12 +84,12 @@ class TermekFaRepository extends \mkwhelpers\Repository {
     //			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
                     . 'sorrend '
                     . 'FROM termekfa f '
-                    . 'WHERE menu' . $menunum . 'lathato=1 '
+                    . 'WHERE menu' . $menunum . 'lathato=1 ' . $webshopfilter
                     . 'ORDER BY sorrend,nev', $rsm);
             return $q->getScalarResult();
         }
         else {
-            $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ORDER BY f.sorrend');
+            $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
             if (\mkw\store::isMainMode()) {
                 \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
             }

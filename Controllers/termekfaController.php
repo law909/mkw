@@ -291,7 +291,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 return $t;
             case \mkw\store::isMugenrace():
                 $repo = $this->getRepo();
-                $f = $repo->getForMenu($menunum);
+                $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());
                 $t = array();
                 foreach ($f as $o) {
                     $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
