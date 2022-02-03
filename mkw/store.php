@@ -3,6 +3,8 @@
 namespace mkw;
 
 use Doctrine\ORM\EntityManager;
+use Entities\Fizmod;
+use Entities\Partner;
 use http\Params;
 
 class store {
@@ -756,22 +758,33 @@ class store {
         return $t_txt;
     }
 
+    /**
+     * @param $kelt
+     * @param Fizmod $fizmod
+     * @param Partner $partner
+     * @return string
+     * @throws \Exception
+     */
     public static function calcEsedekesseg($kelt, $fizmod = null, $partner = null) {
         $fmhaladek = 0;
         $partnerhaladek = 0;
+        $fmtipus = 'B';
         if ($fizmod) {
             $fmhaladek = $fizmod->getHaladek();
+            $fmtipus = $fizmod->getTipus();
         }
         if ($partner) {
             $partnerhaladek = $partner->getFizhatido();
         }
         $dkelt = new \DateTime(self::convDate($kelt));
-        if ($partnerhaladek) {
-            $dkelt->add(new \DateInterval('P' . $partnerhaladek . 'D'));
-        }
-        else {
-            if ($fmhaladek) {
-                $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
+        if ($fmtipus === 'B') {
+            if ($partnerhaladek) {
+                $dkelt->add(new \DateInterval('P' . $partnerhaladek . 'D'));
+            }
+            else {
+                if ($fmhaladek) {
+                    $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
+                }
             }
         }
         return $dkelt->format(self::$DateFormat);
