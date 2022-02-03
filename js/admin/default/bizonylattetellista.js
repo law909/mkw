@@ -125,8 +125,8 @@ $(document).ready(function() {
                     }
                 }
                 //$('#FaFilter').val(fafilter);
+                partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
                 if (partnercimkefilter) {
-                    partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
                     arrayLength = partnercimkefilter.length;
                     for (var i = 0; i < arrayLength; i++) {
                         $ff.append('<input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]" value="' + partnercimkefilter[i] + '">');
