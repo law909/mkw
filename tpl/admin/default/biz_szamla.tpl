@@ -81,35 +81,35 @@
             {if ($egyed.valutasszamla)}
                 <tr>
                     <td>Árfolyam:</td>
-                    <td class="textalignright">{number_format($egyed.arfolyam,2,'',' ')} HUF/{$egyed.valutanemnev}</td>
+                    <td class="textalignright">{number_format($egyed.arfolyam,2,',',' ')} HUF/{$egyed.valutanemnev}</td>
                 </tr>
             {/if}
                 <tr>
                     <td>Nettó:</td>
-                    <td class="textalignright">{number_format($egyed.netto,2,'',' ')} {$egyed.valutanemnev}</td>
+                    <td class="textalignright">{number_format($egyed.netto,2,',',' ')} {$egyed.valutanemnev}</td>
                     {if ($egyed.valutasszamla)}
-                    <td class="textalignright">{number_format($egyed.nettohuf,2,'',' ')} HUF</td>
+                    <td class="textalignright">{number_format($egyed.nettohuf,2,',',' ')} HUF</td>
                     {/if}
                 </tr>
                 <tr>
                     <td>ÁFA:</td>
-                    <td class="textalignright">{number_format($egyed.afa,2,'',' ')} {$egyed.valutanemnev}</td>
+                    <td class="textalignright">{number_format($egyed.afa,2,',',' ')} {$egyed.valutanemnev}</td>
                     {if ($egyed.valutasszamla)}
-                    <td class="textalignright">{number_format($egyed.afahuf,2,'',' ')} HUF</td>
+                    <td class="textalignright">{number_format($egyed.afahuf,2,',',' ')} HUF</td>
                     {/if}
                 </tr>
                 <tr>
                     <td>Bruttó:</td>
-                    <td class="textalignright">{number_format($egyed.brutto,2,'',' ')} {$egyed.valutanemnev}</td>
+                    <td class="textalignright">{number_format($egyed.brutto,2,',',' ')} {$egyed.valutanemnev}</td>
                     {if ($egyed.valutasszamla)}
-                    <td class="textalignright">{number_format($egyed.bruttohuf,2,'',' ')} HUF</td>
+                    <td class="textalignright">{number_format($egyed.bruttohuf,2,',',' ')} HUF</td>
                     {/if}
                 </tr>
                 <tr>
                     <td class="bold">Fizetendő:</td>
-                    <td class="textalignright bold">{number_format($egyed.fizetendo,2,'',' ')} {$egyed.valutanemnev}</td>
+                    <td class="textalignright bold">{number_format($egyed.fizetendo,2,',',' ')} {$egyed.valutanemnev}</td>
                     {if ($egyed.valutasszamla)}
-                    <td class="textalignright bold">{number_format($egyed.bruttohuf,2,'',' ')} HUF</td>
+                    <td class="textalignright bold">{number_format($egyed.bruttohuf,2,',',' ')} HUF</td>
                     {/if}
                 </tr>
                 <tr>
