@@ -1099,6 +1099,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function getBizonylatHTML($id) {
+        /** @var Bizonylatfej $o */
         $o = $this->getRepo()->findForPrint($id);
         if ($o) {
             if ($o->getReportfile()) {

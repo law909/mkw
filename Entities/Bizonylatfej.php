@@ -1101,6 +1101,7 @@ class Bizonylatfej {
         }
         $ret['erbizonylatszam'] = $this->getErbizonylatszam();
         $ret['valutanemnev'] = $this->getValutanemnev();
+        $ret['valutasszamla'] = $this->getValutanemId() != \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
         $ret['arfolyam'] = $this->getArfolyam();
         $ret['partnerszamlatipus'] = $this->getPartnerSzamlatipus();
         $ret['uzletkotonev'] = $this->getUzletkotonev();

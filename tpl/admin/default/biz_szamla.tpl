@@ -78,24 +78,42 @@
         </div>
         <table class="osszesitotable pull-right">
             <tbody>
+            {if ($egyed.valutasszamla)}
+                <tr>
+                    <td>Árfolyam:</td>
+                    <td class="textalignright">{number_format($egyed.arfolyam,0,'',' ')} HUF/{$egyed.valutanemnev}</td>
+                </tr>
+            {/if}
                 <tr>
                     <td>Nettó:</td>
-                    <td class="textalignright">{number_format($egyed.netto,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.netto,0,'',' ')} {$egyed.valutanemnev}</td>
+                    {if ($egyed.valutasszamla)}
+                    <td class="textalignright">{number_format($egyed.nettohuf,0,'',' ')} HUF</td>
+                    {/if}
                 </tr>
                 <tr>
                     <td>ÁFA:</td>
-                    <td class="textalignright">{number_format($egyed.afa,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.afa,0,'',' ')} {$egyed.valutanemnev}</td>
+                    {if ($egyed.valutasszamla)}
+                    <td class="textalignright">{number_format($egyed.afahuf,0,'',' ')} HUF</td>
+                    {/if}
                 </tr>
                 <tr>
                     <td>Bruttó:</td>
-                    <td class="textalignright">{number_format($egyed.brutto,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.brutto,0,'',' ')} {$egyed.valutanemnev}</td>
+                    {if ($egyed.valutasszamla)}
+                    <td class="textalignright">{number_format($egyed.bruttohuf,0,'',' ')} HUF</td>
+                    {/if}
                 </tr>
                 <tr>
                     <td class="bold">Fizetendő:</td>
-                    <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} Ft</td>
+                    <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} {$egyed.valutanemnev}</td>
+                    {if ($egyed.valutasszamla)}
+                    <td class="textalignright bold">{number_format($egyed.fizetendohuf,0,'',' ')} HUF</td>
+                    {/if}
                 </tr>
                 <tr>
-                    <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} forint</td>
+                    <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} {$egyed.valutanemnev}</td>
                 </tr>
             </tbody>
         </table>
