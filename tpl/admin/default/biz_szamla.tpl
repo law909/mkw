@@ -109,7 +109,7 @@
                     <td class="bold">Fizetendő:</td>
                     <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} {$egyed.valutanemnev}</td>
                     {if ($egyed.valutasszamla)}
-                    <td class="textalignright bold">{number_format($egyed.fizetendohuf,0,'',' ')} HUF</td>
+                    <td class="textalignright bold">{number_format($egyed.bruttohuf,0,'',' ')} HUF</td>
                     {/if}
                 </tr>
                 <tr>
