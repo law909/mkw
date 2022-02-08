@@ -40,10 +40,10 @@
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
                     <td class="textalignright">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
                     <td class="textalignright">{number_format($tetel.nettoegysar,2,',',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.netto,2,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.netto,2,',',' ')}</td>
                     <td class="textalignright">{$tetel.afanev}</td>
-                    <td class="textalignright">{number_format($tetel.afa,2,'',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.brutto,2,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.afa,2,',',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.brutto,2,',',' ')}</td>
                 </tr>
             {/foreach}
         </tbody>
@@ -60,9 +60,9 @@
             {foreach $afaosszesito as $a}
                 <tr>
                     <td>{$a.caption}</td>
-                    <td class="textalignright">{number_format($a.netto,2,'',' ')}</td>
-                    <td class="textalignright">{number_format($a.afa,2,'',' ')}</td>
-                    <td class="textalignright">{number_format($a.brutto,2,'',' ')}</td>
+                    <td class="textalignright">{number_format($a.netto,2,',',' ')}</td>
+                    <td class="textalignright">{number_format($a.afa,2,',',' ')}</td>
+                    <td class="textalignright">{number_format($a.brutto,2,',',' ')}</td>
                 </tr>
             {/foreach}
         </tbody>
