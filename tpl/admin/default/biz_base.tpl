@@ -17,7 +17,7 @@
             .teto { height: 820px;}
             .pull-left { float: left;}
             .pull-right { float: right;}
-            .headbox { width: 50%;height: 120px;}
+            .headbox { width: 50%;height: 130px;}
             .headboxborder { height: 100%;}
             .headboxinner { padding: 5px;}
             .bizszam, .biznev { font-size: 20px;font-weight: bold;}
