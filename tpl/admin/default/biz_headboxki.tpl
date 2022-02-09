@@ -9,6 +9,9 @@
             <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
             <p>{$egyed.tulajutca}</p>
             <p>Adószám: {$egyed.tulajadoszam}</p>
+            {if ($egyed.tulajeuadoszam)}
+                <p>Adószám: {$egyed.tulajeuadoszam}</p>
+            {/if}
             <p>Bankszámla: {$egyed.tulajbankszamlaszam}</p>
         </div>
     </div>
