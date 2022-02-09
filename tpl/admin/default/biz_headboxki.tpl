@@ -10,7 +10,7 @@
             <p>{$egyed.tulajutca}</p>
             <p>Adószám: {$egyed.tulajadoszam}</p>
             {if ($egyed.tulajeuadoszam)}
-                <p>Adószám: {$egyed.tulajeuadoszam}</p>
+                <p>EU adószám: {$egyed.tulajeuadoszam}</p>
             {/if}
             <p>Bankszámla: {$egyed.tulajbankszamlaszam}</p>
         </div>
