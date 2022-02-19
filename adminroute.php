@@ -929,7 +929,7 @@ if (!\mkw\store::isClosed()) {
 
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
-    $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
+//    $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
     $router->map('GET', '/admin/partnermerge/view', 'partnermergeController#view', 'adminpartnermergeview');
     if (!\mkw\store::isClosed()) {
         $router->map('POST', '/admin/partnermerge', 'partnermergeController#doIt', 'adminpartnermerge');
