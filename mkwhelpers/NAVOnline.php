@@ -146,6 +146,10 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->callAPI('GET', '/invoice/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
 
+    public function getSzamlaContent($bizszam) {
+        return $this->callAPI('GET', '/invoice/getcontent/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
+    }
+
     public function getAllSzamlaInfo() {
         return $this->callAPI('GET', '/invoices/' . $this->cegAdoszam);
     }

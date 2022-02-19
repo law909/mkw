@@ -559,4 +559,25 @@ class adminController extends mkwhelpers\Controller {
         }
     }
 
+    public function ujdivatszamlare() {
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bizonylattipus', '=', 'szamla');
+        $filter->addFilter('id', '<=', 'SZ2022/000102');
+        $r = $this->getRepo('Entities\Bizonylatfej')->getAll($filter);
+        /** @var Entities\Bizonylatfej $bf */
+        foreach ($r as $bf) {
+            $adat = base64_decode($no->getSzamlaContent($bf->getId()));
+            $bf->setPartneradoszam();
+            $bf->setPartnerirszam();
+            $bf->setPartnervaros();
+            $bf->setPartnerutca();
+            $bf->setPartnernev();
+            $bf->setPartnervatstatus();
+            $bf->setKellszallitasikoltsegetszamolni(false);
+            $bf->setSimpleedit(true);
+        }
+        echo 'kész';
+    }
+
 }
