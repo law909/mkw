@@ -343,6 +343,10 @@
                             {if ($ora['onlineurl'])}1. {/if}Bejelentkezek
                         </a>
                     </div>
+                    {elseif (!$ora['megvanhely'])}
+                    <div>
+                        BETELT
+                    </div>
                 {/if}
                 {if (!$ora['elmarad'] && $ora['onlineurl'])}
                     <div>
