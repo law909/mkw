@@ -140,6 +140,8 @@
         }
         .pirosszoveg {
             color: #B63535;
+            font-size: 16px;
+            font-weight: bold;
         }
         .dttoranev {
             float: left;
