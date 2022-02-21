@@ -576,8 +576,8 @@ class adminController extends mkwhelpers\Controller {
                 $name = (string)$customer->customerName;
                 switch ($ns['']) {
                     case 'http://schemas.nav.gov.hu/OSA/2.0/data':
-                        print_r('2.0');
-                        $taxnumbase = $customer->customerVatData->customerTaxNumber;
+                        $vatstatus = '';
+                        $taxnumbase = $customer->customerTaxNumber;
                         $taxnum = (string)$taxnumbase->taxpayerId . '-' . (string)$taxnumbase->vatCode . '-' . (string)$taxnumbase->countyCode;
                         $address = $customer->customerAddress->simpleAddress;
                         $orszagkod = (string)$address->countryCode;
@@ -586,13 +586,16 @@ class adminController extends mkwhelpers\Controller {
                         $utca = (string)$address->additionalAddressDetail;
                         break;
                     case 'http://schemas.nav.gov.hu/OSA/3.0/data':
-                        print_r('3.0');
                         $vatstatus = (string)$customer->customerVatStatus;
                         switch ($vatstatus) {
                             case 'DOMESTIC':
                                 $taxnumbase = $customer->customerVatData->customerTaxNumber->children('base', true);
                                 $taxnum = (string)$taxnumbase->taxpayerId . '-' . (string)$taxnumbase->vatCode . '-' . (string)$taxnumbase->countyCode;
                                 break;
+                            case 'PRIVATE_PERSON':
+                                $taxnum = '';
+                                break;
+
                         }
                         $address = $customer->customerAddress->children('base', true)->simpleAddress;
                         $orszagkod = (string)$address->countryCode;
@@ -603,18 +606,30 @@ class adminController extends mkwhelpers\Controller {
                 }
 
                 echo $bf->getId() . ': ' . $name . ' ' . $vatstatus . ' ' . $taxnum . ' ' . $orszagkod . ' ' . $irszam . ' ' . $varos . ', ' . $utca . '<br>';
-                /**
-                $bf->setPartneradoszam($taxnum);
-                $bf->setPartnerirszam($irszam);
-                $bf->setPartnervaros($varos);
-                $bf->setPartnerutca($utca);
-                $bf->setPartnernev($name);
-                $bf->setPartnervatstatus();
-                $bf->setKellszallitasikoltsegetszamolni(false);
-                $bf->setSimpleedit(true);
-                $this->getEm()->persist($bf);
-                $this->getEm()->flush();
-                 */
+                if ($vatstatus !== 'PRIVATE_PERSON') {
+                    $bf->setPartneradoszam($taxnum);
+                    $bf->setPartnerirszam($irszam);
+                    $bf->setPartnervaros($varos);
+                    $bf->setPartnerutca($utca);
+                    $bf->setPartnernev($name);
+                    switch ($vatstatus) {
+                        case 'DOMESTIC':
+                            $bf->setPartnervatstatus(1);
+                            break;
+                    }
+                    $bf->setKellszallitasikoltsegetszamolni(false);
+                    $bf->setSimpleedit(true);
+                    $this->getEm()->persist($bf);
+                    $this->getEm()->flush();
+                }
+                else {
+                    $bf->setPartnervatstatus(2);
+                    $this->getEm()->persist($bf);
+                    $this->getEm()->flush();
+                }
+            }
+            else {
+                echo $bf->getId() . ':' . $no->getErrorsAsHtml() . '<br>';
             }
         }
         echo 'kész';
