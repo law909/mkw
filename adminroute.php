@@ -981,3 +981,4 @@ $router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas',
 //$router->map('GET', '/admin/t/emailcheck', 'adminController#checkEmail', 'adminemailcheck');
 $router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
 $router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');
+$router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
