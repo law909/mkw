@@ -138,6 +138,9 @@
         .delelott {
             background-color: #A5C663;
         }
+        .pirosszoveg {
+            color: #B63535;
+        }
         .dttoranev {
             float: left;
             padding: 10px 0;
@@ -344,7 +347,7 @@
                         </a>
                     </div>
                     {elseif (!$ora['megvanhely'])}
-                    <div>
+                    <div class="pirosszoveg">
                         BETELT
                     </div>
                 {/if}
