@@ -279,7 +279,8 @@ class orarendController extends \mkwhelpers\MattableController {
             $orak['datum'] = $napdatum->format(\mkw\store::$SQLDateFormat);
             $orak['bejelentkezesdb'] = $this->getRepo('Entities\JogaBejelentkezes')->getAdottOraCount($napdatum, $item->getId());
             $orak['maxbejelentkezes'] = $item->getMaxferohely();
-            $orak['megvanhely'] = $orak['maxbejelentkezes'] - $orak['bejelentkezesdb'] > 0;
+            $orak['szabadhely'] = $orak['maxbejelentkezes'] - $orak['bejelentkezesdb'];
+            $orak['megvanhely'] = $orak['szabadhely'] > 0;
 
             $hf = new \mkwhelpers\FilterDescriptor();
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
@@ -330,6 +331,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'bejelentkezesdb' => 0,
                 'maxbejelentkezes' => 0,
                 'megvanhely' => false,
+                'szabadhely' => 0,
                 'lemondhato' => false
             );
             if (!array_key_exists($item->getNap(), $orarend)) {
