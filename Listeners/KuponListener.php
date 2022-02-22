@@ -16,6 +16,7 @@ class KuponListener {
 
         $entity = $args->getEntity();
         if ($entity instanceof \Entities\Kupon) {
+            \mkw\store::writelog('listener' . $entity->getId());
             $entity->generateId();
         }
     }

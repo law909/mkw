@@ -45,6 +45,9 @@ class Kupon {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osszeg = 0;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $minimumosszeg = 0;
+
     public function toLista() {
         $ret = array();
         $ret['id'] = $this->getId();
@@ -52,6 +55,7 @@ class Kupon {
         $ret['tipusstr'] = $this->getTipusStr();
         $ret['osszeg'] = $this->getOsszeg();
         $ret['ervenyes'] = $this->isErvenyes();
+        $ret['minimumosszeg'] = $this->getMinimumosszeg();
         return $ret;
     }
 
@@ -64,7 +68,9 @@ class Kupon {
     }
 
     public function generateId() {
-        $this->id = uniqid(\mkw\store::getParameter(\mkw\consts::KuponElotag, 'MKW'));
+        if (!$this->id) {
+            $this->id = uniqid(\mkw\store::getParameter(\mkw\consts::KuponElotag, 'MKW'));
+        }
         return $this->id;
     }
 
@@ -170,4 +176,21 @@ class Kupon {
         return 'rep_kupon' . $this->getTipus() . '.tpl';
     }
 
+    /**
+     * @return int
+     */
+    public function getMinimumosszeg() {
+        return $this->minimumosszeg;
+    }
+
+    /**
+     * @param int $minimumosszeg
+     */
+    public function setMinimumosszeg($minimumosszeg): void {
+        $this->minimumosszeg = $minimumosszeg;
+    }
+
+    public function isMinimumosszegMegvan($osszeg) {
+        return $osszeg >= $this->getMinimumosszeg();
+    }
 }

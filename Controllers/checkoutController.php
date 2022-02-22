@@ -162,15 +162,23 @@ class checkoutController extends \mkwhelpers\MattableController {
 	}
 
 	public function getTetelList() {
+        $kr = $this->getRepo('Entities\Kosar');
         $kuponkod = $this->params->getStringRequestParam('kupon');
         $kuponszoveg = '';
         if ($kuponkod) {
+            $e = $kr->calcSumBySessionId(\Zend_Session::getId());
+            $ertek = $e['sum'];
             /** @var \Entities\Kupon $kupon */
             $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
             if ($kupon) {
                 if ($kupon->isErvenyes()) {
                     if ($kupon->isIngyenSzallitas()) {
-                        $kuponszoveg = $kupon->getTipusStr();
+                        if ($kupon->isMinimumosszegMegvan($ertek)) {
+                            $kuponszoveg = $kupon->getTipusStr();
+                        }
+                        else {
+                            $kuponszoveg = 'Rendeljen még ' . bizformat($kupon->getMinimumosszeg() - $ertek) . ' Ft értékben a kupon használatához!';
+                        }
                     }
                 }
                 else {
@@ -187,7 +195,6 @@ class checkoutController extends \mkwhelpers\MattableController {
             $kuponkod);
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
 
-        $kr = $this->getRepo('Entities\Kosar');
 		$sorok = $kr->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
         $partner = \mkw\store::getLoggedInUser();

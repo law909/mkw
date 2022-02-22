@@ -462,15 +462,16 @@ class KosarRepository extends \mkwhelpers\Repository {
 
         if ($termekid && $termek) {
 
+            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $ertek = $e['sum'];
+            $cnt = $e['count'];
+            /** @var Kupon $kupon */
             $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
-            if ($kupon && $kupon->isErvenyes() && $kupon->isIngyenSzallitas()) {
+            if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
                 $szamol = false;
             }
 
             if ($szamol) {
-                $e = $this->calcSumBySessionId(\Zend_Session::getId());
-                $ertek = $e['sum'];
-                $cnt = $e['count'];
                 if ($cnt != 0) {
                     $partner = \mkw\store::getLoggedInUser();
                     $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
@@ -499,15 +500,16 @@ class KosarRepository extends \mkwhelpers\Repository {
             $szamol = $szm->getVanszallitasiktg();
         }
 
+        $e = $this->calcSumBySessionId(\Zend_Session::getId());
+        $ertek = $e['sum'];
+        $cnt = $e['count'];
+        /** @var Kupon $kupon */
         $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
-        if ($kupon && $kupon->isErvenyes() && $kupon->isIngyenSzallitas()) {
+        if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
             $szamol = false;
         }
 
         if ($szamol) {
-            $e = $this->calcSumBySessionId(\Zend_Session::getId());
-            $ertek = $e['sum'];
-            $cnt = $e['count'];
             if ($cnt != 0) {
                 $partner = \mkw\store::getLoggedInUser();
                 $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(

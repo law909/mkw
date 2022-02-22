@@ -139,14 +139,18 @@ class BizonylatfejListener {
 
     /**
      * @param \Entities\Bizonylatfej $bizfej
+     * @param \Entities\Kupon $kupon
      */
-    private function createSzallitasiKtg($bizfej) {
+    private function createSzallitasiKtg($bizfej, $kupon) {
 
         if (!$bizfej->isKellszallitasikoltsegetszamolni()) {
             return;
         }
-
         $szamol = true;
+
+        if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($bizfej->getBruttohuf()) && $kupon->isIngyenSzallitas()) {
+            $szamol = false;
+        }
 
         $bruttoegysar = $bizfej->getSzallitasikoltsegbrutto();
 
@@ -459,7 +463,7 @@ class BizonylatfejListener {
                     $kupon = $entity->getKuponObject();
 
                     $this->createVasarlasiUtalvany($entity, $kupon);
-                    $this->createSzallitasiKtg($entity);
+                    $this->createSzallitasiKtg($entity, $kupon);
 
                     $entity->calcOsszesen();
                     $entity->calcRugalmasFizmod();
@@ -479,8 +483,8 @@ class BizonylatfejListener {
                     }
 
                     if ($kupon) {
-                        $kupon->doFelhasznalt();
-                        $this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
+                        //$kupon->doFelhasznalt();
+                        //$this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
                     }
 
                     $this->addFizmodTranslations($entity);

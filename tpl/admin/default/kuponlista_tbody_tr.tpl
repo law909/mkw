@@ -11,6 +11,7 @@
     <td class="cell">
         <div>{$_egyed.tipusstr}</div>
         <div>{bizformat($_egyed.osszeg)}</div>
+        <div>Minimum kosárérték: {bizformat($_egyed.minimumosszeg)}</div>
     </td>
     <td class="cell">
         {$_egyed.lejartstr}

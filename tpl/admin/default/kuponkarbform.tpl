@@ -9,8 +9,8 @@
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
-				<td><span>{at('Id')}:</span></td>
-				<td><span>{$egyed.id}</span></td>
+				<td><label for="IdEdit">{at('Id')}:</label></td>
+				<td><input id="IdEdit" type="text" name="xid" value="{$egyed.id}"></td>
 			</tr>
             <tr>
                 <td><label for="TipusEdit">{at('Típus')}:</label></td>
@@ -31,8 +31,12 @@
                     </select></td>
             </tr>
             <tr>
-                <td><label for="">{at('Összeg')}:</label></td>
-                <td><input type="text" name="osszeg" value="{$egyed.osszeg}"></td>
+                <td><label for="OsszegEdit">{at('Összeg')}:</label></td>
+                <td><input id="OsszegEdit" type="text" name="osszeg" value="{$egyed.osszeg}"></td>
+            </tr>
+            <tr>
+                <td><label for="MinOsszegEdit">{at('Minimum kosárérték')}:</label></td>
+                <td><input id="MinOsszegEdit" type="text" name="minimumosszeg" value="{$egyed.minimumosszeg}"></td>
             </tr>
 			</tbody></table>
 		</div>
