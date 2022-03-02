@@ -236,7 +236,7 @@
             padding: 10px;
             display: block;
         }
-        .modal {
+        .modal, .lemondmodal {
             position: fixed;
             left: 0;
             top: 0;
@@ -258,7 +258,7 @@
             width: 80%;
             border-radius: 0.1rem;
         }
-        .close-button {
+        .close-button, .lemondclose-button {
             float: right;
             width: 1.5rem;
             line-height: 1.5rem;
@@ -267,7 +267,7 @@
             border-radius: 0.25rem;
             background-color: lightgray;
         }
-        .close-button:hover {
+        .close-button:hover, .lemondclose-button:hover {
             background-color: darkgray;
         }
         .show-modal {
