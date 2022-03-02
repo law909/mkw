@@ -60,6 +60,10 @@
                 e.preventDefault();
                 toggleModal();
             });
+            $('.lemondclose-button').click(function(e) {
+                e.preventDefault();
+                toggleLemondmodal();
+            });
             $('.js-ok').click(function(e) {
                 e.preventDefault();
                 // ha nev input hidden
@@ -400,14 +404,14 @@
                 {/if}
                 {if (!$ora['elmarad'] && $ora['onlineurl'])}
                     <div>
-                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">
+                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton margin-bottom-5">
                         {if ($ora['bejelentkezeskell'])}2. {/if}Csatlakozom
                         </a>
                     </div>
                 {/if}
                 {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
                     <div>
-                        <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-lemondas" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                        <a href="#" class="dttonlinelink dttorarendbutton js-lemondas" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
                             Lemondom
                         </a>
                     </div>
@@ -439,7 +443,7 @@
 </div>
 <div class="lemondmodal">
     <div class="modal-content">
-        <span class="close-button">×</span>
+        <span class="lemondclose-button">×</span>
         <h1>Lemondás</h1>
         <form id="lemondmodal-form">
             <div class="form-group">
