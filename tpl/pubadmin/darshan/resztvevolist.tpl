@@ -82,7 +82,7 @@
             <button class="col-md-2 btn btn-darshan top-bottom-margin-5 js-setmegjelent"
                     data-id="{$resztvevo.id}"
                     {if (!$resztvevo.megjelent)}data-mustbuy="{$resztvevo.mustbuy}"{/if}>
-                {if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}{if ($resztvevo.lemondva)}&nbsp;(LEMONDTA){/if}
+                {if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}{if ($resztvevo.lemondva)} (LEMONDTA){/if}
             </button>
         {/if}
     </div>
