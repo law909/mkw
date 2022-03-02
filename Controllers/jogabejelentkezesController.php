@@ -145,7 +145,7 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController {
 
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
-                    $body->setVar('oranev', $ora->getJogaoratipusNev());
+                    $body->setVar('oranev', $ora->getNev());
                     $body->setVar('tanarnev', $ora->getDolgozoNev());
                     $body->setVar('idopont', $ora->getKezdetStr());
                     if ($partner) {
@@ -154,6 +154,49 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController {
                     }
                     else {
                         $body->setVar('partnerkeresztnev', $partnernev);
+                    }
+                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+                    $mailer = \mkw\store::getMailer();
+
+                    $mailer->addTo($email);
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+
+                    $mailer->send();
+                }
+            }
+        }
+    }
+
+    public function lemondas() {
+        $email = $this->params->getStringRequestParam('email');
+        $datumstr = $this->params->getStringRequestParam('datum');
+        $datum = new \DateTime($datumstr);
+        $orarendid = $this->params->getIntRequestParam('id');
+        if ($email && $orarendid && $datumstr) {
+            /** @var JogaBejelentkezes $bej */
+            $bej = $this->getRepo()->findOneBy(['partneremail' => $email, 'orarend' => $orarendid, 'datum' => $datum]);
+            if ($bej) {
+                $bej->setLemondva(true);
+                $this->getEm()->persist($bej);
+                $this->getEm()->flush();
+
+                /** @var \Entities\Orarend $ora */
+                $ora = $this->getRepo(Orarend::class)->find($orarendid);
+                /** @var \Entities\Partner $partner */
+                $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesKoszonoSablon));
+                if ($email && $emailtpl && $ora) {
+
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                    $body->setVar('oranev', $ora->getNev());
+                    $body->setVar('tanarnev', $ora->getDolgozoNev());
+                    $body->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
                     }
                     $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
 

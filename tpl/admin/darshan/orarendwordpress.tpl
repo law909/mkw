@@ -6,15 +6,23 @@
     <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            var modal = document.querySelector(".modal");
+            var modal = document.querySelector('.modal'),
+                lemondmodal = document.querySelector('.lemondmodal');
 
             function toggleModal() {
                 modal.classList.toggle("show-modal");
             }
 
+            function toggleLemondmodal() {
+                lemondmodal.classList.toggle("show-modal");
+            }
+
             function windowOnClick(event) {
                 if (event.target === modal) {
                     toggleModal();
+                }
+                elseif (event.target === lemondmodal) {
+                    toggleLemondmodal();
                 }
             }
 
@@ -24,6 +32,13 @@
                 $('input[name="id"]').val($this.data('id'));
                 $('input[name="datum"]').val($this.data('datum'));
                 toggleModal();
+            });
+            $('body').on('click', '.js-lemondas', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $('input[name="lemondid"]').val($this.data('id'));
+                $('input[name="lemonddatum"]').val($this.data('datum'));
+                toggleLemondmodal();
             });
             $('input[name="email"]').change(function(e) {
                 var ee = $(this);
@@ -75,6 +90,33 @@
                             }
                         });
                     }
+                }
+            });
+            $('.js-lemondok').click(function(e) {
+                e.preventDefault();
+                // ha nev input hidden
+                // akkor lekerdezni, hogy ismerjuk-e az emailt
+                //      ha nem, akkor megjeleniteni a nev inputot
+                //      es ismeretlen input legyen true
+                //      egyebkent ismeretlen input legyen false es menteni
+                // egyebkent menteni
+                if (!$('input[name="lemondemail"]').val()) {
+                    alert('Add meg az email címed!');
+                }
+                else {
+                    $.ajax({
+                        url: '/orarend/lemondas',
+                        type: 'POST',
+                        data: {
+                            id: $('input[name="lemondid"]').val(),
+                            datum: $('input[name="lemonddatum"]').val(),
+                            email: $('input[name="lemondemail"]').val()
+                        },
+                        success: function () {
+                            toggleLemondmodal();
+                            location.reload();
+                        }
+                    });
                 }
             });
             window.addEventListener("click", windowOnClick);
@@ -363,6 +405,13 @@
                         </a>
                     </div>
                 {/if}
+                {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
+                    <div>
+                        <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-lemondas" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                            Lemondom
+                        </a>
+                    </div>
+                {/if}
             </div>
         </div>
         {/foreach}
@@ -385,6 +434,21 @@
             <input type="hidden" name="id">
             <input type="hidden" name="datum">
             <button class="js-ok bejelentkezesbtn">OK</button>
+        </form>
+    </div>
+</div>
+<div class="lemondmodal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h1>Lemondás</h1>
+        <form id="lemondmodal-form">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" name="lemondemail" required>
+            </div>
+            <input type="hidden" name="lemondid">
+            <input type="hidden" name="lemonddatum">
+            <button class="js-lemondok bejelentkezesbtn">OK</button>
         </form>
     </div>
 </div>

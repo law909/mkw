@@ -909,12 +909,12 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function calcJutalek()
+    public function calcJutalek($jutalekszazalek = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcJutalek', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcJutalek', [$jutalekszazalek]);
 
-        return parent::calcJutalek();
+        return parent::calcJutalek($jutalekszazalek);
     }
 
     /**

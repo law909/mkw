@@ -113,6 +113,7 @@ class pubadminController extends mkwhelpers\Controller {
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
                 $rvtomb['mustbuy'] = !$rvtomb['tipus'];
                 $rvtomb['online'] = $resztvevo->getOnline();
+                $rvtomb['lemondva'] = $resztvevo->isLemondva();
                 /** @var Entities\Termek $termek */
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 if ($termek) {

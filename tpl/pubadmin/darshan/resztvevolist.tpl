@@ -79,7 +79,11 @@
                     </div>
                 </div>
             </div>
-            <button class="col-md-2 btn btn-darshan top-bottom-margin-5 js-setmegjelent" data-id="{$resztvevo.id}" {if (!$resztvevo.megjelent)}data-mustbuy="{$resztvevo.mustbuy}"{/if}>{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
+            <button class="col-md-2 btn btn-darshan top-bottom-margin-5 js-setmegjelent"
+                    data-id="{$resztvevo.id}"
+                    {if (!$resztvevo.megjelent)}data-mustbuy="{$resztvevo.mustbuy}"{/if}>
+                {if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}{if ($resztvevo.lemondva)}&nbsp;(LEMONDTA){/if}
+            </button>
         {/if}
     </div>
     {$sorszam = $sorszam + 1}

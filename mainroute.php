@@ -50,6 +50,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/orarend/print', 'orarendController#print', 'orarendprint');
     $router->map('GET', '/berletellenor', 'jogaberletController#getBerletAlkalmak', 'berletellenor');
     $router->map('POST', '/orarend/bejelentkezes', 'jogabejelentkezesController#bejelentkezes', 'orarendbejelentkezes');
+    $router->map('POST', '/orarend/lemondas', 'jogabejelentkezesController#lemondas', 'orarendlemondas');
     $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
     $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
     $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');

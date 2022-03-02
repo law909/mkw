@@ -81,6 +81,9 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="integer",nullable=true) */
     private $online = 0;
 
+    /** @ORM\Column(type="boolean") */
+    private $lemondva = false;
+
     public function createJogaReszvetel() {
         $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
@@ -407,6 +410,20 @@ class JogaBejelentkezes {
      */
     public function setOnline($online): void {
         $this->online = $online;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLemondva() {
+        return $this->lemondva;
+    }
+
+    /**
+     * @param bool $lemondva
+     */
+    public function setLemondva($lemondva): void {
+        $this->lemondva = $lemondva;
     }
 
 }
