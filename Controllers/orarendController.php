@@ -330,7 +330,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'datum' => '',
                 'bejelentkezesdb' => 0,
                 'maxbejelentkezes' => 0,
-                'megvanhely' => false,
+                'megvanhely' => true,
                 'szabadhely' => 0,
                 'lemondhato' => false
             );
