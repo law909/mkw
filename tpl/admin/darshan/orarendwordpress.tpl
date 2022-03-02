@@ -21,7 +21,7 @@
                 if (event.target === modal) {
                     toggleModal();
                 }
-                elseif (event.target === lemondmodal) {
+                else if (event.target === lemondmodal) {
                     toggleLemondmodal();
                 }
             }
