@@ -313,6 +313,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $partnerthirdadoszam = '';
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $partnerszamlaegyeb = '';
+
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnermukengszam;
 
@@ -1090,6 +1093,7 @@ class Bizonylatfej {
         $ret['partneradoszam'] = $this->getPartneradoszam();
         $ret['partnereuadoszam'] = $this->getPartnereuadoszam();
         $ret['partnerthirdadoszam'] = $this->getPartnerthirdadoszam();
+        $ret['partnerszamlaegyeb'] = $this->getPartnerszamlaegyeb();
         $ret['partnervatstatus'] = $this->getPartnervatstatus();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
@@ -2535,6 +2539,7 @@ class Bizonylatfej {
         $this->setPartnervaros($val->getVaros());
         $this->setPartnerhazszam($val->getHazszam());
         $this->setPartnervatstatus($val->getVatstatus());
+        $this->setPartnerszamlaegyeb($val->getSzamlaegyeb());
 
         $this->setSzallnev($val->getSzallnev());
         $this->setSzallirszam($val->getSzallirszam());
@@ -2627,6 +2632,7 @@ class Bizonylatfej {
                 $this->partnerktdatvallal = false;
                 $this->partnerktdszerzszam = '';
                 $this->partnervatstatus = 0;
+                $this->partnerszamlaegyeb = '';
                 $this->removeUzletkoto();
                 $this->removeFizmod();
                 $this->removeValutanem();
@@ -4708,6 +4714,20 @@ class Bizonylatfej {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerszamlaegyeb() {
+        return $this->partnerszamlaegyeb;
+    }
+
+    /**
+     * @param string $partnerszamlaegyeb
+     */
+    public function setPartnerszamlaegyeb($partnerszamlaegyeb): void {
+        $this->partnerszamlaegyeb = $partnerszamlaegyeb;
     }
 
 }

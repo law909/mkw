@@ -96,6 +96,8 @@
             <tr>
                 <td><label for="ThirdAdoszamEdit">{at('Harmadik ország adószám')}:</label></td>
                 <td><input id="ThirdAdoszamEdit" name="thirdadoszam" type="text" size="13" maxlength="30" value="{$partner.thirdadoszam}"></td>
+                <td><label for="SzamlaegyebEdit">{at('Egyéb adat számlán')}:</label></td>
+                <td><input id="SzamlaegyebEdit" name="szamlaegyeb" type="text" maxlength="255" value="{$partner.szamlaegyeb}"></td>
             </tr>
             <tr>
                 <td><label for="PartnertipusEdit">{at('Partner típus')}:</label></td>

@@ -391,6 +391,9 @@ class Partner {
     /** @ORM\Column(type="integer",nullable=true) */
     private $vatstatus = 0;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $szamlaegyeb;
+
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -461,6 +464,7 @@ class Partner {
         $this->minicrmcontactid = 0;
         $this->munkahelyneve = '';
         $this->foglalkozas = '';
+        $this->szamlaegyeb = '';
     }
 
     public function toA2a() {
@@ -483,6 +487,7 @@ class Partner {
         $x['szallutca'] = $this->getSzallutca();
         $x['szallhazszam'] = $this->getSzallhazszam();
         $x['vendeg'] = $this->getVendeg();
+        $x['szamlaegyeb'] = $this->getSzamlaegyeb();
         return $x;
     }
 
@@ -1911,6 +1916,20 @@ class Partner {
      */
     public function setThirdadoszam(string $thirdadoszam): void {
         $this->thirdadoszam = $thirdadoszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzamlaegyeb() {
+        return $this->szamlaegyeb;
+    }
+
+    /**
+     * @param mixed $szamlaegyeb
+     */
+    public function setSzamlaegyeb($szamlaegyeb): void {
+        $this->szamlaegyeb = $szamlaegyeb;
     }
 
 }

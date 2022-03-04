@@ -121,6 +121,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['kulsos'] = $t->getKulsos();
         $x['mennyisegetlathat'] = $t->isMennyisegetlathat();
         $x['vatstatus'] = $t->getVatstatus();
+        $x['szamlaegyeb'] = $t->getSzamlaegyeb();
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
         $x['updatedby'] = $t->getUpdatedbyNev();
@@ -226,6 +227,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setKulsos($this->params->getBoolRequestParam('kulsos'));
             $obj->setMennyisegetlathat($this->params->getBoolRequestParam('mennyisegetlathat'));
             $obj->setVatstatus($this->params->getIntRequestParam('vatstatus'));
+            $obj->setSzamlaegyeb($this->params->getStringRequestParam('szamlaegyeb'));
             if ($this->params->getIntRequestParam('minicrmprojectid')) {
                 $obj->setMinicrmprojectid($this->params->getIntRequestParam('minicrmprojectid'));
             }
@@ -730,7 +732,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 'bizonylatnyelv' => $partner->getBizonylatnyelv(),
                 'orszag' => $partner->getOrszagId(),
                 'vatstatus' => $partner->getVatstatus(),
-                'szamlatipus' => $partner->getSzamlatipus()
+                'szamlatipus' => $partner->getSzamlatipus(),
+                'szamlaegyeb' => $partner->getSzamlaegyeb()
             );
             if ($partner->getSzamlatipus() > 0) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
