@@ -1058,12 +1058,17 @@ var bizonylathelper = function($) {
                 return checkBizonylatFej(bizonylattipus, $('input[name="id"]').val());
             },
             onSubmit: function() {
-                $('#messagecenter')
-                        .html('A mentés sikerült.')
-                        .hide()
-                        .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                        .one('click', messagecenterclick)
-                        .slideToggle('slow');
+                $('#dialogcenter').html('A mentés sikerült.').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            $(this).dialog('close');
+                            window.close();
+                        }
+                    }
+                });
             }
         };
     }
