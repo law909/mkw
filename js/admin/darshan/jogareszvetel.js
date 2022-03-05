@@ -4,6 +4,34 @@ function jogareszvetel() {
         form = $('#JogareszvetelForm'),
         reszveteldb = 0;
 
+
+    function isPartnerAutocomplete() {
+        return $('#mattkarb-header').data('partnerautocomplete') == '1';
+    }
+
+    function partnerAutocompleteRenderer(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.value + '</a>')
+            .appendTo( ul );
+    }
+
+    function partnerAutocompleteConfig(id) {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylatfej/getpartnerlist',
+            select: function(event, ui) {
+                var partner = ui.item,
+                    pi = $('input[name="partner_' + id + '"]');
+                if (partner) {
+                    pi.val(partner.id);
+                    $('.js-ujpartnercb.' + id).prop('checked', false);
+                    pi.change();
+                }
+            }
+        };
+    }
+
     function getEmptyRow() {
         $.ajax({
             type: 'GET',
@@ -15,6 +43,26 @@ function jogareszvetel() {
                 $('.js-jrreszveteldelbutton').button();
                 $('.js-counter' + data.id).text(reszveteldb);
                 $('#JRPartnerEdit_' + data.id).focus();
+                $('.js-partnerid').change(function() {
+                    var pe = $(this);
+                    if (pe.val() > 0) {
+                        $.ajax({
+                            url: '/admin/partner/getdata',
+                            type: 'GET',
+                            data: {
+                                partnerid: pe.val()
+                            },
+                            success: function(data) {
+                                var d = JSON.parse(data);
+                                setPartnerData(d);
+                            }
+                        });
+                    }
+                });
+
+                $('.js-jrpartnerautocomplete').autocomplete(partnerAutocompleteConfig(data.id))
+                    .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+
             }
         });
     }
@@ -182,6 +230,23 @@ function jogareszvetel() {
                             $('#JRBerletEdit_' + pe.data('id')).focus();
                         }
                     });
+                }
+            })
+            .on('change', '.js-jrpartnerid', function(e) {
+                var pi = $(this);
+                if (pi.val() > 0) {
+                    $.ajax({
+                        url: '/admin/partner/getdata',
+                        type: 'GET',
+                        data: {
+                            partnerid: pi.val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            setPartnerData(d, pi.data('id'));
+                            $('#JRBerletEdit_' + pi.data('id')).focus();
+                        }
+                    })
                 }
             })
             .on('change', '.js-jrberletedit', function(e) {

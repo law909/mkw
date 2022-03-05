@@ -1,4 +1,4 @@
-<table id="jogareszveteltable_{$egyed.id}" data-id="{$egyed.id}" class="js-reszveteltable ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+<table id="jogareszveteltable_{$egyed.id}" data-id="{$egyed.id}" data-partnerautocomplete="{$setup.partnerautocomplete}" class="js-reszveteltable ui-widget ui-widget-content ui-corner-all mattable-repeatable">
     <tbody>
         <tr>
             <input type="hidden" name="jrid[]" value="{$egyed.id}">
@@ -19,13 +19,19 @@
                     <tr>
                         <td class="mattable-important"><label for="JRPartnerEdit_{$egyed.id}">{at('Résztvevő')}:</label></td>
                         <td colspan="3">
-                            <select id="JRPartnerEdit_{$egyed.id}" name="partner_{$egyed.id}" data-id="{$egyed.id}" class="js-jrpartneredit mattable-important">
-                                <option value="">{at('válassz')}</option>
-                                <option value="-1">{at('Új felvitel')}</option>
-                                {foreach $egyed.partnerlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
-                                {/foreach}
-                            </select>
+                            {if ($setup.partnerautocomplete)}
+                                <input id="JRPartnerEdit_{$egyed.id}" type="text" name="partnerautocomlete_{$egyed.id}" data-id="{$egyed.id}" class="js-jrpartnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 autofocus>
+                                <input class="js-jrpartnerid" name="partner_{$egyed.id}" type="hidden" value="{$egyed.partner}" data-id="{$egyed.id}">
+                                <input class="js-ujpartnercb {$egyed.id}" type="checkbox">Új</input>
+                            {else}
+                                <select id="JRPartnerEdit_{$egyed.id}" name="partner_{$egyed.id}" data-id="{$egyed.id}" class="js-jrpartneredit mattable-important">
+                                    <option value="">{at('válassz')}</option>
+                                    <option value="-1">{at('Új felvitel')}</option>
+                                    {foreach $egyed.partnerlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
+                                    {/foreach}
+                                </select>
+                                {/if}
                         </td>
                     </tr>
                     <tr>
