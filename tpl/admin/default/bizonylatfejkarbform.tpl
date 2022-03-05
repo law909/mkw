@@ -436,6 +436,9 @@
             {if ($showkivetbutton)}
             <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{at('Kivét')}" target="_blank">{at('Kivét')}</a>
             {/if}
+            {if ($showbevetbutton)}
+                <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}" target="_blank">{at('Bevét')}</a>
+            {/if}
         {/if}
 	</div>
 </form>
