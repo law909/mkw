@@ -1319,7 +1319,7 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = false;
                             }
                         }
-                        else {
+                        if (!$valtozat) {
                             $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['parent'], 'gyarto' => $gyartoid));
                         }
 
@@ -2694,7 +2694,7 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = false;
                             }
                         }
-                        else {
+                        if (!$valtozat) {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                         }
                         if ($data[$this->n('k')]) {
@@ -4464,7 +4464,7 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                 }
                             }
-                            else {
+                            if (!$valtozat) {
                                 $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                             }
                             if (!$termek) {
@@ -5336,7 +5336,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                     }
-                    else {
+                    if (!$valtozat) {
                         /** @var Termek $termek */
                         $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['termekkod'], 'gyarto' => $gyartoid));
                     }
@@ -5946,7 +5946,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek = false;
                         }
                     }
-                    else {
+                    if (!$valtozat) {
                         $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $regiidegencikkszam, 'gyarto' => $gyartoid));
                     }
 
