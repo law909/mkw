@@ -327,7 +327,8 @@ class a2aController extends \mkwhelpers\Controller {
                             'brutto' => 0
                         )
                     )
-                )
+                ),
+                'getnaveredmenyriasztas'
             )
         );
 
@@ -524,6 +525,12 @@ class a2aController extends \mkwhelpers\Controller {
                             }
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
+                        break;
+                    case 'getnaveredmenyriasztas':
+                        $bizc = new bizonylatfejController(null);
+                        $bizcnt = $bizc->calcNavEredmenyRiasztas();
+                        $results['abortedcnt'] = $bizcnt['aborted'];
+                        $results['bekuldetlencnt'] = $bizcnt['null'];
                         break;
                 }
             }
