@@ -1112,6 +1112,7 @@ var bizonylathelper = function($) {
                         '#erbizonylatszamfilter',
                         '#uzletkotofilter',
                         '#feketelistafilter',
+                        '#naveredmenyfilter',
                         '#referrerfilter',
                         '#osszegtolfilter',
                         '#osszegigfilter',

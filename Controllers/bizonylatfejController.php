@@ -303,6 +303,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 break;
         }
 
+        $f = $this->params->getIntRequestParam('naveredmenyfilter');
+        switch ($f) {
+            case 1:
+                $filter->addFilter('naveredmeny', '=', 'ABORTED');
+                break;
+            case 2:
+                $filter->addFilter('naveredmeny', '=', 'WAITING');
+                break;
+            case 3:
+                $filter->addSql('_xx.naveredmeny IS NULL');
+                break;
+        }
+
         $f = $this->params->getStringRequestParam('megjegyzesfilter');
         if ($f) {
             $filter->addFilter('megjegyzes', 'LIKE', '%' . $f . '%');

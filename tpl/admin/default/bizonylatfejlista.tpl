@@ -156,6 +156,16 @@
         <input id="megjegyzesfilter" name="megjegyzesfilter" type="text">
     </div>
     <div class="matt-hseparator"></div>
+    <div>
+        <label for="naveredmenyfilter">{at('NAV eredmény')}:</label>
+        <select id="naveredmenyfilter" name="naveredmenyfilter">
+            <option value="0">{at('Mindegy')}</option>
+            <option value="1"{if ($bizonylatnaveredmenyfilter === 1)} selected="selected"{/if}>{at('ABORTED')}</option>
+            <option value="2"{if ($bizonylatnaveredmenyfilter === 2)} selected="selected"{/if}>{at('WAITING')}</option>
+            <option value="3"{if ($bizonylatnaveredmenyfilter === 3)} selected="selected"{/if}>{at('nincs beküldve')}</option>
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
     {include "comp_partnercimkefilter.tpl"}
 </div>
 <div class="mattable-pagerwrapper">
