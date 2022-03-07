@@ -44,6 +44,7 @@ class JogaBejelentkezesRepository extends \mkwhelpers\Repository {
         $hf = new FilterDescriptor();
         $hf->addFilter('datum', '=', $nap);
         $hf->addFilter('orarend', '=', $orarend);
+        $hf->addFilter('lemondva', '=', false);
         $r = $this->getCount($hf);
         return $r;
     }
