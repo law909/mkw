@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col"></div>
+            <div class="col">{if ($resztvevo.lemondva)}LEMONDTA{/if}</div>
         {else}
             {if ($resztvevo.megjelent)}
                 <button class="col-md-1 btn btn-success js-megjegyzes" data-id="{$resztvevo.id}">{if ($resztvevo.megjegyzes)}*{/if}M{if ($resztvevo.megjegyzes)}*{/if}</button>
