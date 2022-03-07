@@ -56,6 +56,11 @@ class adminController extends mkwhelpers\Controller {
         if ($hibasdb) {
             $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
         }
+        $bizc = new bizonylatfejController(null);
+        $bizcnt = $bizc->calcNavEredmenyRiasztas();
+        if ($bizcnt['aborted'] > 0) {
+            $nohibasbeallitas[] = $bizcnt['aborted'] . ' db ABORTED számla van!';
+        }
         $view->setVar('nohibalista', $nohibasbeallitas);
 
         $raktar = new raktarController($this->params);

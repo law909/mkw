@@ -2,6 +2,8 @@
 
 namespace mkw;
 
+use Controllers\bizonylatfejController;
+
 class generalDataLoader {
 
     public function loadData($view) {
@@ -35,6 +37,10 @@ class generalDataLoader {
         $view->setVar('menu', $menuc->getMenu());
         $jelenc = new \Controllers\jelenletiivController(null);
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
+        $bizc = new bizonylatfejController(null);
+        $bizcnt = $bizc->calcNavEredmenyRiasztas();
+        $view->setVar('abortedszamlacnt', $bizcnt['aborted']);
+        $view->setVar('bekuldetlenszamlacnt', $bizcnt['null']);
         $view->setVar('webshop1name', \mkw\store::getParameter(\mkw\consts::Webshop1Name, '1'));
         $view->setVar('webshop2name', \mkw\store::getParameter(\mkw\consts::Webshop2Name, '2'));
         $view->setVar('webshop3name', \mkw\store::getParameter(\mkw\consts::Webshop3Name, '3'));

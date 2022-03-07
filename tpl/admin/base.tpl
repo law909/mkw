@@ -19,6 +19,9 @@
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
 <body>
+{if ($bekuldetlenszamlacnt > 0)}
+    <h1 id="naveredmenyriasztas">{$bekuldetlenszamlacnt} db számla nincs beküldve a NAV-nak!</h1>
+{/if}
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
 <div>

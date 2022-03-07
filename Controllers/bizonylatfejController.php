@@ -8,6 +8,7 @@ use Entities\Bizonylattetel;
 use Entities\Emailtemplate;
 use Entities\Partner;
 use mikehaertl\wkhtmlto\Pdf;
+use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -2091,5 +2092,22 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $bf->sendEmailSablon($sablon);
             }
         }
+    }
+
+    public function calcNavEredmenyRiasztas() {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('kelt', '>=', '2021-04-01');
+        $filter->addFilter('bizonylattipus', 'IN', array('szamla', 'esetiszamla'));
+        $filter->addFilter('_xx.naveredmeny', '=', 'ABORTED');
+        $abortedcnt = (int)$this->getRepo()->getCount($filter);
+        $filter->clear();
+        $filter->addFilter('kelt', '>=', '2021-04-01');
+        $filter->addFilter('bizonylattipus', 'IN', array('szamla', 'esetiszamla'));
+        $filter->addSql('(_xx.naveredmeny IS NULL)');
+        $nullcnt = (int)$this->getRepo()->getCount($filter);
+        return [
+            'aborted' => $abortedcnt,
+            'null' => $nullcnt
+        ];
     }
 }
