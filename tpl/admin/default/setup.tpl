@@ -406,6 +406,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="jogalemondaskoszonoSablonEdit">{at('Óra lemondás köszönő sablon')}:</label></span>
+                            <select id="jogalemondaskoszonoSablonEdit" name="jogalemondaskoszonosablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $jogalemondaskoszonosablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="jogaelmaradaskonyvelonekSablonEdit">{at('Óra elmaradás könyvelőnek sablon')}:</label></span>
                             <select id="jogaelmaradaskonyvelonekSablonEdit" name="jogaelmaradaskonyveloneksablon">
                                 <option value="">{at('válasszon')}</option>
