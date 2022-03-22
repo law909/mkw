@@ -1,0 +1,162 @@
+<?php
+
+namespace Controllers;
+
+use Entities\MNRStatic;
+use Entities\MNRStaticPage;
+use Entities\MNRStaticTranslation;
+use Entities\TermekValtozat,
+	Entities\TermekRecept;
+use mkw\store;
+use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+class mnrstaticController extends \mkwhelpers\MattableController {
+
+    public function __construct($params) {
+		$this->setEntityName(MNRStatic::class);
+		$this->setKarbFormTplName('mnrstatickarbform.tpl');
+		$this->setKarbTplName('mnrstatickarb.tpl');
+		$this->setListBodyRowTplName('mnrstaticlista_tbody_tr.tpl');
+		$this->setListBodyRowVarName('_mnrstatic');
+		parent::__construct($params);
+	}
+
+	protected function loadVars($t, $forKarb = false) {
+        $mnrCtrl = new mnrstaticpageController($this->params);
+        $translationsCtrl = new mnrstatictranslationController($this->params);
+        $translations = array();
+		$x = array();
+		if (!$t) {
+			$t = new \Entities\MNRStatic();
+			$this->getEm()->detach($t);
+		}
+		$x['id'] = $t->getId();
+		$x['nev'] = $t->getNev();
+		$x['szlogen1'] = $t->getSzlogen1();
+		$x['szlogen2'] = $t->getSzlogen2();
+		if ($forKarb) {
+
+            foreach ($t->getMNRStaticPages() as $tvaltozat) {
+                $valtozat[] = $mnrCtrl->loadVars($tvaltozat, $t);
+            }
+            $x['mnrstaticpages'] = $valtozat;
+
+            if (\mkw\store::isMultilang()) {
+                foreach($t->getTranslations() as $tr) {
+                    $translations[] = $translationsCtrl->loadVars($tr, true);
+                }
+                $x['translations'] = $translations;
+            }
+		}
+		$x['kepurl'] = $t->getKepurl();
+		return $x;
+	}
+
+    /**
+     * @param \Entities\MNRStatic $obj
+     * @return mixed
+     */
+	protected function setFields($obj) {
+	    $obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setSzlogen1($this->params->getStringRequestParam('szlogen1'));
+        $obj->setSzlogen2($this->params->getStringRequestParam('szlogen2'));
+		$obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
+        if (\mkw\store::isMultilang()) {
+            $_tf = \Entities\MNRStatic::getTranslatedFields();
+            $translationids = $this->params->getArrayRequestParam('translationid');
+            foreach ($translationids as $translationid) {
+				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+				$mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
+				$mezotype = $_tf[$mezo]['type'];
+				switch ($mezotype) {
+                    case 1:
+                    case 3:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    case 2:
+                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    default:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                }
+				if ($oper === 'add') {
+					$translation = new \Entities\MNRStaticTranslation(
+                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
+                        $mezo,
+                        $mezoertek
+                    );
+					$obj->addTranslation($translation);
+					$this->getEm()->persist($translation);
+				}
+				elseif ($oper === 'edit') {
+					$translation = $this->getEm()->getRepository(MNRStaticTranslation::class)->find($translationid);
+					if ($translation) {
+                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                        $translation->setField($mezo);
+                        $translation->setContent($mezoertek);
+						$this->getEm()->persist($translation);
+					}
+				}
+            }
+        }
+		return $obj;
+	}
+
+	public function getlistbody() {
+		$view = $this->createView('mnrstaticlista_tbody.tpl');
+
+        $this->initPager($this->getRepo()->getCount(array()));
+        $egyedek = $this->getRepo()->getWithJoins(
+            array(), $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+
+        echo json_encode($this->loadDataToView($egyedek, 'mnrstaticlista', $view));
+	}
+
+	public function getSelectList($selid = null) {
+		$rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
+		$res = array();
+		foreach ($rec as $sor) {
+			$res[] = array(
+				'id' => $sor['id'],
+				'caption' => $sor['nev'],
+				'selected' => ($sor['id'] == $selid)
+			);
+		}
+		return $res;
+	}
+
+	public function htmllist() {
+		$rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+		$ret = '<select>';
+		foreach ($rec as $sor) {
+			$ret.='<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
+		}
+		$ret.='</select>';
+		echo $ret;
+	}
+
+	public function viewlist() {
+		$view = $this->createView('mnrstaticlista.tpl');
+		$view->setVar('pagetitle', t('MNR Statikus menü'));
+		$view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+		$view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+		$view->printTemplateResult();
+	}
+
+	protected function _getkarb($tplname) {
+		$id = $this->params->getRequestParam('id', 0);
+		$oper = $this->params->getRequestParam('oper', '');
+		$view = $this->createView($tplname);
+		$view->setVar('pagetitle', t('MNR Statikus menü'));
+		$view->setVar('oper', $oper);
+
+		$mnrstatic = $this->getRepo()->findWithJoins($id);
+
+		$view->setVar('egyed', $this->loadVars($mnrstatic, true));
+        $view->printTemplateResult();
+	}
+
+}
