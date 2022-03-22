@@ -35,6 +35,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         }
         $x['id'] = $t->getId();
         $x['termeknev'] = $t->getTermeknev();
+        $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
         $x['partneremail'] = $t->getPartneremail();
         $x['vasarlasnapja'] = $t->getVasarlasnapjaStr();
