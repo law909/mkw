@@ -1220,7 +1220,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $q = $this->_em->createNativeQuery('SELECT bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.brutto) AS brutto '
             . 'FROM bizonylatfej bf '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
-            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
+//            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
             . $this->getFilterString($filter)
             . ' GROUP BY bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
             . ' ORDER BY bf.valutanemnev,bf.partnernev'
