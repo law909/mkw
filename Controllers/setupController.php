@@ -632,6 +632,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartogulflist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoQman);
         $view->setVar('gyartoqmanlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoSmileebike);
+        $view->setVar('gyartosmileebikelist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -661,6 +663,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::PathEvona, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathNetpresso);
         $view->setVar(\mkw\consts::PathNetpresso, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathSmileebike);
+        $view->setVar(\mkw\consts::PathSmileebike, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::UrlKreativ);
         $view->setVar(\mkw\consts::UrlKreativ, ($p ? $p->getErtek() : ''));
@@ -684,6 +688,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::UrlNetpresso, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UrlEvonaXML);
         $view->setVar(\mkw\consts::UrlEvonaXML, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlSmileebike);
+        $view->setVar(\mkw\consts::UrlSmileebike, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::KepUrlEvona);
         $view->setVar(\mkw\consts::KepUrlEvona, ($p ? $p->getErtek() : ''));
@@ -740,6 +746,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
         $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'gulf')));
         $view->setVar('stopqmanimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'qman')));
+        $view->setVar('stopsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'smileebike')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
@@ -758,6 +765,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
         $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'gulf')));
         $view->setVar('repairqmanimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'qman')));
+        $view->setVar('repairsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'smileebike')));
 
         $view->printTemplateResult();
     }
@@ -1628,6 +1636,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoQman, '');
         }
+        $x = $this->params->getIntRequestParam('gyartosmileebike', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoSmileebike, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoSmileebike, '');
+        }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
@@ -1643,6 +1659,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathHaffner24, $this->params->getStringRequestParam('pathhaffner24', ''));
         $this->setObj(\mkw\consts::PathEvona, $this->params->getStringRequestParam('pathevona', ''));
         $this->setObj(\mkw\consts::PathNetpresso, $this->params->getStringRequestParam('pathnetpresso', ''));
+        $this->setObj(\mkw\consts::PathSmileebike, $this->params->getStringRequestParam('pathsmileebike', ''));
 
         $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''), true);
         $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''), true);
@@ -1655,6 +1672,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
         $this->setObj(\mkw\consts::UrlNetpresso, $this->params->getStringRequestParam('urlnetpresso', ''), true);
         $this->setObj(\mkw\consts::UrlEvonaXML, $this->params->getStringRequestParam('urlevonaxml', ''), true);
+        $this->setObj(\mkw\consts::UrlSmileebike, $this->params->getStringRequestParam('urlsmileebike', ''), true);
 
         $this->setObj(\mkw\consts::KepUrlEvona, $this->params->getStringRequestParam('kepurlevona', ''));
 

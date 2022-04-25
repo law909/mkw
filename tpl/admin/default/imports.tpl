@@ -72,6 +72,11 @@
                 <label>Delton letöltés kell:<abel>
                 <input name="deltondownload" type="checkbox" checked="checked">
             </div>
+    <div class="matt-hseparator"></div>
+            <div>
+                <label>Smile ebike letöltés kell:<abel>
+                        <input name="smileebikedownload" type="checkbox" checked="checked">
+            </div>
 	<div class="matt-hseparator"></div>
             <div>
                 <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
@@ -84,6 +89,7 @@
                 <a href="/admin/import/nomad" class="js-nomadimport">Nomád</a>
                 <a href="/admin/import/nika" class="js-nikaimport">Nika</a>
                 <a href="/admin/import/haffner24" class="js-haffner24import">Haffner24</a>
+                <a href="/admin/import/smileebike" class="js-smileebikeimport">Smile ebike</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>

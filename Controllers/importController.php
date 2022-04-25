@@ -5,9 +5,11 @@ namespace Controllers;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\Termekcimkekat;
+use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekValtozat;
 use Entities\Vtsz;
+use mkw\store;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\DomCrawler\Crawler;
@@ -198,11 +200,29 @@ class importController extends \mkwhelpers\Controller {
         return $cimke1;
     }
 
+    private function createTermekCimkeKat($nev) {
+        if (!$nev) {
+            return null;
+        }
+        $kat = \mkw\store::getEm()->getRepository(Termekcimkekat::class)->findOneBy(['nev' => $nev]);
+        if (!$kat) {
+            $kat = new \Entities\Termekcimkekat();
+            $kat->setNev($nev);
+            $kat->setTermeklaponlathato(true);
+            $kat->setLathato(true);
+            $kat->setTermekszurobenlathato(true);
+            $kat->setTermeklistabanlathato(true);
+            \mkw\store::getEm()->persist($kat);
+            \mkw\store::getEm()->flush($kat);
+        }
+        return $kat;
+    }
+
     private function createTermekCimke($ckat, $nev) {
         if (!$nev || !$ckat) {
             return null;
         }
-        $cimke1 = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $ckat);
+        $cimke1 = \mkw\store::getEm()->getRepository(Termekcimketorzs::class)->getByNevAndKategoria($nev, $ckat);
         if (!$cimke1) {
             $cimke1 = new \Entities\Termekcimketorzs();
             $cimke1->setKategoria($ckat);
@@ -283,6 +303,9 @@ class importController extends \mkwhelpers\Controller {
             case 'qman':
                 $imp = \mkw\consts::RunningQmanImport;
                 break;
+            case 'smileebike':
+                $imp = \mkw\consts::RunningSmileebikeImport;
+                break;
             default:
                 $imp = false;
                 break;
@@ -345,6 +368,9 @@ class importController extends \mkwhelpers\Controller {
                 break;
             case 'qman':
                 $imp = \mkw\consts::GyartoQman;
+                break;
+            case 'smileebike':
+                $imp = \mkw\consts::GyartoSmileebike;
                 break;
             default:
                 $imp = false;
@@ -5138,24 +5164,24 @@ class importController extends \mkwhelpers\Controller {
                             $termekkepszotar[$imgurl] = $urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension;
                             \mkw\store::getEm()->persist($kep);
                         }
-/*
-                        $valtozat = new \Entities\TermekValtozat();
-                        $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
-                        $valtozat->setErtek1($data['szin']);
-                        $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
-                        $valtozat->setErtek2($data['meret']);
-                        $valtozat->setIdegencikkszam($data['cikkszam']);
-                        $valtozat->setCikkszam($data['cikkszam']);
-                        $valtozat->setTermek($termek);
-                        $valtozat->setTermekfokep(true);
-                        if (!$data['kaphato']) {
-                            $valtozat->setElerheto(false);
-                        }
-                        else {
-                            $valtozat->setElerheto(true);
-                        }
-                        \mkw\store::getEm()->persist($valtozat);
-*/
+                        /*
+                                                $valtozat = new \Entities\TermekValtozat();
+                                                $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
+                                                $valtozat->setErtek1($data['szin']);
+                                                $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
+                                                $valtozat->setErtek2($data['meret']);
+                                                $valtozat->setIdegencikkszam($data['cikkszam']);
+                                                $valtozat->setCikkszam($data['cikkszam']);
+                                                $valtozat->setTermek($termek);
+                                                $valtozat->setTermekfokep(true);
+                                                if (!$data['kaphato']) {
+                                                    $valtozat->setElerheto(false);
+                                                }
+                                                else {
+                                                    $valtozat->setElerheto(true);
+                                                }
+                                                \mkw\store::getEm()->persist($valtozat);
+                        */
                         \mkw\store::getEm()->persist($termek);
 
                         foreach ($data['gyerekek'] as $gyerekdata) {
@@ -5980,4 +6006,223 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
+    public function smileebikeImport() {
+
+        function toArr($obj) {
+            $xmlkepek = (array)$obj->image_url;
+            $kepek = array();
+            foreach ($xmlkepek as $xk) {
+                $kepek[] = (string)$xk;
+            }
+            $xmlparams = (array)$obj->parameters;
+            $params = [];
+            foreach ($xmlparams['parameter'] as $xp) {
+                $params[(string)$xp->name] = (string)$xp->value;
+            }
+            return array(
+                'identifier' => (string)$obj->identifier,
+                'name' => (string)$obj->name,
+                'ean' => (string)$obj->ean,
+                'stock' => (int)$obj->stock,
+                'deliveryTime' => (int)$obj->delivery_time,
+                'description' => (string)$obj->description,
+                'grossPrice' => (string)$obj->gross_price,
+                'netPrice' => (string)$obj->net_price,
+                'groupGrossPrice' => (string)$obj->group_gross_price,
+                'groupNetPrice' => (string)$obj->group_net_price,
+                'images' => $kepek,
+                'parameters' => $params
+            );
+        }
+
+        if (!$this->checkRunningImport(\mkw\consts::RunningSmileebikeImport)) {
+
+            $this->setRunningImport(\mkw\consts::RunningSmileebikeImport, 1);
+
+            $parentid = $this->params->getIntRequestParam('katid', 0);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSmileebike);
+            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+            $dbig = $this->params->getIntRequestParam('dbig', 0);
+            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+            $createuj = $this->params->getBoolRequestParam('createuj', false);
+            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+            $todownload = $this->params->getBoolRequestParam('smileebikedownload', false);
+            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathSmileebike));
+
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathSmileebike));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+            if ($mainpath) {
+                $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            }
+            $path = $mainpath . $path;
+            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+            @unlink(\mkw\store::storagePath('smileebike_fuggoben.txt'));
+
+            if ($todownload) {
+                \unlink(\mkw\store::storagePath('smileebike.xml'));
+                $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlSmileebike));
+                $fh = fopen(\mkw\store::storagePath('smileebike.xml'), 'w');
+                \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                \curl_exec($ch);
+                fclose($fh);
+            }
+
+            $xml = simplexml_load_file(\mkw\store::storagePath("smileebike.xml"));
+            if ($xml) {
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $markacs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+
+                $products = $xml->product;
+                if (!$dbig) {
+                    $dbig = count($products);
+                }
+
+                $termekdb = $dbtol;
+                $termekek = array();
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = toArr($products[$termekdb]);
+                    if ($data['identifier']) {
+                        $idegencikkszam = $data['identifier'];
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
+                        if (!$termek) {
+
+                            if ($createuj) {
+                                $parent = $this->getRepo('Entities\TermekFa')->find($parentid);
+                                $urlkatnev = \mkw\store::urlize('ebike');
+                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
+                                $termeknev = trim($data['name']);
+
+                                $hosszuleiras = trim($data['description']);
+                                $rovidleiras = trim($data['description']);
+
+                                $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMekod($this->getME('db'));
+                                $termek->setNev($termeknev);
+                                $termek->setLeiras($hosszuleiras);
+                                $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                $termek->setCikkszam($idegencikkszam);
+                                $termek->setIdegencikkszam($idegencikkszam);
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
+                                $termek->setHparany(3);
+                                $termek->setVonalkod($data['ean']);
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                                if (trim($data['parameters']['Gyártó'])) {
+                                    $cimke = $this->createTermekCimke($markacs, trim($data['parameters']['Gyártó']));
+                                    if ($cimke) {
+                                        $termek->addCimke($cimke);
+                                    }
+                                }
+                                foreach ($data['parameters'] as $k => $v) {
+                                    if ($k !== 'Szín' &&
+                                        $k !== 'Gyártó' &&
+                                        $k !== 'Wsfind Kategória' &&
+                                        $k !== 'EAN' &&
+                                        $k !== 'Státusz-készlet' &&
+                                        $k !== 'Szállítási napok száma, kiszállítás esetén' &&
+                                        $k !== 'AggregateRating' &&
+                                        $k !== 'Arukereso.hu Szállítási Idő') {
+                                        if (trim($v) && trim($k)) {
+                                            $kat = $this->createTermekCimkeKat(trim($k));
+                                            $cimke = $this->createTermekCimke($kat, trim($v));
+                                            if ($cimke) {
+                                                $termek->addCimke($cimke);
+                                            }
+                                        }
+                                    }
+                                }
+                                // kepek
+                                if ($data['images']) {
+
+                                    $imgcnt = 0;
+                                    foreach ($data['images'] as $imgurl) {
+                                        $imgcnt++;
+
+                                        $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                        $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                        if (count($data['images']) > 1) {
+                                            $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                            $kepnev = $kepnev . '_' . $imgcnt;
+                                        }
+
+                                        $extension = \mkw\store::getExtension($imgurl);
+                                        $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                        $ch = \curl_init($imgurl);
+                                        $ih = fopen($imgpath, 'w');
+                                        \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                        \curl_exec($ch);
+                                        fclose($ih);
+
+                                        foreach ($this->settings['sizes'] as $k => $size) {
+                                            $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                            $matches = explode('x', $size);
+                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        }
+                                        if (((count($data['images']) > 1) && ($imgcnt == 1)) || (count($data['images']) == 1)) {
+                                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
+                                            $termek->setKepleiras($termeknev);
+                                        }
+                                        else {
+                                            $kep = new \Entities\TermekKep();
+                                            $termek->addTermekKep($kep);
+                                            $kep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
+                                            $kep->setLeiras($termeknev);
+                                            \mkw\store::getEm()->persist($kep);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            $termek = $termek[0];
+                            if (!$termek->getVonalkod()) {
+                                $termek->setVonalkod($data['ean']);
+                            }
+                            if ($editleiras) {
+                                $hosszuleiras = trim($data['description']);
+                                $termek->setLeiras($hosszuleiras);
+                            }
+                        }
+                        if ($termek) {
+                            if ($termek->getKeszlet() <= 0) {
+                                $termek->setNemkaphato(($data['stock'] * 1) == 0);
+                            }
+                            if (!$termek->getAkcios()) {
+                                $termek->setNetto($data['netPrice'] * 1 * $arszaz / 100);
+                                $termek->setBrutto(round($termek->getBrutto(), -1));
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                        $markacs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+                    }
+                    $termekdb++;
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+            }
+            $this->setRunningImport(\mkw\consts::RunningSmileebikeImport, 0);
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+    }
 }

@@ -1365,6 +1365,24 @@
                         <div class="matt-hseparator"></div>
                         <div>
                             <div>
+                                <label for="SmileebikeEdit">Smile ebike:</label>
+                                <select id="SmileebikeEdit" name="gyartosmileebike">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartosmileebikelist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="PathSmileebikeEdit">Képek mappája:</label>
+                                <input id="PathSmileebikeEdit" name="pathsmileebike" value="{$pathsmileebike}">
+                                <label for="UrlSmileebikeEdit">URL:</label>
+                                <input id="UrlSmileebikeEdit" name="urlsmileebike" value="{$urlsmileebike}">
+                                <a href="#" class="js-stopimport" data-href="{$stopsmileebikeimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairsmileebikeimporturl}">Javít</a>
+                            </div>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
                                 <label for="QManEdit">QMan:</label>
                                 <select id="QManEdit" name="gyartoqman">
                                     <option value="">{at('válasszon')}</option>
