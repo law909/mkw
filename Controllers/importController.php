@@ -6063,7 +6063,7 @@ class importController extends \mkwhelpers\Controller {
             @unlink(\mkw\store::storagePath('smileebike_fuggoben.txt'));
 
             if ($todownload) {
-                \unlink(\mkw\store::storagePath('smileebike.xml'));
+                @\unlink(\mkw\store::storagePath('smileebike.xml'));
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlSmileebike));
                 $fh = fopen(\mkw\store::storagePath('smileebike.xml'), 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
@@ -6072,7 +6072,7 @@ class importController extends \mkwhelpers\Controller {
                 fclose($fh);
             }
 
-            $xml = simplexml_load_file(\mkw\store::storagePath("smileebike.xml"));
+            $xml = simplexml_load_file(\mkw\store::storagePath('smileebike.xml'));
             if ($xml) {
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
