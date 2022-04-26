@@ -664,6 +664,15 @@ class termekController extends \mkwhelpers\MattableController {
 					}
 				}
 			}
+			$valtozatmbkids = $this->params->getArrayRequestParam('valtozatminboltikeszletid');
+			foreach ($valtozatmbkids as $vmbkid) {
+			    /** @var TermekValtozat $valtozat */
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($vmbkid);
+                if ($valtozat) {
+                    $valtozat->setMinboltikeszlet($this->params->getNumRequestParam('valtozatminboltikeszlet_' . $vmbkid));
+                }
+                $this->getEm()->persist($valtozat);
+            }
 		}
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
 		$obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
@@ -923,7 +932,7 @@ class termekController extends \mkwhelpers\MattableController {
                     'id' => $valt->getId(),
                     'caption' => $caption,
                     'selected' => false,
-                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->getTermek()->getMinboltikeszlet()
+                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->getMinboltikeszlet()
                 );
             }
         }

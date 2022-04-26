@@ -119,6 +119,9 @@ class TermekValtozat {
     /** @ORM\Column(type="date",nullable=true) */
     private $beerkezesdatum;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $minboltikeszlet;
+
     /**
      * @ORM\PrePersist
      */
@@ -693,4 +696,19 @@ class TermekValtozat {
                 return $this->getLathato();
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMinboltikeszlet() {
+        return $this->minboltikeszlet;
+    }
+
+    /**
+     * @param mixed $minboltikeszlet
+     */
+    public function setMinboltikeszlet($minboltikeszlet) {
+        $this->minboltikeszlet = $minboltikeszlet;
+    }
+
 }

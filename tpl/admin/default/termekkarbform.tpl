@@ -22,6 +22,7 @@
             {/if}
             {if ($setup.termekvaltozat)}
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
+                <li><a href="#ValtozatMinBoltiKeszletTab">{at('Változat min.bolti készlet')}</a></li>
             {/if}
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
@@ -390,6 +391,15 @@
                 {/foreach}
                 <a class="js-valtozatnewbutton" href="#" title="{at('Új')}" data-termekid="{$egyed.id}"><span
                         class="ui-icon ui-icon-circle-plus"></span></a>
+            </div>
+            <div id="ValtozatMinBoltiKeszletTab" class="mattkarb-page" data-visible="visible">
+                {foreach $egyed.valtozatok as $valtozat}
+                    <div>
+                        <label for="ValtozatMinBoltKeszletEdit_{$valtozat.id}">{$valtozat.ertek1} - {$valtozat.ertek2}</label>
+                        <input id="ValtozatMinBoltKeszletEdit_{$valtozat.id}" name="valtozatminboltikeszlet_{$valtozat.id}" type="number" step="any" value="{$valtozat.minboltikeszlet}">
+                        <input name="valtozatminboltikeszletid[]" type="hidden" value="{$valtozat.id}">
+                    </div>
+                {/foreach}
             </div>
         {/if}
         {if ($setup.kapcsolodotermekek)}

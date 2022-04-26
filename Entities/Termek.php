@@ -734,6 +734,7 @@ class Termek {
                         $keszlet = 0;
                     }
                     $valtadat['keszlet'] = $keszlet;
+                    $valtadat['minboltikeszlet'] = $valt->getMinboltikeszlet();
                     $valtadat['ar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price));
                     $valtadat['diszkontar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount));
                     if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
