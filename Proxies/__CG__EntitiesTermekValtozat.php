@@ -887,6 +887,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function calcMinBoltiKeszlet()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcMinBoltiKeszlet', []);
+
+        return parent::calcMinBoltiKeszlet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setMinboltikeszlet($minboltikeszlet)
     {
 
