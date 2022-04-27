@@ -705,6 +705,7 @@ class TermekValtozat {
     }
 
     public function calcMinBoltiKeszlet() {
+        return $this->minboltikeszlet;
         $tmbk = $this->getTermek()->getMinboltikeszlet();
         if ($tmbk) {
             return $tmbk;
