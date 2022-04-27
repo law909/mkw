@@ -332,7 +332,7 @@ class mainController extends \mkwhelpers\Controller {
             $ma = new \DateTime();
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {
-                    $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->getMinboltikeszlet();
+                    $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                     if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
                         $t['kepurllarge'] = $valt->getKepurlLarge();
                         $t['kepurlmedium'] = $valt->getKepurlMedium();

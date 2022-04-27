@@ -271,7 +271,7 @@ class megrendelesfejController extends bizonylatfejController {
                         $v = $regitetel->getTermekvaltozat();
                         $keszlet = 0;
                         if ($v) {
-                            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->getMinboltikeszlet();
+                            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
                         }
                         else {
                             $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
@@ -325,7 +325,7 @@ class megrendelesfejController extends bizonylatfejController {
                             $v = $regitetel->getTermekvaltozat();
                             $keszlet = 0;
                             if ($v) {
-                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->getMinboltikeszlet();
+                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
                             }
                             else {
                                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
@@ -402,7 +402,7 @@ class megrendelesfejController extends bizonylatfejController {
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->getMinboltikeszlet() > 0) {
+                            if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
                                 $vankeszlet = true;
                                 break;
                             }

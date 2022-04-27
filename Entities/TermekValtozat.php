@@ -704,6 +704,14 @@ class TermekValtozat {
         return $this->minboltikeszlet;
     }
 
+    public function calcMinBoltiKeszlet() {
+        $tmbk = $this->getTermek()->getMinboltikeszlet();
+        if ($tmbk) {
+            return $tmbk;
+        }
+        return $this->minboltikeszlet;
+    }
+
     /**
      * @param mixed $minboltikeszlet
      */

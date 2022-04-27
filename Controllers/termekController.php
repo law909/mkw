@@ -932,7 +932,7 @@ class termekController extends \mkwhelpers\MattableController {
                     'id' => $valt->getId(),
                     'caption' => $caption,
                     'selected' => false,
-                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->getMinboltikeszlet()
+                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet()
                 );
             }
         }
