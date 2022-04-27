@@ -709,7 +709,6 @@ class TermekValtozat {
         if ($tmbk) {
             return $tmbk;
         }
-        return $tmbk;
         return $this->minboltikeszlet;
     }
 
