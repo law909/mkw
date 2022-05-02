@@ -162,12 +162,11 @@
             font-weight: bold;
             font-variant: all-small-caps;
             font-size: 20px;
-            background-color: #ded4d4;
+            background-color: #CDECFF;
         }
         .dttora {
             float: left;
             margin-bottom: 2px;
-            background-color: #fff9f7;
             width: 100%;
         }
         .dttidopont {
@@ -381,10 +380,10 @@
             <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
             <div class="dttoranev">
                 <div class="margin-bottom-5">
-                    <a href="{if ($ora['oraurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['oraurl'])}{/if}" target="_parent">{if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}</a>{if ($ora['multilang'])}<span> (HU/EN)</span>{/if}
+                    {if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}{if ($ora['multilang'])}<span> (HU/EN)</span>{/if}
                 </div>
                 <div class="margin-bottom-5">
-                    <a href="{if ($ora['tanarurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['tanarurl'])}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
+                    {$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}
                 </div>
                 {if (($ora['szabadhely'] <= 5) && ($ora['szabadhely'] > 0))}
                 <div>{$ora['szabadhely']} szabad hely</div>
