@@ -158,7 +158,7 @@
             border-radius: 3px;
             padding: 10px 0;
             margin-bottom: 2px;
-            color: #669999;
+            color: #E0161E;
             font-weight: bold;
             font-variant: all-small-caps;
             font-size: 20px;
@@ -179,13 +179,13 @@
             border-radius: 3px;
             color: white;
             font-weight: bold;
-            background-color: #669999;
+            background-color: #E0161E;
         }
         .delelott {
             background-color: #A5C663;
         }
         .pirosszoveg {
-            color: #B63535;
+            color: #E0161E;
             font-size: 16px;
             font-weight: bold;
         }
@@ -205,7 +205,7 @@
         }
         .dttprev {
             float: left;
-            color: #80008c;
+            color: #00A0FF;
         }
         .dttnext {
             float: right;
@@ -214,7 +214,7 @@
             margin-left: 40px;
         }
         .dttprev, .dttnext, .dttakt {
-            background-color: #80008c;
+            background-color: #00A0FF;
             font-weight: bold;
             font-variant: all-small-caps;
             font-size: 20px;
@@ -230,7 +230,7 @@
             font-weight: bold;
         }
         .dttorarendbutton {
-            background-color: #80008c;
+            background-color: #00A0FF;
             color: white;
             border-radius: 3px;
             padding: 10px;
@@ -278,13 +278,13 @@
         }
         .bejelentkezesbtn {
             color: #fff;
-            background-color: #80008C;
+            background-color: #00A0FF;
             display: inline-block;
             font-weight: 400;
             text-align: center;
             vertical-align: middle;
             user-select: none;
-            border: 1px solid #80008C;
+            border: 1px solid #00A0FF;
             padding: .375rem .75rem;
             font-size: 1rem;
             line-height: 1.5;
