@@ -127,6 +127,9 @@
         });
     </script>
     <style>
+        .sarga {
+            color: #FFFA19;
+        }
         body {
             font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;
             font-size: 14px;
@@ -134,7 +137,6 @@
             color: #666;
         }
         a {
-            color: #b63535;
             text-decoration: none;
         }
         a:hover {
@@ -179,9 +181,6 @@
             color: white;
             font-weight: bold;
             background-color: #E0161E;
-        }
-        .delelott {
-            background-color: #A5C663;
         }
         .pirosszoveg {
             color: #E0161E;
