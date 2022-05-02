@@ -383,7 +383,10 @@
                     {if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}{if ($ora['multilang'])}<span> (HU/EN)</span>{/if}
                 </div>
                 <div class="margin-bottom-5">
-                    {$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}
+                    {$ora['terem']}
+                    {if ($ora['helyettesito'])}
+                    HELYETTESÍT: {$ora['helyettesito']}
+                    {/if}
                 </div>
                 {if (($ora['szabadhely'] <= 5) && ($ora['szabadhely'] > 0))}
                 <div>{$ora['szabadhely']} szabad hely</div>
