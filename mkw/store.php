@@ -1136,7 +1136,7 @@ class store {
     }
 
     public static function isDarshan() {
-        return self::getTheme() === 'darshan';
+        return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
     }
 
     public static function isMiniCRMOn() {
