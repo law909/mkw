@@ -1,0 +1,34 @@
+.btn-darshan {
+    color: #fff;
+    background-color: #00A0FF;
+    border-color: #00A0FF;
+}
+
+.btn-darshan:hover {
+    color: #fff;
+}
+
+.color-darshan {
+    color: #00A0FF;
+}
+
+.color-red {
+    color: #E0161E;
+}
+
+.color-bkg-darshan {
+    background-color: #CDECFF;
+}
+
+.top-margin-10 {
+    margin-top: 10px;
+}
+
+.bottom-margin-10 {
+    margin-bottom: 10px;
+}
+
+.top-bottom-margin-5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
