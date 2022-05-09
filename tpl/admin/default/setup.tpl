@@ -337,7 +337,7 @@
                             </select>
                         </div>
                     </div>
-                    {if ($maintheme === 'darshan')}
+                    {if ($maintheme === 'darshan' || $setup.darshan == 1)}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
                             <span class="setuplabel"><label for="JogaJutalekEdit">{at('Jutalék százalék')}:</label></span>
