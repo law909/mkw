@@ -292,7 +292,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 foreach ($mind as $item) {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $item['partnernev'])
-                        ->setCellValue('B' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'])
+                        ->setCellValue('B' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'] . ' ' . $item['partnerhazszam'])
                         ->setCellValue('C' . $sor, $item['cikkszam'])
                         ->setCellValue('D' . $sor, $item['nev'])
                         ->setCellValue('E' . $sor, $item['ertek1'])
@@ -326,13 +326,41 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $item['uzletkotonev'])
                         ->setCellValue('B' . $sor, $item['partnernev'])
-                        ->setCellValue('C' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'])
+                        ->setCellValue('C' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'] . ' ' . $item['partnerhazszam'])
                         ->setCellValue('D' . $sor, $item['ertek']);
 
                     $sor++;
                 }
                 break;
+            case 4:
+                $res = $this->getData();
+                $mind = $res['tetelek'];
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', t('Bizonylatszám'))
+                    ->setCellValue('B1', t('Státusz'))
+                    ->setCellValue('C1', t('Kelt'))
+                    ->setCellValue('D1', t('Teljesítés'))
+                    ->setCellValue('E1', t('Partner'))
+                    ->setCellValue('F1', t('Partner cím'))
+                    ->setCellValue('G1', t('Cikkszám'))
+                    ->setCellValue('H1', t('Termék'))
+                    ->setCellValue('I1', t('Mennyiség'));
 
+                $sor = 2;
+                foreach ($mind as $item) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $sor, $item['id'])
+                        ->setCellValue('B' . $sor, $item['statusznev'])
+                        ->setCellValue('C' . $sor, $item['kelt'])
+                        ->setCellValue('D' . $sor, $item['teljesites'])
+                        ->setCellValue('E' . $sor, $item['partnernev'])
+                        ->setCellValue('F' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'] . ' ' . $item['partnerhazszam'])
+                        ->setCellValue('G' . $sor, $item['cikkszam'])
+                        ->setCellValue('H' . $sor, $item['nev']. ' ' . $item['ertek1'] . ' ' . $item['ertek2'])
+                        ->setCellValue('I' . $sor, $item['mennyiseg']);
+                    $sor++;
+                }
+                break;
         }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
