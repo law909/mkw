@@ -45,7 +45,7 @@ if (typeof billyloader !== "object") {
                     billyloader.IFrameOnLoad()
                 }, false)
             }
-            iframe.setAttribute('src', 'http://pendzsi.billy.hu/rendezveny/reg?r=' + billyloader.getUrlParameter('r'));
+            iframe.setAttribute('src', billyloader.BaseUrl + 'XXhttp://lb.billy.hu/rendezveny/reg?r=' + billyloader.getUrlParameter('r'));
             iframe.setAttribute('id', billyloader.iFrameId);
             iframe.setAttribute('height', '100%');
             iframe.setAttribute('width', '100%');
