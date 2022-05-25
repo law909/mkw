@@ -96,6 +96,20 @@ $router->map('GET', '/admin/rendezvenyallapot/jsonlist', 'rendezvenyallapotContr
 $router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
 $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
 
+if (\mkw\store::isMPT()) {
+    $router->map('GET', '/admin/mpttagozat/jsonlist', 'mpttagozatController#jsonlist', 'adminmpttagozatjsonlist');
+    $router->map('GET', '/admin/mpttagozat/htmllist', 'mpttagozatController#htmllist', 'adminmpttagozathtmllist');
+    $router->map('POST', '/admin/mpttagozat/save', 'mpttagozatController#save', 'adminmpttagozatsave');
+
+    $router->map('GET', '/admin/mptszekcio/jsonlist', 'mptszekcioController#jsonlist', 'adminmptszekciojsonlist');
+    $router->map('GET', '/admin/mptszekcio/htmllist', 'mptszekcioController#htmllist', 'adminmptszekciohtmllist');
+    $router->map('POST', '/admin/mptszekcio/save', 'mptszekcioController#save', 'adminmptszekciosave');
+
+    $router->map('GET', '/admin/mpttagsagforma/jsonlist', 'mpttagsagformaController#jsonlist', 'adminmpttagsagformajsonlist');
+    $router->map('GET', '/admin/mpttagsagforma/htmllist', 'mpttagsagformaController#htmllist', 'adminmpttagsagformahtmllist');
+    $router->map('POST', '/admin/mpttagsagforma/save', 'mpttagsagformaController#save', 'adminmpttagsagformasave');
+}
+
 if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
     $router->map('GET', '/admin/jogcim/htmllist', 'jogcimController#htmllist', 'adminjogcimhtmllist');
@@ -983,3 +997,4 @@ $router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas',
 $router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
 $router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');
 $router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
+$router->map('GET', '/admin/t/mpttagimport', 'adminController#MPTPartnerImport', 'adminmptpartnerimport');

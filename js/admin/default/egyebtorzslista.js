@@ -944,6 +944,144 @@ $().ready(
             $(_jogcim.pager + '_center').hide();
             $(_jogcim.pager + '_right').hide();
 
+            // mptszekcio grid
+            var _mptszekcio = {
+                grid: '#mptszekciogrid',
+                pager: '#mptszekciogridpager'
+            };
+            var mptszekciogrid = $(_mptszekcio.grid).jqGrid({
+                url: '/admin/mptszekcio/jsonlist',
+                editurl: '/admin/mptszekcio/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mptszekcio.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT szekciók'});
+            $(_mptszekcio.grid).jqGrid('navGrid', _mptszekcio.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mptszekcio.grid).jqGrid('navButtonAdd', _mptszekcio.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mptszekciogrid[0].toggleToolbar();
+                }
+            });
+            $(_mptszekcio.grid).jqGrid('navButtonAdd', _mptszekcio.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mptszekciogrid[0].clearToolbar();
+                }
+            });
+            $(_mptszekcio.grid).jqGrid('filterToolbar');
+            $(_mptszekcio.pager + '_center').hide();
+            $(_mptszekcio.pager + '_right').hide();
+
+            // mpttagozat grid
+            var _mpttagozat = {
+                grid: '#mpttagozatgrid',
+                pager: '#mpttagozatgridpager'
+            };
+            var mpttagozatgrid = $(_mpttagozat.grid).jqGrid({
+                url: '/admin/mpttagozat/jsonlist',
+                editurl: '/admin/mpttagozat/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mpttagozat.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT tagozatok'});
+            $(_mpttagozat.grid).jqGrid('navGrid', _mpttagozat.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mpttagozat.grid).jqGrid('navButtonAdd', _mpttagozat.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mpttagozatgrid[0].toggleToolbar();
+                }
+            });
+            $(_mpttagozat.grid).jqGrid('navButtonAdd', _mpttagozat.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mpttagozatgrid[0].clearToolbar();
+                }
+            });
+            $(_mpttagozat.grid).jqGrid('filterToolbar');
+            $(_mpttagozat.pager + '_center').hide();
+            $(_mpttagozat.pager + '_right').hide();
+
+            // mpttagsagforma grid
+            var _mpttagsagforma = {
+                grid: '#mpttagsagformagrid',
+                pager: '#mpttagsagformagridpager'
+            };
+            var mpttagsagformagrid = $(_mpttagsagforma.grid).jqGrid({
+                url: '/admin/mpttagsagforma/jsonlist',
+                editurl: '/admin/mpttagsagforma/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mpttagsagforma.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT tagság formák'});
+            $(_mpttagsagforma.grid).jqGrid('navGrid', _mpttagsagforma.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mpttagsagforma.grid).jqGrid('navButtonAdd', _mpttagsagforma.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mpttagsagformagrid[0].toggleToolbar();
+                }
+            });
+            $(_mpttagsagforma.grid).jqGrid('navButtonAdd', _mpttagsagforma.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mpttagsagformagrid[0].clearToolbar();
+                }
+            });
+            $(_mpttagsagforma.grid).jqGrid('filterToolbar');
+            $(_mpttagsagforma.pager + '_center').hide();
+            $(_mpttagsagforma.pager + '_right').hide();
+
             // Partnertipus grid
             var _partnertipus = {
                 grid: '#partnertipusgrid',

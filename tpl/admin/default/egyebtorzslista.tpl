@@ -128,6 +128,20 @@
             <div id="mijszgyakorlasszintgridpager"></div>
         </div>
         {/if}
+        {if ($setup.mpt)}
+            <div class="egyebadat-grid">
+                <table id="mptszekciogrid"></table>
+                <div id="mptszekciogridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mpttagozatgrid"></table>
+                <div id="mpttagozatgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mpttagsagformagrid"></table>
+                <div id="mpttagsagformagridpager"></div>
+            </div>
+        {/if}
         <div class="egyebadat-grid">
             <table id="jogateremgrid"></table>
             <div id="jogateremgridpager"></div>

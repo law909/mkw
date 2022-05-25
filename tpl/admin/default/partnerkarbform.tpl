@@ -9,6 +9,9 @@
 		<ul>
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{at('Elérhetőségek')}</a></li>
+            {if ($setup.mpt)}
+                <li><a href="#MPTTab">{at('MPT adatok')}</a></li>
+            {/if}
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
 			<li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
             <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
@@ -199,6 +202,85 @@
 				{/foreach}
 				</div>
 		</div>
+        {if ($setup.mpt)}
+            <div id="MPTTab" class="mattkarb-page" data-visible="visible">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{at('Felhasználónév')}:</td>
+                            <td>{$partner.mpt_username}</td>
+                            <td>{at('Jelszó')}:</td>
+                            <td>{$partner.mpt_password}</td>
+                        </tr>
+                        <tr>
+                            <td>{at('Felhasználó ID')}:</td>
+                            <td>{$partner.mpt_userid}</td>
+                            <td><label for="MPTTagkartyaEdit">{at('Tagkártya száma')}:</label></td>
+                            <td><input id="MPTTagkartyaEdit" name="mpt_tagkartya" type="text" value="{$partner.mpt_tagkartya}"></td>
+                        </tr>
+                        <tr>
+                            <td>{at('Regisztráció dátuma')}:</td>
+                            <td>{$partner.mpt_registerdatestr}</td>
+                        </tr>
+                        <tr>
+                            <td>{at('Utolsó látogatás')}:</td>
+                            <td>{$partner.mpt_lastvisitstr}</td>
+                            <td>{at('Utolsó update')}:</td>
+                            <td>{$partner.mpt_lastupdatestr}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
+                            <td><input id="MPTMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTMunkahelyIrszamEdit">{at('Munkahely címe')}:</label></td>
+                            <td colspan="3">
+                                <input id="MPTMunkahelyIrszamEdit" name="mpt_munkahelyirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_munkahelyirszam}" placeholder="{at('ir.szám')}">
+                                <input id="MPTMunkahelyVarosEdit" name="mpt_munkahelyvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_munkahelyvaros}" placeholder="{at('város')}">
+                                <input id="MPTMunkahelyUtcaEdit" name="mpt_munkahelyutca" type="text" size="40" maxlength="60" value="{$partner.mpt_munkahelyutca}" placeholder="{at('utca')}">
+                                <input id="MPTMunkahelyHazszamEdit" name="mpt_munkahelyhazszam" type="text" size="20" maxlength="40" value="{$partner.mpt_munkahelyhazszam}" placeholder="{at('házszám')}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTLakcimIrszamEdit">{at('Lakcím')}:</label></td>
+                            <td colspan="3">
+                                <input id="MPTLakcimIrszamEdit" name="mpt_lakcimirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_lakcimirszam}" placeholder="{at('ir.szám')}">
+                                <input id="MPTLakcimVarosEdit" name="mpt_lakcimvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimvaros}" placeholder="{at('város')}">
+                                <input id="MPTLakcimUtcaEdit" name="mpt_lakcimutca" type="text" size="40" maxlength="60" value="{$partner.mpt_lakcimutca}" placeholder="{at('utca')}">
+                                <input id="MPTLakcimHazszamEdit" name="mpt_lakcimhazszam" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimhazszam}" placeholder="{at('házszám')}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTMegszolitasEdit">{at('Megszólítás')}:</label></td>
+                            <td><input id="MPTMegszolitasEdit" name="mpt_megszolitas" type="text" value="{$partner.mpt_megszolitas}"></td>
+                            <td>{$partner.vezeteknev} {$partner.keresztnev} - {$partner.nev}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTVegzettsegEdit">{at('Végzettség')}:</label></td>
+                            <td><input id="MPTVegzettsegEdit" name="mpt_vegzettseg" type="text" value="{$partner.mpt_vegzettseg}"></td>
+                            <td><label for="MPTFokozatEdit">{at('Tudományos fokozat')}:</label></td>
+                            <td><input id="MPTFokozatEdit" name="mpt_fokozat" type="text" value="{$partner.mpt_fokozat}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTDiplomaeveEdit">{at('Diploma éve')}:</label></td>
+                            <td><input id="MPTDiplomaeveEdit" name="mpt_diplomaeve" type="text" value="{$partner.mpt_diplomaeve}"></td>
+                            <td><label for="MPTDiplomaiskolaEdit">{at('Diploma iskolája')}:</label></td>
+                            <td><input id="MPTDiplomaiskolaEdit" name="mpt_diplomahely" type="text" value="{$partner.mpt_diplomahely}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTEgyebdiplomaEdit">{at('Egyéb diplomák')}:</label></td>
+                            <td><input id="MPTEgyebdiplomaEdit" name="mpt_egyebdiploma" type="text" value="{$partner.mpt_egyebdiploma}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTSzuleteseveEdit">{at('Születés éve')}:</label></td>
+                            <td><input id="MPTSzuleteseveEdit" name="mpt_szuleteseve" type="text" value="{$partner.mpt_szuleteseve}"></td>
+                            <td><label for="MPTPrivatemailEdit">{at('Privát email')}:</label></td>
+                            <td><input id="MPTPrivatemailEdit" name="mpt_privatemail" type="text" value="{$partner.mpt_privatemail}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {/if}
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
             {if ($maintheme === 'mkwcansas' && $partner.telefon && (!$partner.telkorzet || !$partner.telszam))}

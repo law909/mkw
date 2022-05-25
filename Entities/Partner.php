@@ -106,10 +106,10 @@ class Partner {
     /** @ORM\Column(type="string",length=40,nullable=true) */
     private $lhazszam = '';
 
-    /** @ORM\Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
 	private $telefon = '';
 
-	/** @ORM\Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=60,nullable=true) */
 	private $mobil = '';
 
     /** @ORM\Column(type="string",length=6,nullable=true) */
@@ -394,6 +394,107 @@ class Partner {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szamlaegyeb;
 
+    /** @ORM\Column(type="string",length=55,nullable=true) */
+    private $mpt_username;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_password;
+
+    /** @ORM\Column(type="datetime",nullable=true) */
+    private $mpt_registerdate;
+
+    /** @ORM\Column(type="datetime",nullable=true) */
+    private $mpt_lastvisit;
+
+    /** @ORM\Column(type="datetime",nullable=true) */
+    private $mpt_lastupdate;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mpt_userid = 0;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_munkahelynev;
+
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $mpt_munkahelyirszam = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $mpt_munkahelyvaros = '';
+
+    /** @ORM\Column(type="string",length=60,nullable=true) */
+    private $mpt_munkahelyutca = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $mpt_munkahelyhazszam = '';
+
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $mpt_lakcimirszam = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $mpt_lakcimvaros = '';
+
+    /** @ORM\Column(type="string",length=60,nullable=true) */
+    private $mpt_lakcimutca = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $mpt_lakcimhazszam = '';
+
+    /** @ORM\Column(type="string",length=4,nullable=true) */
+    private $mpt_tagkartya = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTSzekcio")
+     * @ORM\JoinColumn(name="mpt_szekcio1_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mpt_szekcio1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTSzekcio")
+     * @ORM\JoinColumn(name="mpt_szekcio2_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mpt_szekcio2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTSzekcio")
+     * @ORM\JoinColumn(name="mpt_szekcio3_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mpt_szekcio3;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTTagozat")
+     * @ORM\JoinColumn(name="mpt_tagozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mpt_tagozat;
+
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $mpt_megszolitas = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $mpt_fokozat = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_vegzettseg = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTTagsagforma")
+     * @ORM\JoinColumn(name="mpttagsagforma_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mpt_tagsagforma;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mpt_szuleteseve = 0;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_diplomahely = '';
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mpt_diplomaeve = 0;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_egyebdiploma = '';
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $mpt_privatemail = '';
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1932,4 +2033,511 @@ class Partner {
         $this->szamlaegyeb = $szamlaegyeb;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMptUsername() {
+        return $this->mpt_username;
+    }
+
+    /**
+     * @param mixed $mpt_username
+     */
+    public function setMptUsername($mpt_username): void {
+        $this->mpt_username = $mpt_username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptPassword() {
+        return $this->mpt_password;
+    }
+
+    /**
+     * @param mixed $mpt_password
+     */
+    public function setMptPassword($mpt_password): void {
+        $this->mpt_password = $mpt_password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptRegisterdate() {
+        return $this->mpt_registerdate;
+    }
+
+    public function getMptRegisterdateStr() {
+        if ($this->getMptRegisterdate()) {
+            return $this->getMptRegisterdate()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $mpt_registerdate
+     */
+    public function setMptRegisterdate($mpt_registerdate) {
+        if ($mpt_registerdate != '') {
+            $this->mpt_registerdate = new \DateTime(\mkw\store::convDate($mpt_registerdate));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptLastvisit() {
+        return $this->mpt_lastvisit;
+    }
+
+    public function getMptLastvisitStr() {
+        if ($this->getMptLastvisit()) {
+            return $this->getMptLastvisit()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $mpt_lastvisit
+     */
+    public function setMptLastvisit($mpt_lastvisit): void {
+        if ($mpt_lastvisit != '') {
+            $this->mpt_lastvisit = new \DateTime(\mkw\store::convDate($mpt_lastvisit));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptLastupdate() {
+        return $this->mpt_lastupdate;
+    }
+
+    public function getMptLastupdateStr() {
+        if ($this->getMptLastupdate()) {
+            return $this->getMptLastupdate()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $mpt_lastupdate
+     */
+    public function setMptLastupdate($mpt_lastupdate): void {
+        if ($mpt_lastupdate != '') {
+            $this->mpt_lastupdate = new \DateTime(\mkw\store::convDate($mpt_lastupdate));
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getMptUserid() {
+        return $this->mpt_userid;
+    }
+
+    /**
+     * @param int $mpt_userid
+     */
+    public function setMptUserid($mpt_userid): void {
+        $this->mpt_userid = $mpt_userid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptMunkahelynev() {
+        return $this->mpt_munkahelynev;
+    }
+
+    /**
+     * @param mixed $mpt_munkahelynev
+     */
+    public function setMptMunkahelynev($mpt_munkahelynev): void {
+        $this->mpt_munkahelynev = $mpt_munkahelynev;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptMunkahelyirszam() {
+        return $this->mpt_munkahelyirszam;
+    }
+
+    /**
+     * @param string $mpt_munkahelyirszam
+     */
+    public function setMptMunkahelyirszam($mpt_munkahelyirszam): void {
+        $this->mpt_munkahelyirszam = $mpt_munkahelyirszam;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptMunkahelyvaros() {
+        return $this->mpt_munkahelyvaros;
+    }
+
+    /**
+     * @param string $mpt_munkahelyvaros
+     */
+    public function setMptMunkahelyvaros($mpt_munkahelyvaros): void {
+        $this->mpt_munkahelyvaros = $mpt_munkahelyvaros;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptMunkahelyutca() {
+        return $this->mpt_munkahelyutca;
+    }
+
+    /**
+     * @param string $mpt_munkahelyutca
+     */
+    public function setMptMunkahelyutca($mpt_munkahelyutca): void {
+        $this->mpt_munkahelyutca = $mpt_munkahelyutca;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptMunkahelyhazszam() {
+        return $this->mpt_munkahelyhazszam;
+    }
+
+    /**
+     * @param string $mpt_munkahelyhazszam
+     */
+    public function setMptMunkahelyhazszam($mpt_munkahelyhazszam): void {
+        $this->mpt_munkahelyhazszam = $mpt_munkahelyhazszam;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptLakcimirszam() {
+        return $this->mpt_lakcimirszam;
+    }
+
+    /**
+     * @param string $mpt_lakcimirszam
+     */
+    public function setMptLakcimirszam($mpt_lakcimirszam): void {
+        $this->mpt_lakcimirszam = $mpt_lakcimirszam;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptLakcimvaros() {
+        return $this->mpt_lakcimvaros;
+    }
+
+    /**
+     * @param string $mpt_lakcimvaros
+     */
+    public function setMptLakcimvaros($mpt_lakcimvaros): void {
+        $this->mpt_lakcimvaros = $mpt_lakcimvaros;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptLakcimutca() {
+        return $this->mpt_lakcimutca;
+    }
+
+    /**
+     * @param string $mpt_lakcimutca
+     */
+    public function setMptLakcimutca($mpt_lakcimutca): void {
+        $this->mpt_lakcimutca = $mpt_lakcimutca;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptLakcimhazszam() {
+        return $this->mpt_lakcimhazszam;
+    }
+
+    /**
+     * @param string $mpt_lakcimhazszam
+     */
+    public function setMptLakcimhazszam($mpt_lakcimhazszam): void {
+        $this->mpt_lakcimhazszam = $mpt_lakcimhazszam;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptTagkartya() {
+        return $this->mpt_tagkartya;
+    }
+
+    /**
+     * @param string $mpt_tagkartya
+     */
+    public function setMptTagkartya($mpt_tagkartya): void {
+        $this->mpt_tagkartya = $mpt_tagkartya;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptMegszolitas() {
+        return $this->mpt_megszolitas;
+    }
+
+    /**
+     * @param string $mpt_megszolitas
+     */
+    public function setMptMegszolitas($mpt_megszolitas): void {
+        $this->mpt_megszolitas = $mpt_megszolitas;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptFokozat() {
+        return $this->mpt_fokozat;
+    }
+
+    /**
+     * @param string $mpt_fokozat
+     */
+    public function setMptFokozat($mpt_fokozat): void {
+        $this->mpt_fokozat = $mpt_fokozat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptVegzettseg() {
+        return $this->mpt_vegzettseg;
+    }
+
+    /**
+     * @param string $mpt_vegzettseg
+     */
+    public function setMptVegzettseg($mpt_vegzettseg): void {
+        $this->mpt_vegzettseg = $mpt_vegzettseg;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMptSzuleteseve() {
+        return $this->mpt_szuleteseve;
+    }
+
+    /**
+     * @param int $mpt_szuleteseve
+     */
+    public function setMptSzuleteseve($mpt_szuleteseve): void {
+        $this->mpt_szuleteseve = $mpt_szuleteseve;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptDiplomahely() {
+        return $this->mpt_diplomahely;
+    }
+
+    /**
+     * @param string $mpt_diplomahely
+     */
+    public function setMptDiplomahely($mpt_diplomahely): void {
+        $this->mpt_diplomahely = $mpt_diplomahely;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMptDiplomaeve() {
+        return $this->mpt_diplomaeve;
+    }
+
+    /**
+     * @param int $mpt_diplomaeve
+     */
+    public function setMptDiplomaeve($mpt_diplomaeve): void {
+        $this->mpt_diplomaeve = $mpt_diplomaeve;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptEgyebdiploma() {
+        return $this->mpt_egyebdiploma;
+    }
+
+    /**
+     * @param string $mpt_egyebdiploma
+     */
+    public function setMptEgyebdiploma($mpt_egyebdiploma): void {
+        $this->mpt_egyebdiploma = $mpt_egyebdiploma;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMptPrivatemail() {
+        return $this->mpt_privatemail;
+    }
+
+    /**
+     * @param string $mpt_privatemail
+     */
+    public function setMptPrivatemail($mpt_privatemail): void {
+        $this->mpt_privatemail = $mpt_privatemail;
+    }
+
+    public function getMptSzekcio1() {
+        return $this->mpt_szekcio1;
+    }
+
+    public function getMptSzekcio1Id() {
+        if ($this->mpt_szekcio1) {
+            return $this->mpt_szekcio1->getId();
+        }
+        return false;
+    }
+
+    public function getMptSzekcio1Nev() {
+        if ($this->mpt_szekcio1) {
+            return $this->mpt_szekcio1->getNev();
+        }
+        return false;
+    }
+
+    public function setMptSzekcio1($val) {
+        if ($this->mpt_szekcio1 !== $val) {
+            if (!$val) {
+                $this->mpt_szekcio1 = null;
+            }
+            else {
+                $this->mpt_szekcio1 = $val;
+            }
+        }
+    }
+
+    public function getMptSzekcio2() {
+        return $this->mpt_szekcio2;
+    }
+
+    public function getMptSzekcio2Id() {
+        if ($this->mpt_szekcio2) {
+            return $this->mpt_szekcio2->getId();
+        }
+        return false;
+    }
+
+    public function getMptSzekcio2Nev() {
+        if ($this->mpt_szekcio2) {
+            return $this->mpt_szekcio2->getNev();
+        }
+        return false;
+    }
+
+    public function setMptSzekcio2($val) {
+        if ($this->mpt_szekcio2 !== $val) {
+            if (!$val) {
+                $this->mpt_szekcio2 = null;
+            }
+            else {
+                $this->mpt_szekcio2 = $val;
+            }
+        }
+    }
+
+    public function getMptSzekcio3() {
+        return $this->mpt_szekcio3;
+    }
+
+    public function getMptSzekcio3Id() {
+        if ($this->mpt_szekcio3) {
+            return $this->mpt_szekcio3->getId();
+        }
+        return false;
+    }
+
+    public function getMptSzekcio3Nev() {
+        if ($this->mpt_szekcio3) {
+            return $this->mpt_szekcio3->getNev();
+        }
+        return false;
+    }
+
+    public function setMptSzekcio3($val) {
+        if ($this->mpt_szekcio3 !== $val) {
+            if (!$val) {
+                $this->mpt_szekcio3 = null;
+            }
+            else {
+                $this->mpt_szekcio3 = $val;
+            }
+        }
+    }
+
+    public function getMptTagozat() {
+        return $this->mpt_tagozat;
+    }
+
+    public function getMptTagozatId() {
+        if ($this->mpt_tagozat) {
+            return $this->mpt_tagozat->getId();
+        }
+        return false;
+    }
+
+    public function getMptTagozatNev() {
+        if ($this->mpt_tagozat) {
+            return $this->mpt_tagozat->getNev();
+        }
+        return false;
+    }
+
+    public function setMptTagozat($val) {
+        if ($this->mpt_tagozat !== $val) {
+            if (!$val) {
+                $this->mpt_tagozat = null;
+            }
+            else {
+                $this->mpt_tagozat = $val;
+            }
+        }
+    }
+
+    public function getMptTagsagforma() {
+        return $this->mpt_tagsagforma;
+    }
+
+    public function getMptTagsagformaId() {
+        if ($this->mpt_tagsagforma) {
+            return $this->mpt_tagsagforma->getId();
+        }
+        return false;
+    }
+
+    public function getMptTagsagformaNev() {
+        if ($this->mpt_tagsagforma) {
+            return $this->mpt_tagsagforma->getNev();
+        }
+        return false;
+    }
+
+    public function setMptTagsagforma($val) {
+        if ($this->mpt_tagsagforma !== $val) {
+            if (!$val) {
+                $this->mpt_tagsagforma = null;
+            }
+            else {
+                $this->mpt_tagsagforma = $val;
+            }
+        }
+    }
 }

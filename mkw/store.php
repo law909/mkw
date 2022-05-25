@@ -1139,6 +1139,10 @@ class store {
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
     }
 
+    public static function isMPT() {
+        return self::getTheme() === 'mpt' || self::getSetupValue('mpt', false);
+    }
+
     public static function isMiniCRMOn() {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
     }

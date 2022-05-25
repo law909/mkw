@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use Entities\MPTSzekcio;
+use Entities\MPTTagozat;
+use Entities\MPTTagsagforma;
 use Entities\Partner;
 use Entities\PartnerTermekcsoportKedvezmeny;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -126,6 +129,39 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['createdstr'] = $t->getCreatedStr();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
+        $x['mpt_username'] = $t->getMptUsername();
+        $x['mpt_registerdatestr'] = $t->getMptRegisterdateStr();
+        $x['mpt_lastvisitstr'] = $t->getMptLastvisitStr();
+        $x['mpt_lastupdatestr'] = $t->getMptLastupdateStr();
+        $x['mpt_userid'] = $t->getMptUserid();
+        $x['mpt_munkahelynev'] = $t->getMptMunkahelynev();
+        $x['mpt_munkahelyirszam'] = $t->getMptMunkahelyirszam();
+        $x['mpt_munkahelyvaros'] = $t->getMptMunkahelyvaros();
+        $x['mpt_munkahelyutca'] = $t->getMptMunkahelyutca();
+        $x['mpt_munkahelyhazszam'] = $t->getMptMunkahelyhazszam();
+        $x['mpt_lakcimirszam'] = $t->getMptLakcimirszam();
+        $x['mpt_lakcimvaros'] = $t->getMptLakcimvaros();
+        $x['mpt_lakcimutca'] = $t->getMptLakcimutca();
+        $x['mpt_lakcimhazszam'] = $t->getMptLakcimhazszam();
+        $x['mpt_tagkartya'] = $t->getMptTagkartya();
+        $x['mpt_szekcio1'] = $t->getMptSzekcio1Id();
+        $x['mpt_szekcio1nev'] = $t->getMptSzekcio1Nev();
+        $x['mpt_szekcio2'] = $t->getMptSzekcio2Id();
+        $x['mpt_szekcio2nev'] = $t->getMptSzekcio2Nev();
+        $x['mpt_szekcio3'] = $t->getMptSzekcio3Id();
+        $x['mpt_szekcio3nev'] = $t->getMptSzekcio3Nev();
+        $x['mpt_tagozat'] = $t->getMptTagozatId();
+        $x['mpt_tagozatnev'] = $t->getMptTagozatNev();
+        $x['mpt_tagsagforma'] = $t->getMptTagsagformaId();
+        $x['mpt_tagsagformanev'] = $t->getMptTagsagformaNev();
+        $x['mpt_megszolitas'] = $t->getMptMegszolitas();
+        $x['mpt_fokozat'] = $t->getMptFokozat();
+        $x['mpt_vegzettseg'] = $t->getMptVegzettseg();
+        $x['mpt_szuleteseve'] = $t->getMptSzuleteseve();
+        $x['mpt_diplomahely'] = $t->getMptDiplomahely();
+        $x['mpt_diplomaeve'] = $t->getMptDiplomaeve();
+        $x['mpt_egyebdiploma'] = $t->getMptEgyebdiploma();
+        $x['mpt_privatemail'] = $t->getMptPrivatemail();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -233,6 +269,62 @@ class partnerController extends \mkwhelpers\MattableController {
             }
             if ($this->params->getIntRequestParam('minicrmcontactid')) {
                 $obj->setMinicrmcontactid($this->params->getIntRequestParam('minicrmcontactid'));
+            }
+            $obj->setMptUsername($this->params->getStringRequestParam('mpt_username'));
+            $obj->setMptPassword($this->params->getStringRequestParam('mpt_password'));
+            $obj->setMptUserid($this->params->getIntRequestParam('mpt_userid'));
+            $obj->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
+            $obj->setMptMunkahelyirszam($this->params->getStringRequestParam('mpt_munkahelyirszam'));
+            $obj->setMptMunkahelyvaros($this->params->getStringRequestParam('mpt_munkahelyvaros'));
+            $obj->setMptMunkahelyutca($this->params->getStringRequestParam('mpt_munkahelyutca'));
+            $obj->setMptMunkahelyhazszam($this->params->getStringRequestParam('mpt_munkahelyhazszam'));
+            $obj->setMptLakcimirszam($this->params->getStringRequestParam('mpt_lakcimirszam'));
+            $obj->setMptLakcimvaros($this->params->getStringRequestParam('mpt_lakcimvaros'));
+            $obj->setMptLakcimutca($this->params->getStringRequestParam('mpt_lakcimutca'));
+            $obj->setMptLakcimhazszam($this->params->getStringRequestParam('mpt_lakcimhazszam'));
+            $obj->setMptTagkartya($this->params->getStringRequestParam('mpt_tagkartya'));
+            $obj->setMptMegszolitas($this->params->getStringRequestParam('mpt_megszolitas'));
+            $obj->setMptFokozat($this->params->getStringRequestParam('mpt_fokozat'));
+            $obj->setMptVegzettseg($this->params->getStringRequestParam('mpt_vegzettseg'));
+            $obj->setMptSzuleteseve($this->params->getIntRequestParam('mpt_szuleteseve'));
+            $obj->setMptDiplomaeve($this->params->getIntRequestParam('mpt_diplomaeve'));
+            $obj->setMptDiplomahely($this->params->getStringRequestParam('mpt_diplomahely'));
+            $obj->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
+            $obj->setMptPrivatemail($this->params->getStringRequestParam('mpt_privatemail'));
+            $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio1', 0));
+            if ($mptszekcio) {
+                $obj->setMptSzekcio1($mptszekcio);
+            }
+            else {
+                $obj->setMptSzekcio1(null);
+            }
+            $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio2', 0));
+            if ($mptszekcio) {
+                $obj->setMptSzekcio2($mptszekcio);
+            }
+            else {
+                $obj->setMptSzekcio2(null);
+            }
+            $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio3', 0));
+            if ($mptszekcio) {
+                $obj->setMptSzekcio3($mptszekcio);
+            }
+            else {
+                $obj->setMptSzekcio3(null);
+            }
+            $mpttagozat = \mkw\store::getEm()->getRepository(MPTTagozat::class)->find($this->params->getIntRequestParam('mpt_tagozat', 0));
+            if ($mpttagozat) {
+                $obj->setMptTagozat($mpttagozat);
+            }
+            else {
+                $obj->setMptTagozat(null);
+            }
+            $mpttagsagforma = \mkw\store::getEm()->getRepository(MPTTagsagforma::class)->find($this->params->getIntRequestParam('mpt_tagsagforma', 0));
+            if ($mpttagsagforma) {
+                $obj->setMptTagsagforma($mpttagsagforma);
+            }
+            else {
+                $obj->setMptTagsagforma(null);
             }
 
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));

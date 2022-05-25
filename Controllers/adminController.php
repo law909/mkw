@@ -640,4 +640,117 @@ class adminController extends mkwhelpers\Controller {
         echo 'kész';
     }
 
+    private function n($mit) {
+        if (strlen($mit) === 1) {
+            return ord($mit) - 97;
+        }
+        if (strlen($mit) === 2) {
+            return ((ord($mit[0]) - 96) * 26) + (ord($mit[1]) - 97);
+        }
+    }
+
+    private function createMptSzekcio($nev) {
+        $szekcio = \mkw\store::getEm()->getRepository(Entities\MPTSzekcio::class)->findOneBy(['nev' => $nev]);
+        if (!$szekcio) {
+            $szekcio = new Entities\MPTSzekcio();
+            $szekcio->setNev($nev);
+            \mkw\store::getEm()->persist($szekcio);
+            \mkw\store::getEm()->flush($szekcio);
+        }
+        return $szekcio;
+    }
+
+    private function createMptTagozat($nev) {
+        $tagozat = \mkw\store::getEm()->getRepository(Entities\MPTTagozat::class)->findOneBy(['nev' => $nev]);
+        if (!$tagozat) {
+            $tagozat = new Entities\MPTTagozat();
+            $tagozat->setNev($nev);
+            \mkw\store::getEm()->persist($tagozat);
+            \mkw\store::getEm()->flush($tagozat);
+        }
+        return $tagozat;
+    }
+
+    private function createMptTagsagforma($nev) {
+        $tagsagforma = \mkw\store::getEm()->getRepository(Entities\MPTTagsagforma::class)->findOneBy(['nev' => $nev]);
+        if (!$tagsagforma) {
+            $tagsagforma = new Entities\MPTTagsagforma();
+            $tagsagforma->setNev($nev);
+            \mkw\store::getEm()->persist($tagsagforma);
+            \mkw\store::getEm()->flush($tagsagforma);
+        }
+        return $tagsagforma;
+    }
+
+    public function MPTPartnerImport() {
+        $sep = ';';
+        $fh = fopen(\mkw\store::storagePath('mpttagok.csv'), 'r');
+        if ($fh) {
+            fgetcsv($fh, 0, $sep, '"');
+            while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                if ($data[$this->n('a')]) {
+                    $p = new Entities\Partner();
+                    $p->setNev($data[$this->n('a')]);
+                    $nev = explode(' ', $data[$this->n('a')]);
+                    $p->setVezeteknev($nev[0]);
+                    unset($nev[0]);
+                    $p->setKeresztnev(implode(' ', $nev));
+                    $p->setMptUsername($data[$this->n('b')]);
+                    $p->setEmail($data[$this->n('c')]);
+                    $p->setUjdonsaghirlevelkell($data[$this->n('f')]);
+                    if (substr($data[$this->n('g')], 0, 10) !== '0000-00-00') {
+                        $p->setMptRegisterdate($data[$this->n('g')]);
+                    }
+                    if (substr($data[$this->n('h')], 0, 10) !== '0000-00-00') {
+                        $p->setMptLastvisit($data[$this->n('h')]);
+                    }
+                    $p->setMptUserid($data[$this->n('p')]);
+                    if (substr($data[$this->n('aa')], 0, 10) !== '0000-00-00') {
+                        $p->setMptLastupdate($data[$this->n('aa')]);
+                    }
+                    $p->setMptMunkahelynev($data[$this->n('ak')]);
+                    $p->setTelefon($data[$this->n('am')]);
+                    $p->setUtca(mb_substr($data[$this->n('an')], 0, 60));
+                    $p->setVaros(mb_substr($data[$this->n('ao')], 0, 40));
+                    $p->setIrszam(mb_substr($data[$this->n('ap')], 0, 10));
+                    $cim = \mkw\store::explodeCim($data[$this->n('at')]);
+                    $p->setMptLakcimirszam(mb_substr($cim[0], 0, 10));
+                    $p->setMptLakcimvaros(mb_substr($cim[1], 0, 40));
+                    $p->setMptLakcimutca(mb_substr($cim[2], 0, 60));
+                    $cim = \mkw\store::explodeCim($data[$this->n('av')]);
+                    $p->setMptMunkahelyirszam(mb_substr($cim[0], 0, 10));
+                    $p->setMptMunkahelyvaros(mb_substr($cim[1], 0, 40));
+                    $p->setMptMunkahelyutca(mb_substr($cim[2], 0, 60));
+                    $p->setMptTagkartya($data[$this->n('aw')]);
+                    $sz = $this->createMptSzekcio($data[$this->n('az')]);
+                    $p->setMptSzekcio1($sz);
+                    $sz = $this->createMptTagozat($data[$this->n('ba')]);
+                    $p->setMptTagozat($sz);
+                    if (\mkw\store::isMagyarAdoszam($data[$this->n('bn')])) {
+                        $p->setAdoszam($data[$this->n('bn')]);
+                    }
+                    $p->setMptMegszolitas($data[$this->n('bp')]);
+                    $p->setMptFokozat($data[$this->n('bq')]);
+                    $p->setMptVegzettseg($data[$this->n('br')]);
+                    $sz = $this->createMptTagsagforma($data[$this->n('bs')]);
+                    $p->setMptTagsagforma($sz);
+                    $p->setMptSzuleteseve($data[$this->n('by')]);
+                    $p->setMptDiplomahely($data[$this->n('bz')]);
+                    $p->setMptDiplomaeve($data[$this->n('ca')]);
+                    $p->setMptEgyebdiploma($data[$this->n('cb')]);
+                    $p->setMptPrivatemail($data[$this->n('cc')]);
+                    $p->setMegjegyzes($data[$this->n('cm')]);
+                    $sz = $this->createMptSzekcio($data[$this->n('cr')]);
+                    $p->setMptSzekcio2($sz);
+                    $sz = $this->createMptSzekcio($data[$this->n('cs')]);
+                    $p->setMptSzekcio3($sz);
+
+                    \mkw\store::getEm()->persist($p);
+                    \mkw\store::getEm()->flush();
+
+                }
+            }
+        }
+        echo 'Ready.';
+    }
 }
