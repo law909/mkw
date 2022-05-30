@@ -82,7 +82,22 @@
         </tr>
     {/while}
     </tbody>
-    <tfoot>
+    <tfoot class="pagenum">
+    <tr>
+        <td class="printdatum">{$printdatum}</td>
+        {$tdnum = 2}
+        {if ($ertektipus)}
+            {$tdnum++}
+        {/if}
+        {if ($keszletkell)}
+            {$tdnum++}
+        {/if}
+        {for $c = 1 to $tdnum}
+            <td></td>
+        {/for}
+    </tr>
+    </tfoot>
+    <tfoot class="sum">
     <tr>
         <td class="datacell">Összesen / Total</td>
         <td class="datacell"></td>

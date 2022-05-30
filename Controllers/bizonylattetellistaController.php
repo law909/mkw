@@ -410,6 +410,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $view->setVar('ertektipus', $res['ertektipus']);
         $view->setVar('keszletkell', $keszletkell);
         $view->setVar('tetelek', $res['tetelek']);
+        $view->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
         $view->printTemplateResult();
 
     }

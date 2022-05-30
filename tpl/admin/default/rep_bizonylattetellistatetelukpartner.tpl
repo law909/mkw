@@ -53,7 +53,19 @@
                 {$i = $i + 1}
             {/while}
         </tbody>
-        <tfoot>
+        <tfoot class="pagenum">
+        <tr>
+            <td class="printdatum">{$printdatum}</td>
+            {$tdnum = 1}
+            {if ($ertektipus)}
+                {$tdnum++}
+            {/if}
+            {for $c = 1 to $tdnum}
+                <td></td>
+            {/for}
+        </tr>
+        </tfoot>
+        <tfoot class="sum">
             <tr class="italic bold">
                 <td colspan="2" class="cell">{$tetel.uzletkotonev} total</td>
                 {if ($ertektipus)}
