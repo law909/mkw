@@ -120,7 +120,7 @@ $(document).ready(function () {
                         url: '/admin/mnrstaticpage/getemptyrow',
                         type: 'GET',
                         data: {
-                            staticid: $this.attr('data-mnrstaticid')
+                            mnrstaticid: $this.attr('data-mnrstaticid')
                         },
                         success: function (data) {
                             var tbody = $('#MNRStaticPageTab');

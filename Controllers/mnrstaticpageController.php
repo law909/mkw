@@ -24,15 +24,21 @@ class mnrstaticpageController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
-	public function loadVars($t, $forKarb = false) {
+	public function loadVars($t, $static, $forKarb = false) {
         $translationsCtrl = new mnrstatictranslationController($this->params);
         $translations = array();
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\MNRStaticPage();
 			$this->getEm()->detach($t);
+            $x['oper'] = 'add';
+            $x['id'] = store::createUID();
+            $x['static']['id'] = $static ? $static->getId() : null;
 		}
-		$x['id'] = $t->getId();
+		else {
+		    $x['oper'] = 'edit';
+            $x['id'] = $t->getId();
+        }
 		$x['szlogen1'] = $t->getSzlogen1();
 		$x['szlogen2'] = $t->getSzlogen2();
 		$x['tartalom'] = $t->getTartalom();

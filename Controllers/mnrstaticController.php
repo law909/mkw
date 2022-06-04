@@ -63,6 +63,35 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		$obj->setSzlogen1($this->params->getStringRequestParam('szlogen1'));
         $obj->setSzlogen2($this->params->getStringRequestParam('szlogen2'));
 		$obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
+		$pageids = $this->params->getArrayRequestParam('mnrstaticpageid');
+		foreach ($pageids as $pageid) {
+		    $oper = $this->params->getStringRequestParam('mnrstaticpageoper_' . $pageid);
+		    if ($oper == 'add') {
+                $page = new MNRStaticPage();
+                $obj->addMNRStaticPage($page);
+                $page->setNev($this->params->getStringRequestParam('mnrstaticpagenev_' . $pageid));
+                $page->setSzlogen1($this->params->getStringRequestParam('mnrstaticpageszlogen1_' . $pageid));
+                $page->setSzlogen2($this->params->getStringRequestParam('mnrstaticpageszlogen2_' . $pageid));
+                $page->setSzoveg1($this->params->getStringRequestParam('mnrstaticpageszoveg1_' . $pageid));
+                $page->setSzoveg2($this->params->getStringRequestParam('mnrstaticpageszoveg2_' . $pageid));
+                $page->setSzoveg3($this->params->getStringRequestParam('mnrstaticpageszoveg3_' . $pageid));
+                $page->setTartalom($this->params->getStringRequestParam('mnrstaticpagetartalom_' . $pageid));
+                $this->getEm()->persist($page);
+            }
+		    elseif ($oper == 'edit') {
+                $page = $this->getEm()->getRepository(MNRStaticPage::class)->find($pageid);
+                if ($page) {
+                    $page->setNev($this->params->getStringRequestParam('mnrstaticpagenev_' . $pageid));
+                    $page->setSzlogen1($this->params->getStringRequestParam('mnrstaticpageszlogen1_' . $pageid));
+                    $page->setSzlogen2($this->params->getStringRequestParam('mnrstaticpageszlogen2_' . $pageid));
+                    $page->setSzoveg1($this->params->getStringRequestParam('mnrstaticpageszoveg1_' . $pageid));
+                    $page->setSzoveg2($this->params->getStringRequestParam('mnrstaticpageszoveg2_' . $pageid));
+                    $page->setSzoveg3($this->params->getStringRequestParam('mnrstaticpageszoveg3_' . $pageid));
+                    $page->setTartalom($this->params->getStringRequestParam('mnrstaticpagetartalom_' . $pageid));
+                    $this->getEm()->persist($page);
+                }
+            }
+        }
         if (\mkw\store::isMultilang()) {
             $_tf = \Entities\MNRStatic::getTranslatedFields();
             $translationids = $this->params->getArrayRequestParam('translationid');

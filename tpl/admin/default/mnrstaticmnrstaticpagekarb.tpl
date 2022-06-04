@@ -4,7 +4,7 @@
         <input name="mnrstaticpageoper_{$page.id}" type="hidden" value="{$page.oper}">
         <tr>
             <td colspan="3" class="mattable-cell">
-                <a class="js-valtozatdelbutton" href="#" data-id="{$page.id}"{if ($page.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                <a class="js-mnrstaticpagedelbutton" href="#" data-id="{$page.id}"{if ($page.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
             </td>
         </tr>
         <tr>
@@ -20,7 +20,7 @@
                 <label for="mnrstaticpageszlogen1Edit_{$page.id}">{at('Szlogen 1')}:</label>
             </td>
             <td class="mattable-cell">
-                <input class="" id="mnrstaticpagszlogen1Edit_{$page.id}" name="mnrstaticpageszlogen1_{$page.id}" type="text" value="{$page.szlogen1}">
+                <input class="" id="mnrstaticpageszlogen1Edit_{$page.id}" name="mnrstaticpageszlogen1_{$page.id}" type="text" value="{$page.szlogen1}">
             </td>
         </tr>
         <tr>
@@ -84,5 +84,5 @@
     </tbody>
 </table>
 {if ($page.oper=='add')}
-    <a class="js-mnrstaticpagenewbutton" href="#" title="{at('Új')}" data-mnrstaticid="{$page.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+    <a class="js-mnrstaticpagenewbutton" href="#" title="{at('Új')}" data-mnrstaticid="{$page.static.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}
