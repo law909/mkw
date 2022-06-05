@@ -457,20 +457,20 @@ class adminController extends mkwhelpers\Controller {
             $termekid = $ttt['id'];
 
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
-            $stmt->execute();
+            $stmt->executeStatement();
             $vonalkod = \mkw\store::generateEAN13((string)$conn->lastInsertId());
             $st2 = $conn->prepare('UPDATE termek SET vonalkod="' . $vonalkod . '" WHERE id=' . $termekid);
-            $st2->execute();
+            $st2->executeStatement();
 
             $f = new \mkwhelpers\FilterDescriptor();
             $f->addFilter('termek', '=', $termekid);
             $valtozatok = \mkw\store::getEm()->getRepository('\Entities\TermekValtozat')->getAll($f);
             foreach ($valtozatok as $valtozat) {
                 $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
-                $stmt->execute();
+                $stmt->executeStatement();
                 $vonalkod = \mkw\store::generateEAN13((string)$conn->lastInsertId());
                 $st2 = $conn->prepare('UPDATE termekvaltozat SET vonalkod="' . $vonalkod . '" WHERE id=' . $valtozat->getId());
-                $st2->execute();
+                $st2->executeStatement();
             }
         }
         echo 'kész';

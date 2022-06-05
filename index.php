@@ -95,21 +95,6 @@ if ($ini['developer']) {
 
 $mainsess = store::getMainSession();
 
-if (($ini['mail.mailer'] !== 'phpmailer') && ($ini['mail.smtp'] == 1)) {
-    $mailparams = array(
-        'name' => $ini['mail.name'],
-        'port' => $ini['mail.port'],
-        'auth' => 'Login',
-        'username' => $ini['mail.username'],
-        'password' => $ini['mail.password']
-    );
-    if (array_key_exists('mail.ssl', $ini) && $ini['mail.ssl']) {
-        $mailparams['ssl'] = $ini['mail.ssl'];
-    }
-    $mailtr = new Zend_Mail_Transport_Smtp($ini['mail.host'], $mailparams);
-    Zend_Mail::setDefaultTransport($mailtr);
-}
-
 try {
     $conn = store::getEm()->getConnection()->connect();
 }

@@ -66,7 +66,7 @@ class FilterDescriptor implements \Countable {
         return $ret;
     }
 
-    public function count() {
+    public function count(): int {
         return count($this->filter);
     }
 

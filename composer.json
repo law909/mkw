@@ -2,16 +2,27 @@
 	"require": {
 		"law909/altorouter": "1.0.*",
 		"zendframework/zendframework1": "1.*",
-		"smarty/smarty": "3.*",
+		"smarty/smarty": "^3.0",
 		"ezyang/htmlpurifier": "v4.*",
         "myclabs/deep-copy": "1.*",
-        "doctrine/orm": "2.6.*",
-        "gedmo/doctrine-extensions": "2.4.*",
+        "doctrine/orm": "^2.6.0",
+        "gedmo/doctrine-extensions": "^3",
         "symfony/css-selector": "3.*",
         "symfony/dom-crawler": "3.*",
         "phpmailer/phpmailer": "6.*",
 		"mikehaertl/phpwkhtmltopdf": "^2.3",
 		"phpoffice/phpspreadsheet": "^1.12",
-        "nesbot/carbon": "^2.35.0"
-	}
+        "nesbot/carbon": "^2.35.0",
+		"symfony/cache": "^6.0"
+	},
+    "autoload": {
+        "psr-4": {
+            "mkw\\": "mkw",
+            "Listeners\\": "Listeners",
+            "mkwhelpers\\": "mkwhelpers",
+            "Entities\\": "Entities",
+            "Controllers\\": "Controllers",
+            "Proxies\\": "Proxies"
+        }
+    }
 }

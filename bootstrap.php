@@ -1,95 +1,113 @@
 <?php
-use \Doctrine\Common\EventManager;
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
+
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\PsrCachedReader;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\ORMSetup;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Gedmo\Blameable\BlameableListener;
+use Gedmo\Sluggable\SluggableListener;
+use Gedmo\Timestampable\TimestampableListener;
+use mkw\store;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
+use Doctrine\Common\EventManager;
+use Listeners\BizonylatfejListener;
+use Listeners\BankbizonylatfejListener;
+use Listeners\BizonylattetelListener;
+use Listeners\JogareszvetelListener;
+use Listeners\KuponListener;
+use Listeners\PenztarbizonylatfejListener;
+use Listeners\RendezvenyListener;
+use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
 $setini = parse_ini_file('setup.ini');
 
-$classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
-$classLoader->register();
+store::setConfig($ini);
+store::setSetup($setini);
 
-$classLoader = new \Doctrine\Common\ClassLoader('Proxies', __DIR__);
-$classLoader->register();
+$config = new Configuration();
 
-$classLoader = new \Doctrine\Common\ClassLoader('Listeners', __DIR__);
-$classLoader->register();
-
-$classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers', __DIR__);
-$classLoader->register();
-
-$classLoader=new \Doctrine\Common\ClassLoader('mkw', __DIR__);
-$classLoader->register();
-
-$classLoader=new \Doctrine\Common\ClassLoader('Controllers', __DIR__);
-$classLoader->register();
-
-mkw\store::setConfig($ini);
-mkw\store::setSetup($setini);
-
-$config = new Doctrine\ORM\Configuration();
-
-// DriverChain
-//$driverchain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
-$driverchain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
-if (array_key_exists('cache', $ini) && $ini['cache'] === 'apc') {
-    $metacache = new Doctrine\Common\Cache\ApcuCache();
+if (array_key_exists('cache', $ini)) {
+    switch ($ini['cache']) {
+        case 'apc':
+            $metacache = new ApcuAdapter('mkwmetadata');
+            $querycache = new ApcuAdapter('mkwquery');
+            break;
+        case 'file':
+            $metacache = new PhpFilesAdapter('mkwmetadata');
+            $querycache = new PhpFilesAdapter('mkwquery');
+            break;
+        default:
+            $metacache = new ArrayAdapter();
+            $querycache = new ArrayAdapter();
+            break;
+    }
 }
 else {
-    $metacache = new Doctrine\Common\Cache\ArrayCache();
+    $metacache = new ArrayAdapter();
+    $querycache = new ArrayAdapter();
 }
-$cachedAnnotationReader = new Doctrine\Common\Annotations\CachedReader(
-    new Doctrine\Common\Annotations\AnnotationReader,
+$config->setMetadataCache($metacache);
+$config->setQueryCache($querycache);
+
+$config->setProxyDir(__DIR__ . '/Proxies');
+$config->setProxyNamespace('Proxies');
+if ($ini['developer']) {
+    $config->setAutoGenerateProxyClasses(true);
+} else {
+    $config->setAutoGenerateProxyClasses(false);
+}
+
+AnnotationRegistry::registerFile('vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+
+$annotationReader = new AnnotationReader;
+$cachedAnnotationReader = new PsrCachedReader(
+    $annotationReader,
     $metacache
 );
+$driverchain = new MappingDriverChain();
 // Gedmo DoctrineExtensions annotations
 Gedmo\DoctrineExtensions::registerAbstractMappingIntoDriverChainORM(
     $driverchain,
     $cachedAnnotationReader
 );
 // Doctrine annotations
-$doctrinedriver = $config->newDefaultAnnotationDriver(array(__DIR__.'/Entities'), false);
-$driverchain->addDriver($doctrinedriver, 'Entities');
+$defaultDriverImpl = ORMSetup::createDefaultAnnotationDriver([__DIR__ . '/Entities']);
+$driverchain->addDriver($defaultDriverImpl, 'Entities');
+
+$config->setMetadataDriverImpl($driverchain);
+
+if ($ini['sqllog']) {
+	$config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
+}
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
 $config->addCustomStringFunction('NOW', 'mkwhelpers\now');
 $config->addCustomStringFunction('IF', 'mkwhelpers\ifelse');
 $config->addCustomStringFunction('RAND', 'mkwhelpers\rand');
 
-$config->setMetadataDriverImpl($driverchain);
-$config->setProxyDir(__DIR__ . '/Proxies');
-$config->setProxyNamespace('Proxies');
-$config->setMetadataCacheImpl($metacache);
-$config->setAutoGenerateProxyClasses(false);
-
-if ($ini['sqllog']) {
-	$config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
-}
-
-$connectionOptions = array(
-    'driver'=>$ini['db.driver'],
-    'user'=>$ini['db.username'],
-	'password'=>$ini['db.password'],
-	'host'=>$ini['db.host'],
-	'dbname'=>$ini['db.dbname'],
-	'port'=>$ini['db.port']
-);
-
 $evm = new EventManager();
+// new MysqlSessionInit('UTF8','utf8_hungarian_ci')
+$evm->addEventSubscriber(new Listeners\SQLSessionInit('SET NAMES UTF8 COLLATE utf8_hungarian_ci'));
 
-$evm->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit('UTF8','utf8_hungarian_ci'));
-
-$sluggableListener = new Gedmo\Sluggable\SluggableListener;
+$sluggableListener = new SluggableListener;
 $sluggableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($sluggableListener);
 
-$timestampableListener = new Gedmo\Timestampable\TimestampableListener;
+$timestampableListener = new TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
-$blameableListener = new \Gedmo\Blameable\BlameableListener();
+$blameableListener = new BlameableListener();
 $blameableListener->setAnnotationReader($cachedAnnotationReader);
-\mkw\store::setBlameableListener($blameableListener);
+store::setBlameableListener($blameableListener);
 $evm->addEventSubscriber($blameableListener);
 
 if (mkw\store::isMultilang()) {
@@ -102,16 +120,23 @@ if (mkw\store::isMultilang()) {
     mkw\store::setTranslationListener($translatableListener);
 }
 
-$evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BizonylatfejListener());
-$evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BankbizonylatfejListener());
-$evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\PenztarbizonylatfejListener());
-$evm->addEventListener(array('onFlush'), new Listeners\BizonylattetelListener());
-$evm->addEventListener(array('prePersist'), new Listeners\KuponListener());
-$evm->addEventListener(array('prePersist'), new Listeners\RendezvenyListener());
-$evm->addEventListener(array('onFlush'), new Listeners\JogareszvetelListener());
+$evm->addEventListener(array('onFlush', 'prePersist'), new BizonylatfejListener());
+$evm->addEventListener(array('onFlush', 'prePersist'), new BankbizonylatfejListener());
+$evm->addEventListener(array('onFlush', 'prePersist'), new PenztarbizonylatfejListener());
+$evm->addEventListener(array('onFlush'), new BizonylattetelListener());
+$evm->addEventListener(array('prePersist'), new KuponListener());
+$evm->addEventListener(array('prePersist'), new RendezvenyListener());
+$evm->addEventListener(array('onFlush'), new JogareszvetelListener());
 
-$em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
+$connectionOptions = array(
+    'driver'   => $ini['db.driver'],
+    'user'     => $ini['db.username'],
+    'password' => $ini['db.password'],
+    'host'     => $ini['db.host'],
+    'dbname'   => $ini['db.dbname'],
+    'port'     => $ini['db.port']
+);
 
-//Zend_Session::start();
+$entityManager = EntityManager::create($connectionOptions, $config, $evm);
 
-mkw\store::setEm($em);
+mkw\store::setEm($entityManager);

@@ -4197,7 +4197,10 @@ class Bizonylatfej {
 
     public function getSzepkartyatipusNev() {
         $szp = array(1 => 'OTP', 2 => 'MKB', 3 => 'K&H');
-        return $szp[$this->szepkartyatipus];
+        if ($this->szepkartyatipus >= 1 && $this->szepkartyatipus <= 3) {
+            return $szp[$this->szepkartyatipus];
+        }
+        return '';
     }
 
     /**

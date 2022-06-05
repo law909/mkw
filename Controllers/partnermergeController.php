@@ -47,7 +47,7 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ', partnervaros="' . $partnerre->getVaros() . '"'
                 . ', partnerutca="' . $partnerre->getUtca() . '"'
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE bankbizonylattetel SET'
                 . ' partner_id=' . $partnerreid
@@ -61,7 +61,7 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ', partnerutca="' . $partnerre->getUtca() . '"'
                 . ', partnerhazszam="' . $partnerre->getHazszam() . '"'
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             if ($this->params->getBoolRequestParam('bizupdate')) {
                 $st = $conn->prepare('UPDATE bizonylatfej SET'
@@ -100,40 +100,40 @@ class partnermergeController extends \mkwhelpers\MattableController {
                     . ', szallutca="' . $partnerre->getSzallutca() . '"'
                     . ', szallhazszam="' . $partnerre->getSzallhazszam() . '"'
                     . ' WHERE (partner_id=' . $partnerrolid . ') AND (bizonylattipus_id<>"szamla") AND (bizonylattipus_id<>"esetiszamla")');
-                $st->execute();
+                $st->executeStatement();
             }
             else {
                 $st = $conn->prepare('UPDATE bizonylatfej SET'
                     . ' partner_id=' . $partnerreid
                     . ' WHERE partner_id=' . $partnerrolid);
-                $st->execute();
+                $st->executeStatement();
             }
 
             $st = $conn->prepare('UPDATE bizonylattetel SET'
                 . ' mijszpartner_id=' . $partnerreid
                 . ', mijszpartnernev="' . $partnerre->getNev() . '"'
                 . ' WHERE mijszpartner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE cimketorzs SET'
                 . ' gyarto_id=' . $partnerreid
                 . ' WHERE gyarto_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE dokumentumtar SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE folyoszamla SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE jogaberlet SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE jogareszvetel SET'
                 . ' partner_id=' . $partnerreid
@@ -142,62 +142,62 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ', partnerkeresztnev="' . $partnerre->getKeresztnev() . '"'
                 . ', partneremail="' . $partnerre->getEmail() . '"'
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE kontakt SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE kosar SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partner_cimkek SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnermijszoklevel SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnermijszoralatogatas SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnermijszpune SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnermijsztanitas SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnertermekcsoportkedvezmeny SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnertermekcsoportszerzodes SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnertermekkedvezmeny SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE partnertermekszerzodes SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE penztarbizonylatfej SET'
                 . ' partner_id=' . $partnerreid
@@ -211,7 +211,7 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ', partnerutca="' . $partnerre->getUtca() . '"'
                 . ', partnerhazszam="' . $partnerre->getHazszam() . '"'
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE rendezvenyjelentkezes SET'
                 . ' partner_id=' . $partnerreid
@@ -219,17 +219,17 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ', partneremail="' . $partnerre->getEmail() . '"'
                 . ', partnertelefon="' . $partnerre->getTelefon() . '"'
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE termek SET'
                 . ' gyarto_id=' . $partnerreid
                 . ' WHERE gyarto_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             $st = $conn->prepare('UPDATE termekertesito SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            $st->executeStatement();
 
             if ($this->params->getBoolRequestParam('nevcsere')) {
                 if ($partnerrol->getNev()) {

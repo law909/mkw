@@ -222,7 +222,7 @@ class mkwimportController extends \mkwhelpers\Controller {
                         'ujdonsaghirlevelkell' => $hirlevel,
                         'telefon' => mb_convert_encoding(trim($data[24]), 'UTF8', 'ISO-8859-2')
                     );
-                    $stmt->execute($params);
+                    $stmt->executeStatement($params);
                 }
             }
         }

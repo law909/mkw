@@ -1284,11 +1284,19 @@ class store {
     }
 
     public static function haveJog($jog) {
-        return self::getAdminSession()->loggedinuser['jog'] >= $jog;
+        $lu = self::getAdminSession()->loggedinuser;
+        if (is_array($lu) && array_key_exists('jog', $lu)) {
+            return $lu['jog'] >= $jog;
+        }
+        return false;
     }
 
     public static function getJog() {
-        return self::getAdminSession()->loggedinuser['jog'];
+        $lu = self::getAdminSession()->loggedinuser;
+        if (is_array($lu) && array_key_exists('jog', $lu)) {
+            return $lu['jog'];
+        }
+        return 0;
     }
 
     public static function translate($mit, $mire = null) {

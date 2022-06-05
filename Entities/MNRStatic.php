@@ -5,7 +5,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
-use mysql_xdevapi\ColumnResult;
 
 /** @ORM\Entity(repositoryClass="Entities\MNRStaticRepository")
  * @ORM\Table(name="mnrstatic",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
@@ -47,7 +46,7 @@ class MNRStatic {
     /** @Gedmo\Locale */
     protected $locale;
 
-    /** @ORM\OneToMany(targetEntity="MNRStaticPage", mappedBy="mnrstaticpage",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="MNRStaticPage", mappedBy="mnrstatic",cascade={"persist"}) */
     private $mnrstaticpages;
 
     /** @ORM\OneToMany(targetEntity="MNRStaticTranslation", mappedBy="object", cascade={"persist", "remove"}) */

@@ -16,7 +16,11 @@ class generalDataLoader {
         }
         $view->setVar('theme', store::getConfigValue('theme'));
         $view->setVar('pubadmintheme', store::getConfigValue('main.theme'));
-        $uitheme = \mkw\store::getAdminSession()->loggedinuser['uitheme'];
+        $uitheme = '';
+        $lu = \mkw\store::getAdminSession()->loggedinuser;
+        if (is_array($lu) && array_key_exists('uitheme', $lu)) {
+            $uitheme = $lu['uitheme'];
+        }
         if (!$uitheme) {
             $uitheme = 'sunny';
         }

@@ -1,6 +1,8 @@
 <?php
 namespace mkwhelpers;
 
+use Doctrine\Common\Annotations\PsrCachedReader;
+
 class TemplateFactory {
 	private $path_template;
 	private $path_template_c;
@@ -23,8 +25,18 @@ class TemplateFactory {
 		$this->main_path_template=$ini['main.path.template'];
 		$this->main_path_smartyconfig=$ini['main.path.smartyconfig'];
 		$this->main_path_smartycache=$ini['main.path.smartycache'];
-		$this->pubadmin_path_template = $ini['pubadmin.path.template'];
-		$this->pubadmin_path_template_default = $ini['pubadmin.path.template.default'];
+		if (array_key_exists('pubadmin.path.template', $ini)) {
+            $this->pubadmin_path_template = $ini['pubadmin.path.template'];
+        }
+		else {
+            $this->pubadmin_path_template = '';
+        }
+        if (array_key_exists('pubadmin.path.template.default', $ini)) {
+            $this->pubadmin_path_template_default = $ini['pubadmin.path.template.default'];
+        }
+        else {
+            $this->pubadmin_path_template_default = '';
+        }
 		$this->templateenginename=$ini['tplengine'];
 	}
 

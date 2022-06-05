@@ -245,7 +245,7 @@ class FifoRepository extends \mkwhelpers\Repository {
                 'betetelid' => (array_key_exists('betetelid', $d) ? $d['betetelid'] : null),
                 'mennyiseg' => $d['mennyiseg']
             );
-            $q->execute($params);
+            $q->executeStatement($params);
         }
 
         $q = $this->_em->getConnection()->prepare('INSERT INTO keszlet (raktar_id, termek_id, termekvaltozat_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
@@ -260,7 +260,7 @@ class FifoRepository extends \mkwhelpers\Repository {
                     'betetelid' => (array_key_exists('tetelid', $d) ? $d['tetelid'] : null),
                     'mennyiseg' => $d['maradek']
                 );
-                $q->execute($params);
+                $q->executeStatement($params);
             }
         }
     }

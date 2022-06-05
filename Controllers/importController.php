@@ -94,7 +94,7 @@ class importController extends \mkwhelpers\Controller {
         $conn = \mkw\store::getEm()->getConnection();
         if ($parent) {
             $st2 = $conn->prepare('UPDATE termek SET inaktiv=0, fuggoben=0 WHERE gyarto_id=' . $gyartoid . ' and termekfa1karkod not like \'' . $parent->getKarkod() . '%\'');
-            $st2->execute();
+            $st2->executeStatement();
         }
     }
 

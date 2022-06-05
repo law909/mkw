@@ -23,7 +23,7 @@ class BizonylatfejListener {
     private function generateTrxId($entity) {
         $conn = $this->em->getConnection();
         $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
-        $stmt->execute();
+        $stmt->executeStatement();
         $entity->setTrxid($conn->lastInsertId());
         $entity->setMasterPassCorrelationID(\mkw\store::createGUID());
     }

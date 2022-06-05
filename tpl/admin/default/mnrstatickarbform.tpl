@@ -49,7 +49,7 @@
         <div id="MNRStaticPageTab" class="mattkarb-page" data-visible="visible">
             <a class="js-mnrstaticpagedelallbutton" href="#" title="{at('Mind törlése')}"
                data-mnrstaticid="{$egyed.id}"><span class="ui-button-text">{at('Mind törlése')}</span></a>
-            {foreach $egyed.valtozatok as $valtozat}
+            {foreach $egyed.mnrstaticpages as $page}
                 {include 'mnrstaticmnrstaticpagekarb.tpl'}
             {/foreach}
             <a class="js-mnrstaticpagenewbutton" href="#" title="{at('Új')}" data-mnrstaticid="{$egyed.id}"><span
