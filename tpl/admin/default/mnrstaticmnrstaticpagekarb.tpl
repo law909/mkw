@@ -63,24 +63,33 @@
                 <textarea class="" id="mnrstaticpagetartalomEdit_{$page.id}" name="mnrstaticpagetartalom_{$page.id}">{$page.tartalom}</textarea>
             </td>
         </tr>
-
+        <tr class="imageupload">
+            <td class="mattable-cell">
+                <label for="KepUrlEdit_{$page.id}">{at('Kép')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input id="KepUrlEdit_{$page.id}" name="mnrstaticpagekepurl_{$page.id}" type="text" size="70" maxlength="255" value="{$page.kepurl}">
+                <a id="KepBrowseButton_{$page.id}" class="js-kepbrowsebutton" href="#" data-id="{$page.id}" title="{at('Browse')}">{at('...')}</a>
+            </td>
+        </tr>
         {if ($setup.multilang)}
+            {foreach $page.translations as $translation}
+                <tr>
+                    <td></td>
+                    <td>
+                {include 'mnrstaticpagetranslationkarb.tpl'}
+                    </td>
+                </tr>
+            {/foreach}
             <tr>
+                <td></td>
                 <td>
-                {foreach $page.translations as $translation}
-                    {include 'mnrstaticpagetranslationkarb.tpl'}
-                {/foreach}
-                </td>
-                <td>
-                <a class="js-pagetranslationnewbutton" href="#" title="{at('Új fordítás')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
+            <a class="js-pagetranslationnewbutton" href="#" title="{at('Új fordítás')}" data-pageid="{$page.id}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
                 </td>
             </tr>
         {/if}
-
-
-
     </tbody>
 </table>
 {if ($page.oper=='add')}

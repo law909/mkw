@@ -25,7 +25,7 @@ class mnrstaticpageController extends \mkwhelpers\MattableController {
 	}
 
 	public function loadVars($t, $static, $forKarb = false) {
-        $translationsCtrl = new mnrstatictranslationController($this->params);
+        $translationsCtrl = new mnrstaticpagetranslationController($this->params);
         $translations = array();
 		$x = array();
 		if (!$t) {
@@ -39,6 +39,7 @@ class mnrstaticpageController extends \mkwhelpers\MattableController {
 		    $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
+		$x['nev'] = $t->getNev();
 		$x['szlogen1'] = $t->getSzlogen1();
 		$x['szlogen2'] = $t->getSzlogen2();
 		$x['tartalom'] = $t->getTartalom();
@@ -49,7 +50,9 @@ class mnrstaticpageController extends \mkwhelpers\MattableController {
 
             if (\mkw\store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
-                    $translations[] = $translationsCtrl->loadVars($tr, true);
+                    $tr = $translationsCtrl->loadVars($tr, true);
+                    $tr['pageid'] = $x['id'];
+                    $translations[] = $tr;
                 }
                 $x['translations'] = $translations;
             }

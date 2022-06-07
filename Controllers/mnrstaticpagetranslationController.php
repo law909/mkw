@@ -26,7 +26,7 @@ class mnrstaticpagetranslationController extends \mkwhelpers\MattableController 
         $x['locale'] = $t->getLocale();
         $x['content'] = $t->getContent();
         $x['field'] = $t->getField();
-        $f =  \Entities\MNRStaticPage::getTranslatedFields();
+        $f = \Entities\MNRStaticPage::getTranslatedFields();
         $x['type'] = $f[$t->getField()]['type'];
         if ($forKarb) {
             $x['fieldlist'] = \Entities\MNRStaticPage::getTranslatedFieldsSelectList($t->getField());
@@ -40,7 +40,9 @@ class mnrstaticpagetranslationController extends \mkwhelpers\MattableController 
 
     public function getemptyrow() {
         $view = $this->createView('mnrstaticpagetranslationkarb.tpl');
-        $view->setVar('translation', $this->loadVars(null, true));
+        $x = $this->loadVars(null, true);
+        $x['pageid'] = $this->params->getStringRequestParam('pageid');
+        $view->setVar('translation', $x);
         echo $view->getTemplateResult();
     }
 

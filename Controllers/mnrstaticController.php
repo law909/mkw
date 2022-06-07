@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\MNRStatic;
 use Entities\MNRStaticPage;
+use Entities\MNRStaticPageTranslation;
 use Entities\MNRStaticTranslation;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -37,7 +38,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		if ($forKarb) {
 
             foreach ($t->getMNRStaticPages() as $tvaltozat) {
-                $valtozat[] = $mnrCtrl->loadVars($tvaltozat, $t);
+                $valtozat[] = $mnrCtrl->loadVars($tvaltozat, $t, $forKarb);
             }
             $x['mnrstaticpages'] = $valtozat;
 
@@ -74,6 +75,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
                 $page->setSzoveg2($this->params->getStringRequestParam('mnrstaticpageszoveg2_' . $pageid));
                 $page->setSzoveg3($this->params->getStringRequestParam('mnrstaticpageszoveg3_' . $pageid));
                 $page->setTartalom($this->params->getStringRequestParam('mnrstaticpagetartalom_' . $pageid));
+                $page->setKepurl($this->params->getStringRequestParam('mnrstaticpagekepurl_' . $pageid));
                 $this->getEm()->persist($page);
             }
 		    elseif ($oper == 'edit') {
@@ -86,7 +88,47 @@ class mnrstaticController extends \mkwhelpers\MattableController {
                     $page->setSzoveg2($this->params->getStringRequestParam('mnrstaticpageszoveg2_' . $pageid));
                     $page->setSzoveg3($this->params->getStringRequestParam('mnrstaticpageszoveg3_' . $pageid));
                     $page->setTartalom($this->params->getStringRequestParam('mnrstaticpagetartalom_' . $pageid));
+                    $page->setKepurl($this->params->getStringRequestParam('mnrstaticpagekepurl_' . $pageid));
                     $this->getEm()->persist($page);
+                }
+            }
+		    if (\mkw\store::isMultilang()) {
+		        $_tf = \Entities\MNRStaticPage::getTranslatedFields();
+		        $translationids = $this->params->getArrayRequestParam('pagetranslationid_' . $pageid);
+		        foreach ($translationids as $translationid) {
+		            $oper = $this->params->getStringRequestParam('pagetranslationoper_' . $translationid . '_' . $pageid);
+                    $mezo = $this->params->getStringRequestParam('pagetranslationfield_' . $translationid . '_' . $pageid);
+                    $mezotype = $_tf[$mezo]['type'];
+                    switch ($mezotype) {
+                        case 1:
+                        case 3:
+                            $mezoertek = $this->params->getStringRequestParam('pagetranslationcontent_' . $translationid . '_' . $pageid);
+                            break;
+                        case 2:
+                            $mezoertek = $this->params->getOriginalStringRequestParam('pagetranslationcontent_' . $translationid . '_' . $pageid);
+                            break;
+                        default:
+                            $mezoertek = $this->params->getStringRequestParam('pagetranslationcontent_' . $translationid . '_' . $pageid);
+                            break;
+                    }
+                    if ($oper === 'add') {
+                        $translation = new \Entities\MNRStaticPageTranslation(
+                            $this->params->getStringRequestParam('pagetranslationlocale_' . $translationid . '_' . $pageid),
+                            $mezo,
+                            $mezoertek
+                        );
+                        $page->addTranslation($translation);
+                        $this->getEm()->persist($translation);
+                    }
+                    elseif ($oper === 'edit') {
+                        $translation = $this->getEm()->getRepository(MNRStaticPageTranslation::class)->find($translationid);
+                        if ($translation) {
+                            $translation->setLocale($this->params->getStringRequestParam('pagetranslationlocale_' . $translationid . '_' . $pageid));
+                            $translation->setField($mezo);
+                            $translation->setContent($mezoertek);
+                            $this->getEm()->persist($translation);
+                        }
+                    }
                 }
             }
         }

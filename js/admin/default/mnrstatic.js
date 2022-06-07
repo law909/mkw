@@ -125,7 +125,8 @@ $(document).ready(function () {
                         success: function (data) {
                             var tbody = $('#MNRStaticPageTab');
                             tbody.append(data);
-                            $('.js-mnrstaticpagenewbutton,.js-mnrstaticpagedelbutton').button();
+                            $('.js-mnrstaticpagenewbutton,.js-mnrstaticpagedelbutton,.js-kepbrowsebutton,' +
+                                '.js-pagetranslationnewbutton,.js-pagetranslationdelbutton').button();
                             $this.remove();
                         }
                     });
@@ -138,7 +139,7 @@ $(document).ready(function () {
                         $('#mnrstatictable_' + vid).remove();
                     }
                     else {
-                        dialogcenter.html('Biztos, hogy törli a változatot?').dialog({
+                        dialogcenter.html('Biztos, hogy törli az oldalt?').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
@@ -170,8 +171,11 @@ $(document).ready(function () {
                     $.ajax({
                         url: '/admin/mnrstaticpagetranslation/getemptyrow',
                         type: 'GET',
+                        data: {
+                            pageid: $this.data('pageid')
+                        },
                         success: function (data) {
-                            var tbody = mnrstaticpagetab;
+                            var tbody = $this.parent();
                             tbody.append(data);
                             $('.js-pagetranslationnewbutton,.js-pagetranslationdelbutton').button();
                             $this.remove();
@@ -233,7 +237,38 @@ $(document).ready(function () {
                             }
                         }
                     }
+                })
+                .on('click', '.FoKepDelButton', function (e) {
+                    e.preventDefault();
+                    dialogcenter.html('Biztos, hogy törli a képet?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $('#KepUrlEdit_' + $(this).data('id')).val('');
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('click', '.js-kepbrowsebutton', function (e) {
+                    e.preventDefault();
+                    var finder = new CKFinder(),
+                        $kepurl = $('#KepUrlEdit_' + $(this).data('id')),
+                        path = $kepurl.val();
+                    if (path) {
+                        finder.startupPath = 'Images:' + path.substring(path.indexOf('/', 1));
+                    }
+                    finder.selectActionFunction = function (fileUrl, data) {
+                        $kepurl.val(fileUrl);
+                    };
+                    finder.popup();
                 });
+            $('.js-kepbrowsebutton').button();
             $('.js-pagetranslationnewbutton,.js-pagetranslationdelbutton').button();
             $('.js-mnrstaticpagedelallbutton').button().on('click', function (e) {
                 var $this = $(this);

@@ -82,7 +82,7 @@ class MNRStaticPage {
     /** @Gedmo\Locale */
     protected $locale;
 
-    /** @ORM\OneToMany(targetEntity="MNRStaticTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    /** @ORM\OneToMany(targetEntity="MNRStaticPageTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
     public function __construct() {
