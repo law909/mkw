@@ -1127,6 +1127,10 @@ class store {
         return self::getTheme() === 'mugenrace';
     }
 
+    public static function isMugenrace2021() {
+        return self::getTheme() === 'mugenrace2021';
+    }
+
     public static function isKisszamlazo() {
         return self::getTheme() === 'kisszamlazo';
     }

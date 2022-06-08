@@ -28,6 +28,12 @@ class MNRStatic {
      */
     private $nev = '';
 
+    /**
+     * @Gedmo\Slug(fields={"nev"})
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $slug;
+
     /** @ORM\Column(type="text",nullable=true) */
     private $kepurl = '';
 
@@ -69,6 +75,21 @@ class MNRStatic {
                 'caption' => $v['caption'],
                 'selected' => ($k === $sel)
             );
+        }
+        return $ret;
+    }
+
+    public function toPublic() {
+        $ret = array();
+        $ret['id'] = $this->getId();
+        $ret['nev'] = $this->getNev();
+        $ret['szlogen1'] = $this->getSzlogen1();
+        $ret['szlogen2'] = $this->getSzlogen2();
+        $ret['kepurl'] = $this->getKepurl();
+        $ret['translations'] = $this->getTranslationsArray();
+        /** @var MNRStaticPage $page */
+        foreach ($this->getMNRStaticPages() as $page) {
+            $ret['pages'][] = $page->toPublic();
         }
         return $ret;
     }
@@ -230,6 +251,14 @@ class MNRStatic {
      */
     public function setNev($nev): void {
         $this->nev = $nev;
+    }
+
+    public function getSlug() {
+        return $this->slug;
+    }
+
+    public function setSlug($adat) {
+        $this->slug = $adat;
     }
 
 }

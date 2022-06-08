@@ -228,4 +228,18 @@ class mnrstaticController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
 	}
 
+	public function show() {
+        $com = $this->params->getStringParam('lap');
+        /** @var MNRStatic $statlap */
+        $statlap = $this->getRepo()->findOneBySlug($com);
+        if ($statlap) {
+            $view = $this->getTemplateFactory()->createMainView('mnrstatic.tpl');
+            \mkw\store::fillTemplate($view);
+            $view->setVar('mnrstatic', $statlap->toPublic());
+            $view->printTemplateResult(true);
+        }
+        else {
+            \mkw\store::redirectTo404($com, $this->params);
+        }
+    }
 }

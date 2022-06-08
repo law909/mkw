@@ -191,6 +191,17 @@ class MNRStaticPage extends \Entities\MNRStaticPage implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
+    public function toPublic()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toPublic', []);
+
+        return parent::toPublic();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

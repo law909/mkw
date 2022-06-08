@@ -63,6 +63,10 @@ if (\mkw\store::isMugenrace()) {
     $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
 }
 
+if (\mkw\store::isMugenrace2021()) {
+    $router->map('GET', '/mnrstatic/[:lap]', 'mnrstaticController#show', 'mnrshowstatic');
+}
+
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');

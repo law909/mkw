@@ -118,6 +118,20 @@ class MNRStaticPage {
        return $ret;
     }
 
+    public function toPublic() {
+        $ret = array();
+        $ret['hidden'] = $this->isHidden();
+        $ret['szlogen1'] = $this->getSzlogen1();
+        $ret['szlogen2'] = $this->getSzlogen2();
+        $ret['tartalom'] = $this->getTartalom();
+        $ret['szoveg1'] = $this->getSzoveg1();
+        $ret['szoveg2'] = $this->getSzoveg2();
+        $ret['szoveg3'] = $this->getSzoveg3();
+        $ret['kepurl'] = $this->getKepurl();
+        $ret['translations'] = $this->getTranslationsArray();
+        return $ret;
+    }
+
     public function getId() {
         return $this->id;
     }
