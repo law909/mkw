@@ -96,7 +96,7 @@
 					<td class="lapozotalalat">
 						<select name="elemperpage" class="elemperpageedit">
 							{$elemszam = array(10, 20, 30, 40, $lapozo.elemcount)}
-							{$elemnev = array("10 " + t('darab'), "20 " + t('darab'), "30 " + t('darab'), "40" + t('darab'), t("Mind"))}
+							{$elemnev = array("10 "|cat:t('darab'), "20 "|cat:t('darab'), "30 "|cat:t('darab'), "40"|cat:t('darab'), t("Mind"))}
 							{foreach $elemszam as $c}
 							<option value="{$c}"{if ($c==$lapozo.elemperpage)} selected="selected"{/if}>{$elemnev[$c@index]}</option>
 							{/foreach}
