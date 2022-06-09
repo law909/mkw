@@ -17,6 +17,7 @@ body {
     color: white;
     font-size: 280px;
     font-weight: bold;
+    grid-row: 1;
     position: absolute;
     top: 40%;
     left: 40%;
@@ -26,24 +27,49 @@ body {
     color: white;
     font-size: 50px;
     font-weight: bold;
+    grid-row: 2;
     position: absolute;
     top: 40%;
     left: 30%;
 }
 
+.subpage {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 100vh;
+    position: relative;
+}
+
+.pageszlogencontainer {
+    display: grid;
+    position: absolute;
+    top: 0px;
+}
+
 .pageimg {
     height: 100vh;
-    width: 70vw;
+    width: 100%;
 }
 
 .pageszlogen1 {
+    color: white;
+    font-size: 140px;
+    font-weight: bold;
+    grid-row: 1;
+}
 
+.pageszlogen2 {
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    grid-row: 2;
 }
 
 .pagetartalomcontainer {
-
+    padding: 10px;
 }
 
 .pagetartalom {
     color: black;
+    font-size: 20px;
 }
