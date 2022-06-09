@@ -156,7 +156,7 @@ class mkwimportController extends \mkwhelpers\Controller {
 
         if ($darabolva) {
             $record = file_get_contents('mkwrecord.txt');
-            $record = $record * 1;
+            $record = (int)$record;
 
             $vevotomb = array();
 
@@ -246,7 +246,7 @@ class mkwimportController extends \mkwhelpers\Controller {
 
         if ($darabolva) {
             $record = file_get_contents('mkwrecord.txt');
-            $record = $record * 1;
+            $record = (int)$record;
 
             $vevotomb = array();
 
@@ -318,7 +318,7 @@ class mkwimportController extends \mkwhelpers\Controller {
         fclose($x);
 
         $record = file_get_contents('mkwrecord.txt');
-        $record = $record * 1;
+        $record = (int)$record;
 
         $metomb = array();
         $import = fopen('rep_megyseg.csv', 'r');
@@ -486,7 +486,7 @@ class mkwimportController extends \mkwhelpers\Controller {
         while (($data = fgetcsv($import, 0, ';', '"')) !== false) {
             $termekvertek[$data[5]][] = array(
                 'nev' => mb_convert_encoding($data[6], 'UTF8', 'ISO-8859-2'),
-                'elerheto' => $data[7] * 1
+                'elerheto' => (int)$data[7]
             );
         }
         fclose($import);

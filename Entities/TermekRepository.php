@@ -544,6 +544,7 @@ class TermekRepository extends \mkwhelpers\Repository {
     }
 
     public function getHasonloTermekek($termek, $db, $arszaz) {
+        $arszaz = (int)$arszaz;
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         if (\mkw\store::isMugenrace()) {
@@ -565,8 +566,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($a) {
             $filter->addFilter(array('termekfa1', 'termekfa2', 'termekfa3'), '=', $a);
         }
-        $filter->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz * 1) / 100)
-            ->addFilter('brutto', '<=', $termek->getBrutto() * (100 + $arszaz * 1) / 100)
+        $filter->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz) / 100)
+            ->addFilter('brutto', '<=', $termek->getBrutto() * (100 + $arszaz) / 100)
             ->addFilter('id', '<>', $termek->getId())
             ->addFilter('nemkaphato', '=', false);
 
@@ -590,7 +591,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                     $tlist = $termek->getId();
                 }
                 else {
-                    $tlist = $termek * 1;
+                    $tlist = (int)$termek;
                 }
             }
             $rsm = new ResultSetMapping();
@@ -814,7 +815,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             . 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
             . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (' . \mkw\store::getWebshopFieldName('t.lathato') . '=1) AND (t.fuggoben=0)', $rsm);
         $res = $q->getScalarResult();
-        return $res[0]['db'] * 1;
+        return (int)$res[0]['db'];
     }
 
     public function getKepekKiveve($termek, $valtozat) {

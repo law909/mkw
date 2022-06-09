@@ -465,7 +465,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
-                        if ($data[$this->n('c')] * 1 > 0) {
+                        if ((int)$data[$this->n('c')] > 0) {
                             $katnev = $this->toutf(trim($data[$this->n('h')]));
                             $parent = $this->createKategoria($katnev, $parentid);
                         }
@@ -480,7 +480,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
-                        if ($data[$this->n('c')] * 1 > 0) {
+                        if ((int)$data[$this->n('c')] > 0) {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                             if (!$termek) {
 
@@ -538,7 +538,7 @@ class importController extends \mkwhelpers\Controller {
                                             foreach ($this->settings['sizes'] as $k => $size) {
                                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                                 $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                             }
                                             if (((count($imagelist[$data[$this->n('a')]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[$this->n('a')]]) == 1)) {
                                                 $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -569,10 +569,10 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($termek) {
                                 if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
+                                    $termek->setNemkaphato((int)$data[$this->n('g')] == 0);
                                 }
                                 if (!$termek->getAkcios()) {
-                                    $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
+                                    $termek->setNetto((float)$data[$this->n('d')] * $arszaz / 100);
                                     $termek->setBrutto(round($termek->getBrutto(), -1));
                                 }
                                 \mkw\store::getEm()->persist($termek);

@@ -102,7 +102,7 @@ class arfolyamController extends \mkwhelpers\JQGridController {
                             $arf = new \Entities\Arfolyam();
                             $arf->setValutanem($valutanem);
                             $arf->setDatum(new \DateTime(\mkw\store::convDate($datum)));
-                            $arf->setArfolyam(str_replace(',', '.', $rate) * 1);
+                            $arf->setArfolyam((float)str_replace(',', '.', $rate));
                             \mkw\store::getEm()->persist($arf);
                             \mkw\store::getEm()->flush();
                         }

@@ -113,10 +113,10 @@ class kosarController extends \mkwhelpers\MattableController {
                 $hatar = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
                 $partner = \mkw\store::getLoggedInUser();
                 if ($partner && $partner->getSzamlatipus()) {
-                    $osszeg = $m[0][3] * 1;
+                    $osszeg = (float)$m[0][3];
                 }
                 else {
-                    $osszeg = $m[0][2] * 1;
+                    $osszeg = (float)$m[0][2];
                 }
                 $valutanem = 'Ft';
                 if ($partner) {

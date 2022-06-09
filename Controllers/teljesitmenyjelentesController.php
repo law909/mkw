@@ -17,8 +17,8 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
     public function getData($tol = null, $ig = null) {
 
         function per($a, $b) {
-            $a = $a * 1;
-            $b = $b * 1;
+            $a = (float)$a;
+            $b = (float)$b;
             if ($b) {
                 return $a / $b;
             }
@@ -36,20 +36,20 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         }
         else {
             $tol = \mkw\store::toDate($tol);
-            $evtol = $tol->format('Y') * 1;
+            $evtol = (int)$tol->format('Y');
             $hotol = $tol->format('m');
             $naptol = $tol->format('d');
         }
 
         if (!$ig) {
             $ig = new \DateTime();
-            $evig = date('Y') * 1;
+            $evig = (int)date('Y');
             $hoig = date('m');
             $napig = date('d');
         }
         else {
             $ig = \mkw\store::toDate($ig);
-            $evig = $ig->format('Y') * 1;
+            $evig = (int)$ig->format('Y');
             $hoig = $ig->format('m');
             $napig = $ig->format('d');
         }
@@ -77,12 +77,12 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         $sorok = $bfrepo->calcTeljesitmeny($filter);
         $adat = array();
         foreach ($sorok as $sor) {
-            $ev = $sor['ev'] * 1;
+            $ev = (int)$sor['ev'];
             $a = array();
             $a['ev'] = $ev;
-            $a['megrendelesdb'] = $sor['db'] * 1;
+            $a['megrendelesdb'] = (int)$sor['db'];
             $a['megrendelesdbpernap'] = per($sor['db'], $nap);
-            $a['megrendelesnetto'] = $sor['netto'] * 1;
+            $a['megrendelesnetto'] = (float)$sor['netto'];
             $a['megrendelesnettopernap'] = per($sor['netto'], $nap);
             $a['megrendelesnettoperdb'] = per($sor['netto'], $sor['db']);
             if (array_key_exists($ev - 1, $adat)) {

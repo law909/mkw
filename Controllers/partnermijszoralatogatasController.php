@@ -32,7 +32,7 @@ class partnermijszoralatogatasController extends \mkwhelpers\MattableController 
         $x['mikor'] = $t->getMikor();
         $x['oraszam'] = $t->getOraszam();
         if ($x['oper'] === 'add') {
-            $x['ev'] = date('Y') * 1 - 1;
+            $x['ev'] = (int)date('Y') - 1;
         }
         else {
             $x['ev'] = $t->getEv();

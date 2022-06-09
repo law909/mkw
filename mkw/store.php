@@ -201,7 +201,7 @@ class store {
     public static function getIntParameter($par, $default = null) {
         $er = self::getParameter($par, $default);
         if (is_numeric($er)) {
-            return $er * 1;
+            return (int)$er;
         }
         return $default;
     }
@@ -1384,7 +1384,7 @@ class store {
         }
         $osszegtomb = explode(',', $osszegek);
         foreach ($osszegtomb as $osszeg) {
-            $maradek = self::kerekit(trim($osszeg) * 1, 5);
+            $maradek = self::kerekit((int)trim($osszeg), 5);
             $sum += $maradek;
             foreach ($cimletek as $cimlet) {
                 $kiszamolt[$cimlet] += intdiv($maradek, $cimlet);
@@ -1570,7 +1570,7 @@ class store {
         if (self::isDeveloper()) {
             return 0;
         }
-        return self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0) * 1;
+        return (float)self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
     }
 
     public static function isMagyarAdoszam($adoszam) {

@@ -473,8 +473,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
             if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * 1;
+                $ret[$kulcs]['nyito'] = (float)$rekord['mennyiseg'];
+                $ret[$kulcs]['nyitoertek'] = (float)$rekord['ertek'];
             }
         }
 
@@ -516,8 +516,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
             if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+                $ret[$kulcs]['be'] = (float)$rekord['mennyiseg'];
+                $ret[$kulcs]['beertek'] = (float)$rekord['ertek'];
             }
         }
 
@@ -559,8 +559,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
             if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+                $ret[$kulcs]['ki'] = (float)$rekord['mennyiseg'];
+                $ret[$kulcs]['kiertek'] = (float)$rekord['ertek'];
             }
         }
 
@@ -598,8 +598,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
             if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['zaro'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['zaroertek'] = $rekord['ertek'] * 1;
+                $ret[$kulcs]['zaro'] = (float)$rekord['mennyiseg'];
+                $ret[$kulcs]['zaroertek'] = (float)$rekord['ertek'];
             }
         }
 
@@ -1005,8 +1005,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $ret[$kulcs]['nev'] = $rekord['nev'];
             $ret[$kulcs]['ertek1'] = $rekord['ertek1'];
             $ret[$kulcs]['ertek2'] = $rekord['ertek2'];
-            $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+            $ret[$kulcs]['be'] = (float)$rekord['mennyiseg'];
+            $ret[$kulcs]['beertek'] = (float)$rekord['ertek'];
             $ret[$kulcs]['ki'] = 0;
             $ret[$kulcs]['kiertek'] = 0;
         }
@@ -1055,8 +1055,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $ret[$kulcs]['be'] = 0;
                 $ret[$kulcs]['beertek'] = 0;
             }
-            $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+            $ret[$kulcs]['ki'] = (float)$rekord['mennyiseg'];
+            $ret[$kulcs]['kiertek'] = (float)$rekord['ertek'];
         }
 
         return $ret;

@@ -968,7 +968,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         require_once('busvendor/OTPay/MerchTerm_umg_client.php');
 
         $error = false;
-        \mkw\store::getMainSession()->fizetesdb = \mkw\store::getMainSession()->fizetesdb * 1 + 1;
+        \mkw\store::getMainSession()->fizetesdb = (int)\mkw\store::getMainSession()->fizetesdb + 1;
 
         $mrszam = $this->params->getStringRequestParam('megrendelesszam');
         $mobilszam = preg_replace('/[^0-9]/','',$this->params->getStringRequestParam('mobilszam'));

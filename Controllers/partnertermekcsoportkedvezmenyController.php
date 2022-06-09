@@ -59,7 +59,7 @@ class partnertermekcsoportkedvezmenyController extends \mkwhelpers\MattableContr
                 'oper' => ($it['id'] ? 'edit' : 'add'),
                 'tcsid' => $it['tcsid'],
                 'nev' => $it['nev'],
-                'kedvezmeny' => ($it['kedvezmeny'] ? $it['kedvezmeny'] * 1 : '')
+                'kedvezmeny' => ($it['kedvezmeny'] ? (float)$it['kedvezmeny'] : '')
             );
         }
         return $ret;

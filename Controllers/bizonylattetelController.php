@@ -134,7 +134,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
                 $tetel['mijszpartner'] = $partnerid;
                 $tetel['mijszpartnernev'] = $partner->getNev();
             }
-            $tetel['mijszev'] = date('Y') * 1;
+            $tetel['mijszev'] = (int)date('Y');
         }
 		$view->setVar('tetel', $tetel);
         /** @var \Entities\Bizonylattipus $bt */

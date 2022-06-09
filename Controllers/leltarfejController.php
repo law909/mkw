@@ -346,7 +346,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
                 $reader->setReadDataOnly(true);
                 $excel = $reader->load($filenev);
                 $sheet = $excel->getActiveSheet();
-                $maxrow = $sheet->getHighestRow() * 1;
+                $maxrow = (int)$sheet->getHighestRow();
                 $db = 0;
 
                 for ($row = 0; $row <= $maxrow; ++$row) {
@@ -364,8 +364,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
                                     $tetel->setTermek($termek);
                                     $tetel->setTermekvaltozat($valtozat);
                                 }
-                                $tetel->setGepimennyiseg($sheet->getCell('G' . $row)->getValue() * 1);
-                                $tetel->setTenymennyiseg($sheet->getCell('H' . $row)->getValue() * 1);
+                                $tetel->setGepimennyiseg((float)$sheet->getCell('G' . $row)->getValue());
+                                $tetel->setTenymennyiseg((float)$sheet->getCell('H' . $row)->getValue());
                                 $this->getEm()->persist($tetel);
                                 $db++;
                             }
@@ -377,8 +377,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
                                 $tetel->setLeltarfej($l);
                                 $tetel->setTermek($termek);
                             }
-                            $tetel->setGepimennyiseg($sheet->getCell('G' . $row)->getValue() * 1);
-                            $tetel->setTenymennyiseg($sheet->getCell('H' . $row)->getValue() * 1);
+                            $tetel->setGepimennyiseg((float)$sheet->getCell('G' . $row)->getValue());
+                            $tetel->setTenymennyiseg((float)$sheet->getCell('H' . $row)->getValue());
                             $this->getEm()->persist($tetel);
                             $db++;
                         }
