@@ -8,10 +8,6 @@
         console.log('doScroll');
     }
 
-    document.addEventListener('scroll', function (e) {
-        //console.log(document.scrollingElement.scrollTop);
-    });
-
     document.addEventListener('keydown', function (e) {
         switch (e.code) {
             case 'ArrowLeft':
