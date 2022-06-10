@@ -31,7 +31,6 @@
             </div>
             <div class="page-tartalom">{$page.tartalom}</div>
         </div>
-        <div class="page-padder"></div>
     </div>
 {/foreach}
 {/block}
