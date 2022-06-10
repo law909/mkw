@@ -15,6 +15,20 @@
     {block "script"}{/block}
 </head>
 <body>
+<div class="header">
+    <div class="menu">
+    <a href="" class="header-menu"><img src="/themes/main/mugenrace2021/menu_w.png" alt="Menu"></a>
+    <a href="/" class="header-logo hcenter"><img src="/themes/main/mugenrace2021/logo_w.png" alt="Home"></a>
+    <a href="" class="header-search"><img src="/themes/main/mugenrace2021/search_w.png" alt="Search"></a>
+    <a href="" class="header-cart"><img src="/themes/main/mugenrace2021/cart_w.png" alt="Cart"></a>
+    <a href="" class="header-lang">HU</a>
+    </div>
+    <div class="header-triangle">
+    <svg class="header-triangle-size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon fill="black" points="0,0 0,100 100,0"/>
+    </svg>
+    </div>
+</div>
 {block "body"}
 {/block}
 {block "stonebody"}

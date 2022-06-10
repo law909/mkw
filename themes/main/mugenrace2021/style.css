@@ -1,9 +1,55 @@
+.hcenter {
+    margin: 0 auto;
+}
+
+.vcenter {
+    margin: auto 0;
+}
+
+.center {
+    margin: auto;
+}
+
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0;
+    overflow-x: hidden;
 }
 
-.page {
+.header {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 999;
+    color: white;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 4fr 24fr 1fr 1fr 2fr;
+    column-gap: 5px;
+    align-items: center;
+    align-content: center;
+    padding: 5px;
+    background: black;
+}
+
+.header-lang {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.header-triangle {
+    grid-row: 2;
+    z-index: 998;
+}
+
+.header-triangle-size {
+    width: 100vw;
+    height: 6vh;
+}
+
+.mainpage {
     height: 100vh;
     position: relative;
 }
@@ -11,6 +57,10 @@ body {
 .bgimg {
     height: 100vh;
     width: 100vw;
+}
+
+.szlogencontainer {
+    margin: 0 auto;
 }
 
 .szlogen1 {
@@ -33,43 +83,81 @@ body {
     left: 30%;
 }
 
-.subpage {
-    display: grid;
-    grid-template-columns: 70% 30%;
+.page-container {
     height: 100vh;
+}
+
+.page {
     position: relative;
 }
 
-.pageszlogencontainer {
+.page-padder {
+    width: 100%;
+    height: 10vh;
+}
+
+.page-szlogen-container {
     display: grid;
     position: absolute;
     top: 0px;
 }
 
-.pageimg {
-    height: 100vh;
+.page-img {
+    max-height: 80vh;
     width: 100%;
 }
 
-.pageszlogen1 {
+.page-img-container {
+    position: relative;
+}
+
+.page-img-top-triangle {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 6vh;
+}
+
+.page-img-bottom-triangle {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 6vh;
+}
+
+.page-szlogen1 {
     color: white;
     font-size: 140px;
     font-weight: bold;
     grid-row: 1;
+    transform: rotate(-1.5deg);
 }
 
-.pageszlogen2 {
+.page-szlogen2 {
     color: white;
     font-size: 50px;
     font-weight: bold;
     grid-row: 2;
+    transform: rotate(-1.5deg);
 }
 
-.pagetartalomcontainer {
+.page-tartalom-container {
     padding: 10px;
 }
 
-.pagetartalom {
+.page-tartalom {
+    max-height: 80vh;
+    overflow: hidden;
     color: black;
     font-size: 20px;
+    padding: 0 10px;
+}
+
+@media screen and (min-width: 600px) {
+    .page {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        position: relative;
+    }
 }
