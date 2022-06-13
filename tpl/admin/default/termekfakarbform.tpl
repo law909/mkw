@@ -38,7 +38,7 @@
 			<a class="js-translationnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{/if}
-		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+		<div id="WebTab" class="mattkarb-page">
 			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}</input>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($egyed.menu1lathato)}checked="checked"{/if}>{at('Főmenü')}</input>
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($egyed.menu2lathato)}checked="checked"{/if}>{at('Főmenü lenyíló')}</input>

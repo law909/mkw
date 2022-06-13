@@ -348,7 +348,7 @@
                         class="ui-icon ui-icon-circle-plus"></span></a>
             </div>
         {/if}
-        <div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+        <div id="WebTab" class="mattkarb-page">
             <input id="LathatoCheck" name="lathato" type="checkbox"
                    {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}
             <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"

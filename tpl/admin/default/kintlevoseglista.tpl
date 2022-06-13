@@ -13,15 +13,10 @@
         <div id="mattkarb-header">
             <h3>{at('Kintlevőség')}</h3>
         </div>
-        <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-            {if ($setup.editstyle=='tab')}
-                <ul>
-                    <li><a href="#DefaTab">{at('Kintlevőség')}</a></li>
-                </ul>
-            {/if}
-            {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{at('Kintlevőség')}" data-refcontrol="#DefaTab"></div>
-            {/if}
+        <div id="mattkarb-tabs">
+            <ul>
+                <li><a href="#DefaTab">{at('Kintlevőség')}</a></li>
+            </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="kintlevoseg" action="" target="_blank">
                     {include "comp_idoszak.tpl"}

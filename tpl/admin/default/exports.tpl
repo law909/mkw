@@ -14,15 +14,10 @@
 	<h3>{at('Termék exportok')}</h3>
 </div>
 <form id="mattkarb-form" action="" method="post">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#DefaTab">{at('Exportok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{at('Exportok')}" data-refcontrol="#DefaTab"></div>
-		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
             <a href="/admin/export/grando" class="js-grandoexport">Grando export</a>
 		</div>

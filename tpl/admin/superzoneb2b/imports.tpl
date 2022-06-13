@@ -14,15 +14,10 @@
 	<h3>{t('Termék importok')}</h3>
 </div>
 <form id="mattkarb-form" action="" method="post">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#DefaTab">{t('Importok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Exportok')}" data-refcontrol="#DefaTab"></div>
-		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
             <div>
                 <span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="">Ebbe a kategóriába kerüljenek a termékek</span>

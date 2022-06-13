@@ -13,15 +13,10 @@
 <div id="mattkarb-header">
 	<h3>{at('Készletérték')}</h3>
 </div>
-<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-    {if ($setup.editstyle=='tab')}
+<div id="mattkarb-tabs">
     <ul>
         <li><a href="#DefaTab">{at('Készletérték')}</a></li>
     </ul>
-    {/if}
-    {if ($setup.editstyle=='dropdown')}
-    <div class="mattkarb-titlebar" data-caption="{at('Készletérték')}" data-refcontrol="#DefaTab"></div>
-    {/if}
     <div id="DefaTab" class="mattkarb-page" data-visible="visible">
         <form id="fifocalc">
         <div>

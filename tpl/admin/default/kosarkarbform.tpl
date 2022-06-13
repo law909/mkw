@@ -15,7 +15,7 @@
 			</tr>
 			</tbody></table>
 		</div>
-		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+		<div id="WebTab" class="mattkarb-page">
 
 		</div>
 	</div>

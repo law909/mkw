@@ -430,7 +430,7 @@
                         class="ui-icon ui-icon-circle-plus"></span></a>
             </div>
         {/if}
-        <div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+        <div id="WebTab" class="mattkarb-page">
             <div>
             <input id="LathatoCheck" name="lathato" type="checkbox"
                    {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
@@ -492,7 +492,7 @@
             {/foreach}
             <a class="js-kepnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
-        <div id="CsomagolasTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+        <div id="CsomagolasTab" class="mattkarb-page">
             <table>
                 <tbody>
                 <tr>

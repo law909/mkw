@@ -1224,20 +1224,20 @@
         },
         {
             "name": "law909/altorouter",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/law909/AltoRouter.git",
-                "reference": "ab71d2e6078c28f8fa3e7ad4406ad7c418aa8859"
+                "reference": "bdd43d1f9c6f2ccd7129e051cfce17b47bb70c3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/law909/AltoRouter/zipball/ab71d2e6078c28f8fa3e7ad4406ad7c418aa8859",
-                "reference": "ab71d2e6078c28f8fa3e7ad4406ad7c418aa8859",
+                "url": "https://api.github.com/repos/law909/AltoRouter/zipball/bdd43d1f9c6f2ccd7129e051cfce17b47bb70c3c",
+                "reference": "bdd43d1f9c6f2ccd7129e051cfce17b47bb70c3c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.0"
             },
             "type": "library",
             "autoload": {
@@ -1265,9 +1265,9 @@
                 "routing"
             ],
             "support": {
-                "source": "https://github.com/law909/AltoRouter/tree/1.0.5"
+                "source": "https://github.com/law909/AltoRouter/tree/1.0.6"
             },
-            "time": "2013-11-19T23:58:18+00:00"
+            "time": "2022-06-13T17:16:20+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
