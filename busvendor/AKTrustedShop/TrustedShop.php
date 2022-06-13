@@ -35,13 +35,13 @@ class TrustedShop {
     if (empty($this->Email)) {
       throw new Exception(self::ErrorEmail);
     }
-    
+
     $String = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $C = '';
     for ($i = 0; $i < 20; $i++) {
-      $C .= $String{mt_rand(0, strlen($String) - 1)};
+      $C .= $String[mt_rand(0, strlen($String) - 1)];
     }
-    
+
     $Timestamp = time();
     $HashedKey = md5($this->WebApiKey . $Timestamp);
 
@@ -50,14 +50,14 @@ class TrustedShop {
       $Query .= '&Products[]=' . urlencode($ProductName);
     }
     $Query .= '&Timestamp=' . $Timestamp;
-    
+
     echo '<script type="text/javascript" src="' . $this->Protocol . '://' . self::ServiceHost . '/fc.js"></script>';
     echo
       '<script type="text/javascript">',
       'function fc_request_done(C) { var I = new Image(); I.src=\'' . $this->Protocol . '://' . self::ServiceHost . self::ServiceUrl . "?" . $Query . '&C=\'+C; }',
       'set_fc("' . self::ServiceHost . '", "__aku","' . $C . '");',
       '</script>';
-    
+
     echo
       '<noscript>',
       '<img src="' . $this->Protocol . '://' . self::ServiceHost . self::ServiceUrl . "?" . $Query . '&C=' . $C . '">',
