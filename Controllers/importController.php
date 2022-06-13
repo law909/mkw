@@ -820,7 +820,7 @@ class importController extends \mkwhelpers\Controller {
                                     foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                         $matches = explode('x', $size);
-                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                     }
                                     $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                     $termek->setKepleiras($termeknev);
@@ -867,8 +867,8 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setNemkaphato(false);
                                 }
                                 if (!$termek->getAkcios()) {
-                                    $kiskerar = $data[7] * 1;
-                                    $nagykerar = $data[8] * 1;
+                                    $kiskerar = (float)$data[7];
+                                    $nagykerar = (float)$data[8];
                                     if (($kiskerar / $nagykerar * 100 < 120) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 120)) {
                                         $termek->setNetto($nagykerar * 120 / 100);
                                     }
@@ -1109,7 +1109,7 @@ class importController extends \mkwhelpers\Controller {
                                 foreach ($this->settings['sizes'] as $k => $size) {
                                     $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                     $matches = explode('x', $size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                 }
                                 $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                 $termek->setKepleiras($data['name']);
@@ -1235,7 +1235,7 @@ class importController extends \mkwhelpers\Controller {
                                 foreach ($this->settings['sizes'] as $k => $size) {
                                     $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                     $matches = explode('x', $size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                 }
                                 $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                 $termek->setKepleiras($data['name']);
@@ -1397,7 +1397,7 @@ class importController extends \mkwhelpers\Controller {
                                     foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                         $matches = explode('x', $size);
-                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                     }
                                     if (!$termek->getKepurl()) {
                                         $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -1736,7 +1736,7 @@ class importController extends \mkwhelpers\Controller {
                                                 foreach ($this->settings['sizes'] as $k => $size) {
                                                     $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                                     $matches = explode('x', $size);
-                                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                                 }
                                                 if ($elso) {
                                                     $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -1800,7 +1800,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setNemkaphato(false);
                         }
                         if (!$termek->getAkcios()) {
-                            $termek->setNetto($data['priceMembership'] * 1);
+                            $termek->setNetto((float)$data['priceMembership']);
                             $termek->setBrutto(round($termek->getBrutto() * $arszaz / 100, -1));
                         }
                         \mkw\store::getEm()->persist($termek);
@@ -2062,7 +2062,7 @@ class importController extends \mkwhelpers\Controller {
                                             foreach ($this->settings['sizes'] as $k => $size) {
                                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                                 $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                             }
                                             $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                             $termek->setKepleiras($data['name']);
@@ -2114,7 +2114,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setNemkaphato(false);
                         }
                         if (!$termek->getAkcios()) {
-                            $termek->setNetto($data['price'] * 1);
+                            $termek->setNetto((float)$data['price']);
                             $brutto = round($termek->getBrutto() * $arszaz / 100, -1);
                             if ($brutto < $minimumar) {
                                 $brutto = $minimumar;
@@ -2546,7 +2546,7 @@ class importController extends \mkwhelpers\Controller {
                 }
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     if ($data[$this->n('a')]) {
-                        if ($data[$this->n('d')] * 1 != 0) {
+                        if ((int)$data[$this->n('d')] != 0) {
                             $this->createME($this->toutf(trim($data[$this->n('c')])));
                         }
                     }
@@ -2564,7 +2564,7 @@ class importController extends \mkwhelpers\Controller {
                             $csz = str_replace(' ', '', $data[$this->n('a')]);
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
                         }
-                        if ($data[$this->n('d')] * 1 != 0) {
+                        if ((int)$data[$this->n('d')] != 0) {
                             if (!$termek) {
 
                                 if ($createuj) {
