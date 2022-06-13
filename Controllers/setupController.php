@@ -328,7 +328,7 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::BarionPayeeEmail);
         $view->setVar(\mkw\consts::BarionPayeeEmail, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::BarionEnvironment);
-        $view->setVar('barionenvironmentlist', \mkw\store::getBarionEnvironmentSelectList($p ? $p->getErtek() * 1 : 0));
+        $view->setVar('barionenvironmentlist', \mkw\store::getBarionEnvironmentSelectList($p ? (int)$p->getErtek() : 0));
 
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
