@@ -25,6 +25,7 @@
             <th>Cikkszám</th>
             <th>Termék neve</th>
             <th class="textalignright">Mennyiség</th>
+            <th>ME</th>
             <th class="textalignright">Nettó e.ár</th>
             <th class="textalignright">Nettó érték</th>
             <th class="textalignright">ÁFA %</th>
@@ -36,7 +37,8 @@
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
-                    <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
+                    <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')}</td>
+                    <td>{$tetel.me}</td>
                     <td class="textalignright">{number_format($tetel.nettoegysar,0,'',' ')}</td>
                     <td class="textalignright">{number_format($tetel.netto,0,'',' ')}</td>
                     <td class="textalignright">{$tetel.afanev}</td>
