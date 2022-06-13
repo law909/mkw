@@ -32,6 +32,7 @@ class FizmodRepository extends \mkwhelpers\Repository {
     }
 
     public function getAllBySzallitasimod($szmid, $exc = array()) {
+        $szm = false;
         if (!is_null($szmid)) {
             $szm = $this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
         }
