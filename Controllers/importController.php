@@ -2597,7 +2597,7 @@ class importController extends \mkwhelpers\Controller {
                             if ($termek) {
                                 $termek->setCikkszam($data[$this->n('a')]);
                                 if (!$termek->getAkcios()) {
-                                    $termek->setBrutto(round($data[$this->n('e')] * 1 * $arszaz / 100, -1));
+                                    $termek->setBrutto(round((float)$data[$this->n('e')] * $arszaz / 100, -1));
                                 }
                                 \mkw\store::getEm()->persist($termek);
                             }
@@ -2768,8 +2768,8 @@ class importController extends \mkwhelpers\Controller {
                                 }
                                 $termek->setNemkaphato(false);
 
-                                $kiskerar = $data[$this->n('h')] * 1;
-                                $nagykerar = $data[$this->n('g')] * 1;
+                                $kiskerar = (float)$data[$this->n('h')];
+                                $nagykerar = (float)$data[$this->n('g')];
                                 if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
                                     $termek->setBrutto($nagykerar * 115 / 100);
                                 }
@@ -2804,7 +2804,7 @@ class importController extends \mkwhelpers\Controller {
                                     foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                         $matches = explode('x', $size);
-                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                     }
                                     if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
                                         $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -2828,8 +2828,8 @@ class importController extends \mkwhelpers\Controller {
                             if ($valtozat) {
                                 if ($termek) {
                                     if (!$termek->getAkcios()) {
-                                        $kiskerar = $data[$this->n('h')] * 1;
-                                        $nagykerar = $data[$this->n('g')] * 1;
+                                        $kiskerar = (float)$data[$this->n('h')];
+                                        $nagykerar = (float)$data[$this->n('g')];
                                         if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
                                             $termek->setBrutto($nagykerar * 115 / 100);
                                         }
@@ -2871,8 +2871,8 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setNemkaphato(false);
                                     }
                                     if (!$termek->getAkcios()) {
-                                        $kiskerar = $data[$this->n('h')] * 1;
-                                        $nagykerar = $data[$this->n('g')] * 1;
+                                        $kiskerar = (float)$data[$this->n('h')];
+                                        $nagykerar = (float)$data[$this->n('g')];
                                         if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
                                             $termek->setBrutto($nagykerar * 115 / 100);
                                         }
@@ -2901,7 +2901,7 @@ class importController extends \mkwhelpers\Controller {
                         fgetcsv($fh, 0, $sep, '"');
                         $idegenkodok = array();
                         while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                            $idegenkodok[] = (string)$data[1];
+                            $idegenkodok[] = (string)$data[$this->n('b')];
                         }
                         if ($idegenkodok) {
                             $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
@@ -2921,7 +2921,7 @@ class importController extends \mkwhelpers\Controller {
                                                 // a változat nincs készleten, nincs meg az id.cikkszám makszutovnál, a terméknek sincs id.cikkszáma
                                                 else {
                                                     $termekdb++;
-                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'makszutov_fuggoben.txt');
+                                                    \mkw\store::writelog('A ' . $valtozat->getId() . ' VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'makszutov_fuggoben.txt');
                                                     $lettfuggoben = true;
                                                     $valtozat->setLathato(false);
                                                     $valtozat->setElerheto(false);
@@ -2944,11 +2944,13 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     if ($termeketkikellvenni) {
                                         if ($termek && $termek->getKeszlet() <= 0) {
-                                            $termekdb++;
-                                            \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
-                                            $lettfuggoben = true;
-                                            $termek->setInaktiv(true);
-                                            \mkw\store::getEm()->persist($termek);
+                                            if (!$termek->getInaktiv()) {
+                                                $termekdb++;
+                                                \mkw\store::writelog('B ' . $termek->getId() . ' idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
+                                                $lettfuggoben = true;
+                                                $termek->setInaktiv(true);
+                                                \mkw\store::getEm()->persist($termek);
+                                            }
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
                                                 \mkw\store::getEm()->clear();
@@ -2961,11 +2963,13 @@ class importController extends \mkwhelpers\Controller {
                                         /** @var \Entities\Termek $termek */
                                         $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                         if ($termek && $termek->getKeszlet() <= 0) {
-                                            $termekdb++;
-                                            \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
-                                            $lettfuggoben = true;
-                                            $termek->setInaktiv(true);
-                                            \mkw\store::getEm()->persist($termek);
+                                            if (!$termek->getInaktiv()) {
+                                                $termekdb++;
+                                                \mkw\store::writelog('C ' . $termek->getId() . ' idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
+                                                $lettfuggoben = true;
+                                                $termek->setInaktiv(true);
+                                                \mkw\store::getEm()->persist($termek);
+                                            }
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
                                                 \mkw\store::getEm()->clear();
@@ -3023,7 +3027,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -3104,7 +3108,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
                         $termek->setNemkaphato(false);
-                        $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                        $termek->setBrutto(round((float)$sheet->getCell('E' . $row)->getValue() * $arszaz / 100, -1));
                         \mkw\store::getEm()->persist($termek);
                     }
                 }
@@ -3124,7 +3128,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(false);
                     }
                     if (!$termek->getAkcios()) {
-                        $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                        $termek->setBrutto(round((float)$sheet->getCell('E' . $row)->getValue() * $arszaz / 100, -1));
                     }
                     \mkw\store::getEm()->persist($termek);
                 }
@@ -3153,7 +3157,7 @@ class importController extends \mkwhelpers\Controller {
 
         if (!$this->checkRunningImport(\mkw\consts::RunningBtechImport)) {
             function isTermeksor($adat) {
-                return trim($adat, '\'') * 1 > 0;
+                return (int)trim($adat, '\'') > 0;
             }
 
             $this->setRunningImport(\mkw\consts::RunningBtechImport, 1);
@@ -3194,7 +3198,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -3256,14 +3260,14 @@ class importController extends \mkwhelpers\Controller {
                             if ($nodelist->count()) {
                                 $ar = $nodelist->text();
                                 $ar = str_replace(array(' ', 'Ft'), '', $ar);
-                                $ar = $ar * 1;
+                                $ar = (float)$ar;
                             }
                             else {
                                 $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
                                 if ($nodelist->count()) {
                                     $ar = $nodelist->text();
                                     $ar = str_replace(array(' ', 'Ft'), '', $ar);
-                                    $ar = $ar * 1;
+                                    $ar = (float)$ar;
                                 }
                             }
 
@@ -3343,7 +3347,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($this->settings['sizes'] as $k => $size) {
                                             $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                             $matches = explode('x', $size);
-                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                         }
                                         if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
                                             $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -3478,7 +3482,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -3491,7 +3495,7 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
 
                         $cikkszam = str_replace(' ', '', $sheet->getCell('C' . $row)->getValue());
-                        $ar = $sheet->getCell('F' . $row)->getValue() * 1;
+                        $ar = (float)$sheet->getCell('F' . $row)->getValue();
 
                         $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
@@ -3558,7 +3562,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -3571,7 +3575,7 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
 
                         $cikkszam = str_replace(' ', '', $sheet->getCell('B' . $row)->getValue());
-                        $ar = $sheet->getCell('E' . $row)->getValue() * 1;
+                        $ar = (float)$sheet->getCell('E' . $row)->getValue();
 
                         $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
@@ -3736,7 +3740,7 @@ class importController extends \mkwhelpers\Controller {
                     if ($data[$this->n('f')]) {
                         $rendelesek[$rid]['datum'] = $data[$this->n('g')];
                         $rendelesek[$rid]['szallmod'] = $data[$this->n('h')];
-                        $rendelesek[$rid]['szallktg'] = $data[$this->n('i')] * 1;
+                        $rendelesek[$rid]['szallktg'] = (float)$data[$this->n('i')];
                         $rendelesek[$rid]['szallnev'] = $data[$this->n('j')];
                         $rendelesek[$rid]['szallirszam'] = $data[$this->n('k')];
                         $rendelesek[$rid]['szallvaros'] = $data[$this->n('l')];
@@ -3758,7 +3762,7 @@ class importController extends \mkwhelpers\Controller {
                     $rendelesek[$rid]['vasarlashelye'] = $t[$this->n('l')];
                     $rendelesek[$rid]['tdatum'] = $t[$this->n('o')];
                     $rendelesek[$rid]['tszallmod'] = $t[$this->n('p')];
-                    $rendelesek[$rid]['tszallktg'] = $t[$this->n('q')] * 1;
+                    $rendelesek[$rid]['tszallktg'] = (float)$t[$this->n('q')];
                     $rendelesek[$rid]['tszallnev'] = $t[$this->n('r')];
                     $cim = \mkw\store::explodeCim($t[$this->n('s')]);
                     $rendelesek[$rid]['tszallirszam'] = $cim[0];
@@ -3776,10 +3780,10 @@ class importController extends \mkwhelpers\Controller {
                         'nev' => $data[$this->n('c')],
                         'tnev' => $t[$this->n('a')],
                         'tcikkszam' => $t[$this->n('b')],
-                        'mennyiseg' => $data[$this->n('d')] * 1,
-                        'egysar' => $data[$this->n('e')] * 1,
-                        'tmennyiseg' => $t[$this->n('d')] * 1,
-                        'tegysar' => $t[$this->n('e')] * 1
+                        'mennyiseg' => (float)$data[$this->n('d')],
+                        'egysar' => (float)$data[$this->n('e')],
+                        'tmennyiseg' => (float)$t[$this->n('d')],
+                        'tegysar' => (float)$t[$this->n('e')]
                     );
                 }
             }
@@ -4085,7 +4089,7 @@ class importController extends \mkwhelpers\Controller {
         $reader->setReadDataOnly(true);
         $excel = $reader->load($filenev);
         $sheet = $excel->getActiveSheet();
-        $maxrow = $sheet->getHighestRow() * 1;
+        $maxrow = (int)$sheet->getHighestRow();
         if (!$dbig) {
             $dbig = $maxrow;
         }
@@ -4470,8 +4474,8 @@ class importController extends \mkwhelpers\Controller {
 
                         $data = $products->Row[$row];
 
-                        $kaphato = $data->qty_on_hand * 1 > 0;
-                        $ar = $data->unit_price * 1 * 650;
+                        $kaphato = (int)$data->qty_on_hand > 0;
+                        $ar = (float)$data->unit_price * 650;
                         $ar = round($ar, -1);
                         $idegencikkszam = (string)$data->sku;
                         $style = (string)$data->Style;
@@ -4546,7 +4550,7 @@ class importController extends \mkwhelpers\Controller {
                                             foreach ($this->settings['sizes'] as $k => $size) {
                                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                                 $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                             }
                                             $kep = new \Entities\TermekKep();
                                             $termek->addTermekKep($kep);
@@ -4615,7 +4619,7 @@ class importController extends \mkwhelpers\Controller {
                                             foreach ($this->settings['sizes'] as $k => $size) {
                                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                                 $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                             }
                                             if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
                                                 $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -4859,7 +4863,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
 
             $katnevek = array();
             $szulocikkszamok = array();
@@ -4918,7 +4922,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $termekdb++;
 
-                $ar = $data['netto'] * 1 * $arszaz / 100;
+                $ar = (float)$data['netto'] * $arszaz / 100;
 
                 $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['cikkszam'], 'gyarto' => $gyartoid));
                 if (!$termek) {
@@ -4980,7 +4984,7 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -5007,7 +5011,7 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                             }
                             $kep = new \Entities\TermekKep();
                             $termek->addTermekKep($kep);
@@ -5061,7 +5065,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $termekdb++;
 
-                $ar = $data['netto'] * 1 * $arszaz / 100;
+                $ar = (float)$data['netto'] * $arszaz / 100;
 
                 $termekkeplista = array();
                 $termekkepszotar = array();
@@ -5126,7 +5130,7 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -5154,7 +5158,7 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                             }
                             $kep = new \Entities\TermekKep();
                             $termek->addTermekKep($kep);
@@ -5233,7 +5237,7 @@ class importController extends \mkwhelpers\Controller {
                                     foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                         $matches = explode('x', $size);
-                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                     }
                                     $kep = new \Entities\TermekKep();
                                     $termek->addTermekKep($kep);
@@ -5621,7 +5625,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($this->settings['sizes'] as $k => $size) {
                                             $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                             $matches = explode('x', $size);
-                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                         }
                                         $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                         $termek->setKepleiras($termeknev);
@@ -5640,10 +5644,10 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($termek) {
                                 if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato(($data[$this->n('q')] * 1) == 0);
+                                    $termek->setNemkaphato((int)$data[$this->n('q')] == 0);
                                 }
                                 if (!$termek->getAkcios()) {
-                                    $termek->setNetto($data[$this->n('g')] * 1 * $arszaz / 100);
+                                    $termek->setNetto((float)$data[$this->n('g')] * $arszaz / 100);
                                     $termek->setBrutto(round($termek->getBrutto(), -1));
                                 }
                                 \mkw\store::getEm()->persist($termek);
@@ -5741,7 +5745,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -5760,7 +5764,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek = $termek[0];
                     }
                     if ($termek) {
-                        $ar = $sheet->getCell('M' . $row)->getValue();
+                        $ar = (float)$sheet->getCell('M' . $row)->getValue();
                         if ($ar && !$termek->getAkcios()) {
                             $termek->setBrutto(round($ar, -1));
                             \mkw\store::getEm()->persist($termek);
@@ -5826,7 +5830,7 @@ class importController extends \mkwhelpers\Controller {
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
-            $maxrow = $sheet->getHighestRow() * 1;
+            $maxrow = (int)$sheet->getHighestRow();
             if (!$dbig) {
                 $dbig = $maxrow;
             }
@@ -5859,7 +5863,7 @@ class importController extends \mkwhelpers\Controller {
                             $t->setRovidleiras(mb_substr(trim($sheet->getCell('C' . $row)->getValue()), 0, 100, 'UTF8') . '...');
                             $t->setLeiras(trim($sheet->getCell('C' . $row)->getValue()) . ' ' . trim($sheet->getCell('D' . $row)->getValue()));
                             $t->setSuly($sheet->getCell('E' . $row)->getValue());
-                            $ar = $sheet->getCell('G' . $row)->getValue();
+                            $ar = (float)$sheet->getCell('G' . $row)->getValue();
                             $t->setBrutto(round($ar, -1));
                             $cimke = $this->createTermekCimke($markacs, 'Qman');
                             if ($cimke) {
@@ -5885,7 +5889,7 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     else {
-                        $ar = $sheet->getCell('G' . $row)->getValue();
+                        $ar = (float)$sheet->getCell('G' . $row)->getValue();
                         if ($ar && !$termek->getAkcios()) {
                             $termek->setBrutto(round($ar, -1));
                             \mkw\store::getEm()->persist($termek);
@@ -6168,7 +6172,7 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($this->settings['sizes'] as $k => $size) {
                                             $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                             $matches = explode('x', $size);
-                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
                                         }
                                         if (((count($data['images']) > 1) && ($imgcnt == 1)) || (count($data['images']) == 1)) {
                                             $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
@@ -6197,10 +6201,10 @@ class importController extends \mkwhelpers\Controller {
                         }
                         if ($termek) {
                             if ($termek->getKeszlet() <= 0) {
-                                $termek->setNemkaphato(($data['stock'] * 1) == 0);
+                                $termek->setNemkaphato((int)$data['stock'] == 0);
                             }
                             if (!$termek->getAkcios()) {
-                                $termek->setNetto($data['netPrice'] * 1 * $arszaz / 100);
+                                $termek->setNetto((float)$data['netPrice'] * $arszaz / 100);
                                 $termek->setBrutto(round($termek->getBrutto(), -1));
                             }
                             \mkw\store::getEm()->persist($termek);
