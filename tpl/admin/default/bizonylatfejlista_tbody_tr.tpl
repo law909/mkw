@@ -65,10 +65,6 @@
                 {if ($showfeketelistabutton)}
                     <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}" target="_blank"><span class="ui-icon ui-icon-alert"></span></a>
                 {/if}
-                {if ($_egyed.bizonylattipusid=='megrendeles' && $_egyed.otpayid)}
-                    <a class="js-otpayrefund" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('OTPay refund')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
-                    <a class="js-otpaystorno" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('OTPay storno')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
-                {/if}
                 {if ($showstorno)}
                     {if ($_egyed.naveredmeny=='DONE')}
                     <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno" title="{at('Számlával egy tekintet alá eső okirat')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
@@ -120,6 +116,12 @@
                         </td>
                     </tr>
                 {/if}
+                {if ($_egyed.sysmegjegyzes)}
+                    <tr><td colspan="5" class="guestpartner">
+                            {$_egyed.sysmegjegyzes}
+                        </td>
+                    </tr>
+                {/if}
             </tbody>
         </table>
     </td>
@@ -157,6 +159,20 @@
                             &nbsp;{if ($_egyed.isglsbekuldve)}<a href="#" class="js-delglsparcel" data-egyedid="{$_egyed.id}">GLS csomag törlés</a>{/if}
                         </td>
                     </tr>
+                    {if ($_egyed.foxpostbarcode)}
+                        <tr>
+                            <td>{at('Foxpost barcode')}:</td>
+                            <td class="fuvarlevel">
+                                {$_egyed.foxpostbarcode}
+                            </td>
+                        </tr>
+                    {/if}
+                    {if ($_egyed.glsparcellabelurl)}
+                        <tr>
+                            <td>{at('Címke')}:</td>
+                            <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                        </tr>
+                    {/if}
                 {/if}
                 {if ($showkupon)}
                     <tr><td>{at('Kupon')}:</td><td class="kupon">{$_egyed.kupon}</td></tr>

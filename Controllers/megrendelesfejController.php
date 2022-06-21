@@ -12,6 +12,7 @@ class megrendelesfejController extends bizonylatfejController {
         $this->setPluralPageTitle('Megrendelések');
         parent::__construct($params);
         $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
+        $this->getRepo()->addToBatches(array('foxpostlabel' => 'Foxpost címke letöltés'));
         $this->getRepo()->addToBatches(array('glssend' => 'Küldés GLS-nek'));
     }
 
@@ -45,120 +46,82 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    public function otpayrefund() {
-        require_once('busvendor/OTPay/MerchTerm_umg_client.php');
-
-        $szam = $this->params->getStringRequestParam('id');
-        $mr = $this->getRepo()->find($szam);
-
-        $error = '';
-        if ($mr) {
-            $timeout = new \TimeoutCategory();
-            $timeout->value = "mediumPeriod";
-            if ($mr->getOTPayMSISDN()) {
-                $clientId = new \ClientMsisdn();
-                $clientId->value = $mr->getOTPayMSISDN();
-            }
-            else {
-                if ($mr->getOTPayMPID()) {
-                    $clientId = new \ClientMpid();
-                    $clientId->value = $mr->getOTPayMPID();
-                }
-                else {
-                    $error = 'Hiányzik a mobil szám vagy a fizetési azonosító';
-                }
-            }
-            if (!$error) {
-                $request = array(
-                    'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
-                    'merchTrxId' => $mr->getTrxId(),
-                    'clientId' => $clientId,
-                    'timeout' => $timeout,
-                    'amount' => $mr->getFizetendo(),
-                    'description' => 'refund',
-                    'isRepeated' => false,
-                    'origBankTrxId' => $mr->getOTPayId()
-                );
-
-                $client = null;
-
-                try {
-                    $client = new \MerchTerm_umg_client();
-                    $response = $client->PostImCreditInit($request);
-                    \mkw\store::writelog(print_r($response, true), 'otpay.log');
-                    /*
-                    if ($response->result == 0) {
-                        $mr->setFizetve(false);
-                        $this->getEm()->persist($mr);
-                        $this->getEm()->flush();
-                    }
-                    else {
-                        $error = \mkw\store::getOTPayErrorMessage($response->result);
-                    }
-                     *
-                     */
-
-                } catch (\Exception $e) {
-                    $exception = $e;
-                    $error = $exception->getMessage();
-                }
-            }
-        }
-        echo json_encode($error);
-    }
-
-    public function otpaystorno() {
-        require_once('busvendor/OTPay/MerchTerm_umg_client.php');
-
-        $mr = $this->getRepo()->find($this->params->getStringRequestParam('id'));
-
-        $error = '';
-        if ($mr) {
-            $request = array(
-                'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
-                'bankTrxId' => $mr->getOTPayId(),
-                'reasonCode' => 1
-            );
-
-            $client = null;
-
-            try {
-                $client = new \MerchTerm_umg_client();
-                $response = $client->PostImCreditInit($request);
-                \mkw\store::writelog(print_r($response, true), 'otpay.log');
-                /*
-                if ($response->result == 0) {
-                    $mr->setFizetve(false);
-                    $this->getEm()->persist($mr);
-                    $this->getEm()->flush();
-                }
-                else {
-                    $error = \mkw\store::getOTPayErrorMessage($response->result);
-                }
-                 *
-                 */
-
-            } catch (\Exception $e) {
-                $error = $e->getMessage();
-                echo json_encode($error);
-            }
-        }
-        echo json_encode($error);
-    }
-
     public function sendToFoxPost() {
         $ids = $this->params->getArrayRequestParam('ids');
         foreach($ids as $id) {
+            /** @var \Entities\Bizonylatfej $megrendfej */
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
+                $megrendfej->setSimpleedit(true);
                 $fpc = new \Controllers\csomagterminalController($this->params);
                 $fpres = $fpc->sendMegrendelesToFoxpost($megrendfej);
                 if ($fpres) {
-                    $megrendfej->setFoxpostBarcode($fpres['barcode']);
-                    $megrendfej->setFuvarlevelszam($fpres['barcode']);
-                    if (array_key_exists('trace', $fpres)) {
-                        $megrendfej->setTraceurl($fpres['trace']['href']);
+                    switch (\mkw\store::getParameter(\mkw\consts::FoxpostApiVersion, 'v2')) {
+                        case 'v1':
+                            $megrendfej->setFoxpostBarcode($fpres['barcode']);
+                            $megrendfej->setFuvarlevelszam($fpres['barcode']);
+                            if (array_key_exists('trace', $fpres)) {
+                                $megrendfej->setTraceurl($fpres['trace']['href']);
+                            }
+                            $this->getEm()->persist($megrendfej);
+                            $this->getEm()->flush();
+                            break;
+                        case 'v2':
+                            if (is_array($fpres)) {
+                                if ($fpres['success']) {
+                                    $megrendfej->setFoxpostBarcode($fpres['data']['clFoxId']);
+                                    if (array_key_exists('barcodeTof', $fpres) && ($fpres['data']['barcodeTof'])) {
+                                        $megrendfej->setFuvarlevelszam($fpres['data']['barcodeTof']);
+                                    } else {
+                                        $megrendfej->setFuvarlevelszam($fpres['data']['clFoxId']);
+                                    }
+                                    $megrendfej->setSysmegjegyzes('');
+                                    $this->getEm()->persist($megrendfej);
+                                    $this->getEm()->flush();
+                                }
+                                else {
+                                    $megrendfej->setSysmegjegyzes(json_encode($fpres['errors']));
+                                    $this->getEm()->persist($megrendfej);
+                                    $this->getEm()->flush();
+                                }
+                            }
+                            break;
                     }
+                }
+            }
+        }
+    }
+
+    public function generateFoxpostLabel() {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $clfids = [];
+        foreach($ids as $id) {
+            /** @var \Entities\Bizonylatfej $megrendfej */
+            $megrendfej = $this->getRepo()->find($id);
+            if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && $megrendfej->getFoxpostBarcode()) {
+                $clfids[] = $megrendfej->getFoxpostBarcode();
+            }
+        }
+        if ($clfids) {
+            $cstc = new csomagterminalController(null);
+            $res = $cstc->generateFoxpostLabels($clfids);
+            if ($res && $res['success']) {
+                foreach($ids as $id) {
+                    /** @var \Entities\Bizonylatfej $megrendfej */
+                    $megrendfej = $this->getRepo()->find($id);
+                    $megrendfej->setSimpleedit(true);
+                    $megrendfej->setGlsparcellabelurl($res['data']);
+                    $megrendfej->setSysmegjegyzes(null);
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+                }
+            }
+            else {
+                foreach($ids as $id) {
+                    /** @var \Entities\Bizonylatfej $megrendfej */
+                    $megrendfej = $this->getRepo()->find($id);
+                    $megrendfej->setSimpleedit(true);
+                    $megrendfej->setSysmegjegyzes(json_encode($res['errors']));
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
                 }

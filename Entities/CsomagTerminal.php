@@ -32,7 +32,7 @@ class CsomagTerminal {
     /** @ORM\Column(type="string",length=100,nullable=true) */
 	private $subgroup;
 
-    /** @ORM\Column(type="string",length=75,nullable=true) */
+    /** @ORM\Column(type="string",length=254,nullable=true) */
 	private $nyitva;
 
     /** @ORM\Column(type="string",length=254,nullable=true) */

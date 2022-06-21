@@ -290,6 +290,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toFoxpostv2API()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toFoxpostv2API', []);
+
+        return parent::toFoxpostv2API();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toGLSAPI()
     {
 

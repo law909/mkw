@@ -1135,7 +1135,7 @@ var bizonylathelper = function($) {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
-                            '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, ' +
+                            '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-mese, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email').button();
                     },
                     onDoEditLink: function() {
@@ -1182,6 +1182,51 @@ var bizonylathelper = function($) {
                 var cbs;
                 e.preventDefault();
                 switch ($('.mattable-batchselect').val()) {
+                    case 'foxpostlabel':
+                        cbs = $('.maincheckbox:checked');
+                        if (cbs.length) {
+                            dialogcenter.html('Biztos, hogy lekéri a megrendelés címkéket?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        var tomb = [],
+                                            dia = $(this);
+                                        cbs.closest('tr').each(function(index, elem) {
+                                            tomb.push($(elem).data('egyedid'));
+                                        });
+                                        $.ajax({
+                                            url: '/admin/' + bizonylattipus + 'fej/generatefoxpostlabel',
+                                            type: 'POST',
+                                            data: {
+                                                ids: tomb
+                                            },
+                                            success: function() {
+                                                dia.dialog('close');
+                                                $('.mattable-tablerefresh').click();
+                                            }
+                                        });
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        break;
                     case 'foxpostsend':
                         cbs = $('.maincheckbox:checked');
                         if (cbs.length) {
@@ -1354,40 +1399,6 @@ var bizonylathelper = function($) {
                         'Nem': function() {
                             sendQ(id, statusz, false);
                             $(this).dialog('close');
-                        }
-                    }
-                });
-            })
-            .on('click', '.js-otpayrefund', function(e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/otpay/refund',
-                    type: 'POST',
-                    data: {
-                        id: $this.data('egyedid')
-                    },
-                    success: function(data) {
-                        var d = JSON.parse(data);
-                        if (d) {
-                            alert(d);
-                        }
-                    }
-                });
-            })
-            .on('click', '.js-otpaystorno', function(e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/otpay/storno',
-                    type: 'POST',
-                    data: {
-                        id: $this.data('egyedid')
-                    },
-                    success: function(data) {
-                        var d = JSON.parse(data);
-                        if (d) {
-                            alert(d);
                         }
                     }
                 });

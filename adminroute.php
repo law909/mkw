@@ -215,6 +215,7 @@ $router->map('GET', '/admin/megrendelesfej/viewkarb', 'megrendelesfejController#
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/megrendelesfej/save', 'megrendelesfejController#save', 'adminmegrendelesfejsave');
     $router->map('POST', '/admin/megrendelesfej/sendtofoxpost', 'megrendelesfejController#sendToFoxPost', 'adminmegrendelessendtofoxpost');
+    $router->map('POST', '/admin/megrendelesfej/generatefoxpostlabel', 'megrendelesfejController#generateFoxpostLabel', 'admingeneratefoxpostlabel');
     $router->map('POST', '/admin/megrendelesfej/sendtogls', 'megrendelesfejController#sendToGLS', 'adminmegrendelessendtogls');
     $router->map('POST', '/admin/megrendelesfej/delglsparcel', 'megrendelesfejController#delGLSParcel', 'adminmegrendelesdelglsparcel');
     $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
@@ -851,9 +852,6 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/fifo/alapadat', 'fifoController#getAlapadat', 'adminfifoalapadat');
 $router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek', 'adminkeszletertek');
-
-$router->map('POST', '/admin/otpay/refund', 'megrendelesfejController#otpayrefund', 'adminotpayrefund');
-$router->map('POST', '/admin/otpay/storno', 'megrendelesfejController#otpaystorno', 'adminotpaystorno');
 
 $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');
 $router->map('GET', '/admin/lista/nemkaphatoertesito', 'listaController#nemkaphatoertesito', 'adminlistanemkaphatoertesito');

@@ -26,7 +26,7 @@ class CsomagTerminalRepository extends \mkwhelpers\Repository {
         return null;
     }
 
-    public function getByCsoport($csoport = null, $tipus = null) {
+    public function getByCsoport($csoport = null, $tipus = null, $order = null) {
         if ($tipus) {
             $filter = new FilterDescriptor();
             $filter->addFilter('tipus', '=', $tipus);
@@ -34,7 +34,7 @@ class CsomagTerminalRepository extends \mkwhelpers\Repository {
                 $filter->addFilter('csoport', '=', $csoport);
             }
             $filter->addFilter('inaktiv', '=', false);
-            $rec = $this->getRepo('Entities\CsomagTerminal')->getAll($filter);
+            $rec = $this->getRepo('Entities\CsomagTerminal')->getAll($filter, $order);
             return $rec;
         }
         return null;

@@ -45,6 +45,7 @@ class store {
     private static $routename;
     private static $daynames = array('hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap');
     private static $BarionEnvironment = array('teszt', 'éles');
+    private static $FoxpostAPIVersions = array('v1', 'v2');
     public static $DateFormat = 'Y.m.d';
     public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
@@ -278,6 +279,18 @@ class store {
                 'id' => $k + 1,
                 'caption' => $v,
                 'selected' => ($k + 1 === $sel)
+            );
+        }
+        return $ret;
+    }
+
+    public static function getFoxpostAPIVersionSelectList($sel = null) {
+        $ret = array();
+        foreach (self::$FoxpostAPIVersions as $k => $v) {
+            $ret[] = array(
+                'id' => $v,
+                'caption' => $v,
+                'selected' => ($v === $sel)
             );
         }
         return $ret;

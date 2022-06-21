@@ -177,6 +177,11 @@ class consts {
     const FoxpostApiURL = 'foxpostapiurl';
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';
+    const FoxpostApiVersion = 'foxpostapiversion';
+    const Foxpostv2ApiURL = 'foxpostv2apiurl';
+    const Foxpostv2Username = 'foxpostv2username';
+    const Foxpostv2Password = 'foxpostv2password';
+    const Foxpostv2ApiKey = 'foxpostv2apikey';
 
     const GLSApiURL = 'glsapiurl';
     const GLSClientNumber = 'glsclientnumber';

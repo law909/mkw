@@ -1601,12 +1601,31 @@
                             <td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"></td>
                         </tr>
                         <tr>
+                            <td><label>{at('Foxpost API verzió')}:</label></td>
+                            <td><select name="foxpostapiversion">
+                                    <option value="">válasszon</option>
+                                    {foreach $foxpostapiversionlist as $_fpapiversion}
+                                        <option value="{$_fpapiversion.id}"{if ($_fpapiversion.selected)} selected="selected"{/if}>{$_fpapiversion.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
+                        <tr>
                             <td><label>{at('Foxpost API URL')}:</label></td>
                             <td><input name="foxpostapiurl" type="text" value="{$foxpostapiurl}"></td>
                             <td><label>{at('Username')}:</label></td>
                             <td><input name="foxpostusername" type="text" value="{$foxpostusername}" autocomplete="off"></td>
                             <td><label>{at('Password')}:</label></td>
                             <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Foxpost v2 API URL')}:</label></td>
+                            <td><input name="foxpostv2apiurl" type="text" value="{$foxpostv2apiurl}"></td>
+                            <td><label>{at('v2 Username')}:</label></td>
+                            <td><input name="foxpostv2username" type="text" value="{$foxpostv2username}" autocomplete="off"></td>
+                            <td><label>{at('v2 Password')}:</label></td>
+                            <td><input name="foxpostv2password" type="password" value="{$foxpostv2password}" autocomplete="off"></td>
+                            <td><label>{at('v2 API key')}:</label></td>
+                            <td><input name="foxpostv2apikey" type="text" value="{$foxpostv2apikey}" autocomplete="off"></td>
                         </tr>
                         <tr>
                             <td><label>{at('GLS API URL')}:</label></td>

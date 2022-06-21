@@ -269,12 +269,24 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::GMapsApiKey, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FBAppId);
         $view->setVar(\mkw\consts::FBAppId, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::FoxpostApiURL);
         $view->setVar(\mkw\consts::FoxpostApiURL, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostUsername);
         $view->setVar(\mkw\consts::FoxpostUsername, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostPassword);
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FoxpostApiVersion);
+        $view->setVar('foxpostapiversionlist', \mkw\store::getFoxpostAPIVersionSelectList($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Foxpostv2ApiURL);
+        $view->setVar(\mkw\consts::Foxpostv2ApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Foxpostv2Username);
+        $view->setVar(\mkw\consts::Foxpostv2Username, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Foxpostv2Password);
+        $view->setVar(\mkw\consts::Foxpostv2Password, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Foxpostv2ApiKey);
+        $view->setVar(\mkw\consts::Foxpostv2ApiKey, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::GLSApiURL);
         $view->setVar(\mkw\consts::GLSApiURL, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSParcelLabelDir);
@@ -966,9 +978,16 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
+
         $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'), true);
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
         $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
+        $this->setObj(\mkw\consts::FoxpostApiVersion, $this->params->getStringRequestParam(\mkw\consts::FoxpostApiVersion));
+        $this->setObj(\mkw\consts::Foxpostv2ApiURL, $this->params->getStringRequestParam('foxpostv2apiurl'), true);
+        $this->setObj(\mkw\consts::Foxpostv2Username, $this->params->getStringRequestParam('foxpostv2username'));
+        $this->setObj(\mkw\consts::Foxpostv2Password, $this->params->getStringRequestParam('foxpostv2password'));
+        $this->setObj(\mkw\consts::Foxpostv2ApiKey, $this->params->getStringRequestParam('foxpostv2apikey'));
+
         $this->setObj(\mkw\consts::GLSApiURL, $this->params->getStringRequestParam('glsapiurl'), true);
         $this->setObj(\mkw\consts::GLSUsername, $this->params->getStringRequestParam('glsusername'));
         $this->setObj(\mkw\consts::GLSClientNumber, $this->params->getStringRequestParam('glsclientnumber'));

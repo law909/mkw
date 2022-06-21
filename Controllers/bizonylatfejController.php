@@ -421,6 +421,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['szallhazszam'] = $t->getSzallhazszam();
         $x['webshopmessage'] = $t->getWebshopmessage();
         $x['couriermessage'] = $t->getCouriermessage();
+        $x['sysmegjegyzes'] = $t->getSysmegjegyzes();
+        $x['foxpostbarcode'] = $t->getFoxpostBarcode();
         $x['ip'] = $t->getIp();
         $x['referrer'] = $t->getReferrer();
         $x['fizetve'] = $t->getFizetve();

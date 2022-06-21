@@ -888,6 +888,31 @@ class Bizonylatfej {
         }
     }
 
+    public function toFoxpostv2API() {
+        $fields = array(
+            'recipientName' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $this->getSzallnev()),
+            'recipientPhone' => $this->getPartnertelefon(),
+            'recipientEmail' => $this->getPartneremail(),
+            'refCode' => $this->getId(),
+            'size' => 'M'
+        );
+        if ($this->getCsomagterminalIdegenId()) {
+            $fields['destination'] = $this->getCsomagterminalIdegenId();
+        }
+        else {
+            $fields['recipientZip'] = $this->getSzallirszam();
+            $fields['recipientCity'] = $this->getSzallvaros();
+            $fields['recipientAddress'] = $this->getSzallutca();
+        }
+        if ($this->getCouriermessage()) {
+            $fields['deliveryNote'] = mb_substr($this->getCouriermessage(), 0, 50);
+        }
+        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
+            $fields['cod'] = (int)$this->getBrutto();
+        }
+        return $fields;
+    }
+
     public function toGLSAPI() {
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
             $codamount = $this->getBruttohuf();
@@ -1098,8 +1123,10 @@ class Bizonylatfej {
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
+        $ret['sysmegjegyzes'] = $this->getSysmegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
+        $ret['foxpostbarcode'] = $this->getFoxpostBarcode();
         if (\mkw\store::isFoxpostSzallitasimod($this->getSzallitasimodId())) {
             $ret['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $this->getFuvarlevelszam();
         }

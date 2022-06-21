@@ -191,7 +191,7 @@ class Repository extends EntityRepository {
             $this->batches = $batches;
         }
         else {
-            $this->batches = array_merge_recursive($this->batches, $batches);
+            $this->batches = array_merge($this->batches, $batches);
         }
     }
 }
