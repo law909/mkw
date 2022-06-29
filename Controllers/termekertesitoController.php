@@ -93,6 +93,7 @@ class termekertesitoController extends \mkwhelpers\MattableController {
                     $mailer->setSubject($subject->getTemplateResult());
                     $mailer->setMessage($body->getTemplateResult());
                     $mailer->send();
+                    $mailer->clear();
                     $ert->setSent('');
                     $this->getEm()->persist($ert);
                     $this->getEm()->flush();
