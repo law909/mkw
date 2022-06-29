@@ -801,9 +801,6 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/qman', 'importController#qmanImport', 'adminqmanimport');
     $router->map('POST', '/admin/import/smileebike', 'importController#smileebikeImport', 'adminsmileebikeimport');
     $router->map('POST', '/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
-//$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
-//$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
-//$router->map('POST','/admin/import/szpartnerimport', 'importController#szInvarPartnerImport', 'adminszinvarpartnerimport');
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
