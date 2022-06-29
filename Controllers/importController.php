@@ -680,6 +680,8 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningDeltonImport, 1);
 
+            $minarszaz = 120;
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoDelton);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -869,8 +871,8 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$termek->getAkcios()) {
                                     $kiskerar = (float)$data[7];
                                     $nagykerar = (float)$data[8];
-                                    if (($kiskerar / $nagykerar * 100 < 120) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 120)) {
-                                        $termek->setNetto($nagykerar * 120 / 100);
+                                    if (($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)) {
+                                        $termek->setNetto($nagykerar * $minarszaz / 100);
                                     }
                                     else {
                                         $termek->setNetto($kiskerar * $arszaz / 100);
