@@ -5374,6 +5374,10 @@ class importController extends \mkwhelpers\Controller {
                     if (is_array($termek)) {
                         $termek = $termek[0];
                     }
+                    if ($termek && $termek->getGyartoId() != $gyartoid) {
+                        $termek = null;
+                    }
+
                     if ($valtozat) {
                         if ($data['stock'] <= 0) {
                             if ($valtozat->getKeszlet() <= 0) {
