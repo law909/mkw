@@ -1517,7 +1517,6 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => \mkw\store::logsUrl('nomad_fuggoben.txt')));
                 }
             }
-            \unlink(\mkw\store::storagePath('nomad.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 0);
         }
@@ -2168,7 +2167,6 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => \mkw\store::logsUrl('haffner24import.txt')));
                 }
             }
-            \unlink(\mkw\store::storagePath('haffner24products.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 0);
         }
@@ -2507,7 +2505,6 @@ class importController extends \mkwhelpers\Controller {
                 }
 
                 fclose($fh);
-                \unlink(\mkw\store::storagePath('reintex.csv'));
             }
             $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
         }
@@ -2624,7 +2621,6 @@ class importController extends \mkwhelpers\Controller {
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
                 fclose($fh);
-                \unlink('tutisportimport.csv');
             }
             $this->setRunningImport(\mkw\consts::RunningTutisportImport, 0);
         }
@@ -2987,7 +2983,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 fclose($fh);
-                \unlink(\mkw\store::storagePath('makszutov.txt'));
             }
             else {
                 echo json_encode(array('url' => \mkw\store::storageUrl('makszutov.txt')));
@@ -4401,7 +4396,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
             }
-            \unlink(\mkw\store::storagePath('legavenue.xml'));
 
             if ($db) {
                 echo json_encode(array('url' => \mkw\store::logsUrl('legavenue_forditani.txt')));
@@ -4776,7 +4770,6 @@ class importController extends \mkwhelpers\Controller {
                         echo json_encode(array('url' => \mkw\store::logsUrl('legavenue_fuggoben.txt')));
                     }
                 }
-                \unlink(\mkw\store::storagePath('legavenue.xml'));
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
             }
