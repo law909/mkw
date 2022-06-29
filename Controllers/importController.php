@@ -1312,6 +1312,10 @@ class importController extends \mkwhelpers\Controller {
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto($data['price']);
+                            }
+                            \mkw\store::getEm()->persist($termek);
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
@@ -1443,6 +1447,10 @@ class importController extends \mkwhelpers\Controller {
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto($data['price']);
+                            }
+                            \mkw\store::getEm()->persist($termek);
                         }
                         else {
                             \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - NO PARENT TERMEK - child', 'nomadimport.log');
