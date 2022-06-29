@@ -70,7 +70,7 @@ class store {
     public static function getBootstrapJSVersion() {
         switch (self::getTheme()) {
             case 'mkwcansas':
-                return 8;
+                return 9;
         }
     }
 
