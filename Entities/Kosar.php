@@ -178,6 +178,9 @@ class Kosar {
 		}
 	}
 
+    /**
+     * @return Termek
+     */
 	public function getTermek() {
 		return $this->termek;
 	}

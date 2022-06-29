@@ -354,6 +354,7 @@ class Termek {
     private $termekertesitok;
 
     /**
+     * @var Partner
      * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="gyarto_id",referencedColumnName="id",nullable=true,onDelete="set null")
      */
