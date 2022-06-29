@@ -2635,6 +2635,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningMaxutovImport, 1);
 
             $sep = ';';
+            $minarszaz = 120;
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoMaxutov);
@@ -2766,8 +2767,8 @@ class importController extends \mkwhelpers\Controller {
 
                                 $kiskerar = (float)$data[$this->n('h')];
                                 $nagykerar = (float)$data[$this->n('g')];
-                                if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
-                                    $termek->setBrutto($nagykerar * 115 / 100);
+                                if (($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)) {
+                                    $termek->setBrutto($nagykerar * $minarszaz / 100);
                                 }
                                 else {
                                     $termek->setBrutto($kiskerar * $arszaz / 100);
@@ -2826,8 +2827,8 @@ class importController extends \mkwhelpers\Controller {
                                     if (!$termek->getAkcios()) {
                                         $kiskerar = (float)$data[$this->n('h')];
                                         $nagykerar = (float)$data[$this->n('g')];
-                                        if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
-                                            $termek->setBrutto($nagykerar * 115 / 100);
+                                        if (($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)) {
+                                            $termek->setBrutto($nagykerar * $minarszaz / 100);
                                         }
                                         else {
                                             $termek->setBrutto($kiskerar * $arszaz / 100);
@@ -2869,8 +2870,8 @@ class importController extends \mkwhelpers\Controller {
                                     if (!$termek->getAkcios()) {
                                         $kiskerar = (float)$data[$this->n('h')];
                                         $nagykerar = (float)$data[$this->n('g')];
-                                        if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
-                                            $termek->setBrutto($nagykerar * 115 / 100);
+                                        if (($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)) {
+                                            $termek->setBrutto($nagykerar * $minarszaz / 100);
                                         }
                                         else {
                                             $termek->setBrutto($kiskerar * $arszaz / 100);
