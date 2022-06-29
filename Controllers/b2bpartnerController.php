@@ -83,7 +83,7 @@ class b2bpartnerController extends partnerController {
         }
     }
 
-    public function showRegistrationForm($hibak = array()) {
+    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = array()) {
         $view = $this->getTemplateFactory()->createMainView('regisztracio.tpl');
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('hibak', $hibak);
