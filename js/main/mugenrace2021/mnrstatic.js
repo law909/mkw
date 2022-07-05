@@ -5,7 +5,6 @@
             top: (window.innerHeight + 4) * up,
             behavior: "smooth"
         });
-        console.log('doScroll');
     }
 
     document.addEventListener('keydown', function (e) {
@@ -28,7 +27,6 @@
     document.addEventListener('wheel', function (e) {
         e.preventDefault();
         e.deltaY = 0;
-        console.log('onwheel');
         if (e.deltaY > 0) {
             doScroll(1);
         }
@@ -49,5 +47,16 @@
         szlogens.forEach((szlogen) => {
             szlogen.style.transform = 'rotate(${beta}deg)';
         });
-    })
+    });
+
+    document.querySelector('.nav-menu').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('.menucontainer').classList.add('menucontainer-down');
+        document.querySelectorAll('html, body').forEach(e => e.classList.add('dontscroll'));
+    });
+    document.querySelector('.menu-close').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('.menucontainer').classList.remove('menucontainer-down');
+        document.querySelectorAll('html, body').forEach(e => e.classList.remove('dontscroll'));
+    });
 }

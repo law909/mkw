@@ -10,10 +10,58 @@
     margin: auto;
 }
 
+.dontscroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0;
     overflow-x: hidden;
+}
+
+.menucontainer {
+    z-index: 9999;
+    position: absolute;
+    top: -100%;
+    background-color: #AAFF00;
+    width: 100vw;
+    height: 100vh;
+    transition: 600ms;
+    overflow: hidden;
+}
+
+.menucontainer-down {
+    transform: translateY(100vh);
+}
+
+.menucloser {
+    display: grid;
+    grid-template-columns: 40px;
+    column-gap: 5px;
+    align-items: center;
+    align-content: center;
+    padding: 5px;
+}
+
+.menu-bottom-triangle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5vh;
+}
+
+.menu-bottom-text {
+    color: white;
+    opacity: 0.3;
+    bottom: -8vw;
+    position: absolute;
+    font-size: 18vw;
+    left: -5vw;
+    font-style: oblique;
+    font-weight: bold;
 }
 
 .header {
@@ -24,7 +72,7 @@ body {
     color: white;
 }
 
-.menu {
+.nav {
     display: grid;
     grid-template-columns: 40px 0 1fr 40px 40px 40px;
     column-gap: 5px;
@@ -34,15 +82,15 @@ body {
     background: black;
 }
 
-.menu-img {
+.nav-img {
     width: 80%;
 }
 
-.menu-logo {
+.nav-logoimg {
     max-width: 180px;
 }
 
-.header-lang {
+.nav-lang {
     font-size: 30px;
     font-weight: bold;
 }
@@ -109,7 +157,7 @@ body {
 .page-szlogen-container {
     display: grid;
     position: absolute;
-    top: 0px;
+    top: 0;
 }
 
 .page-img {
@@ -124,7 +172,7 @@ body {
 
 .page-img-top-triangle {
     position: absolute;
-    top: 0;
+    top: -1px;
     width: 100%;
     height: 6vh;
 }
@@ -170,11 +218,16 @@ body {
 }
 
 @media screen and (min-width: 600px) {
-    .menu {
+    .nav {
         grid-template-columns: 1fr 3fr 24fr 1fr 1fr 2fr;
     }
 
-     .page {
+    .menu-bottom-triangle {
+        width: 100%;
+        height: 15vh;
+    }
+
+    .page {
         display: grid;
         grid-template-columns: 70% 30%;
         position: relative;
