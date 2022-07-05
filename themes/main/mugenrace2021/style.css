@@ -57,6 +57,7 @@ body {
 .bgimg {
     height: 100vh;
     width: 100vw;
+    object-fit: cover;
 }
 
 .szlogencontainer {
@@ -65,12 +66,12 @@ body {
 
 .szlogen1 {
     color: white;
-    font-size: 280px;
+    font-size: 140px;
     font-weight: bold;
     grid-row: 1;
     position: absolute;
-    top: 40%;
-    left: 40%;
+    top: 30%;
+    left: 20%;
 }
 
 .szlogen2 {
@@ -79,8 +80,8 @@ body {
     font-weight: bold;
     grid-row: 2;
     position: absolute;
-    top: 40%;
-    left: 30%;
+    top: 50%;
+    left: 10%;
 }
 
 .page-container {
@@ -89,6 +90,7 @@ body {
 
 .page {
     position: relative;
+    max-height: 100vh;
 }
 
 .page-padder {
@@ -105,6 +107,7 @@ body {
 .page-img {
     max-height: 80vh;
     width: 100%;
+    object-fit: cover;
 }
 
 .page-img-container {
@@ -128,18 +131,19 @@ body {
 
 .page-szlogen1 {
     color: white;
-    font-size: 140px;
+    font-size: 12vw;
     font-weight: bold;
     grid-row: 1;
-    transform: rotate(-1.5deg);
+    transform: rotate(-8deg);
+    padding-top: 5vw;
 }
 
 .page-szlogen2 {
     color: white;
-    font-size: 50px;
+    font-size: 6vw;
     font-weight: bold;
     grid-row: 2;
-    transform: rotate(-1.5deg);
+    transform: rotate(-8deg);
 }
 
 .page-tartalom-container {
@@ -154,10 +158,42 @@ body {
     padding: 0 10px;
 }
 
+@media screen and (min-width: 480px) {
+}
+
 @media screen and (min-width: 600px) {
-    .page {
+     .page {
         display: grid;
         grid-template-columns: 70% 30%;
         position: relative;
+    }
+
+    .szlogen1 {
+        font-size: 280px;
+        grid-row: 1;
+        position: absolute;
+        top: 40%;
+        left: 40%;
+    }
+
+    .szlogen2 {
+        font-size: 50px;
+        grid-row: 2;
+        position: absolute;
+        top: 40%;
+        left: 30%;
+    }
+
+    .page-szlogen1 {
+        font-size: 140px;
+        grid-row: 1;
+        transform: rotate(-1.5deg);
+        padding-top: 2vw;
+    }
+
+    .page-szlogen2 {
+        font-size: 50px;
+        grid-row: 2;
+        transform: rotate(-1.5deg);
     }
 }
