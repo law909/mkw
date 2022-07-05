@@ -26,7 +26,7 @@ body {
 
 .menu {
     display: grid;
-    grid-template-columns: 40px 1fr 40px 40px 40px;
+    grid-template-columns: 40px 0 1fr 40px 40px 40px;
     column-gap: 5px;
     align-items: center;
     align-content: center;
@@ -35,7 +35,7 @@ body {
 }
 
 .menu-img {
-    max-width: 40px;
+    width: 80%;
 }
 
 .menu-logo {
@@ -171,7 +171,7 @@ body {
 
 @media screen and (min-width: 600px) {
     .menu {
-        grid-template-columns: 4fr 24fr 1fr 1fr 2fr;
+        grid-template-columns: 1fr 3fr 24fr 1fr 1fr 2fr;
     }
 
      .page {

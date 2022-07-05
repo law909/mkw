@@ -18,6 +18,7 @@
 <div class="header">
     <div class="menu">
     <a href="" class="header-menu"><img src="/themes/main/mugenrace2021/menu_w.png" class="menu-img" alt="Menu"></a>
+    <div></div>
     <a href="/" class="header-logo hcenter"><img src="/themes/main/mugenrace2021/logo_w.png" class="menu-logo" alt="Home"></a>
     <a href="" class="header-search"><img src="/themes/main/mugenrace2021/search_w.png" class="menu-img" alt="Search"></a>
     <a href="" class="header-cart"><img src="/themes/main/mugenrace2021/cart_w.png" class="menu-img" alt="Cart"></a>
