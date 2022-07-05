@@ -26,12 +26,20 @@ body {
 
 .menu {
     display: grid;
-    grid-template-columns: 4fr 24fr 1fr 1fr 2fr;
+    grid-template-columns: 40px 1fr 40px 40px 40px;
     column-gap: 5px;
     align-items: center;
     align-content: center;
     padding: 5px;
     background: black;
+}
+
+.menu-img {
+    max-width: 40px;
+}
+
+.menu-logo {
+    max-width: 180px;
 }
 
 .header-lang {
@@ -162,6 +170,10 @@ body {
 }
 
 @media screen and (min-width: 600px) {
+    .menu {
+        grid-template-columns: 4fr 24fr 1fr 1fr 2fr;
+    }
+
      .page {
         display: grid;
         grid-template-columns: 70% 30%;
@@ -187,13 +199,13 @@ body {
     .page-szlogen1 {
         font-size: 140px;
         grid-row: 1;
-        transform: rotate(-1.5deg);
+        transform: rotate(-2.5deg);
         padding-top: 2vw;
     }
 
     .page-szlogen2 {
         font-size: 50px;
         grid-row: 2;
-        transform: rotate(-1.5deg);
+        transform: rotate(-2.5deg);
     }
 }
