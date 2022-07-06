@@ -14,7 +14,7 @@ class mkwphpmailer {
     private $attachment;
     public $ErrorInfo;
 
-    protected function clear() {
+    public function clear() {
         $this->to = array();
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
     }

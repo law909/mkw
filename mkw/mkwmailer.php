@@ -9,7 +9,7 @@ class mkwmailer {
     private $headers;
     private $replyto;
 
-    protected function clear() {
+    public function clear() {
         unset($this->to, $this->subject, $this->message, $this->headers, $this->replyto);
     }
 

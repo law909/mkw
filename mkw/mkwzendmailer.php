@@ -26,7 +26,7 @@ class mkwzendmailer {
     private $replyto;
     private $attachment;
 
-    protected function clear() {
+    public function clear() {
         $this->to = array();
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
     }
