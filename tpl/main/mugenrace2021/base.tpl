@@ -10,7 +10,7 @@
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=1">
     {block "css"}{/block}
     {block "script"}{/block}
 </head>

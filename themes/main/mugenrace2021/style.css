@@ -24,7 +24,7 @@ body {
 .menucontainer {
     z-index: 9999;
     position: absolute;
-    top: -100%;
+    top: -100vh;
     background-color: #AAFF00;
     width: 100vw;
     height: 100vh;
