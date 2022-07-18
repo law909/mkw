@@ -184,9 +184,7 @@ class kosarController extends \mkwhelpers\MattableController {
             $s[] = $sor->toLista($partner);
             $tids[] = $sor->getTermekId();
         }
-        if (date(\mkw\store::$TimeFormat) > '13:00') {
-            $szallido = $szallido + 1;
-        }
+        $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
 
         $v->setVar('szallitasiido', $szallido);
         $v->setVar('tetellista', $s);

@@ -1597,4 +1597,13 @@ class store {
     public static function isClosed() {
         return self::getConfigValue('closed', false);
     }
+
+    public static function calcSzallitasiidoAddition($date) {
+        if ($date->format(self::$TimeFormat) > '13:00') {
+            if ($date->format('N') < 6) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

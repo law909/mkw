@@ -4605,9 +4605,7 @@ class Bizonylatfej {
                 }
             }
         }
-        if ($this->getCreated()->format(\mkw\store::$TimeFormat) > '13:00') {
-            $szallido = $szallido + 1;
-        }
+        $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition($this->getCreated());
         $this->setSzallitasiido($szallido);
     }
 

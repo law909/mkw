@@ -213,9 +213,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             }
 			$s[] = $sor->toLista($partner);
 		}
-        if (date(\mkw\store::$TimeFormat) > '13:00') {
-            $szallido = $szallido + 1;
-        }
+        $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
 
         $view->setVar('szallitasiido', $szallido);
 		$view->setVar('tetellista', $s);
