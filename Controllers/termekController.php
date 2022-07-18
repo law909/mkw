@@ -555,16 +555,9 @@ class termekController extends \mkwhelpers\MattableController {
 					$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_' . $valtozatid));
                     $valtozat->setLathato2($this->params->getBoolRequestParam('valtozatlathato2_' . $valtozatid));
                     $valtozat->setLathato3($this->params->getBoolRequestParam('valtozatlathato3_' . $valtozatid));
-					if ($obj->getNemkaphato()) {
-						$valtozat->setElerheto(false);
-                        $valtozat->setElerheto2(false);
-                        $valtozat->setElerheto3(false);
-					}
-					else {
-						$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
-                        $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
-                        $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
-					}
+                    $valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
+                    $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
+                    $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
 //						$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
 					$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
 					$valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
@@ -607,16 +600,9 @@ class termekController extends \mkwhelpers\MattableController {
 						$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_' . $valtozatid));
                         $valtozat->setLathato2($this->params->getBoolRequestParam('valtozatlathato2_' . $valtozatid));
                         $valtozat->setLathato3($this->params->getBoolRequestParam('valtozatlathato3_' . $valtozatid));
-						if ($obj->getNemkaphato()) {
-							$valtozat->setElerheto(false);
-                            $valtozat->setElerheto2(false);
-                            $valtozat->setElerheto3(false);
-						}
-						else {
-							$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
-                            $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
-                            $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
-						}
+                        $valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
+                        $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
+                        $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
 //							$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
 						$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
 						$valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
