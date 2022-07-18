@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -6,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\Entity(repositoryClass="Entities\BizonylattipusRepository")
  * @ORM\Table(name="bizonylattipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  **/
-class Bizonylattipus {
+class Bizonylattipus
+{
     /**
      * @ORM\Id @ORM\Column(type="string",length=30)
      */
@@ -87,12 +89,16 @@ class Bizonylattipus {
     private $navbekuldendo = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showemailbutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showeddigimegrendeleseiurl = false;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function setTemplateVars($view) {
+    public function setTemplateVars($view)
+    {
         $view->setVar('showteljesites', $this->getShowteljesites());
         $view->setVar('showesedekesseg', $this->getShowesedekesseg());
         $view->setVar('showhatarido', $this->getShowhatarido());
@@ -120,370 +126,463 @@ class Bizonylattipus {
         $view->setVar('shownavallapot', $this->getNavbekuldendo());
         $view->setVar('showforditottadozas', $this->getId() === 'szamla' || $this->getId() === 'esetiszamla');
         $view->setVar('showemailbutton', $this->getShowemailbutton());
+        $view->setVar('showeddigimegrendeleseiurl', $this->getShoweddigimegrendeleseiurl());
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
-    public function setNev($val) {
+    public function setNev($val)
+    {
         $this->nev = $val;
     }
 
-    public function getIrany() {
+    public function getIrany()
+    {
         return $this->irany;
     }
 
-    public function setIrany($val) {
+    public function setIrany($val)
+    {
         $this->irany = $val;
     }
 
-    public function getNyomtatni() {
+    public function getNyomtatni()
+    {
         return $this->nyomtatni;
     }
 
-    public function setNyomtatni($val) {
+    public function setNyomtatni($val)
+    {
         $this->nyomtatni = $val;
     }
 
-    public function getAzonosito() {
+    public function getAzonosito()
+    {
         return $this->azonosito;
     }
 
-    public function setAzonosito($val) {
+    public function setAzonosito($val)
+    {
         $this->azonosito = $val;
     }
 
-    public function getKezdosorszam() {
+    public function getKezdosorszam()
+    {
         return $this->kezdosorszam;
     }
 
-    public function setKezdosorszam($val) {
+    public function setKezdosorszam($val)
+    {
         $this->kezdosorszam = $val;
     }
 
-    public function getPeldanyszam() {
+    public function getPeldanyszam()
+    {
         return $this->peldanyszam;
     }
 
-    public function setPeldanyszam($val) {
+    public function setPeldanyszam($val)
+    {
         $this->peldanyszam = $val;
     }
 
-    public function getMozgat() {
+    public function getMozgat()
+    {
         return $this->mozgat;
     }
 
-    public function setMozgat($val) {
+    public function setMozgat($val)
+    {
         $this->mozgat = $val;
     }
 
-    public function getPenztmozgat() {
+    public function getPenztmozgat()
+    {
         return $this->penztmozgat;
     }
 
-    public function setPenztmozgat($val) {
+    public function setPenztmozgat($val)
+    {
         $this->penztmozgat = $val;
     }
 
-    public function getEditprinted() {
+    public function getEditprinted()
+    {
         return $this->editprinted;
     }
 
-    public function setEditprinted($val) {
+    public function setEditprinted($val)
+    {
         $this->editprinted = $val;
     }
 
-    public function getShowteljesites() {
+    public function getShowteljesites()
+    {
         return $this->showteljesites;
     }
 
-    public function setShowteljesites($show) {
+    public function setShowteljesites($show)
+    {
         $this->showteljesites = $show;
     }
 
-    public function getShowesedekesseg() {
+    public function getShowesedekesseg()
+    {
         return $this->showesedekesseg;
     }
 
-    public function setShowesedekesseg($show) {
+    public function setShowesedekesseg($show)
+    {
         $this->showesedekesseg = $show;
     }
 
-    public function getShowhatarido() {
+    public function getShowhatarido()
+    {
         return $this->showhatarido;
     }
 
-    public function setShowhatarido($show) {
+    public function setShowhatarido($show)
+    {
         $this->showhatarido = $show;
     }
 
-    public function getShowvalutanem() {
+    public function getShowvalutanem()
+    {
         return \mkw\store::isMultiValuta();
     }
 
-    public function getTplname() {
+    public function getTplname()
+    {
         return $this->tplname;
     }
 
-    public function setTplname($d) {
+    public function setTplname($d)
+    {
         $this->tplname = $d;
     }
 
-    public function getShowbizonylatstatuszeditor() {
+    public function getShowbizonylatstatuszeditor()
+    {
         return $this->showbizonylatstatuszeditor;
     }
 
-    public function setShowbizonylatstatuszeditor($val) {
+    public function setShowbizonylatstatuszeditor($val)
+    {
         $this->showbizonylatstatuszeditor = $val;
     }
 
-    public function getShowszamlabutton() {
+    public function getShowszamlabutton()
+    {
         return $this->showszamlabutton;
     }
 
-    public function setShowszamlabutton($val) {
+    public function setShowszamlabutton($val)
+    {
         $this->showszamlabutton = $val;
     }
 
-    public function getShowkeziszamlabutton() {
+    public function getShowkeziszamlabutton()
+    {
         return $this->showkeziszamlabutton;
     }
 
-    public function setShowkeziszamlabutton($val) {
+    public function setShowkeziszamlabutton($val)
+    {
         $this->showkeziszamlabutton = $val;
     }
 
-    public function getShowkivetbutton() {
+    public function getShowkivetbutton()
+    {
         return $this->showkivetbutton;
     }
 
-    public function setShowkivetbutton($val) {
+    public function setShowkivetbutton($val)
+    {
         $this->showkivetbutton = $val;
     }
 
-    public function getShowbevetbutton() {
+    public function getShowbevetbutton()
+    {
         return $this->showbevetbutton;
     }
 
-    public function setShowbevetbutton($val) {
+    public function setShowbevetbutton($val)
+    {
         $this->showbevetbutton = $val;
     }
 
-    public function getShowszallitobutton() {
+    public function getShowszallitobutton()
+    {
         return $this->showszallitobutton;
     }
 
-    public function setShowszallitobtn($val) {
+    public function setShowszallitobtn($val)
+    {
         $this->showszallitobutton = $val;
     }
 
-    public function getShowuzenet() {
+    public function getShowuzenet()
+    {
         return $this->showuzenet;
     }
 
-    public function setShowuzenet($val) {
+    public function setShowuzenet($val)
+    {
         $this->showuzenet = $val;
     }
 
-    public function getShowszallitasicim() {
+    public function getShowszallitasicim()
+    {
         return $this->showszallitasicim;
     }
 
-    public function setShowszallitasicim($val) {
+    public function setShowszallitasicim($val)
+    {
         $this->showszallitasicim = $val;
     }
 
-    public function getShowerbizonylatszam() {
+    public function getShowerbizonylatszam()
+    {
         return $this->showerbizonylatszam;
     }
 
-    public function setShowerbizonylatszam($val) {
+    public function setShowerbizonylatszam($val)
+    {
         $this->showerbizonylatszam = $val;
     }
 
-    public function getShowfuvarlevelszam() {
+    public function getShowfuvarlevelszam()
+    {
         return $this->showfuvarlevelszam;
     }
 
-    public function setShowfuvarlevelszam($val) {
+    public function setShowfuvarlevelszam($val)
+    {
         $this->showfuvarlevelszam = $val;
     }
 
-    public function getShowhaszonszazalek() {
+    public function getShowhaszonszazalek()
+    {
         return $this->showhaszonszazalek;
     }
 
-    public function setShowhaszonszazalek($val) {
+    public function setShowhaszonszazalek($val)
+    {
         $this->showhaszonszazalek = $val;
     }
 
-    public function getShowstorno() {
+    public function getShowstorno()
+    {
         return $this->showstorno;
     }
 
-    public function setShowstorno($adat) {
+    public function setShowstorno($adat)
+    {
         $this->showstorno = $adat;
     }
 
-    public function getShowbackorder() {
+    public function getShowbackorder()
+    {
         return $this->showbackorder;
     }
 
-    public function setShowbackorder($adat) {
+    public function setShowbackorder($adat)
+    {
         $this->showbackorder = $adat;
     }
 
-    public function getFoglal() {
+    public function getFoglal()
+    {
         return $this->foglal;
     }
 
-    public function setFoglal($adat) {
+    public function setFoglal($adat)
+    {
         $this->foglal = $adat;
     }
 
     /**
      * @return mixed
      */
-    public function getShowmesebutton() {
+    public function getShowmesebutton()
+    {
         return $this->showmesebutton;
     }
 
     /**
      * @param mixed $showmesebutton
      */
-    public function setShowmesebutton($showmesebutton) {
+    public function setShowmesebutton($showmesebutton)
+    {
         $this->showmesebutton = $showmesebutton;
     }
 
     /**
      * @return mixed
      */
-    public function getShowcsomagbutton() {
+    public function getShowcsomagbutton()
+    {
         return $this->showcsomagbutton;
     }
 
     /**
      * @param mixed $showcsomagbutton
      */
-    public function setShowcsomagbutton($showcsomagbutton) {
+    public function setShowcsomagbutton($showcsomagbutton)
+    {
         $this->showcsomagbutton = $showcsomagbutton;
     }
 
     /**
      * @return mixed
      */
-    public function getShowfeketelistabutton() {
+    public function getShowfeketelistabutton()
+    {
         return $this->showfeketelistabutton;
     }
 
     /**
      * @param mixed $showfeketelistabutton
      */
-    public function setShowfeketelistabutton($showfeketelistabutton) {
+    public function setShowfeketelistabutton($showfeketelistabutton)
+    {
         $this->showfeketelistabutton = $showfeketelistabutton;
     }
 
     /**
      * @return mixed
      */
-    public function getShowkupon() {
+    public function getShowkupon()
+    {
         return $this->showkupon;
     }
 
     /**
      * @param mixed $showkupon
      */
-    public function setShowkupon($showkupon) {
+    public function setShowkupon($showkupon)
+    {
         $this->showkupon = $showkupon;
     }
 
     /**
      * @return mixed
      */
-    public function getShowfoxpostterminaleditor() {
+    public function getShowfoxpostterminaleditor()
+    {
         return $this->showfoxpostterminaleditor;
     }
 
     /**
      * @param mixed $showfoxpostterminaleditor
      */
-    public function setShowfoxpostterminaleditor($showfoxpostterminaleditor) {
+    public function setShowfoxpostterminaleditor($showfoxpostterminaleditor)
+    {
         $this->showfoxpostterminaleditor = $showfoxpostterminaleditor;
     }
 
     /**
      * @return mixed
      */
-    public function getShowfelhasznalo() {
+    public function getShowfelhasznalo()
+    {
         return $this->showfelhasznalo;
     }
 
     /**
      * @param mixed $showfelhasznalo
      */
-    public function setShowfelhasznalo($showfelhasznalo) {
+    public function setShowfelhasznalo($showfelhasznalo)
+    {
         $this->showfelhasznalo = $showfelhasznalo;
     }
 
     /**
      * @return mixed
      */
-    public function getCheckkelt() {
+    public function getCheckkelt()
+    {
         return $this->checkkelt;
     }
 
     /**
      * @param mixed $checkkelt
      */
-    public function setCheckkelt($checkkelt) {
+    public function setCheckkelt($checkkelt)
+    {
         $this->checkkelt = $checkkelt;
     }
 
     /**
      * @return mixed
      */
-    public function getShowpdf() {
+    public function getShowpdf()
+    {
         return $this->showpdf;
     }
 
     /**
      * @param mixed $showpdf
      */
-    public function setShowpdf($showpdf) {
+    public function setShowpdf($showpdf)
+    {
         $this->showpdf = $showpdf;
     }
 
     /**
      * @return bool
      */
-    public function getNavbekuldendo() {
+    public function getNavbekuldendo()
+    {
         return $this->navbekuldendo;
     }
 
     /**
      * @param bool $navbekuldendo
      */
-    public function setNavbekuldendo($navbekuldendo) {
+    public function setNavbekuldendo($navbekuldendo)
+    {
         $this->navbekuldendo = $navbekuldendo;
     }
 
     /**
      * @return bool
      */
-    public function getShowemailbutton() {
+    public function getShowemailbutton()
+    {
         return $this->showemailbutton;
     }
 
     /**
      * @param bool $showemailbutton
      */
-    public function setShowemailbutton($showemailbutton): void {
+    public function setShowemailbutton($showemailbutton): void
+    {
         $this->showemailbutton = $showemailbutton;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShoweddigimegrendeleseiurl()
+    {
+        return $this->showeddigimegrendeleseiurl;
+    }
+
+    /**
+     * @param bool $showeddigimegrendeleseiurl
+     */
+    public function setShoweddigimegrendeleseiurl($showeddigimegrendeleseiurl): void
+    {
+        $this->showeddigimegrendeleseiurl = $showeddigimegrendeleseiurl;
     }
 
 }

@@ -297,11 +297,16 @@
         };
 
         var createFilterObject = function(obj) {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
             for (i in setup.filter.fields) {
                 o = $(setup.filter.fields[i]);
                 if (o.val()) {
                     obj[o.attr('name')] = o.val();
                 }
+            }
+            for (const [key, value] of urlParams) {
+                obj[key] = value;
             }
         };
 

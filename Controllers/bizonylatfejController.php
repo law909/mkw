@@ -138,42 +138,48 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
-        $f = $this->params->getStringRequestParam('vevonevfilter');
+        $f = $this->params->getIntRequestParam('partnerid');
         if ($f) {
-            $filter->addFilter('partnernev', 'LIKE', '%' . $f . '%');
+            $filter->addFilter('partner', '=', $f);
         }
+        else {
+            $f = $this->params->getStringRequestParam('vevonevfilter');
+            if ($f) {
+                $filter->addFilter('partnernev', 'LIKE', '%' . $f . '%');
+            }
 
-        $f = $this->params->getStringRequestParam('vevoemailfilter');
-        if ($f) {
-            $filter->addFilter('partneremail', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('vevotelefonfilter');
-        if ($f) {
-            $filter->addFilter('partnertelefon', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
-        if ($f) {
-            $filter->addFilter('szallirszam', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szallitasivarosfilter');
-        if ($f) {
-            $filter->addFilter('szallvaros', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szallitasiutcafilter');
-        if ($f) {
-            $filter->addFilter('szallutca', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
-        if ($f) {
-            $filter->addFilter('partnerirszam', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
-        if ($f) {
-            $filter->addFilter('partnervaros', 'LIKE', '%' . $f . '%');
-        }
-        $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
-        if ($f) {
-            $filter->addFilter('partnerutca', 'LIKE', '%' . $f . '%');
+            $f = $this->params->getStringRequestParam('vevoemailfilter');
+            if ($f) {
+                $filter->addFilter('partneremail', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('vevotelefonfilter');
+            if ($f) {
+                $filter->addFilter('partnertelefon', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
+            if ($f) {
+                $filter->addFilter('szallirszam', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szallitasivarosfilter');
+            if ($f) {
+                $filter->addFilter('szallvaros', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szallitasiutcafilter');
+            if ($f) {
+                $filter->addFilter('szallutca', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
+            if ($f) {
+                $filter->addFilter('partnerirszam', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
+            if ($f) {
+                $filter->addFilter('partnervaros', 'LIKE', '%' . $f . '%');
+            }
+            $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
+            if ($f) {
+                $filter->addFilter('partnerutca', 'LIKE', '%' . $f . '%');
+            }
         }
         $tip = $this->params->getStringRequestParam('datumtipusfilter');
         $tol = $this->params->getStringRequestParam('datumtolfilter');
@@ -357,6 +363,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         elseif (\mkw\store::isGLSSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = $t->getGlsparcellabelurl();
         }
+        $x['tobbimegrendeleslink'] = \mkw\store::getRouter()->generate(
+            'adminmegrendelesfejviewlist',
+            false,
+            [],
+            [
+                'partnerid' => $t->getPartnerId(),
+                'bizonylatstatuszfilter' => ''
+            ]
+        );
         $x['keltstr'] = $t->getKeltStr();
         $x['teljesitesstr'] = $t->getTeljesitesStr();
         $x['esedekessegstr'] = $t->getEsedekessegStr();

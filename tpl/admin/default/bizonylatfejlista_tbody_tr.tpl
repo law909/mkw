@@ -79,7 +79,7 @@
                 {if ($showfelhasznalo)}
                 <tr><td>{$_egyed.felhasznalonev}</td></tr>
                 {/if}
-                <tr><td  colspan="2" class="mattable-important">
+                <tr><td colspan="2" class="mattable-important">
                         {$_egyed.partnernev}
                     </td></tr>
                 <tr><td colspan="2">
@@ -91,6 +91,13 @@
                 <tr><td colspan="2">
                         {$_egyed.partnertelefon}
                     </td></tr>
+                {if ($showeddigimegrendeleseiurl)}
+                    <tr>
+                        <td colspan="2">
+                            <a href="{$_egyed.tobbimegrendeleslink}" target="_blank">(eddigi megrendelései)</a>
+                        </td>
+                    </tr>
+                {/if}
                 <tr><td colspan="5" class="referrer">
                         {at('IP')}: {$_egyed.ip} {at('Ref.')}: {$_egyed.referrer}
                     </td>
