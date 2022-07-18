@@ -413,19 +413,18 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
-        $elozocsoport = \mkw\store::getMainSession()->lscsoport;
+        $key = 'lscsoport' . $szmid;
+        $elozocsoport = \mkw\store::getMainSession()->$key;
 
         $rec = $this->getRepo('Entities\CsomagTerminal')->getCsoportok($tipus);
         $res = array();
-        $vanvalasztott = false;
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor['csoport'],
                 'caption' => $sor['csoport']
             );
-            if ((!$elozocsoport && !$vanvalasztott) || ($elozocsoport && ($sor['csoport'] == $elozocsoport))) {
+            if ($elozocsoport && ($sor['csoport'] == $elozocsoport)) {
                 $r['selected'] = true;
-                $vanvalasztott = true;
             }
             else {
                 $r['selected'] = false;
@@ -448,20 +447,19 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
-        $elozoterminal = \mkw\store::getMainSession()->lsterminal;
+        $key = 'lsterminal' . $this->params->getStringRequestParam('cs');
+        $elozoterminal = \mkw\store::getMainSession()->$key;
 
         $rec = $this->getRepo('Entities\CsomagTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus, ['nev' => 'ASC']);
         $res = array();
-        $vanvalasztott = false;
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'cim' => $sor->getCim()
             );
-            if ((!$elozoterminal && !$vanvalasztott) || ($elozoterminal && ($sor->getId() == $elozoterminal))) {
+            if ($elozoterminal && ($sor->getId() == $elozoterminal)) {
                 $r['selected'] = true;
-                $vanvalasztott = true;
             }
             else {
                 $r['selected'] = false;

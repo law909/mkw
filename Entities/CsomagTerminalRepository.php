@@ -33,6 +33,9 @@ class CsomagTerminalRepository extends \mkwhelpers\Repository {
             if ($csoport) {
                 $filter->addFilter('csoport', '=', $csoport);
             }
+            else {
+                $filter->addSql('1=0');
+            }
             $filter->addFilter('inaktiv', '=', false);
             $rec = $this->getRepo('Entities\CsomagTerminal')->getAll($filter, $order);
             return $rec;

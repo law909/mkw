@@ -1196,7 +1196,9 @@ class checkoutController extends \mkwhelpers\MattableController {
 	    $cs = $this->params->getStringRequestParam('cs');
 	    $t = $this->params->getIntRequestParam('t');
 	    \mkw\store::getMainSession()->lsszallmod = $szmid;
-	    \mkw\store::getMainSession()->lscsoport = $cs;
-	    \mkw\store::getMainSession()->lsterminal = $t;
+	    $key = 'lscsoport' . $szmid;
+	    \mkw\store::getMainSession()->$key = $cs;
+	    $key = 'lsterminal' . $cs;
+	    \mkw\store::getMainSession()->$key = $t;
     }
 }
