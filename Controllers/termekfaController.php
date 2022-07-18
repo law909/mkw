@@ -694,6 +694,32 @@ class termekfaController extends \mkwhelpers\MattableController {
                             $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
                     }
                     $ret['lapozo'] = 0;
+                    $bpt = array();
+                    $blogposztok = $this->getRepo('Entities\Blogposzt')->getByTermekfa($parent);
+                    if ($blogposztok) {
+                        /** @var \Entities\Blogposzt $poszt */
+                        foreach ($blogposztok as $poszt) {
+                            $bpt[] = $poszt->convertToArray();
+                        }
+                    }
+                    $ret['blogposztok'] = $bpt;
+
+                    $ret['kiemelttermekek'] = [];
+
+                    if ($parent) {
+                        $ret['kategoria'] = array(
+                            'nev' => $parent->getNev(),
+                            'leiras2' => $parent->getLeiras2(),
+                            'leiras3' => $parent->getLeiras3()
+                        );
+                    }
+                    else {
+                        $ret['kategoria'] = array(
+                            'nev' => '',
+                            'leiras2' => '',
+                            'leiras3' => ''
+                        );
+                    }
                 }
                 return $ret;
 

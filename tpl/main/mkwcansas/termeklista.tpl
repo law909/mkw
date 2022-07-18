@@ -59,65 +59,65 @@
 				{$kategoria.leiras2}
 			</div>
             {if (count($blogposztok))}
-            <div>
-                <h3>Kapcsolódó blogbejegyzések</h3>
-            </div>
-            <div>
-                {$i=0}
-                {foreach $blogposztok as $_child}
-                    {if ($_child.lathato && ($i<$blogposztdb))}
-                        {$i=$i+1}
-                        <div class="kat" data-href="/blogposzt/{$_child.slug}">
-                            <div class="kattext">
-                                <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
-                                <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
-                                <div>{$_child.megjelenesdatumstr}</div>
-                                <div class="katcopy">{$_child.kivonat}</div>
-                            </div>
-                        </div>
-                    {/if}
-                {/foreach}
-            </div>
-            {/if}
-        {$lntcnt=count($kiemelttermekek)}
-        {if ($lntcnt>0)}
-            <div class="lapozo">
-                <span class="bold">Kiemelt termékeink</span>
-            </div>
-            <div>
-            {$step=min(3, $lntcnt)}
-            {if ($step==0)}
-                {$step=1}
-            {/if}
-            {for $i=0 to $lntcnt-1 step $step}
                 <div>
-                {for $j=0 to $step-1}
-                    {if ($i+$j<$lntcnt)}
-                    {$_termek=$kiemelttermekek[$i+$j]}
-                    <div class="textaligncenter pull-left" style="width:{100/$step}%">
-                        <div class="o404TermekInner">
-                            <a href="{$_termek.link}">
-                                <div class="o404ImageContainer">
-                                    <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                    <h3>Kapcsolódó blogbejegyzések</h3>
+                </div>
+                <div>
+                    {$i=0}
+                    {foreach $blogposztok as $_child}
+                        {if ($_child.lathato && ($i<$blogposztdb))}
+                            {$i=$i+1}
+                            <div class="kat" data-href="/blogposzt/{$_child.slug}">
+                                <div class="kattext">
+                                    <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
+                                    <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
+                                    <div>{$_child.megjelenesdatumstr}</div>
+                                    <div class="katcopy">{$_child.kivonat}</div>
                                 </div>
-                                <div>{$_termek.caption}</div>
-                                <h5 class="termeklista">
-                                    {if ($_termek.akcios)}
-                                    <span><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
-                                    {else}
-                                    <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
-                                    {/if}
-                                </h5>
-                                <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
-                            </a>
-                        </div>
+                            </div>
+                        {/if}
+                    {/foreach}
+                </div>
+            {/if}
+            {$lntcnt=count($kiemelttermekek)}
+            {if ($lntcnt>0)}
+                <div class="lapozo">
+                    <span class="bold">Kiemelt termékeink</span>
+                </div>
+                <div>
+                {$step=min(3, $lntcnt)}
+                {if ($step==0)}
+                    {$step=1}
+                {/if}
+                {for $i=0 to $lntcnt-1 step $step}
+                    <div>
+                    {for $j=0 to $step-1}
+                        {if ($i+$j<$lntcnt)}
+                            {$_termek=$kiemelttermekek[$i+$j]}
+                            <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                                <div class="o404TermekInner">
+                                    <a href="{$_termek.link}">
+                                        <div class="o404ImageContainer">
+                                            <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                        </div>
+                                        <div>{$_termek.caption}</div>
+                                        <h5 class="termeklista">
+                                            {if ($_termek.akcios)}
+                                                <span><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                            {else}
+                                                <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                            {/if}
+                                        </h5>
+                                        <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
+                                    </a>
+                                </div>
+                            </div>
+                        {/if}
+                    {/for}
                     </div>
-                    {/if}
                 {/for}
                 </div>
-            {/for}
-            </div>
-        {/if}
+            {/if}
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
 					<table><tbody><tr>
@@ -363,7 +363,7 @@
 					{/for}
 				{/if}
 			{else}
-				A termékek jelenleg feltöltés alatt állnak!
+                <h1>A termékek jelenleg feltöltés alatt állnak!</h1>
 			{/if}
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
