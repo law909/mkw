@@ -2029,9 +2029,18 @@ class importController extends \mkwhelpers\Controller {
             else {
                 $x = $x['cat'];
             }
-            $desc = (string)$obj->description;
+
+            $desc = (string)$obj->description[0];
+            if (!$desc) {
+                $desc = (string)$obj->description[1];
+            }
             $desc = str_replace(array('&lt,', '&gt,'), array('&lt;', '&gt;'), $desc);
             $desc = html_entity_decode($desc);
+
+            $images = [];
+            foreach ($obj->image->img as $img) {
+                $images[] = (string)$img;
+            }
             return array(
                 'sku' => (string)$obj->sku,
                 'name' => (string)$obj->name,
@@ -2043,22 +2052,23 @@ class importController extends \mkwhelpers\Controller {
                 'shortdescription' => (string)$obj->short_description,
                 'price' => (float)$obj->basic_price,
                 'discountprice' => (float)$obj->discount_price,
-                'compatibledevices' => (string)$obj->compatibledevices,
+                'compatibledevices' => (string)$obj->compatible_devices,
                 'stock' => (int)$obj->stock,
                 'emailnotify' => (int)$obj->email_notify,
                 'available' => (int)$obj->available,
                 'prodtype' => (string)$obj->prod_type,
                 'prodstart' => (string)$obj->prod_start,
-                'imageurl' => (string)$obj->image_url
+                'imageurl' => (string)$obj->image_url,
+                'images' => $images
             );
         }
 
         function keres($mit, $miben) {
-            $dbig = count($miben);
+            $dbig = $miben->count();
             $termekdb = 0;
             $megvan = false;
             while (($dbig && ($termekdb < $dbig)) && !$megvan) {
-                $megvan = ((string)$miben[$termekdb]->id) == $mit;
+                $megvan = ((string)$miben[$termekdb]->sku) == $mit;
                 if ($megvan) {
                     $ret = $miben[$termekdb];
                 }
@@ -2086,6 +2096,7 @@ class importController extends \mkwhelpers\Controller {
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
             $editnev = $this->params->getBoolRequestParam('editnev', false);
             $createuj = $this->params->getBoolRequestParam('createuj', false);
+            $addimages = true;
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
             $minimumar = $this->params->getNumRequestParam('minimumar', 490);
@@ -2100,6 +2111,7 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $urlkatnev = '';
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
             $fh = fopen(\mkw\store::storagePath('haffner24products.xml'), 'w');
@@ -2111,19 +2123,17 @@ class importController extends \mkwhelpers\Controller {
 
             $xml = simplexml_load_file(\mkw\store::storagePath("haffner24products.xml"));
             if ($xml) {
-                $products = $xml->product;
-                unset($xml);
 
                 if (!$dbig) {
-                    $dbig = count($products);
+                    $dbig = $xml->product->count();
                 }
 
                 $termekdb = $dbtol;
                 $termekek = array();
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = toArr($products[$termekdb]);
+                    $data = toArr($xml->product[$termekdb]);
                     if (($data['stock'] > 0) || (($data['stock'] <= 0) && ($data['emailnotify'] == 1))) {
-                        $termekek[$data['id']] = $data;
+                        $termekek[$data['sku']] = $data;
                     }
                     $termekdb++;
                 }
@@ -2147,7 +2157,7 @@ class importController extends \mkwhelpers\Controller {
 
                 foreach ($termekek as $data) {
 
-                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegenkod' => $data['id'], 'gyarto' => $gyartoid));
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data['sku'], 'gyarto' => $gyartoid));
 
                     if (!$termek) {
                         if ($createuj && (($data['stock'] > 0) || (($data['stock'] <= 0) && ($data['emailnotify'] == 1)))) {
@@ -2192,55 +2202,79 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setVtsz($vtsz);
 
                             // kepek
+                            $elso = true;
+                            foreach ($data['images'] as $i) {
 
-                            $imgurl = $data['imageurl'];
-                            $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
-                            $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $imgurl = trim($i);
+                                $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
 
-                            $parsedpath = parse_url($imgurl, PHP_URL_PATH);
-                            $extension = \mkw\store::getExtension($parsedpath);
-                            if ($extension) {
-                                $imgpath = $nameWithoutExt . '.' . $extension;
-                            }
-                            else {
-                                $imgpath = $nameWithoutExt;
-                            }
+                                $parsedpath = parse_url($imgurl, PHP_URL_PATH);
+                                $extension = \mkw\store::getExtension($parsedpath);
+                                if ($extension) {
+                                    $imgpath = $nameWithoutExt . '.' . $extension;
+                                }
+                                else {
+                                    $imgpath = $nameWithoutExt;
+                                }
 
-                            $ih = fopen($imgpath, 'w');
-                            if ($ih) {
-                                $ch = \curl_init($imgurl);
-                                \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                                $curlretval = \curl_exec($ch);
-                                fclose($ih);
-                                if (($curlretval !== false) && (!\curl_errno($ch))) {
-                                    switch ($http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
-                                        case 200:
-                                            \mkw\store::watermark($imgpath, $imgpath, $extension);
-                                            foreach ($this->settings['sizes'] as $k => $size) {
-                                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                                $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
-                                            }
-                                            $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
-                                            $termek->setKepleiras($data['name']);
-                                            break;
-                                        default:
-                                            \mkw\store::writelog(
-                                                'ELÉRHETETLEN KÉP'
-                                                . ' ' . $http_code . ' :'
-                                                . ' termék cikkszám: ' . $termek->getCikkszam()
-                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                                . ' url: ' . $imgurl,
-                                                $logfile
-                                            );
-                                            $lettlog = true;
-                                            break;
+                                $ih = fopen($imgpath, 'w');
+                                if ($ih) {
+                                    $ch = \curl_init($imgurl);
+                                    \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                    $curlretval = \curl_exec($ch);
+                                    fclose($ih);
+                                    if (($curlretval !== false) && (!\curl_errno($ch))) {
+                                        switch ($http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+                                            case 200:
+                                                foreach ($this->settings['sizes'] as $k => $size) {
+                                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                    $matches = explode('x', $size);
+                                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1], $this->settings['quality'], true);
+                                                }
+                                                if ($elso) {
+                                                    $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
+                                                    $termek->setKepleiras($data['name']);
+                                                }
+                                                else {
+                                                    $tkep = new \Entities\TermekKep();
+                                                    $termek->addTermekKep($tkep);
+                                                    $tkep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
+                                                    $tkep->setLeiras($data['name']);
+                                                    \mkw\store::getEm()->persist($tkep);
+                                                }
+                                                $elso = false;
+                                                break;
+                                            default:
+                                                \mkw\store::writelog(
+                                                    'ELÉRHETETLEN KÉP'
+                                                    . ' ' . $http_code . ' :'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                    . ' url: ' . $imgurl,
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
+                                                break;
+                                        }
+                                    }
+                                    else {
+                                        \mkw\store::writelog(
+                                            'ELÉRHETETLEN KÉP'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' url: ' . $imgurl
+                                            . ' errno: ' . curl_errno($ch)
+                                            . ' error: ' . curl_error($ch),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                 }
                                 else {
                                     \mkw\store::writelog(
-                                        'ELÉRHETETLEN KÉP'
+                                        'HIBÁS KÉP NÉV'
                                         . ' termék cikkszám: ' . $termek->getCikkszam()
                                         . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                         . ' url: ' . $imgurl,
@@ -2248,16 +2282,6 @@ class importController extends \mkwhelpers\Controller {
                                     );
                                     $lettlog = true;
                                 }
-                            }
-                            else {
-                                \mkw\store::writelog(
-                                    'HIBÁS KÉP NÉV'
-                                    . ' termék cikkszám: ' . $termek->getCikkszam()
-                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                    . ' url: ' . $imgurl,
-                                    $logfile
-                                );
-                                $lettlog = true;
                             }
                         }
                     }
@@ -2277,6 +2301,87 @@ class importController extends \mkwhelpers\Controller {
                         if ($editnev) {
                             $termek->setNev($data['name']);
                         }
+                        $termekkepdb = count($termek->getTermekKepek());
+                        if ($addimages && $termekkepdb == 0) {
+                            $elso = true;
+                            foreach ($data['images'] as $i) {
+
+                                if (!$elso) {
+                                    $imgurl = trim($i);
+                                    $nameWithoutExt = $path . $this->urlkatnev($urlkatnev) . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                    $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+
+                                    $parsedpath = parse_url($imgurl, PHP_URL_PATH);
+                                    $extension = \mkw\store::getExtension($parsedpath);
+                                    if ($extension) {
+                                        $imgpath = $nameWithoutExt . '.' . $extension;
+                                    } else {
+                                        $imgpath = $nameWithoutExt;
+                                    }
+
+                                    $ih = fopen($imgpath, 'w');
+                                    if ($ih) {
+                                        $ch = \curl_init($imgurl);
+                                        \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                        $curlretval = \curl_exec($ch);
+                                        fclose($ih);
+                                        if (($curlretval !== false) && (!\curl_errno($ch))) {
+                                            switch ($http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+                                                case 200:
+                                                    foreach ($this->settings['sizes'] as $k => $size) {
+                                                        $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                        $matches = explode('x', $size);
+                                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, (int)$matches[0], (int)$matches[1],
+                                                            $this->settings['quality'], true);
+                                                    }
+                                                    $tkep = new \Entities\TermekKep();
+                                                    $termek->addTermekKep($tkep);
+                                                    $tkep->setUrl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
+                                                    $tkep->setLeiras($data['name']);
+
+                                                    \mkw\store::writelog($termek->getId(), 'haffnertermekkepek.txt');
+
+                                                    \mkw\store::getEm()->persist($tkep);
+                                                    break;
+                                                default:
+                                                    \mkw\store::writelog(
+                                                        'ELÉRHETETLEN KÉP'
+                                                        . ' ' . $http_code . ' :'
+                                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                        . ' url: ' . $imgurl,
+                                                        $logfile
+                                                    );
+                                                    $lettlog = true;
+                                                    break;
+                                            }
+                                        } else {
+                                            \mkw\store::writelog(
+                                                'ELÉRHETETLEN KÉP'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' url: ' . $imgurl
+                                                . ' errno: ' . curl_errno($ch)
+                                                . ' error: ' . curl_error($ch),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
+                                        }
+                                    } else {
+                                        \mkw\store::writelog(
+                                            'HIBÁS KÉP NÉV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' url: ' . $imgurl,
+                                            $logfile
+                                        );
+                                        $lettlog = true;
+                                    }
+                                }
+                                $elso = false;
+                            }
+                        }
                     }
                     if ($termek) {
                         if ($data['stock'] == 0) {
@@ -2285,7 +2390,7 @@ class importController extends \mkwhelpers\Controller {
                                 \mkw\store::writelog(
                                     'NEM KAPHATÓ'
                                     . ' termék cikkszám: ' . $termek->getCikkszam()
-                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                                     $logfile
                                 );
                                 $lettlog = true;
@@ -2322,7 +2427,7 @@ class importController extends \mkwhelpers\Controller {
                         /** @var \Entities\Termek $termek */
                         $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                         if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
-                            $talalat = keres($t['idegenkod'], $products);
+                            $talalat = keres($t['cikkszam'], $xml->product);
                             if ($talalat) {
                                 $talalat = toArr($talalat);
                             }
