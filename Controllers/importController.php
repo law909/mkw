@@ -388,10 +388,10 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningKreativImport, 1);
 
             $sep = ';';
-            $logfile = \mkw\store::logsPath('kreativ_log.txt');
-            $logurl = \mkw\store::logsUrl('kreativ_log.txt');
+            $logfile = 'kreativ_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoKreativ);
@@ -702,10 +702,10 @@ class importController extends \mkwhelpers\Controller {
 
             $minarszaz = 120;
 
-            $logfile = \mkw\store::logsPath('delton_log.txt');
-            $logurl = \mkw\store::logsUrl('delton_log.txt');
+            $logfile = 'delton_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoDelton);
@@ -1010,10 +1010,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
 
-            $logfile = \mkw\store::logsPath('nomad_log.txt');
-            $logurl = \mkw\store::logsUrl('nomad_log.txt');
+            $logfile = 'nomad_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNomad);
@@ -1703,10 +1703,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 1);
 
-            $logfile = \mkw\store::logsPath('nika_log.txt');
-            $logurl = \mkw\store::logsUrl('nika_log.txt');
+            $logfile = 'nika_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNika);
@@ -2074,10 +2074,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 1);
 
-            $logfile = \mkw\store::logsPath('haffner24_log.txt');
-            $logurl = \mkw\store::logsUrl('haffner24_log.txt');
+            $logfile = 'haffner24_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoHaffner24);
@@ -2375,10 +2375,10 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
 
-            $logfile = \mkw\store::logsPath('reintex_log.txt');
-            $logurl = \mkw\store::logsUrl('reintex_log.txt');
+            $logfile = 'reintex_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
@@ -2759,10 +2759,10 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
 
-            $logfile = \mkw\store::logsPath('tutisport_log.txt');
-            $logurl = \mkw\store::logsUrl('tutisport_log.txt');
+            $logfile = 'tutisport_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoTutisport);
@@ -2892,10 +2892,10 @@ class importController extends \mkwhelpers\Controller {
             $sep = ';';
             $minarszaz = 120;
 
-            $logfile = \mkw\store::logsPath('makszutov_log.txt');
-            $logurl = \mkw\store::logsUrl('makszutov_log.txt');
+            $logfile = 'makszutov_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoMaxutov);
@@ -3328,10 +3328,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningSilkoImport, 1);
 
-            $logfile = \mkw\store::logsPath('silko_log.txt');
-            $logurl = \mkw\store::logsUrl('silko_log.txt');
+            $logfile = 'silko_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSilko);
@@ -3509,10 +3509,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningBtechImport, 1);
 
-            $logfile = \mkw\store::logsPath('btech_log.txt');
-            $logurl = \mkw\store::logsUrl('btech_log.txt');
+            $logfile = 'btech_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoBtech);
@@ -4408,10 +4408,10 @@ class importController extends \mkwhelpers\Controller {
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-                $logfile = \mkw\store::logsPath('legavenue_log.txt');
-                $logurl = \mkw\store::logsUrl('legavenue_log.txt');
+                $logfile = 'legavenue_log.txt';
+                $logurl = \mkw\store::logsUrl($logfile);
 
-                @\unlink($logfile);
+                @unlink(\mkw\store::logsPath($logfile));
 
                 $parentid = $this->params->getIntRequestParam('katid', 0);
                 $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
@@ -4879,10 +4879,10 @@ class importController extends \mkwhelpers\Controller {
         if (!$this->checkRunningImport(\mkw\consts::RunningEvonaImport)) {
             $this->setRunningImport(\mkw\consts::RunningEvonaImport, 1);
 
-            $logfile = \mkw\store::logsPath('evona_log.txt');
-            $logurl = \mkw\store::logsUrl('evona_log.txt');
+            $logfile = 'evona_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoEvona);
@@ -5398,10 +5398,10 @@ class importController extends \mkwhelpers\Controller {
         if (!$this->checkRunningImport(\mkw\consts::RunningEvonaXMLImport)) {
             $this->setRunningImport(\mkw\consts::RunningEvonaXMLImport, 1);
 
-            $logfile = \mkw\store::logsPath('evonaxml_log.txt');
-            $logurl = \mkw\store::logsUrl('evonaxml_log.txt');
+            $logfile = 'evonaxml_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoEvona);
@@ -5590,10 +5590,10 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
 
-            $logfile = \mkw\store::logsPath('netpresso_log.txt');
-            $logurl = \mkw\store::logsUrl('netpresso_log.txt');
+            $logfile = 'netpresso_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNetpresso);
@@ -6173,10 +6173,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningSmileebikeImport, 1);
 
-            $logfile = \mkw\store::logsPath('smileebike_log.txt');
-            $logurl = \mkw\store::logsUrl('smileebike_log.txt');
+            $logfile = 'smileebike_log.txt';
+            $logurl = \mkw\store::logsUrl($logfile);
 
-            @\unlink($logfile);
+            @unlink(\mkw\store::logsPath($logfile));
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSmileebike);
