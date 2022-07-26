@@ -388,6 +388,10 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningKreativImport, 1);
 
             $sep = ';';
+            $logfile = \mkw\store::logsPath('kreativ_log.txt');
+            $logurl = \mkw\store::logsUrl('kreativ_log.txt');
+
+            @unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoKreativ);
@@ -408,8 +412,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @unlink(\mkw\store::storagePath('kreativ_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativ));
             $fh = fopen(\mkw\store::storagePath('kreativpuzzlestock.txt'), 'w');
@@ -478,6 +480,7 @@ class importController extends \mkwhelpers\Controller {
                     while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
                     }
+                    $lettlog = false;
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
                         if ((int)$data[$this->n('c')] > 0) {
@@ -569,7 +572,15 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($termek) {
                                 if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato((int)$data[$this->n('g')] == 0);
+                                    $termek->setNemkaphato((int)$data[$this->n('g')] === 0);
+                                    if ($termek->getNemkaphato()) {
+                                        \mkw\store::writelog(
+                                            'NEM KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
+                                    }
                                 }
                                 if (!$termek->getAkcios()) {
                                     $termek->setNetto((float)$data[$this->n('d')] * $arszaz / 100);
@@ -589,6 +600,12 @@ class importController extends \mkwhelpers\Controller {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
                                     $termek->setLathato(false);
+                                    \mkw\store::writelog(
+                                        'NEM KAPHATÓ | NEM LÁTHATÓ'
+                                        . ' cikkszám: ' . $termek->getCikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     \mkw\store::getEm()->persist($termek);
                                 }
                             }
@@ -603,7 +620,6 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
 
-                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
@@ -617,17 +633,21 @@ class importController extends \mkwhelpers\Controller {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek && $termek->getKeszlet() <= 0) {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
                                     $termek->setInaktiv(true);
+                                    \mkw\store::writelog(
+                                        'INAKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
                                 }
                             }
                         }
                     }
-                    if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('kreativ_fuggoben.txt')));
+                    if ($lettlog) {
+                        echo json_encode(array('url' => $logurl));
                     }
                 }
                 fclose($fh);
@@ -682,6 +702,11 @@ class importController extends \mkwhelpers\Controller {
 
             $minarszaz = 120;
 
+            $logfile = \mkw\store::logsPath('delton_log.txt');
+            $logurl = \mkw\store::logsUrl('delton_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoDelton);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -702,8 +727,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @unlink(\mkw\store::storagePath('delton_fuggoben.txt'));
 
             if ($deltondownload) {
                 \unlink(\mkw\store::storagePath('delton.txt'));
@@ -759,6 +782,7 @@ class importController extends \mkwhelpers\Controller {
                     while (($termekdb < $dbtol) && ($data = $this->fgetdeltoncsv($fh))) {
                         $termekdb++;
                     }
+                    $lettlog = false;
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = $this->fgetdeltoncsv($fh))) {
                         $termekdb++;
                         if ($data[1]) {
@@ -860,6 +884,12 @@ class importController extends \mkwhelpers\Controller {
                                 if ((substr($data[11], -6) == 'rkezik') || (substr($data[11], 0, 6) == 'rendel')) {
                                     if ($termek->getKeszlet() <= 0) {
                                         $termek->setNemkaphato(true);
+                                        \mkw\store::writelog(
+                                            'NEM KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     else {
                                         $termek->setNemkaphato(false);
@@ -893,7 +923,6 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
 
-                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         $idegenkodok = array();
@@ -909,8 +938,12 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek && $termek->getKeszlet() <= 0) {
                                         $termekdb++;
-                                        \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
-                                        $lettfuggoben = true;
+                                        \mkw\store::writelog(
+                                            'INAKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                         if (($termekdb % $batchsize) === 0) {
@@ -924,8 +957,8 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\store::getEm()->clear();
                         }
                     }
-                    if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('delton_fuggoben.txt')));
+                    if ($lettlog) {
+                        echo json_encode(array('url' => $logurl));
                     }
                 }
                 fclose($fh);
@@ -977,6 +1010,11 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
 
+            $logfile = \mkw\store::logsPath('nomad_log.txt');
+            $logurl = \mkw\store::logsUrl('nomad_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNomad);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -996,8 +1034,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @unlink(\mkw\store::logsPath('nomad_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNomad));
             $fh = fopen(\mkw\store::storagePath('nomad.xml'), 'w');
@@ -1046,6 +1082,8 @@ class importController extends \mkwhelpers\Controller {
                 }
 
 //                \mkw\store::writelog(print_r($szulok, true), 'nomadtree.log');
+
+                $lettlog = false;
 
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
@@ -1137,12 +1175,24 @@ class importController extends \mkwhelpers\Controller {
                             if (!$data['available']) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
+                                    \mkw\store::writelog(
+                                        'NEM KAPHATÓ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                                 else {
                                     $termek->setNemkaphato(false);
                                     if ($termek->getInaktiv()) {
-                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                        \mkw\store::writelog(
+                                            'ÚJRA AKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' ' . $termek->getNev(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     $termek->setInaktiv(false);
                                 }
@@ -1150,8 +1200,14 @@ class importController extends \mkwhelpers\Controller {
                             else {
                                 $termek->setNemkaphato(false);
                                 if ($termek->getInaktiv()) {
-                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                        . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                    \mkw\store::writelog(
+                                        'ÚJRA AKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' ' . $termek->getNev(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                                 $termek->setInaktiv(false);
                             }
@@ -1257,6 +1313,13 @@ class importController extends \mkwhelpers\Controller {
                                 $valtozat->setTermek($termek);
                                 if (!$data['available']) {
                                     $valtozat->setElerheto(false);
+                                    \mkw\store::writelog(
+                                        'NEM ELÉRHETŐ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                                 else {
                                     $valtozat->setElerheto(true);
@@ -1290,12 +1353,26 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$data['available']) {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
+                                        \mkw\store::writelog(
+                                            'NEM ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     else {
                                         $valtozat->setElerheto(true);
                                         if ($termek->getInaktiv()) {
-                                            \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                                . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                            \mkw\store::writelog(
+                                                'ÚJRA AKTÍV'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                         }
                                         $termek->setNemkaphato(false);
                                         $termek->setInaktiv(false);
@@ -1304,8 +1381,14 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     $valtozat->setElerheto(true);
                                     if ($termek->getInaktiv()) {
-                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                        \mkw\store::writelog(
+                                            'ÚJRA AKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     $termek->setNemkaphato(false);
                                     $termek->setInaktiv(false);
@@ -1425,12 +1508,26 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$data['available']) {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
+                                        \mkw\store::writelog(
+                                            'NEM ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     else {
                                         $valtozat->setElerheto(true);
                                         if ($termek->getInaktiv()) {
-                                            \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                                . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                            \mkw\store::writelog(
+                                                'ÚJRA ELÉRHETŐ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                         }
                                         $termek->setInaktiv(false);
                                         $termek->setNemkaphato(false);
@@ -1439,8 +1536,14 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     $valtozat->setElerheto(true);
                                     if ($termek->getInaktiv()) {
-                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                        \mkw\store::writelog(
+                                            'ÚJRA ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     $termek->setInaktiv(false);
                                     $termek->setNemkaphato(false);
@@ -1453,7 +1556,12 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\store::getEm()->persist($termek);
                         }
                         else {
-                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - NO PARENT TERMEK - child', 'nomadimport.log');
+                            \mkw\store::writelog(
+                                'NO PARENT'
+                                . ' ' . $data['sku'] . '|' . $data['name'],
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
@@ -1468,7 +1576,6 @@ class importController extends \mkwhelpers\Controller {
                 $szulok = null;
                 $gyereklist = null;
 
-                $lettfuggoben = false;
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 if ($gyarto) {
                     $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
@@ -1483,11 +1590,15 @@ class importController extends \mkwhelpers\Controller {
                                 if ($valtozat->getElerheto()) {
                                     if (!keres($valtozat->getIdegencikkszam(), $products)) {
                                         if ($valtozat->getKeszlet() <= 0) {
-                                            $lettfuggoben = true;
-                                            \mkw\store::writelog('változat cikkszám: ' . $valtozat->getCikkszam()
-                                                . ' szállítói cikkszám: ' . $valtozat->getIdegencikkszam() . ' ' . $valtozat->getNev()
-                                                . ' | termék: ' . $termek->getCikkszam(),
-                                                'nomad_fuggoben.txt');
+                                            \mkw\store::writelog(
+                                                'NEM ELÉRHETŐ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             $valtozat->setElerheto(false);
                                             \mkw\store::getEm()->persist($valtozat);
                                         }
@@ -1505,9 +1616,13 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                     if ($nincselerhetovaltozat) {
-                                        $lettfuggoben = true;
-                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nomad_fuggoben.txt');
+                                        \mkw\store::writelog(
+                                            'INAKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                     }
@@ -1523,8 +1638,8 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
                 }
-                if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::logsUrl('nomad_fuggoben.txt')));
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
                 }
             }
 
@@ -1588,6 +1703,11 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 1);
 
+            $logfile = \mkw\store::logsPath('nika_log.txt');
+            $logurl = \mkw\store::logsUrl('nika_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNika);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -1609,7 +1729,6 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink(\mkw\store::logsPath('nikaimport.txt'));
             @unlink(\mkw\store::storagePath('nikaproducts.xml'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
@@ -1657,7 +1776,7 @@ class importController extends \mkwhelpers\Controller {
                     $this->createME($_t['unitType']);
                 }
 
-                $lettfuggoben = false;
+                $lettlog = false;
 
                 foreach ($termekek as $data) {
 
@@ -1754,22 +1873,38 @@ class importController extends \mkwhelpers\Controller {
                                                 $elso = false;
                                                 break;
                                             default:
-                                                $lettfuggoben = true;
-                                                \mkw\store::writelog('ELÉRHETETLEN KÉP: ' . $http_code . ' : termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                                    . ': ' . $imgurl, 'nikaimport.txt');
+                                                \mkw\store::writelog(
+                                                    'ELÉRHETETLEN KÉP'
+                                                    . ' ' . $http_code . ' :'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                    . ' url: ' . $imgurl,
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                                 break;
                                         }
                                     }
                                     else {
-                                        $lettfuggoben = true;
-                                        \mkw\store::writelog('ELÉRHETETLEN KÉP termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                            . ': ' . $imgurl, 'nikaimport.txt');
+                                        \mkw\store::writelog(
+                                            'ELÉRHETETLEN KÉP'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' url: ' . $imgurl,
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                 }
                                 else {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('HIBÁS KÉP NÉV termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                        . ': ' . $imgurl, 'nikaimport.txt');
+                                    \mkw\store::writelog(
+                                        'HIBÁS KÉP NÉV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' url: ' . $imgurl,
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                             }
                         }
@@ -1803,6 +1938,13 @@ class importController extends \mkwhelpers\Controller {
                         if ($data['available'] == 2 && $data['storageCondition'] == 2) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato(true);
+                                \mkw\store::writelog(
+                                    'NEM KAPHATÓ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         }
                         else {
@@ -1843,9 +1985,13 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                     if ($nincselerhetovaltozat) {
-                                        $lettfuggoben = true;
-                                        \mkw\store::writelog('FÜGGŐBEN termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nikaimport.txt');
+                                        \mkw\store::writelog(
+                                            'INAKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                     }
@@ -1861,8 +2007,8 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
                 }
-                if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::logsUrl('nikaimport.txt')));
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
                 }
             }
 
@@ -1928,6 +2074,11 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 1);
 
+            $logfile = \mkw\store::logsPath('haffner24_log.txt');
+            $logurl = \mkw\store::logsUrl('haffner24_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoHaffner24);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -1949,8 +2100,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @unlink(\mkw\store::logsPath('haffner24import.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
             $fh = fopen(\mkw\store::storagePath('haffner24products.xml'), 'w');
@@ -1994,7 +2143,7 @@ class importController extends \mkwhelpers\Controller {
                 $this->getEm()->clear();
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
-                $lettfuggoben = false;
+                $lettlog = false;
 
                 foreach ($termekek as $data) {
 
@@ -2077,22 +2226,38 @@ class importController extends \mkwhelpers\Controller {
                                             $termek->setKepleiras($data['name']);
                                             break;
                                         default:
-                                            $lettfuggoben = true;
-                                            \mkw\store::writelog('ELÉRHETETLEN KÉP: ' . $http_code . ' : termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                                . ': ' . $imgurl, 'haffner24import.txt');
+                                            \mkw\store::writelog(
+                                                'ELÉRHETETLEN KÉP'
+                                                . ' ' . $http_code . ' :'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' url: ' . $imgurl,
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             break;
                                     }
                                 }
                                 else {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('ELÉRHETETLEN KÉP termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                        . ': ' . $imgurl, 'haffner24import.txt');
+                                    \mkw\store::writelog(
+                                        'ELÉRHETETLEN KÉP'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' url: ' . $imgurl,
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                             }
                             else {
-                                $lettfuggoben = true;
-                                \mkw\store::writelog('HIBÁS KÉP NÉV termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
-                                    . ': ' . $imgurl, 'haffner24import.txt');
+                                \mkw\store::writelog(
+                                    'HIBÁS KÉP NÉV'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                    . ' url: ' . $imgurl,
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         }
                     }
@@ -2117,6 +2282,13 @@ class importController extends \mkwhelpers\Controller {
                         if ($data['stock'] == 0) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato(true);
+                                \mkw\store::writelog(
+                                    'NEM KAPHATÓ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         }
                         else {
@@ -2156,9 +2328,13 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if (!$talalat || (($talalat['stock'] == 0) && ($talalat['emailnotify'] == 0))) {
                                 if ($termek->getKeszlet() <= 0) {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('FÜGGŐBEN termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                        . ' ' . $termek->getNev(), 'haffner24import.txt');
+                                    \mkw\store::writelog(
+                                        'INAKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                 }
@@ -2173,8 +2349,8 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
                 }
-                if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::logsUrl('haffner24import.txt')));
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
                 }
             }
 
@@ -2199,6 +2375,11 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
 
+            $logfile = \mkw\store::logsPath('reintex_log.txt');
+            $logurl = \mkw\store::logsUrl('reintex_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -2219,8 +2400,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @\unlink(\mkw\store::logsPath('reintex_fuggoben.txt'));
 
             if (\mkw\store::isReintexTeszt()) {
                 $ch = \curl_init('https://www.mindentkapni.hu/t/reintexdownload');
@@ -2247,6 +2426,7 @@ class importController extends \mkwhelpers\Controller {
             }
             $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'r');
             if ($fh) {
+                $lettlog = false;
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
@@ -2288,9 +2468,15 @@ class importController extends \mkwhelpers\Controller {
                                             if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {  // nincs meg a reintexnel
                                                 if ($valtozat->getKeszlet() <= 0) {  // nincs keszleten
                                                     if ($valtozat->getElerheto()) {
-                                                        \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam()
-                                                            . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
-                                                        $lettfuggoben = true;
+                                                        \mkw\store::writelog(
+                                                            'NEM ELÉRHETŐ'
+                                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                            . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                            $logfile
+                                                        );
+                                                        $lettlog = true;
                                                         $valtozat->setElerheto(false);
                                                         \mkw\store::getEm()->persist($valtozat);
                                                         \mkw\store::getEm()->flush();
@@ -2304,9 +2490,15 @@ class importController extends \mkwhelpers\Controller {
                                             ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
                                         ) {
                                             if (!$valtozat->getElerheto()) {
-                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam()
-                                                    . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
-                                                $lettfuggoben = true;
+                                                \mkw\store::writelog(
+                                                    'ELÉRHETŐ'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                    . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                    . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                                 $valtozat->setElerheto(true);
                                                 \mkw\store::getEm()->persist($valtozat);
                                                 \mkw\store::getEm()->flush();
@@ -2323,8 +2515,13 @@ class importController extends \mkwhelpers\Controller {
                                         if ($termek && $termek->getKeszlet() <= 0) {
                                             $termekdb++;
                                             if (!$termek->getInaktiv()) {
-                                                \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
-                                                $lettfuggoben = true;
+                                                \mkw\store::writelog(
+                                                    'INAKTÍV'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                                 $termek->setInaktiv(true);
                                                 \mkw\store::getEm()->persist($termek);
                                                 \mkw\store::getEm()->flush();
@@ -2333,8 +2530,13 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     else {
                                         if ($termek->getInaktiv()) {
-                                            \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
-                                            $lettfuggoben = true;
+                                            \mkw\store::writelog(
+                                                'AKTÍV'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             $termek->setInaktiv(false);
                                             \mkw\store::getEm()->persist($termek);
                                             \mkw\store::getEm()->flush();
@@ -2343,8 +2545,13 @@ class importController extends \mkwhelpers\Controller {
                                 }
                                 else {
                                     if ($termek->getInaktiv()) {
-                                        \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
-                                        $lettfuggoben = true;
+                                        \mkw\store::writelog(
+                                            'AKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(false);
                                         \mkw\store::getEm()->persist($termek);
                                         \mkw\store::getEm()->flush();
@@ -2361,9 +2568,15 @@ class importController extends \mkwhelpers\Controller {
                                         if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {
                                             if ($valtozat->getKeszlet() <= 0) {
                                                 if ($valtozat->getElerheto()) {
-                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam()
-                                                        . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
-                                                    $lettfuggoben = true;
+                                                    \mkw\store::writelog(
+                                                        'NEM ELÉRHETŐ'
+                                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                        . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                        $logfile
+                                                    );
+                                                    $lettlog = true;
                                                     $valtozat->setElerheto(false);
                                                     \mkw\store::getEm()->persist($valtozat);
                                                     \mkw\store::getEm()->flush();
@@ -2377,9 +2590,15 @@ class importController extends \mkwhelpers\Controller {
                                         ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
                                     ) {
                                         if (!$valtozat->getElerheto()) {
-                                            \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam()
-                                                . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
-                                            $lettfuggoben = true;
+                                            \mkw\store::writelog(
+                                                'ELÉRHETŐ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             $valtozat->setElerheto(true);
                                             \mkw\store::getEm()->persist($valtozat);
                                             \mkw\store::getEm()->flush();
@@ -2394,8 +2613,13 @@ class importController extends \mkwhelpers\Controller {
                                 }
                                 if ($elerhetovaltozatdb > 0) {
                                     if ($termek->getInaktiv()) {
-                                        \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
-                                        $lettfuggoben = true;
+                                        \mkw\store::writelog(
+                                            'AKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(false);
                                         \mkw\store::getEm()->persist($termek);
                                         \mkw\store::getEm()->flush();
@@ -2405,8 +2629,13 @@ class importController extends \mkwhelpers\Controller {
                                     $keszlet = $termek->getKeszlet();
                                     if ($termek && $keszlet <= 0) {
                                         if (!$termek->getInaktiv()) {
-                                            \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'] . ' (készlet: ' . $keszlet . ': ' . gettype($keszlet) . ')', 'reintex_fuggoben.txt');
-                                            $lettfuggoben = true;
+                                            \mkw\store::writelog(
+                                                'INAKTÍV'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             $termek->setInaktiv(true);
                                             \mkw\store::getEm()->persist($termek);
                                             \mkw\store::getEm()->flush();
@@ -2418,9 +2647,6 @@ class importController extends \mkwhelpers\Controller {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
                     }
-                }
-                if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::logsUrl('reintex_fuggoben.txt')));
                 }
 
                 if ($createuj) {
@@ -2514,6 +2740,9 @@ class importController extends \mkwhelpers\Controller {
 
                 }
 
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
+                }
                 fclose($fh);
             }
             $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
@@ -2530,6 +2759,11 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
 
+            $logfile = \mkw\store::logsPath('tutisport_log.txt');
+            $logurl = \mkw\store::logsUrl('tutisport_log.txt');
+
+            @unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoTutisport);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -2542,6 +2776,7 @@ class importController extends \mkwhelpers\Controller {
 
             $fh = fopen('tutisportimport.csv', 'r');
             if ($fh) {
+                $lettlog = false;
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
@@ -2613,6 +2848,13 @@ class importController extends \mkwhelpers\Controller {
                             if ($termek) {
                                 $termek = $termek[0];
                                 if ($termek->getKeszlet() <= 0) {
+                                    \mkw\store::writelog(
+                                        'NEM KAPHATÓ | NEM LÁTHATÓ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     $termek->setNemkaphato(true);
                                     $termek->setLathato(false);
                                     \mkw\store::getEm()->persist($termek);
@@ -2630,6 +2872,9 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
+                }
                 fclose($fh);
             }
             $this->setRunningImport(\mkw\consts::RunningTutisportImport, 0);
@@ -2646,6 +2891,11 @@ class importController extends \mkwhelpers\Controller {
 
             $sep = ';';
             $minarszaz = 120;
+
+            $logfile = \mkw\store::logsPath('makszutov_log.txt');
+            $logurl = \mkw\store::logsUrl('makszutov_log.txt');
+
+            @\unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoMaxutov);
@@ -2666,8 +2916,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @\unlink(\mkw\store::logsPath('makszutov_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
             $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
@@ -2703,6 +2951,8 @@ class importController extends \mkwhelpers\Controller {
                     }
 
                     rewind($fh);
+
+                    $lettlog = false;
 
                     $termekdb = 0;
                     fgetcsv($fh, 0, $sep, '"');
@@ -2849,6 +3099,15 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$kaphato) {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
+                                        \mkw\store::writelog(
+                                            'NEM ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                 }
                                 else {
@@ -2863,6 +3122,15 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                     $termek->setNemkaphato($egysemkaphato);
+                                    if ($egysemkaphato) {
+                                        \mkw\store::writelog(
+                                            'NEM KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
+                                    }
                                     \mkw\store::getEm()->persist($termek);
                                 }
                             }
@@ -2873,9 +3141,25 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     if (!$kaphato) {
                                         $termek->setNemkaphato($termek->getKeszlet() <= 0);
+                                        if ($termek->getNemkaphato()) {
+                                            \mkw\store::writelog(
+                                                'NEM KAPHATÓ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
+                                        }
                                     }
                                     else {
                                         $termek->setNemkaphato(false);
+                                        \mkw\store::writelog(
+                                            'KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     if (!$termek->getAkcios()) {
                                         $kiskerar = (float)$data[$this->n('h')];
@@ -2902,7 +3186,6 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
 
-                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
@@ -2928,8 +3211,15 @@ class importController extends \mkwhelpers\Controller {
                                                 // a változat nincs készleten, nincs meg az id.cikkszám makszutovnál, a terméknek sincs id.cikkszáma
                                                 else {
                                                     $termekdb++;
-                                                    \mkw\store::writelog('A ' . $valtozat->getId() . ' VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'makszutov_fuggoben.txt');
-                                                    $lettfuggoben = true;
+                                                    \mkw\store::writelog(
+                                                        'NEM LÁTHATÓ | NEM ELÉRHETŐ'
+                                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                        . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                        $logfile
+                                                    );
+                                                    $lettlog = true;
                                                     $valtozat->setLathato(false);
                                                     $valtozat->setElerheto(false);
                                                     \mkw\store::getEm()->persist($valtozat);
@@ -2953,8 +3243,13 @@ class importController extends \mkwhelpers\Controller {
                                         if ($termek && $termek->getKeszlet() <= 0) {
                                             if (!$termek->getInaktiv()) {
                                                 $termekdb++;
-                                                \mkw\store::writelog('B ' . $termek->getId() . ' idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
-                                                $lettfuggoben = true;
+                                                \mkw\store::writelog(
+                                                    'INAKTÍV'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                                 $termek->setInaktiv(true);
                                                 \mkw\store::getEm()->persist($termek);
                                             }
@@ -2972,8 +3267,13 @@ class importController extends \mkwhelpers\Controller {
                                         if ($termek && $termek->getKeszlet() <= 0) {
                                             if (!$termek->getInaktiv()) {
                                                 $termekdb++;
-                                                \mkw\store::writelog('C ' . $termek->getId() . ' idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
-                                                $lettfuggoben = true;
+                                                \mkw\store::writelog(
+                                                    'INAKTÍV'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                                 $termek->setInaktiv(true);
                                                 \mkw\store::getEm()->persist($termek);
                                             }
@@ -2989,8 +3289,8 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\store::getEm()->clear();
                         }
                     }
-                    if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('makszutov_fuggoben.txt')));
+                    if ($lettlog) {
+                        echo json_encode(array('url' => $logurl));
                     }
                 }
                 fclose($fh);
@@ -3009,6 +3309,11 @@ class importController extends \mkwhelpers\Controller {
         if (!$this->checkRunningImport(\mkw\consts::RunningSilkoImport)) {
 
             $this->setRunningImport(\mkw\consts::RunningSilkoImport, 1);
+
+            $logfile = \mkw\store::logsPath('silko_log.txt');
+            $logurl = \mkw\store::logsUrl('silko_log.txt');
+
+            @\unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSilko);
@@ -3061,6 +3366,7 @@ class importController extends \mkwhelpers\Controller {
             }
 
             $termekdb = 0;
+            $lettlog = false;
             for ($row = $dbtol; $row <= $dbig; ++$row) {
                 $termekdb++;
 
@@ -3128,10 +3434,24 @@ class importController extends \mkwhelpers\Controller {
                     if (!$kaphato) {
                         if ($termek->getKeszlet() <= 0) {
                             $termek->setNemkaphato(true);
+                            \mkw\store::writelog(
+                                'NEM KAPHATÓ'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                     }
                     else {
                         $termek->setNemkaphato(false);
+                        \mkw\store::writelog(
+                            'KAPHATÓ'
+                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                            $logfile
+                        );
+                        $lettlog = true;
                     }
                     if (!$termek->getAkcios()) {
                         $termek->setBrutto(round((float)$sheet->getCell('E' . $row)->getValue() * $arszaz / 100, -1));
@@ -3151,6 +3471,9 @@ class importController extends \mkwhelpers\Controller {
 
             $excel->disconnectWorksheets();
             \unlink($filenev);
+            if ($lettlog) {
+                echo json_encode(array('url' => $logurl));
+            }
             $this->setRunningImport(\mkw\consts::RunningSilkoImport, 0);
         }
         else {
@@ -3168,7 +3491,10 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningBtechImport, 1);
 
-            $volthiba = false;
+            $logfile = \mkw\store::logsPath('btech_log.txt');
+            $logurl = \mkw\store::logsUrl('btech_log.txt');
+
+            @\unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoBtech);
@@ -3225,6 +3551,7 @@ class importController extends \mkwhelpers\Controller {
             $letezocikkszamok = array();
 
             $termekdb = 0;
+            $lettlog = false;
             for ($row = $dbtol; $row <= $dbig; ++$row) {
                 $adat = $sheet->getCell('A' . $row)->getValue();
                 if ($adat) {
@@ -3381,10 +3708,24 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$kaphato) {
                                     if ($termek->getKeszlet() <= 0) {
                                         $termek->setNemkaphato(true);
+                                        \mkw\store::writelog(
+                                            'NEM KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                 }
                                 else {
                                     $termek->setNemkaphato(false);
+                                    \mkw\store::writelog(
+                                        'KAPHATÓ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                                 if ($ar && !$termek->getAkcios()) {
                                     $termek->setBrutto($ar);
@@ -3403,10 +3744,23 @@ class importController extends \mkwhelpers\Controller {
                         else {
                             $volthiba = true;
                             if ($termekpage === false) {
-                                \mkw\store::writelog($cikkszam . ': ' . $curlerrno . ' - ' . $curlerror, 'btechimport.error');
+                                \mkw\store::writelog(
+                                    'CURL ERROR'
+                                    . ' cikkszám: ' . $cikkszam
+                                    . ' errno: ' . $curlerrno
+                                    . ' error: ' . $curlerror,
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                             else {
-                                \mkw\store::writelog($cikkszam . ': ' . gettype($termekpage) . ' = ' . $termekpage, 'btechimport.error');
+                                \mkw\store::writelog(
+                                    'CURL ERROR'
+                                    . ' cikkszám: ' . $cikkszam
+                                    . ' ' . gettype($termekpage) . ' = ' . $termekpage,
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         }
                     }
@@ -3431,6 +3785,13 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek && $termek->getKeszlet() <= 0) {
                             $termekdb++;
                             $termek->setInaktiv(true);
+                            \mkw\store::writelog(
+                                'INAKTÍV'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                             \mkw\store::getEm()->persist($termek);
                             if (($termekdb % $batchsize) === 0) {
                                 \mkw\store::getEm()->flush();
@@ -3446,8 +3807,8 @@ class importController extends \mkwhelpers\Controller {
             $excel->disconnectWorksheets();
             \unlink($filenev);
 
-            if ($volthiba) {
-                echo json_encode(array('url' => '/btechimport.error'));
+            if ($lettlog) {
+                echo json_encode(array('url' => $logurl));
             }
             $this->setRunningImport(\mkw\consts::RunningBtechImport, 0);
         }
@@ -4029,7 +4390,10 @@ class importController extends \mkwhelpers\Controller {
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-                @\unlink(\mkw\store::logsPath('legavenue_fuggoben.txt'));
+                $logfile = \mkw\store::logsPath('legavenue_log.txt');
+                $logurl = \mkw\store::logsUrl('legavenue_log.txt');
+
+                @\unlink($logfile);
 
                 $parentid = $this->params->getIntRequestParam('katid', 0);
                 $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
@@ -4060,6 +4424,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $xml = simplexml_load_file(\mkw\store::storagePath("legavenue.xml"));
                 if ($xml) {
+                    $lettlog = false;
                     $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
                     $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
 
@@ -4262,10 +4627,28 @@ class importController extends \mkwhelpers\Controller {
                                     if (!$kaphato) {
                                         if ($valtozat->getKeszlet() <= 0) {
                                             $valtozat->setElerheto(false);
+                                            \mkw\store::writelog(
+                                                'NEM ELÉRHETŐ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                         }
                                     }
                                     else {
                                         $valtozat->setElerheto(true);
+                                        \mkw\store::writelog(
+                                            'ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                     }
                                     \mkw\store::getEm()->persist($valtozat);
                                     if ($termek) {
@@ -4276,6 +4659,15 @@ class importController extends \mkwhelpers\Controller {
                                             }
                                         }
                                         $termek->setNemkaphato($egysemkaphato);
+                                        if ($termek->getNemkaphato()) {
+                                            \mkw\store::writelog(
+                                                'NEM KAPHATÓ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
+                                        }
                                         \mkw\store::getEm()->persist($termek);
                                     }
                                 }
@@ -4284,10 +4676,24 @@ class importController extends \mkwhelpers\Controller {
                                         if (!$kaphato) {
                                             if ($termek->getKeszlet() <= 0) {
                                                 $termek->setNemkaphato(true);
+                                                \mkw\store::writelog(
+                                                    'NEM KAPHATÓ'
+                                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                    $logfile
+                                                );
+                                                $lettlog = true;
                                             }
                                         }
                                         else {
                                             $termek->setNemkaphato(false);
+                                            \mkw\store::writelog(
+                                                'KAPHATÓ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                         }
                                         if (!$termek->getAkcios()) {
                                             //$termek->setBrutto($ar);
@@ -4309,7 +4715,6 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                     $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
 
-                    $lettfuggoben = false;
                     if ($gyarto) {
                         $idegenkodok = array();
                         foreach ($products as $data) {
@@ -4323,8 +4728,13 @@ class importController extends \mkwhelpers\Controller {
                                 if ($termek->getIdegencikkszam() && !in_array($termek->getIdegencikkszam(), $idegenkodok)) {
                                     if ($termek->getKeszlet() <= 0) {
                                         $termekdb++;
-                                        \mkw\store::writelog('idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
-                                        $lettfuggoben = true;
+                                        \mkw\store::writelog(
+                                            'INAKTÍV'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                     }
@@ -4335,8 +4745,15 @@ class importController extends \mkwhelpers\Controller {
                                     if ($valtozat->getIdegencikkszam() && !in_array($valtozat->getIdegencikkszam(), $idegenkodok)) {
                                         if ($valtozat->getKeszlet() <= 0) {
                                             $termekdb++;
-                                            \mkw\store::writelog('változat idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'legavenue_fuggoben.txt');
-                                            $lettfuggoben = true;
+                                            \mkw\store::writelog(
+                                                'NEM ELÉRHETŐ'
+                                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                                . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                $logfile
+                                            );
+                                            $lettlog = true;
                                             $valtozat->setElerheto(false);
                                             \mkw\store::getEm()->persist($valtozat);
                                         }
@@ -4367,8 +4784,13 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($vanvaltozat && !$vanelerheto) {
                                 $termekdb++;
-                                \mkw\store::writelog('NINCS ELÉRHETŐ VÁLTOZAT: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
-                                $lettfuggoben = true;
+                                \mkw\store::writelog(
+                                    'NEM KAPHATÓ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                                 $termek->setNemkaphato(true);
                                 \mkw\store::getEm()->persist($termek);
                                 if (($termekdb % $batchsize) === 0) {
@@ -4380,11 +4802,10 @@ class importController extends \mkwhelpers\Controller {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
                     }
-                    if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('legavenue_fuggoben.txt')));
+                    if ($lettlog) {
+                        echo json_encode(array('url' => $logurl));
                     }
                 }
-
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
             }
             else {
@@ -4439,6 +4860,11 @@ class importController extends \mkwhelpers\Controller {
 
         if (!$this->checkRunningImport(\mkw\consts::RunningEvonaImport)) {
             $this->setRunningImport(\mkw\consts::RunningEvonaImport, 1);
+
+            $logfile = \mkw\store::logsPath('evona_log.txt');
+            $logurl = \mkw\store::logsUrl('evona_log.txt');
+
+            @\unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoEvona);
@@ -4512,11 +4938,6 @@ class importController extends \mkwhelpers\Controller {
                 }
             }
 
-            \unlink(\mkw\store::logsPath('evonaszulok.log'));
-            \unlink(\mkw\store::logsPath('evonatermekek.log'));
-            \mkw\store::writelog(print_r($szulok, true), 'evonaszulok.log');
-            \mkw\store::writelog(print_r($termekek, true), 'evonatermekek.log');
-
             foreach ($katnevek as $katnev) {
                 $parent = $this->createKategoria($katnev, $parentid);
             }
@@ -4524,6 +4945,8 @@ class importController extends \mkwhelpers\Controller {
             $termekkepszotar = array();
 
             $termekdb = 0;
+
+            $lettlog = false;
 
             foreach ($termekek as $data) {
 
@@ -4640,10 +5063,24 @@ class importController extends \mkwhelpers\Controller {
                     if (!$data['kaphato']) {
                         if ($termek->getKeszlet() <= 0) {
                             $termek->setNemkaphato(true);
+                            \mkw\store::writelog(
+                                'NEM KAPHATÓ'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                     }
                     else {
                         $termek->setNemkaphato(false);
+                        \mkw\store::writelog(
+                            'KAPHATÓ'
+                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                            $logfile
+                        );
+                        $lettlog = true;
                     }
                     if (!$termek->getAkcios()) {
                         $termek->setNetto($ar);
@@ -4870,10 +5307,24 @@ class importController extends \mkwhelpers\Controller {
                     if (!$data['kaphato']) {
                         if ($termek->getKeszlet() <= 0) {
                             $termek->setNemkaphato(true);
+                            \mkw\store::writelog(
+                                'NEM KAPHATÓ'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                     }
                     else {
                         $termek->setNemkaphato(false);
+                        \mkw\store::writelog(
+                            'KAPHATÓ'
+                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                            $logfile
+                        );
+                        $lettlog = true;
                     }
                     if (!$termek->getAkcios()) {
                         $termek->setNetto($ar);
@@ -4895,6 +5346,9 @@ class importController extends \mkwhelpers\Controller {
 
             $excel->disconnectWorksheets();
             \unlink($filenev);
+            if ($lettlog) {
+                echo json_encode(array('url' => $logurl));
+            }
             $this->setRunningImport(\mkw\consts::RunningEvonaImport, 0);
         }
         else {
@@ -4926,6 +5380,11 @@ class importController extends \mkwhelpers\Controller {
         if (!$this->checkRunningImport(\mkw\consts::RunningEvonaXMLImport)) {
             $this->setRunningImport(\mkw\consts::RunningEvonaXMLImport, 1);
 
+            $logfile = \mkw\store::logsPath('evonaxml_log.txt');
+            $logurl = \mkw\store::logsUrl('evonaxml_log.txt');
+
+            @\unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoEvona);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -4942,9 +5401,7 @@ class importController extends \mkwhelpers\Controller {
             fclose($fh);
             \curl_close($ch);
 
-            @unlink(\mkw\store::logsPath('evona_fuggoben.txt'));
-
-            $lettfuggoben = false;
+            $lettlog = false;
 
             $xml = simplexml_load_file(\mkw\store::storagePath("evona.xml"));
             if ($xml) {
@@ -4989,8 +5446,15 @@ class importController extends \mkwhelpers\Controller {
                         if ($data['stock'] <= 0) {
                             if ($valtozat->getKeszlet() <= 0) {
                                 $valtozat->setElerheto(false);
-                                \mkw\store::writelog('VÁLTOZAT STOCK <= 0: idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'evona_fuggoben.txt');
-                                $lettfuggoben = true;
+                                \mkw\store::writelog(
+                                    'NEM ELÉRHETŐ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                    . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                    . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         }
                         else {
@@ -5009,8 +5473,13 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $termek->setNemkaphato($egysemkaphato);
                             if ($egysemkaphato) {
-                                \mkw\store::writelog('TERMÉK EGY VÁLTOZATA SEM ELÉRHETŐ: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
-                                $lettfuggoben = true;
+                                \mkw\store::writelog(
+                                    'NEM KAPHATÓ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                             \mkw\store::getEm()->persist($termek);
                         }
@@ -5023,8 +5492,13 @@ class importController extends \mkwhelpers\Controller {
                             if ($data['stock'] <= 0) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
-                                    \mkw\store::writelog('TERMÉK STOCK <= 0: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
-                                    $lettfuggoben = true;
+                                    \mkw\store::writelog(
+                                        'NEM KAPHATÓ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                             }
                             else {
@@ -5060,8 +5534,13 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($vanvaltozat && !$vanelerheto) {
                         $termekdb++;
-                        \mkw\store::writelog('NINCS ELÉRHETŐ VÁLTOZAT: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'evona_fuggoben.txt');
-                        $lettfuggoben = true;
+                        \mkw\store::writelog(
+                            'NEM KAPHATÓ'
+                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                            $logfile
+                        );
+                        $lettlog = true;
                         $termek->setNemkaphato(true);
                         \mkw\store::getEm()->persist($termek);
                         if (($termekdb % $batchsize) === 0) {
@@ -5074,8 +5553,8 @@ class importController extends \mkwhelpers\Controller {
                 \mkw\store::getEm()->clear();
 
             }
-            if ($lettfuggoben) {
-                echo json_encode(array('url' => \mkw\store::logsUrl('evona_fuggoben.txt')));
+            if ($lettlog) {
+                echo json_encode(array('url' => $logurl));
             }
 
             $this->setRunningImport(\mkw\consts::RunningEvonaXMLImport, 0);
@@ -5092,6 +5571,11 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningNetpressoImport, 1);
 
             $sep = ';';
+
+            $logfile = \mkw\store::logsPath('netpresso_log.txt');
+            $logurl = \mkw\store::logsUrl('netpresso_log.txt');
+
+            @\unlink($logfile);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNetpresso);
@@ -5112,8 +5596,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-            @unlink(\mkw\store::storagePath('netpresso_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNetpresso));
             $fh = fopen(\mkw\store::storagePath('netpresso.txt'), 'w');
@@ -5139,6 +5621,7 @@ class importController extends \mkwhelpers\Controller {
                     $markacs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
 
                     $termekdb = 0;
+                    $lettlog = false;
                     fgetcsv($fh, 0, $sep, '"');
                     while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
@@ -5256,6 +5739,15 @@ class importController extends \mkwhelpers\Controller {
                             if ($termek) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato((int)$data[$this->n('q')] == 0);
+                                    if ($termek->getNemkaphato()) {
+                                        \mkw\store::writelog(
+                                            'NEM KAPHATÓ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
+                                    }
                                 }
                                 if (!$termek->getAkcios()) {
                                     $termek->setNetto((float)$data[$this->n('g')] * $arszaz / 100);
@@ -5275,7 +5767,6 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
 
-                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
@@ -5289,8 +5780,13 @@ class importController extends \mkwhelpers\Controller {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek && $termek->getKeszlet() <= 0) {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam() . ' (szállítói cikkszám: ' . $termek->getIdegencikkszam() . ')', 'netpresso_fuggoben.txt');
+                                    \mkw\store::writelog(
+                                        'INAKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
@@ -5303,8 +5799,13 @@ class importController extends \mkwhelpers\Controller {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek) {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('vissza rakott cikkszám: ' . $termek->getCikkszam() . ' (szállítói cikkszám: ' . $termek->getIdegencikkszam() . ')', 'netpresso_fuggoben.txt');
+                                    \mkw\store::writelog(
+                                        'AKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                     $termek->setInaktiv(false);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
@@ -5314,8 +5815,8 @@ class importController extends \mkwhelpers\Controller {
 
 //                        a kivett termekeket kell megnezni, hogz bent vannak-e megint a feedben, es visszatenni
                     }
-                    if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('netpresso_fuggoben.txt')));
+                    if ($lettlog) {
+                        echo json_encode(array('url' => $logurl));
                     }
                 }
                 fclose($fh);
@@ -5654,6 +6155,11 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningSmileebikeImport, 1);
 
+            $logfile = \mkw\store::logsPath('smileebike_log.txt');
+            $logurl = \mkw\store::logsUrl('smileebike_log.txt');
+
+            @\unlink($logfile);
+
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSmileebike);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -5688,6 +6194,7 @@ class importController extends \mkwhelpers\Controller {
             }
 
             $xml = simplexml_load_file(\mkw\store::storagePath('smileebike.xml'));
+            $lettlog = false;
             if ($xml) {
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -5813,6 +6320,15 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato((int)$data['stock'] == 0);
+                                if ($termek->getNemkaphato()) {
+                                    \mkw\store::writelog(
+                                        'NEM KAPHATÓ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
+                                }
                             }
                             if (!$termek->getAkcios()) {
                                 $termek->setNetto((float)$data['netPrice'] * $arszaz / 100);
@@ -5832,6 +6348,9 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                if ($lettlog) {
+                    echo json_encode(array('url' => $logurl));
+                }
 
             }
             $this->setRunningImport(\mkw\consts::RunningSmileebikeImport, 0);
