@@ -594,34 +594,6 @@ $(document).ready(function () {
                     e.preventDefault();
                     getSorNetto($(this), 'valtozatnettogen');
                 })
-                .on('click', 'input[name^="valtozatelerheto_"]', function (e) {
-                    var $this = $(this);
-                    if (!$this.prop('checked')) {
-                        return !$('input[name="valtozatlathato_' + $this.attr('name').split('_')[1] + '"]').prop('checked');
-                    }
-                    return true;
-                })
-                .on('click', 'input[name^="valtozatlathato_"]', function (e) {
-                    var $this = $(this);
-                    if ($this.prop('checked')) {
-                        return $('input[name="valtozatelerheto_' + $this.attr('name').split('_')[1] + '"]').prop('checked');
-                    }
-                    return true;
-                })
-                .on('click', 'input[name="valtozatelerheto"]', function (e) {
-                    var $this = $(this);
-                    if (!$this.prop('checked')) {
-                        return !$('input[name="valtozatlathato"]').prop('checked');
-                    }
-                    return true;
-                })
-                .on('click', 'input[name="valtozatlathato"]', function (e) {
-                    var $this = $(this);
-                    if ($this.prop('checked')) {
-                        return $('input[name="valtozatelerheto"]').prop('checked');
-                    }
-                    return true;
-                });
             $('#valtozatgeneratorform').ajaxForm({
                 type: 'POST',
                 beforeSubmit: function (arr, form, opt) {
