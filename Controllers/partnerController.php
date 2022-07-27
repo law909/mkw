@@ -29,6 +29,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $mijszoralatogatasCtrl = new \Controllers\partnermijszoralatogatasController($this->params);
         $mijsztanitasCtrl = new \Controllers\partnermijsztanitasController($this->params);
         $dokCtrl = new partnerdokController($this->params);
+        $mptfolyoszamlaCtrl = new mptfolyoszamlaController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -162,6 +163,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['mpt_diplomaeve'] = $t->getMptDiplomaeve();
         $x['mpt_egyebdiploma'] = $t->getMptEgyebdiploma();
         $x['mpt_privatemail'] = $t->getMptPrivatemail();
+        $x['mpt_tagsagdatestr'] = $t->getMptTagsagdateStr();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -186,6 +188,14 @@ class partnerController extends \mkwhelpers\MattableController {
                 $dok[] = $dokCtrl->loadVars($kepje);
             }
             $x['dokok'] = $dok;
+        }
+
+        if (\mkw\store::isMPT()) {
+            $fsz = [];
+            foreach ($t->getMPTFolyoszamlak() as $item) {
+                $fsz[] = $mptfolyoszamlaCtrl->loadVars($item, true);
+            }
+            $x['mptfolyoszamla'] = $fsz;
         }
 
         if (\mkw\store::isMIJSZ()) {
@@ -291,6 +301,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setMptDiplomahely($this->params->getStringRequestParam('mpt_diplomahely'));
             $obj->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
             $obj->setMptPrivatemail($this->params->getStringRequestParam('mpt_privatemail'));
+            $obj->setMptTagsagdate($this->params->getStringRequestParam('mpt_tagsagdate'));
             $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio1', 0));
             if ($mptszekcio) {
                 $obj->setMptSzekcio1($mptszekcio);
@@ -731,6 +742,14 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('orszaglist', $orszag->getSelectList(($partner ? $partner->getOrszagId() : 0), true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(($partner ? $partner->getPartnertipusId() : 0)));
+        $mpttagsagforma = new mpttagsagformaController($this->params);
+        $view->setVar('mpttagsagformalist', $mpttagsagforma->getSelectList(($partner ? $partner->getMptTagsagformaId() : 0)));
+        $mptszekcio = new mptszekcioController($this->params);
+        $view->setVar('mptszekcio1list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio1Id() : 0)));
+        $view->setVar('mptszekcio2list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio2Id() : 0)));
+        $view->setVar('mptszekcio3list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio3Id() : 0)));
+        $mpttagozat = new mpttagozatController($this->params);
+        $view->setVar('mpttagozatlist', $mpttagozat->getSelectList(($partner ? $partner->getMptTagozatId() : 0)));
 
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getBizonylatnyelv() : ''));
 

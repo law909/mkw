@@ -682,7 +682,47 @@ class adminController extends mkwhelpers\Controller {
         return $tagsagforma;
     }
 
+    private function MPTCreateFSZ($osszeg, $biz, $datum, $ev, $p) {
+        if ($osszeg && $biz) {
+            $f = new Entities\MPTFolyoszamla();
+            $f->setTipus('E');
+            $f->setIrany('-1');
+            $f->setPartner($p);
+            $f->setMegjegyzes('Importált adat');
+            $f->setDatum($datum);
+            $f->setOsszeg($osszeg);
+            $f->setBizonylatszam('ismeretlen');
+            $f->setVonatkozoev($ev);
+            \mkw\store::getEm()->persist($f);
+            $f = new Entities\MPTFolyoszamla();
+            $f->setTipus('B');
+            $f->setIrany('1');
+            $f->setPartner($p);
+            $f->setMegjegyzes('Importált adat');
+            $f->setDatum($datum);
+            $f->setOsszeg($osszeg);
+            $f->setBizonylatszam($biz);
+            $f->setVonatkozoev($ev);
+            \mkw\store::getEm()->persist($f);
+        }
+    }
+
     public function MPTPartnerImport() {
+
+        function getosszeg($mibol) {
+            if (trim($mibol) !== '-') {
+                return (int)trim($mibol);
+            }
+            return false;
+        }
+        function getbiz($mibol) {
+            if (trim($mibol) !== '-') {
+                return trim($mibol);
+            }
+            return false;
+        }
+
+
         $sep = ';';
         $fh = fopen(\mkw\store::storagePath('mpttagok.csv'), 'r');
         if ($fh) {
@@ -722,28 +762,203 @@ class adminController extends mkwhelpers\Controller {
                     $p->setMptMunkahelyvaros(mb_substr($cim[1], 0, 40));
                     $p->setMptMunkahelyutca(mb_substr($cim[2], 0, 60));
                     $p->setMptTagkartya($data[$this->n('aw')]);
-                    $sz = $this->createMptSzekcio($data[$this->n('az')]);
-                    $p->setMptSzekcio1($sz);
-                    $sz = $this->createMptTagozat($data[$this->n('ba')]);
-                    $p->setMptTagozat($sz);
+                    if ($data[$this->n('az')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('az')]);
+                        $p->setMptSzekcio1($sz);
+                    }
+                    if ($data[$this->n('ba')]) {
+                        $sz = $this->createMptTagozat($data[$this->n('ba')]);
+                        $p->setMptTagozat($sz);
+                    }
                     if (\mkw\store::isMagyarAdoszam($data[$this->n('bn')])) {
                         $p->setAdoszam($data[$this->n('bn')]);
                     }
                     $p->setMptMegszolitas($data[$this->n('bp')]);
                     $p->setMptFokozat($data[$this->n('bq')]);
                     $p->setMptVegzettseg($data[$this->n('br')]);
-                    $sz = $this->createMptTagsagforma($data[$this->n('bs')]);
-                    $p->setMptTagsagforma($sz);
+                    if ($data[$this->n('bs')]) {
+                        $sz = $this->createMptTagsagforma($data[$this->n('bs')]);
+                        $p->setMptTagsagforma($sz);
+                    }
                     $p->setMptSzuleteseve($data[$this->n('by')]);
                     $p->setMptDiplomahely($data[$this->n('bz')]);
+                    $tagsagdate = trim($data[$this->n('bw')]);
+                    if ($tagsagdate) {
+                        if (\mkw\store::isValidDate($tagsagdate)) {
+                            $p->setMptTagsagdate($tagsagdate);
+                        }
+                        else {
+                            $tagsagdate = substr($tagsagdate, 0, 4);
+                            if (\mkw\store::isValidDate($tagsagdate . '-01-01')) {
+                                $p->setMptTagsagdate($tagsagdate . '-01-01');
+                            }
+                        }
+                    }
                     $p->setMptDiplomaeve($data[$this->n('ca')]);
                     $p->setMptEgyebdiploma($data[$this->n('cb')]);
                     $p->setMptPrivatemail($data[$this->n('cc')]);
                     $p->setMegjegyzes($data[$this->n('cm')]);
-                    $sz = $this->createMptSzekcio($data[$this->n('cr')]);
-                    $p->setMptSzekcio2($sz);
-                    $sz = $this->createMptSzekcio($data[$this->n('cs')]);
-                    $p->setMptSzekcio3($sz);
+                    if ($data[$this->n('cr')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('cr')]);
+                        $p->setMptSzekcio2($sz);
+                    }
+                    if ($data[$this->n('cs')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('cs')]);
+                        $p->setMptSzekcio3($sz);
+                    }
+                    $p->setInaktiv(trim($data[$this->n('cy')]) === '');
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('co')]),
+                        getbiz($data[$this->n('cn')]),
+                        '2004-01-01',
+                        2004,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('cl')]),
+                        getbiz($data[$this->n('cj')]),
+                        '2005-01-01',
+                        2005,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('ci')]),
+                        getbiz($data[$this->n('ch')]),
+                        '2006-01-01',
+                        2006,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('cg')]),
+                        getbiz($data[$this->n('cf')]),
+                        '2007-01-01',
+                        2007,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('ce')]),
+                        getbiz($data[$this->n('cd')]),
+                        '2008-01-01',
+                        2008,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('ck')]),
+                        getbiz($data[$this->n('bx')]),
+                        '2009-01-01',
+                        2009,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('cq')]),
+                        getbiz($data[$this->n('cp')]),
+                        '2010-01-01',
+                        2010,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('cv')]),
+                        getbiz($data[$this->n('cu')]),
+                        '2011-01-01',
+                        2011,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('cx')]),
+                        getbiz($data[$this->n('cw')]),
+                        '2012-01-01',
+                        2012,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('da')]),
+                        getbiz($data[$this->n('cz')]),
+                        '2013-01-01',
+                        2013,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dc')]),
+                        getbiz($data[$this->n('db')]),
+                        '2014-01-01',
+                        2014,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('de')]),
+                        getbiz($data[$this->n('dd')]),
+                        '2015-01-01',
+                        2015,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dg')]),
+                        getbiz($data[$this->n('df')]),
+                        '2016-01-01',
+                        2016,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('di')]),
+                        getbiz($data[$this->n('dh')]),
+                        '2017-01-01',
+                        2017,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dk')]),
+                        getbiz($data[$this->n('dj')]),
+                        '2018-01-01',
+                        2018,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dm')]),
+                        getbiz($data[$this->n('dl')]),
+                        '2019-01-01',
+                        2019,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('do')]),
+                        getbiz($data[$this->n('dn')]),
+                        '2020-01-01',
+                        2020,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dr')]),
+                        getbiz($data[$this->n('dq')]),
+                        '2021-01-01',
+                        2021,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dt')]),
+                        getbiz($data[$this->n('ds')]),
+                        '2022-01-01',
+                        2022,
+                        $p
+                    );
 
                     \mkw\store::getEm()->persist($p);
                     \mkw\store::getEm()->flush();

@@ -256,6 +256,11 @@ class store {
         return $dat->format('Y-m-d');
     }
 
+    public static function isValidDate($date, $format = 'Y-m-d') {
+        $d = \DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
+    }
+
     public static function getDayname($day) {
         return self::$daynames[$day - 1];
     }

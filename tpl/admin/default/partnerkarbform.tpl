@@ -11,6 +11,7 @@
 			<li><a href="#ElerhetosegTab">{at('Elérhetőségek')}</a></li>
             {if ($setup.mpt)}
                 <li><a href="#MPTTab">{at('MPT adatok')}</a></li>
+                <li><a href="#MPTFolyoszamlaTab">{at('MPT folyószámla')}</a></li>
             {/if}
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
 			<li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
@@ -219,6 +220,8 @@
                             <td><input id="MPTTagkartyaEdit" name="mpt_tagkartya" type="text" value="{$partner.mpt_tagkartya}"></td>
                         </tr>
                         <tr>
+                            <td><label for="MPTTagsagdateEdit">{at('Tagság kezdete')}:</label></td>
+                            <td><input id="MPTTagsagdateEdit" name="mpt_tagsagdate" type="text" size="12" data-datum="{$partner.mpt_tagsagdatestr}"></td>
                             <td>{at('Regisztráció dátuma')}:</td>
                             <td>{$partner.mpt_registerdatestr}</td>
                         </tr>
@@ -244,9 +247,9 @@
                         <tr>
                             <td><label for="MPTLakcimIrszamEdit">{at('Lakcím')}:</label></td>
                             <td colspan="3">
-                                <input id="MPTLakcimIrszamEdit" name="mpt_lakcimirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_lakcimirszam}" placeholder="{at('ir.szám')}">
-                                <input id="MPTLakcimVarosEdit" name="mpt_lakcimvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimvaros}" placeholder="{at('város')}">
-                                <input id="MPTLakcimUtcaEdit" name="mpt_lakcimutca" type="text" size="40" maxlength="60" value="{$partner.mpt_lakcimutca}" placeholder="{at('utca')}">
+                                <input id="MPTLakcimIrszamEdit" name="mpt_lakcimirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_lakcimirszam}" placeholder="{at('ir.szám')}" required="required">
+                                <input id="MPTLakcimVarosEdit" name="mpt_lakcimvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimvaros}" placeholder="{at('város')}" required="required">
+                                <input id="MPTLakcimUtcaEdit" name="mpt_lakcimutca" type="text" size="40" maxlength="60" value="{$partner.mpt_lakcimutca}" placeholder="{at('utca')}" required="required">
                                 <input id="MPTLakcimHazszamEdit" name="mpt_lakcimhazszam" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimhazszam}" placeholder="{at('házszám')}">
                             </td>
                         </tr>
@@ -263,7 +266,7 @@
                         </tr>
                         <tr>
                             <td><label for="MPTDiplomaeveEdit">{at('Diploma éve')}:</label></td>
-                            <td><input id="MPTDiplomaeveEdit" name="mpt_diplomaeve" type="text" value="{$partner.mpt_diplomaeve}"></td>
+                            <td><input id="MPTDiplomaeveEdit" name="mpt_diplomaeve" type="text" value="{$partner.mpt_diplomaeve}" required="required"></td>
                             <td><label for="MPTDiplomaiskolaEdit">{at('Diploma iskolája')}:</label></td>
                             <td><input id="MPTDiplomaiskolaEdit" name="mpt_diplomahely" type="text" value="{$partner.mpt_diplomahely}"></td>
                         </tr>
@@ -277,8 +280,81 @@
                             <td><label for="MPTPrivatemailEdit">{at('Privát email')}:</label></td>
                             <td><input id="MPTPrivatemailEdit" name="mpt_privatemail" type="text" value="{$partner.mpt_privatemail}"></td>
                         </tr>
+                        <tr>
+                            <td><label for="MPTTagsagformaEdit">{at('Tagság forma')}</label></td>
+                            <td><select id="MPTTagsagformaEdit" name="mpt_tagsagforma">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mpttagsagformalist as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTSzekcio1Edit">{at('Szekció 1')}</label></td>
+                            <td><select id="MPTSzekcio1Edit" name="mpt_szekcio1">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptszekcio1list as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                            <td><label for="MPTTagozatEdit">{at('Tagozat')}</label></td>
+                            <td><select id="MPTTagozatEdit" name="mpt_tagozat">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mpttagozatlist as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="MPTSzekcio2Edit">{at('Szekció 2')}</label></td>
+                            <td><select id="MPTSzekcio2Edit" name="mpt_szekcio2">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptszekcio2list as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                            <td><label for="MPTSzekcio3Edit">{at('Szekció 3')}</label></td>
+                            <td><select id="MPTSzekcio3Edit" name="mpt_szekcio3">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptszekcio3list as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+            <div id="MPTFolyoszamlaTab" class="mattkarb-page" data-visible="visible">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Vonatkozó év</th>
+                        <th>Típus</th>
+                        <th class="textalignright">Összeg</th>
+                        <th>Bizonylatszám</th>
+                        <th>Dátum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $partner.mptfolyoszamla as $fsz}
+                        <tr>
+                            <td>{$fsz.vonatkozoev}</td>
+                            <td>{$fsz.tipusnev}</td>
+                            <td class="textalignright">{$fsz.osszeg * $fsz.irany}</td>
+                            <td>{$fsz.bizonylatszam}</td>
+                            <td>{$fsz.datum}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+
+
+
             </div>
         {/if}
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
@@ -301,7 +377,7 @@
                         <input id="TelszamEdit" type="text" name="telszam" value="{$partner.telszam}" required="required">
                     </td>
                 {else}
-                    <td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40" value="{$partner.telefon}"></td>
+                    <td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40" value="{$partner.telefon}"{if ($setup.mpt)} required="required"{/if}></td>
                 {/if}
 			</tr>
 			<tr>

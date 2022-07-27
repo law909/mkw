@@ -88,15 +88,15 @@ $(document).ready(function(){
 			newWindowUrl:'/admin/partner/viewkarb',
 			saveUrl:'/admin/partner/save',
 			beforeShow:function() {
-				var szuletesiidoedit=$('#SzuletesiidoEdit'),
+				var szuletesiidoedit = $('#SzuletesiidoEdit'),
+                    mpt_tagsagdateedit = $('#MPTTagsagdateEdit'),
                     termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
                     termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                     doktab = $('#DokTab'),
                     mijszokleveltab = $('#MIJSZOklevelTab');
 
-                szuletesiidoedit.datepicker($.datepicker.regional['hu']);
-                szuletesiidoedit.datepicker('option','dateFormat','yy.mm.dd');
-                szuletesiidoedit.datepicker('setDate',szuletesiidoedit.attr('data-datum'));
+				mkwcomp.datumEdit.init(mpt_tagsagdateedit);
+				mkwcomp.datumEdit.init(szuletesiidoedit);
 
                 $('#EmailEdit').on('change', function(e) {
                     $('.js-email').text($(this).val());

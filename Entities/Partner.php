@@ -163,6 +163,9 @@ class Partner {
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist"}) */
 	private $bizonylatfejek;
 
+    /** @ORM\OneToMany(targetEntity="MPTFolyoszamla", mappedBy="partner",cascade={"persist"}) */
+    private $mptfolyoszamlak;
+
     /** @ORM\OneToMany(targetEntity="Bankbizonylatfej", mappedBy="partner",cascade={"persist"}) */
     private $bankbizonylatfejek;
 
@@ -496,9 +499,13 @@ class Partner {
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $mpt_privatemail = '';
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $mpt_tagsagdate;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mptfolyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bankbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bankbizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->penztarbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1833,6 +1840,13 @@ class Partner {
     /**
      * @return mixed
      */
+    public function getMPTFolyoszamlak() {
+        return $this->mptfolyoszamlak;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getBankbizonylatfejek() {
         return $this->bankbizonylatfejek;
     }
@@ -2538,6 +2552,29 @@ class Partner {
             else {
                 $this->mpt_tagsagforma = $val;
             }
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptTagsagdate() {
+        return $this->mpt_tagsagdate;
+    }
+
+    public function getMptTagsagdateStr() {
+        if ($this->getMptTagsagdate()) {
+            return $this->getMptTagsagdate()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $mpt_tagsagdate
+     */
+    public function setMptTagsagdate($mpt_tagsagdate): void {
+        if ($mpt_tagsagdate != '') {
+            $this->mpt_tagsagdate = new \DateTime(\mkw\store::convDate($mpt_tagsagdate));
         }
     }
 }
