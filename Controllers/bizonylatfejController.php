@@ -93,7 +93,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
-                if ($this->biztipus == 'megrendeles') {
+                if ($this->biztipus === 'megrendeles') {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
                 }
                 else {
@@ -113,6 +113,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $view->setVar('bizonylatrontottfilter', 1);
                 break;
             case \mkw\store::isKisszamlazo():
+                if ($this->biztipus === 'bizsablon') {
+                    $view->setVar('bizonylatrontottfilter', 1);
+                }
+                $a = false;
+                break;
             case \mkw\store::isMIJSZ():
                 $a = false;
                 break;
