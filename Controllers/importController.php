@@ -6482,4 +6482,218 @@ class importController extends \mkwhelpers\Controller {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
         }
     }
+
+    public function szimport() {
+//        $translaterepo = \mkw\store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
+
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        if ($dbtol < 2) {
+            $dbtol = 2;
+        }
+
+        $filenev = $_FILES['toimport']['name'];
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+        $maxcol = $sheet->getHighestColumn();
+        $maxcolindex = Coordinate::columnIndexFromString($maxcol);
+
+        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+        $afa = $afa[0];
+        $termekrepo = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $termekarrepo = \mkw\store::getEm()->getRepository('Entities\TermekAr');
+        $valutanemek = array();
+        $vnemek = \mkw\store::getEm()->getRepository('Entities\Valutanem')->getAll(array(), array());
+        foreach ($vnemek as $vn) {
+            $valutanemek[$vn->getNev()] = $vn;
+        }
+
+        $fej = array();
+        for ($col = 0; $col < $maxcolindex; ++$col) {
+            $cell = $sheet->getCellByColumnAndRow($col + 1, 1);
+            $fej[$col] = $cell->getValue();
+        }
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $ujtermek = false;
+            $kod = false;
+            $vonalkod = false;
+            $cikkszam = false;
+            $nev = array();
+            $vtsz = false;
+            $netto = array();
+            $brutto = array();
+
+            for ($col = 0; $col < $maxcolindex; ++$col) {
+                $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
+                if ($fej[$col] == 'kod') {
+                    $kod = $cell->getValue();
+                }
+                elseif ($fej[$col] == 'vonalkod') {
+                    $vonalkod = $cell->getValue();
+                }
+                elseif ($fej[$col] == 'cikkszam') {
+                    $cikkszam = $cell->getValue();
+                }
+                elseif ($fej[$col] == 'vtsz') {
+                    $vtsz = $cell->getValue();
+                }
+                elseif ($cell->getValue() && substr($fej[$col], 0, 4) == 'nev_') {
+                    $nyelv = strtoupper(substr($fej[$col], 4));
+                    $nev[\mkw\store::getLocaleName($nyelv)] = $cell->getValue();
+                }
+                elseif ($cell->getValue() && substr($fej[$col], 0, 3) == 'nev') {
+                    $nev[\mkw\store::getLocaleName('HU')] = $cell->getValue();
+                }
+                elseif ($cell->getValue() && substr($fej[$col], 0, 6) == 'netto_') {
+                    $n = explode('_', $fej[$col]);
+                    $netto[strtoupper($n[1])][$n[2]] = $cell->getValue();
+                }
+                elseif ($cell->getValue() && substr($fej[$col], 0, 7) == 'brutto_') {
+                    $n = explode('_', $fej[$col]);
+                    $brutto[strtoupper($n[1])][$n[2]] = $cell->getValue();
+                }
+            }
+
+            $termek = false;
+            if ($kod) {
+                $termek = $termekrepo->find($kod);
+            }
+            elseif ($vonalkod) {
+                $termek = $termekrepo->findByVonalkod($vonalkod);
+            }
+            elseif ($cikkszam) {
+                $termek = $termekrepo->findByCikkszam($cikkszam);
+            }
+
+            if ($termek) {
+                if (is_array($termek)) {
+                    $termek = $termek[0];
+                }
+            }
+            else {
+                if ($createuj && is_array($nev) && array_key_exists('HU', $nev)) {
+                    $ujtermek = true;
+                    $termek = new \Entities\Termek();
+                    $termek->setMekod($this->getME('db'));
+                    if ($parent) {
+                        $termek->setTermekfa1($parent);
+                    }
+                }
+            }
+            if ($termek) {
+                if ($vonalkod) {
+                    $termek->setVonalkod($vonalkod);
+                }
+                if ($cikkszam) {
+                    $termek->setCikkszam($cikkszam);
+                }
+                if ($vtsz) {
+                    $vtsz = $this->createVtsz($vtsz, $afa);
+                    $termek->setVtsz($vtsz);
+                }
+                if ($brutto) {
+                    foreach ($brutto as $evalu => $bruttox) {
+                        $valutanem = $valutanemek[$evalu];
+                        if ($valutanem) {
+                            foreach ($bruttox as $ename => $ertek) {
+                                if (is_array($netto)) {
+                                    unset($netto[$evalu][$ename]);
+                                }
+                                if (!$ujtermek) {
+                                    $ar = $termekarrepo->findBy(array('termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename));
+                                    if ($ar) {
+                                        $ar = $ar[0];
+                                    }
+                                }
+                                if ($ujtermek || !$ar) {
+                                    $ar = new \Entities\TermekAr();
+                                    $ar->setTermek($termek);
+                                    $ar->setValutanem($valutanem);
+                                    $ar->setAzonosito($ename);
+                                }
+                                $ar->setBrutto($ertek);
+                                \mkw\store::getEm()->persist($ar);
+                            }
+                        }
+                    }
+                }
+                if ($netto) {
+                    foreach ($netto as $evalu => $nettox) {
+                        $valutanem = $valutanemek[$evalu];
+                        if ($valutanem) {
+                            foreach ($nettox as $ename => $ertek) {
+                                if (!$ujtermek) {
+                                    $ar = $termekarrepo->findBy(array('termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename));
+                                    if ($ar) {
+                                        $ar = $ar[0];
+                                    }
+                                }
+                                if ($ujtermek || !$ar) {
+                                    $ar = new \Entities\TermekAr();
+                                    $ar->setTermek($termek);
+                                    $ar->setValutanem($valutanem);
+                                    $ar->setAzonosito($ename);
+                                }
+                                $ar->setNetto($ertek);
+                                \mkw\store::getEm()->persist($ar);
+                            }
+                        }
+                    }
+                }
+
+                if ($nev) {
+                    foreach ($nev as $loc => $text) {
+                        if ($loc !== \mkw\store::getTranslationListener()->getDefaultLocale()) {
+                            if (!$ujtermek) {
+                                $translation = \mkw\store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
+                                    array('object' => $termek->getId(), 'locale' => $loc, 'field' => 'nev'));
+                                if ($translation) {
+                                    $translation = $translation[0];
+                                }
+                            }
+                            if ($ujtermek || !$translation) {
+                                $translation = new \Entities\TermekTranslation('', 'nev', '');
+                                $translation->setObject($termek);
+                            }
+                            $translation->setLocale($loc);
+                            $translation->setContent($text);
+                            \mkw\store::getEm()->persist($translation);
+                        }
+                        else {
+                            $termek->setNev($text);
+                        }
+                    }
+                }
+                \mkw\store::getEm()->persist($termek);
+                \mkw\store::getEm()->flush();
+
+//                if (is_array($nev)) {
+//                    foreach($nev as $loc => $text) {
+//                        $termek->setNev($text);
+//                        $termek->setTranslatableLocale($loc);
+//                        \mkw\store::getEm()->persist($termek);
+//                        \mkw\store::getEm()->flush();
+//                    }
+//                }
+//                else {
+//                    \mkw\store::getEm()->persist($termek);
+//                    \mkw\store::getEm()->flush();
+//                }
+            }
+        }
+    }
 }
