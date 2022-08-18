@@ -5,9 +5,11 @@ namespace Entities;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
 
-class TermekRepository extends \mkwhelpers\Repository {
+class TermekRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Termek');
         $this->setOrders(array(
@@ -20,13 +22,15 @@ class TermekRepository extends \mkwhelpers\Repository {
         ));
     }
 
-    protected function addAktivLathatoFilter($filter) {
+    protected function addAktivLathatoFilter($filter)
+    {
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter(\mkw\store::getWebshopFieldName('lathato'), '=', true);
         $filter->addFilter('fuggoben', '=', false);
     }
 
-    public function getAkciosFilterSQL($date = null) {
+    public function getAkciosFilterSQL($date = null)
+    {
         if (!$date) {
             $date = date(\mkw\store::$SQLDateFormat);
         }
@@ -42,7 +46,33 @@ class TermekRepository extends \mkwhelpers\Repository {
                 ';
     }
 
-    public function getAllForSelectList($filter, $order = array(), $offset = 0, $elemcount = 0) {
+    public function getAllWithLocale($filter = array(), $order = array(), $offset = 0, $elemcount = 0, $locale = false)
+    {
+        $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        if (\mkw\store::isMainMode()) {
+            if (!$locale) {
+                $locale = \mkw\store::getLocale();
+            }
+            \mkw\store::setTranslationHint($q, $locale);
+        } else {
+            if ($locale) {
+                \mkw\store::setTranslationHint($q, $locale);
+            }
+        }
+        return $q->getResult();
+    }
+
+    public function getAllForSelectList($filter, $order = array(), $offset = 0, $elemcount = 0)
+    {
         $q = $this->_em->createQuery('SELECT _xx.id,_xx.nev '
             . ' FROM Entities\Termek _xx'
             . $this->getFilterString($filter)
@@ -60,7 +90,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getAllForExport($addedfilter = false, $locale = false) {
+    public function getAllForExport($addedfilter = false, $locale = false)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('termekexportbanszerepel', '=', true);
@@ -78,8 +109,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 $locale = \mkw\store::getLocale();
             }
             \mkw\store::setTranslationHint($q, $locale);
-        }
-        else {
+        } else {
             if ($locale) {
                 \mkw\store::setTranslationHint($q, $locale);
             }
@@ -87,13 +117,13 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getAllValtozatForExport($addedfilter = false, $locale = false) {
+    public function getAllValtozatForExport($addedfilter = false, $locale = false)
+    {
         $filter = new FilterDescriptor();
         if (\mkw\store::isSuperzoneB2B()) {
             $filter->addFilter('inaktiv', '=', false);
             $filter->addFilter('fuggoben', '=', false);
-        }
-        else {
+        } else {
             $this->addAktivLathatoFilter($filter);
         }
         $filter->addFilter('termekexportbanszerepel', '=', true);
@@ -112,8 +142,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 $locale = \mkw\store::getLocale();
             }
             \mkw\store::setTranslationHint($q, $locale);
-        }
-        else {
+        } else {
             if ($locale) {
                 \mkw\store::setTranslationHint($q, $locale);
             }
@@ -121,7 +150,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getSuperzonehuExport($addedfilter = false) {
+    public function getSuperzonehuExport($addedfilter = false)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('fuggoben', '=', false);
         $filter->addFilter('nemkaphato', '=', false);
@@ -137,7 +167,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
+    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0)
+    {
         $q = $this->_em->createQuery('SELECT _xx,vtsz,afa,fa1,fa2,fa3'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
@@ -160,7 +191,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithAr($arsavid, $valutanemid, $filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithAr($arsavid, $valutanemid, $filter, $order, $offset = 0, $elemcount = 0)
+    {
         $q = $this->_em->createQuery('SELECT _xx,vtsz,afa,fa1,fa2,fa3,ar,valutanem'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
@@ -188,7 +220,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithArak($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithArak($filter, $order, $offset = 0, $elemcount = 0)
+    {
         $q = $this->_em->createQuery('SELECT _xx,vtsz,afa,fa1,fa2,fa3,ar,valutanem'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
@@ -213,7 +246,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getIdsWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getIdsWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
         $q = $this->_em->createQuery('SELECT _xx.id'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
@@ -233,7 +267,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getCount($filter) {
+    public function getCount($filter)
+    {
         $q = $this->_em->createQuery('SELECT COUNT(_xx)'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
@@ -249,9 +284,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
-    public function getTermekLista($filter, $order, $offset = null, $elemcount = null) {
+    public function getTermekLista($filter, $order, $offset = null, $elemcount = null)
+    {
         switch (true) {
-
             case \mkw\store::isMindentkapni():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
@@ -303,9 +338,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function getTermekListaCount($filter) {
+    public function getTermekListaCount($filter)
+    {
         switch (true) {
-
             case \mkw\store::isMugenrace():
                 $this->addAktivLathatoFilter($filter);
                 $q = $this->_em->createQuery('SELECT COUNT(_xx)'
@@ -338,7 +373,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
-    public function getTermekListaMaxAr($filter) {
+    public function getTermekListaMaxAr($filter)
+    {
         $this->addAktivLathatoFilter($filter);
         $q = $this->_em->createQuery('SELECT MAX(_xx.brutto+IF(v.brutto IS NULL,0,v.brutto))'
             . ' FROM Entities\Termek _xx'
@@ -354,7 +390,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
-    public function getForSitemapXml() {
+    public function getForSitemapXml()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('slug', 'slug');
@@ -368,7 +405,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getTermekIds($filter, $order = array()) {
+    public function getTermekIds($filter, $order = array())
+    {
         $this->addAktivLathatoFilter($filter);
         $q = $this->_em->createQuery('SELECT DISTINCT _xx.id '
             . ' FROM Entities\Termek _xx'
@@ -385,7 +423,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getFeedTermek() {
+    public function getFeedTermek()
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -403,7 +442,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getAjanlottTermekek($db) {
+    public function getAjanlottTermekek($db)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('ajanlott', '=', true);
@@ -429,13 +469,13 @@ class TermekRepository extends \mkwhelpers\Repository {
             }
             $filter->addFilter('id', 'IN', $v);
             return $this->getWithJoins($filter, array(), 0, $db);
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getAkciosTermekek($db) {
+    public function getAkciosTermekek($db)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addSQL($this->getAkciosFilterSQL());
@@ -461,13 +501,13 @@ class TermekRepository extends \mkwhelpers\Repository {
             }
             $filter->addFilter('id', 'IN', $v);
             return $this->getWithJoins($filter, array(), 0, $db);
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getKiemeltTermekek($filter, $db) {
+    public function getKiemeltTermekek($filter, $db)
+    {
         $kiemeltfilter = new FilterDescriptor();
         $this->addAktivLathatoFilter($kiemeltfilter);
         $kiemeltfilter->addFilter('kiemelt', '=', true);
@@ -507,13 +547,13 @@ class TermekRepository extends \mkwhelpers\Repository {
                 \mkw\store::setTranslationHint($q, \mkw\store::getLocale());
             }
             return $q->getScalarResult();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getLegnepszerubbTermekek($db) {
+    public function getLegnepszerubbTermekek($db)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -528,7 +568,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, $order, 0, $db);
     }
 
-    public function getLegujabbTermekek($db) {
+    public function getLegujabbTermekek($db)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -543,7 +584,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, $order, 0, $db);
     }
 
-    public function getHasonloTermekek($termek, $db, $arszaz) {
+    public function getHasonloTermekek($termek, $db, $arszaz)
+    {
         $arszaz = (int)$arszaz;
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
@@ -574,23 +616,21 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, array(), 0, $db);
     }
 
-    public function getHozzavasaroltTermekek($termek) {
+    public function getHozzavasaroltTermekek($termek)
+    {
         if ($termek) {
             if (is_array($termek)) {
                 $x = array();
                 if ($termek instanceof \Entities\Termek) {
                     $x[] = $termek->getId();
-                }
-                else {
+                } else {
                     $x = $termek;
                 }
                 $tlist = implode(',', $x);
-            }
-            else {
+            } else {
                 if ($termek instanceof \Entities\Termek) {
                     $tlist = $termek->getId();
-                }
-                else {
+                } else {
                     $tlist = (int)$termek;
                 }
             }
@@ -619,8 +659,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 
             if ($rr) {
                 $filter->addFilter('id', 'IN', $rr);
-            }
-            else {
+            } else {
                 $filter->addFilter('id', '=', -1);
             }
 
@@ -629,7 +668,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function getNevek($keresett) {
+    public function getNevek($keresett)
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('_xx.nev', 'LIKE', '%' . $keresett . '%');
@@ -655,7 +695,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getBizonylattetelLista($keresett) {
+    public function getBizonylattetelLista($keresett)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter(array('_xx.nev', '_xx.cikkszam', '_xx.vonalkod'), 'LIKE', '%' . $keresett . '%');
         $order = array('_xx.nev' => 'ASC');
@@ -676,7 +717,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getUjTermekId() {
+    public function getUjTermekId()
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -701,7 +743,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getTop10Mennyiseg() {
+    public function getTop10Mennyiseg()
+    {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -726,7 +769,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function calcKeszlet($filter, $plusfields = '', $groupby = '', $order = array()) {
+    public function calcKeszlet($filter, $plusfields = '', $groupby = '', $order = array())
+    {
         if ($plusfields) {
             $plusfields = ' ,' . $plusfields . ' ';
         }
@@ -744,8 +788,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function calcNapijelentes($filter) {
-
+    public function calcNapijelentes($filter)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
         $rsm->addScalarResult('nettohuf', 'nettohuf');
@@ -765,7 +809,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getForImport($gyarto, $inaktiv = null) {
+    public function getForImport($gyarto, $inaktiv = null)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('gyarto', '=', $gyarto);
         if ($inaktiv === false || $inaktiv === true) {
@@ -779,7 +824,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getWithValtozatokForImport($gyarto) {
+    public function getWithValtozatokForImport($gyarto)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('gyarto', '=', $gyarto);
         $q = $this->_em->createQuery('SELECT _xx, v'
@@ -790,7 +836,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getKarton($filter, $order) {
+    public function getKarton($filter, $order)
+    {
         $q = $this->_em->createQuery('SELECT bt,bf '
             . 'FROM Entities\Bizonylattetel bt '
             . 'LEFT JOIN bt.bizonylatfej bf '
@@ -801,24 +848,28 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function clearNepszeruseg() {
+    public function clearNepszeruseg()
+    {
         $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.nepszeruseg = 0');
         $q->Execute();
     }
 
-    public function getMarkaCount($cimke) {
+    public function getMarkaCount($cimke)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('db', 'db');
         $r = array();
         $q = $this->_em->createNativeQuery('SELECT COUNT(*) AS db '
             . 'FROM termek_cimkek tc '
             . 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
-            . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (' . \mkw\store::getWebshopFieldName('t.lathato') . '=1) AND (t.fuggoben=0)', $rsm);
+            . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (' . \mkw\store::getWebshopFieldName('t.lathato') . '=1) AND (t.fuggoben=0)',
+            $rsm);
         $res = $q->getScalarResult();
         return (int)$res[0]['db'];
     }
 
-    public function getKepekKiveve($termek, $valtozat) {
+    public function getKepekKiveve($termek, $valtozat)
+    {
         $altomb = array();
         $kivet = 0;
         if ($valtozat) {

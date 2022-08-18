@@ -321,6 +321,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
         		return $t;
             case \mkw\store::isSuperzoneB2B():
+                $kulfoldi = false;
                 $partner = \mkw\store::getLoggedInUser();
                 if ($partner) {
                     $cimkek = $partner->getCimkek();

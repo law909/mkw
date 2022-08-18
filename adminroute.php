@@ -96,6 +96,10 @@ $router->map('GET', '/admin/rendezvenyallapot/jsonlist', 'rendezvenyallapotContr
 $router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
 $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
 
+$router->map('GET', '/admin/arlista/view', 'arlistaController#view', 'adminarlistaview');
+$router->map('GET', '/admin/arlista/get', 'arlistaController#createLista', 'adminarlistaget');
+$router->map('GET', '/admin/arlista/export', 'arlistaController#exportLista', 'adminarlistaexport');
+
 if (\mkw\store::isMPT()) {
     $router->map('GET', '/admin/mpttagozat/jsonlist', 'mpttagozatController#jsonlist', 'adminmpttagozatjsonlist');
     $router->map('GET', '/admin/mpttagozat/htmllist', 'mpttagozatController#htmllist', 'adminmpttagozathtmllist');
@@ -159,8 +163,10 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jutaleklista/export', 'jutaleklistaController#exportLista', 'adminjutaleklistaexport');
 
     $router->map('GET', '/admin/idoszakipenztarjelenteslista/view', 'idoszakipenztarjelenteslistaController#view', 'adminidoszakipenztarjelenteslistaview');
-    $router->map('GET', '/admin/idoszakipenztarjelenteslista/get', 'idoszakipenztarjelenteslistaController#createLista', 'adminidoszakipenztarjelenteslistaget');
-    $router->map('GET', '/admin/idoszakipenztarjelenteslista/export', 'idoszakipenztarjelenteslistaController#exportLista', 'adminidoszakipenztarjelenteslistaexport');
+    $router->map('GET', '/admin/idoszakipenztarjelenteslista/get', 'idoszakipenztarjelenteslistaController#createLista',
+        'adminidoszakipenztarjelenteslistaget');
+    $router->map('GET', '/admin/idoszakipenztarjelenteslista/export', 'idoszakipenztarjelenteslistaController#exportLista',
+        'adminidoszakipenztarjelenteslistaexport');
 
     $router->map('GET', '/admin/penztarzaras/view', 'penztarbizonylatfejController#zarasView', 'adminpenztarzarasview');
     $router->map('POST', '/admin/penztarzaras/zar', 'penztarbizonylatfejController#zar', 'adminpenztarzaraszar');
@@ -446,7 +452,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrstaticpage/delall', 'mnrstaticpageController#delall', 'adminmnrstaticpagedelall');
 }
 
-$router->map('GET', '/admin/mnrstaticpagetranslation/getemptyrow', 'mnrstaticpagetranslationController#getemptyrow', 'adminmnrstaticpagetranslationgetemptyrow');
+$router->map('GET', '/admin/mnrstaticpagetranslation/getemptyrow', 'mnrstaticpagetranslationController#getemptyrow',
+    'adminmnrstaticpagetranslationgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrstaticpagetranslation/save', 'mnrstaticpagetranslationController#save', 'adminmnrstaticpagetranslationsave');
 }
@@ -478,9 +485,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekar/save', 'termekarController#save', 'admintermekarsave');
 }
 
-$router->map('GET', '/admin/partnertermekcsoportkedvezmeny/getemptyrow', 'partnertermekcsoportkedvezmenyController#getemptyrow', 'adminpartnertermekcsoportkedvezmenygetemptyrow');
+$router->map('GET', '/admin/partnertermekcsoportkedvezmeny/getemptyrow', 'partnertermekcsoportkedvezmenyController#getemptyrow',
+    'adminpartnertermekcsoportkedvezmenygetemptyrow');
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/partnertermekcsoportkedvezmeny/save', 'partnertermekcsoportkedvezmenyController#save', 'adminpartnertermekcsoportkedvezmenysave');
+    $router->map('POST', '/admin/partnertermekcsoportkedvezmeny/save', 'partnertermekcsoportkedvezmenyController#save',
+        'adminpartnertermekcsoportkedvezmenysave');
 }
 
 $router->map('GET', '/admin/partnertermekkedvezmeny/getemptyrow', 'partnertermekkedvezmenyController#getemptyrow', 'adminpartnertermekkedvezmenygetemptyrow');
@@ -513,7 +522,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/fizmodtranslation/save', 'fizmodtranslationController#save', 'adminfizmodtranslationsave');
 }
 
-$router->map('GET', '/admin/szallitasimodtranslation/getemptyrow', 'szallitasimodtranslationController#getemptyrow', 'adminszallitasimodtranslationgetemptyrow');
+$router->map('GET', '/admin/szallitasimodtranslation/getemptyrow', 'szallitasimodtranslationController#getemptyrow',
+    'adminszallitasimodtranslationgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szallitasimodtranslation/save', 'szallitasimodtranslationController#save', 'adminszallitasimodtranslationsave');
 }
@@ -558,7 +568,8 @@ $router->map('GET', '/admin/szallitasimod/viewkarb', 'szallitasimodController#vi
 $router->map('GET', '/admin/szallitasimod/htmllist', 'szallitasimodController#htmllist', 'adminszallitasimodhtmllist');
 $router->map('GET', '/admin/szallitasimodhatar/getemptyrow', 'szallitasimodhatarController#getemptyrow', 'adminszallitasimodhatargetemptyrow');
 $router->map('GET', '/admin/szallitasimodorszag/getemptyrow', 'szallitasimodorszagController#getemptyrow', 'adminszallitasimodorszaggetemptyrow');
-$router->map('GET', '/admin/szallitasimodfizmodnovelo/getemptyrow', 'szallitasimodfizmodnoveloController#getemptyrow', 'adminszallitasimodfizmodnovelogetemptyrow');
+$router->map('GET', '/admin/szallitasimodfizmodnovelo/getemptyrow', 'szallitasimodfizmodnoveloController#getemptyrow',
+    'adminszallitasimodfizmodnovelogetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save', 'adminszallitasimodsave');
     $router->map('POST', '/admin/szallitasimodhatar/save', 'szallitasimodhatarController#save', 'adminszallitasimodhatarsave');
@@ -874,9 +885,12 @@ $router->map('GET', '/admin/termekforgalmilista/view', 'termekforgalmilistaContr
 $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaController#refresh', 'admintermekforgalmilistarefresh');
 $router->map('GET', '/admin/termekforgalmilista/export', 'termekforgalmilistaController#export', 'admintermekforgalmilistaexport');
 
-$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/view', 'partnermijszoralatogatasosszesitolistaController#view', 'adminpartnermijszoralatogatasosszesitolistaview');
-$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/refresh', 'partnermijszoralatogatasosszesitolistaController#refresh', 'adminpartnermijszoralatogatasosszesitolistarefresh');
-$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/export', 'partnermijszoralatogatasosszesitolistaController#export', 'adminpartnermijszoralatogatasosszesitolistaexport');
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/view', 'partnermijszoralatogatasosszesitolistaController#view',
+    'adminpartnermijszoralatogatasosszesitolistaview');
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/refresh', 'partnermijszoralatogatasosszesitolistaController#refresh',
+    'adminpartnermijszoralatogatasosszesitolistarefresh');
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/export', 'partnermijszoralatogatasosszesitolistaController#export',
+    'adminpartnermijszoralatogatasosszesitolistaexport');
 
 $router->map('GET', '/admin/bizonylattetellista/view', 'bizonylattetellistaController#view', 'adminbizonylattetellistaview');
 $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaController#refresh', 'adminbizonylattetellistarefresh');
@@ -926,14 +940,16 @@ $router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelen
 $router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'rendezvenyjelentkezesController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
 $router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'rendezvenyjelentkezesController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
 $router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
-$router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg', 'adminrendezvenyjelentkezesgetfizetettosszeg');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg',
+    'adminrendezvenyjelentkezesgetfizetettosszeg');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/rendezvenyjelentkezes/save', 'rendezvenyjelentkezesController#save', 'adminrendezvenyjelentkezessave');
     $router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'rendezvenyjelentkezesController#fizet', 'adminrendezvenyjelentkezesfizet');
     $router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'rendezvenyjelentkezesController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
     $router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'rendezvenyjelentkezesController#lemond', 'adminrendezvenyjelentkezeslemond');
     $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/email/dijbekero', 'rendezvenyjelentkezesController#sendDijbekeroEmail', 'adminsendrendezvenyjeldijbekeroemail');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/email/dijbekero', 'rendezvenyjelentkezesController#sendDijbekeroEmail',
+        'adminsendrendezvenyjeldijbekeroemail');
     $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjelentkezesController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
 }
 
