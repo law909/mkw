@@ -17,6 +17,9 @@ class arlistaController extends \mkwhelpers\Controller
     {
         $view = $this->createView('arlista.tpl');
 
+        $partner = new partnerController($this->params);
+        $view->setVar('partnerlist', $partner->getSelectList());
+
         $pcc = new partnercimkekatController($this->params);
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
 
@@ -27,10 +30,16 @@ class arlistaController extends \mkwhelpers\Controller
     {
         $filter = new FilterDescriptor();
 
-        $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
-        $this->partnerkodok = $partnerkodok;
-        if ($partnerkodok) {
-            $filter->addFilter('id', 'IN', $partnerkodok);
+        $partnerid = $this->params->getIntRequestParam('partner');
+        if ($partnerid) {
+            $filter->addFilter('id', '=', $partnerid);
+        }
+        else {
+            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            $this->partnerkodok = $partnerkodok;
+            if ($partnerkodok) {
+                $filter->addFilter('id', 'IN', $partnerkodok);
+            }
         }
 
         return $filter;

@@ -19,6 +19,8 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="arlista" action="" target="_blank">
+                    {include "comp_partnerselect.tpl"}
+                    <div class="matt-hseparator"></div>
                     {include "comp_partnercimkefilter.tpl"}
                     <div class="matt-hseparator"></div>
                     {include "comp_termekfa.tpl"}
