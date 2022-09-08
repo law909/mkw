@@ -133,6 +133,9 @@ body {
 
 .szlogencontainer {
     margin: 0 auto;
+    position: absolute;
+    top: 20vh;
+    width: 100%;
 }
 
 .szlogen1 {
@@ -140,9 +143,9 @@ body {
     font-size: 140px;
     font-weight: bold;
     grid-row: 1;
-    position: absolute;
-    top: 30%;
-    left: 20%;
+    white-space: nowrap;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .szlogen2 {
@@ -150,9 +153,9 @@ body {
     font-size: 50px;
     font-weight: bold;
     grid-row: 2;
-    position: absolute;
-    top: 50%;
-    left: 10%;
+    white-space: nowrap;
+    text-align: center;
+    text-transform: lowercase;
 }
 
 .page-container {
@@ -251,17 +254,17 @@ body {
     .szlogen1 {
         font-size: 280px;
         grid-row: 1;
-        position: absolute;
-        top: 40%;
-        left: 40%;
+        white-space: nowrap;
+        text-align: center;
+        text-transform: uppercase;
     }
 
     .szlogen2 {
         font-size: 50px;
         grid-row: 2;
-        position: absolute;
-        top: 40%;
-        left: 30%;
+        white-space: nowrap;
+        text-align: center;
+        text-transform: lowercase;
     }
 
     .page-szlogen1 {

@@ -147,19 +147,4 @@ class mnrlandingController extends \mkwhelpers\MattableController {
 		$view->setVar('egyed', $this->loadVars($mnrlanding, true));
         $view->printTemplateResult();
 	}
-
-	public function show() {
-        $com = $this->params->getStringParam('lap');
-        /** @var MNRLanding $statlap */
-        $statlap = $this->getRepo()->findOneBySlug($com);
-        if ($statlap) {
-            $view = $this->getTemplateFactory()->createMainView('mnrlanding.tpl');
-            \mkw\store::fillTemplate($view);
-            $view->setVar('mnrlanding', $statlap->toPublic());
-            $view->printTemplateResult(true);
-        }
-        else {
-            \mkw\store::redirectTo404($com, $this->params);
-        }
-    }
 }

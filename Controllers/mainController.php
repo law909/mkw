@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\MNRLanding;
 use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
 
@@ -75,8 +76,10 @@ class mainController extends \mkwhelpers\Controller {
                 $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
                 break;
 
-            case \mkw\store::isMIJSZ():
-
+            case \mkw\store::isMugenrace2021():
+                $rs = $this->getRepo(MNRLanding::class)->getAll([], ['id' => 'ASC']);
+                $r = $rs[0];
+                $this->view->setVar('mnrlanding', $r->toPublic());
                 break;
         }
 		$this->view->printTemplateResult(true);
