@@ -35,6 +35,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		$x['nev'] = $t->getNev();
 		$x['szlogen1'] = $t->getSzlogen1();
 		$x['szlogen2'] = $t->getSzlogen2();
+		$x['slug'] = $t->getSlug();
 		if ($forKarb) {
 
             foreach ($t->getMNRStaticPages() as $tvaltozat) {

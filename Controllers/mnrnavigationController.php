@@ -24,7 +24,7 @@ class mnrnavigationController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
-	protected function loadVars($t, $forKarb = false) {
+	public function loadVars($t, $forKarb = false) {
         $mnrCtrl = new mnrstaticController($this->params);
         $translationsCtrl = new mnrnavigationtranslationController($this->params);
         $translations = array();

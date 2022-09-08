@@ -2,8 +2,10 @@
 
 namespace mkw;
 
+use Controllers\mnrnavigationController;
 use Doctrine\ORM\EntityManager;
 use Entities\Fizmod;
+use Entities\MNRNavigation;
 use Entities\Partner;
 use http\Params;
 
@@ -557,6 +559,15 @@ class store {
         }
         else {
             $v->setVar('myownaccount', true);
+        }
+        if (\mkw\store::isMugenrace2021()) {
+            $mnrnavictrl = new mnrnavigationController(null);
+            $mnrnavi = [];
+            $navis = self::getEm()->getRepository(MNRNavigation::class)->getAll([], ['szam' => 'ASC']);
+            foreach ($navis as $navi) {
+                $mnrnavi[] = $mnrnavictrl->loadVars($navi);
+            }
+            $v->setVar('mnrnavigation', $mnrnavi);
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));

@@ -19,6 +19,15 @@
     <div class="menucloser">
         <a href="" class="menu-close"><img src="/themes/main/mugenrace2021/close_b.png" class="nav-img" alt="Close menu">CLOSE</a>
     </div>
+    <div>
+    {foreach $mnrnavigation as $mnrnavi}
+        <div>
+            <a href="/mnrstatic/{$mnrnavi.mnrstatic.slug}" class="menu-nav-num">{$mnrnavi.szam}</a>
+            <a href="/mnrstatic/{$mnrnavi.mnrstatic.slug}" class="menu-nav-text">{$mnrnavi.nev}</a>
+            <div class="menu-nav-slogen">{$mnrnavi.szlogen}</div>
+        </div>
+    {/foreach}
+    </div>
     <svg class="menu-bottom-triangle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <polygon fill="black" points="0,100 100,100 100,0"/>
     </svg>

@@ -32,6 +32,21 @@ body {
     overflow: hidden;
 }
 
+.menu-nav-text {
+    text-transform: uppercase;
+    font-size: 18vh;
+}
+
+.menu-nav-num {
+    text-transform: uppercase;
+    font-size: 10vh;
+}
+
+.menu-nav-slogen {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
 .menucontainer-down {
     transform: translateY(100vh);
 }
