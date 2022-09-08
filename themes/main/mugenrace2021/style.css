@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Helvetica Neue";
+    src: url("/themes/main/mugenrace2021/HelveticaNeueLTPro-Bd.woff") format("woff");
+}
+
 .hcenter {
     margin: 0 auto;
 }
@@ -17,6 +22,7 @@
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: italic;
     margin: 0;
     overflow-x: hidden;
 }
@@ -73,8 +79,8 @@ body {
     opacity: 0.3;
     bottom: -8vw;
     position: absolute;
-    font-size: 18vw;
-    left: -5vw;
+    font-size: 16vw;
+    left: -2vw;
     font-style: oblique;
     font-weight: bold;
 }
@@ -134,7 +140,7 @@ body {
 .szlogencontainer {
     margin: 0 auto;
     position: absolute;
-    top: 20vh;
+    top: 30vh;
     width: 100%;
 }
 
