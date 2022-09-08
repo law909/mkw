@@ -22,7 +22,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
-	protected function loadVars($t, $forKarb = false) {
+	public function loadVars($t, $forKarb = false) {
         $mnrCtrl = new mnrstaticpageController($this->params);
         $translationsCtrl = new mnrstatictranslationController($this->params);
         $translations = array();
@@ -189,9 +189,9 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		$res = array();
 		foreach ($rec as $sor) {
 			$res[] = array(
-				'id' => $sor['id'],
-				'caption' => $sor['nev'],
-				'selected' => ($sor['id'] == $selid)
+				'id' => $sor->getId(),
+				'caption' => $sor->getNev(),
+				'selected' => ($sor->getId() == $selid)
 			);
 		}
 		return $res;
@@ -201,7 +201,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		$rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
 		$ret = '<select>';
 		foreach ($rec as $sor) {
-			$ret.='<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
+			$ret.='<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
 		}
 		$ret.='</select>';
 		echo $ret;

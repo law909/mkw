@@ -458,6 +458,19 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrstaticpagetranslation/save', 'mnrstaticpagetranslationController#save', 'adminmnrstaticpagetranslationsave');
 }
 
+$router->map('GET', '/admin/mnrnavigation/viewlist', 'mnrnavigationController#viewlist', 'adminmnrnavigationviewlist');
+$router->map('GET', '/admin/mnrnavigation/htmllist', 'mnrnavigationController#htmllist', 'adminmnrnavigationhtmllist');
+$router->map('GET', '/admin/mnrnavigation/getlistbody', 'mnrnavigationController#getlistbody', 'adminmnrnavigationgetlistbody');
+$router->map('GET', '/admin/mnrnavigation/getkarb', 'mnrnavigationController#getkarb', 'adminmnrnavigationgetkarb');
+$router->map('GET', '/admin/mnrnavigation/viewkarb', 'mnrnavigationController#viewkarb', 'adminmnrnavigationviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrnavigation/save', 'mnrnavigationController#save', 'adminmnrnavigationsave');
+}
+$router->map('GET', '/admin/mnrnavigationtranslation/getemptyrow', 'mnrnavigationtranslationController#getemptyrow', 'adminmnrnavigationtranslationgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrnavigationtranslation/save', 'mnrnavigationtranslationController#save', 'adminmnrnavigationtranslationsave');
+}
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
