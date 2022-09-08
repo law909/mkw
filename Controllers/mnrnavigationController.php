@@ -158,7 +158,7 @@ class mnrnavigationController extends \mkwhelpers\MattableController {
 		$view = $this->createView($tplname);
 		$view->setVar('pagetitle', t('MNR Navigáció'));
 		$view->setVar('oper', $oper);
-        $view->setVar('mnrstaticlist', $staticCtrl->getSelectList($mnrnavigation->getMnrstaticId()));
+        $view->setVar('mnrstaticlist', $staticCtrl->getSelectList($mnrnavigation ? $mnrnavigation->getMnrstaticId() : null));
 
 		$view->setVar('egyed', $this->loadVars($mnrnavigation, true));
         $view->printTemplateResult();
