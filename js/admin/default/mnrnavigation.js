@@ -8,8 +8,6 @@ $(document).ready(function () {
         saveUrl: '/admin/mnrnavigation/save',
         beforeShow: function () {
             var translationtab = $('#TranslationTab');
-            var mnrstaticpagetab = $('#MNRStaticPageTab');
-            var altalanostab = $('#AltalanosTab');
             translationtab.on('click', '.js-translationnewbutton', function (e) {
                     var $this = $(this);
                     e.preventDefault();
