@@ -415,10 +415,10 @@
                             </select>
                         </div>
                         <div class="setuprow">
-                            <span class="setuplabel"><label for="jogagyakorlolemondasSablonEdit">{at('Gyakorló lemondás')}:</label></span>
-                            <select id="jogagyakorlolemondasSablonEdit" name="jogagyakorlolemondassablon">
+                            <span class="setuplabel"><label for="jogaelmaradasertesitoSablonEdit">{at('Elmaradás értesítő')}:</label></span>
+                            <select id="jogaelmaradasertesitoSablonEdit" name="jogaelmaradasertesitosablon">
                                 <option value="">{at('válasszon')}</option>
-                                {foreach $jogagyakorlolemondassablonlist as $_belsouk}
+                                {foreach $jogaelmaradasertesitosablonlist as $_belsouk}
                                     <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
                                 {/foreach}
                             </select>
