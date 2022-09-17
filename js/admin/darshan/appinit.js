@@ -1,5 +1,25 @@
+function pleaseWait(msg) {
+    if (typeof(msg)!=='string') {
+        msg='Kérem várjon...';
+    }
+    $.blockUI({
+        message:msg,
+        css:{
+            border:'none',
+            padding:'15px',
+            backgroundColor:'#000',
+            '-webkit-border-radius':'10px',
+            '-moz-border-radius':'10px',
+            opacity:.5,
+            color:'#fff'
+        }
+    });
+}
+
 $(document).ready(
 	function(){
+
+        let dialogcenter = $('#dialogcenter');
 
         eladas = eladas();
         eladas.init();
@@ -59,6 +79,27 @@ $(document).ready(
                 url: $(this).data('url'),
                 success: function() {
                     window.location.reload(true);
+                }
+            });
+        });
+
+        $('.js-berletlejaratas').button();
+        $('.js-berletlejaratas').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                method: 'GET',
+                url: $(this).data('url'),
+                success: function() {
+                    dialogcenter.html('A bérletek lejáratása sikerült.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function() {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
                 }
             });
         });

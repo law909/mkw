@@ -863,6 +863,7 @@ $router->map('GET', '/admin/jogaberlet/getkarb', 'jogaberletController#getkarb',
 $router->map('GET', '/admin/jogaberlet/viewkarb', 'jogaberletController#viewkarb', 'adminjogaberletviewkarb');
 $router->map('GET', '/admin/jogaberlet/getselect', 'jogaberletController#getSelectHtml', 'adminjogaberletgetselect');
 $router->map('GET', '/admin/jogaberlet/getar', 'jogaberletController#getar', 'adminjogaberletgetar');
+$router->map('GET', '/admin/jogaberlet/lejarat', 'jogaberletController#bulkLejarat', 'adminjogaberletbulklejarat');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/jogaberlet/save', 'jogaberletController#save', 'adminjogaberletsave');
     $router->map('POST', '/admin/jogaberlet/setflag', 'jogaberletController#setflag', 'adminjogaberletsetflag');

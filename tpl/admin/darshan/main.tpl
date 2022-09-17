@@ -27,6 +27,14 @@
                 {/if}
             </div>
         </div>
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Bérlet lejáratás</div>
+            </div>
+            <div class="mainboxinner">
+                <a href="#" class="js-berletlejaratas" data-url="/admin/jogaberlet/lejarat">Lejáratás</a>
+            </div>
+        </div>
     </div>
     <div class="clearboth">
     <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">

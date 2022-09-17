@@ -337,6 +337,7 @@ class consts {
     const JogaBerletFelszolitoSablon = 'jogaberletfelszolitosablon';
     const JogaBerletLefogjarniSablon = 'jogaberletlefogjarnisablon';
     const JogaBerletLejartSablon = 'jogaberletlejartsablon';
+    const JogaBerletDatumLejartSablon = 'jogaberletdatumlejartsablon';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';

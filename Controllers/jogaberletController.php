@@ -90,7 +90,11 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
         $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
         $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
+        $oldlejart = $obj->isLejart();
         $obj->setLejart($this->params->getBoolRequestParam('lejart'));
+        if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
+            $obj->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+        }
         return $obj;
     }
 
@@ -408,7 +412,11 @@ class jogaberletController extends \mkwhelpers\MattableController {
         if ($obj) {
             switch ($flag) {
                 case 'lejart':
+                    $oldlejart = $obj->isLejart();
                     $obj->setLejart($kibe);
+                    if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
+                        $obj->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+                    }
                     break;
                 case 'nincsfizetve':
                     $obj->setNincsfizetve($kibe);
@@ -417,5 +425,31 @@ class jogaberletController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
         }
+    }
+
+    public function bulkLejarat()
+    {
+        $dt = new \DateTime();
+        $dt->modify('-6 weeks');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('vasarlasnapja', '<=', $dt->format(\mkw\store::$SQLDateFormat));
+        $filter->addFilter('lejart', '=', false);
+        $berletek = $this->getRepo()->getAll($filter);
+        /** @var JogaBerlet $berlet */
+        foreach ($berletek as $berlet) {
+            $berlet->setLejart(true);
+            $this->getEm()->persist($berlet);
+            $this->getEm()->flush();
+            \mkw\store::writelog(
+                $berlet->getId() . ': '
+                . $berlet->getNev() . ' | '
+                . $berlet->getPartnernev()
+                . ' (' . $berlet->getPartneremail() . ') | '
+                . $berlet->getVasarlasnapjaStr() . ' | '
+                . $berlet->getElfogyottalkalom() . ' elfogyott alkalom'
+                , 'berletlejarat.txt');
+            $berlet->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+        }
+        echo 'ok';
     }
 }
