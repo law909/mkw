@@ -175,6 +175,10 @@ class setupController extends \mkwhelpers\Controller {
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogalemondaskoszonosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::JogaGyakorloLemondasSablon);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('jogagyakorlolemondassablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
@@ -1146,6 +1150,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::JogaLemondasKoszonoSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaGyakorloLemondasSablon, 0));
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::JogaGyakorloLemondasSablon, $levelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::JogaGyakorloLemondasSablon, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));

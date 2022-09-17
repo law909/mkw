@@ -329,6 +329,7 @@ class consts {
     const JogaElegenjelentkeztekTanarnakSablon = 'jogaelegenjelentkeztektanarnaksablon';
     const JogaBejelentkezesKoszonoSablon = 'jogabejelentkezeskoszonosablon';
     const JogaLemondasKoszonoSablon = 'jogalemondaskoszonosablon';
+    const JogaGyakorloLemondasSablon = 'jogagyakorlolemondassablon';
     const JogaElmaradasKonyvelonekSablon = 'jogaelmaradaskonyveloneksablon';
     const JogaOrajegyTermek = 'jogaorajegytermek';
     const JogaBerlet4Termek = 'jogaberlet4termek';

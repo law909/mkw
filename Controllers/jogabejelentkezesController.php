@@ -186,7 +186,7 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController {
                 $ora = $this->getRepo(Orarend::class)->find($orarendid);
                 /** @var \Entities\Partner $partner */
                 $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
-                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesKoszonoSablon));
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaGyakorloLemondasSablon));
                 if ($email && $emailtpl && $ora) {
 
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
