@@ -4,6 +4,7 @@ namespace Controllers;
 
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use Entities;
 
 class orarendhelyettesitesController extends \mkwhelpers\MattableController {
 
@@ -51,7 +52,11 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
                     $obj->setHelyettesito(null);
                 }
                 $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+                $oldelmarad = $obj->getElmarad();
                 $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
+                if ($obj->getElmarad() && $oldelmarad !== $obj->getElmarad()) {
+                    $this->sendErtesitoEmail($obj);
+                }
                 break;
             default:
                 $orarend = \mkw\store::getEm()->getRepository('Entities\Orarend')->find($this->params->getIntRequestParam('orarend'));
@@ -68,11 +73,51 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
                 $obj->setDatum($this->params->getStringRequestParam('datum'));
                 $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
                 $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
+                if ($obj->getElmarad()) {
+                    $this->sendErtesitoEmail($obj);
+                }
         }
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
 
+	protected function sendErtesitoEmail($obj) {
+        $ora = $this->getRepo(Entities\Orarend::class)->find($obj->getOrarendId());
+        if ($ora) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('orarend', '=', $obj->getOrarendId());
+            $filter->addFilter('datum', '=', $obj->getDatum()->format(\mkw\store::$SQLDateFormat));
+            $resztvevok = $this->getRepo(Entities\JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
+
+            /** @var \Entities\JogaBejelentkezes $resztvevo */
+            foreach ($resztvevok as $resztvevo) {
+                $email = $resztvevo->getPartneremail();
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaLemondasKoszonoSablon));
+                if ($email && $emailtpl) {
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
+                    $body->setVar('oranev', $ora->getJogaoratipusNev());
+                    $body->setVar('tanarnev', $ora->getDolgozoNev());
+                    $body->setVar('idopont', $ora->getKezdetStr());
+                    if ($resztvevo) {
+                        $body->setVar('partnerkeresztnev', $resztvevo->getPartnerKeresztnev());
+                        $body->setVar('partnervezeteknev', $resztvevo->getPartnerVezeteknev());
+                    }
+                    $body->setVar('datum', $obj->getDatumStr());
+
+                    $mailer = \mkw\store::getMailer();
+
+                    $mailer->addTo($email);
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+
+                    $mailer->send();
+                }
+            }
+        }
+    }
     /**
      * @param \Entities\Orarendhelyettesites $o
      * @return mixed
