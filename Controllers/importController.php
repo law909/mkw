@@ -619,6 +619,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     if ($gyarto) {
                         rewind($fh);
@@ -922,6 +924,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     if ($gyarto) {
                         rewind($fh);
@@ -949,12 +953,16 @@ class importController extends \mkwhelpers\Controller {
                                         if (($termekdb % $batchsize) === 0) {
                                             \mkw\store::getEm()->flush();
                                             \mkw\store::getEm()->clear();
+                                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                         }
                                     }
                                 }
                             }
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     if ($lettlog) {
@@ -1227,6 +1235,8 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
@@ -1411,6 +1421,8 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
@@ -1567,11 +1579,15 @@ class importController extends \mkwhelpers\Controller {
                     if (($termekdb % $batchsize) === 0) {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
                     $termekdb++;
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $szulok = null;
                 $gyereklist = null;
@@ -1633,10 +1649,14 @@ class importController extends \mkwhelpers\Controller {
                         if (($termekdb % $batchsize) === 0) {
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 }
                 if ($lettlog) {
                     echo json_encode(array('url' => $logurl));
@@ -1959,12 +1979,15 @@ class importController extends \mkwhelpers\Controller {
                     if (($termekdb % $batchsize) === 0) {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                         $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
                     $termekdb++;
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 if ($gyarto) {
@@ -2002,10 +2025,14 @@ class importController extends \mkwhelpers\Controller {
                         if (($termekdb % $batchsize) === 0) {
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 }
                 if ($lettlog) {
                     echo json_encode(array('url' => $logurl));
@@ -2449,10 +2476,12 @@ class importController extends \mkwhelpers\Controller {
                         if (($termekdb % $batchsize) === 0) {
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 }
                 if ($lettlog) {
                     echo json_encode(array('url' => $logurl));
@@ -2977,6 +3006,9 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                 if ($lettlog) {
                     echo json_encode(array('url' => $logurl));
                 }
@@ -3308,6 +3340,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     if ($gyarto) {
                         rewind($fh);
@@ -3349,6 +3383,8 @@ class importController extends \mkwhelpers\Controller {
                                                     if (($termekdb % $batchsize) === 0) {
                                                         \mkw\store::getEm()->flush();
                                                         \mkw\store::getEm()->clear();
+                                                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                                                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                                     }
                                                 }
                                             }
@@ -3379,6 +3415,8 @@ class importController extends \mkwhelpers\Controller {
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
                                                 \mkw\store::getEm()->clear();
+                                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                             }
                                         }
                                     }
@@ -3403,6 +3441,8 @@ class importController extends \mkwhelpers\Controller {
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
                                                 \mkw\store::getEm()->clear();
+                                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                             }
                                         }
                                     }
@@ -3410,6 +3450,8 @@ class importController extends \mkwhelpers\Controller {
                             }
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     if ($lettlog) {
