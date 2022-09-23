@@ -1568,12 +1568,14 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\store::getEm()->persist($termek);
                         }
                         else {
+                            /**
                             \mkw\store::writelog(
                                 'NO PARENT'
                                 . ' ' . $data['sku'] . '|' . $data['name'],
                                 $logfile
                             );
                             $lettlog = true;
+                            **/
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
