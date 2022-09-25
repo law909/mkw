@@ -86,6 +86,39 @@ $(document).ready(function() {
                 });
                 return false;
             }).button();
+            $('.js-web4defakatid').on('click', function(e) {
+                dialogcenter.jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
+                })
+                    .bind('loaded.jstree', function(event, data) {
+                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                    });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var ide = dialogcenter.jstree('get_selected').children('a').attr('id'),
+                                caption = dialogcenter.jstree('get_selected').children('a').text(),
+                                ideid = ide.split('_')[1];
+                            $('.js-web4defakatid span').text(caption);
+                            $('input[name="web4defakatid"]').val(ideid);
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+                return false;
+            }).button();
             $('.js-mugenracekatid').on('click', function(e) {
                 dialogcenter.jstree({
                     core: {animation: 100},

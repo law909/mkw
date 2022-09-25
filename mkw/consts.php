@@ -33,6 +33,9 @@ class consts {
     const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
     const BelsoUzletkoto = 'belsouzletkoto';
     const Off = 'off';
+    const Off2 = 'off2';
+    const Off3 = 'off3';
+    const Off4 = 'off4';
     const Orszag = 'orszag';
     const Magyarorszag = 'magyarorszag';
     const Watermark = 'watermark';
@@ -310,6 +313,9 @@ class consts {
     const Webshop2Discount = 'Webshop2Discount';
     const Webshop3Price = 'Webshop3Price';
     const Webshop3Discount = 'Webshop3Discount';
+    const Webshop4Price = 'Webshop4Price';
+    const Webshop4Discount = 'Webshop4Discount';
+    const Web4DefaKatId = 'Web4DefaKatId';
 
     const SZEPFizmod = 'szepkartyafizmod';
     const SportkartyaFizmod = 'sportkartyafizmod';

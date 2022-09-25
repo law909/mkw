@@ -119,8 +119,12 @@ if (file_exists('pubadminroute.php')) {
 }
 $redirected = false;
 
+$webshopnum = store::getSetupValue('webshopnum', '1');
+if ($webshopnum == '1') {
+    $webshopnum = '';
+}
 $match = $router->match();
-if (store::getParameter(\mkw\consts::Off) && substr($match['name'], 0, 5) !== 'admin') {
+if (store::getParameter(\mkw\consts::Off . $webshopnum) && substr($match['name'], 0, 5) !== 'admin') {
     callTheController('mainController#showOff', array());
 }
 else {

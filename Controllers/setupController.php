@@ -319,6 +319,12 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
         $view->setVar(\mkw\consts::Off, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::Off2);
+        $view->setVar(\mkw\consts::Off2, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::Off3);
+        $view->setVar(\mkw\consts::Off3, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::Off4);
+        $view->setVar(\mkw\consts::Off4, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaUresTeremJutalek);
         $view->setVar(\mkw\consts::JogaUresTeremJutalek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaJutalek);
@@ -454,6 +460,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('arsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::Webshop3Discount);
         $view->setVar('akciosarsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop4Price);
+        $view->setVar('arsav4list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop4Discount);
+        $view->setVar('akciosarsav4list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::MarkaCs);
         $markacs = new termekcimkekatController($this->params);
@@ -547,6 +557,22 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $view->setVar('mugenracekat', array(
+                'caption' => '',
+                'id' => ''
+            ));
+        }
+
+        $p = $repo->find(\mkw\consts::Web4DefaKatId);
+        $inkid = $p ? $p->getErtek() : 0;
+        $web4defakat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+        if ($web4defakat) {
+            $view->setVar('web4defakat', array(
+                'caption' => $web4defakat->getNev(),
+                'id' => $web4defakat->getId()
+            ));
+        }
+        else {
+            $view->setVar('web4defakat', array(
                 'caption' => '',
                 'id' => ''
             ));
@@ -1014,6 +1040,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMRendezvenyJelentkezes, $this->params->getIntRequestParam('minicrmrendezvenyjelentkezes'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
         $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
+        $this->setObj(\mkw\consts::Off2, $this->params->getBoolRequestParam(\mkw\consts::Off2));
+        $this->setObj(\mkw\consts::Off3, $this->params->getBoolRequestParam(\mkw\consts::Off3));
+        $this->setObj(\mkw\consts::Off4, $this->params->getBoolRequestParam(\mkw\consts::Off4));
         $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
         $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
         $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
@@ -1316,6 +1345,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Webshop2Discount, $this->params->getStringRequestParam('akciosarsav2'));
         $this->setObj(\mkw\consts::Webshop3Price, $this->params->getStringRequestParam('arsav3'));
         $this->setObj(\mkw\consts::Webshop3Discount, $this->params->getStringRequestParam('akciosarsav3'));
+        $this->setObj(\mkw\consts::Webshop4Price, $this->params->getStringRequestParam('arsav4'));
+        $this->setObj(\mkw\consts::Webshop4Discount, $this->params->getStringRequestParam('akciosarsav4'));
 
         $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {
@@ -1516,6 +1547,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::MugenraceKatId, 0);
+        }
+        $inkid = $this->params->getIntRequestParam('web4defakatid');
+        if ($inkid) {
+            $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+            $this->setObj(\mkw\consts::Web4DefaKatId, $importnewkat->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::Web4DefaKatId, 0);
         }
         //feed
         $this->setObj(\mkw\consts::Feedhirdb, $this->params->getIntRequestParam('feedhirdb', 20));

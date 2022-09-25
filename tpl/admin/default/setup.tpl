@@ -25,6 +25,7 @@
                         <li><a href="#WebTab">{$webshop1name} {at('beállítások')}</a></li>
                         <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
                         <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
+                        <li><a href="#Web4Tab">{$webshop4name} {at('beállítások')}</a></li>
                         <li><a href="#WebshopSetupTab">{at('Webshopok beállításai')}</a></li>
                     {else}
                         <li><a href="#WebTab">{at('Web beállítások')}</a></li>
@@ -1091,6 +1092,47 @@
                                             <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
                                         {/foreach}
                                     </select></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="Web4Tab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Off4Edit">{at('Publikus felület kikapcsolva')}:</label></span>
+                                <input id="Off4Edit" name="off4" type="checkbox"{if ($off4)} checked="checked"{/if}>
+                            </div>
+                        </div>
+                        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <tbody>
+                            <tr>
+                                <td><label for="WS4PriceEdit">{at('Ársáv')}:</label></td>
+                                <td><select id="WS4PriceEdit" name="arsav4">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $arsav4list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS4DiscountPriceEdit">{at('Akciós ársáv')}:</label></td>
+                                <td><select id="WS4DiscountPriceEdit" name="akciosarsav4">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $akciosarsav4list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><label>{at('Alapértelmezett kategória')}:</label></td>
+                                <td>
+                                    <span class="js-web4defakatid">{$web4defakat.caption|default:'nincs megadva'}</span>
+                                    <input name="web4defakatid" type="hidden" value="{$web4defakat.id}">
+                                </td>
                             </tr>
                             </tbody>
                         </table>
