@@ -23,8 +23,8 @@
     {foreach $mnrnavigation as $mnrnavi}
         <div>
             <div>
-            <a href="/mnrstatic/{$mnrnavi.mnrstatic.slug}" class="menu-nav-num">{$mnrnavi.szam}</a>
-            <a href="/mnrstatic/{$mnrnavi.mnrstatic.slug}" class="menu-nav-text">{$mnrnavi.nev}</a>
+            <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat}{/if}" class="menu-nav-num">{$mnrnavi.szam}</a>
+            <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat}{/if}" class="menu-nav-text">{$mnrnavi.nev}</a>
             </div>
             <div class="menu-nav-slogen">{$mnrnavi.szlogen}</div>
         </div>
