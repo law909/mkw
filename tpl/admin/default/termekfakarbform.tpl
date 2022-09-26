@@ -29,6 +29,10 @@
             </tr>
 			</tbody></table>
 			{include 'termekfaimagekarb.tpl'}
+			<div>
+				<label for="SketchfabEdit">{at('Sketchfab model id')}:</label>
+				<input id="SketchfabEdit" name="sketchfabmodelid" type="text" value="{$egyed.sketchfabmodelid}">
+			</div>
 		</div>
 		{if ($setup.multilang)}
 		<div id="TranslationTab" class="mattkarb-page" data-visible="visible">

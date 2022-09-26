@@ -41,7 +41,6 @@
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-style: italic;
     margin: 0;
     overflow-x: hidden;
 }
@@ -61,6 +60,7 @@ a {
     height: 100vh;
     transition: 600ms;
     overflow: hidden;
+    font-style: italic;
 }
 
 .menu-nav-text {
@@ -132,6 +132,7 @@ a {
     align-content: center;
     padding: 5px;
     background: black;
+    font-style: italic;
 }
 
 .nav-img {
@@ -148,6 +149,10 @@ a {
     color: var(--light-font-color);
 }
 
+.nav-spacer {
+    height: 2vh;
+}
+
 .header-triangle {
     grid-row: 2;
     z-index: 998;
@@ -155,12 +160,13 @@ a {
 
 .header-triangle-size {
     width: 100vw;
-    height: 6vh;
+    height: 2vh;
 }
 
 .mainpage {
     height: 100vh;
     position: relative;
+    font-style: italic;
 }
 
 .bgimg {
@@ -198,6 +204,7 @@ a {
 
 .page-container {
     height: 100vh;
+    font-style: italic;
 }
 
 .page {
@@ -230,15 +237,15 @@ a {
     position: absolute;
     top: -1px;
     width: 100%;
-    height: 6vh;
+    height: 2vh;
 }
 
 .page-img-bottom-triangle {
     position: absolute;
-    bottom: 4px;
+    bottom: 6px;
     left: 0;
     width: 100%;
-    height: 6vh;
+    height: 2vh;
 }
 
 .page-szlogen1 {
@@ -246,7 +253,7 @@ a {
     font-size: 12vw;
     font-weight: bold;
     grid-row: 1;
-    transform: rotate(-8deg);
+    transform: rotate(357deg);
     padding-top: 5vw;
 }
 
@@ -255,7 +262,7 @@ a {
     font-size: 6vw;
     font-weight: bold;
     grid-row: 2;
-    transform: rotate(-8deg);
+    transform: rotate(357deg);
 }
 
 .page-tartalom-container {
@@ -272,12 +279,31 @@ a {
 
 .termek-screen {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
 }
 
-.termek-filter {
+.termek-filter-d {
+    display: none;
+}
+
+.termek-filter-inner-d {
     background-color: var(--brand-color);
+    padding: 20px;
+}
+
+.termek-filter-m {
+    background-color: red;
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: -88vh;
+}
+
+.termek-filter-inner-m {
+    display: flex;
+    flex-direction: column;
 }
 
 .termek-grid {
@@ -307,17 +333,63 @@ a {
     margin-top: auto;
 }
 
+.termek-nev {
+    font-style: normal;
+}
+
+.termek-cikkszam {
+    font-size: 0.8em;
+}
+
+.termek-ar-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.termek-ertekeles {
+    flex-basis: 50%;
+}
+
+.termek-ar {
+    flex-basis: 50%;
+    text-align: end;
+}
+
 @media screen and (min-width: 480px) {
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 761px) {
+    .c-viewer__iframe {
+        width: 100vw;
+        height: 100vh;
+    }
+
     .nav {
         grid-template-columns: 1fr 3fr 24fr 1fr 1fr 2fr;
+    }
+
+    .header-triangle-size {
+        width: 100vw;
+        height: 6vh;
+    }
+
+    .nav-spacer {
+        height: 7vh;
     }
 
     .menu-bottom-triangle {
         width: 100%;
         height: 15vh;
+    }
+
+    .page-img-top-triangle {
+        top: 0px;
+        height: 4vh;
+    }
+
+    .page-img-bottom-triangle {
+        bottom: 7px;
+        height: 4vh;
     }
 
     .menu-nav-text {
@@ -354,18 +426,32 @@ a {
     .page-szlogen1 {
         font-size: 140px;
         grid-row: 1;
-        transform: rotate(-2.5deg);
+        transform: rotate(358.5deg);
         padding-top: 2vw;
     }
 
     .page-szlogen2 {
         font-size: 50px;
         grid-row: 2;
-        transform: rotate(-2.5deg);
+        transform: rotate(358.5deg);
     }
 
-    .termek-filter {
+    .termekfa-kep {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .termek-filter-d {
+        display: block;
         flex-basis: 20%;
+    }
+
+    .termek-filter-m {
+        display: none;
+    }
+
+    .termek-screen {
+        flex-direction: row;
     }
 
     .termek-grid {

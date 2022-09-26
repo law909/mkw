@@ -68,6 +68,7 @@ class termekfaController extends \mkwhelpers\MattableController {
         $x['lathato13'] = $t->getLathato13();
         $x['lathato14'] = $t->getLathato14();
         $x['lathato15'] = $t->getLathato15();
+        $x['sketchfabmodelid'] = $t->getSketchfabmodelid();
         if (\mkw\store::isMultilang()) {
             $translations = array();
             $translationsCtrl = new termekfatranslationController($this->params);
@@ -120,6 +121,7 @@ class termekfaController extends \mkwhelpers\MattableController {
         $obj->setLathato13($this->params->getBoolRequestParam('lathato13'));
         $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
         $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
+        $obj->setSketchfabmodelid($this->params->getStringRequestParam('sketchfabmodelid'));
         if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             $_tf = \Entities\TermekFa::getTranslatedFields();
@@ -1158,6 +1160,11 @@ class termekfaController extends \mkwhelpers\MattableController {
                     $tid = array();
                     foreach ($termekids as $termek) {
                         $tid[] = $termek['id'];
+                    }
+
+                    $tfs = $this->getRepo()->getForFilter(\mkw\store::getWebshopNum());
+                    if ($tfs) {
+                        $ret['categoryfilter'] = $tfs;
                     }
 
                     switch ($caller) {

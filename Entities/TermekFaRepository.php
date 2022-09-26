@@ -113,6 +113,37 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
     }
 
+    public function getForFilter($webshopnum = null) {
+        $webshopfilter = '';
+        if ($webshopnum) {
+            if ($webshopnum == 1) {
+                $webshopfilter = ' (f.lathato=1) ';
+            }
+            else $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
+        }
+        $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend');
+        if (\mkw\store::isMainMode()) {
+            \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
+        }
+        $res = $q->getResult();
+        $ret = array();
+        /** @var TermekFa $r */
+        foreach($res as $r) {
+            $ret[] = array(
+                'id' => $r->getId(),
+                'caption' => $r->getNev(),
+                'slug' => $r->getSlug(),
+                'leiras' => $r->getLeiras(),
+                'rovidleiras' => $r->getRovidleiras(),
+                'kepurl' => $r->getKepurl(),
+                'kepleiras' => $r->getKepleiras(),
+                'sorrend' => $r->getSorrend(),
+                'karkod' => $r->getKarkod()
+            );
+        }
+        return $ret;
+    }
+
     public function getForParentCount($parentid, $menunum = 0) {
         $filterstr = '';
         if ($menunum > 0) {

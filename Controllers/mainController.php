@@ -106,6 +106,8 @@ class mainController extends \mkwhelpers\Controller {
 				$this->view->setVar($k, $v);
 			}
             \mkw\store::fillTemplate($this->view);
+			$this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
+			$this->view->setVar('kepurl', $ag->getKepurlLarge());
 			$this->view->setVar('pagetitle', $ag->getShowOldalcim());
 			$this->view->setVar('seodescription', $ag->getShowSeodescription());
 			$this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));

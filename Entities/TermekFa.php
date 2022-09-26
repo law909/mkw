@@ -211,6 +211,11 @@ class TermekFa {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $arukeresoid;
 
+    /**
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $sketchfabmodelid;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -972,6 +977,22 @@ class TermekFa {
      */
     public function setArukeresoid($arukeresoid) {
         $this->arukeresoid = $arukeresoid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSketchfabmodelid()
+    {
+        return $this->sketchfabmodelid;
+    }
+
+    /**
+     * @param mixed $sketchfabmodelid
+     */
+    public function setSketchfabmodelid($sketchfabmodelid): void
+    {
+        $this->sketchfabmodelid = $sketchfabmodelid;
     }
 
 }
