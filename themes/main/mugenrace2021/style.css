@@ -2,7 +2,9 @@
     --brand-color: #AAFF00;
     --dark-font-color: black;
     --light-font-color: white;
+    --default-font-size: 16px;
     --content-font-size: 20px;
+    --header5-font-size: 20px;
     --termek-padding-m: 5px;
     --termek-padding-d: 20px;
     --menu-nav-text-font-size-d: 14vh;
@@ -41,6 +43,7 @@
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: var(--default-font-size);
     margin: 0;
     overflow-x: hidden;
 }
@@ -150,7 +153,7 @@ a {
 }
 
 .nav-spacer {
-    height: 2vh;
+    height: 12vh;
 }
 
 .header-triangle {
@@ -283,27 +286,44 @@ a {
     flex-wrap: wrap;
 }
 
-.termek-filter-d {
-    display: none;
-}
-
-.termek-filter-inner-d {
+.termek-filter {
     background-color: var(--brand-color);
-    padding: 20px;
-}
-
-.termek-filter-m {
-    background-color: red;
-    display: block;
-    position: absolute;
+    position: fixed;
     height: 100vh;
     width: 100vw;
-    top: -88vh;
+    bottom: 88vh;
+    transition: 600ms;
+    overflow: hidden;
 }
 
-.termek-filter-inner-m {
+.termek-filter-down {
+    transform: translateY(88vh);
+}
+
+.termek-filter-inner {
+    background-color: var(--brand-color);
+    padding: 85px 20px 20px 20px;
     display: flex;
     flex-direction: column;
+}
+
+.filter-header {
+    font-size: var(--header5-font-size);
+    margin-bottom: 5px;
+}
+
+.filter-box {
+    margin-bottom: 10px;
+}
+
+.filter-filters {
+    margin-left: 5px;
+}
+
+.filter-opener {
+    align-self: center;
+    position: absolute;
+    bottom: 5px;
 }
 
 .termek-grid {
@@ -446,12 +466,22 @@ a {
         margin: auto;
     }
 
-    .termek-filter-d {
-        display: block;
+    .termek-filter {
+        background-color: unset;
+        position: unset;
+        width: unset;
+        height: unset;
+        top: unset;
         flex-basis: 20%;
     }
 
-    .termek-filter-m {
+    .termek-filter-inner {
+        padding: 20px;
+        display: block;
+        flex-direction: unset;
+    }
+
+    .filter-opener {
         display: none;
     }
 

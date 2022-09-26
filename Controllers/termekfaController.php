@@ -1034,7 +1034,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $termekrepo = $tc->getRepo();
                 $tck = new termekcimkekatController($this->params);
 
-                $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+                $elemperpage = 10000;
 
                 $pageno = $this->params->getIntRequestParam('pageno', 1);
                 $ord = $this->params->getStringRequestParam('order');
