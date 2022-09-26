@@ -32,5 +32,5 @@
 {/block}
 
 {block "endscript"}
-    <script src="/js/main/mugenrace2021/mnrstatic.js?v=1"></script>
+    <script src="/js/main/mugenrace2021/mnrstatic.js?v=2"></script>
 {/block}

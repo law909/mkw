@@ -1,6 +1,19 @@
+:root {
+    --brand-color: #AAFF00;
+    --dark-font-color: black;
+    --light-font-color: white;
+    --content-font-size: 20px;
+    --termek-padding-mobile: 5px;
+    --termek-padding-desktop: 20px;
+}
+
 @font-face {
     font-family: "Helvetica Neue";
     src: url("/themes/main/mugenrace2021/HelveticaNeueLTPro-Bd.woff") format("woff");
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .hcenter {
@@ -30,14 +43,14 @@ body {
 a {
     text-decoration: none;
     outline: none;
-    color: black;
+    color: var(--dark-font-color);
 }
 
 .menucontainer {
     z-index: 9999;
     position: absolute;
     top: -100vh;
-    background-color: #AAFF00;
+    background-color: var(--brand-color);
     width: 100vw;
     height: 100vh;
     transition: 600ms;
@@ -46,16 +59,25 @@ a {
 
 .menu-nav-text {
     text-transform: uppercase;
-    font-size: 16vh;
+    font-size: 14vh;
+    margin-left: 4vh;
+    vertical-align: middle;
 }
 
 .menu-nav-num {
     text-transform: uppercase;
-    font-size: 10vh;
+    font-size: 8vh;
 }
 
 .menu-nav-slogen {
     text-transform: uppercase;
+    margin-top: -2em;
+    margin-bottom: 2em;
+    margin-left: 30em;
+}
+
+.menu-line {
+    margin-bottom: 3em;
 }
 
 .menucontainer-down {
@@ -80,7 +102,7 @@ a {
 }
 
 .menu-bottom-text {
-    color: white;
+    color: var(--light-font-color);
     opacity: 0.3;
     bottom: -8vw;
     position: absolute;
@@ -95,7 +117,7 @@ a {
     top: 0;
     width: 100vw;
     z-index: 999;
-    color: white;
+    color: var(--light-font-color);
 }
 
 .nav {
@@ -119,7 +141,7 @@ a {
 .nav-lang {
     font-size: 30px;
     font-weight: bold;
-    color: white;
+    color: var(--light-font-color);
 }
 
 .header-triangle {
@@ -150,7 +172,7 @@ a {
 }
 
 .szlogen1 {
-    color: white;
+    color: var(--light-font-color);
     font-size: 75px;
     font-weight: bold;
     grid-row: 1;
@@ -161,7 +183,7 @@ a {
 }
 
 .szlogen2 {
-    color: white;
+    color: var(--light-font-color);
     font-size: 50px;
     font-weight: bold;
     grid-row: 2;
@@ -216,7 +238,7 @@ a {
 }
 
 .page-szlogen1 {
-    color: white;
+    color: var(--light-font-color);
     font-size: 12vw;
     font-weight: bold;
     grid-row: 1;
@@ -225,7 +247,7 @@ a {
 }
 
 .page-szlogen2 {
-    color: white;
+    color: var(--light-font-color);
     font-size: 6vw;
     font-weight: bold;
     grid-row: 2;
@@ -239,9 +261,39 @@ a {
 .page-tartalom {
     max-height: 80vh;
     overflow: hidden;
-    color: black;
-    font-size: 20px;
+    color: var(--dark-font-color);
+    font-size: var(--content-font-size);
     padding: 0 10px;
+}
+
+.termek-screen {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.termek-filter {
+    background-color: var(--brand-color);
+}
+
+.termek-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.termek-box {
+    flex: 0 0 50%;
+    padding: var(--termek-padding-mobile);
+}
+
+.termek-innerbox {
+    border: #1b1b1b solid 1px;
+    padding: var(--termek-padding-mobile);
+}
+
+.termek-img {
+    width: 100%;
 }
 
 @media screen and (min-width: 480px) {
@@ -284,5 +336,22 @@ a {
         font-size: 50px;
         grid-row: 2;
         transform: rotate(-2.5deg);
+    }
+
+    .termek-filter {
+        flex-basis: 20%;
+    }
+
+    .termek-grid {
+        flex-basis: 80%;
+    }
+
+    .termek-box {
+        flex: 0 0 33.3333%;
+        padding: var(--termek-padding-desktop);
+    }
+
+    .termek-innerbox {
+        padding: var(--termek-padding-desktop);
     }
 }

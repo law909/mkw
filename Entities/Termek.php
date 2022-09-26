@@ -772,11 +772,19 @@ class Termek {
         return $x;
     }
 
+    /**
+     * @param TermekValtozat|null $valtozat
+     * @param null $ujtermekid
+     * @param null $top10min
+     * @return array
+     * @throws \Exception
+     */
     public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {
         $x = array();
         $x['ujtermek'] = $this->getUjTermek($ujtermekid);
         $x['top10'] = $this->getTop10($top10min);
         $x['id'] = $this->getId();
+        $x['nagykepurl'] = $this->getKepurlLarge();
         $x['kozepeskepurl'] = $this->getKepurlMedium();
         $x['kiskepurl'] = $this->getKepurlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
@@ -821,6 +829,7 @@ class Termek {
 
         if (!is_null($valtozat)) {
             if ($valtozat->getKepurlSmall()) {
+                $x['nagykepurl'] = $valtozat->getKepurlLarge();
                 $x['kozepeskepurl'] = $valtozat->getKepurlMedium();
                 $x['kiskepurl'] = $valtozat->getKepurlSmall();
                 $x['minikepurl'] = $valtozat->getKepurlMini();

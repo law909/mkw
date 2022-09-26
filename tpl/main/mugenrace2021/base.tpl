@@ -21,7 +21,7 @@
     </div>
     <div>
     {foreach $mnrnavigation as $mnrnavi}
-        <div>
+        <div class="menu-line">
             <div>
             <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}" class="menu-nav-num">{$mnrnavi.szam}</a>
             <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}" class="menu-nav-text">{$mnrnavi.nev}</a>
@@ -54,6 +54,7 @@
 {/block}
 {block "stonebody"}
 {/block}
+<script src="/js/main/mugenrace2021/base.js?v=1"></script>
 {block "endscript"}{/block}
 </body>
 </html>
