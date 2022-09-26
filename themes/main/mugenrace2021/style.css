@@ -292,6 +292,8 @@ a {
 }
 
 .termek-innerbox {
+    display: flex;
+    flex-direction: column;
     border: #1b1b1b solid 1px;
     padding: var(--termek-padding-m);
     height: 100%;
@@ -299,6 +301,10 @@ a {
 
 .termek-img {
     width: 100%;
+}
+
+.termek-infobox {
+    margin-top: auto;
 }
 
 @media screen and (min-width: 480px) {
