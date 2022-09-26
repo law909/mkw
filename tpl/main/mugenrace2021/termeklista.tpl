@@ -32,19 +32,21 @@
                                     {/foreach}
                                 </div>
                             {/if}
-                            <div class="termek-nev">
-                                <a href="/termek/{$_termek.slug}" itemprop="url"><span itemprop="name">{$_termek.caption}</span></a>
-                            </div>
-                            <div class="termek-cikkszam">
-                                <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
-                            </div>
-                            <div class="termek-rovidleiras">
-                                <span>{$_termek.rovidleiras}</span>
-                            </div>
-                            <div class="">
-                                <div class="termek-ertekeles"></div>
-                                <div class="termek-ar" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                    <span itemprop="price">{number_format($_termek.brutto,0,',',' ')} {$_termek.valutanemnev}</span>
+                            <div class="termek-infobox">
+                                <div class="termek-nev">
+                                    <a href="/termek/{$_termek.slug}" itemprop="url"><span itemprop="name">{$_termek.caption}</span></a>
+                                </div>
+                                <div class="termek-cikkszam">
+                                    <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                </div>
+                                <div class="termek-rovidleiras">
+                                    <span>{$_termek.rovidleiras}</span>
+                                </div>
+                                <div class="">
+                                    <div class="termek-ertekeles"></div>
+                                    <div class="termek-ar" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        <span itemprop="price">{number_format($_termek.brutto,0,',',' ')} {$_termek.valutanemnev}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
