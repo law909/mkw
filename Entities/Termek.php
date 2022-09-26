@@ -1835,6 +1835,7 @@ class Termek {
                 return $this->valtozatok;
             case \mkw\store::isMugenrace():
             case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isMugenrace2021():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);

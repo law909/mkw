@@ -3,7 +3,10 @@
 namespace Controllers;
 
 use Entities\MNRLanding;
+use Entities\TermekFa;
 use Entities\TermekValtozat;
+use mkw\consts;
+use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class mainController extends \mkwhelpers\Controller {
@@ -86,8 +89,9 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termekfa() {
+        $tf = new termekfaController($this->params);
 		$com = $this->params->getStringParam('slug');
-		$tf = new termekfaController($this->params);
+		/** @var TermekFa $ag */
 		$ag = $tf->getRepo()->findOneBySlug($com);
 		if ($ag && !$ag->getInaktiv()) {
 			if (count($ag->getChildren()) > 0) {

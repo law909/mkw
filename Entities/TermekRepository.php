@@ -311,6 +311,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 return $q->getScalarResult();
 
             case \mkw\store::isMugenrace():
+            case \mkw\store::isMugenrace2021():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
                 $rsm->addScalarResult('valtozatid', 'valtozatid');

@@ -42,6 +42,18 @@
                     </label>
                 </td>
             </tr>
+            <tr>
+                <td class="mattable-cell">
+                    <label for="VElerheto4Edit{$valtozat.id}">{at('Elérhető 4')}:
+                        <input id="VElerheto4Edit{$valtozat.id}" name="valtozatelerheto4_{$valtozat.id}" type="checkbox"{if ($valtozat.elerheto4)} checked="checked"{/if}>
+                    </label>
+                </td>
+                <td class="mattable-cell">
+                    <label for="VLathato4Edit{$valtozat.id}">{at('Látható 4')}:
+                        <input id="VLathato4Edit{$valtozat.id}" name="valtozatlathato4_{$valtozat.id}" type="checkbox"{if ($valtozat.lathato4)} checked="checked"{/if}>
+                    </label>
+                </td>
+            </tr>
 
         {/if}
         <tr>

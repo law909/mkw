@@ -277,6 +277,34 @@ class TermekFa {
         return $x;
     }
 
+    public function toLista() {
+        $x = [];
+        $x['id'] = $this->getId();
+        $x['nev'] = $this->getNev();
+        $x['slug'] = $this->getSlug();
+        $x['rovidleiras'] = $this->getRovidleiras();
+        $x['leiras'] = $this->getLeiras();
+        $x['leiras2'] = $this->getLeiras2();
+        $x['leiras3'] = $this->getLeiras3();
+        $x['karkod'] = $this->getKarkod();
+        $x['sorrend'] = $this->getSorrend();
+        if ($this->getKepurl()) {
+            $x['kepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
+            $x['kozepeskepurl'] = \mkw\store::getFullUrl($this->getKepurlMedium());
+            $x['kiskepurl'] = \mkw\store::getFullUrl($this->getKepurlSmall());
+            $x['minikepurl'] = \mkw\store::getFullUrl($this->getKepurlMini());
+            $x['kepleiras'] = $this->getKepleiras();
+        }
+        else {
+            $x['kepurl'] = null;
+            $x['kozepeskepurl'] = null;
+            $x['kiskepurl'] = null;
+            $x['minikepurl'] = null;
+            $x['kepleiras'] = null;
+        }
+        return $x;
+    }
+
     public function getId() {
         return $this->id;
     }

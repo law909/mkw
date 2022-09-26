@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,97 +16,104 @@ use mkwhelpers\FilterDescriptor;
  *      @ORM\index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"})
  * })
  * @ORM\HasLifecycleCallbacks
-*/
-class TermekValtozat {
+ */
+class TermekValtozat
+{
 
     private $keszletinfo;
     private $foglalasinfo;
 
-	/**
-	 * @ORM\Id @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
+    /**
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-	 * @Gedmo\Timestampable(on="create")
-	 * @ORM\Column(type="datetime",nullable=true)
-	 */
-	private $created;
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $created;
 
     /**
-	 * @Gedmo\Timestampable(on="update")
-	 * @ORM\Column(type="datetime",nullable=true)
-	 */
-	private $lastmod;
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $lastmod;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok",cascade={"persist"})
-	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
-	 */
-	private $termek;
+     * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok",cascade={"persist"})
+     * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+     */
+    private $termek;
 
     /** @ORM\Column(type="boolean") */
-	private $lathato=true;
+    private $lathato = true;
 
     /** @ORM\Column(type="boolean") */
-    private $lathato2=true;
+    private $lathato2 = true;
 
     /** @ORM\Column(type="boolean") */
-    private $lathato3=true;
+    private $lathato3 = true;
 
     /** @ORM\Column(type="boolean") */
-	private $elerheto=true;
+    private $lathato4 = true;
 
     /** @ORM\Column(type="boolean") */
-    private $elerheto2=true;
+    private $elerheto = true;
 
     /** @ORM\Column(type="boolean") */
-    private $elerheto3=true;
+    private $elerheto2 = true;
 
     /** @ORM\Column(type="boolean") */
-	private $termekfokep=false;
+    private $elerheto3 = true;
+
+    /** @ORM\Column(type="boolean") */
+    private $elerheto4 = true;
+
+    /** @ORM\Column(type="boolean") */
+    private $termekfokep = false;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
-	 * @ORM\JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
-	 */
-	private $adattipus1;
+     * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
+     * @ORM\JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
+     */
+    private $adattipus1;
 
     /**
-	 * @ORM\Column(type="string",length=255,nullable=true)
-	 */
-	private $ertek1;
-	/**
-	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok2")
-	 * @ORM\JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="restrict")
-	 */
-	private $adattipus2;
-	/**
-	 * @ORM\Column(type="string",length=255,nullable=true)
-	 */
-	private $ertek2;
-	/** @ORM\OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist"}) */
-	private $kosarak;
-	/**
-	 * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-	 */
-	private $netto=0;
-	/**
-	 * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-	 */
-	private $brutto=0;
-	/**
-	 * @ORM\ManyToOne(targetEntity="TermekKep",inversedBy="valtozatok")
-	 * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-	 */
-	private $kep;
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $ertek1;
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok2")
+     * @ORM\JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="restrict")
+     */
+    private $adattipus2;
+    /**
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $ertek2;
+    /** @ORM\OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist"}) */
+    private $kosarak;
+    /**
+     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
+     */
+    private $netto = 0;
+    /**
+     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
+     */
+    private $brutto = 0;
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekKep",inversedBy="valtozatok")
+     * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $kep;
 
-	/** @ORM\Column(type="string",length=50,nullable=true) */
-	private $cikkszam='';
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $cikkszam = '';
 
-	/** @ORM\Column(type="string",length=50,nullable=true) */
-	private $idegencikkszam='';
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $idegencikkszam = '';
 
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
@@ -113,8 +121,8 @@ class TermekValtozat {
     /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $leltartetelek;
 
-	/** @ORM\Column(type="string",length=255,nullable=true) */
-	private $vonalkod;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $vonalkod;
 
     /** @ORM\Column(type="date",nullable=true) */
     private $beerkezesdatum;
@@ -125,7 +133,8 @@ class TermekValtozat {
     /**
      * @ORM\PrePersist
      */
-    public function generateVonalkod() {
+    public function generateVonalkod()
+    {
         if (\mkw\store::getSetupValue('vonalkod') && !$this->vonalkod) {
             $conn = \mkw\store::getEm()->getConnection();
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
@@ -134,13 +143,15 @@ class TermekValtozat {
         }
     }
 
-    public function __construct() {
-		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
+    public function __construct()
+    {
+        $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
-	}
+    }
 
-	public function toEmag() {
+    public function toEmag()
+    {
         $termek = $this->getTermek();
         $x = $termek->toEmag();
         $x['id'] = $this->getId();
@@ -160,8 +171,7 @@ class TermekValtozat {
 
         if ($this->getLathato()) {
             $x['status'] = 1;
-        }
-        else {
+        } else {
             $x['status'] = 0;
         }
         $x['stock'] = array(
@@ -173,7 +183,8 @@ class TermekValtozat {
         return $x;
     }
 
-    protected function calcKeszletInfo($datum = null, $raktarid = null) {
+    protected function calcKeszletInfo($datum = null, $raktarid = null)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
         $rsm->addScalarResult('mozgasdb', 'mozgasdb');
@@ -193,11 +204,14 @@ class TermekValtozat {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
             . ' FROM bizonylattetel bt'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
-            , $rsm);
+            ,
+            $rsm
+        );
 
         $q->setParameters($filter->getQueryParameters());
         $d = $q->getScalarResult();
@@ -227,7 +241,8 @@ class TermekValtozat {
         return $this->keszletinfo;
     }
 
-    protected function calcFoglalasInfo($kivevebiz = null, $datum = null, $raktarid = null) {
+    protected function calcFoglalasInfo($kivevebiz = null, $datum = null, $raktarid = null)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
         $rsm->addScalarResult('mozgasdb', 'mozgasdb');
@@ -251,11 +266,14 @@ class TermekValtozat {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
             . ' FROM bizonylattetel bt'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
-            , $rsm);
+            ,
+            $rsm
+        );
 
         $q->setParameters($filter->getQueryParameters());
         $d = $q->getScalarResult();
@@ -267,14 +285,16 @@ class TermekValtozat {
         return $this->foglalasinfo;
     }
 
-    public function getMozgasDb($datum = null, $raktarid = null) {
+    public function getMozgasDb($datum = null, $raktarid = null)
+    {
         if (!$this->keszletinfo) {
             $this->calcKeszletInfo($datum, $raktarid);
         }
         return $this->keszletinfo['mozgasdb'];
     }
 
-    public function getKeszlet($datum = null, $raktarid = null) {
+    public function getKeszlet($datum = null, $raktarid = null)
+    {
         if (!$this->keszletinfo) {
             $this->calcKeszletInfo($datum, $raktarid);
         }
@@ -283,7 +303,8 @@ class TermekValtozat {
         return $r;
     }
 
-    public function getFoglaltMennyiseg($kivevebiz = null) {
+    public function getFoglaltMennyiseg($kivevebiz = null)
+    {
         if (\mkw\store::isFoglalas()) {
             if (is_a($kivevebiz, 'Bizonylatfej')) {
                 $kivevebiz = $kivevebiz->getId();
@@ -314,288 +335,327 @@ class TermekValtozat {
         return 0;
     }
 
-	public function getId() {
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function getTermek() {
-		return $this->termek;
-	}
+    public function getTermek()
+    {
+        return $this->termek;
+    }
 
-	public function setTermek($termek) {
-		$this->termek = $termek;
+    public function setTermek($termek)
+    {
+        $this->termek = $termek;
 //		$termek->addValtozat($this);
-	}
+    }
 
-	public function getLathato() {
-		return $this->lathato;
-	}
+    public function getLathato()
+    {
+        return $this->lathato;
+    }
 
-	public function setLathato($lathato) {
-		$this->lathato=$lathato;
-	}
+    public function setLathato($lathato)
+    {
+        $this->lathato = $lathato;
+    }
 
-	public function getElerheto() {
-		return $this->elerheto;
-	}
+    public function getElerheto()
+    {
+        return $this->elerheto;
+    }
 
-	public function setElerheto($elerheto) {
-		$this->elerheto=$elerheto;
-	}
+    public function setElerheto($elerheto)
+    {
+        $this->elerheto = $elerheto;
+    }
 
-	public function getTermekfokep() {
-		return $this->termekfokep;
-	}
+    public function getTermekfokep()
+    {
+        return $this->termekfokep;
+    }
 
-	public function setTermekfokep($adat) {
-		$this->termekfokep = $adat;
-	}
+    public function setTermekfokep($adat)
+    {
+        $this->termekfokep = $adat;
+    }
 
-	public function getAdatTipus1() {
-		return $this->adattipus1;
-	}
+    public function getAdatTipus1()
+    {
+        return $this->adattipus1;
+    }
 
-	public function getAdatTipus1Id() {
-		if ($this->adattipus1) {
-			return $this->adattipus1->getId();
-		}
-		return 0;
-	}
+    public function getAdatTipus1Id()
+    {
+        if ($this->adattipus1) {
+            return $this->adattipus1->getId();
+        }
+        return 0;
+    }
 
-	public function getAdatTipus1Nev() {
-		if ($this->adattipus1) {
-			return $this->adattipus1->getNev();
-		}
-		return '';
-	}
+    public function getAdatTipus1Nev()
+    {
+        if ($this->adattipus1) {
+            return $this->adattipus1->getNev();
+        }
+        return '';
+    }
 
-	public function setAdatTipus1($at) {
-		$this->adattipus1=$at;
+    public function setAdatTipus1($at)
+    {
+        $this->adattipus1 = $at;
 //		$at->addValtozat($this);
-	}
+    }
 
-	public function getErtek1() {
-		return $this->ertek1;
-	}
+    public function getErtek1()
+    {
+        return $this->ertek1;
+    }
 
-	public function setErtek1($ertek) {
-		$this->ertek1=$ertek;
-	}
+    public function setErtek1($ertek)
+    {
+        $this->ertek1 = $ertek;
+    }
 
-	public function getAdatTipus2() {
-		return $this->adattipus2;
-	}
+    public function getAdatTipus2()
+    {
+        return $this->adattipus2;
+    }
 
-	public function getAdatTipus2Id() {
-		if ($this->adattipus2) {
-			return $this->adattipus2->getId();
-		}
-		return 0;
-	}
+    public function getAdatTipus2Id()
+    {
+        if ($this->adattipus2) {
+            return $this->adattipus2->getId();
+        }
+        return 0;
+    }
 
-	public function getAdatTipus2Nev() {
-		if ($this->adattipus2) {
-			return $this->adattipus2->getNev();
-		}
-		return '';
-	}
+    public function getAdatTipus2Nev()
+    {
+        if ($this->adattipus2) {
+            return $this->adattipus2->getNev();
+        }
+        return '';
+    }
 
-	public function setAdatTipus2($at) {
-		$this->adattipus2=$at;
+    public function setAdatTipus2($at)
+    {
+        $this->adattipus2 = $at;
 //		$at->addValtozat($this);
-	}
+    }
 
-	public function getErtek2() {
-		return $this->ertek2;
-	}
+    public function getErtek2()
+    {
+        return $this->ertek2;
+    }
 
-	public function setErtek2($ertek) {
-		$this->ertek2=$ertek;
-	}
+    public function setErtek2($ertek)
+    {
+        $this->ertek2 = $ertek;
+    }
 
-	public function getLastmod() {
-		return $this->lastmod;
-	}
+    public function getLastmod()
+    {
+        return $this->lastmod;
+    }
 
-	public function getCreated() {
-		return $this->created;
-	}
+    public function getCreated()
+    {
+        return $this->created;
+    }
 
-	public function getNetto() {
-		return $this->netto;
-	}
+    public function getNetto()
+    {
+        return $this->netto;
+    }
 
-	public function setNetto($netto) {
-		$this->netto=$netto;
-		$this->brutto=$this->termek->getAfa()->calcBrutto($netto);
-	}
+    public function setNetto($netto)
+    {
+        $this->netto = $netto;
+        $this->brutto = $this->termek->getAfa()->calcBrutto($netto);
+    }
 
-	public function getBrutto() {
-		return $this->brutto;
-	}
+    public function getBrutto()
+    {
+        return $this->brutto;
+    }
 
-	public function setBrutto($brutto) {
-		$this->brutto=$brutto;
-		$this->netto=$this->termek->getAfa()->calcNetto($brutto);
-	}
+    public function setBrutto($brutto)
+    {
+        $this->brutto = $brutto;
+        $this->netto = $this->termek->getAfa()->calcNetto($brutto);
+    }
 
-	public function getKepurl($pre='/')	{
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getUrl($pre);
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepurl($pre);
-			}
-		}
-		return '';
-	}
+    public function getKepurl($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrl($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurl($pre);
+            }
+        }
+        return '';
+    }
 
-	public function getKepurlMini($pre='/') {
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getUrlMini($pre);
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepurlMini($pre);
-			}
-		}
-		return '';
-	}
+    public function getKepurlMini($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrlMini($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurlMini($pre);
+            }
+        }
+        return '';
+    }
 
-	public function getKepurlSmall($pre='/') {
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getUrlSmall($pre);
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepurlSmall($pre);
-			}
-		}
-		return '';
-	}
+    public function getKepurlSmall($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrlSmall($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurlSmall($pre);
+            }
+        }
+        return '';
+    }
 
-	public function getKepurlMedium($pre='/') {
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getUrlMedium($pre);
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepurlMedium($pre);
-			}
-		}
-		return '';
-	}
+    public function getKepurlMedium($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrlMedium($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurlMedium($pre);
+            }
+        }
+        return '';
+    }
 
-	public function getKepurlLarge($pre='/') {
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getUrlLarge($pre);
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepurlLarge($pre);
-			}
-		}
-		return '';
-	}
+    public function getKepurlLarge($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrlLarge($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurlLarge($pre);
+            }
+        }
+        return '';
+    }
 
-	public function getKepleiras() {
-		if (!$this->termekfokep) {
-			if ($this->getKep()) {
-				return $this->getKep()->getLeiras();
-			}
-		}
-		else {
-			if ($this->getTermek()) {
-				return $this->getTermek()->getKepleiras();
-			}
-		}
-		return '';
-	}
+    public function getKepleiras()
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getLeiras();
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepleiras();
+            }
+        }
+        return '';
+    }
 
-	public function getKep() {
-		if ($this->termekfokep) {
-			return false;
-		}
-		return $this->kep;
-	}
+    public function getKep()
+    {
+        if ($this->termekfokep) {
+            return false;
+        }
+        return $this->kep;
+    }
 
-	public function getKepId() {
-		if (!$this->termekfokep&&$this->getKep()) {
-			return $this->kep->getId();
-		}
-		return '';
-	}
+    public function getKepId()
+    {
+        if (!$this->termekfokep && $this->getKep()) {
+            return $this->kep->getId();
+        }
+        return '';
+    }
 
-	public function setKep($kep) {
-		$this->kep = $kep;
+    public function setKep($kep)
+    {
+        $this->kep = $kep;
 //		$kep->addValtozat($this);
-	}
+    }
 
-	public function getIdegencikkszam() {
-		return $this->idegencikkszam;
-	}
+    public function getIdegencikkszam()
+    {
+        return $this->idegencikkszam;
+    }
 
-	public function setIdegencikkszam($idegencikkszam) {
-		$this->idegencikkszam = $idegencikkszam;
-	}
+    public function setIdegencikkszam($idegencikkszam)
+    {
+        $this->idegencikkszam = $idegencikkszam;
+    }
 
-	public function getCikkszam() {
-		return $this->cikkszam;
-	}
+    public function getCikkszam()
+    {
+        return $this->cikkszam;
+    }
 
-	public function setCikkszam($cikkszam) {
-		$this->cikkszam = $cikkszam;
-	}
+    public function setCikkszam($cikkszam)
+    {
+        $this->cikkszam = $cikkszam;
+    }
 
-	public function getNev() {
-		return implode(' - ', array($this->getErtek1(), $this->getErtek2()));
-	}
+    public function getNev()
+    {
+        return implode(' - ', array($this->getErtek1(), $this->getErtek2()));
+    }
 
-    public function getVonalkod() {
+    public function getVonalkod()
+    {
         return $this->vonalkod;
     }
 
-    public function setVonalkod($vonalkod) {
+    public function setVonalkod($vonalkod)
+    {
         $this->vonalkod = $vonalkod;
     }
 
-    public function getBeerkezesdatum() {
+    public function getBeerkezesdatum()
+    {
         return $this->beerkezesdatum;
     }
 
-    public function getBeerkezesdatumStr() {
+    public function getBeerkezesdatumStr()
+    {
         if ($this->getBeerkezesdatum()) {
             return $this->getBeerkezesdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setBeerkezesdatum($adat = '') {
+    public function setBeerkezesdatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->beerkezesdatum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $this->beerkezesdatum = null;
-            }
-            else {
+            } else {
                 $this->beerkezesdatum = new \DateTime(\mkw\store::convDate($adat));
             }
         }
     }
 
-    public function getSzin() {
+    public function getSzin()
+    {
         if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
             return $this->getErtek1();
         }
@@ -605,7 +665,8 @@ class TermekValtozat {
         return null;
     }
 
-    public function getMeret() {
+    public function getMeret()
+    {
         if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
             return $this->getErtek1();
         }
@@ -618,60 +679,101 @@ class TermekValtozat {
     /**
      * @return mixed
      */
-    public function getElerheto2() {
+    public function getElerheto2()
+    {
         return $this->elerheto2;
     }
 
     /**
      * @param mixed $elerheto2
      */
-    public function setElerheto2($elerheto2) {
+    public function setElerheto2($elerheto2)
+    {
         $this->elerheto2 = $elerheto2;
     }
 
     /**
      * @return mixed
      */
-    public function getElerheto3() {
+    public function getElerheto3()
+    {
         return $this->elerheto3;
     }
 
     /**
      * @param mixed $elerheto3
      */
-    public function setElerheto3($elerheto3) {
+    public function setElerheto3($elerheto3)
+    {
         $this->elerheto3 = $elerheto3;
     }
 
     /**
      * @return mixed
      */
-    public function getLathato2() {
+    public function getElerheto4()
+    {
+        return $this->elerheto4;
+    }
+
+    /**
+     * @param mixed $elerheto4
+     */
+    public function setElerheto4($elerheto4)
+    {
+        $this->elerheto4 = $elerheto4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato2()
+    {
         return $this->lathato2;
     }
 
     /**
      * @param mixed $lathato2
      */
-    public function setLathato2($lathato2) {
+    public function setLathato2($lathato2)
+    {
         $this->lathato2 = $lathato2;
     }
 
     /**
      * @return mixed
      */
-    public function getLathato3() {
+    public function getLathato3()
+    {
         return $this->lathato3;
     }
 
     /**
      * @param mixed $lathato3
      */
-    public function setLathato3($lathato3) {
+    public function setLathato3($lathato3)
+    {
         $this->lathato3 = $lathato3;
     }
 
-    public function getXElerheto() {
+    /**
+     * @return mixed
+     */
+    public function getLathato4()
+    {
+        return $this->lathato4;
+    }
+
+    /**
+     * @param mixed $lathato4
+     */
+    public function setLathato4($lathato4)
+    {
+        $this->lathato4 = $lathato4;
+    }
+
+    public function getXElerheto()
+    {
         switch (\mkw\store::getSetupValue('webshopnum', 1)) {
             case 1:
                 return $this->getElerheto();
@@ -679,12 +781,15 @@ class TermekValtozat {
                 return $this->getElerheto2();
             case 3:
                 return $this->getElerheto3();
+            case 4:
+                return $this->getElerheto4();
             default:
                 return $this->getElerheto();
         }
     }
 
-    public function getXLathato() {
+    public function getXLathato()
+    {
         switch (\mkw\store::getSetupValue('webshopnum', 1)) {
             case 1:
                 return $this->getLathato();
@@ -692,6 +797,8 @@ class TermekValtozat {
                 return $this->getLathato2();
             case 3:
                 return $this->getLathato3();
+            case 4:
+                return $this->getLathato4();
             default:
                 return $this->getLathato();
         }
@@ -700,11 +807,13 @@ class TermekValtozat {
     /**
      * @return mixed
      */
-    public function getMinboltikeszlet() {
+    public function getMinboltikeszlet()
+    {
         return $this->minboltikeszlet;
     }
 
-    public function calcMinBoltiKeszlet() {
+    public function calcMinBoltiKeszlet()
+    {
         $tmbk = $this->getTermek()->getMinboltikeszlet() * 1;
         if ($tmbk) {
             return $tmbk;
@@ -715,7 +824,8 @@ class TermekValtozat {
     /**
      * @param mixed $minboltikeszlet
      */
-    public function setMinboltikeszlet($minboltikeszlet) {
+    public function setMinboltikeszlet($minboltikeszlet)
+    {
         $this->minboltikeszlet = $minboltikeszlet;
     }
 

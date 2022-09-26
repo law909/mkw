@@ -3,10 +3,12 @@
 namespace mkw;
 
 use Controllers\mnrnavigationController;
+use Controllers\termekfaController;
 use Doctrine\ORM\EntityManager;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
+use Entities\TermekFa;
 use http\Params;
 
 class store {
@@ -568,6 +570,14 @@ class store {
                 $mnrnavi[] = $mnrnavictrl->loadVars($navi);
             }
             $v->setVar('mnrnavigation', $mnrnavi);
+
+            $tc = new termekfaController(null);
+            $defakatid = store::getParameter(consts::Web4DefaKatId);
+            /** @var TermekFa $web4defafa */
+            $web4defafa = $tc->getRepo()->find($defakatid);
+            if ($web4defafa) {
+                $v->setVar('mnrdefaultkat', $web4defafa->toLista());
+            }
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
