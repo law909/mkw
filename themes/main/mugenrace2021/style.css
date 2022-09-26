@@ -3,8 +3,14 @@
     --dark-font-color: black;
     --light-font-color: white;
     --content-font-size: 20px;
-    --termek-padding-mobile: 5px;
-    --termek-padding-desktop: 20px;
+    --termek-padding-m: 5px;
+    --termek-padding-d: 20px;
+    --menu-nav-text-font-size-d: 14vh;
+    --menu-nav-text-font-size-m: 5vh;
+    --menu-nav-text-margin-left-d: 4vh;
+    --menu-nav-text-margin-left-m: 4vh;
+    --menu-nav-num-font-size-d: 8vh;
+    --menu-nav-num-font-size-m: 4vh;
 }
 
 @font-face {
@@ -59,25 +65,23 @@ a {
 
 .menu-nav-text {
     text-transform: uppercase;
-    font-size: 14vh;
-    margin-left: 4vh;
+    font-size: var(--menu-nav-text-font-size-m);
+    margin-left: var(--menu-nav-text-margin-left-m);
     vertical-align: middle;
 }
 
 .menu-nav-num {
     text-transform: uppercase;
-    font-size: 8vh;
+    font-size: var(--menu-nav-num-font-size-m)
 }
 
 .menu-nav-slogen {
     text-transform: uppercase;
-    margin-top: -2em;
-    margin-bottom: 2em;
-    margin-left: 30em;
 }
 
 .menu-line {
     margin-bottom: 3em;
+    margin-top: 3em;
 }
 
 .menucontainer-down {
@@ -122,7 +126,7 @@ a {
 
 .nav {
     display: grid;
-    grid-template-columns: 40px 0 1fr 40px 40px 40px;
+    grid-template-columns: 40px 0 1fr 40px 40px 50px;
     column-gap: 5px;
     align-items: center;
     align-content: center;
@@ -284,12 +288,13 @@ a {
 
 .termek-box {
     flex: 0 0 50%;
-    padding: var(--termek-padding-mobile);
+    padding: var(--termek-padding-m);
 }
 
 .termek-innerbox {
     border: #1b1b1b solid 1px;
-    padding: var(--termek-padding-mobile);
+    padding: var(--termek-padding-m);
+    height: 100%;
 }
 
 .termek-img {
@@ -307,6 +312,21 @@ a {
     .menu-bottom-triangle {
         width: 100%;
         height: 15vh;
+    }
+
+    .menu-nav-text {
+        font-size: var(--menu-nav-text-font-size-d);
+        margin-left: var(--menu-nav-text-margin-left-d);
+    }
+
+    .menu-nav-num {
+        font-size: var(--menu-nav-num-font-size-d);
+    }
+
+    .menu-nav-slogen {
+        margin-top: -2em;
+        margin-bottom: 2em;
+        margin-left: 30em;
     }
 
     .page {
@@ -348,10 +368,10 @@ a {
 
     .termek-box {
         flex: 0 0 33.3333%;
-        padding: var(--termek-padding-desktop);
+        padding: var(--termek-padding-d);
     }
 
     .termek-innerbox {
-        padding: var(--termek-padding-desktop);
+        padding: var(--termek-padding-d);
     }
 }
