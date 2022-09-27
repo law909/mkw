@@ -291,7 +291,7 @@ a {
     position: fixed;
     height: 100vh;
     width: 100vw;
-    bottom: 88vh;
+    top: -88vh;
     transition: 600ms;
     overflow: hidden;
 }
