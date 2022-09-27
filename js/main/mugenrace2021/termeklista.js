@@ -28,9 +28,28 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     document.getElementById('filter-cleaner-button').addEventListener('click', function (e) {
         e.preventDefault();
-        checks = document.querySelectorAll('input[type="checkbox"]');
-        checks.forEach((check) => {
+        document.querySelectorAll('input[type="checkbox"]').forEach((check) => {
             check.checked = false;
-        })
+        });
     });
+
+    document.querySelectorAll('.filter-apply-button').forEach((applybutton) => {
+        applybutton.addEventListener('click', function (e) {
+            e.preventDefault();
+            let url,
+                filterstr = '';
+            url = document.location.origin + document.location.pathname;
+            checks = document.querySelectorAll('input[type="checkbox"]');
+            checks.forEach((check) => {
+                if (check.checked) {
+                    filterstr = filterstr + check.name + ',';
+                }
+            });
+            if (filterstr !== '') {
+                url = url + '?filter=' + filterstr;
+            }
+            document.location = url;
+        })
+
+    })
 });
