@@ -25,4 +25,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         });
     }
+
+    document.getElementById('filter-cleaner-button').addEventListener('click', function (e) {
+        e.preventDefault();
+        checks = document.querySelectorAll('input[type="checkbox"]');
+        checks.forEach((check) => {
+            check.checked = false;
+        })
+    });
 });
