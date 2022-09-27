@@ -25,7 +25,21 @@
     <div class="termek-screen">
         <div class="termek-filter">
             <div class="termek-filter-inner">
+                <div class="filter-upper-container">
+                    <div class="filter-closer">
+                        CLOSE
+                    </div>
+                    <div class="filter-cleaner">
+                        <a href="#">CLEAR ALL</a>
+                    </div>
+                </div>
                 {include 'comp_termekfilter.tpl'}
+                <div class="filter-apply">
+                    <button class="filter-apply-button">APPLY & SHOW PRODUCTS</button>
+                </div>
+                <div class="filter-opener">
+                    FILTERS
+                </div>
             </div>
         </div>
         <div class="termek-grid">

@@ -153,7 +153,7 @@ a {
 }
 
 .nav-spacer {
-    height: 12vh;
+    height: 14vh;
 }
 
 .header-triangle {
@@ -291,13 +291,13 @@ a {
     position: fixed;
     height: 100vh;
     width: 100vw;
-    top: -88vh;
+    top: -86vh;
     transition: 600ms;
     overflow: hidden;
 }
 
 .termek-filter-down {
-    transform: translateY(88vh);
+    transform: translateY(86vh);
 }
 
 .termek-filter-inner {
@@ -310,6 +310,35 @@ a {
 .filter-header {
     font-size: var(--header5-font-size);
     margin-bottom: 5px;
+}
+
+.filter-upper-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.filter-closer, .filter-cleaner {
+    flex-basis: 33.3333%;
+}
+
+.filter-closer {
+    text-align: center;
+}
+
+.filter-cleaner {
+    text-align: end;
+}
+
+.filter-apply {
+    align-self: center;
+}
+
+.filter-apply-button {
+    width: 80vw;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: var(--header5-font-size);
+    padding-top: 10px;
 }
 
 .filter-box {
@@ -482,8 +511,17 @@ a {
         flex-direction: unset;
     }
 
-    .filter-opener {
+    .filter-opener, .filter-closer {
         display: none;
+    }
+
+    .filter-apply {
+        align-self: unset;
+        text-align: center;
+    }
+
+    .filter-apply-button {
+        width: unset;
     }
 
     .termek-screen {

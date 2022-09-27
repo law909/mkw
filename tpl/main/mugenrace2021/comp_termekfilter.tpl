@@ -20,9 +20,3 @@
         </div>
     </div>
 {/foreach}
-<div class="filter-apply">
-APPLY
-</div>
-<div class="filter-opener">
-    FILTERS
-</div>
