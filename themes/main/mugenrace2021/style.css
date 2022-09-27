@@ -324,6 +324,7 @@ a {
     align-self: center;
     position: absolute;
     bottom: 5px;
+    padding: 0 45vw;
 }
 
 .termek-grid {
@@ -447,7 +448,7 @@ a {
         font-size: 140px;
         grid-row: 1;
         transform: rotate(358.5deg);
-        padding-top: 2vw;
+        padding-top: 3vw;
     }
 
     .page-szlogen2 {
@@ -458,6 +459,7 @@ a {
 
     .termekfa-kep {
         display: flex;
+        width: 100vw;
         height: 100vh;
     }
 
