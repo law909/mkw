@@ -458,12 +458,12 @@ a {
 
     .termekfa-kep {
         display: flex;
-        width: 100vw;
         height: 100vh;
     }
 
     .termekfa-kep > img {
         margin: auto;
+        max-height: 100vh;
     }
 
     .termek-filter {
@@ -471,7 +471,7 @@ a {
         position: unset;
         width: unset;
         height: unset;
-        top: unset;
+        bottom: unset;
         flex-basis: 20%;
     }
 
