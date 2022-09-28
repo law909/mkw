@@ -192,7 +192,9 @@ else {
                     $mainlocale = store::getLocale();
                     if ($mainlocale) {
                         $__maintranslate->setLocale($mainlocale);
-                        \mkw\store::getTranslationListener()->setTranslatableLocale($mainlocale);
+                        if (\mkw\store::isMultilang() && \mkw\store::isMugenrace2021()) {
+                            \mkw\store::getTranslationListener()->setTranslatableLocale($mainlocale);
+                        }
                     }
 
                     if (!$mainsess->referrer) {
