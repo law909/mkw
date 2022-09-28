@@ -415,8 +415,9 @@ a {
 
 @media screen and (min-width: 761px) {
     .c-viewer__iframe {
-        width: 100vw;
+        width: 50vw;
         height: 100vh;
+        align-self: center;
     }
 
     .nav {
@@ -494,6 +495,7 @@ a {
     .termekfa-kep {
         display: flex;
         height: 100vh;
+        flex-direction: column;
     }
 
     .termekfa-kep > img {
