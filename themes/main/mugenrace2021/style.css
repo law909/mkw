@@ -1,6 +1,7 @@
 :root {
     --brand-color: #AAFF00;
     --dark-font-color: black;
+    --nav-background-color: black;
     --light-font-color: white;
     --default-font-size: 16px;
     --content-font-size: 20px;
@@ -134,7 +135,7 @@ a {
     align-items: center;
     align-content: center;
     padding: 5px;
-    background: black;
+    background-color: var(--nav-background-color);
     font-style: italic;
 }
 
@@ -147,9 +148,13 @@ a {
 }
 
 .nav-lang {
+    width: 2.5em;
     font-size: 30px;
     font-weight: bold;
+    font-style: italic;
     color: var(--light-font-color);
+    background-color: var(--nav-background-color);
+    border: none;
 }
 
 .nav-spacer {

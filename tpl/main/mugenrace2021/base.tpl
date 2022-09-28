@@ -12,6 +12,7 @@
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=1">
     {block "css"}{/block}
+    <script src="/js/main/mugenrace2021/base.js?v=2"></script>
     {block "script"}{/block}
 </head>
 <body>
@@ -42,7 +43,11 @@
         <a href="/" class="nav-logo hcenter"><img src="/themes/main/mugenrace2021/logo_w.png" class="nav-logoimg" alt="Home"></a>
         <a href="" class="nav-search"><img src="/themes/main/mugenrace2021/search_w.png" class="nav-img" alt="Search"></a>
         <a href="" class="nav-cart"><img src="/themes/main/mugenrace2021/cart_w.png" class="nav-img" alt="Cart"></a>
-        <a href="" class="nav-lang">HU</a>
+        <select class="nav-lang">
+            {foreach $localelist as $locale}
+                <option value="{$locale.id}"{if ($locale.selected)} selected="selected"{/if}>{$locale.caption}</option>
+            {/foreach}
+        </select>
     </div>
     <div class="header-triangle">
         <svg class="header-triangle-size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -54,7 +59,6 @@
 {/block}
 {block "stonebody"}
 {/block}
-<script src="/js/main/mugenrace2021/base.js?v=1"></script>
 {block "endscript"}{/block}
 </body>
 </html>

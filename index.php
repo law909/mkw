@@ -189,8 +189,10 @@ else {
                             'locale' => 'en_us'
                         )
                     );
-                    if (store::getLocale()) {
-                        $__maintranslate->setLocale(store::getLocale());
+                    $mainlocale = store::getLocale();
+                    if ($mainlocale) {
+                        $__maintranslate->setLocale($mainlocale);
+                        \mkw\store::getTranslationListener()->setTranslatableLocale($mainlocale);
                     }
 
                     if (!$mainsess->referrer) {

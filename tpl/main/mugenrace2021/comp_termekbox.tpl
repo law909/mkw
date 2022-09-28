@@ -13,7 +13,7 @@
         </div>
         {if ($_termek.kepek|default)}
             <div class="termek-valtozatslider">
-                {foreach $_termek.valtozatok as $_v}
+                {foreach $_termek.mindenvaltozat as $_v}
                     <span>{$_v}</span>
                 {/foreach}
             </div>

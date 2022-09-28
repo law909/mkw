@@ -544,4 +544,9 @@ class mainController extends \mkwhelpers\Controller {
         \mkw\store::getMainSession()->valutanemnev = null;
     }
 
+    public function setLocale()
+    {
+	    $locale = $this->params->getStringRequestParam('locale');
+	    \mkw\store::setMainLocale($locale);
+    }
 }

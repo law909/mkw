@@ -9,6 +9,7 @@ use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
 use Entities\TermekFa;
+use Entities\Valutanem;
 use http\Params;
 
 class store {
@@ -41,6 +42,7 @@ class store {
     private static $sanitizer;
     private static $translationListener;
     private static $locales = array('hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de', 'it' => 'it_it');
+    private static $valutanemperlocale = array('hu_hu' => 'HUF', 'en_us' => 'EUR', 'de_de' => 'EUR', 'it_it' => 'EUR');
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
@@ -162,6 +164,9 @@ class store {
         self::$em = $em;
     }
 
+    /**
+     * @return \Gedmo\Translatable\TranslatableListener()
+     */
     public static function getTranslationListener() {
         return self::$translationListener;
     }
@@ -578,6 +583,7 @@ class store {
             if ($web4defafa) {
                 $v->setVar('mnrdefaultkat', $web4defafa->toLista());
             }
+            $v->setVar('localelist', self::getLocaleSelectList(self::getMainLocale()));
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
@@ -919,6 +925,9 @@ class store {
         if (self::isMIJSZ() && $luser) {
             $l = $luser->getBizonylatnyelv();
         }
+        elseif (self::isMugenrace2021()) {
+            $l = self::getMainLocale();
+        }
         else {
             $l = self::getSetupValue('locale', false);
             if ($l) {
@@ -935,6 +944,16 @@ class store {
         return self::$locales[$ny];
     }
 
+    /**
+     * @param $ny
+     * @return null|Valutanem
+     */
+    public static function getValutanemForLocale($ny) {
+        $v = self::$valutanemperlocale[$ny];
+        $valutanem = self::getEm()->getRepository(Valutanem::class)->findBy(['nev' => $v]);
+        return $valutanem;
+    }
+
     public static function getLocaleList() {
         return array_values(self::$locales);
     }
@@ -948,12 +967,11 @@ class store {
     }
 
     public static function getLocaleSelectList($sel = null) {
-        $val = array_values(self::$locales);
         $ret = array();
-        foreach ($val as $v) {
+        foreach (self::$locales as $i => $v) {
             $ret[] = array(
                 'id' => $v,
-                'caption' => $v,
+                'caption' => strtoupper($i),
                 'selected' => ($v === $sel)
             );
         }
@@ -1632,4 +1650,27 @@ class store {
         }
         return 0;
     }
+
+    public static function setMainLocale($ny)
+    {
+        \mkw\store::getMainSession()->locale = $ny;
+        $v = self::getValutanemForLocale($ny);
+        if ($v) {
+            \mkw\store::getMainSession()->valutanem = $v->getId();
+            \mkw\store::getMainSession()->valutanemnev = $v->getNev();
+        }
+    }
+
+    public static function getMainLocale() {
+        return \mkw\store::getMainSession()->locale;
+    }
+
+    public static function getMainValutanemNev() {
+        return \mkw\store::getMainSession()->valutanemnev;
+    }
+
+    public static function getMainValutanemId() {
+        return \mkw\store::getMainSession()->valutanem;
+    }
+
 }

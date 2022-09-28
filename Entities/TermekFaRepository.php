@@ -122,9 +122,6 @@ class TermekFaRepository extends \mkwhelpers\Repository {
             else $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
         }
         $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend,f.nev');
-        if (\mkw\store::isMainMode()) {
-            \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
-        }
         $res = $q->getResult();
         $ret = array();
         /** @var TermekFa $r */

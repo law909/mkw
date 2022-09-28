@@ -27,18 +27,18 @@
             <div class="termek-filter-inner">
                 <div class="filter-upper-container">
                     <div class="filter-closer">
-                        CLOSE
+                        {t('CLOSE')}
                     </div>
                     <div class="filter-cleaner">
-                        <a id="filter-cleaner-button" href="#">CLEAR ALL</a>
+                        <a id="filter-cleaner-button" href="#">{t('CLEAR ALL')}</a>
                     </div>
                 </div>
                 {include 'comp_termekfilter.tpl'}
                 <div class="filter-apply">
-                    <button class="filter-apply-button">APPLY & SHOW PRODUCTS</button>
+                    <button class="filter-apply-button">{t('APPLY & SHOW PRODUCTS')}</button>
                 </div>
                 <div class="filter-opener">
-                    FILTERS
+                    {t('FILTERS')}
                 </div>
             </div>
         </div>
