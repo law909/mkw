@@ -183,13 +183,6 @@ return array(
     'Pune látogatások' => 'Pune visits',
     'Módosítsd adataidat' => 'Modify your data',
     'Év, hónap' => 'Year, month',
-    'Mióta tanítasz Iyengar metódusban (év)' => 'Year when you started teaching Iyengar yoga',
-    'Mióta jógázol Iyengar metódus szerint (év)' => 'Year when you started practicing Iyengar yoga',
-    'Stúdiód neve' => 'Your studio\'s name',
-    'Más Iyengar Szövetségbeli tagságod' => 'Membership beside HIYA (MIJSZ)',
-    'Írd be vesszővel elválasztva a szövetségek nevét' => 'Fill in the associations name',
-    'Írd be a stúdiód nevét, ha van' => 'Fill in your studio\'s name',
-    'Írd be a weboldaladat vagy a stúdiód weboldalát' => 'Fill in your or your studio\'s home page',
     'jelszó megismétlése' => 'retype your password',
     'Munkahelyed' => 'Workplace',
     'Írd be a munkahelyed nevét, ha van' => 'Fill in your workplace',
@@ -221,5 +214,11 @@ return array(
     'Kelt' => 'Date',
     'Még nincs számlája' => 'You don\'t have any invoices yet',
     'Nyomtat' => 'Print',
-    'Számláim' => 'My invoices'
+    'Számláim' => 'My invoices',
+    'BEZÁR' => 'CLOSE',
+    'TÖRLÉS' => 'CLOSE ALL',
+    'SZŰRŐK' => 'FILTERS',
+    'SZŰRÉS' => 'APPLY & SHOW PRODUCTS',
+    'NAVIGÁCIÓ' => 'NAVIGATION',
+    'KATEGÓRIA' => 'CATEGORY'
 );

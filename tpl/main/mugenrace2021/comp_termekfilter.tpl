@@ -1,5 +1,5 @@
 <div class="filter-box">
-    <div class="filter-header">CATEGORY</div>
+    <div class="filter-header">{t('KATEGÓRIA')}</div>
     <div class="filter-filters">
         {foreach $categoryfilter as $cat}
             <div><a href="/termekfa/{$cat.slug}">{$cat.caption}</a></div>

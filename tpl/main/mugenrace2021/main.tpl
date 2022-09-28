@@ -3,7 +3,7 @@
 {block "body"}
     <div class="mainpage">
         <img src="{$imagepath}{$mnrlanding.kepurl}" class="bgimg">
-        <div class="szlogencontainer">
+        <div class="szlogen-container">
             <div class="szlogen1">{$mnrlanding.nev}</div>
             <div class="szlogen2">{$mnrlanding.szlogen}</div>
         </div>

@@ -14,6 +14,9 @@
     --menu-nav-text-margin-left-m: 4vh;
     --menu-nav-num-font-size-d: 8vh;
     --menu-nav-num-font-size-m: 4vh;
+    --nav-spacer-height-m: 14vh;
+    --nav-spacer-height-d: 5vh;
+    --termekfa-kep-height: calc(100vh - var(--nav-spacer-height-d));
 }
 
 @font-face {
@@ -158,7 +161,7 @@ a {
 }
 
 .nav-spacer {
-    height: 14vh;
+    height: var(--nav-spacer-height-m);
 }
 
 .header-triangle {
@@ -183,10 +186,11 @@ a {
     object-fit: cover;
 }
 
-.szlogencontainer {
+.szlogen-container {
     position: absolute;
     top: 40vh;
     width: 100%;
+    overflow-x: clip;
 }
 
 .szlogen1 {
@@ -229,6 +233,8 @@ a {
     display: grid;
     position: absolute;
     top: 0;
+    width: 100%;
+    overflow-x: clip;
 }
 
 .page-img {
@@ -430,7 +436,7 @@ a {
     }
 
     .nav-spacer {
-        height: 5vh;
+        height: var(--nav-spacer-height-d);
     }
 
     .menu-bottom-triangle {
@@ -494,13 +500,13 @@ a {
 
     .termekfa-kep {
         display: flex;
-        height: 100vh;
+        height: var(--termekfa-kep-height);
         flex-direction: column;
     }
 
     .termekfa-kep > img {
         margin: auto;
-        max-height: 100vh;
+        max-height: var(--termekfa-kep-height);
     }
 
     .termek-filter {

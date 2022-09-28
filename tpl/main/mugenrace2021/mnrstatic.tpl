@@ -3,7 +3,7 @@
 {block "body"}
     <div class="mainpage">
         <img src="{$imagepath}{$mnrstatic.kepurl}" class="bgimg">
-        <div class="szlogencontainer">
+        <div class="szlogen-container">
             <div class="szlogen1">{$mnrstatic.szlogen1}</div>
             <div class="szlogen2">{$mnrstatic.szlogen2}</div>
         </div>

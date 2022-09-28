@@ -27,18 +27,18 @@
             <div class="termek-filter-inner">
                 <div class="filter-upper-container">
                     <div class="filter-closer">
-                        {t('CLOSE')}
+                        {t('BEZÁR')}
                     </div>
                     <div class="filter-cleaner">
-                        <a id="filter-cleaner-button" href="#">{t('CLEAR ALL')}</a>
+                        <a id="filter-cleaner-button" href="#">{t('TÖRLÉS')}</a>
                     </div>
                 </div>
                 {include 'comp_termekfilter.tpl'}
                 <div class="filter-apply">
-                    <button class="filter-apply-button">{t('APPLY & SHOW PRODUCTS')}</button>
+                    <button class="filter-apply-button">{t('SZŰRÉS')}</button>
                 </div>
                 <div class="filter-opener">
-                    {t('FILTERS')}
+                    {t('SZŰRŐK')}
                 </div>
             </div>
         </div>
