@@ -990,15 +990,25 @@ class Termek {
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
-        if (\mkw\store::isMugenrace()) {
-            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-        }
-        else {
-            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
-            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        switch (true) {
+            case \mkw\store::isMugenrace():
+                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
+                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainValutanemId(),
+                                                     \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+                break;
+            case \mkw\store::isMugenrace2021():
+                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
+                $x['brutto'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainValutanemId(),
+                                                  \mkw\store::getParameter(\mkw\consts::Webshop4Price));
+                $x['bruttohuf'] = $x['brutto'];
+                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+                $x['eredetibruttohuf'] = $x['eredetibrutto'];
+                break;
+            default:
+                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
+                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+                break;
         }
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\MNRLanding;
+use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekValtozat;
 use mkw\consts;
@@ -287,6 +288,36 @@ class mainController extends \mkwhelpers\Controller {
                     }
                     $t['valtozatok'] = $vtt;
                     $this->view->setVar('termek', $t);
+                    $this->view->printTemplateResult(true);
+                }
+                else {
+                    \mkw\store::redirectTo404($com, $this->params);
+                }
+                break;
+            case \mkw\store::isMugenrace2021():
+                $com = $this->params->getStringParam('slug');
+                $tc = new termekController($this->params);
+                $filter = new FilterDescriptor();
+                $filter->addFilter('slug', '=', $com);
+                /** @var Termek $termek */
+                $termek = $tc->getRepo()->getWithJoins($filter);
+                if (is_array($termek)) {
+                    $termek = $termek[0];
+                }
+                //$termek = $tc->getRepo()->findOneBySlug($com);
+                if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
+                    $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
+                    \mkw\store::fillTemplate($this->view);
+                    $this->view->setVar('pagetitle', $termek->getShowOldalcim());
+                    $this->view->setVar('seodescription', $termek->getShowSeodescription());
+                    $t = $tc->getTermekLap($termek);
+                    foreach ($t as $k => $v) {
+                        $this->view->setVar($k, $v);
+                    }
+                    $statlap = $this->getRepo('Entities\Statlap')->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
+                    if ($statlap) {
+                        $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());
+                    }
                     $this->view->printTemplateResult(true);
                 }
                 else {

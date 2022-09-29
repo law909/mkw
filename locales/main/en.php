@@ -220,5 +220,8 @@ return array(
     'SZŰRŐK' => 'FILTERS',
     'SZŰRÉS' => 'APPLY & SHOW PRODUCTS',
     'NAVIGÁCIÓ' => 'NAVIGATION',
-    'KATEGÓRIA' => 'CATEGORY'
+    'KATEGÓRIA' => 'CATEGORY',
+    'VÁLASSZ SZÍNT' => 'SELECT COLOR',
+    'VÁLASSZ MÉRETET' => 'SELECT SIZE',
+    'RÉSZLETEK' => 'DETAILS',
 );

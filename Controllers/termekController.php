@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Termek;
 use Entities\TermekValtozat,
 	Entities\TermekRecept;
 use mkw\store;
@@ -1246,6 +1247,12 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
+    /**
+     * @param Termek $termek
+     * @return array
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
 	public function getTermekLap($termek) {
         $ujtermekminid = $this->getRepo()->getUjTermekId();
         $top10min = $this->getRepo()->getTop10Mennyiseg();
