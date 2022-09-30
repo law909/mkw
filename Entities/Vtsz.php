@@ -43,6 +43,10 @@ class Vtsz {
      */
     private $kt;
 
+    public function __toString() {
+        return $this->getId() . ': ' . $this->getSzam() . '_' . $this->getNev();
+    }
+
 	public function getId() {
 		return $this->id;
 	}

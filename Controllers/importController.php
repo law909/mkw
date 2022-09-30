@@ -3342,7 +3342,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
-                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     if ($gyarto) {
@@ -3375,7 +3374,8 @@ class importController extends \mkwhelpers\Controller {
                                                         . ' termék cikkszám: ' . $termek->getCikkszam()
                                                         . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                                         . ' változat cikkszám: ' . $valtozat->getCikkszam()
-                                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam()
+                                                        ,
                                                         $logfile
                                                     );
                                                     $lettlog = true;
@@ -3384,9 +3384,6 @@ class importController extends \mkwhelpers\Controller {
                                                     \mkw\store::getEm()->persist($valtozat);
                                                     if (($termekdb % $batchsize) === 0) {
                                                         \mkw\store::getEm()->flush();
-                                                        \mkw\store::getEm()->clear();
-                                                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                                                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                                     }
                                                 }
                                             }
@@ -3416,9 +3413,6 @@ class importController extends \mkwhelpers\Controller {
                                             }
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
-                                                \mkw\store::getEm()->clear();
-                                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                             }
                                         }
                                     }
@@ -3442,9 +3436,6 @@ class importController extends \mkwhelpers\Controller {
                                             }
                                             if (($termekdb % $batchsize) === 0) {
                                                 \mkw\store::getEm()->flush();
-                                                \mkw\store::getEm()->clear();
-                                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                             }
                                         }
                                     }
@@ -3452,8 +3443,6 @@ class importController extends \mkwhelpers\Controller {
                             }
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
-                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
                     if ($lettlog) {

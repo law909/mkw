@@ -522,6 +522,10 @@ class Partner {
         $this->partnerdokok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	public function __toString() {
+        return $this->getId() . ': ' . $this->getNev() . '_' . $this->getEmail();
+    }
+
 	public function calcVatstatus() {
     }
 
