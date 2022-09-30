@@ -40,8 +40,6 @@ $(document).ready(
             dialogcenter = $('#dialogcenter');
 
 		$('.menupont').button();
-		var menu=$('#menu');
-		$('#kozep').css('left',menu.outerWidth()+menu.offset().left*2+'px');
 		var menubar=$('.menu-titlebar');
 		menubar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all');
 		menubar.each(function() {

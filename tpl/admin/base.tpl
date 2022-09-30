@@ -24,9 +24,9 @@
 {/if}
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
-<div>
+<div class="screen">
     {if ($userloggedin)}
-        <div id="menu" class="matt-container ui-widget ui-widget-content ui-corner-all">
+        <div class="menu-container ui-widget ui-widget-content ui-corner-all">
             <div class="textaligncenter">{$loggedinuser.name}</div>
             {$tabcnt = 1}
             {$cscikl = 0}
@@ -52,7 +52,7 @@
             </div>
         </div>
     {/if}
-    <div id="kozep">
+    <div class="content-container">
         {block "kozep"}
         {/block}
     </div>

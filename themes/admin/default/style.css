@@ -2,13 +2,19 @@ body {
 	font-size: 62.5%;
 }
 
-#menu {
-	padding: 0.5em;
-    float: left;
+.screen {
+    display: flex;
+    flex-direction: row;
 }
 
-#kozep {
-	position: absolute;
+.menu-container {
+    flex-basis: 10%;
+    padding: 0.5em;
+    margin-right: 0.5em;
+}
+
+.content-container {
+    width: 100%;
 }
 
 .textaligncenter {
