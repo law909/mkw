@@ -9,11 +9,11 @@
 {/block}
 
 {block "kozep"}
-    <div class="clearboth">
-        {include "../default/comp_noallapot.tpl"}
+    <div class="component-container">
+    {include "../default/comp_noallapot.tpl"}
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Árfolyamok</div>
             </div>
@@ -23,39 +23,41 @@
                 <button class="js-arfolyamdownload ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Letölt</span></button>
             </div>
         </div>
-        {if (haveJog(20))}
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
-            <div class="ui-widget-header ui-corner-top">
-                <div class="mainboxinner ui-corner-top">Egy raktárban nincs, de a többiben van</div>
-            </div>
-            <div class="mainboxinner">
-                <form action="/admin/lista/boltbannincsmasholvan" target="_blank">
-                    <div>
-                        <label for="RaktarEdit">Raktár, amelyikben nincs:</label>
-                        <select id="RaktarEdit" name="raktar">
-                            <option value="">{t('válasszon')}</option>
-                            {foreach $raktarlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div>
-                        <label for="MinKeszletEdit">Min. készlet:</label>
-                        <input id="MinKeszletEdit" type="number" name="minkeszlet" value="2">
-                        <input type="submit" class="ui-widget ui-button ui-state-default ui-corner-all" value="OK">
-                    </div>
-                    <div>
-                        <label>Termékcsoport:</label>
-                        <span class="js-boltbannincstermekfabutton" data-text="{t('válasszon')}">{t('válasszon')}</span>
-                        <input class="js-boltbannincstermekfainput" name="termekfa" type="hidden">
-                    </div>
-                </form>
+    </div>
+    {if (haveJog(20))}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Egy raktárban nincs, de a többiben van</div>
+                </div>
+                <div class="mainboxinner">
+                    <form action="/admin/lista/boltbannincsmasholvan" target="_blank">
+                        <div>
+                            <label for="RaktarEdit">Raktár, amelyikben nincs:</label>
+                            <select id="RaktarEdit" name="raktar">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $raktarlist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="MinKeszletEdit">Min. készlet:</label>
+                            <input id="MinKeszletEdit" type="number" name="minkeszlet" value="2">
+                            <input type="submit" class="ui-widget ui-button ui-state-default ui-corner-all" value="OK">
+                        </div>
+                        <div>
+                            <label>Termékcsoport:</label>
+                            <span class="js-boltbannincstermekfabutton" data-text="{t('válasszon')}">{t('válasszon')}</span>
+                            <input class="js-boltbannincstermekfainput" name="termekfa" type="hidden">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        {/if}
-    </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    {/if}
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Napi jelentés</div>
             </div>
@@ -68,8 +70,10 @@
                 {include "napijelentesbody.tpl"}
             </div>
         </div>
-        {if (haveJog(20))}
-            <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    </div>
+    {if (haveJog(20))}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
                 <div class="ui-widget-header ui-corner-top">
                     <div class="mainboxinner ui-corner-top">Kintlevőségek</div>
                 </div>
@@ -110,7 +114,9 @@
                     </div>
                 </div>
             </div>
-            <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+        </div>
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
                 <div class="ui-widget-header ui-corner-top">
                     <div class="mainboxinner ui-corner-top">Spanyol kintlevőségek</div>
                 </div>
@@ -151,11 +157,11 @@
                     </div>
                 </div>
             </div>
+        <div class="component-container">
         {/if}
-    </div>
-    <div class="clearboth">
         {if (haveJog(20))}
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Teljesíthető backorderek</div>
             </div>
@@ -182,11 +188,10 @@
                 </table>
             </div>
         </div>
+    </div>
         {/if}
+    <div class="component-container">
+    <div id="mattkarb">
     </div>
-    <div class="clearboth">
-    <div id="mattkarb" class="mainbox balra">
-    </div>
-    </div>
-
+        <div class="component-container">
 {/block}

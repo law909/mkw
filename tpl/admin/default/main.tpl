@@ -4,7 +4,7 @@
 {/block}
 
 {block "kozep"}
-    <div class="clearboth">
+    <div class="component-container">
     {include "comp_noallapot.tpl"}
     </div>
 {/block}

@@ -1,13 +1,13 @@
 {extends "../base.tpl"}
 
 {block "kozep"}
-    <div class="clearboth">
-        {include "../default/comp_noallapot.tpl"}
+    <div class="component-container">
+    {include "../default/comp_noallapot.tpl"}
     </div>
-    <div class="clearboth">
-        {if (haveJog(20))}
-            {if ($setup.bankpenztar)}
-                <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    {if (haveJog(20))}
+        {if ($setup.bankpenztar)}
+            <div class="component-container">
+                <div class="ui-widget ui-widget-content ui-corner-all">
                     <div class="ui-widget-header ui-corner-top">
                         <div class="mainboxinner ui-corner-top">Kintlevőségek</div>
                     </div>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-            {/if}
+            </div>
         {/if}
-    </div>
+    {/if}
 {/block}

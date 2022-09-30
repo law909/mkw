@@ -11,11 +11,11 @@
 {/block}
 
 {block "kozep"}
-    <div class="clearboth">
+    <div class="component-container">
         {include "../default/comp_noallapot.tpl"}
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Jelenléti ív</div>
             </div>
@@ -27,7 +27,9 @@
                 {/if}
             </div>
         </div>
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    </div>
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Bérlet lejáratás</div>
             </div>
@@ -36,23 +38,24 @@
             </div>
         </div>
     </div>
-    <div class="clearboth">
-    <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
-        <div class="ui-widget-header ui-corner-top">
-            <div class="mainboxinner ui-corner-top">Statisztikák</div>
-        </div>
-        <div class="mainboxinner">
-            {include "../default/comp_idoszak.tpl" comptype="datum"}
-            <div><label>Tanár elszámolás </label>
-                <input id="telszelozo" name="telszidoszak" type="radio" value="1" checked><label for="telszelozo">előző hó</label>
-                <input id="telszaktualis" name="telszidoszak" type="radio" value="2"><label for="telszaktualis">aktuális hó</label>
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Statisztikák</div>
             </div>
-            <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
-            <div id="stateredmeny"></div>
+            <div class="mainboxinner">
+                {include "../default/comp_idoszak.tpl" comptype="datum"}
+                <div><label>Tanár elszámolás </label>
+                    <input id="telszelozo" name="telszidoszak" type="radio" value="1" checked><label for="telszelozo">előző hó</label>
+                    <input id="telszaktualis" name="telszidoszak" type="radio" value="2"><label for="telszaktualis">aktuális hó</label>
+                </div>
+                <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
+                <div id="stateredmeny"></div>
+            </div>
         </div>
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Óra látogatások</div>
             </div>
@@ -91,8 +94,9 @@
             </div>
         </div>
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">ELADOK bérletet, órajegyet, hengerpárnát, stb.</div>
             </div>
@@ -102,11 +106,14 @@
                         <tbody>
                         <tr>
                             <td><input id="ElSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="szamla" required="required">Számla</td>
-                            <td><input id="ElSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="egyeb" required="required" checked="checked">Egyéb mozgás</td>
+                            <td><input id="ElSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="egyeb" required="required"
+                                       checked="checked">Egyéb mozgás
+                            </td>
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="ElKeltEdit">{at('Kelt')}:</label></td>
-                            <td><input id="ElKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                            <td><input id="ElKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required">
+                            </td>
                         </tr>
                         <tr id="ElTeljesitesRow" class="hidden">
                             <td class="mattable-important"><label for="ElTeljesitesEdit">{at('Teljesítés')}:</label></td>
@@ -129,9 +136,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="ElPartnervezeteknevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
+                            <td><label for="ElPartnervezeteknevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
                             <td><input id="ElPartnervezeteknevEdit" name="partnervezeteknev"></td>
-                            <td><label for="ElPartnerkeresztnevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
+                            <td><label for="ElPartnerkeresztnevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
                             <td><input id="ElPartnerkeresztnevEdit" name="partnerkeresztnev"></td>
                         </tr>
                         <tr>
@@ -143,9 +152,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="ElPartneremailEdit" class="mattable-important" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
+                            <td class="mattable-important"><label for="ElPartneremailEdit" class="mattable-important"
+                                                                  title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}
+                                    :</label></td>
                             <td><input id="ElPartneremailEdit" name="partneremail"></td>
-                            <td><label for="ElPartnertelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
+                            <td><label for="ElPartnertelefonEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label>
+                            </td>
                             <td><input id="ElPartnertelefonEdit" name="partnertelefon"></td>
                         </tr>
                         <tr>
@@ -198,7 +211,8 @@
                             <td><input id="ElMennyisegEdit" class="mattable-important" name="mennyiseg" type="number" step="any" value="1"></td>
                         </tr>
                         <tr>
-                            <td><label for="ElEgysarEdit" class="mattable-important" title="{at('Az eladott termék egységára')}">{at('MENNYIBE kerül')}:</label></td>
+                            <td><label for="ElEgysarEdit" class="mattable-important" title="{at('Az eladott termék egységára')}">{at('MENNYIBE kerül')}:</label>
+                            </td>
                             <td><input id="ElEgysarEdit" name="egysegar" type="number" step="any" class="mattable-important" required="required"></td>
                         </tr>
                         <tr>
@@ -209,12 +223,14 @@
                     </table>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <input id="ElVanPenzmozgas" type="checkbox" name="vanpenzmozgas" checked="checked">
-                        <label for="ElVanPenzmozgas">Ha kapsz pénzt VAGY beérkezett átutalást rögzítesz, kapcsold be a pipát és add meg ezeket az adatokat is!</label>
+                        <label for="ElVanPenzmozgas">Ha kapsz pénzt VAGY beérkezett átutalást rögzítesz, kapcsold be a pipát és add meg ezeket az adatokat
+                            is!</label>
                         <table>
                             <tbody>
                             <tr>
                                 <td class="mattable-important"><label for="ElPenzdatumEdit">{at('Mikor kapod')}:</label></td>
-                                <td><input id="ElPenzdatumEdit" name="penzdatum" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                                <td><input id="ElPenzdatumEdit" name="penzdatum" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"
+                                           required="required"></td>
                             </tr>
                             <tr id="ElPenztarRow">
                                 <td><label for="ElPenztarEdit" class="mattable-important">{at('Hova teszed a pénzt')}:</label></td>
@@ -222,7 +238,8 @@
                                     <select id="ElPenztarEdit" name="penztar" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
                                         {foreach $penztarlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}
+                                                    data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                                         {/foreach}
                                     </select>
                                 </td>
@@ -233,13 +250,15 @@
                                     <select id="ElBankszamlaEdit" name="bankszamla" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
                                         {foreach $bankszamlalist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}
+                                                    data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                                         {/foreach}
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="mattable-important"><label for="ElJogcimEdit" title="{at('Milyen célból kaptál pénzt?')}">{at('Jogcím')}:</label></td>
+                                <td class="mattable-important"><label for="ElJogcimEdit" title="{at('Milyen célból kaptál pénzt?')}">{at('Jogcím')}:</label>
+                                </td>
                                 <td>
                                     <select id="ElJogcimEdit" name="teteljogcim" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
@@ -265,7 +284,9 @@
                 </form>
             </div>
         </div>
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    </div>
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">VETTEM valamit a Darshannak</div>
             </div>
@@ -279,25 +300,33 @@
                                 <label title="{at('Ha érkezett valamilyen áru, amit eladásra szánunk, pl. könyv, hengerpárna')}">Bevételezés</label>
                             </td>
                             <td>
-                                <input id="KtgSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="koltsegszamla" required="required" checked="checked">
+                                <input id="KtgSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="koltsegszamla" required="required"
+                                       checked="checked">
                                 <label title="{at('Ha valamilyen költséget rögzítesz, pl. tanári fizetés, villanyszámla, nyomtatás')}">Költségszámla</label>
                             </td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="KtgErbizonylatszamEdit" class="mattable-important" title="{at('Az eredeti számla számát írd ide')}">{at('Eredeti biz.szám')}:</label></td>
+                            <td class="mattable-important"><label for="KtgErbizonylatszamEdit" class="mattable-important"
+                                                                  title="{at('Az eredeti számla számát írd ide')}">{at('Eredeti biz.szám')}:</label></td>
                             <td><input id="KtgErbizonylatszamEdit" type="text" name="erbizonylatszam"></td>
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="KtgKeltEdit" title="{at('Az eredeti bizonylat kelte')}">{at('Kelt')}:</label></td>
-                            <td><input id="KtgKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                            <td><input id="KtgKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"
+                                       required="required"></td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="KtgTeljesitesEdit" title="{at('Az eredeti bizonylat teljesítése')}">{at('Teljesítés')}:</label></td>
-                            <td><input id="KtgTeljesitesEdit" name="teljesites" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                            <td class="mattable-important"><label for="KtgTeljesitesEdit" title="{at('Az eredeti bizonylat teljesítése')}">{at('Teljesítés')}
+                                    :</label></td>
+                            <td><input id="KtgTeljesitesEdit" name="teljesites" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"
+                                       required="required"></td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="KtgEsedekessegEdit" title="{at('Az eredeti bizonylat esedékessége (fizetési határideje)')}">{at('Esedékesség')}:</label></td>
-                            <td><input id="KtgEsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                            <td class="mattable-important"><label for="KtgEsedekessegEdit"
+                                                                  title="{at('Az eredeti bizonylat esedékessége (fizetési határideje)')}">{at('Esedékesség')}
+                                    :</label></td>
+                            <td><input id="KtgEsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"
+                                       required="required"></td>
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="KtgPartnerEdit">{at('Kitől')}:</label></td>
@@ -312,9 +341,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="KtgPartnervezeteknevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
+                            <td><label for="KtgPartnervezeteknevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
                             <td><input id="KtgPartnervezeteknevEdit" name="partnervezeteknev"></td>
-                            <td><label for="KtgPartnerkeresztnevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
+                            <td><label for="KtgPartnerkeresztnevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
                             <td><input id="KtgPartnerkeresztnevEdit" name="partnerkeresztnev"></td>
                         </tr>
                         <tr>
@@ -326,9 +357,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="KtgPartneremailEdit" class="mattable-important" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
+                            <td class="mattable-important"><label for="KtgPartneremailEdit" class="mattable-important"
+                                                                  title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}
+                                    :</label></td>
                             <td><input id="KtgPartneremailEdit" type="email" name="partneremail"></td>
-                            <td><label for="KtgPartnertelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
+                            <td><label for="KtgPartnertelefonEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label>
+                            </td>
                             <td><input id="KtgPartnertelefonEdit" name="partnertelefon"></td>
                         </tr>
                         <tr>
@@ -372,7 +407,8 @@
                             <td><input id="KtgMennyisegEdit" class="mattable-important" name="mennyiseg" type="number" step="any" value="1"></td>
                         </tr>
                         <tr>
-                            <td><label for="KtgEgysarEdit" class="mattable-important" title="{at('Az vásárolt termék egységára')}">{at('MENNYIBE kerül')}:</label></td>
+                            <td><label for="KtgEgysarEdit" class="mattable-important" title="{at('Az vásárolt termék egységára')}">{at('MENNYIBE kerül')}
+                                    :</label></td>
                             <td><input id="KtgEgysarEdit" name="egysegar" type="number" step="any" class="mattable-important" required="required"></td>
                         </tr>
                         <tr>
@@ -388,7 +424,8 @@
                             <tbody>
                             <tr>
                                 <td class="mattable-important"><label for="KtgPenzdatumEdit">{at('Mikor fizettél')}:</label></td>
-                                <td><input id="KtgPenzdatumEdit" name="penzdatum" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                                <td><input id="KtgPenzdatumEdit" name="penzdatum" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"
+                                           required="required"></td>
                             </tr>
                             <tr>
                                 <td><label for="KtgPenztarEdit" class="mattable-important">{at('Honnan veszed ki a pénzt')}:</label></td>
@@ -396,13 +433,15 @@
                                     <select id="KtgPenztarEdit" name="penztar" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
                                         {foreach $penztarlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}
+                                                    data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                                         {/foreach}
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="mattable-important"><label for="KtgJogcimEdit" title="{at('Milyen célból költesz pénzt?')}">{at('Jogcím')}:</label></td>
+                                <td class="mattable-important"><label for="KtgJogcimEdit" title="{at('Milyen célból költesz pénzt?')}">{at('Jogcím')}:</label>
+                                </td>
                                 <td>
                                     <select id="KtgJogcimEdit" name="teteljogcim" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
@@ -430,8 +469,8 @@
             </div>
         </div>
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">{at('Pénzt VESZEK KI')}</div>
             </div>
@@ -442,99 +481,111 @@
                     <input name="oper" value="add" type="hidden">
                     <table>
                         <tbody>
-                            <tr>
-                                <td class="mattable-important"><label for="KeltEdit">{at('Mikor')}:</label></td>
-                                <td><input id="KiKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiPenztarEdit">{at('Honnan')}:</label></td>
-                                <td>
-                                    <select id="KiPenztarEdit" name="penztar" required="required">
-                                        <option value="">{at('válassz')}</option>
-                                        {foreach $penztarlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="mattable-important"><label for="KiPartnerEdit">{at('Kinek adom')}:</label></td>
-                                <td colspan="3">
-                                    <select id="KiPartnerEdit" name="partner" class="mattable-important" required="required">
-                                        <option value="">{at('válassz')}</option>
-                                        <option value="-1">{at('Új felvitel')}</option>
-                                        {foreach $partnerlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiPartnervezeteknevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
-                                <td><input id="KiPartnervezeteknevEdit" name="partnervezeteknev"></td>
-                                <td><label for="KiPartnerkeresztnevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
-                                <td colspan="3"><input id="KiPartnerkeresztnevEdit" name="partnerkeresztnev"></td>
-                            </tr>
-                            <tr>
-                                <td><label title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Cím')}:</label></td>
-                                <td colspan="7">
-                                    <input id="KiPartnerirszamEdit" name="partnerirszam" size="6" maxlength="10">
-                                    <input id="KiPartnervarosEdit" name="partnervaros" size="20" maxlength="40">
-                                    <input id="KiPartnerutcaEdit" name="partnerutca" size="40" maxlength="60">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="mattable-important"><label for="KiEmailEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                                <td><input id="KiEmailEdit" name="partneremail"></td>
-                                <td><label for="KiTelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
-                                <td><input id="KiTelefonEdit" name="partnertelefon"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiMegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-                                <td colspan="7"><textarea id="KiMegjegyzesEdit" name="megjegyzes" rows="1" cols="50"></textarea></td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiSzovegEdit" title="{at('Írd be a saját szavaiddal')}">{at('Mire veszem ki')}:</label></td>
-                                <td><input id="KiSzovegEdit" name="tetelszoveg" value=""></td>
-                            </tr>
-                            <tr>
-                                <td class="mattable-important"><label for="KiJogcimEdit" title="{at('Milyen célból veszel ki pénzt')}">{at('Jogcím')}:</label></td>
-                                <td>
-                                    <select id="KiJogcimEdit" name="teteljogcim" class="mattable-important" required="required">
-                                        <option value="">{at('válassz')}</option>
-                                        {foreach $jogcimlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="mattable-important"><label for="KiHivatkozottBizonylatEdit" title="{at('Ha pl. villanyszámlát fizetsz ki, írd ide a költségszámla számát vagy keresd ki')}">{at('Hivatkozott bizonylat')}:</label></td>
-                                <td>
-                                    <input id="KiHivatkozottBizonylatEdit" name="tetelhivatkozottbizonylat" value="">
-                                    <a class="js-kihivatkozottbizonylatbutton">{at('Keresés')}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiEsedekessegEdit" title="{at('A hivatkozott bizonylat fizetési határideje')}">{at('Esedékesség')}:</label></td>
-                                <td><input id="KiEsedekessegEdit" name="tetelhivatkozottdatum" readonly></td>
-                            </tr>
-                            <tr>
-                                <td><label for="KiOsszegEdit">{at('Összeg')}:</label></td>
-                                <td><input id="KiOsszegEdit" name="tetelosszeg" type="number" required="required" step="any"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input id="KiOKButton" type="submit" value="OK">
-                                    <a id="KiCancelButton" href="#"><span>Mégsem</span></a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="mattable-important"><label for="KeltEdit">{at('Mikor')}:</label></td>
+                            <td><input id="KiKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiPenztarEdit">{at('Honnan')}:</label></td>
+                            <td>
+                                <select id="KiPenztarEdit" name="penztar" required="required">
+                                    <option value="">{at('válassz')}</option>
+                                    {foreach $penztarlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}
+                                                data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-important"><label for="KiPartnerEdit">{at('Kinek adom')}:</label></td>
+                            <td colspan="3">
+                                <select id="KiPartnerEdit" name="partner" class="mattable-important" required="required">
+                                    <option value="">{at('válassz')}</option>
+                                    <option value="-1">{at('Új felvitel')}</option>
+                                    {foreach $partnerlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiPartnervezeteknevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
+                            <td><input id="KiPartnervezeteknevEdit" name="partnervezeteknev"></td>
+                            <td><label for="KiPartnerkeresztnevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
+                            <td colspan="3"><input id="KiPartnerkeresztnevEdit" name="partnerkeresztnev"></td>
+                        </tr>
+                        <tr>
+                            <td><label title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Cím')}:</label></td>
+                            <td colspan="7">
+                                <input id="KiPartnerirszamEdit" name="partnerirszam" size="6" maxlength="10">
+                                <input id="KiPartnervarosEdit" name="partnervaros" size="20" maxlength="40">
+                                <input id="KiPartnerutcaEdit" name="partnerutca" size="40" maxlength="60">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-important"><label for="KiEmailEdit"
+                                                                  title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}
+                                    :</label></td>
+                            <td><input id="KiEmailEdit" name="partneremail"></td>
+                            <td><label for="KiTelefonEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label>
+                            </td>
+                            <td><input id="KiTelefonEdit" name="partnertelefon"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiMegjegyzesEdit">{at('Megjegyzés')}:</label></td>
+                            <td colspan="7"><textarea id="KiMegjegyzesEdit" name="megjegyzes" rows="1" cols="50"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiSzovegEdit" title="{at('Írd be a saját szavaiddal')}">{at('Mire veszem ki')}:</label></td>
+                            <td><input id="KiSzovegEdit" name="tetelszoveg" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-important"><label for="KiJogcimEdit" title="{at('Milyen célból veszel ki pénzt')}">{at('Jogcím')}:</label></td>
+                            <td>
+                                <select id="KiJogcimEdit" name="teteljogcim" class="mattable-important" required="required">
+                                    <option value="">{at('válassz')}</option>
+                                    {foreach $jogcimlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-important"><label for="KiHivatkozottBizonylatEdit"
+                                                                  title="{at('Ha pl. villanyszámlát fizetsz ki, írd ide a költségszámla számát vagy keresd ki')}">{at('Hivatkozott bizonylat')}
+                                    :</label></td>
+                            <td>
+                                <input id="KiHivatkozottBizonylatEdit" name="tetelhivatkozottbizonylat" value="">
+                                <a class="js-kihivatkozottbizonylatbutton">{at('Keresés')}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiEsedekessegEdit" title="{at('A hivatkozott bizonylat fizetési határideje')}">{at('Esedékesség')}:</label></td>
+                            <td><input id="KiEsedekessegEdit" name="tetelhivatkozottdatum" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label for="KiOsszegEdit">{at('Összeg')}:</label></td>
+                            <td><input id="KiOsszegEdit" name="tetelosszeg" type="number" required="required" step="any"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="KiOKButton" type="submit" value="OK">
+                                <a id="KiCancelButton" href="#"><span>Mégsem</span></a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </form>
             </div>
         </div>
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    </div>
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">{at('Pénzt TESZEK BE')}</div>
             </div>
@@ -547,7 +598,8 @@
                         <tbody>
                         <tr>
                             <td class="mattable-important"><label for="KeltEdit">{at('Mikor')}:</label></td>
-                            <td><input id="BeKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                            <td><input id="BeKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required">
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="BePenztarEdit">{at('Hova')}:</label></td>
@@ -555,7 +607,8 @@
                                 <select id="BePenztarEdit" name="penztar" required="required">
                                     <option value="">{at('válassz')}</option>
                                     {foreach $penztarlist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}
+                                                data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                                     {/foreach}
                                 </select>
                             </td>
@@ -573,9 +626,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="BePartnervezeteknevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
+                            <td><label for="BePartnervezeteknevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
                             <td><input id="BePartnervezeteknevEdit" name="partnervezeteknev"></td>
-                            <td><label for="BePartnerkeresztnevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
+                            <td><label for="BePartnerkeresztnevEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
                             <td colspan="3"><input id="BePartnerkeresztnevEdit" name="partnerkeresztnev"></td>
                         </tr>
                         <tr>
@@ -587,9 +642,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="BeEmailEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
+                            <td class="mattable-important"><label for="BeEmailEdit"
+                                                                  title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}
+                                    :</label></td>
                             <td><input id="BeEmailEdit" name="partneremail"></td>
-                            <td><label for="BeTelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
+                            <td><label for="BeTelefonEdit"
+                                       title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label>
+                            </td>
                             <td><input id="BeTelefonEdit" name="partnertelefon"></td>
                         </tr>
                         <tr>
@@ -612,7 +671,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="BeHivatkozottBizonylatEdit" title="{at('Ha pl. terembérletet teszel be, a számla vagy egyéb mozgás számát írd ide vagy keresd ki')}">{at('Hivatkozott bizonylat')}:</label></td>
+                            <td class="mattable-important"><label for="BeHivatkozottBizonylatEdit"
+                                                                  title="{at('Ha pl. terembérletet teszel be, a számla vagy egyéb mozgás számát írd ide vagy keresd ki')}">{at('Hivatkozott bizonylat')}
+                                    :</label></td>
                             <td>
                                 <input id="BeHivatkozottBizonylatEdit" name="tetelhivatkozottbizonylat" value="">
                                 <a class="js-behivatkozottbizonylatbutton">{at('Keresés')}</a>
@@ -638,8 +699,8 @@
             </div>
         </div>
     </div>
-    <div class="clearboth">
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Címletező</div>
             </div>
@@ -651,7 +712,9 @@
                 </table>
             </div>
         </div>
-        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+    </div>
+    <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Bérlet lejárat kalkulátor</div>
             </div>
