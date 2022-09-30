@@ -39,38 +39,6 @@ $(document).ready(
 		var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter');
 
-		$('.menupont').button();
-		var menubar=$('.menu-titlebar');
-		menubar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all');
-		menubar.each(function() {
-			$this=$(this);
-			var ref=$($this.attr('data-refcontrol'));
-			if (ref.attr('data-visible')=='hidden') {
-				$this.append('<a href="#" class="mattedit-titlebar-close">'+
-					'<span class="ui-icon ui-icon-circle-triangle-s"></span></a>'+
-					'<span class="ui-jqgrid-title">'+$this.attr('data-caption')+'</span>');
-				ref.hide();
-			}
-			else {
-				$this.append('<a href="#" class="mattedit-titlebar-close">'+
-					'<span class="ui-icon ui-icon-circle-triangle-n"></span></a>'+
-					'<span class="ui-jqgrid-title">'+$this.attr('data-caption')+'</span>');
-			}
-		});
-		menubar.on('click',function(e) {
-			e.preventDefault();
-			var ref=$($(this).attr('data-refcontrol'));
-			if (ref.attr('data-visible')=='hidden') {
-				ref.attr('data-visible','visible');
-				ref.slideDown(50);
-				$('> a > span',this).removeClass('ui-icon-circle-triangle-s').addClass('ui-icon-circle-triangle-n');
-			}
-			else {
-				ref.attr('data-visible','hidden');
-				ref.slideUp(50);
-				$('> a > span',this).removeClass('ui-icon-circle-triangle-n').addClass('ui-icon-circle-triangle-s');
-			}
-		});
 		$(document)
 				.ajaxStart(pleaseWait)
 				.ajaxStop($.unblockUI)

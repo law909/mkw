@@ -28,20 +28,22 @@
     {if ($userloggedin)}
         <div class="menu-container ui-widget ui-widget-content ui-corner-all">
             <div class="textaligncenter">{$loggedinuser.name}</div>
-            {$tabcnt = 1}
             {$cscikl = 0}
             {$mdb = count($menu)}
             {while ($cscikl < $mdb)}
                 {if ($menu[$cscikl]['mcsnev'])}
-                    <div class="menu-titlebar" data-caption="{t($menu[$cscikl]['mcsnev'])}" data-refcontrol="#Tab{$tabcnt}"></div>
+                    <div class="menu-titlebar mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all">
+                        <span class="ui-jqgrid-title">{t($menu[$cscikl]['mcsnev'])}</span>
+                    </div>
                 {/if}
-                <div id="Tab{$tabcnt}">
                 {$mcs = $menu[$cscikl]['mcsid']}
                 {while ($cscikl < $mdb) && ($menu[$cscikl]['mcsid'] == $mcs)}
-                    <div><a class="menupont {$menu[$cscikl]['class']}" href="{$menu[$cscikl]['url']}">{t($menu[$cscikl]['nev'])}</a></div>
+                    <div><a
+                            class="menupont ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only {$menu[$cscikl]['class']}"
+                            href="{$menu[$cscikl]['url']}"><span class="ui-button-text">{t($menu[$cscikl]['nev'])}</span></a>
+                    </div>
                     {$cscikl = $cscikl + 1}
                 {/while}
-                </div>
             {/while}
             <div>
                 <select id="ThemeSelect">
