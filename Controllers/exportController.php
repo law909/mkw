@@ -1244,4 +1244,125 @@ class exportController extends \mkwhelpers\Controller {
         echo '</products>';
     }
 
+    public function KaposimotoExport() {
+
+        $maxstock = $this->params->getNumRequestParam('max', 0);
+
+        $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
+
+        $ertek1 = array_merge(
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+
+        foreach ($ertek1 as $eee1) {
+            $e1 = $eee1['ertek'];
+
+            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            if (!$kodsz) {
+                $kodsz = new \Entities\TermekValtozatErtekKodszotar();
+                $kodsz->setErtek($e1);
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+                $kodsz->setKod($kodsz->getId());
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+            }
+        }
+
+        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // CSAK MUGENRACE
+        $res = $tr->getSuperzonehuExport();
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+//        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+
+        $sor = [];
+        /** @var \Entities\Termek $t */
+        foreach ($res as $t) {
+
+            $ford = $t->getTranslationsArray();
+
+            $termekkepek = $t->getTermekKepek();
+            $kepek = array();
+            /** @var TermekKep $kep */
+            foreach ($termekkepek as $kep) {
+                if ($kep->getUrl()) {
+                    $kepek[] = \mkw\store::getFullUrl($kep->getUrl(), \mkw\store::getConfigValue('mainurl'));
+                }
+            }
+
+            $valtozatok = $t->getValtozatok();
+            if ($valtozatok) {
+                /** @var \Entities\TermekValtozat $valt */
+                foreach ($valtozatok as $valt) {
+                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    else {
+                        $keszlet = 1;
+                    }
+                    $sor[] = [
+                        'categoryId' => $t->getTermekfa1Id(),
+                        'category' => $t->getTermekfa1()->getTeljesNev(),
+                        'categoryVisible' => $t->getTermekfa1()->getLathato(),
+                        'articleNumber' => $t->getCikkszam(),
+                        'articleNameEN' => $ford['en_us']['nev'],
+                        'color' => $valt->getSzin(),
+                        'size' => $valt->getMeret(),
+                        'inactive' => $t->getInaktiv(),
+                        'visible' => ($t->getLathato() && $valt->getLathato()),
+                        'stock' => $keszlet,
+                        'EANcode' => (string)$valt->getVonalkod(),
+                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                        'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
+                        'images' => $kepek,
+                        'price' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Price)),
+                        'discountPrice' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Discount)),
+                        'articleId' => $t->getId(),
+                        'variantId' => $valt->getId()
+                    ];
+                }
+            }
+            else {
+                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
+                if ($keszlet < 0) {
+                    $keszlet = 0;
+                }
+                else {
+                    $keszlet = 1;
+                }
+                $sor[] = [
+                    'categoryId' => $t->getTermekfa1Id(),
+                    'category' => $t->getTermekfa1()->getTeljesNev(),
+                    'categoryVisible' => $t->getTermekfa1()->getLathato(),
+                    'articleNumber' => $t->getCikkszam(),
+                    'articleNameEN' => $ford['en_us']['nev'],
+                    'color' => '',
+                    'size' => '',
+                    'inactive' => $t->getInaktiv(),
+                    'visible' => $t->getLathato(),
+                    'stock' => $keszlet,
+                    'EANcode' => (string)$t->getVonalkod(),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ),
+                    'images' => $kepek,
+                    'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Price)),
+                    'discountPrice' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Discount)),
+                    'articleId' => $t->getId(),
+                    'variantId' => ''
+                ];
+            }
+        }
+        header("Content-type: application/json");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=mugenrace.json");
+        echo json_encode($sor);
+    }
+
 }
