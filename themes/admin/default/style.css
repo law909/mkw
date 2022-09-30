@@ -17,6 +17,14 @@ body {
     width: 100%;
 }
 
+#loginform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
 .textaligncenter {
     text-align: center;
 }
