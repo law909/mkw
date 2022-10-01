@@ -1,12 +1,36 @@
 {extends "base.tpl"}
 
+{block "precss"}
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/splide/splide-sea-green.min.css?v=1">
+{/block}
+
+{block "prescript"}
+    <script src="/themes/main/mugenrace2021/splide/splide.min.js?v=1"></script>
+{/block}
+{block "script"}
+    <script src="/js/main/mugenrace2021/termeklap.js?v=2"></script>
+{/block}
+
 {block "body"}
     <div class="tl-nav-spacer"></div>
     <article class="tl-container">
         <div class="tl-termek-imageslider">
-            {foreach $termek.kepek as $_k}
-                <div><img src="{$imagepath}{$_k.kozepeskepurl}" alt="{$_k.leiras}"></div>
-            {/foreach}
+            <section class="splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        {foreach $termek.kepek as $_k}
+                            <li class="splide__slide">
+                                <img
+                                    src="{$imagepath}{$_k.kozepeskepurl}"
+                                    alt="{$_k.leiras}"
+                                    data-url="{$imagepath}{$_k.kepurl}"
+                                    class="tl-termek-imageslide"
+                                >
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </section>
         </div>
         <div class="tl-termek-innerbox">
             <section class="tl-termek-fokep">

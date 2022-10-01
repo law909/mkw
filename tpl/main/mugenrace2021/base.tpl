@@ -10,9 +10,11 @@
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=1">
+    {block "precss"}{/block}
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=2">
     {block "css"}{/block}
-    <script src="/js/main/mugenrace2021/base.js?v=2"></script>
+    {block "prescript"}{/block}
+    <script src="/js/main/mugenrace2021/base.js?v=3"></script>
     {block "script"}{/block}
 </head>
 <body>
