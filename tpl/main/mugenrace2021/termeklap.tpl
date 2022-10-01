@@ -2,14 +2,14 @@
 
 {block "body"}
     <div class="tl-nav-spacer"></div>
-    <div class="tl-container">
+    <article class="tl-container">
         <div class="tl-termek-imageslider">
             {foreach $termek.kepek as $_k}
                 <div><img src="{$imagepath}{$_k.kozepeskepurl}" alt="{$_k.leiras}"></div>
             {/foreach}
         </div>
         <div class="tl-termek-innerbox">
-            <div class="tl-termek-fokep">
+            <section class="tl-termek-fokep">
                 <img
                     itemprop="image"
                     src="{$imagepath}{$termek.kepurl}"
@@ -17,8 +17,8 @@
                     alt="{$termek.caption}"
                     class="tl-termek-img"
                 >
-            </div>
-            <div class="tl-termek-infobox">
+            </section>
+            <section class="tl-termek-infobox">
                 <div class="tl-termek-nev">
                     <span itemprop="name">{$termek.caption}</span>
                 </div>
@@ -35,7 +35,9 @@
                     <div>{t('VÁLASSZ SZÍNT')}</div>
                     <div class="tl-color-select">
                         {foreach $termek.szinek as $szin}
-                            <a href="#" class="tl-color-selector"><img src="{$imagepath}{$szin[1]}" alt="{$szin[0]}" class="tl-color-selector-img"></a>
+                            <a href="#" class="tl-color-selector">
+                                <img src="{$imagepath}{$szin[1]}" alt="{$szin[0]}" title="{$szin[0]}" class="tl-color-selector-img">
+                            </a>
                         {/foreach}
                     </div>
                 </div>
@@ -52,7 +54,7 @@
                     <div class="tl-details-text">{$termek.leiras}</div>
                 </div>
                 <div class="tl-termek-ertekeles"></div>
-            </div>
+            </section>
         </div>
-    </div>
+    </article>
 {/block}

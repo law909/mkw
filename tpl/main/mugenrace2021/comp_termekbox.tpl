@@ -1,6 +1,6 @@
-<div class="termek-box" itemscope itemtype="http://schema.org/Product">
+<article class="termek-box" itemscope itemtype="http://schema.org/Product">
     <div class="termek-innerbox">
-        <div class="termek-fokep">
+        <section class="termek-fokep">
             <a href="/termek/{$_termek.slug}">
                 <img
                     itemprop="image"
@@ -10,7 +10,7 @@
                     class="termek-img"
                     onerror="this.src = '/themes/main/mugenrace2021/noprodimg.jpg';"
                 ></a>
-        </div>
+        </section>
         {if ($_termek.kepek|default)}
             <div class="termek-valtozatslider">
                 {foreach $_termek.mindenvaltozat as $_v}
@@ -18,7 +18,7 @@
                 {/foreach}
             </div>
         {/if}
-        <div class="termek-infobox">
+        <section class="termek-infobox">
             <div class="termek-nev">
                 <a href="/termek/{$_termek.slug}" itemprop="url"><span itemprop="name">{$_termek.caption}</span></a>
             </div>
@@ -34,6 +34,6 @@
                     <span itemprop="price">{number_format($_termek.brutto,0,',',' ')} {$_termek.valutanemnev}</span>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-</div>
+</article>

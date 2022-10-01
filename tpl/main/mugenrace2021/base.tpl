@@ -20,7 +20,7 @@
     <div class="menucloser">
         <a href="" class="menu-close"><img src="/themes/main/mugenrace2021/close_b.png" class="nav-img" alt="Close menu">{t('BEZÁR')}</a>
     </div>
-    <div>
+    <nav>
     {foreach $mnrnavigation as $mnrnavi}
         <div class="menu-line">
             <div>
@@ -30,14 +30,14 @@
             <div class="menu-nav-slogen">{$mnrnavi.szlogen}</div>
         </div>
     {/foreach}
-    </div>
+    </nav>
     <svg class="menu-bottom-triangle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <polygon fill="black" points="0,100 100,100 100,0"/>
     </svg>
     <div class="menu-bottom-text">{t('NAVIGÁCIÓ')}</div>
 </div>
-<div class="header">
-    <div class="nav">
+<header class="header">
+    <nav class="nav">
         <a href="" class="nav-menu"><img src="/themes/main/mugenrace2021/menu_w.png" class="nav-img" alt="Menu"></a>
         <div></div>
         <a href="/" class="nav-logo hcenter"><img src="/themes/main/mugenrace2021/logo_w.png" class="nav-logoimg" alt="Home"></a>
@@ -48,13 +48,13 @@
                 <option value="{$locale.id}"{if ($locale.selected)} selected="selected"{/if}>{$locale.caption}</option>
             {/foreach}
         </select>
-    </div>
+    </nav>
     <div class="header-triangle">
         <svg class="header-triangle-size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
             <polygon fill="black" points="0,0 0,100 100,0"/>
         </svg>
     </div>
-</div>
+</header>
 {block "body"}
 {/block}
 {block "stonebody"}
