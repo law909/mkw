@@ -38,6 +38,7 @@ class mnrstaticController extends \mkwhelpers\MattableController {
 		$x['slug'] = $t->getSlug();
 		if ($forKarb) {
 
+            $valtozat = [];
             foreach ($t->getMNRStaticPages() as $tvaltozat) {
                 $valtozat[] = $mnrCtrl->loadVars($tvaltozat, $t, $forKarb);
             }

@@ -216,7 +216,7 @@ return array(
     'Nyomtat' => 'Print',
     'Számláim' => 'My invoices',
     'BEZÁR' => 'CLOSE',
-    'TÖRLÉS' => 'CLOSE ALL',
+    'TÖRLÉS' => 'CLEAR ALL',
     'SZŰRŐK' => 'FILTERS',
     'SZŰRÉS' => 'APPLY & SHOW PRODUCTS',
     'NAVIGÁCIÓ' => 'NAVIGATION',

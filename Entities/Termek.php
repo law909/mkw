@@ -1085,6 +1085,38 @@ class Termek {
             }
             $x['szinek'] = $vtt;
         }
+        elseif (\mkw\store::isMugenrace2021()) {
+            $vtt = [];
+            $valtozatok = $this->getValtozatok();
+            /** @var TermekValtozat $valt */
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek1()] = [$valt->getErtek1(), $valt->getKepurl()];
+                    }
+                    elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek2()] = [$valt->getErtek2(), $valt->getKepurl()];
+                    }
+                }
+            }
+            $x['szinek'] = $vtt;
+        }
+
+        if (\mkw\store::isMugenrace2021()) {
+            $vtt = array();
+            $valtozatok = $this->getValtozatok();
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                        $vtt[$valt->getErtek1()] = $valt->getErtek1();
+                    }
+                    elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                        $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                    }
+                }
+            }
+            $x['meretek'] = $vtt;
+        }
 
         $hasontomb = array();
         $r = \mkw\store::getEm()->getRepository('Entities\Termek');
