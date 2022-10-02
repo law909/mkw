@@ -72,6 +72,14 @@ a {
     color: var(--dark-font-color);
 }
 
+.hide-on-mobile {
+    display: none;
+}
+
+.hide-on-desktop {
+    display: initial;
+}
+
 .menucontainer {
     z-index: 9999;
     position: absolute;
@@ -140,7 +148,7 @@ a {
 .header {
     position: fixed;
     top: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 999;
     color: var(--light-font-color);
 }
@@ -452,18 +460,40 @@ a {
 .tl-termek-innerbox {
     display: flex;
     flex-direction: column;
+    padding: 0 10px;
 }
 
 .tl-termek-img {
-    width: 100%;
+    margin: auto;
 }
 
 .tl-termek-infobox {
     font-family: var(--font-normal);
 }
 
+.splide__arrow svg {
+    fill: var(--dark-font-color);
+}
+
+.splide__arrow:hover:not(:disabled) svg {
+    fill: var(--brand-color);
+}
+
+.splide__pagination__page.is-active {
+    background-color: var(--dark-font-color);
+}
+
+.splide__arrow:focus-visible {
+    outline-color: var(--brand-color);
+}
+
 .tl-termek-imageslider {
-    display: none;
+    max-width: 17%;
+    padding-left: 1em;
+}
+
+.tl-termek-imageslide {
+    max-width: 100%;
 }
 
 .tl-termek-cikkszam, .tl-termek-rovidleiras {
@@ -506,25 +536,17 @@ a {
         align-self: center;
     }
 
+    .hide-on-mobile {
+        display: initial;
+    }
+
+    .hide-on-desktop {
+        display: none;
+    }
+
     .splide {
         padding-left: 0;
         padding-right: 0;
-    }
-
-    .splide__arrow svg {
-        fill: var(--dark-font-color);
-    }
-
-    .splide__arrow:hover:not(:disabled) svg {
-        fill: var(--brand-color);
-    }
-
-    .splide__pagination__page.is-active {
-        background-color: var(--dark-font-color);
-    }
-
-    .splide__arrow:focus-visible {
-        outline-color: var(--brand-color);
     }
 
     .nav {
@@ -666,19 +688,16 @@ a {
     .tl-termek-innerbox {
         flex-basis: 100%;
         flex-direction: row;
-    }
-
-    .tl-termek-imageslider {
-        display: block;
-        max-width: 17%;
-        padding-left: 1em;
+        padding: unset;
     }
 
     .tl-termek-imageslide {
         border: var(--termek-border);
+        width: 100%;
     }
 
     .tl-termek-fokep {
+        display: flex;
         flex-basis: 50%;
         border: var(--termek-border);
         padding: 0.5em;

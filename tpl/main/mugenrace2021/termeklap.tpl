@@ -15,8 +15,8 @@
 {block "body"}
     <div class="tl-nav-spacer"></div>
     <article class="tl-container" x-data="{ imagepath: '{$imagepath}', termekid: {$termek.id} }">
-        <div class="tl-termek-imageslider">
-            <section class="splide">
+        <div class="tl-termek-imageslider hide-on-mobile">
+            <section class="tl-splide-desktop splide">
                 <div class="splide__track">
                     <ul class="splide__list">
                         {foreach $termek.kepek as $_k}
@@ -34,7 +34,13 @@
             </section>
         </div>
         <div class="tl-termek-innerbox" x-data="termeklap" x-init="getLists">
-            <section class="tl-termek-fokep">
+            <div class="tl-termek-nev hide-on-desktop">
+                <span itemprop="name">{$termek.caption}</span>
+            </div>
+            <div class="tl-termek-cikkszam hide-on-desktop">
+                <span>{$termek.cikkszam}</span>
+            </div>
+            <section class="tl-termek-fokep hide-on-mobile">
                 <img
                     itemprop="image"
                     src="{$imagepath}{$termek.kepurl}"
@@ -43,11 +49,26 @@
                     class="tl-termek-img"
                 >
             </section>
+            <section class="tl-splide-mobile splide hide-on-desktop">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        {foreach $termek.kepek as $_k}
+                            <li class="splide__slide">
+                                <img
+                                    src="{$imagepath}{$_k.kepurl}"
+                                    alt="{$_k.leiras}"
+                                    class="tl-termek-imageslide"
+                                >
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </section>
             <section class="tl-termek-infobox">
-                <div class="tl-termek-nev">
+                <div class="tl-termek-nev hide-on-mobile">
                     <span itemprop="name">{$termek.caption}</span>
                 </div>
-                <div class="tl-termek-cikkszam">
+                <div class="tl-termek-cikkszam hide-on-mobile">
                     <span>{$termek.cikkszam}</span>
                 </div>
                 <div class="tl-termek-rovidleiras">
