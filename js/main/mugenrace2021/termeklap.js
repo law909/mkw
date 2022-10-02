@@ -5,6 +5,7 @@ document.addEventListener("alpine:init", () => {
         stocks: [],
         selectedSize: null,
         selectedColor: null,
+        canAddToCart: false,
         getLists() {
             const url = new URL('/valtozatadatok', location.origin);
             url.searchParams.append('tid', this.termekid);
@@ -17,29 +18,22 @@ document.addEventListener("alpine:init", () => {
                 });
         },
         selectSize(size) {
-            let mehet = true;
+            this.canAddToCart = false;
             if (this.selectedColor) {
-                mehet = this.stocks[this.selectedColor.value + size.value];
+                this.canAddToCart = this.stocks[this.selectedColor.value + size.value];
             }
-            if (mehet) {
-                this.selectedSize = size;
-            }
-            else {
-                alert('Nincs készleten');
-            }
+            this.selectedSize = size;
         },
         selectColor(color) {
-            let mehet = true;
+            this.canAddToCart = false;
             if (this.selectedSize) {
-                mehet = this.stocks[color.value + this.selectedSize.value];
+                this.canAddToCart = this.stocks[color.value + this.selectedSize.value];
             }
-            if (mehet) {
-                this.selectedColor = color;
-            }
-            else {
-                alert('Nincs készleten');
-            }
+            this.selectedColor = color;
         },
+        addToCart() {
+            alert('A kosárban lesz majd: ' + this.selectedColor.value + ' - ' + this.selectedSize.value);
+        }
     }));
 });
 

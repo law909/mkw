@@ -90,6 +90,11 @@
                         </template>
                     </div>
                 </div>
+                <button
+                    class="tl-add-to-cart-button"
+                    :disabled="!canAddToCart"
+                    @click.prevent="addToCart"
+                >{t("KOSÁRBA")}</button>
                 <div class="tl-details">
                     <div>{t('RÉSZLETEK')}</div>
                     <div class="tl-details-text">{$termek.leiras}</div>

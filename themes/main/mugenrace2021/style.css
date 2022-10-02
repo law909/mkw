@@ -723,6 +723,17 @@ a {
         margin: 0 3px;
     }
 
+    .tl-add-to-cart-button {
+        width: 100%;
+        font-family: var(--font-bold);
+        font-size: var(--header5-font-size);
+        padding-top: 10px;
+        background-color: var(--brand-color);
+    }
+
+    .tl-add-to-cart-button:disabled {
+        background-color: #9d9d9d;
+    }
 }
 
 .selected {

@@ -224,4 +224,5 @@ return array(
     'VÁLASSZ SZÍNT' => 'SELECT COLOR',
     'VÁLASSZ MÉRETET' => 'SELECT SIZE',
     'RÉSZLETEK' => 'DETAILS',
+    'KOSÁRBA' => 'ADD TO CART',
 );
