@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Termek;
+use Entities\TermekValtozat;
 use mkw\store;
 
 class termekvaltozatController extends \mkwhelpers\MattableController {
@@ -220,4 +222,64 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
             $view->printTemplateResult();
         }
     }
+
+    public function getValtozatAdatok() {
+        $x = [];
+        $tid = $this->params->getIntRequestParam('tid');
+        $termek = $this->getRepo(Termek::class)->find($tid);
+        if ($termek) {
+            if (\mkw\store::isMugenrace2021()) {
+                $vtt = [];
+                $valtozatok = $termek->getValtozatok();
+                /** @var TermekValtozat $valt */
+                foreach ($valtozatok as $valt) {
+                    if ($valt->getXElerheto()) {
+                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek1()] = [
+                                'value' => $valt->getErtek1(),
+                                'type' => $valt->getAdatTipus1Id(),
+                                'kepurl' => $valt->getKepurl()
+                            ];
+                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek2()] = [
+                                'value' => $valt->getErtek2(),
+                                'type' => $valt->getAdatTipus2Id(),
+                                'kepurl' => $valt->getKepurl()
+                            ];
+                        }
+                    }
+                }
+                $x['szinek'] = $vtt;
+                $vtt = array();
+                foreach ($valtozatok as $valt) {
+                    if ($valt->getXElerheto()) {
+                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                            $vtt[$valt->getErtek1()] = [
+                                'value' => $valt->getErtek1(),
+                                'type' => $valt->getAdatTipus1Id()
+                            ];
+                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                            $vtt[$valt->getErtek2()] = [
+                                'value' => $valt->getErtek2(),
+                                'type' => $valt->getAdatTipus2Id()
+                            ];
+                        }
+                    }
+                }
+                $x['meretek'] = $vtt;
+                $vtt = [];
+                foreach ($valtozatok as $valt) {
+                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek1() . $valt->getErtek2()] = $keszlet > 0;
+                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek2() . $valt->getErtek1()] = $keszlet > 0;
+                    }
+                }
+                $x['keszlet'] = $vtt;
+            }
+        }
+        echo json_encode($x);
+    }
+
 }

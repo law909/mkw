@@ -1,3 +1,48 @@
+document.addEventListener("alpine:init", () => {
+    Alpine.data("termeklap", () => ({
+        colors: [],
+        sizes: [],
+        stocks: [],
+        selectedSize: null,
+        selectedColor: null,
+        getLists() {
+            const url = new URL('/valtozatadatok', location.origin);
+            url.searchParams.append('tid', this.termekid);
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.colors = data.szinek;
+                    this.sizes = data.meretek;
+                    this.stocks = data.keszlet;
+                });
+        },
+        selectSize(size) {
+            let mehet = true;
+            if (this.selectedColor) {
+                mehet = this.stocks[this.selectedColor.value + size.value];
+            }
+            if (mehet) {
+                this.selectedSize = size;
+            }
+            else {
+                alert('Nincs készleten');
+            }
+        },
+        selectColor(color) {
+            let mehet = true;
+            if (this.selectedSize) {
+                mehet = this.stocks[color.value + this.selectedSize.value];
+            }
+            if (mehet) {
+                this.selectedColor = color;
+            }
+            else {
+                alert('Nincs készleten');
+            }
+        },
+    }));
+});
+
 document.addEventListener( 'DOMContentLoaded', function() {
     var splide = new Splide( '.splide', {
         type: 'loop',
@@ -18,4 +63,5 @@ document.addEventListener( 'DOMContentLoaded', function() {
     });
 
     splide.mount();
-} );
+
+});

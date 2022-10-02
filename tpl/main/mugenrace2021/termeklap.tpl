@@ -6,14 +6,15 @@
 
 {block "prescript"}
     <script src="/themes/main/mugenrace2021/splide/splide.min.js?v=1"></script>
+    <script defer src="/js/alpine/cdn.min.js"></script>
 {/block}
 {block "script"}
-    <script src="/js/main/mugenrace2021/termeklap.js?v=2"></script>
+    <script src="/js/main/mugenrace2021/termeklap.js?v=3"></script>
 {/block}
 
 {block "body"}
     <div class="tl-nav-spacer"></div>
-    <article class="tl-container">
+    <article class="tl-container" x-data="{ imagepath: '{$imagepath}', termekid: {$termek.id} }">
         <div class="tl-termek-imageslider">
             <section class="splide">
                 <div class="splide__track">
@@ -32,7 +33,7 @@
                 </div>
             </section>
         </div>
-        <div class="tl-termek-innerbox">
+        <div class="tl-termek-innerbox" x-data="termeklap" x-init="getLists">
             <section class="tl-termek-fokep">
                 <img
                     itemprop="image"
@@ -58,19 +59,35 @@
                 <div class="tl-color-select-container">
                     <div>{t('VÁLASSZ SZÍNT')}</div>
                     <div class="tl-color-select">
-                        {foreach $termek.szinek as $szin}
-                            <a href="#" class="tl-color-selector">
-                                <img src="{$imagepath}{$szin[1]}" alt="{$szin[0]}" title="{$szin[0]}" class="tl-color-selector-img">
+                        <template x-for="(color, index) in colors">
+                            <a
+                                href="#"
+                                class="tl-color-selector"
+                                :class="selectedColor === color ? 'selected' : ''"
+                                @click.prevent="selectColor(color)"
+                            >
+                                <img
+                                    :src="imagepath + color.kepurl"
+                                    :alt="color.value"
+                                    :title="color.value"
+                                    class="tl-color-selector-img"
+                                >
                             </a>
-                        {/foreach}
+                        </template>
                     </div>
                 </div>
                 <div class="tl-size-select-container">
                     <div>{t('VÁLASSZ MÉRETET')}</div>
                     <div class="tl-size-select">
-                        {foreach $termek.meretek as $meret}
-                            <a href="#" class="tl-size-selector">{$meret}</a>
-                        {/foreach}
+                        <template x-for="(size, index) in sizes">
+                            <a
+                                href="#"
+                                class="tl-size-selector"
+                                x-text="size.value"
+                                :class="selectedSize === size ? 'selected' : ''"
+                                @click.prevent="selectSize(size)"
+                            ></a>
+                        </template>
                     </div>
                 </div>
                 <div class="tl-details">

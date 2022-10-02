@@ -101,6 +101,7 @@ $router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
 $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
 $router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
+$router->map('GET', '/valtozatadatok', 'termekvaltozatController#getValtozatAdatok', 'getvaltozatadatok');
 
 $router->map('GET', '/rendezveny/reg', 'rendezvenyController#regView', 'showrendezvenyreg');
 $router->map('POST', '/rendezveny/reg/save', 'rendezvenyController#regSave', 'saverendezvenyreg');

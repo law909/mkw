@@ -726,5 +726,6 @@ a {
 }
 
 .selected {
-    background-color: var(--brand-color);
+    background-color: var(--dark-font-color);
+    color: var(--brand-color);
 }
