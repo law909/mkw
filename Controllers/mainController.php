@@ -426,91 +426,55 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function valtozat() {
-        switch (true) {
-            case \mkw\store::isMugenrace2021():
-                $termekkod = $this->params->getIntRequestParam('t');
-                $tipusid = $this->params->getIntRequestParam('ti');
-                $valtozatertek = $this->params->getRequestParam('v');
-                $masiktipusid = $this->params->getIntRequestParam('mti');
-                $masikselected = $this->params->getRequestParam('sel');
-                $ret = array();
+        $termekkod = $this->params->getIntRequestParam('t');
+        $tipusid = $this->params->getIntRequestParam('ti');
+        $valtozatertek = $this->params->getRequestParam('v');
+        $masiktipusid = $this->params->getIntRequestParam('mti');
+        $masikselected = $this->params->getRequestParam('sel');
+        $ret = array();
 
-                /** @var \Entities\Termek $termek */
-                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
+        /** @var \Entities\Termek $termek */
+        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
 
-                $valtozatok = $termek->getValtozatok();
-                foreach ($valtozatok as $valtozat) {
-                    if ($valtozat->getXElerheto()) {
-                        if ($valtozat->getAdatTipus1Id() == $tipusid && ($valtozat->getErtek1() == $valtozatertek || !$valtozatertek)) {
-                            $ret['adat'][$valtozat->getErtek2()] = [
-                                'value' => $valtozat->getErtek2(),
-                                'type' => $valtozat->getAdatTipus2Id(),
-                                'sel' => $masikselected == $valtozat->getErtek2()
-                            ];
-                        }
-                        elseif ($valtozat->getAdatTipus2Id() == $tipusid && ($valtozat->getErtek2() == $valtozatertek || !$valtozatertek)) {
-                            $ret['adat'][$valtozat->getErtek1()] = [
-                                'value' => $valtozat->getErtek1(),
-                                'type' => $valtozat->getAdatTipus1Id(),
-                                'sel' => $masikselected == $valtozat->getErtek1()
-                            ];
-                        }
-                    }
-                }
-                echo json_encode($ret);
-                break;
-            default:
-                $termekkod = $this->params->getIntRequestParam('t');
-                $tipusid = $this->params->getIntRequestParam('ti');
-                $valtozatertek = $this->params->getRequestParam('v');
-                $masiktipusid = $this->params->getIntRequestParam('mti');
-                $masikselected = $this->params->getRequestParam('sel');
-                $ret = array();
-
-                /** @var \Entities\Termek $termek */
-                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
-
-                if ($masiktipusid) {
-                    $t = array($tipusid, $masiktipusid);
-                    $e = array($valtozatertek, $masikselected);
-                }
-                else {
-                    $t = array($tipusid);
-                    $e = array($valtozatertek);
-                }
-                /** @var \Entities\TermekValtozat $termekvaltozat */
-                $termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
-
-                $ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
-                $ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
-                $ret['price'] = number_format($termek->getBruttoAr(
-                        $termekvaltozat,
-                        \mkw\store::getLoggedInUser(),
-                        \mkw\store::getMainSession()->valutanem,
-                        \mkw\store::getParameter(\mkw\consts::Webshop2Price)), 0, ',', ' ') . ' ' . \mkw\store::getMainSession()->valutanemnev;
-                if ($termekvaltozat) {
-                    $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
-                    $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
-                    $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
-                    $ret['kepurlorig'] = $termekvaltozat->getKepurl();
-                }
-                $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
-                $ret['imagepath'] = \mkw\store::getConfigValue('main.imagepath', '');
-
-                $valtozatok = $termek->getValtozatok();
-                foreach ($valtozatok as $valtozat) {
-                    if ($valtozat->getElerheto()) {
-                        if ($valtozat->getAdatTipus1Id() == $tipusid && ($valtozat->getErtek1() == $valtozatertek || !$valtozatertek)) {
-                            $ret['adat'][$valtozat->getErtek2()] = array('value' => $valtozat->getErtek2(), 'sel' => $masikselected == $valtozat->getErtek2());
-                        }
-                        elseif ($valtozat->getAdatTipus2Id() == $tipusid && ($valtozat->getErtek2() == $valtozatertek || !$valtozatertek)) {
-                            $ret['adat'][$valtozat->getErtek1()] = array('value' => $valtozat->getErtek1(), 'sel' => $masikselected == $valtozat->getErtek1());
-                        }
-                    }
-                }
-                echo json_encode($ret);
-                break;
+        if ($masiktipusid) {
+            $t = array($tipusid, $masiktipusid);
+            $e = array($valtozatertek, $masikselected);
         }
+        else {
+            $t = array($tipusid);
+            $e = array($valtozatertek);
+        }
+        /** @var \Entities\TermekValtozat $termekvaltozat */
+        $termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
+
+        $ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
+        $ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
+        $ret['price'] = number_format($termek->getBruttoAr(
+                $termekvaltozat,
+                \mkw\store::getLoggedInUser(),
+                \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price)), 0, ',', ' ') . ' ' . \mkw\store::getMainSession()->valutanemnev;
+        if ($termekvaltozat) {
+            $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
+            $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
+            $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
+            $ret['kepurlorig'] = $termekvaltozat->getKepurl();
+        }
+        $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
+        $ret['imagepath'] = \mkw\store::getConfigValue('main.imagepath', '');
+
+        $valtozatok = $termek->getValtozatok();
+        foreach ($valtozatok as $valtozat) {
+            if ($valtozat->getElerheto()) {
+                if ($valtozat->getAdatTipus1Id() == $tipusid && ($valtozat->getErtek1() == $valtozatertek || !$valtozatertek)) {
+                    $ret['adat'][$valtozat->getErtek2()] = array('value' => $valtozat->getErtek2(), 'sel' => $masikselected == $valtozat->getErtek2());
+                }
+                elseif ($valtozat->getAdatTipus2Id() == $tipusid && ($valtozat->getErtek2() == $valtozatertek || !$valtozatertek)) {
+                    $ret['adat'][$valtozat->getErtek1()] = array('value' => $valtozat->getErtek1(), 'sel' => $masikselected == $valtozat->getErtek1());
+                }
+            }
+        }
+        echo json_encode($ret);
 	}
 
 	public function kapcsolat() {
