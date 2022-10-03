@@ -750,14 +750,14 @@ a {
 
     .tl-termek-fokep {
         display: flex;
-        flex-basis: 50%;
+        flex: 0 0 50%;
         border: var(--termek-border);
         padding: 0.5em;
         margin-left: 2em;
     }
 
     .tl-termek-infobox {
-        flex-basis: 50%;
+        flex: 0 1 50%;
         padding: 0.5em;
         margin: 0 2em;
     }
