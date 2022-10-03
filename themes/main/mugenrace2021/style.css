@@ -171,7 +171,7 @@ a {
 }
 
 .nav-logoimg {
-    max-width: 180px;
+    max-width: 145px;
 }
 
 .nav-lang {
@@ -588,6 +588,10 @@ a {
 
     .nav {
         grid-template-columns: 1fr 3fr 24fr 1fr 1fr 2fr;
+    }
+
+    .nav-logoimg {
+        max-width: 180px;
     }
 
     .header-triangle-size {
