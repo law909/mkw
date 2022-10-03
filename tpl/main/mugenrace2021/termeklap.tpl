@@ -14,7 +14,7 @@
 
 {block "body"}
     <div class="tl-nav-spacer"></div>
-    <div class="tl-nav-decor"></div>
+    <div class="tl-nav-decor hide-on-desktop"></div>
     <article class="tl-container" x-data="{ imagepath: '{$imagepath}', termekid: {$termek.id} }">
         <div class="tl-termek-imageslider hide-on-mobile">
             <section class="tl-splide-desktop splide">
@@ -84,7 +84,7 @@
                 <div class="tl-color-select-container hide-on-mobile">
                     <div>{t('VÁLASSZ SZÍNT')}</div>
                     <div class="tl-color-select">
-                        <template x-for="(color, index) in colors">
+                        <template x-for="(color, index) in colors" :key="index">
                             <a
                                 href="#"
                                 class="tl-color-selector"
@@ -101,6 +101,14 @@
                         </template>
                     </div>
                 </div>
+                <div class="tl-color-input-container hide-on-desktop">
+                    <select x-model="selectedColorIndex">
+                        <option value="">{t('VÁLASSZ SZÍNT')}</option>
+                        <template x-for="(color, index) in colors" :key="index">
+                            <option :value="index" x-text="color.value"></option>
+                        </template>
+                    </select>
+                </div>
                 <div class="tl-size-select-container hide-on-mobile">
                     <div>{t('VÁLASSZ MÉRETET')}</div>
                     <div class="tl-size-select">
@@ -114,6 +122,14 @@
                             ></a>
                         </template>
                     </div>
+                </div>
+                <div class="tl-size-input-container hide-on-desktop">
+                    <select x-model="selectedSizeIndex">
+                        <option value="">{t('VÁLASSZ MÉRETET')}</option>
+                        <template x-for="(size, index) in sizes" :key="index">
+                            <option :value="index" x-text="size.value"></option>
+                        </template>
+                    </select>
                 </div>
                 <button
                     class="tl-add-to-cart-button"

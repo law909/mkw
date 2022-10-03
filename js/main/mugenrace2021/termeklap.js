@@ -5,6 +5,8 @@ document.addEventListener("alpine:init", () => {
         stocks: [],
         selectedSize: null,
         selectedColor: null,
+        selectedColorIndex: null,
+        selectedSizeIndex: null,
         canAddToCart: false,
         getLists() {
             const url = new URL('/valtozatadatok', location.origin);
@@ -16,17 +18,23 @@ document.addEventListener("alpine:init", () => {
                     this.sizes = data.meretek;
                     this.stocks = data.keszlet;
                 });
+            this.$watch('selectedColorIndex', (value) => {
+                this.selectColor(this.colors[value]);
+            });
+            this.$watch('selectedSizeIndex', (value) => {
+                this.selectSize(this.sizes[value]);
+            });
         },
         selectSize(size) {
             this.canAddToCart = false;
-            if (this.selectedColor) {
+            if (this.selectedColor && size) {
                 this.canAddToCart = this.stocks[this.selectedColor.value + size.value];
             }
             this.selectedSize = size;
         },
         selectColor(color) {
             this.canAddToCart = false;
-            if (this.selectedSize) {
+            if (this.selectedSize && color) {
                 this.canAddToCart = this.stocks[color.value + this.selectedSize.value];
             }
             this.selectedColor = color;

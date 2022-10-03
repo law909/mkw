@@ -77,11 +77,11 @@ a {
 }
 
 .hide-on-desktop {
-    display: initial;
+    display: block;
 }
 
 .menucontainer {
-    z-index: 9999;
+    z-index: 100000;
     position: absolute;
     top: -100vh;
     background-color: var(--brand-color);
@@ -351,7 +351,8 @@ a {
     justify-content: flex-end;
 }
 
-.filter-closer, .filter-cleaner {
+.filter-closer,
+.filter-cleaner {
     flex-basis: 33.3333%;
 }
 
@@ -423,7 +424,8 @@ a {
     text-transform: uppercase;
 }
 
-.termek-cikkszam, .termek-rovidleiras {
+.termek-cikkszam,
+.termek-rovidleiras {
     font-family: var(--font-normal);
     font-size: var(--termek-cikkszam-font-size);
 }
@@ -496,6 +498,11 @@ a {
     outline-color: var(--brand-color);
 }
 
+.tl-splide-mobile {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 .tl-termek-imageslider {
     max-width: 17%;
     padding-left: 1em;
@@ -505,7 +512,8 @@ a {
     max-width: 100%;
 }
 
-.tl-termek-cikkszam, .tl-termek-rovidleiras {
+.tl-termek-cikkszam,
+.tl-termek-rovidleiras {
     font-size: var(--termek-cikkszam-font-size);
 }
 
@@ -524,14 +532,36 @@ a {
     font-family: var(--font-bold);
     font-size: var(--termek-ar-font-size);
     font-style: italic;
-    margin: 20px 0;
+    margin: 1em 0;
 }
 
 .tl-details {
-    margin: 20px 0;
+    margin: 1em 0;
 }
 
-@media screen and (min-width: 480px) {
+.tl-color-input-container,
+.tl-size-input-container {
+    margin: 1em 0;
+}
+
+.tl-color-input-container > select,
+.tl-size-input-container > select {
+    width: 100%;
+    padding: 0.5em;
+    font-size: 1em;
+    font-family: var(--font-normal);
+}
+
+.tl-add-to-cart-button {
+    width: 100%;
+    font-family: var(--font-bold);
+    font-size: var(--header5-font-size);
+    padding-top: 0.5em;
+    background-color: var(--brand-color);
+}
+
+.tl-add-to-cart-button:disabled {
+    background-color: #9d9d9d;
 }
 
 @media screen and (min-width: 761px) {
@@ -542,7 +572,7 @@ a {
     }
 
     .hide-on-mobile {
-        display: initial;
+        display: block;
     }
 
     .hide-on-desktop {
@@ -652,7 +682,8 @@ a {
         flex-direction: unset;
     }
 
-    .filter-opener, .filter-closer {
+    .filter-opener,
+    .filter-closer {
         display: none;
     }
 
@@ -716,7 +747,8 @@ a {
         margin: 0 2em;
     }
 
-    .tl-color-select-container, .tl-size-select-container {
+    .tl-color-select-container,
+    .tl-size-select-container {
         display: block;
         margin: 2em 0;
     }
@@ -746,18 +778,6 @@ a {
         border: var(--termek-border);
         padding: 3px;
         margin: 0 3px;
-    }
-
-    .tl-add-to-cart-button {
-        width: 100%;
-        font-family: var(--font-bold);
-        font-size: var(--header5-font-size);
-        padding-top: 10px;
-        background-color: var(--brand-color);
-    }
-
-    .tl-add-to-cart-button:disabled {
-        background-color: #9d9d9d;
     }
 }
 
