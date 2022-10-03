@@ -477,10 +477,6 @@ a {
     padding: 10px;
 }
 
-.tl-termek-img {
-    margin: auto;
-}
-
 .tl-termek-infobox {
     font-family: var(--font-normal);
 }
@@ -751,9 +747,16 @@ a {
     .tl-termek-fokep {
         display: flex;
         flex: 0 0 50%;
+        max-width: 50%;
         border: var(--termek-border);
         padding: 0.5em;
         margin-left: 2em;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tl-termek-img {
+        max-width: 100%;
     }
 
     .tl-termek-infobox {
