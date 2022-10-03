@@ -9,7 +9,7 @@
     <script defer src="/js/alpine/cdn.min.js"></script>
 {/block}
 {block "script"}
-    <script src="/js/main/mugenrace2021/termeklap.js?v=7"></script>
+    <script src="/js/main/mugenrace2021/termeklap.js?v=8"></script>
 {/block}
 
 {block "body"}
@@ -35,7 +35,7 @@
             </section>
         </div>
         <div class="tl-termek-innerbox" x-data="termeklap" x-init="getLists">
-            <div class="tl-termek-nev hide-on-desktop" @click="sizeTest()">
+            <div class="tl-termek-nev hide-on-desktop">
                 <span itemprop="name">{$termek.caption}</span>
             </div>
             <div class="tl-termek-rovidleiras hide-on-desktop">

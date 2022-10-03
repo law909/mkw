@@ -8,10 +8,6 @@ document.addEventListener("alpine:init", () => {
         selectedColorIndex: null,
         selectedSizeIndex: null,
         canAddToCart: false,
-        sizeTest() {
-            alert('inner: ' + window.innerWidth + ' outer: ' + window.outerWidth);
-            alert('innerH: ' + window.innerHeight + ' outerH: ' + window.outerHeight);
-        },
         getLists() {
             const url = new URL('/valtozatadatok', location.origin);
             url.searchParams.append('tid', this.termekid);
