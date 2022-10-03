@@ -1,23 +1,25 @@
 :root {
     --font-bold: "Helvetica Neue Bd", Helvetica, Arial, sans-serif;
     --font-normal: "Helvetica Neue Lt", Helvetica, Arial, sans-serif;
-    --brand-color: #AAFF00;
+    --brand-color: #C8FF00;
     --dark-font-color: black;
     --nav-background-color: black;
     --light-font-color: white;
-    --default-font-size: 16px;
-    --content-font-size: 20px;
-    --header5-font-size: 20px;
+    --default-font-size: 1em;
+    --content-font-size: 1em;
+    --header5-font-size: 1em;
     --termek-cikkszam-font-size: 0.8em;
-    --termek-nev-font-size: 24px;
-    --termek-ar-font-size: 28px;
-    --termek-padding-m: 5px;
-    --termek-padding-d: 0 20px 40px 20px;
+    --termek-nev-font-size-d: 1.2em;
+    --termek-ar-font-size-d: 1.4em;
+    --termek-nev-font-size-m: 1em;
+    --termek-ar-font-size-m: 1.1em;
+    --termek-padding-m: 0.4em;
+    --termek-padding-d: 0 1.25em 1.25em 1.25em;
     --termek-border: #1b1b1b solid 1px;
     --menu-nav-text-font-size-d: 14vh;
-    --menu-nav-text-font-size-m: 5vh;
+    --menu-nav-text-font-size-m: 2em;
     --menu-nav-text-margin-left-d: 4vh;
-    --menu-nav-text-margin-left-m: 4vh;
+    --menu-nav-text-margin-left-m: 1.4em;
     --menu-nav-num-font-size-d: 8vh;
     --menu-nav-num-font-size-m: 4vh;
     --nav-spacer-height-m: 12vh;
@@ -174,7 +176,7 @@ a {
 
 .nav-lang {
     width: 2.5em;
-    font-size: 30px;
+    font-size: 1.8em;
     font-weight: bold;
     font-style: italic;
     color: var(--light-font-color);
@@ -217,7 +219,7 @@ a {
 
 .szlogen1 {
     color: var(--light-font-color);
-    font-size: 75px;
+    font-size: 65px;
     font-weight: bold;
     grid-row: 1;
     white-space: nowrap;
@@ -228,7 +230,7 @@ a {
 
 .szlogen2 {
     color: var(--light-font-color);
-    font-size: 50px;
+    font-size: 38px;
     font-weight: bold;
     grid-row: 2;
     white-space: nowrap;
@@ -286,7 +288,7 @@ a {
 
 .page-szlogen1 {
     color: var(--light-font-color);
-    font-size: 12vw;
+    font-size: 38px;
     font-weight: bold;
     grid-row: 1;
     transform: rotate(357deg);
@@ -295,7 +297,7 @@ a {
 
 .page-szlogen2 {
     color: var(--light-font-color);
-    font-size: 6vw;
+    font-size: 24px;
     font-weight: bold;
     grid-row: 2;
     transform: rotate(357deg);
@@ -419,7 +421,7 @@ a {
 }
 
 .termek-nev {
-    font-size: var(--termek-nev-font-size);
+    font-size: var(--termek-nev-font-size-m);
     font-style: normal;
     text-transform: uppercase;
 }
@@ -445,7 +447,7 @@ a {
 }
 
 .termek-ar {
-    font-size: var(--termek-ar-font-size);
+    font-size: var(--termek-ar-font-size-m);
     flex-basis: 50%;
     text-align: end;
 }
@@ -524,13 +526,13 @@ a {
 
 .tl-termek-nev {
     font-family: var(--font-bold);
-    font-size: var(--termek-nev-font-size);
+    font-size: var(--termek-nev-font-size-m);
     text-transform: uppercase;
 }
 
 .tl-termek-ar {
     font-family: var(--font-bold);
-    font-size: var(--termek-ar-font-size);
+    font-size: var(--termek-ar-font-size-m);
     font-style: italic;
     margin: 1em 0;
 }
@@ -713,6 +715,14 @@ a {
         padding: var(--termek-padding-d);
     }
 
+    .termek-nev {
+        font-size: var(--termek-nev-font-size-d);
+    }
+
+    .termek-ar {
+        font-size: var(--termek-ar-font-size-d);
+    }
+
     .tl-nav-spacer {
         height: var(--tl-nav-spacer-height-d);
         background-color: unset;
@@ -745,6 +755,14 @@ a {
         flex-basis: 50%;
         padding: 0.5em;
         margin: 0 2em;
+    }
+
+    .tl-termek-nev {
+        font-size: var(--termek-nev-font-size-d);
+    }
+
+    .tl-termek-ar {
+        font-size: var(--termek-ar-font-size-d);
     }
 
     .tl-color-select-container,
