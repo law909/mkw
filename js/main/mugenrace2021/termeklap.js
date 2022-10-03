@@ -25,6 +25,7 @@ document.addEventListener("alpine:init", () => {
                 this.selectSize(this.sizes[value]);
             });
             alert('inner: ' + window.innerWidth + ' outer: ' + window.outerWidth);
+            alert('innerH: ' + window.innerHeight + ' outerH: ' + window.outerHeight);
         },
         selectSize(size) {
             this.canAddToCart = false;
