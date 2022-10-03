@@ -20,6 +20,14 @@
             <section class="tl-splide-desktop splide">
                 <div class="splide__track">
                     <ul class="splide__list">
+                        <li class="splide__slide">
+                            <img
+                                src="{$imagepath}{$termek.kepurl}"
+                                alt="{$termek.caption}"
+                                data-url="{$imagepath}{$termek.kepurl}"
+                                class="tl-termek-imageslide"
+                            >
+                        </li>
                         {foreach $termek.kepek as $_k}
                             <li class="splide__slide">
                                 <img
