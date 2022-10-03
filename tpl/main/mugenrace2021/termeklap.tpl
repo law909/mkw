@@ -14,6 +14,7 @@
 
 {block "body"}
     <div class="tl-nav-spacer"></div>
+    <div class="tl-nav-decor"></div>
     <article class="tl-container" x-data="{ imagepath: '{$imagepath}', termekid: {$termek.id} }">
         <div class="tl-termek-imageslider hide-on-mobile">
             <section class="tl-splide-desktop splide">
@@ -37,8 +38,11 @@
             <div class="tl-termek-nev hide-on-desktop">
                 <span itemprop="name">{$termek.caption}</span>
             </div>
-            <div class="tl-termek-cikkszam hide-on-desktop">
-                <span>{$termek.cikkszam}</span>
+            <div class="tl-termek-rovidleiras hide-on-desktop">
+                <span>{$termek.rovidleiras}</span>
+            </div>
+            <div class="tl-termek-ar hide-on-desktop" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$termek.valutanemnev}</span>
             </div>
             <section class="tl-termek-fokep hide-on-mobile">
                 <img
@@ -68,16 +72,16 @@
                 <div class="tl-termek-nev hide-on-mobile">
                     <span itemprop="name">{$termek.caption}</span>
                 </div>
-                <div class="tl-termek-cikkszam hide-on-mobile">
+                <div class="tl-termek-cikkszam">
                     <span>{$termek.cikkszam}</span>
                 </div>
-                <div class="tl-termek-rovidleiras">
+                <div class="tl-termek-rovidleiras hide-on-mobile">
                     <span>{$termek.rovidleiras}</span>
                 </div>
-                <div class="tl-termek-ar" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <div class="tl-termek-ar hide-on-mobile" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$termek.valutanemnev}</span>
                 </div>
-                <div class="tl-color-select-container">
+                <div class="tl-color-select-container hide-on-mobile">
                     <div>{t('VÁLASSZ SZÍNT')}</div>
                     <div class="tl-color-select">
                         <template x-for="(color, index) in colors">
@@ -97,7 +101,7 @@
                         </template>
                     </div>
                 </div>
-                <div class="tl-size-select-container">
+                <div class="tl-size-select-container hide-on-mobile">
                     <div>{t('VÁLASSZ MÉRETET')}</div>
                     <div class="tl-size-select">
                         <template x-for="(size, index) in sizes">

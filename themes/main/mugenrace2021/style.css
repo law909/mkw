@@ -20,10 +20,10 @@
     --menu-nav-text-margin-left-m: 4vh;
     --menu-nav-num-font-size-d: 8vh;
     --menu-nav-num-font-size-m: 4vh;
-    --nav-spacer-height-m: 14vh;
+    --nav-spacer-height-m: 12vh;
     --nav-spacer-height-d: 5vh;
     --termekfa-kep-height: calc(100vh - var(--nav-spacer-height-d));
-    --tl-nav-spacer-height-m: 14vh;
+    --tl-nav-spacer-height-m: 12vh;
     --tl-nav-spacer-height-d: 14vh;
     --tl-color-selector-img-width: 5vw;
 }
@@ -149,7 +149,7 @@ a {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 99999;
     color: var(--light-font-color);
 }
 
@@ -188,7 +188,7 @@ a {
 
 .header-triangle {
     grid-row: 2;
-    z-index: 998;
+    z-index: 99998;
 }
 
 .header-triangle-size {
@@ -324,13 +324,13 @@ a {
     position: fixed;
     height: 100vh;
     width: 100vw;
-    top: -86vh;
+    top: calc(var(--nav-spacer-height-m) - 100vh);
     transition: 600ms;
     overflow: hidden;
 }
 
 .termek-filter-down {
-    transform: translateY(86vh);
+    transform: translateY(calc(100vh - var(--nav-spacer-height-m)));
 }
 
 .termek-filter-inner {
@@ -452,6 +452,15 @@ a {
     height: var(--tl-nav-spacer-height-m);
 }
 
+.tl-nav-decor {
+    position: fixed;
+    width: 100vw;
+    height: var(--tl-nav-spacer-height-m);
+    top: 0;
+    background-color: var(--brand-color);
+    z-index: 99990;
+}
+
 .tl-container {
     display: flex;
     flex-direction: column;
@@ -460,7 +469,7 @@ a {
 .tl-termek-innerbox {
     display: flex;
     flex-direction: column;
-    padding: 0 10px;
+    padding: 10px;
 }
 
 .tl-termek-img {
@@ -518,10 +527,6 @@ a {
     margin: 20px 0;
 }
 
-.tl-color-select-container, .tl-size-select-container {
-    display: none;
-}
-
 .tl-details {
     margin: 20px 0;
 }
@@ -555,7 +560,7 @@ a {
 
     .header-triangle-size {
         width: 100vw;
-        height: 6vh;
+        height: 3vh;
     }
 
     .nav-spacer {
@@ -568,7 +573,7 @@ a {
     }
 
     .page-img-top-triangle {
-        top: 0px;
+        top: 0;
         height: 4vh;
     }
 
@@ -679,6 +684,7 @@ a {
 
     .tl-nav-spacer {
         height: var(--tl-nav-spacer-height-d);
+        background-color: unset;
     }
 
     .tl-container {
