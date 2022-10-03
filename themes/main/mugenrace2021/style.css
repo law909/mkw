@@ -219,7 +219,7 @@ a {
 
 .szlogen1 {
     color: var(--light-font-color);
-    font-size: 65px;
+    font-size: 58px;
     font-weight: bold;
     grid-row: 1;
     white-space: nowrap;
@@ -230,7 +230,7 @@ a {
 
 .szlogen2 {
     color: var(--light-font-color);
-    font-size: 38px;
+    font-size: 34px;
     font-weight: bold;
     grid-row: 2;
     white-space: nowrap;
