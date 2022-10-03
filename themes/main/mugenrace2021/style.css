@@ -16,11 +16,11 @@
     --termek-padding-m: 0.4em;
     --termek-padding-d: 0 1.25em 1.25em 1.25em;
     --termek-border: #1b1b1b solid 1px;
-    --menu-nav-text-font-size-d: 14vh;
+    --menu-nav-text-font-size-d: 5em;
     --menu-nav-text-font-size-m: 2em;
     --menu-nav-text-margin-left-d: 4vh;
     --menu-nav-text-margin-left-m: 1.4em;
-    --menu-nav-num-font-size-d: 8vh;
+    --menu-nav-num-font-size-d: 3em;
     --menu-nav-num-font-size-m: 4vh;
     --nav-spacer-height-m: 12vh;
     --nav-spacer-height-d: 5vh;
@@ -208,6 +208,7 @@ a {
     height: 100vh;
     width: 100vw;
     object-fit: cover;
+    object-position: left;
 }
 
 .szlogen-container {
@@ -506,8 +507,8 @@ a {
 }
 
 .tl-termek-imageslider {
-    max-width: 17%;
-    padding-left: 1em;
+    max-width: 12.5%;
+    padding-left: 3em;
 }
 
 .tl-termek-imageslide {
@@ -628,19 +629,19 @@ a {
     }
 
     .menu-nav-slogen {
-        margin-top: -2em;
+        margin-top: -1em;
         margin-bottom: 2em;
-        margin-left: 30em;
+        margin-left: 15em;
     }
 
     .page {
         display: grid;
-        grid-template-columns: 70% 30%;
+        grid-template-columns: 67% 33%;
         position: relative;
     }
 
     .szlogen1 {
-        font-size: 280px;
+        font-size: 220px;
         grid-row: 1;
     }
 
@@ -650,14 +651,14 @@ a {
     }
 
     .page-szlogen1 {
-        font-size: 140px;
+        font-size: 6em;
         grid-row: 1;
         transform: rotate(358.5deg);
-        padding-top: 3vw;
+        padding-top: 0.5em;
     }
 
     .page-szlogen2 {
-        font-size: 50px;
+        font-size: 3em;
         grid-row: 2;
         transform: rotate(358.5deg);
     }
@@ -798,8 +799,8 @@ a {
 
     .tl-size-selector {
         border: var(--termek-border);
-        padding: 3px;
-        margin: 0 3px;
+        padding: 9px;
+        margin: 0 6px;
     }
 }
 

@@ -23,7 +23,7 @@
                         {foreach $termek.kepek as $_k}
                             <li class="splide__slide">
                                 <img
-                                    src="{$imagepath}{$_k.kozepeskepurl}"
+                                    src="{$imagepath}{$_k.kepurl}"
                                     alt="{$_k.leiras}"
                                     data-url="{$imagepath}{$_k.kepurl}"
                                     class="tl-termek-imageslide"

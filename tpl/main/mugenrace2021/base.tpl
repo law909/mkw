@@ -11,7 +11,7 @@
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=6">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=7">
     {block "css"}{/block}
     {block "prescript"}{/block}
     <script src="/js/main/mugenrace2021/base.js?v=4"></script>
