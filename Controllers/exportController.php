@@ -1275,12 +1275,11 @@ class exportController extends \mkwhelpers\Controller {
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
         $filter = new FilterDescriptor();
-        $filter->addFilter('lathato', '=', true);
         $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
         if ($karkod) {
             $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
         }
-        $res = $tr->getSuperzonehuExport($filter);
+        $res = $tr->getKaposimotoExport($filter);
 
         $partner = $this->getRepo(Partner::class)->find(23827);
 
@@ -1343,6 +1342,8 @@ class exportController extends \mkwhelpers\Controller {
                     'articleNameEN' => $ford['en_us']['nev'],
                     'inactive' => $t->getInaktiv(),
                     'visible' => $t->getLathato(),
+                    'pending' => $t->getFuggoben(),
+                    'notAvailable' => $t->getNemkaphato(),
                     'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
@@ -1368,6 +1369,8 @@ class exportController extends \mkwhelpers\Controller {
                     'articleNameEN' => $ford['en_us']['nev'],
                     'inactive' => $t->getInaktiv(),
                     'visible' => $t->getLathato(),
+                    'pending' => $t->getFuggoben(),
+                    'notAvailable' => $t->getNemkaphato(),
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
                     'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),

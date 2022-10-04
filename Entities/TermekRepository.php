@@ -167,6 +167,21 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    public function getKaposimotoExport($addedfilter = false)
+    {
+        $filter = new FilterDescriptor();
+        if ($addedfilter) {
+            $filter = $filter->merge($addedfilter);
+        }
+        $q = $this->_em->createQuery('SELECT _xx, v'
+                                     . ' FROM Entities\Termek _xx'
+                                     . ' LEFT JOIN _xx.valtozatok v'
+                                     . $this->getFilterString($filter)
+                                     . $this->getOrderString(array()));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0)
     {
         $q = $this->_em->createQuery('SELECT _xx,vtsz,afa,fa1,fa2,fa3'
