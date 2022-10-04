@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
@@ -1273,10 +1274,15 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
-        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // CSAK MUGENRACE
-        $res = $tr->getSuperzonehuExport();
-        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        $filter = new FilterDescriptor();
+        $filter->addFilter('lathato', '=', true);
+        $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+        if ($karkod) {
+            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+        }
+        $res = $tr->getSuperzonehuExport($filter);
+
+        $partner = $this->getRepo(Partner::class)->find(23827);
 
 //        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
 
@@ -1296,6 +1302,19 @@ class exportController extends \mkwhelpers\Controller {
             }
 
             $valtozatok = $t->getValtozatok();
+
+            $valutanem = $t->getArValutanem(null, $partner);
+            if ($partner && $partner->getSzamlatipus()) {
+                $price = $t->getNettoAr(null, $partner);
+                $discountprice = $t->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
+            }
+            else {
+                $price = $t->getBruttoAr(null, $partner);
+                $discountprice = $t->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
+            }
+            $discount = $t->getKedvezmeny($partner);
+
+            $valtozattomb = [];
             if ($valtozatok) {
                 /** @var \Entities\TermekValtozat $valt */
                 foreach ($valtozatok as $valt) {
@@ -1306,27 +1325,32 @@ class exportController extends \mkwhelpers\Controller {
                     else {
                         $keszlet = 1;
                     }
-                    $sor[] = [
-                        'categoryId' => $t->getTermekfa1Id(),
-                        'category' => $t->getTermekfa1()->getTeljesNev(),
-                        'categoryVisible' => $t->getTermekfa1()->getLathato(),
-                        'articleNumber' => $t->getCikkszam(),
-                        'articleNameEN' => $ford['en_us']['nev'],
+                    $valtozattomb[] = [
                         'color' => $valt->getSzin(),
                         'size' => $valt->getMeret(),
-                        'inactive' => $t->getInaktiv(),
-                        'visible' => ($t->getLathato() && $valt->getLathato()),
+                        'visible' => $valt->getLathato(),
                         'stock' => $keszlet,
                         'EANcode' => (string)$valt->getVonalkod(),
-                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
                         'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
-                        'images' => $kepek,
-                        'price' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Price)),
-                        'discountPrice' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Discount)),
-                        'articleId' => $t->getId(),
-                        'variantId' => $valt->getId()
+                        'Id' => $valt->getId()
                     ];
                 }
+                $sor[] = [
+                    'categoryId' => $t->getTermekfa1Id(),
+                    'category' => $t->getTermekfa1()->getTeljesNev(),
+                    'categoryVisible' => $t->getTermekfa1()->getLathato(),
+                    'articleNumber' => $t->getCikkszam(),
+                    'articleNameEN' => $ford['en_us']['nev'],
+                    'inactive' => $t->getInaktiv(),
+                    'visible' => $t->getLathato(),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
+                    'images' => $kepek,
+                    'price' => $price,
+                    'discountPrice' => $discountprice,
+                    'Id' => $t->getId(),
+                    'variants' => $valtozattomb
+                ];
             }
             else {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
@@ -1342,19 +1366,16 @@ class exportController extends \mkwhelpers\Controller {
                     'categoryVisible' => $t->getTermekfa1()->getLathato(),
                     'articleNumber' => $t->getCikkszam(),
                     'articleNameEN' => $ford['en_us']['nev'],
-                    'color' => '',
-                    'size' => '',
                     'inactive' => $t->getInaktiv(),
                     'visible' => $t->getLathato(),
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
                     'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
-                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ),
+                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
-                    'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Price)),
-                    'discountPrice' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop1Discount)),
-                    'articleId' => $t->getId(),
-                    'variantId' => ''
+                    'price' => $price,
+                    'discountPrice' => $discountprice,
+                    'Id' => $t->getId(),
                 ];
             }
         }
