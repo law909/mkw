@@ -433,16 +433,6 @@ class BizonylatfejListener {
             $this->uow->getScheduledEntityUpdates()
         );
 
-        $ujak = $this->uow->getScheduledEntityInsertions();
-        foreach ($ujak as $entity) {
-            if ($entity instanceof \Entities\Bizonylatfej) {
-
-                $this->generateTrxId($entity);
-
-                $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
-            }
-        }
-
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
 
