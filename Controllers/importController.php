@@ -903,7 +903,13 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$termek->getAkcios()) {
                                     $kiskerar = (float)$data[7];
                                     $nagykerar = (float)$data[8];
-                                    if (($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)) {
+                                    if (
+                                        ($kiskerar < 50000) &&
+                                        (
+                                            ($kiskerar / $nagykerar * 100 < $minarszaz) ||
+                                            ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)
+                                        )
+                                    ){
                                         $termek->setNetto($nagykerar * $minarszaz / 100);
                                     }
                                     else {
