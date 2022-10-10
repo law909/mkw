@@ -229,6 +229,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/megrendelesfej/fejexport', 'megrendelesfejController#fejexport', 'adminmegrendelesfejfejexport');
     $router->map('POST', '/admin/megrendelesfej/tetelexport', 'megrendelesfejController#tetelexport', 'adminmegrendelesfejtetelexport');
     $router->map('GET', '/admin/megrendelesfej/getszamlakarb', 'megrendelesfejController#getszamlakarb', 'adminmegrendelesfejgetszamlakarb');
+    $router->map('POST', '/admin/megrendelesfej/recalcprice', 'megrendelesfejController#recalcPrice', 'adminmegrendelesrecalcprice');
 }
 $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doPrint', 'adminmegrendelesfejprint');
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');

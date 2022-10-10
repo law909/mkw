@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
 
 class megrendelesfejController extends bizonylatfejController {
 
@@ -14,6 +15,7 @@ class megrendelesfejController extends bizonylatfejController {
         $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
         $this->getRepo()->addToBatches(array('foxpostlabel' => 'Foxpost címke letöltés'));
         $this->getRepo()->addToBatches(array('glssend' => 'Küldés GLS-nek'));
+        $this->getRepo()->addToBatches(array('recalcprice' => 'Árak újra számolása'));
     }
 
     public function setVars($view) {
@@ -399,5 +401,33 @@ class megrendelesfejController extends bizonylatfejController {
             }
         }
         return $ret;
+    }
+
+    public function recalcPrice()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        foreach ($ids as $id) {
+            /** @var Bizonylatfej $megrendfej */
+            $megrendfej = $this->getRepo()->find($id);
+            if ($megrendfej) {
+                $this->getEm()->beginTransaction();
+                try {
+                    /** @var Bizonylattetel $bt */
+                    foreach ($megrendfej->getBizonylattetelek() as $bt) {
+                        $bt->fillEgysar();
+                        $bt->calc();
+                        $this->getEm()->persist($bt);
+                    }
+                    $megrendfej->setNetto(0);
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+                    $this->getEm()->commit();
+                }
+                catch (\Exception $e) {
+                    $this->getEm()->rollback();
+                    throw $e;
+                }
+            }
+        }
     }
 }
