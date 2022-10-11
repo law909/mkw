@@ -430,9 +430,8 @@ class jogaberletController extends \mkwhelpers\MattableController {
     public function bulkLejarat()
     {
         $dt = new \DateTime();
-        $dt->modify('-6 weeks');
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('vasarlasnapja', '<=', $dt->format(\mkw\store::$SQLDateFormat));
+        $filter->addFilter('lejaratdatum', '<=', $dt->format(\mkw\store::$SQLDateFormat));
         $filter->addFilter('lejart', '=', false);
         $berletek = $this->getRepo()->getAll($filter);
         /** @var JogaBerlet $berlet */
