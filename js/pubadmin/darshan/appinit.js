@@ -1,6 +1,24 @@
 $(document).ready(
     function() {
 
+        function pleaseWait(msg) {
+            if (typeof (msg) !== 'string') {
+                msg = 'Kérem várjon...';
+            }
+            $.blockUI({
+                message: msg,
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+        }
+
         function resetPartnerModal() {
             $('#nevedit').val('');
             $('#emailedit').val('');
@@ -27,6 +45,13 @@ $(document).ready(
         $('#nevedit, #emailedit').change(function() {
             $('#keresoedit').autoComplete('clear');
         });
+
+        $(document)
+            .ajaxStart(pleaseWait)
+            .ajaxStop($.unblockUI)
+            .ajaxError(function(e, xhr, settings, exception) {
+                alert('error in: ' + settings.url + ' \n'+'error:\n' + exception);
+            });
 
         $(document)
             .on('change', '#datumselect', function(e) {
