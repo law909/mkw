@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/themes/fa/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/themes/pubadmin/{$pubadmintheme}/style.css" />
     <script type="text/javascript" src="/js/pubadmin/default/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="/js/pubadmin/default/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/pubadmin/default/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/js/pubadmin/default/bootstrap-autocomplete.min.js"></script>
     {block "inhead"}
