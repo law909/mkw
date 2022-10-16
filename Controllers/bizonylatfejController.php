@@ -637,9 +637,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setForditottadozas($this->params->getBoolRequestParam('forditottadozas'));
 
         if ($partnerkod > 0) {
-            $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
-            if ($ck) {
-                $obj->setPartner($ck);
+            if ($partnerobj) {
+                $obj->setPartner($partnerobj);
             }
         }
         else {

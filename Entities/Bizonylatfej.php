@@ -2586,37 +2586,35 @@ class Bizonylatfej {
      * @param \Entities\Partner $val
      */
     public function setPartner($val) {
-        if ($this->partner !== $val) {
-            if (!$val) {
-                $this->removePartner();
-            }
-            else {
-                $this->partner = $val;
-                if (!$this->duplication) {
+        if (!$val) {
+            $this->removePartner();
+        }
+        else {
+            $this->partner = $val;
+            if (!$this->duplication) {
 
-                    $this->setPartnerLeiroadat($val);
+                $this->setPartnerLeiroadat($val);
 
-                    $uk = $val->getUzletkoto();
-                    if ($uk) {
-                        $this->setUzletkoto($uk);
-                    }
-                    else {
-                        $this->removeUzletkoto();
-                    }
-                    $fm = $val->getFizmod();
-                    if ($fm) {
-                        $this->setFizmod($fm);
-                    }
-                    else {
-                        $this->removeFizmod();
-                    }
-                    $v = $val->getValutanem();
-                    if ($v) {
-                        $this->setValutanem($v);
-                    }
-                    else {
-                        $this->removeValutanem();
-                    }
+                $uk = $val->getUzletkoto();
+                if ($uk) {
+                    $this->setUzletkoto($uk);
+                }
+                else {
+                    $this->removeUzletkoto();
+                }
+                $fm = $val->getFizmod();
+                if ($fm) {
+                    $this->setFizmod($fm);
+                }
+                else {
+                    $this->removeFizmod();
+                }
+                $v = $val->getValutanem();
+                if ($v) {
+                    $this->setValutanem($v);
+                }
+                else {
+                    $this->removeValutanem();
                 }
             }
         }
