@@ -246,12 +246,12 @@ class pubadminController extends mkwhelpers\Controller {
         /** @var \Entities\Partner $partner */
         foreach ($partnerek as $partner) {
             $result[] = [
-                'value' => $partner->getId(),
+                'id' => $partner->getId(),
                 'text' => $partner->getNev() . ' (' . $partner->getEmail() . ')'
             ];
         }
         header('Content-Type: application/json');
-        echo json_encode($result);
+        echo json_encode(['results' => $result]);
     }
 
     public function newBejelentkezes() {
@@ -276,11 +276,13 @@ class pubadminController extends mkwhelpers\Controller {
         $oraid = $this->params->getIntRequestParam('oraid');
         $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
-        if ($ora) {
+        $nev = $this->params->getStringRequestParam('nev');
+        $email = $this->params->getStringRequestParam('email');
+        if ($ora && $nev && $email) {
             $obj = new \Entities\JogaBejelentkezes();
             $obj->setDatum($datum);
-            $obj->setPartnernev($this->params->getStringRequestParam('nev'));
-            $obj->setPartneremail($this->params->getStringRequestParam('email'));
+            $obj->setPartnernev($nev);
+            $obj->setPartneremail($email);
             $obj->setOrarend($ora);
             $this->getEm()->persist($obj);
             $this->getEm()->flush();

@@ -22,7 +22,7 @@ $(document).ready(
         function resetPartnerModal() {
             $('#nevedit').val('');
             $('#emailedit').val('');
-            $('#keresoedit').autoComplete('clear');
+            $('#keresoedit').val(null).trigger('change');
         }
 
         function refreshResztvevoList() {
@@ -33,17 +33,20 @@ $(document).ready(
             $('#aredit').trigger('focus');
         });
 
-        $('#keresoedit').autoComplete({
-            resolverSettings: {
-                url: '/pubadmin/partnerdata'
-            }
+        $('#keresoedit').select2({
+            theme: 'bootstrap4',
+            ajax: {
+                url: '/pubadmin/partnerdata',
+                delay: 500,
+            },
+            minimumInputLength: 3,
         });
-        $('#keresoedit').on('autocomplete.select', function() {
+        $('#keresoedit').on('select2:select', function() {
             $('#nevedit, #emailedit').val('');
         });
 
         $('#nevedit, #emailedit').change(function() {
-            $('#keresoedit').autoComplete('clear');
+            $('#keresoedit').val(null).trigger('change');
         });
 
         $(document)
@@ -55,7 +58,7 @@ $(document).ready(
 
         $(document)
             .on('change', '#datumselect', function(e) {
-                var datum = $(this).val();
+                const datum = $(this).val();
                 $('#resztvevolist').html('');
                 $.ajax({
                     method: 'GET',
@@ -69,7 +72,7 @@ $(document).ready(
                 });
             })
             .on('change', '#oraselect', function(e) {
-                var oraid = $(this).val(),
+                const oraid = $(this).val(),
                     datum = $('#datumselect').val();
                 $.ajax({
                     method: 'GET',
@@ -98,7 +101,7 @@ $(document).ready(
                                 backdrop: 'static'
                             });
                     } else {
-                        var rid = $(this).data('id'),
+                        const rid = $(this).data('id'),
                             online = $('input[name="online-'+ rid + '"]:checked').val();
                         $.ajax({
                             method: 'POST',
@@ -115,7 +118,7 @@ $(document).ready(
                 }
             })
             .on('click', '.js-buy', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
                 $('#buyModalLabel').text($this.text() + ' vásárlás');
                 $('.js-buyok').data('id', $this.data('id'));
@@ -127,7 +130,7 @@ $(document).ready(
                     });
             })
             .on('click', '.js-buyok', function(e) {
-                var rid = $(this).data('id');
+                const rid = $(this).data('id');
                 $('#buyModal').modal('hide');
                 $.ajax({
                     method: 'POST',
@@ -144,7 +147,7 @@ $(document).ready(
                 })
             })
             .on('click', '.js-megjegyzes', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 $('.js-megjegyzesok').data('id', $this.data('id'));
                 e.preventDefault();
                 $.ajax({
@@ -163,7 +166,7 @@ $(document).ready(
                 });
             })
             .on('click', '.js-megjegyzesok', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
                 $.ajax({
                     method: 'POST',
@@ -188,7 +191,7 @@ $(document).ready(
             .on('click', '.js-partnerok', function(e) {
                 e.preventDefault();
                 $('#partnerModal').modal('hide');
-                var partnerid = $('input[name="kereso"]').val();
+                const partnerid = $('#keresoedit').find(':selected')[0].value;
                 if (partnerid) {
                     $.ajax({
                         method: 'POST',
@@ -222,7 +225,7 @@ $(document).ready(
                 }
             })
             .on('click', '.js-partneredit', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
                 $('.js-partnereditok').data('id', $this.data('id'));
                 $.ajax({
@@ -242,7 +245,7 @@ $(document).ready(
                 });
             })
             .on('click', '.js-partnereditok', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
                 $.ajax({
                     method: 'POST',
@@ -267,7 +270,7 @@ $(document).ready(
                 resetPartnerModal();
             })
             .on('click', '.js-lemond', function(e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
                 $.ajax({
                     method: 'POST',
