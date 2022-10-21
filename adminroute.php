@@ -982,6 +982,14 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjelentkezesController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
 }
 
+$router->map('GET', '/admin/termekertekeles/viewlist', 'termekertekelesController#viewlist', 'admintermekertekelesviewlist');
+$router->map('GET', '/admin/termekertekeles/getlistbody', 'termekertekelesController#getlistbody', 'admintermekertekelesgetlistbody');
+$router->map('GET', '/admin/termekertekeles/getkarb', 'termekertekelesController#getkarb', 'admintermekertekelesgetkarb');
+$router->map('GET', '/admin/termekertekeles/viewkarb', 'termekertekelesController#viewkarb', 'admintermekertekelesviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekertekeles/save', 'termekertekelesController#save', 'admintermekertekelessave');
+}
+
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
 //    $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');

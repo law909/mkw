@@ -166,6 +166,13 @@ if ($DBVersion < '0041') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0041');
 }
 
+if ($DBVersion < '0042') {
+    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+                                                           . ' VALUES '
+                                                           . '(3, "Termék értékelések","/admin/termekertekeles/viewlist","/admin/termekertekeles",20,0,1100, "")');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0042');
+}
 /*********************************************************
  *
  * NAV ONLINE 1.1 (2019.06.01)
