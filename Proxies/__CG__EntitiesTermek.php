@@ -3151,4 +3151,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::setArukeresofanev($arukeresofanev);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getMarka()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMarka', []);
+
+        return parent::getMarka();
+    }
+
 }

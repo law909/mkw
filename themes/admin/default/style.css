@@ -3,12 +3,11 @@ body {
 }
 
 .screen {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(200px, 15%) 1fr;
 }
 
 .menu-container {
-    flex-basis: 10%;
     padding: 0.5em;
     margin-right: 0.5em;
 }
