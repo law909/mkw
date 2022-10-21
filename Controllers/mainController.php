@@ -217,6 +217,7 @@ class mainController extends \mkwhelpers\Controller {
                 $tc = new termekController($this->params);
                 $filter = new FilterDescriptor();
                 $filter->addFilter('slug', '=', $com);
+                /** @var Termek $termek */
                 $termek = $tc->getRepo()->getWithJoins($filter);
                 if (is_array($termek)) {
                     $termek = $termek[0];
@@ -230,6 +231,12 @@ class mainController extends \mkwhelpers\Controller {
                     $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
                     $this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
                     $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztTermeklapdb, 3));
+
+                    $marka = $termek->getMarka();
+                    if ($marka) {
+                        $markaszuro = $marka->getTermekFilter();
+                    }
+
                     $t = $tc->getTermekLap($termek);
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);

@@ -3102,4 +3102,14 @@ class Termek {
         $this->arukeresofanev = $arukeresofanev;
     }
 
+    /**
+     * @return false|Termekcimketorzs
+     */
+    public function getMarka() {
+        $marka = $this->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+        if ($marka) {
+            return $marka;
+        }
+        return false;
+    }
 }
