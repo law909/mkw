@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css" />
+    <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css?v=2" />
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css" />
     <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery-migrate-1.2.1.js"></script>
