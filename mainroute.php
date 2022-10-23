@@ -11,8 +11,6 @@ if (\mkw\store::isMindentkapni()) {
 
 if (\mkw\store::isSuperzoneB2B()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
-//    $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
-//    $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
 }
 
 if (\mkw\store::isB2B()) {
@@ -102,6 +100,9 @@ $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
 $router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
 $router->map('GET', '/valtozatadatok', 'termekvaltozatController#getValtozatAdatok', 'getvaltozatadatok');
+$router->map('GET', '/termekertekeles', 'termekertekelesController#showErtekelesForm', 'showertekelesform');
+$router->map('POST', '/termekertekeles/save', 'termekertekelesController#pubSave', 'pubsaveertekeles');
+$router->map('GET', '/termekertekeles/koszonjuk', 'termekertekelesController#thanks', 'termekertekeleskoszonjuk');
 
 $router->map('GET', '/rendezveny/reg', 'rendezvenyController#regView', 'showrendezvenyreg');
 $router->map('POST', '/rendezveny/reg/save', 'rendezvenyController#regSave', 'saverendezvenyreg');

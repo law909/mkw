@@ -68,9 +68,15 @@ var fiok = (function($) {
 
 			mkw.overrideFormSubmit($fiokadataimform, mkwmsg.FiokAdataitModositjuk);
 
+			$('.js-termekertekeles').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				document.location = $(this).attr('href');
+			});
+			
 			$('.js-accmegrendelesopen').on('click', function() {
 				$(this).next('tr').toggleClass('notvisible');
-				return false;
+				//return false;
 			});
 		}
 

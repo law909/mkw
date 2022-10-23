@@ -10,9 +10,11 @@ use Entities\PartnerTermekcsoportKedvezmeny;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class partnerController extends \mkwhelpers\MattableController {
+class partnerController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Partner');
         $this->setKarbFormTplName('partnerkarbform.tpl');
         $this->setKarbTplName('partnerkarb.tpl');
@@ -21,7 +23,8 @@ class partnerController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
+    protected function loadVars($t, $forKarb = false)
+    {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
         $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
         $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
@@ -227,8 +230,8 @@ class partnerController extends \mkwhelpers\MattableController {
      * @param \Entities\Partner $obj
      * @return \Entities\Partner
      */
-    public function setFields($obj, $parancs, $subject = 'minden') {
-
+    public function setFields($obj, $parancs, $subject = 'minden')
+    {
         if ($subject === 'minden') {
             $j1 = $this->params->getStringRequestParam('jelszo1');
             $j2 = $this->params->getStringRequestParam('jelszo2');
@@ -305,36 +308,31 @@ class partnerController extends \mkwhelpers\MattableController {
             $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio1', 0));
             if ($mptszekcio) {
                 $obj->setMptSzekcio1($mptszekcio);
-            }
-            else {
+            } else {
                 $obj->setMptSzekcio1(null);
             }
             $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio2', 0));
             if ($mptszekcio) {
                 $obj->setMptSzekcio2($mptszekcio);
-            }
-            else {
+            } else {
                 $obj->setMptSzekcio2(null);
             }
             $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio3', 0));
             if ($mptszekcio) {
                 $obj->setMptSzekcio3($mptszekcio);
-            }
-            else {
+            } else {
                 $obj->setMptSzekcio3(null);
             }
             $mpttagozat = \mkw\store::getEm()->getRepository(MPTTagozat::class)->find($this->params->getIntRequestParam('mpt_tagozat', 0));
             if ($mpttagozat) {
                 $obj->setMptTagozat($mpttagozat);
-            }
-            else {
+            } else {
                 $obj->setMptTagozat(null);
             }
             $mpttagsagforma = \mkw\store::getEm()->getRepository(MPTTagsagforma::class)->find($this->params->getIntRequestParam('mpt_tagsagforma', 0));
             if ($mpttagsagforma) {
                 $obj->setMptTagsagforma($mpttagsagforma);
-            }
-            else {
+            } else {
                 $obj->setMptTagsagforma(null);
             }
 
@@ -345,8 +343,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $uk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
             if ($uk) {
                 $obj->setUzletkoto($uk);
-            }
-            else {
+            } else {
                 $obj->removeUzletkoto();
             }
             $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
@@ -395,8 +392,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
                         $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
                         $this->getEm()->persist($dok);
-                    }
-                    elseif ($dokoper === 'edit') {
+                    } elseif ($dokoper === 'edit') {
                         $dok = \mkw\store::getEm()->getRepository('Entities\PartnerDok')->find($dokid);
                         if ($dok) {
                             $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
@@ -422,8 +418,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $obj->setTelkorzet($telkorzet);
                 $obj->setTelszam($telszam);
                 $obj->setTelefon('+36' . $telkorzet . $telszam);
-            }
-            else {
+            } else {
                 $obj->setTelefon($this->params->getStringRequestParam('telefon'));
             }
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
@@ -475,7 +470,9 @@ class partnerController extends \mkwhelpers\MattableController {
             $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
             foreach ($kdids as $kdid) {
                 $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
-                $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find($this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid));
+                $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find(
+                    $this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid)
+                );
                 if ($termekcsoport) {
                     if ($oper === 'add') {
                         $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
@@ -483,8 +480,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         $kedv->setTermekcsoport($termekcsoport);
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
-                    }
-                    elseif ($oper === 'edit') {
+                    } elseif ($oper === 'edit') {
                         $kedv = $this->getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->find($kdid);
                         if ($kedv) {
                             $kedv->setPartner($obj);
@@ -506,8 +502,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         $kedv->setTermek($termek);
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('termekkedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
-                    }
-                    elseif ($oper === 'edit') {
+                    } elseif ($oper === 'edit') {
                         $kedv = $this->getEm()->getRepository('Entities\PartnerTermekKedvezmeny')->find($kdid);
                         if ($kedv) {
                             $kedv->setPartner($obj);
@@ -529,8 +524,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $email = $this->params->getStringRequestParam('kapcsemail');
             if ($email) {
                 $obj->setEmail($email);
-            }
-            else {
+            } else {
                 $obj->setEmail($this->params->getStringRequestParam('email'));
             }
             $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
@@ -556,7 +550,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function saveRegistrationData($vendeg = false) {
+    public function saveRegistrationData($vendeg = false)
+    {
         $email = $this->params->getStringRequestParam('kapcsemail');
         if (!$email) {
             $email = $this->params->getStringRequestParam('email');
@@ -564,8 +559,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $ps = $this->getRepo()->findVendegByEmail($email);
         if (count($ps) > 0) {
             $t = $ps[0];
-        }
-        else {
+        } else {
             $t = new \Entities\Partner();
         }
         $t = $this->setFields($t, null, 'registration');
@@ -575,7 +569,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $t;
     }
 
-    public function checkApiRegData($data) {
+    public function checkApiRegData($data)
+    {
         $ret = array();
         if (!$data['email']) {
             $ret[] = 'Empty field: email';
@@ -598,7 +593,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    public function saveApiRegData($data, $consumer) {
+    public function saveApiRegData($data, $consumer)
+    {
         $p = $this->getRepo()->findOneBy(array('email' => $data['email']));
         if (!$p) {
             $p = new \Entities\Partner();
@@ -631,13 +627,14 @@ class partnerController extends \mkwhelpers\MattableController {
         return $p;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('partnerlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
-            $filter->addFilter(array('nev','keresztnev','vezeteknev','szallnev'), 'LIKE', '%' . $fv . '%');
+            $filter->addFilter(array('nev', 'keresztnev', 'vezeteknev', 'szallnev'), 'LIKE', '%' . $fv . '%');
         }
         $f = $this->params->getStringRequestParam('emailfilter');
         if ($f) {
@@ -667,17 +664,17 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($f) {
             $filter->addFilter('utca', 'LIKE', '%' . $f . '%');
         }
-        $f = $this->params->getNumRequestParam('beszallitofilter',9);
+        $f = $this->params->getNumRequestParam('beszallitofilter', 9);
         if ($f != 9) {
             $filter->addFilter('szallito', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('partnertipusfilter', null))) {
-            $filter->addFilter('partnertipus' , '=', $this->params->getIntRequestParam('partnertipusfilter'));
+            $filter->addFilter('partnertipus', '=', $this->params->getIntRequestParam('partnertipusfilter'));
         }
         if (!is_null($this->params->getRequestParam('orszagfilter', null))) {
-            $filter->addFilter('orszag' , '=', $this->params->getIntRequestParam('orszagfilter'));
+            $filter->addFilter('orszag', '=', $this->params->getIntRequestParam('orszagfilter'));
         }
-        if (!is_null($this->params->getRequestParam('cimkefilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('cimkefilter', null))) {
             $fv = $this->params->getArrayRequestParam('cimkefilter');
             $cimkekodok = implode(',', $fv);
             if ($cimkekodok) {
@@ -688,12 +685,17 @@ class partnerController extends \mkwhelpers\MattableController {
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'partnerlista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('partnerlista.tpl');
 
         $view->setVar('pagetitle', t('Partnerek'));
@@ -712,7 +714,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function _getkarb($tplname) {
+    public function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -760,7 +763,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getSelectList($selid = null, $filter = array()) {
+    public function getSelectList($selid = null, $filter = array())
+    {
         $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
@@ -777,7 +781,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $res;
     }
 
-    public function getBizonylatfejSelectList() {
+    public function getBizonylatfejSelectList()
+    {
         $term = trim($this->params->getStringRequestParam('term'));
         $ret = array();
         if ($term) {
@@ -803,14 +808,14 @@ class partnerController extends \mkwhelpers\MattableController {
         echo json_encode($ret);
     }
 
-    public function getPartnerData() {
+    public function getPartnerData()
+    {
         $pid = $this->params->getIntRequestParam('partnerid');
         $email = $this->params->getStringRequestParam('email');
         if ($pid) {
             /** @var Partner $partner */
             $partner = $this->getRepo()->find($pid);
-        }
-        elseif ($email) {
+        } elseif ($email) {
             /** @var Partner $partner */
             $partner = $this->getRepo()->findOneBy(array('email' => $email));
         }
@@ -855,7 +860,8 @@ class partnerController extends \mkwhelpers\MattableController {
         echo json_encode($ret);
     }
 
-    public function getSzallitoSelectList($selid) {
+    public function getSzallitoSelectList($selid)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('szallito', '=', true);
         $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
@@ -876,7 +882,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $res;
     }
 
-    public function checkemail() {
+    public function checkemail()
+    {
         $email = $this->params->getStringRequestParam('email');
         $ret = array();
         $ret['hibas'] = !\Zend_Validate::is($email, 'EmailAddress');
@@ -887,42 +894,33 @@ class partnerController extends \mkwhelpers\MattableController {
                     $ret['uzenet'] = t('Már létezik ez az emailcím.');
                 }
             }
-        }
-        else {
+        } else {
             $ret['uzenet'] = t('Kérjük emailcímet adjon meg.');
         }
         echo json_encode($ret);
     }
 
-    public function getFiokTpl() {
-        $view = $this->getTemplateFactory()->createMainView('fiok.tpl');
-        return $view;
-    }
-
-    public function getLoginTpl() {
-        $view = $this->getTemplateFactory()->createMainView('login.tpl');
-        return $view;
-    }
-
-    public function showPubRegistration() {
+    public function showPubRegistration()
+    {
         $view = $this->getTemplateFactory()->createMainView('pubregistration.tpl');
         \mkw\store::fillTemplate($view);
         $view->printTemplateResult(true);
     }
 
-    public function showPubRegistrationThx() {
+    public function showPubRegistrationThx()
+    {
         $view = $this->getTemplateFactory()->createMainView('pubregistrationthx.tpl');
         \mkw\store::fillTemplate($view);
         $view->printTemplateResult(true);
     }
 
-    public function apiLogin($puser, $pass) {
+    public function apiLogin($puser, $pass)
+    {
         $ok = false;
         if ($puser instanceof \Entities\Partner) {
             $user = $puser;
             $ok = true;
-        }
-        else {
+        } else {
             $users = $this->getRepo()->findByUserPass($puser, $pass);
             if (count($users) > 0) {
                 $user = $users[0];
@@ -935,13 +933,13 @@ class partnerController extends \mkwhelpers\MattableController {
         return false;
     }
 
-    public function login($puser, $pass = null) {
+    public function login($puser, $pass = null)
+    {
         $ok = false;
         if ($puser instanceof \Entities\Partner) {
             $user = $puser;
             $ok = true;
-        }
-        else {
+        } else {
             /** @var \Entities\Partner $users */
             $users = $this->getRepo()->findByUserPass($puser, $pass);
             if (count($users) > 0) {
@@ -991,7 +989,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return false;
     }
 
-    public function logout() {
+    public function logout()
+    {
         $user = \mkw\store::getLoggedInUser();
         if ($user) {
             \mkw\store::clearLoggedInUser();
@@ -1007,12 +1006,15 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function autologout() {
+    public function autologout()
+    {
         $user = \mkw\store::getLoggedInUser();
         if ($user) {
             $ma = new \DateTime();
             $kul = $ma->diff($user->getUtolsoklikk());
-            $kulonbseg = floor(($kul->y * 365 * 24 * 60 * 60 + $kul->m * 30 * 24 * 60 * 60 + $kul->d * 24 * 60 * 60 + $kul->h * 60 * 60 + $kul->i * 60 + $kul->s) / 60);
+            $kulonbseg = floor(
+                ($kul->y * 365 * 24 * 60 * 60 + $kul->m * 30 * 24 * 60 * 60 + $kul->d * 24 * 60 * 60 + $kul->h * 60 * 60 + $kul->i * 60 + $kul->s) / 60
+            );
             $perc = \mkw\store::getParameter(\mkw\consts::Autologoutmin, 10);
             if ($perc <= 0) {
                 $perc = 10;
@@ -1025,7 +1027,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return false;
     }
 
-    public function setUtolsoKlikk() {
+    public function setUtolsoKlikk()
+    {
         $user = \mkw\store::getLoggedInUser();
         if ($user) {
             $user->setUtolsoKlikk();
@@ -1034,11 +1037,13 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function checkloggedin() {
+    public function checkloggedin()
+    {
         return $this->getRepo()->checkloggedin();
     }
 
-    public function saveRegistration() {
+    public function saveRegistration()
+    {
         $hibas = false;
         $hibak = array();
 
@@ -1059,8 +1064,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $ps = $this->getRepo()->findVendegByEmail($email);
             if (count($ps) > 0) {
                 $t = $ps[0];
-            }
-            else {
+            } else {
                 $t = new \Entities\Partner();
             }
             $t = $this->setFields($t, 'add', 'registration');
@@ -1089,13 +1093,13 @@ class partnerController extends \mkwhelpers\MattableController {
             }
             \Zend_Session::writeClose();
             Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
-        }
-        else {
+        } else {
             $this->showRegistrationForm($vezeteknev, $keresztnev, $email, $hibak);
         }
     }
 
-    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = array()) {
+    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = array())
+    {
         $view = $this->getTemplateFactory()->createMainView('regisztracio.tpl');
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('vezeteknev', $vezeteknev);
@@ -1106,13 +1110,13 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(true);
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         if ($this->checkloggedin()) {
             \Zend_Session::writeClose();
             header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
-        }
-        else {
-            $view = $this->getLoginTpl();
+        } else {
+            $view = $this->getTemplateFactory()->createMainView('login.tpl');
             \mkw\store::fillTemplate($view, (!\mkw\store::isSuperzoneB2B()));
             $view->setVar('pagetitle', t('Bejelentkezés') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('sikertelen', \mkw\store::getMainSession()->loginerror);
@@ -1121,25 +1125,23 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function doLogin() {
+    public function doLogin()
+    {
         $checkout = $this->params->getStringRequestParam('c') === 'c';
         if ($checkout) {
             $route = \mkw\store::getRouter()->generate('showcheckout');
-        }
-        else {
+        } else {
             if (\mkw\store::mustLogin() && \mkw\store::getMainSession()->redirafterlogin) {
                 $route = \mkw\store::getMainSession()->redirafterlogin;
                 unset(\mkw\store::getMainSession()->redirafterlogin);
-            }
-            else {
+            } else {
                 $route = \mkw\store::getRouter()->generate('showaccount');
             }
         }
         if ($this->checkloggedin()) {
 //			\Zend_Session::writeClose();
             header('Location: ' . $route);
-        }
-        else {
+        } else {
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
 //				\Zend_Session::writeClose();
                 if (!$checkout) {
@@ -1153,16 +1155,14 @@ class partnerController extends \mkwhelpers\MattableController {
                     $mc->setOrszag($partnerobj->getOrszagId());
                 }
                 header('Location: ' . $route);
-            }
-            else {
+            } else {
                 \mkw\store::clearLoggedInUser();
                 $mc = new mainController($this->params);
                 $mc->clearOrszag();
                 if ($checkout) {
                     \mkw\store::getMainSession()->loginerror = true;
                     header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
-                }
-                else {
+                } else {
                     \mkw\store::getMainSession()->loginerror = true;
                     header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
                 }
@@ -1170,14 +1170,14 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function doLogout($uri = null) {
+    public function doLogout($uri = null)
+    {
         if (!$uri) {
             $prevuri = \mkw\store::getMainSession()->prevuri;
             if (!$prevuri) {
                 $prevuri = '/';
             }
-        }
-        else {
+        } else {
             $prevuri = $uri;
         }
         if ($this->checkloggedin()) {
@@ -1188,11 +1188,12 @@ class partnerController extends \mkwhelpers\MattableController {
         Header('Location: ' . $prevuri);
     }
 
-    public function showAccount() {
+    public function showAccount()
+    {
         /** @var \Entities\Partner $user */
         $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
-            $view = $this->getFiokTpl();
+            $view = $this->getTemplateFactory()->createMainView('fiok.tpl');
             \mkw\store::fillTemplate($view);
 
             $view->setVar('pagetitle', t('Fiók') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
@@ -1222,8 +1223,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $ptcsklist = $ptcsk->getFiokList();
             $view->setVar('discountlist', $ptcsklist);
             $view->printTemplateResult(true);
-        }
-        else {
+        } else {
             header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
         }
     }
@@ -1233,7 +1233,8 @@ class partnerController extends \mkwhelpers\MattableController {
      * @param \Entities\Partner|null $user
      * @return array
      */
-    public function checkPartnerData($subject) {
+    public function checkPartnerData($subject)
+    {
         $ret = array();
         $hibas = false;
         $hibak = array();
@@ -1277,8 +1278,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         $hibak['jelszo1'] = t('A két jelszó nem egyezik');
                         $hibak['hibas'] = 1;
                     }
-                }
-                else {
+                } else {
                     $hibak['regijelszo'] = t('Rossz régi jelszót adott meg');
                     $hibak['hibas'] = 2;
                 }
@@ -1293,7 +1293,8 @@ class partnerController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    public function saveAccount() {
+    public function saveAccount()
+    {
         $user = $this->getRepo()->getLoggedInUser();
         $jax = $this->params->getIntRequestParam('jax', 0);
         $subject = $this->params->getStringParam('subject');
@@ -1306,26 +1307,23 @@ class partnerController extends \mkwhelpers\MattableController {
                 $this->getEm()->flush();
                 if (!$jax) {
                     Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
-                }
-                else {
+                } else {
                     echo json_encode($hiba['hibak']);
                 }
-            }
-            else {
+            } else {
                 if ($jax) {
                     echo json_encode($hiba['hibak']);
-                }
-                else {
+                } else {
                     echo $hiba['hibak'];
                 }
             }
-        }
-        else {
+        } else {
             header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
         }
     }
 
-    public function savePubRegistration() {
+    public function savePubRegistration()
+    {
         $user = new \Entities\Partner();
         $subject = 'pubreg';
 
@@ -1335,13 +1333,13 @@ class partnerController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($user);
             $this->getEm()->flush();
             Header('Location: ' . \mkw\store::getRouter()->generate('pubregistrationthx'));
-        }
-        else {
+        } else {
             echo $hiba['hibak'];
         }
     }
 
-    public function createPassReminder() {
+    public function createPassReminder()
+    {
         $email = $this->params->getStringRequestParam('email');
         if ($email) {
             $p = $this->getRepo()->findNemVendegByEmail($email);
@@ -1358,7 +1356,8 @@ class partnerController extends \mkwhelpers\MattableController {
                         'fiokurl' => \mkw\store::getRouter()->generate('showaccount', true),
                         'url' => \mkw\store::getFullUrl(),
                         'reminder' => \mkw\store::getRouter()->generate('showpassreminder', true, array(
-                            'id' => $pr))
+                            'id' => $pr
+                        ))
                     );
                     $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $subject->setVar('user', $tpldata);
@@ -1374,7 +1373,8 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function showPassReminder() {
+    public function showPassReminder()
+    {
         $route = \mkw\store::getRouter()->generate('show404');
         $pr = $this->params->getStringParam('id');
         if ($pr) {
@@ -1390,7 +1390,8 @@ class partnerController extends \mkwhelpers\MattableController {
         header('Location: ' . $route);
     }
 
-    public function savePassReminder() {
+    public function savePassReminder()
+    {
         $route = \mkw\store::getRouter()->generate('show404');
         $pr = $this->params->getStringRequestParam('id');
         if ($pr) {
@@ -1414,25 +1415,24 @@ class partnerController extends \mkwhelpers\MattableController {
         header('Location: ' . $route);
     }
 
-    public function getKiegyenlitetlenBiz() {
+    public function getKiegyenlitetlenBiz()
+    {
         $partnerid = $this->params->getIntRequestParam('partner');
         $irany = $this->params->getIntRequestParam('irany', 1);
         $br = $this->getRepo('Entities\Bizonylatfej');
         $bizs = $this->getRepo('Entities\Folyoszamla')->getSumByPartner($partnerid, $irany);
         $adat = array();
-        foreach($bizs as $biz) {
+        foreach ($bizs as $biz) {
             if ($biz['hivatkozottdatum']) {
                 $datum = $biz['hivatkozottdatum']->format(\mkw\store::$DateFormat);
-            }
-            else {
+            } else {
                 $datum = '';
             }
             /** @var \Entities\Bizonylatfej $hbiz */
             $hbiz = $br->find($biz['hivatkozottbizonylat']);
             if ($hbiz) {
                 $erbizszam = $hbiz->getErbizonylatszam();
-            }
-            else {
+            } else {
                 $erbizszam = '';
             }
             $adat[] = array(
@@ -1451,8 +1451,10 @@ class partnerController extends \mkwhelpers\MattableController {
         echo json_encode($ret);
     }
 
-    public function mijszExport() {
-        function x($o, $sor) {
+    public function mijszExport()
+    {
+        function x($o, $sor)
+        {
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
@@ -1488,7 +1490,6 @@ class partnerController extends \mkwhelpers\MattableController {
             ->setCellValue(x($o++, 1), 'Web page');
 
         if ($partnerek) {
-
             $sor = 2;
             /** @var \Entities\Partner $partner */
             foreach ($partnerek as $partner) {
@@ -1504,8 +1505,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         ->setCellValue(x($o++, $sor), $oklevel->getMIJSZOklevelkibocsajtoNev())
                         ->setCellValue(x($o++, $sor), $oklevel->getMIJSZOklevelszintNev())
                         ->setCellValue(x($o++, $sor), $oklevel->getOklevelev());
-                }
-                else {
+                } else {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue(x($o++, $sor), '')
                         ->setCellValue(x($o++, $sor), '')
@@ -1547,11 +1547,12 @@ class partnerController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 
-    public function megjegyzesExport() {
-        function x($o, $sor) {
+    public function megjegyzesExport()
+    {
+        function x($o, $sor)
+        {
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
@@ -1575,7 +1576,6 @@ class partnerController extends \mkwhelpers\MattableController {
             ->setCellValue(x($o++, 1), 'Megjegyzés');
 
         if ($partnerek) {
-
             $sor = 2;
             /** @var \Entities\Partner $partner */
             foreach ($partnerek as $partner) {
@@ -1607,10 +1607,10 @@ class partnerController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 
-    public function roadrecordExport() {
+    public function roadrecordExport()
+    {
         $filepath = uniqid('roadrecordpartner') . '.csv';
         $csv = fopen($filepath, 'w');
 
@@ -1637,7 +1637,6 @@ class partnerController extends \mkwhelpers\MattableController {
 
         $partnerek = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
         if ($partnerek) {
-
             /** @var \Entities\Partner $partner */
             foreach ($partnerek as $partner) {
                 $sor = array(
@@ -1669,13 +1668,16 @@ class partnerController extends \mkwhelpers\MattableController {
         \unlink($filepath);
     }
 
-    public function doAnonym() {
+    public function doAnonym()
+    {
         $partnerid = $this->params->getIntRequestParam('id');
         $this->getRepo()->doAnonym($partnerid);
     }
 
-    public function hirlevelExport() {
-        function x($o, $sor) {
+    public function hirlevelExport()
+    {
+        function x($o, $sor)
+        {
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
@@ -1696,7 +1698,6 @@ class partnerController extends \mkwhelpers\MattableController {
             ->setCellValue(x($o++, 1), 'Újdonság hírlevél');
 
         if ($partnerek) {
-
             $sor = 2;
             /** @var \Entities\Partner $partner */
             foreach ($partnerek as $partner) {
@@ -1728,10 +1729,10 @@ class partnerController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 
-    public function arsavcsere() {
+    public function arsavcsere()
+    {
         $ids = $this->params->getArrayRequestParam('ids');
         $arsav = $this->params->getStringRequestParam('arsav');
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -1747,10 +1748,10 @@ class partnerController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($partner);
             $this->getEm()->flush();
         }
-
     }
 
-    public function tcskedit() {
+    public function tcskedit()
+    {
         $ids = $this->params->getArrayRequestParam('ids');
         $tcs = $this->params->getStringRequestParam('tcs');
         $kedvvalt = $this->params->getNumRequestParam('kedv');
@@ -1771,6 +1772,5 @@ class partnerController extends \mkwhelpers\MattableController {
                 }
             }
         }
-
     }
 }

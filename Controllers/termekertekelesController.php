@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekErtekeles;
@@ -121,4 +123,80 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    public function showErtekelesForm()
+    {
+        $id = $this->params->getStringRequestParam('id');
+        $bizid = $this->params->getStringRequestParam('b');
+        if (!$id) {
+            /** @var Bizonylatfej $biz */
+            $biz = $this->getRepo(Bizonylatfej::class)->find($bizid);
+            if ($biz) {
+                if (!$biz->getTermekertekelesid()) {
+                    $biz->setSimpleedit(true);
+                    $biz->generateTermekertekelesid();
+                    $id = $biz->getTermekertekelesid();
+                    $this->getEm()->persist($biz);
+                    $this->getEm()->flush();
+                } else {
+                    $id = $biz->getTermekertekelesid();
+                }
+            }
+        }
+        /** @var Bizonylatfej $biz */
+        $biz = $this->getRepo(Bizonylatfej::class)->findOneBy(['termekertekelesid' => $id]);
+        if ($biz) {
+            $view = $this->getTemplateFactory()->createMainView('termekertekelesform.tpl');
+            \mkw\store::fillTemplate($view);
+            $view->setVar('pagetitle', t('Értékelés') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
+
+            $view->setVar('megr', $biz->toLista());
+            $view->setVar('szktgtermek', \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+            $view->printTemplateResult();
+        }
+    }
+
+    public function pubSave()
+    {
+        $pid = $this->params->getIntRequestParam('pid');
+        $partner = $this->getRepo(Partner::class)->find($pid);
+        if ($partner) {
+            $termekids = $this->params->getArrayRequestParam('termekids');
+            foreach ($termekids as $id) {
+                $ert = $this->getRepo(TermekErtekeles::class)->findOneBy(
+                    [
+                        'partner' => $partner,
+                        'termek' => $id
+                    ]
+                );
+                if (!$ert) {
+                    $termek = $this->getRepo(Termek::class)->find($id);
+                    if ($termek) {
+                        $rating = $this->params->getIntRequestParam('rating_' . $id);
+                        $ertekeles = $this->params->getStringRequestParam('ertekeles_' . $id);
+                        $elony = $this->params->getStringRequestParam('elony_' . $id);
+                        $hatrany = $this->params->getStringRequestParam('hatrany_' . $id);
+                        $ert = new TermekErtekeles();
+                        $ert->setTermek($termek);
+                        $ert->setPartner($partner);
+                        $ert->setErtekeles($rating);
+                        $ert->setSzoveg($ertekeles);
+                        $ert->setElony($elony);
+                        $ert->setHatrany($hatrany);
+                        $this->getEm()->persist($ert);
+                        $this->getEm()->flush();
+                    }
+                }
+            }
+        }
+        Header('Location: ' . \mkw\store::getRouter()->generate('termekertekeleskoszonjuk'));
+    }
+
+    public function thanks()
+    {
+        $view = \mkw\store::getTemplateFactory()->createMainView('termekertekeleskoszonjuk.tpl');
+        \mkw\store::fillTemplate($view);
+
+        $view->printTemplateResult(false);
+
+    }
 }

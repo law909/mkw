@@ -32,6 +32,7 @@ module.exports = function(grunt) {
                     'js/main/mkwcansas/checkout.js',
                     'js/main/mkwcansas/cart.js',
                     'js/main/mkwcansas/fiok.js',
+                    'js/main/mkwcansas/termekertekeles.js',
                     'js/main/mkwcansas/mkwcansas.js'
                 ],
                 dest: 'js/main/mkwcansas/mkwapp.js'

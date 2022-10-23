@@ -49,6 +49,7 @@
 		<script src="/js/main/mkwcansas/checkout.js"></script>
 		<script src="/js/main/mkwcansas/cart.js"></script>
 		<script src="/js/main/mkwcansas/fiok.js"></script>
+		<script src="/js/main/mkwcansas/termekertekeles.js"></script>
 		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
         {else}
         <script src="/js/main/mkwcansas/mkwapp.js?v={$jsversion}"></script>

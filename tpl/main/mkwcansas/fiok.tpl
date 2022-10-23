@@ -134,6 +134,7 @@
 								<td>Érték</td>
 								<td>Fuvarlevélszám</td>
 								<td></td>
+								<td></td>
 							</thead>
 							<tbody class="acc-megrendeles">
 								{foreach $megrendeleslist as $megr}
@@ -149,6 +150,7 @@
                                             {$megr.fuvarlevelszam}
                                         {/if}
                                     </td>
+									<td><a href="/termekertekeles?b={$megr.id}&id={$megr.termekertekelesid}" class="js-termekertekeles">{t('Értékelés')}</a></td>
                                     <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
 								</tr>
 								<tr class="notvisible acc-megrendelesborderbottom">

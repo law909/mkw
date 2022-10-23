@@ -1405,9 +1405,15 @@ var fiok = (function($) {
 
 			mkw.overrideFormSubmit($fiokadataimform, mkwmsg.FiokAdataitModositjuk);
 
+			$('.js-termekertekeles').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				document.location = $(this).attr('href');
+			});
+			
 			$('.js-accmegrendelesopen').on('click', function() {
 				$(this).next('tr').toggleClass('notvisible');
-				return false;
+				//return false;
 			});
 		}
 
@@ -1430,6 +1436,43 @@ var fiok = (function($) {
 	return {
 		initUI: initUI
 	};
+})(jQuery);
+var termekertekeles = (function($) {
+
+    function initUI() {
+        $('.js-tert-form').on('submit', function (e) {
+            let tids = [], error;
+            $('.js-errorable').removeClass('checkouterrorblock');
+            $('.js-termekids').each(function (i, el) {
+                tids.push(el.value);
+            });
+            tids.forEach((el) => {
+                const rating = $('input[name="rating_' + el + '"]:checked'),
+                    ertekeles = $('textarea[name="ertekeles_' + el + '"]'),
+                    elony = $('textarea[name="elony_' + el + '"]'),
+                    hatrany = $('textarea[name="hatrany_' + el + '"]');
+                if (hatrany.val() || elony.val()) {
+                    if (!rating.val()) {
+                        $('.rating').addClass('checkouterrorblock');
+                        error = true;
+                    }
+                    if (!ertekeles.val()) {
+                        ertekeles.addClass('checkouterrorblock');
+                        error = true;
+                    }
+                }
+            });
+            if (error) {
+                mkw.showMessage('Kérjük, töltse ki a hiányzó adatokat.');
+                e.preventDefault();
+            }
+            return error;
+        });
+    }
+
+    return {
+        initUI: initUI
+    };
 })(jQuery);
 
 $(document).ready(function() {
@@ -2045,5 +2088,6 @@ $(document).ready(function() {
     cart.initUI();
     checkout.initUI();
     fiok.initUI();
+    termekertekeles.initUI();
 
 });

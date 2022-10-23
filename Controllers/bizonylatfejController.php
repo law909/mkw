@@ -453,6 +453,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['otpayresulttext'] = $t->getOTPayResultText();
         $x['showotpay'] = ($t->getFizmodId() == \mkw\store::getParameter(\mkw\consts::OTPayFizmod));
         $x['trxid'] = $t->getTrxId();
+        $x['termekertekelesid'] = $t->getTermekertekelesid();
         $x['fix'] = $t->getFix();
         $x['uzletkoto'] = $t->getUzletkotoId();
         $x['uzletkotonev'] = $t->getUzletkotonev();
@@ -1248,6 +1249,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'DESC'));
         $ret = array();
+        /** @var Bizonylatfej $it */
         foreach ($l as $it) {
             $ret[] = $it->toLista();
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -11,7 +12,8 @@ use mkw\store;
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @Gedmo\TranslationEntity(class="Entities\BizonylatfejTranslation")
  * */
-class Bizonylatfej {
+class Bizonylatfej
+{
 
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
@@ -636,11 +638,16 @@ class Bizonylatfej {
     /** @ORM\OneToMany(targetEntity="BizonylatDok", mappedBy="bizonylat", cascade={"persist", "remove"}) */
     private $bizonylatdokok;
 
-    public function __toString() {
+    /** @ORM\Column(type="string", length=32,nullable=true) */
+    private $termekertekelesid;
+
+    public function __toString()
+    {
         return (string)$this->id;
     }
 
-    public function calcNAVBekuldendo() {
+    public function calcNAVBekuldendo()
+    {
         if (!$this->isNavbekuldve()) {
             $nov = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
             if ($nov == '2_0') {
@@ -649,14 +656,14 @@ class Bizonylatfej {
                     && $this->getPartneradoszam()
                     && $this->getPartner()->isDefaultOrszag()
                 );
-            }
-            else {
+            } else {
                 $this->setNavbekuldendo($this->getBizonylattipusNavbekuldendo());
             }
         }
     }
 
-    public function calcOsszesen() {
+    public function calcOsszesen()
+    {
         $mincimlet = 0;
         $kerekit = false;
         $defakerekit = false;
@@ -689,8 +696,7 @@ class Bizonylatfej {
         }
         if ($kerekit) {
             $this->brutto = round($this->netto + $this->afa);
-        }
-        else {
+        } else {
             $this->brutto = $this->netto + $this->afa;
         }
         if ($mincimlet && ($fizmodtipus == 'P')) {
@@ -701,13 +707,13 @@ class Bizonylatfej {
         $this->fizetendo = $this->brutto;
         if ($defakerekit) {
             $this->bruttohuf = round($this->nettohuf + $this->afahuf);
-        }
-        else {
+        } else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
         }
     }
 
-    public function calcRugalmasFizmod() {
+    public function calcRugalmasFizmod()
+    {
         $regifizmod = $this->getFizmod();
         if ($regifizmod && $regifizmod->getRugalmas()) {
             $fh = \mkw\store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
@@ -716,7 +722,9 @@ class Bizonylatfej {
             }
         }
     }
-    public function calcOsztottFizetendo() {
+
+    public function calcOsztottFizetendo()
+    {
         // superzone osztott fizetendo
         if (\mkw\store::isOsztottFizmod()) {
             $this->setEsedekesseg1();
@@ -744,8 +752,7 @@ class Bizonylatfej {
                     $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek2() / 100, 2);
                     $this->setFizetendo2($fiz);
                     $eddigi = $eddigi + $fiz;
-                }
-                else {
+                } else {
                     $this->setFizetendo2($this->fizetendo - $eddigi);
                     $eddigi = $this->fizetendo;
                 }
@@ -756,8 +763,7 @@ class Bizonylatfej {
                     $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek3() / 100, 2);
                     $this->setFizetendo3($fiz);
                     $eddigi = $eddigi + $fiz;
-                }
-                else {
+                } else {
                     $this->setFizetendo3($this->fizetendo - $eddigi);
                     $eddigi = $this->fizetendo;
                 }
@@ -768,12 +774,10 @@ class Bizonylatfej {
                     $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek4() / 100, 2);
                     $this->setFizetendo4($fiz);
                     $eddigi = $eddigi + $fiz;
-                }
-                else {
+                } else {
                     $this->setFizetendo4($this->fizetendo - $eddigi);
                     $eddigi = $this->fizetendo;
                 }
-
             }
             if ($fizmod->getOsztotthaladek5()) {
                 $this->setEsedekesseg5($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek5() . 'D')));
@@ -782,7 +786,8 @@ class Bizonylatfej {
         }
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->szulobizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
@@ -791,21 +796,24 @@ class Bizonylatfej {
         $this->setPersistentData();
     }
 
-    public function getEgyenleg() {
+    public function getEgyenleg()
+    {
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
         return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylat($this->getId());
     }
 
-    public function getOsztottEgyenleg() {
+    public function getOsztottEgyenleg()
+    {
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
         return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylatDatum($this->getId());
     }
 
-    public function getKedvezmenyCount() {
+    public function getKedvezmenyCount()
+    {
         /** @var \Entities\Bizonylattetel $item */
         $db = 0;
         foreach ($this->bizonylattetelek as $item) {
@@ -822,7 +830,8 @@ class Bizonylatfej {
      * @param \Entities\Bizonylatfej|null $bf
      * @param bool|true $topartner
      */
-    public function sendStatuszEmail($emailtpl, $bf = null, $topartner = true) {
+    public function sendStatuszEmail($emailtpl, $bf = null, $topartner = true)
+    {
         if (!$bf) {
             $bf = $this;
         }
@@ -835,8 +844,7 @@ class Bizonylatfej {
             if (\mkw\store::getConfigValue('developer')) {
                 \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
                 \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
-            }
-            else {
+            } else {
                 $mailer = \mkw\store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
@@ -847,8 +855,7 @@ class Bizonylatfej {
                 $mailer->setMessage($body->getTemplateResult());
                 if ($bf->getBizonylatstatuszId() == \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)) {
                     $mailer->send();
-                }
-                else {
+                } else {
                     $mailer->send(true);
                 }
             }
@@ -860,7 +867,8 @@ class Bizonylatfej {
      * @param \Entities\Bizonylatfej|null $bf
      * @param bool|true $topartner
      */
-    public function sendEmailSablon($emailtpl, $bf = null, $topartner = true) {
+    public function sendEmailSablon($emailtpl, $bf = null, $topartner = true)
+    {
         if (!$bf) {
             $bf = $this;
         }
@@ -873,8 +881,7 @@ class Bizonylatfej {
             if (\mkw\store::getConfigValue('developer')) {
                 \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
                 \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
-            }
-            else {
+            } else {
                 $mailer = \mkw\store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
@@ -888,9 +895,10 @@ class Bizonylatfej {
         }
     }
 
-    public function toFoxpostv2API() {
+    public function toFoxpostv2API()
+    {
         $fields = array(
-            'recipientName' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $this->getSzallnev()),
+            'recipientName' => (\mkw\store::getConfigValue('developer') ? 'teszt' : $this->getSzallnev()),
             'recipientPhone' => $this->getPartnertelefon(),
             'recipientEmail' => $this->getPartneremail(),
             'refCode' => $this->getId(),
@@ -898,8 +906,7 @@ class Bizonylatfej {
         );
         if ($this->getCsomagterminalIdegenId()) {
             $fields['destination'] = $this->getCsomagterminalIdegenId();
-        }
-        else {
+        } else {
             $fields['recipientZip'] = $this->getSzallirszam();
             $fields['recipientCity'] = $this->getSzallvaros();
             $fields['recipientAddress'] = $this->getSzallutca();
@@ -913,7 +920,8 @@ class Bizonylatfej {
         return $fields;
     }
 
-    public function toGLSAPI() {
+    public function toGLSAPI()
+    {
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
             $codamount = $this->getBruttohuf();
             $szamlaszam = false;
@@ -925,12 +933,10 @@ class Bizonylatfej {
             }
             if ($szamlaszam) {
                 $codref = $szamlaszam;
-            }
-            else {
+            } else {
                 $codref = $this->getId();
             }
-        }
-        else {
+        } else {
             $codamount = 0;
             $codref = $this->getId();
         }
@@ -981,8 +987,7 @@ class Bizonylatfej {
                 'Code' => 'PSD',
                 'PSDParameter' => $psdpar
             ];
-        }
-        else {
+        } else {
             $result['ServiceList'][] = [
                 'Code' => 'FDS',
                 'FDSParameter' => $fdspar
@@ -991,7 +996,8 @@ class Bizonylatfej {
         return $result;
     }
 
-    public function toBarionModel() {
+    public function toBarionModel()
+    {
         require_once "busvendor/Barion/library/BarionClient.php";
 
         $trans = new \PaymentTransactionModel();
@@ -1019,12 +1025,10 @@ class Bizonylatfej {
                 $partner = $this->getPartner();
                 if (!\mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
                     $ppr->Locale = \UILocale::HU;
-                }
-                else {
+                } else {
                     if ($partner->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
                         $ppr->Locale = \UILocale::HU;
-                    }
-                    else {
+                    } else {
                         $ppr->Locale = \UILocale::EN;
                     }
                 }
@@ -1037,7 +1041,8 @@ class Bizonylatfej {
         return $ppr;
     }
 
-    public function toLista() {
+    public function toLista()
+    {
         $ret = array();
         $ret['id'] = $this->getId();
         $ret['lastmodstr'] = $this->getLastmodStr();
@@ -1092,6 +1097,7 @@ class Bizonylatfej {
         $ret['tulajegyenivallalkozo'] = $this->getTulajegyenivallalkozo();
         $ret['tulajevnyilvszam'] = $this->getTulajevnyilvszam();
         $ret['tulajevnev'] = $this->getTulajevnev();
+        $ret['partnerid'] = $this->getPartnerId();
         $ret['partneremail'] = $this->getPartneremail();
         $ret['partnertelefon'] = $this->getPartnertelefon();
         $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();
@@ -1157,6 +1163,7 @@ class Bizonylatfej {
         $ret['szepkartyatipus'] = $this->getSzepkartyatipusNev();
         $ret['szepkartyakifizetve'] = $this->getSzepkartyakifizetve();
         $ret['barionpaymentstatus'] = $this->getBarionpaymentstatus();
+        $ret['termekertekelesid'] = $this->getTermekertekelesid();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -1166,15 +1173,14 @@ class Bizonylatfej {
                     'id' => $this->getId(),
                     'oper' => 'edit'
                 ));
-            }
-            else {
+            } else {
                 $ret['editurl'] = $ret['printurl'];
             }
         }
         $ret['foxpost'] = false;
         $ret['gls'] = false;
         if ($this->csomagterminal) {
-            switch($this->csomagterminal->getTipus()) {
+            switch ($this->csomagterminal->getTipus()) {
                 case 'foxpost':
                     $ret['foxpost'] = true;
                     $ret['foxpostterminal']['nev'] = $this->csomagterminal->getNev();
@@ -1200,16 +1206,14 @@ class Bizonylatfej {
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
                 $a = $tetellist;
-                uasort($a, function($e, $f) use ($sorrend, $rendezendo) {
+                uasort($a, function ($e, $f) use ($sorrend, $rendezendo) {
                     if ($e['valtadattipus1id'] == $rendezendo) {
                         $ertek = $e['valtertek1'];
                         $eszin = $e['valtertek2'];
-                    }
-                    elseif ($e['valtadattipus2id'] == $rendezendo) {
+                    } elseif ($e['valtadattipus2id'] == $rendezendo) {
                         $ertek = $e['valtertek2'];
                         $eszin = $e['valtertek1'];
-                    }
-                    else {
+                    } else {
                         $ertek = false;
                         $eszin = false;
                     }
@@ -1217,20 +1221,18 @@ class Bizonylatfej {
                     if ($ve === false) {
                         $ve = 0;
                     }
-                    $ve = str_pad($e['cikkszam'], 50, ' ',STR_PAD_RIGHT)
-                        . str_pad($e['termeknev'], 255, ' ',STR_PAD_RIGHT)
+                    $ve = str_pad($e['cikkszam'], 50, ' ', STR_PAD_RIGHT)
+                        . str_pad($e['termeknev'], 255, ' ', STR_PAD_RIGHT)
                         . $eszin
                         . str_pad((string)$ve, 6, '0', STR_PAD_LEFT);
 
                     if ($f['valtadattipus1id'] == $rendezendo) {
                         $ertek = $f['valtertek1'];
                         $fszin = $f['valtertek2'];
-                    }
-                    elseif ($f['valtadattipus2id'] == $rendezendo) {
+                    } elseif ($f['valtadattipus2id'] == $rendezendo) {
                         $ertek = $f['valtertek2'];
                         $fszin = $f['valtertek1'];
-                    }
-                    else {
+                    } else {
                         $ertek = false;
                         $fszin = false;
                     }
@@ -1238,8 +1240,8 @@ class Bizonylatfej {
                     if ($vf === false) {
                         $vf = 0;
                     }
-                    $vf = str_pad($f['cikkszam'], 50, ' ',STR_PAD_RIGHT)
-                        . str_pad($f['termeknev'], 255, ' ',STR_PAD_RIGHT)
+                    $vf = str_pad($f['cikkszam'], 50, ' ', STR_PAD_RIGHT)
+                        . str_pad($f['termeknev'], 255, ' ', STR_PAD_RIGHT)
                         . $fszin
                         . str_pad((string)$vf, 6, '0', STR_PAD_LEFT);
 
@@ -1257,7 +1259,8 @@ class Bizonylatfej {
         return $ret;
     }
 
-    public function toNAVOnlineXML($rawreturn = false) {
+    public function toNAVOnlineXML($rawreturn = false)
+    {
         $nover = store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0');
         switch ($nover) {
             case '2_0':
@@ -1269,7 +1272,8 @@ class Bizonylatfej {
         }
     }
 
-    private function toNAVOnlineXML3_0($rawreturn = false) {
+    private function toNAVOnlineXML3_0($rawreturn = false)
+    {
         $result = '<?xml version="1.0" encoding="UTF-8"?>';
         $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/3.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common" xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/3.0/data invoiceData.xsd">';
         $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
@@ -1283,8 +1287,7 @@ class Bizonylatfej {
             $pb = $this->getParbizonylatfej();
             if ($pb->getNaveredmeny() === 'DONE') {
                 $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
-            }
-            else {
+            } else {
                 $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
             }
             $result = $result . '<modificationIndex>1</modificationIndex>';
@@ -1297,7 +1300,11 @@ class Bizonylatfej {
         $result = $result . '<supplierTaxNumber><base:taxpayerId>' . $s[0] . '</base:taxpayerId><base:vatCode>' . $s[1] . '</base:vatCode><base:countyCode>' . $s[2] . '</base:countyCode></supplierTaxNumber>';
         $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
         $result = $result . '<supplierAddress><base:simpleAddress>';
-        $result = $result . '<base:countryCode>HU</base:countryCode><base:postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</base:postalCode><base:city>' . \mkw\store::CData($this->getTulajvaros()) . '</base:city><base:additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</base:additionalAddressDetail>';
+        $result = $result . '<base:countryCode>HU</base:countryCode><base:postalCode>' . \mkw\store::CData(
+                $this->getTulajirszam()
+            ) . '</base:postalCode><base:city>' . \mkw\store::CData($this->getTulajvaros()) . '</base:city><base:additionalAddressDetail>' . \mkw\store::CData(
+                $this->getTulajutca()
+            ) . '</base:additionalAddressDetail>';
         $result = $result . '</base:simpleAddress></supplierAddress>';
         if ($this->getTulajjovengszam()) {
             $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
@@ -1321,19 +1328,18 @@ class Bizonylatfej {
             $result = $result . '<base:postalCode>';
             if (trim($this->getPartnerirszam())) {
                 $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
-            }
-            else {
+            } else {
                 $result = $result . '0000';
             }
             $result = $result . '</base:postalCode>';
             $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
-            $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+            $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
+                    implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                ) . '</base:additionalAddressDetail>';
             $result = $result . '</base:simpleAddress></customerAddress>';
-        }
-        elseif ($this->getPartnervatstatus() == 2) {
+        } elseif ($this->getPartnervatstatus() == 2) {
             $result = $result . '<customerVatStatus>PRIVATE_PERSON</customerVatStatus>';
-        }
-        elseif ($this->getPartnervatstatus() == 3) {
+        } elseif ($this->getPartnervatstatus() == 3) {
             $result = $result . '<customerVatStatus>OTHER</customerVatStatus>';
             if ($this->getPartnereuadoszam() || ($this->getPartnerSzamlatipus() == 1)) { // EUn beluli
                 if ($this->getPartnereuadoszam()) {
@@ -1349,16 +1355,16 @@ class Bizonylatfej {
                 $result = $result . '<base:postalCode>';
                 if (trim($this->getPartnerirszam())) {
                     $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
-                }
-                else {
+                } else {
                     $result = $result . '0000';
                 }
                 $result = $result . '</base:postalCode>';
                 $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
-                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
+                        implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                    ) . '</base:additionalAddressDetail>';
                 $result = $result . '</base:simpleAddress></customerAddress>';
-            }
-            elseif ($this->getPartnerthirdadoszam() || ($this->getPartnerSzamlatipus() == 2)) { // EUn kivuli
+            } elseif ($this->getPartnerthirdadoszam() || ($this->getPartnerSzamlatipus() == 2)) { // EUn kivuli
                 if ($this->getPartnerthirdadoszam()) {
                     $result = $result . '<customerVatData>';
                     $result = $result . '<thirdStateTaxId>' . $this->getPartnerthirdadoszam() . '</thirdStateTaxId>';
@@ -1372,13 +1378,14 @@ class Bizonylatfej {
                 $result = $result . '<base:postalCode>';
                 if (trim($this->getPartnerirszam())) {
                     $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
-                }
-                else {
+                } else {
                     $result = $result . '0000';
                 }
                 $result = $result . '</base:postalCode>';
                 $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
-                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</base:additionalAddressDetail>';
+                $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
+                        implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                    ) . '</base:additionalAddressDetail>';
                 $result = $result . '</base:simpleAddress></customerAddress>';
             }
         }
@@ -1388,21 +1395,21 @@ class Bizonylatfej {
         $result = $result . '<invoiceCategory>';
         if ($this->getGyujtoszamla()) {
             $result = $result . 'AGGREGATE';
-        }
-        else {
+        } else {
             $result = $result . 'NORMAL';
         }
         $result = $result . '</invoiceCategory>';
         $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
         if ($this->getGyujtoszamla()) {
-            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
+            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(
+                    \mkw\store::$SQLDateFormat
+                ) . '</invoiceDeliveryPeriodStart>' .
                 '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
         }
         $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
         if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
             $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
-        }
-        else {
+        } else {
             $result = $result . '<exchangeRate>1</exchangeRate>';
         }
         $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
@@ -1437,13 +1444,11 @@ class Bizonylatfej {
             if ($bt->getMekodNavtipus()) {
                 $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getMekodNavtipus()) . '</unitOfMeasure>';
                 $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-            }
-            else {
+            } else {
                 $result = $result . '<unitOfMeasure>' . \mkw\store::CData('OWN') . '</unitOfMeasure>';
                 if ($bt->getME()) {
                     $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-                }
-                else {
+                } else {
                     $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
                 }
             }
@@ -1459,16 +1464,16 @@ class Bizonylatfej {
             $result = $result . '<lineVatRate>';
             if ($this->isForditottadozas()) {
                 $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            }
-            else {
+            } else {
                 $afak = $bt->getAfa();
                 if ($afak->getErtek() == 0) {
                     $result = $result . '<vatExemption>';
                     $result = $result . '<case>' . $afak->getNavcase() . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::CData(\mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase())) . '</reason>';
+                    $result = $result . '<reason>' . \mkw\store::CData(
+                            \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase())
+                        ) . '</reason>';
                     $result = $result . '</vatExemption>';
-                }
-                else {
+                } else {
                     $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage>';
                 }
             }
@@ -1513,20 +1518,20 @@ class Bizonylatfej {
         $result = $result . '<invoiceSummary>';
         $result = $result . '<summaryNormal>';
         $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
-        foreach($afasum as $as) {
+        foreach ($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
             $result = $result . '<vatRate>';
             if ($this->isForditottadozas()) {
                 $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            }
-            else {
+            } else {
                 if ($as['afakulcs'] == 0) {
                     $result = $result . '<vatExemption>';
                     $result = $result . '<case>' . $as['navcase'] . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::CData(\mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase'])) . '</reason>';
+                    $result = $result . '<reason>' . \mkw\store::CData(
+                            \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase'])
+                        ) . '</reason>';
                     $result = $result . '</vatExemption>';
-                }
-                else {
+                } else {
                     $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage>';
                 }
             }
@@ -1571,14 +1576,14 @@ class Bizonylatfej {
 
         if ($this->getStorno()) {
             $result = 'STORNO' . $b64;
-        }
-        else {
+        } else {
             $result = 'CREATE' . $b64;
         }
         return $result;
     }
 
-    private function toNAVOnlineXML2_0($rawreturn = false) {
+    private function toNAVOnlineXML2_0($rawreturn = false)
+    {
         $result = '<?xml version="1.0" encoding="UTF-8"?>';
         $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/2.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/2.0/data invoiceData.xsd">';
         $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
@@ -1591,8 +1596,7 @@ class Bizonylatfej {
             $pb = $this->getParbizonylatfej();
             if ($pb->getNaveredmeny() === 'DONE') {
                 $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
-            }
-            else {
+            } else {
                 $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
             }
             $result = $result . '<modificationIndex>1</modificationIndex>';
@@ -1605,7 +1609,11 @@ class Bizonylatfej {
         $result = $result . '<supplierTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></supplierTaxNumber>';
         $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
         $result = $result . '<supplierAddress><simpleAddress>';
-        $result = $result . '<countryCode>HU</countryCode><postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</postalCode><city>' . \mkw\store::CData($this->getTulajvaros()) . '</city><additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</additionalAddressDetail>';
+        $result = $result . '<countryCode>HU</countryCode><postalCode>' . \mkw\store::CData(
+                $this->getTulajirszam()
+            ) . '</postalCode><city>' . \mkw\store::CData($this->getTulajvaros()) . '</city><additionalAddressDetail>' . \mkw\store::CData(
+                $this->getTulajutca()
+            ) . '</additionalAddressDetail>';
         $result = $result . '</simpleAddress></supplierAddress>';
         if ($this->getTulajjovengszam()) {
             $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
@@ -1625,13 +1633,14 @@ class Bizonylatfej {
         $result = $result . '<postalCode>';
         if (trim($this->getPartnerirszam())) {
             $result = $result . \mkw\store::CData(trim($this->getPartnerirszam()));
-        }
-        else {
+        } else {
             $result = $result . '0000';
         }
         $result = $result . '</postalCode>';
         $result = $result . '<city>' . \mkw\store::CData($this->getPartnervaros()) . '</city>';
-        $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</additionalAddressDetail>';
+        $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(
+                implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+            ) . '</additionalAddressDetail>';
         $result = $result . '</simpleAddress></customerAddress>';
         $result = $result . '</customerInfo>';
 
@@ -1639,21 +1648,21 @@ class Bizonylatfej {
         $result = $result . '<invoiceCategory>';
         if ($this->getGyujtoszamla()) {
             $result = $result . 'AGGREGATE';
-        }
-        else {
+        } else {
             $result = $result . 'NORMAL';
         }
         $result = $result . '</invoiceCategory>';
         $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
         if ($this->getGyujtoszamla()) {
-            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
+            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(
+                    \mkw\store::$SQLDateFormat
+                ) . '</invoiceDeliveryPeriodStart>' .
                 '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
         }
         $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
         if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
             $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
-        }
-        else {
+        } else {
             $result = $result . '<exchangeRate>1</exchangeRate>';
         }
         $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
@@ -1687,13 +1696,11 @@ class Bizonylatfej {
             if ($bt->getMekodNavtipus()) {
                 $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getMekodNavtipus()) . '</unitOfMeasure>';
                 $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-            }
-            else {
+            } else {
                 $result = $result . '<unitOfMeasure>' . \mkw\store::CData('OWN') . '</unitOfMeasure>';
                 if ($bt->getME()) {
                     $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
-                }
-                else {
+                } else {
                     $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
                 }
             }
@@ -1709,12 +1716,10 @@ class Bizonylatfej {
             $result = $result . '<lineVatRate>';
             if ($this->isForditottadozas()) {
                 $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            }
-            else {
+            } else {
                 if ($bt->getAfakulcs() == 0) {
                     $result = $result . '<vatExemption>AAM</vatExemption>';
-                }
-                else {
+                } else {
                     $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage>';
                 }
             }
@@ -1759,17 +1764,15 @@ class Bizonylatfej {
         $result = $result . '<invoiceSummary>';
         $result = $result . '<summaryNormal>';
         $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
-        foreach($afasum as $as) {
+        foreach ($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
             $result = $result . '<vatRate>';
             if ($this->isForditottadozas()) {
                 $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            }
-            else {
+            } else {
                 if ($as['afakulcs'] == 0) {
                     $result = $result . '<vatExemption>AAM</vatExemption>';
-                }
-                else {
+                } else {
                     $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage>';
                 }
             }
@@ -1814,18 +1817,19 @@ class Bizonylatfej {
 
         if ($this->getStorno()) {
             $result = 'STORNO' . $b64;
-        }
-        else {
+        } else {
             $result = 'CREATE' . $b64;
         }
         return $result;
     }
 
-    public function setPersistentData() {
+    public function setPersistentData()
+    {
         $this->setTulajData();
     }
 
-    protected function setTulajData() {
+    protected function setTulajData()
+    {
         $this->setTulajnev(\mkw\store::getParameter(\mkw\consts::Tulajnev));
         $this->setTulajirszam(\mkw\store::getParameter(\mkw\consts::Tulajirszam));
         $this->setTulajvaros(\mkw\store::getParameter(\mkw\consts::Tulajvaros));
@@ -1841,41 +1845,50 @@ class Bizonylatfej {
         $this->setProgramnev(\mkw\store::getParameter(\mkw\consts::ProgramNev));
     }
 
-    public function calcEsedekesseg() {
+    public function calcEsedekesseg()
+    {
         $this->esedekesseg = \mkw\store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner());
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function setId($val) {
+    public function setId($val)
+    {
         if (!$this->id) {
             $this->id = $val;
         }
     }
 
-    public function clearId() {
+    public function clearId()
+    {
         $this->id = null;
     }
 
-    public function getSanitizedId() {
+    public function getSanitizedId()
+    {
         return str_replace(['/', ' ', '.', '-'], '_', $this->getId());
     }
 
-    public function getTrxId() {
+    public function getTrxId()
+    {
         return $this->trxid;
     }
 
-    public function getOTPayId() {
+    public function getOTPayId()
+    {
         return $this->otpayid;
     }
 
-    public function setOTPayId($val) {
+    public function setOTPayId($val)
+    {
         $this->otpayid = $val;
     }
 
-    public static function getNextId($bizszam) {
+    public static function getNextId($bizszam)
+    {
         $szam = explode('/', $bizszam);
         if (is_array($szam)) {
             $szam[1] = $szam[1] + 1;
@@ -1884,7 +1897,8 @@ class Bizonylatfej {
         return $bizszam;
     }
 
-    public static function getPrevId($bizszam) {
+    public static function getPrevId($bizszam)
+    {
         $szam = explode('/', $bizszam);
         if (is_array($szam)) {
             $szam[1] = $szam[1] - 1;
@@ -1893,11 +1907,13 @@ class Bizonylatfej {
         return $bizszam;
     }
 
-    public static function createBizonylatszam($azon = '', $ev = 0, $szam = 0) {
+    public static function createBizonylatszam($azon = '', $ev = 0, $szam = 0)
+    {
         return $azon . $ev . '/' . sprintf('%06d', $szam * 1);
     }
 
-    public function generateId($from = null) {
+    public function generateId($from = null)
+    {
         if ($this->getId()) {
             return $this->getId();
         }
@@ -1922,9 +1938,9 @@ class Bizonylatfej {
                 $szam = $kezdo;
                 $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
                 $q->setParameters(array(
-                    'p1' => $bt,
-                    'p2' => $ev
-                ));
+                                      'p1' => $bt,
+                                      'p2' => $ev
+                                  ));
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -1932,14 +1948,13 @@ class Bizonylatfej {
                         $szam = $szam[1] + 1;
                     }
                 }
-            }
-            else {
+            } else {
                 $szam = $from;
                 $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
                 $q->setParameters(array(
-                    'p1' => $bt,
-                    'p2' => $ev
-                ));
+                                      'p1' => $bt,
+                                      'p2' => $ev
+                                  ));
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -1956,11 +1971,13 @@ class Bizonylatfej {
         return $szam;
     }
 
-    public function getBizonylattetelek() {
+    public function getBizonylattetelek()
+    {
         return $this->bizonylattetelek;
     }
 
-    public function addBizonylattetel(Bizonylattetel $val) {
+    public function addBizonylattetel(Bizonylattetel $val)
+    {
         if (!$this->bizonylattetelek->contains($val)) {
             $val->setIrany($this->getIrany());
             $this->bizonylattetelek->add($val);
@@ -1968,7 +1985,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeBizonylattetel(Bizonylattetel $val) {
+    public function removeBizonylattetel(Bizonylattetel $val)
+    {
         if ($this->bizonylattetelek->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -1976,22 +1994,26 @@ class Bizonylatfej {
         return false;
     }
 
-    public function clearBizonylattetelek() {
+    public function clearBizonylattetelek()
+    {
         $this->bizonylattetelek->clear();
     }
 
-    public function getFolyoszamlak() {
+    public function getFolyoszamlak()
+    {
         return $this->folyoszamlak;
     }
 
-    public function addFolyoszamla(Folyoszamla $val) {
+    public function addFolyoszamla(Folyoszamla $val)
+    {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
             $val->setBizonylatfej($this);
         }
     }
 
-    public function removeFolyoszamla(Folyoszamla $val) {
+    public function removeFolyoszamla(Folyoszamla $val)
+    {
         if ($this->folyoszamlak->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -1999,33 +2021,39 @@ class Bizonylatfej {
         return false;
     }
 
-    public function clearFolyoszamlak() {
+    public function clearFolyoszamlak()
+    {
         $this->folyoszamlak->clear();
     }
 
-    public function getIrany() {
+    public function getIrany()
+    {
         return $this->irany;
     }
 
-    public function setIrany($val) {
+    public function setIrany($val)
+    {
         $this->irany = $val;
     }
 
     /**
      * @return \Entities\Bizonylattipus
      */
-    public function getBizonylattipus() {
+    public function getBizonylattipus()
+    {
         return $this->bizonylattipus;
     }
 
-    public function getBizonylattipusNavbekuldendo() {
+    public function getBizonylattipusNavbekuldendo()
+    {
         if ($this->bizonylattipus) {
             return $this->bizonylattipus->getNavbekuldendo();
         }
         return false;
     }
 
-    public function getBizonylattipusId() {
+    public function getBizonylattipusId()
+    {
         if ($this->bizonylattipus) {
             return $this->bizonylattipus->getId();
         }
@@ -2035,12 +2063,12 @@ class Bizonylatfej {
     /**
      * @param \Entities\Bizonylattipus $val
      */
-    public function setBizonylattipus($val) {
+    public function setBizonylattipus($val)
+    {
         if ($this->bizonylattipus !== $val) {
             if (!$val) {
                 $this->removeBizonylattipus();
-            }
-            else {
+            } else {
                 $this->bizonylattipus = $val;
                 if (!$this->duplication) {
                     $this->setIrany($val->getIrany());
@@ -2052,7 +2080,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeBizonylattipus() {
+    public function removeBizonylattipus()
+    {
         if ($this->bizonylattipus !== null) {
             $this->bizonylattipus = null;
             if (!$this->duplication) {
@@ -2062,38 +2091,46 @@ class Bizonylatfej {
         }
     }
 
-    public function getBizonylatnev() {
+    public function getBizonylatnev()
+    {
         return $this->bizonylatnev;
     }
 
-    public function setBizonylatnev($val) {
+    public function setBizonylatnev($val)
+    {
         $this->bizonylatnev = $val;
     }
 
-    public function getNyomtatva() {
+    public function getNyomtatva()
+    {
         return $this->nyomtatva;
     }
 
-    public function setNyomtatva($val) {
+    public function setNyomtatva($val)
+    {
         $this->nyomtatva = $val;
     }
 
-    public function getStorno() {
+    public function getStorno()
+    {
         return $this->storno;
     }
 
-    public function setStorno($val) {
+    public function setStorno($val)
+    {
         $this->storno = $val;
         if ($this->storno && !$this->duplication) {
             $this->setStornozott(false);
         }
     }
 
-    public function getStornozott() {
+    public function getStornozott()
+    {
         return $this->stornozott;
     }
 
-    public function setStornozott($val) {
+    public function setStornozott($val)
+    {
         $this->stornozott = $val;
         if ($this->stornozott && !$this->duplication) {
             $this->setStorno(false);
@@ -2106,7 +2143,8 @@ class Bizonylatfej {
         }
     }
 
-    public function getStornoStr() {
+    public function getStornoStr()
+    {
         if ($this->storno) {
             return 'Storno';
         }
@@ -2116,7 +2154,8 @@ class Bizonylatfej {
         return '';
     }
 
-    public function getMozgat() {
+    public function getMozgat()
+    {
         $bt = $this->getBizonylattipus();
         $raktar = $this->getRaktar();
         if ($bt && $raktar) {
@@ -2125,7 +2164,8 @@ class Bizonylatfej {
         return false;
     }
 
-    public function getFoglal() {
+    public function getFoglal()
+    {
         $bt = $this->getBizonylattipus();
         if ($bt) {
             return $bt->getFoglal();
@@ -2133,89 +2173,107 @@ class Bizonylatfej {
         return false;
     }
 
-    public function getPenztmozgat() {
+    public function getPenztmozgat()
+    {
         return $this->penztmozgat;
     }
 
-    public function setPenztmozgat($val) {
+    public function setPenztmozgat($val)
+    {
         $this->penztmozgat = $val;
     }
 
-    public function getTulajnev() {
+    public function getTulajnev()
+    {
         return $this->tulajnev;
     }
 
-    public function setTulajnev($val) {
+    public function setTulajnev($val)
+    {
         $this->tulajnev = $val;
     }
 
-    public function getTulajirszam() {
+    public function getTulajirszam()
+    {
         return $this->tulajirszam;
     }
 
-    public function setTulajirszam($val) {
+    public function setTulajirszam($val)
+    {
         $this->tulajirszam = $val;
     }
 
-    public function getTulajvaros() {
+    public function getTulajvaros()
+    {
         return $this->tulajvaros;
     }
 
-    public function setTulajvaros($val) {
+    public function setTulajvaros($val)
+    {
         $this->tulajvaros = $val;
     }
 
-    public function getTulajutca() {
+    public function getTulajutca()
+    {
         return $this->tulajutca;
     }
 
-    public function setTulajutca($val) {
+    public function setTulajutca($val)
+    {
         $this->tulajutca = $val;
     }
 
-    public function getTulajadoszam() {
+    public function getTulajadoszam()
+    {
         return $this->tulajadoszam;
     }
 
-    public function setTulajadoszam($val) {
+    public function setTulajadoszam($val)
+    {
         $this->tulajadoszam = $val;
     }
 
-    public function getTulajeuadoszam() {
+    public function getTulajeuadoszam()
+    {
         return $this->tulajeuadoszam;
     }
 
-    public function setTulajeuadoszam($val) {
+    public function setTulajeuadoszam($val)
+    {
         $this->tulajeuadoszam = $val;
     }
 
-    public function getTulajeorinr() {
+    public function getTulajeorinr()
+    {
         return $this->tulajeorinr;
     }
 
-    public function setTulajeorinr($val) {
+    public function setTulajeorinr($val)
+    {
         $this->tulajeorinr = $val;
     }
 
-    public function getKelt() {
+    public function getKelt()
+    {
         if (!$this->id && !$this->kelt) {
             $this->kelt = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->kelt;
     }
 
-    public function getKeltStr() {
+    public function getKeltStr()
+    {
         if ($this->getKelt()) {
             return $this->getKelt()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setKelt($adat = '') {
+    public function setKelt($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->kelt = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -2223,25 +2281,27 @@ class Bizonylatfej {
         }
     }
 
-    public function getTeljesites() {
+    public function getTeljesites()
+    {
         if (!$this->id && !$this->teljesites) {
             $this->teljesites = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->teljesites;
     }
 
-    public function getTeljesitesStr() {
+    public function getTeljesitesStr()
+    {
         if ($this->getTeljesites()) {
             return $this->getTeljesites()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setTeljesites($adat = '') {
+    public function setTeljesites($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->teljesites = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -2249,25 +2309,27 @@ class Bizonylatfej {
         }
     }
 
-    public function getEsedekesseg() {
+    public function getEsedekesseg()
+    {
         if (!$this->id && !$this->esedekesseg) {
             $this->esedekesseg = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->esedekesseg;
     }
 
-    public function getEsedekessegStr() {
+    public function getEsedekessegStr()
+    {
         if ($this->getEsedekesseg()) {
             return $this->getEsedekesseg()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg($adat = '') {
+    public function setEsedekesseg($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->esedekesseg = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -2275,25 +2337,27 @@ class Bizonylatfej {
         }
     }
 
-    public function getHatarido() {
+    public function getHatarido()
+    {
         if (!$this->id && !$this->hatarido) {
             $this->hatarido = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->hatarido;
     }
 
-    public function getHataridoStr() {
+    public function getHataridoStr()
+    {
         if ($this->getHatarido()) {
             return $this->getHatarido()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setHatarido($adat = '') {
+    public function setHatarido($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->hatarido = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -2304,18 +2368,21 @@ class Bizonylatfej {
     /**
      * @return \Entities\Fizmod
      */
-    public function getFizmod() {
+    public function getFizmod()
+    {
         if (!$this->id && !$this->fizmod) {
             $this->setFizmod(\mkw\store::getParameter(\mkw\consts::Fizmod));
         }
         return $this->fizmod;
     }
 
-    public function getFizmodnev() {
+    public function getFizmodnev()
+    {
         return $this->fizmodnev;
     }
 
-    public function getFizmodId() {
+    public function getFizmodId()
+    {
         $fm = $this->getFizmod();
         if ($fm) {
             return $fm->getId();
@@ -2326,15 +2393,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Fizmod $val
      */
-    public function setFizmod($val) {
+    public function setFizmod($val)
+    {
         if (!($val instanceof \Entities\Fizmod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {
                 $this->removeFizmod();
-            }
-            else {
+            } else {
                 $this->fizmod = $val;
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
@@ -2344,7 +2411,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeFizmod() {
+    public function removeFizmod()
+    {
         if ($this->fizmod !== null) {
             $this->fizmod = null;
             if (!$this->duplication) {
@@ -2357,15 +2425,18 @@ class Bizonylatfej {
     /**
      * @return \Entities\Szallitasimod
      */
-    public function getSzallitasimod() {
+    public function getSzallitasimod()
+    {
         return $this->szallitasimod;
     }
 
-    public function getSzallitasimodnev() {
+    public function getSzallitasimodnev()
+    {
         return $this->szallitasimodnev;
     }
 
-    public function getSzallitasimodId() {
+    public function getSzallitasimodId()
+    {
         if ($this->szallitasimod) {
             return $this->szallitasimod->getId();
         }
@@ -2375,15 +2446,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Szallitasimod $val
      */
-    public function setSzallitasimod($val) {
+    public function setSzallitasimod($val)
+    {
         if (!($val instanceof \Entities\Szallitasimod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
         }
         if ($this->szallitasimod !== $val) {
             if (!$val) {
                 $this->removeSzallitasimod();
-            }
-            else {
+            } else {
                 $this->szallitasimod = $val;
                 if (!$this->duplication) {
                     $this->szallitasimodnev = $val->getNev();
@@ -2392,7 +2463,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeSzallitasimod() {
+    public function removeSzallitasimod()
+    {
         if ($this->szallitasimod !== null) {
             $this->szallitasimod = null;
             if (!$this->duplication) {
@@ -2401,53 +2473,64 @@ class Bizonylatfej {
         }
     }
 
-    public function getNetto() {
+    public function getNetto()
+    {
         return $this->netto;
     }
 
-    public function setNetto($val) {
+    public function setNetto($val)
+    {
         $this->netto = $val;
     }
 
-    public function getAfa() {
+    public function getAfa()
+    {
         return $this->afa;
     }
 
-    public function setAfa($val) {
+    public function setAfa($val)
+    {
         $this->afa = $val;
     }
 
-    public function getBrutto() {
+    public function getBrutto()
+    {
         return $this->brutto;
     }
 
-    public function setBrutto($val) {
+    public function setBrutto($val)
+    {
         $this->brutto = $val;
     }
 
-    public function getFizetendo() {
+    public function getFizetendo()
+    {
         return $this->fizetendo;
     }
 
-    public function setFizetendo($val) {
+    public function setFizetendo($val)
+    {
         $this->fizetendo = $val;
     }
 
     /**
      * @return \Entities\Valutanem
      */
-    public function getValutanem() {
+    public function getValutanem()
+    {
         if (!$this->id && !$this->valutanem) {
             $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
 
-    public function getValutanemnev() {
+    public function getValutanemnev()
+    {
         return $this->valutanemnev;
     }
 
-    public function getValutanemId() {
+    public function getValutanemId()
+    {
         $vn = $this->getValutanem();
         if ($vn) {
             return $vn->getId();
@@ -2458,15 +2541,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Valutanem $val
      */
-    public function setValutanem($val) {
+    public function setValutanem($val)
+    {
         if (!($val instanceof \Entities\Valutanem)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
                 $this->removeValutanem();
-            }
-            else {
+            } else {
                 $this->valutanem = $val;
                 if (!$this->duplication) {
                     $this->valutanemnev = $val->getNev();
@@ -2475,7 +2558,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeValutanem() {
+    public function removeValutanem()
+    {
         if ($this->valutanem !== null) {
             $this->valutanem = null;
             if (!$this->duplication) {
@@ -2485,54 +2569,62 @@ class Bizonylatfej {
         }
     }
 
-    public function getNettohuf() {
+    public function getNettohuf()
+    {
         return $this->nettohuf;
     }
 
-    public function setNettohuf($val) {
+    public function setNettohuf($val)
+    {
         $this->nettohuf = $val;
     }
 
-    public function getAfahuf() {
+    public function getAfahuf()
+    {
         return $this->afahuf;
     }
 
-    public function setAfahuf($val) {
+    public function setAfahuf($val)
+    {
         $this->afahuf = $val;
     }
 
-    public function getBruttohuf() {
+    public function getBruttohuf()
+    {
         return $this->bruttohuf;
     }
 
-    public function setBruttohuf($val) {
+    public function setBruttohuf($val)
+    {
         $this->bruttohuf = $val;
     }
 
-    public function getArfolyam() {
+    public function getArfolyam()
+    {
         if (!$this->id && !$this->arfolyam) {
             if ($this->getValutanemId() == \mkw\store::getParameter(\mkw\consts::Valutanem)) {
                 $this->setArfolyam(1);
-            }
-            else {
-
+            } else {
             }
         }
         return $this->arfolyam;
     }
 
-    public function setArfolyam($val) {
+    public function setArfolyam($val)
+    {
         $this->arfolyam = $val;
     }
 
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
@@ -2542,7 +2634,8 @@ class Bizonylatfej {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartnerLeiroadat($val) {
+    public function setPartnerLeiroadat($val)
+    {
         $this->setPartnernev($val->getNev());
         $this->setPartnervezeteknev($val->getVezeteknev());
         $this->setPartnerkeresztnev($val->getKeresztnev());
@@ -2585,42 +2678,39 @@ class Bizonylatfej {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if (!$val) {
             $this->removePartner();
-        }
-        else {
+        } else {
             $this->partner = $val;
             if (!$this->duplication) {
-
                 $this->setPartnerLeiroadat($val);
 
                 $uk = $val->getUzletkoto();
                 if ($uk) {
                     $this->setUzletkoto($uk);
-                }
-                else {
+                } else {
                     $this->removeUzletkoto();
                 }
                 $fm = $val->getFizmod();
                 if ($fm) {
                     $this->setFizmod($fm);
-                }
-                else {
+                } else {
                     $this->removeFizmod();
                 }
                 $v = $val->getValutanem();
                 if ($v) {
                     $this->setValutanem($v);
-                }
-                else {
+                } else {
                     $this->removeValutanem();
                 }
             }
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
             if (!$this->duplication) {
@@ -2665,162 +2755,201 @@ class Bizonylatfej {
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         return $this->partnernev;
     }
 
-    public function setPartnernev($val) {
+    public function setPartnernev($val)
+    {
         $this->partnernev = $val;
     }
 
-    public function getPartnervezeteknev() {
+    public function getPartnervezeteknev()
+    {
         return $this->partnervezeteknev;
     }
 
-    public function setPartnervezeteknev($val) {
+    public function setPartnervezeteknev($val)
+    {
         $this->partnervezeteknev = $val;
     }
 
-    public function getPartnerkeresztnev() {
+    public function getPartnerkeresztnev()
+    {
         return $this->partnerkeresztnev;
     }
 
-    public function setPartnerkeresztnev($val) {
+    public function setPartnerkeresztnev($val)
+    {
         $this->partnerkeresztnev = $val;
     }
 
-    public function getPartneradoszam() {
+    public function getPartneradoszam()
+    {
         return $this->partneradoszam;
     }
 
-    public function setPartneradoszam($val) {
+    public function setPartneradoszam($val)
+    {
         $this->partneradoszam = $val;
     }
 
-    public function getPartnercjszam() {
+    public function getPartnercjszam()
+    {
         return $this->partnercjszam;
     }
 
-    public function setPartnercjszam($val) {
+    public function setPartnercjszam($val)
+    {
         $this->partnercjszam = $val;
     }
 
-    public function getPartnereuadoszam() {
+    public function getPartnereuadoszam()
+    {
         return $this->partnereuadoszam;
     }
 
-    public function setPartnereuadoszam($val) {
+    public function setPartnereuadoszam($val)
+    {
         $this->partnereuadoszam = $val;
     }
 
-    public function getPartnerfvmszam() {
+    public function getPartnerfvmszam()
+    {
         return $this->partnerfvmszam;
     }
 
-    public function setPartnerfvmszam($val) {
+    public function setPartnerfvmszam($val)
+    {
         $this->partnerfvmszam = $val;
     }
 
-    public function getPartnerirszam() {
+    public function getPartnerirszam()
+    {
         return $this->partnerirszam;
     }
 
-    public function setPartnerirszam($val) {
+    public function setPartnerirszam($val)
+    {
         $this->partnerirszam = $val;
     }
 
-    public function getPartnerjovengszam() {
+    public function getPartnerjovengszam()
+    {
         return $this->partnerjovengszam;
     }
 
-    public function setPartnerjovengszam($val) {
+    public function setPartnerjovengszam($val)
+    {
         $this->partnerjovengszam = $val;
     }
 
-    public function getPartnerlirszam() {
+    public function getPartnerlirszam()
+    {
         return $this->partnerlirszam;
     }
 
-    public function setPartnerlirszam($val) {
+    public function setPartnerlirszam($val)
+    {
         $this->partnerlirszam = $val;
     }
 
-    public function getPartnerlutca() {
+    public function getPartnerlutca()
+    {
         return $this->partnerlutca;
     }
 
-    public function setPartnerlutca($val) {
+    public function setPartnerlutca($val)
+    {
         $this->partnerlutca = $val;
     }
 
-    public function getPartnerlvaros() {
+    public function getPartnerlvaros()
+    {
         return $this->partnerlvaros;
     }
 
-    public function setPartnerlvaros($val) {
+    public function setPartnerlvaros($val)
+    {
         $this->partnerlvaros = $val;
     }
 
-    public function getPartnermukengszam() {
+    public function getPartnermukengszam()
+    {
         return $this->partnermukengszam;
     }
 
-    public function setPartnermukengszam($val) {
+    public function setPartnermukengszam($val)
+    {
         $this->partnermukengszam = $val;
     }
 
-    public function getPartnerostermszam() {
+    public function getPartnerostermszam()
+    {
         return $this->partnerostermszam;
     }
 
-    public function setPartnerostermszam($val) {
+    public function setPartnerostermszam($val)
+    {
         $this->partnerostermszam = $val;
     }
 
-    public function getPartnerstatszamjel() {
+    public function getPartnerstatszamjel()
+    {
         return $this->partnerstatszamjel;
     }
 
-    public function setPartnerstatszamjel($val) {
+    public function setPartnerstatszamjel($val)
+    {
         $this->partnerstatszamjel = $val;
     }
 
-    public function getPartnerutca() {
+    public function getPartnerutca()
+    {
         return $this->partnerutca;
     }
 
-    public function setPartnerutca($val) {
+    public function setPartnerutca($val)
+    {
         $this->partnerutca = $val;
     }
 
-    public function getPartnervalligszam() {
+    public function getPartnervalligszam()
+    {
         return $this->partnervalligszam;
     }
 
-    public function setPartnervalligszam($val) {
+    public function setPartnervalligszam($val)
+    {
         $this->partnervalligszam = $val;
     }
 
-    public function getPartnervaros() {
+    public function getPartnervaros()
+    {
         return $this->partnervaros;
     }
 
-    public function setPartnervaros($val) {
+    public function setPartnervaros($val)
+    {
         $this->partnervaros = $val;
     }
 
     /**
      * @return \Entities\Bankszamla
      */
-    public function getBankszamla() {
+    public function getBankszamla()
+    {
         return $this->bankszamla;
     }
 
-    public function getTulajbankszamlaszam() {
+    public function getTulajbankszamlaszam()
+    {
         return $this->tulajbankszamlaszam;
     }
 
-    public function getBankszamlaId() {
+    public function getBankszamlaId()
+    {
         if ($this->bankszamla) {
             return $this->bankszamla->getId();
         }
@@ -2830,12 +2959,12 @@ class Bizonylatfej {
     /**
      * @param \Entities\Bankszamla|null $val
      */
-    public function setBankszamla($val = null) {
+    public function setBankszamla($val = null)
+    {
         if ($this->bankszamla !== $val) {
             if (!$val) {
                 $this->removeBankszamla();
-            }
-            else {
+            } else {
                 $this->bankszamla = $val;
                 if (!$this->duplication) {
                     $this->tulajbanknev = $val->getBanknev();
@@ -2847,7 +2976,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeBankszamla() {
+    public function removeBankszamla()
+    {
         if ($this->bankszamla !== null) {
             $this->bankszamla = null;
             if (!$this->duplication) {
@@ -2859,30 +2989,36 @@ class Bizonylatfej {
         }
     }
 
-    public function getTulajswift() {
+    public function getTulajswift()
+    {
         return $this->tulajswift;
     }
 
-    public function getTulajbanknev() {
+    public function getTulajbanknev()
+    {
         return $this->tulajbanknev;
     }
 
     /**
      * @return \Entities\Uzletkoto
      */
-    public function getUzletkoto() {
+    public function getUzletkoto()
+    {
         return $this->uzletkoto;
     }
 
-    public function getUzletkotonev() {
+    public function getUzletkotonev()
+    {
         return $this->uzletkotonev;
     }
 
-    public function getUzletkotoemail() {
+    public function getUzletkotoemail()
+    {
         return $this->uzletkotoemail;
     }
 
-    public function getUzletkotoId() {
+    public function getUzletkotoId()
+    {
         if ($this->uzletkoto) {
             return $this->uzletkoto->getId();
         }
@@ -2892,12 +3028,12 @@ class Bizonylatfej {
     /**
      * @param \Entities\Uzletkoto $val
      */
-    public function setUzletkoto($val) {
+    public function setUzletkoto($val)
+    {
         if ($this->uzletkoto !== $val) {
             if (!$val) {
                 $this->removeUzletkoto();
-            }
-            else {
+            } else {
                 $this->uzletkoto = $val;
                 if (!$this->duplication) {
                     $this->uzletkotonev = $val->getNev();
@@ -2908,7 +3044,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeUzletkoto() {
+    public function removeUzletkoto()
+    {
         if ($this->uzletkoto !== null) {
             $this->uzletkoto = null;
             if (!$this->duplication) {
@@ -2922,19 +3059,23 @@ class Bizonylatfej {
     /**
      * @return \Entities\Uzletkoto
      */
-    public function getBelsouzletkoto() {
+    public function getBelsouzletkoto()
+    {
         return $this->belsouzletkoto;
     }
 
-    public function getBelsouzletkotonev() {
+    public function getBelsouzletkotonev()
+    {
         return $this->belsouzletkotonev;
     }
 
-    public function getBelsouzletkotoemail() {
+    public function getBelsouzletkotoemail()
+    {
         return $this->belsouzletkotoemail;
     }
 
-    public function getBelsouzletkotoId() {
+    public function getBelsouzletkotoId()
+    {
         if ($this->belsouzletkoto) {
             return $this->belsouzletkoto->getId();
         }
@@ -2944,12 +3085,12 @@ class Bizonylatfej {
     /**
      * @param \Entities\Uzletkoto $val
      */
-    public function setBelsouzletkoto($val) {
+    public function setBelsouzletkoto($val)
+    {
         if ($this->belsouzletkoto !== $val) {
             if (!$val) {
                 $this->removeBelsozletkoto();
-            }
-            else {
+            } else {
                 $this->belsouzletkoto = $val;
                 if (!$this->duplication) {
                     $this->belsouzletkotonev = $val->getNev();
@@ -2960,7 +3101,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeBelsouzletkoto() {
+    public function removeBelsouzletkoto()
+    {
         if ($this->belsouzletkoto !== null) {
             $this->belsouzletkoto = null;
             if (!$this->duplication) {
@@ -2974,15 +3116,18 @@ class Bizonylatfej {
     /**
      * @return \Entities\Raktar
      */
-    public function getRaktar() {
+    public function getRaktar()
+    {
         return $this->raktar;
     }
 
-    public function getRaktarnev() {
+    public function getRaktarnev()
+    {
         return $this->raktarnev;
     }
 
-    public function getRaktarId() {
+    public function getRaktarId()
+    {
         if ($this->raktar) {
             return $this->raktar->getId();
         }
@@ -2992,15 +3137,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Raktar $val
      */
-    public function setRaktar($val) {
+    public function setRaktar($val)
+    {
         if (!($val instanceof \Entities\Raktar)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
         }
         if ($this->raktar !== $val) {
             if (!$val) {
                 $this->removeRaktar();
-            }
-            else {
+            } else {
                 $this->raktar = $val;
                 if (!$this->duplication) {
                     $this->raktarnev = $val->getNev();
@@ -3009,7 +3154,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeRaktar() {
+    public function removeRaktar()
+    {
         if ($this->raktar !== null) {
             $this->raktar = null;
             if (!$this->duplication) {
@@ -3018,148 +3164,182 @@ class Bizonylatfej {
         }
     }
 
-    public function getErbizonylatszam() {
+    public function getErbizonylatszam()
+    {
         return $this->erbizonylatszam;
     }
 
-    public function setErbizonylatszam($val) {
+    public function setErbizonylatszam($val)
+    {
         $this->erbizonylatszam = $val;
     }
 
-    public function getMegjegyzes() {
+    public function getMegjegyzes()
+    {
         return $this->megjegyzes;
     }
 
-    public function setMegjegyzes($val) {
+    public function setMegjegyzes($val)
+    {
         $this->megjegyzes = $val;
     }
 
-    public function getBelsomegjegyzes() {
+    public function getBelsomegjegyzes()
+    {
         return $this->belsomegjegyzes;
     }
 
-    public function setBelsomegjegyzes($val) {
+    public function setBelsomegjegyzes($val)
+    {
         $this->belsomegjegyzes = $val;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
-    public function getSzallnev() {
+    public function getSzallnev()
+    {
         return $this->szallnev;
     }
 
-    public function setSzallnev($adat) {
+    public function setSzallnev($adat)
+    {
         $this->szallnev = $adat;
     }
 
-    public function getSzallirszam() {
+    public function getSzallirszam()
+    {
         return $this->szallirszam;
     }
 
-    public function setSzallirszam($adat) {
+    public function setSzallirszam($adat)
+    {
         $this->szallirszam = $adat;
     }
 
-    public function getSzallvaros() {
+    public function getSzallvaros()
+    {
         return $this->szallvaros;
     }
 
-    public function setSzallvaros($adat) {
+    public function setSzallvaros($adat)
+    {
         $this->szallvaros = $adat;
     }
 
-    public function getSzallutca() {
+    public function getSzallutca()
+    {
         return $this->szallutca;
     }
 
-    public function setSzallutca($adat) {
+    public function setSzallutca($adat)
+    {
         $this->szallutca = $adat;
     }
 
-    public function getWebshopmessage() {
+    public function getWebshopmessage()
+    {
         return $this->webshopmessage;
     }
 
-    public function setWebshopmessage($val) {
+    public function setWebshopmessage($val)
+    {
         $this->webshopmessage = $val;
     }
 
-    public function getCouriermessage() {
+    public function getCouriermessage()
+    {
         return $this->couriermessage;
     }
 
-    public function setCouriermessage($val) {
+    public function setCouriermessage($val)
+    {
         $this->couriermessage = $val;
     }
 
-    public function getPartnertelefon() {
+    public function getPartnertelefon()
+    {
         return $this->partnertelefon;
     }
 
-    public function setPartnertelefon($telefon) {
+    public function setPartnertelefon($telefon)
+    {
         $this->partnertelefon = $telefon;
     }
 
-    public function getPartneremail() {
+    public function getPartneremail()
+    {
         return $this->partneremail;
     }
 
-    public function setPartneremail($email) {
+    public function setPartneremail($email)
+    {
         $this->partneremail = $email;
     }
 
-    public function getIp() {
+    public function getIp()
+    {
         return $this->ip;
     }
 
-    public function setIp($val) {
+    public function setIp($val)
+    {
         $this->ip = $val;
     }
 
-    public function getReferrer() {
+    public function getReferrer()
+    {
         return $this->referrer;
     }
 
-    public function setReferrer($val) {
+    public function setReferrer($val)
+    {
         $this->referrer = $val;
     }
 
     /**
      * @return \Entities\Bizonylatstatusz
      */
-    public function getBizonylatstatusz() {
+    public function getBizonylatstatusz()
+    {
         return $this->bizonylatstatusz;
     }
 
-    public function getBizonylatstatusznev() {
+    public function getBizonylatstatusznev()
+    {
         if (!$this->bizonylatstatusznev) {
             $bs = $this->getBizonylatstatusz();
             if ($bs) {
@@ -3170,19 +3350,23 @@ class Bizonylatfej {
         return $this->bizonylatstatusznev;
     }
 
-    public function setBizonylatstatusznev($val) {
+    public function setBizonylatstatusznev($val)
+    {
         $this->bizonylatstatusznev = $val;
     }
 
-    public function getBizonylatstatuszcsoport() {
+    public function getBizonylatstatuszcsoport()
+    {
         return $this->bizonylatstatuszcsoport;
     }
 
-    public function setBizonylatstatuszcsoport($val) {
+    public function setBizonylatstatuszcsoport($val)
+    {
         $this->bizonylatstatuszcsoport = $val;
     }
 
-    public function getBizonylatstatuszId() {
+    public function getBizonylatstatuszId()
+    {
         $fm = $this->getBizonylatstatusz();
         if ($fm) {
             return $fm->getId();
@@ -3193,15 +3377,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Bizonylatstatusz $val
      */
-    public function setBizonylatstatusz($val) {
+    public function setBizonylatstatusz($val)
+    {
         if (!($val instanceof \Entities\Bizonylatstatusz)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
         }
         if ($this->bizonylatstatusz !== $val) {
             if (!$val) {
                 $this->removeBizonylatstatusz();
-            }
-            else {
+            } else {
                 $this->bizonylatstatusz = $val;
                 if (!$this->duplication) {
                     $this->bizonylatstatusznev = $val->getNev();
@@ -3211,7 +3395,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeBizonylatstatusz() {
+    public function removeBizonylatstatusz()
+    {
         if ($this->bizonylatstatusz !== null) {
             $this->bizonylatstatusz = null;
             if (!$this->duplication) {
@@ -3221,22 +3406,26 @@ class Bizonylatfej {
         }
     }
 
-    public function getFuvarlevelszam() {
+    public function getFuvarlevelszam()
+    {
         return $this->fuvarlevelszam;
     }
 
-    public function setFuvarlevelszam($adat) {
+    public function setFuvarlevelszam($adat)
+    {
         $this->fuvarlevelszam = $adat;
     }
 
     /**
      * @return \Entities\Bizonylatfej
      */
-    public function getParbizonylatfej() {
+    public function getParbizonylatfej()
+    {
         return $this->parbizonylatfej;
     }
 
-    public function getParbizonylatfejId() {
+    public function getParbizonylatfejId()
+    {
         if ($this->parbizonylatfej) {
             return $this->parbizonylatfej->getId();
         }
@@ -3246,14 +3435,16 @@ class Bizonylatfej {
     /**
      * @param \Entities\Bizonylatfej $val
      */
-    public function setParbizonylatfej($val) {
+    public function setParbizonylatfej($val)
+    {
         if ($this->parbizonylatfej !== $val) {
             $this->parbizonylatfej = $val;
             $val->addSzulobizonylatfej($this);
         }
     }
 
-    public function removeParbizonylatfej() {
+    public function removeParbizonylatfej()
+    {
         if ($this->parbizonylatfej !== null) {
             $val = $this->parbizonylatfej;
             $this->parbizonylatfej = null;
@@ -3261,14 +3452,16 @@ class Bizonylatfej {
         }
     }
 
-    public function getSzulobizonylatfejek() {
+    public function getSzulobizonylatfejek()
+    {
         return $this->szulobizonylatfejek;
     }
 
     /**
      * @param \Entities\Bizonylatfej $val
      */
-    public function addSzulobizonylatfej($val) {
+    public function addSzulobizonylatfej($val)
+    {
         if (!$this->szulobizonylatfejek->contains($val)) {
             $this->szulobizonylatfejek->add($val);
             $val->setParbizonylatfej($this);
@@ -3279,7 +3472,8 @@ class Bizonylatfej {
      * @param \Entities\Bizonylatfej $val
      * @return bool
      */
-    public function removeSzulobizonylatfej($val) {
+    public function removeSzulobizonylatfej($val)
+    {
         if ($this->szulobizonylatfejek->removeElement($val)) {
             $val->removeParbizonylatfej();
             return true;
@@ -3287,136 +3481,166 @@ class Bizonylatfej {
         return false;
     }
 
-    public function getPartnerCim() {
+    public function getPartnerCim()
+    {
         $a = array($this->partnerirszam, $this->partnervaros);
         $cim = implode(' ', $a);
         $a = array($cim, $this->partnerutca);
         return implode(', ', $a);
     }
 
-    public function getOTPayMSISDN() {
+    public function getOTPayMSISDN()
+    {
         return $this->otpaymsisdn;
     }
 
-    public function setOTPayMSISDN($val) {
+    public function setOTPayMSISDN($val)
+    {
         $this->otpaymsisdn = $val;
     }
 
-    public function getOTPayMPID() {
+    public function getOTPayMPID()
+    {
         return $this->otpaympid;
     }
 
-    public function setOTPayMPID($val) {
+    public function setOTPayMPID($val)
+    {
         $this->otpaympid = $val;
     }
 
-    public function getFizetve() {
+    public function getFizetve()
+    {
         return $this->fizetve;
     }
 
-    public function setFizetve($val) {
+    public function setFizetve($val)
+    {
         $this->fizetve = $val;
     }
 
-    public function getMasterPassCorrelationID() {
+    public function getMasterPassCorrelationID()
+    {
         return $this->masterpasscorrelationid;
     }
 
-    public function setMasterPassCorrelationID($val) {
+    public function setMasterPassCorrelationID($val)
+    {
         $this->masterpasscorrelationid = $val;
     }
 
-    public function getMasterPassBankTrxId() {
+    public function getMasterPassBankTrxId()
+    {
         return $this->masterpassbanktrxid;
     }
 
-    public function setMaterPassBankTrxId($val) {
+    public function setMaterPassBankTrxId($val)
+    {
         $this->masterpassbanktrxid = $val;
     }
 
-    public function getMasterPassTrxId() {
+    public function getMasterPassTrxId()
+    {
         return $this->masterpasstrxid;
     }
 
-    public function setMaterPassTrxId($val) {
+    public function setMaterPassTrxId($val)
+    {
         $this->masterpasstrxid = $val;
     }
 
-    public function getOTPayResult() {
+    public function getOTPayResult()
+    {
         return $this->otpayresult;
     }
 
-    public function setOTPayResult($val) {
+    public function setOTPayResult($val)
+    {
         $this->otpayresult = $val;
     }
 
-    public function getOTPayResultText() {
+    public function getOTPayResultText()
+    {
         return $this->otpayresulttext;
     }
 
-    public function setOTPayResultText($val) {
+    public function setOTPayResultText($val)
+    {
         $this->otpayresulttext = $val;
     }
 
-    public function getPartnerSzamlatipus() {
+    public function getPartnerSzamlatipus()
+    {
         return $this->partnerszamlatipus;
     }
 
-    public function setPartnerSzamlatipus($val) {
+    public function setPartnerSzamlatipus($val)
+    {
         $this->partnerszamlatipus = $val;
     }
 
-    public function getCsomagterminal() {
+    public function getCsomagterminal()
+    {
         return $this->csomagterminal;
     }
 
-    public function getCsomagterminalId() {
+    public function getCsomagterminalId()
+    {
         if ($this->csomagterminal) {
             return $this->csomagterminal->getId();
         }
         return false;
     }
 
-    public function getCsomagterminalIdegenId() {
+    public function getCsomagterminalIdegenId()
+    {
         if ($this->csomagterminal) {
             return $this->csomagterminal->getIdegenid();
         }
         return false;
     }
 
-    public function setCsomagterminal($val) {
+    public function setCsomagterminal($val)
+    {
         if ($this->csomagterminal !== $val) {
             $this->csomagterminal = $val;
         }
     }
 
-    public function removeCsomagterminal() {
+    public function removeCsomagterminal()
+    {
         if ($this->csomagterminal !== null) {
             $this->csomagterminal = null;
         }
     }
 
-    public function getFoxpostBarcode() {
+    public function getFoxpostBarcode()
+    {
         return $this->foxpostbarcode;
     }
 
-    public function setFoxpostBarcode($adat) {
+    public function setFoxpostBarcode($adat)
+    {
         $this->foxpostbarcode = $adat;
     }
 
-    public function getTraceurl() {
+    public function getTraceurl()
+    {
         return $this->traceurl;
     }
 
-    public function setTraceurl($adat) {
+    public function setTraceurl($adat)
+    {
         $this->traceurl = $adat;
     }
 
-    public function getRontott() {
+    public function getRontott()
+    {
         return $this->rontott;
     }
 
-    public function setRontott($adat) {
+    public function setRontott($adat)
+    {
         $this->rontott = $adat;
         if (!$this->duplication) {
             foreach ($this->bizonylattetelek as $bt) {
@@ -3426,216 +3650,243 @@ class Bizonylatfej {
         }
     }
 
-    public function getSysmegjegyzes() {
+    public function getSysmegjegyzes()
+    {
         return $this->sysmegjegyzes;
     }
 
-    public function setSysmegjegyzes($adat) {
+    public function setSysmegjegyzes($adat)
+    {
         $this->sysmegjegyzes = $adat;
     }
 
-    public function getFix() {
+    public function getFix()
+    {
         return $this->fix;
     }
 
-    public function setFix($adat) {
+    public function setFix($adat)
+    {
         $this->fix = $adat;
     }
 
-    public function getBizonylatnyelv() {
+    public function getBizonylatnyelv()
+    {
         return $this->bizonylatnyelv;
     }
 
-    public function setBizonylatnyelv($adat) {
+    public function setBizonylatnyelv($adat)
+    {
         $this->bizonylatnyelv = $adat;
     }
 
-    public function getReportfile() {
+    public function getReportfile()
+    {
         return $this->reportfile;
     }
 
-    public function setReportfile($adat) {
+    public function setReportfile($adat)
+    {
         $this->reportfile = $adat;
     }
 
-    public function getKerkul() {
+    public function getKerkul()
+    {
         return $this->kerkul;
     }
 
-    public function setKerkul($adat) {
+    public function setKerkul($adat)
+    {
         $this->kerkul = $adat;
     }
 
-    public function getTulajiban() {
+    public function getTulajiban()
+    {
         return $this->tulajiban;
     }
 
-    public function getEsedekesseg1() {
+    public function getEsedekesseg1()
+    {
         return $this->esedekesseg1;
     }
 
-    public function getEsedekesseg1Str() {
+    public function getEsedekesseg1Str()
+    {
         if ($this->getEsedekesseg1()) {
             return $this->getEsedekesseg1()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg1($adat = '') {
+    public function setEsedekesseg1($adat = '')
+    {
         if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg1 = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->esedekesseg1 = new \DateTime(\mkw\store::convDate($adat));
-            }
-            else {
+            } else {
                 $this->esedekesseg1 = null;
             }
         }
     }
 
-    public function getFizetendo1() {
+    public function getFizetendo1()
+    {
         return $this->fizetendo1;
     }
 
-    public function setFizetendo1($val) {
+    public function setFizetendo1($val)
+    {
         $this->fizetendo1 = $val;
     }
 
-    public function getEsedekesseg2() {
+    public function getEsedekesseg2()
+    {
         return $this->esedekesseg2;
     }
 
-    public function getEsedekesseg2Str() {
+    public function getEsedekesseg2Str()
+    {
         if ($this->getEsedekesseg2()) {
             return $this->getEsedekesseg2()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg2($adat = '') {
+    public function setEsedekesseg2($adat = '')
+    {
         if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg2 = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->esedekesseg2 = new \DateTime(\mkw\store::convDate($adat));
-            }
-            else {
+            } else {
                 $this->esedekesseg2 = null;
             }
         }
     }
 
-    public function getFizetendo2() {
+    public function getFizetendo2()
+    {
         return $this->fizetendo2;
     }
 
-    public function setFizetendo2($val) {
+    public function setFizetendo2($val)
+    {
         $this->fizetendo2 = $val;
     }
 
-    public function getEsedekesseg3() {
+    public function getEsedekesseg3()
+    {
         return $this->esedekesseg3;
     }
 
-    public function getEsedekesseg3Str() {
+    public function getEsedekesseg3Str()
+    {
         if ($this->getEsedekesseg3()) {
             return $this->getEsedekesseg3()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg3($adat = '') {
+    public function setEsedekesseg3($adat = '')
+    {
         if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg3 = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->esedekesseg3 = new \DateTime(\mkw\store::convDate($adat));
-            }
-            else {
+            } else {
                 $this->esedekesseg3 = null;
             }
         }
     }
 
-    public function getFizetendo3() {
+    public function getFizetendo3()
+    {
         return $this->fizetendo3;
     }
 
-    public function setFizetendo3($val) {
+    public function setFizetendo3($val)
+    {
         $this->fizetendo3 = $val;
     }
 
-    public function getEsedekesseg4() {
+    public function getEsedekesseg4()
+    {
         return $this->esedekesseg4;
     }
 
-    public function getEsedekesseg4Str() {
+    public function getEsedekesseg4Str()
+    {
         if ($this->getEsedekesseg4()) {
             return $this->getEsedekesseg4()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg4($adat = '') {
+    public function setEsedekesseg4($adat = '')
+    {
         if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg4 = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->esedekesseg4 = new \DateTime(\mkw\store::convDate($adat));
-            }
-            else {
+            } else {
                 $this->esedekesseg4 = null;
             }
         }
     }
 
-    public function getFizetendo4() {
+    public function getFizetendo4()
+    {
         return $this->fizetendo4;
     }
 
-    public function setFizetendo4($val) {
+    public function setFizetendo4($val)
+    {
         $this->fizetendo4 = $val;
     }
 
-    public function getEsedekesseg5() {
+    public function getEsedekesseg5()
+    {
         return $this->esedekesseg5;
     }
 
-    public function getEsedekesseg5Str() {
+    public function getEsedekesseg5Str()
+    {
         if ($this->getEsedekesseg5()) {
             return $this->getEsedekesseg5()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setEsedekesseg5($adat = '') {
+    public function setEsedekesseg5($adat = '')
+    {
         if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg5 = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->esedekesseg5 = new \DateTime(\mkw\store::convDate($adat));
-            }
-            else {
+            } else {
                 $this->esedekesseg5 = null;
             }
         }
     }
 
-    public function getFizetendo5() {
+    public function getFizetendo5()
+    {
         return $this->fizetendo5;
     }
 
-    public function setFizetendo5($val) {
+    public function setFizetendo5($val)
+    {
         $this->fizetendo5 = $val;
     }
 
-    public function duplicateFrom($entityB) {
+    public function duplicateFrom($entityB)
+    {
         $this->duplication = true;
         $kivetel = array('setParbizonylatfej');
         $methods = get_class_methods($this);
@@ -3658,207 +3909,237 @@ class Bizonylatfej {
     /**
      * @param mixed $masterpassbanktrxid
      */
-    public function setMasterpassbanktrxid($masterpassbanktrxid) {
+    public function setMasterpassbanktrxid($masterpassbanktrxid)
+    {
         $this->masterpassbanktrxid = $masterpassbanktrxid;
     }
 
     /**
      * @param mixed $masterpasstrxid
      */
-    public function setMasterpasstrxid($masterpasstrxid) {
+    public function setMasterpasstrxid($masterpasstrxid)
+    {
         $this->masterpasstrxid = $masterpasstrxid;
     }
 
     /**
      * @param mixed $raktarnev
      */
-    public function setRaktarnev($raktarnev) {
+    public function setRaktarnev($raktarnev)
+    {
         $this->raktarnev = $raktarnev;
     }
 
     /**
      * @param mixed $szallitasimodnev
      */
-    public function setSzallitasimodnev($szallitasimodnev) {
+    public function setSzallitasimodnev($szallitasimodnev)
+    {
         $this->szallitasimodnev = $szallitasimodnev;
     }
 
     /**
      * @param mixed $trxid
      */
-    public function setTrxid($trxid) {
+    public function setTrxid($trxid)
+    {
         $this->trxid = $trxid;
     }
 
     /**
      * @param mixed $tulajbanknev
      */
-    public function setTulajbanknev($tulajbanknev) {
+    public function setTulajbanknev($tulajbanknev)
+    {
         $this->tulajbanknev = $tulajbanknev;
     }
 
     /**
      * @param mixed $tulajbankszamlaszam
      */
-    public function setTulajbankszamlaszam($tulajbankszamlaszam) {
+    public function setTulajbankszamlaszam($tulajbankszamlaszam)
+    {
         $this->tulajbankszamlaszam = $tulajbankszamlaszam;
     }
 
     /**
      * @param mixed $tulajiban
      */
-    public function setTulajiban($tulajiban) {
+    public function setTulajiban($tulajiban)
+    {
         $this->tulajiban = $tulajiban;
     }
 
     /**
      * @param mixed $tulajswift
      */
-    public function setTulajswift($tulajswift) {
+    public function setTulajswift($tulajswift)
+    {
         $this->tulajswift = $tulajswift;
     }
 
     /**
      * @param mixed $uzletkotoemail
      */
-    public function setUzletkotoemail($uzletkotoemail) {
+    public function setUzletkotoemail($uzletkotoemail)
+    {
         $this->uzletkotoemail = $uzletkotoemail;
     }
 
     /**
      * @param mixed $uzletkotojutalek
      */
-    public function setUzletkotojutalek($uzletkotojutalek) {
+    public function setUzletkotojutalek($uzletkotojutalek)
+    {
         $this->uzletkotojutalek = $uzletkotojutalek;
     }
 
     /**
      * @param mixed $uzletkotonev
      */
-    public function setUzletkotonev($uzletkotonev) {
+    public function setUzletkotonev($uzletkotonev)
+    {
         $this->uzletkotonev = $uzletkotonev;
     }
 
     /**
      * @param mixed $valutanemnev
      */
-    public function setValutanemnev($valutanemnev) {
+    public function setValutanemnev($valutanemnev)
+    {
         $this->valutanemnev = $valutanemnev;
     }
 
     /**
      * @param mixed $fizmodnev
      */
-    public function setFizmodnev($fizmodnev) {
+    public function setFizmodnev($fizmodnev)
+    {
         $this->fizmodnev = $fizmodnev;
     }
 
-    public function getUzletkotojutalek() {
+    public function getUzletkotojutalek()
+    {
         return $this->uzletkotojutalek;
     }
 
     /**
      * @return mixed
      */
-    public function getMese() {
+    public function getMese()
+    {
         return $this->mese;
     }
 
     /**
      * @param mixed $mese
      */
-    public function setMese($mese) {
+    public function setMese($mese)
+    {
         $this->mese = $mese;
     }
 
     /**
      * @return mixed
      */
-    public function getRegmode() {
+    public function getRegmode()
+    {
         return $this->regmode;
     }
 
     /**
      * @param mixed $regmode
      */
-    public function setRegmode($regmode) {
+    public function setRegmode($regmode)
+    {
         $this->regmode = $regmode;
     }
 
     /**
      * @return mixed
      */
-    public function getStornotipus() {
+    public function getStornotipus()
+    {
         return $this->stornotipus;
     }
 
     /**
      * @param mixed $stornotipus
      */
-    public function setStornotipus($stornotipus) {
+    public function setStornotipus($stornotipus)
+    {
         $this->stornotipus = $stornotipus;
     }
 
     /**
      * @return mixed
      */
-    public function getTulajegyenivallalkozo() {
+    public function getTulajegyenivallalkozo()
+    {
         return $this->tulajegyenivallalkozo;
     }
 
     /**
      * @param mixed $tulajegyenivallalkozo
      */
-    public function setTulajegyenivallalkozo($tulajegyenivallalkozo) {
+    public function setTulajegyenivallalkozo($tulajegyenivallalkozo)
+    {
         $this->tulajegyenivallalkozo = $tulajegyenivallalkozo;
     }
 
     /**
      * @return mixed
      */
-    public function getTulajevnev() {
+    public function getTulajevnev()
+    {
         return $this->tulajevnev;
     }
 
     /**
      * @param mixed $tulajevnev
      */
-    public function setTulajevnev($tulajevnev) {
+    public function setTulajevnev($tulajevnev)
+    {
         $this->tulajevnev = $tulajevnev;
     }
 
     /**
      * @return mixed
      */
-    public function getTulajevnyilvszam() {
+    public function getTulajevnyilvszam()
+    {
         return $this->tulajevnyilvszam;
     }
 
     /**
      * @param mixed $tulajevnyilvszam
      */
-    public function setTulajevnyilvszam($tulajevnyilvszam) {
+    public function setTulajevnyilvszam($tulajevnyilvszam)
+    {
         $this->tulajevnyilvszam = $tulajevnyilvszam;
     }
 
     /**
      * @return mixed
      */
-    public function getTulajkisadozo() {
+    public function getTulajkisadozo()
+    {
         return $this->tulajkisadozo;
     }
 
     /**
      * @param mixed $tulajkisadozo
      */
-    public function setTulajkisadozo($tulajkisadozo) {
+    public function setTulajkisadozo($tulajkisadozo)
+    {
         $this->tulajkisadozo = $tulajkisadozo;
     }
 
     /**
      * @return boolean
      */
-    public function isKellszallitasikoltsegetszamolni() {
+    public function isKellszallitasikoltsegetszamolni()
+    {
         if ($this->kellszallitasikoltsegetszamolni) {
             if ($this->kupon) {
                 $k = $this->getKuponObject();
@@ -3873,67 +4154,77 @@ class Bizonylatfej {
     /**
      * @param boolean $kellszallitasikoltsegetszamolni
      */
-    public function setKellszallitasikoltsegetszamolni($kellszallitasikoltsegetszamolni) {
+    public function setKellszallitasikoltsegetszamolni($kellszallitasikoltsegetszamolni)
+    {
         $this->kellszallitasikoltsegetszamolni = $kellszallitasikoltsegetszamolni;
     }
 
     /**
      * @return mixed
      */
-    public function getSzallitasikoltsegbrutto() {
+    public function getSzallitasikoltsegbrutto()
+    {
         return $this->szallitasikoltsegbrutto;
     }
 
     /**
      * @param mixed $szallitasikoltsegbrutto
      */
-    public function setSzallitasikoltsegbrutto($szallitasikoltsegbrutto) {
+    public function setSzallitasikoltsegbrutto($szallitasikoltsegbrutto)
+    {
         $this->szallitasikoltsegbrutto = $szallitasikoltsegbrutto;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerfeketelistas() {
+    public function getPartnerfeketelistas()
+    {
         return $this->partnerfeketelistas;
     }
 
     /**
      * @param mixed $partnerfeketelistas
      */
-    public function setPartnerfeketelistas($partnerfeketelistas) {
+    public function setPartnerfeketelistas($partnerfeketelistas)
+    {
         $this->partnerfeketelistas = $partnerfeketelistas;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerfeketelistaok() {
+    public function getPartnerfeketelistaok()
+    {
         return $this->partnerfeketelistaok;
     }
 
     /**
      * @param mixed $partnerfeketelistaok
      */
-    public function setPartnerfeketelistaok($partnerfeketelistaok) {
+    public function setPartnerfeketelistaok($partnerfeketelistaok)
+    {
         $this->partnerfeketelistaok = $partnerfeketelistaok;
     }
 
     /**
      * @return mixed
      */
-    public function getKupon() {
+    public function getKupon()
+    {
         return $this->kupon;
     }
 
     /**
      * @param mixed $kupon
      */
-    public function setKupon($kupon) {
+    public function setKupon($kupon)
+    {
         $this->kupon = $kupon;
     }
 
-    public function getKuponObject() {
+    public function getKuponObject()
+    {
         if ($this->kupon) {
             return \mkw\store::getEm()->getRepository('\Entities\Kupon')->find($this->kupon);
         }
@@ -3943,51 +4234,56 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getFakekifizetve() {
+    public function getFakekifizetve()
+    {
         return $this->fakekifizetve;
     }
 
     /**
      * @param mixed $fakekifizetve
      */
-    public function setFakekifizetve($fakekifizetve) {
+    public function setFakekifizetve($fakekifizetve)
+    {
         $this->fakekifizetve = $fakekifizetve;
     }
 
     /**
      * @return mixed
      */
-    public function getFakekintlevoseg() {
+    public function getFakekintlevoseg()
+    {
         return $this->fakekintlevoseg;
     }
 
     /**
      * @param mixed $fakekintlevoseg
      */
-    public function setFakekintlevoseg($fakekintlevoseg) {
+    public function setFakekintlevoseg($fakekintlevoseg)
+    {
         $this->fakekintlevoseg = $fakekintlevoseg;
     }
 
-    public function getFakekifizetesdatum() {
+    public function getFakekifizetesdatum()
+    {
         return $this->fakekifizetesdatum;
     }
 
-    public function getFakekifizetesdatumStr() {
+    public function getFakekifizetesdatumStr()
+    {
         if ($this->getFakekifizetesdatum()) {
             return $this->getFakekifizetesdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setFakekifizetesdatum($adat = '') {
+    public function setFakekifizetesdatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->fakekifizetesdatum = $adat;
-        }
-        else {
+        } else {
             if (!$adat) {
                 $this->fakekifizetesdatum = null;
-            }
-            else {
+            } else {
                 $this->fakekifizetesdatum = new \DateTime(\mkw\store::convDate($adat));
             }
         }
@@ -3996,94 +4292,110 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getBelsouzletkotojutalek() {
+    public function getBelsouzletkotojutalek()
+    {
         return $this->belsouzletkotojutalek;
     }
 
     /**
      * @param mixed $belsouzletkotojutalek
      */
-    public function setBelsouzletkotojutalek($belsouzletkotojutalek) {
+    public function setBelsouzletkotojutalek($belsouzletkotojutalek)
+    {
         $this->belsouzletkotojutalek = $belsouzletkotojutalek;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerktdatvallal() {
+    public function getPartnerktdatvallal()
+    {
         return $this->partnerktdatvallal;
     }
 
     /**
      * @param mixed $partnerktdatvallal
      */
-    public function setPartnerktdatvallal($partnerktdatvallal) {
+    public function setPartnerktdatvallal($partnerktdatvallal)
+    {
         $this->partnerktdatvallal = $partnerktdatvallal;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerktdatalany() {
+    public function getPartnerktdatalany()
+    {
         return $this->partnerktdatalany;
     }
 
     /**
      * @param mixed $partnerktdatalany
      */
-    public function setPartnerktdatalany($partnerktdatalany) {
+    public function setPartnerktdatalany($partnerktdatalany)
+    {
         $this->partnerktdatalany = $partnerktdatalany;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerktdszerzszam() {
+    public function getPartnerktdszerzszam()
+    {
         return $this->partnerktdszerzszam;
     }
 
     /**
      * @param mixed $partnerktdszerzszam
      */
-    public function setPartnerktdszerzszam($partnerktdszerzszam) {
+    public function setPartnerktdszerzszam($partnerktdszerzszam)
+    {
         $this->partnerktdszerzszam = $partnerktdszerzszam;
     }
 
-    public function getTranslations() {
+    public function getTranslations()
+    {
         return $this->translations;
     }
 
-    public function addTranslation(BizonylatfejTranslation $t) {
+    public function addTranslation(BizonylatfejTranslation $t)
+    {
         if (!$this->translations->contains($t)) {
             $this->translations[] = $t;
             $t->setObject($this);
         }
     }
 
-    public function removeTranslation(BizonylatfejTranslation $t) {
+    public function removeTranslation(BizonylatfejTranslation $t)
+    {
         $this->translations->removeElement($t);
     }
 
-    public function getLocale() {
+    public function getLocale()
+    {
         return $this->locale;
     }
 
-    public function setLocale($locale) {
+    public function setLocale($locale)
+    {
         $this->locale = $locale;
     }
 
     /**
      * @return \Entities\Felhasznalo
      */
-    public function getFelhasznalo() {
+    public function getFelhasznalo()
+    {
         return $this->felhasznalo;
     }
 
-    public function getFelhasznalonev() {
+    public function getFelhasznalonev()
+    {
         return $this->felhasznalonev;
     }
 
-    public function getFelhasznaloId() {
+    public function getFelhasznaloId()
+    {
         $fm = $this->getFelhasznalo();
         if ($fm) {
             return $fm->getId();
@@ -4094,15 +4406,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Felhasznalo $val
      */
-    public function setFelhasznalo($val) {
+    public function setFelhasznalo($val)
+    {
         if (!($val instanceof \Entities\Dolgozo)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($val);
         }
         if ($this->felhasznalo !== $val) {
             if (!$val) {
                 $this->removeFelhasznalo();
-            }
-            else {
+            } else {
                 $this->felhasznalo = $val;
                 if (!$this->duplication) {
                     $this->felhasznalonev = $val->getNev();
@@ -4111,7 +4423,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removeFelhasznalo() {
+    public function removeFelhasznalo()
+    {
         if ($this->felhasznalo !== null) {
             $this->felhasznalo = null;
             if (!$this->duplication) {
@@ -4123,18 +4436,21 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -4144,40 +4460,45 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
         return null;
     }
 
-    public function getSzepkartyaervenyesseg() {
+    public function getSzepkartyaervenyesseg()
+    {
         return $this->szepkartyaervenyesseg;
     }
 
-    public function getSzepkartyaervenyessegStr() {
+    public function getSzepkartyaervenyessegStr()
+    {
         if ($this->getSzepkartyaervenyesseg()) {
             return $this->getSzepkartyaervenyesseg()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setSzepkartyaervenyesseg($adat = '') {
+    public function setSzepkartyaervenyesseg($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->szepkartyaervenyesseg = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -4188,39 +4509,45 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getPartnerorszagnev() {
+    public function getPartnerorszagnev()
+    {
         return $this->partnerorszagnev;
     }
 
     /**
      * @param mixed $partnerorszagnev
      */
-    public function setPartnerorszagnev($partnerorszagnev) {
+    public function setPartnerorszagnev($partnerorszagnev)
+    {
         $this->partnerorszagnev = $partnerorszagnev;
     }
 
     /**
      * @return mixed
      */
-    public function getSzepkartyaszam() {
+    public function getSzepkartyaszam()
+    {
         return $this->szepkartyaszam;
     }
 
     /**
      * @param mixed $szepkartyaszam
      */
-    public function setSzepkartyaszam($szepkartyaszam) {
+    public function setSzepkartyaszam($szepkartyaszam)
+    {
         $this->szepkartyaszam = $szepkartyaszam;
     }
 
     /**
      * @return mixed
      */
-    public function getSzepkartyatipus() {
+    public function getSzepkartyatipus()
+    {
         return $this->szepkartyatipus;
     }
 
-    public function getSzepkartyatipusNev() {
+    public function getSzepkartyatipusNev()
+    {
         $szp = array(1 => 'OTP', 2 => 'MKB', 3 => 'K&H');
         if ($this->szepkartyatipus >= 1 && $this->szepkartyatipus <= 3) {
             return $szp[$this->szepkartyatipus];
@@ -4231,18 +4558,21 @@ class Bizonylatfej {
     /**
      * @param mixed $szepkartyatipus
      */
-    public function setSzepkartyatipus($szepkartyatipus) {
+    public function setSzepkartyatipus($szepkartyatipus)
+    {
         $this->szepkartyatipus = $szepkartyatipus;
     }
 
     /**
      * @return \Entities\Orszag
      */
-    public function getPartnerorszag() {
+    public function getPartnerorszag()
+    {
         return $this->partnerorszag;
     }
 
-    public function getPartnerorszagId() {
+    public function getPartnerorszagId()
+    {
         $fm = $this->getPartnerorszag();
         if ($fm) {
             return $fm->getId();
@@ -4253,15 +4583,15 @@ class Bizonylatfej {
     /**
      * @param \Entities\Orszag $val
      */
-    public function setPartnerorszag($val) {
+    public function setPartnerorszag($val)
+    {
         if (!($val instanceof \Entities\Orszag)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($val);
         }
         if ($this->partnerorszag !== $val) {
             if (!$val) {
                 $this->removePartnerorszag();
-            }
-            else {
+            } else {
                 $this->partnerorszag = $val;
                 if (!$this->duplication) {
                     $this->partnerorszagnev = $val->getNev();
@@ -4271,7 +4601,8 @@ class Bizonylatfej {
         }
     }
 
-    public function removePartnerorszag() {
+    public function removePartnerorszag()
+    {
         if ($this->partnerorszag !== null) {
             $this->partnerorszag = null;
             if (!$this->duplication) {
@@ -4284,74 +4615,85 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getSzepkartyanev() {
+    public function getSzepkartyanev()
+    {
         return $this->szepkartyanev;
     }
 
     /**
      * @param mixed $szepkartyanev
      */
-    public function setSzepkartyanev($szepkartyanev) {
+    public function setSzepkartyanev($szepkartyanev)
+    {
         $this->szepkartyanev = $szepkartyanev;
     }
 
     /**
      * @return mixed
      */
-    public function getNincspenzmozgas() {
+    public function getNincspenzmozgas()
+    {
         return $this->nincspenzmozgas;
     }
 
     /**
      * @param mixed $nincspenzmozgas
      */
-    public function setNincspenzmozgas($nincspenzmozgas) {
+    public function setNincspenzmozgas($nincspenzmozgas)
+    {
         $this->nincspenzmozgas = $nincspenzmozgas;
     }
 
     /**
      * @return mixed
      */
-    public function getEmagid() {
+    public function getEmagid()
+    {
         return $this->emagid;
     }
 
     /**
      * @param mixed $emagid
      */
-    public function setEmagid($emagid) {
+    public function setEmagid($emagid)
+    {
         $this->emagid = $emagid;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerhazszam() {
+    public function getPartnerhazszam()
+    {
         return $this->partnerhazszam;
     }
 
     /**
      * @param mixed $partnerhazszam
      */
-    public function setPartnerhazszam($partnerhazszam) {
+    public function setPartnerhazszam($partnerhazszam)
+    {
         $this->partnerhazszam = $partnerhazszam;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerlhazszam() {
+    public function getPartnerlhazszam()
+    {
         return $this->partnerlhazszam;
     }
 
     /**
      * @param mixed $partnerlhazszam
      */
-    public function setPartnerlhazszam($partnerlhazszam) {
+    public function setPartnerlhazszam($partnerlhazszam)
+    {
         $this->partnerlhazszam = $partnerlhazszam;
     }
 
-    public function getSzallitasiCim() {
+    public function getSzallitasiCim()
+    {
         $a = array($this->szallirszam, $this->szallvaros);
         $cim = implode(' ', $a);
         $a = array($cim, $this->szallutca);
@@ -4361,131 +4703,149 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getSzallhazszam() {
+    public function getSzallhazszam()
+    {
         return $this->szallhazszam;
     }
 
     /**
      * @param mixed $szallhazszam
      */
-    public function setSzallhazszam($szallhazszam) {
+    public function setSzallhazszam($szallhazszam)
+    {
         $this->szallhazszam = $szallhazszam;
     }
 
     /**
      * @return bool
      */
-    public function isSimpleedit() {
+    public function isSimpleedit()
+    {
         return $this->simpleedit;
     }
 
     /**
      * @param bool $simpleedit
      */
-    public function setSimpleedit($simpleedit) {
+    public function setSimpleedit($simpleedit)
+    {
         $this->simpleedit = $simpleedit;
     }
 
     /**
      * @return mixed
      */
-    public function getSzepkartyakifizetve() {
+    public function getSzepkartyakifizetve()
+    {
         return $this->szepkartyakifizetve;
     }
 
     /**
      * @param mixed $szepkartyakifizetve
      */
-    public function setSzepkartyakifizetve($szepkartyakifizetve) {
+    public function setSzepkartyakifizetve($szepkartyakifizetve)
+    {
         $this->szepkartyakifizetve = $szepkartyakifizetve;
     }
 
     /**
      * @return mixed
      */
-    public function getProgramnev() {
+    public function getProgramnev()
+    {
         return $this->programnev;
     }
 
     /**
      * @param mixed $programnev
      */
-    public function setProgramnev($programnev) {
+    public function setProgramnev($programnev)
+    {
         $this->programnev = $programnev;
     }
 
     /**
      * @return mixed
      */
-    public function getBarionpaymentid() {
+    public function getBarionpaymentid()
+    {
         return $this->barionpaymentid;
     }
 
     /**
      * @param mixed $barionpaymentid
      */
-    public function setBarionpaymentid($barionpaymentid) {
+    public function setBarionpaymentid($barionpaymentid)
+    {
         $this->barionpaymentid = $barionpaymentid;
     }
 
     /**
      * @return mixed
      */
-    public function getBarionpaymentstatus() {
+    public function getBarionpaymentstatus()
+    {
         return $this->barionpaymentstatus;
     }
 
     /**
      * @param mixed $barionpaymentstatus
      */
-    public function setBarionpaymentstatus($barionpaymentstatus) {
+    public function setBarionpaymentstatus($barionpaymentstatus)
+    {
         $this->barionpaymentstatus = $barionpaymentstatus;
     }
 
     /**
      * @return mixed
      */
-    public function getTulajjovengszam() {
+    public function getTulajjovengszam()
+    {
         return $this->tulajjovengszam;
     }
 
     /**
      * @param mixed $tulajjovengszam
      */
-    public function setTulajjovengszam($tulajjovengszam) {
+    public function setTulajjovengszam($tulajjovengszam)
+    {
         $this->tulajjovengszam = $tulajjovengszam;
     }
 
     /**
      * @return mixed
      */
-    public function getGyujtoszamla() {
+    public function getGyujtoszamla()
+    {
         return $this->gyujtoszamla;
     }
 
     /**
      * @param mixed $gyujtoszamla
      */
-    public function setGyujtoszamla($gyujtoszamla) {
+    public function setGyujtoszamla($gyujtoszamla)
+    {
         $this->gyujtoszamla = $gyujtoszamla;
     }
 
-    public function getGyujtoidoszakeleje() {
+    public function getGyujtoidoszakeleje()
+    {
         return $this->gyujtoidoszakeleje;
     }
 
-    public function getGyujtoidoszakelejeStr() {
+    public function getGyujtoidoszakelejeStr()
+    {
         if ($this->getGyujtoidoszakeleje()) {
             return $this->getGyujtoidoszakeleje()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setGyujtoidoszakeleje($adat = '') {
+    public function setGyujtoidoszakeleje($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->gyujtoidoszakeleje = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -4493,22 +4853,24 @@ class Bizonylatfej {
         }
     }
 
-    public function getGyujtoidoszakvege() {
+    public function getGyujtoidoszakvege()
+    {
         return $this->gyujtoidoszakvege;
     }
 
-    public function getGyujtoidoszakvegeStr() {
+    public function getGyujtoidoszakvegeStr()
+    {
         if ($this->getGyujtoidoszakvege()) {
             return $this->getGyujtoidoszakvege()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setGyujtoidoszakvege($adat = '') {
+    public function setGyujtoidoszakvege($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->gyujtoidoszakvege = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -4519,7 +4881,8 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getPartnerorszagiso3166() {
+    public function getPartnerorszagiso3166()
+    {
         if ($this->partnerorszagiso3166) {
             return $this->partnerorszagiso3166;
         }
@@ -4532,25 +4895,27 @@ class Bizonylatfej {
     /**
      * @param mixed $partnerorszagiso3166
      */
-    public function setPartnerorszagiso3166($partnerorszagiso3166) {
+    public function setPartnerorszagiso3166($partnerorszagiso3166)
+    {
         $this->partnerorszagiso3166 = $partnerorszagiso3166;
     }
 
     /**
      * @return mixed
      */
-    public function getSzallitasiido() {
+    public function getSzallitasiido()
+    {
         return $this->szallitasiido;
     }
 
-    public function getSzallitasiidoDatumStr() {
+    public function getSzallitasiidoDatumStr()
+    {
         if ($this->kelt && $this->getSzallitasiido()) {
             /** @var \DateTime $k */
             $k = clone $this->kelt;
             if ($k->format('w') == 6) {
                 $k->add(new \DateInterval('P2D'));
-            }
-            elseif ($k->format('w') == 0) {
+            } elseif ($k->format('w') == 0) {
                 $k->add(new \DateInterval('P1D'));
             }
             $v = $this->getSzallitasiido();
@@ -4587,11 +4952,13 @@ class Bizonylatfej {
     /**
      * @param mixed $szallitasiido
      */
-    public function setSzallitasiido($szallitasiido) {
+    public function setSzallitasiido($szallitasiido)
+    {
         $this->szallitasiido = $szallitasiido;
     }
 
-    public function calcSzallitasiido() {
+    public function calcSzallitasiido()
+    {
         $szallido = 0;
         /** @var \Entities\Bizonylattetel $tetel */
         foreach ($this->getBizonylattetelek() as $tetel) {
@@ -4610,26 +4977,28 @@ class Bizonylatfej {
     /**
      * @return mixed
      */
-    public function getGlsparcelid() {
+    public function getGlsparcelid()
+    {
         return $this->glsparcelid;
     }
 
     /**
      * @param mixed $glsparcelid
      */
-    public function setGlsparcelid($glsparcelid) {
+    public function setGlsparcelid($glsparcelid)
+    {
         $this->glsparcelid = $glsparcelid;
     }
 
     /**
      * @return mixed
      */
-    public function getGlsparcellabelurl($pre = '/') {
+    public function getGlsparcellabelurl($pre = '/')
+    {
         if ($this->glsparcellabelurl) {
             if ($this->glsparcellabelurl[0] !== $pre) {
                 return $pre . $this->glsparcellabelurl;
-            }
-            else {
+            } else {
                 return $this->glsparcellabelurl;
             }
         }
@@ -4639,77 +5008,88 @@ class Bizonylatfej {
     /**
      * @param mixed $glsparcellabelurl
      */
-    public function setGlsparcellabelurl($glsparcellabelurl) {
+    public function setGlsparcellabelurl($glsparcellabelurl)
+    {
         $this->glsparcellabelurl = $glsparcellabelurl;
     }
 
     /**
      * @return bool
      */
-    public function isNavbekuldendo() {
+    public function isNavbekuldendo()
+    {
         return $this->navbekuldendo;
     }
 
     /**
      * @param bool $navbekuldendo
      */
-    public function setNavbekuldendo($navbekuldendo) {
+    public function setNavbekuldendo($navbekuldendo)
+    {
         $this->navbekuldendo = $navbekuldendo;
     }
 
     /**
      * @return bool
      */
-    public function isNavbekuldve() {
+    public function isNavbekuldve()
+    {
         return (bool)$this->getNaveredmeny();
     }
 
     /**
      * @return mixed
      */
-    public function getNaveredmeny() {
+    public function getNaveredmeny()
+    {
         return $this->naveredmeny;
     }
 
     /**
      * @param mixed $naveredmeny
      */
-    public function setNaveredmeny($naveredmeny) {
+    public function setNaveredmeny($naveredmeny)
+    {
         $this->naveredmeny = $naveredmeny;
     }
 
     /**
      * @return bool
      */
-    public function isForditottadozas() {
+    public function isForditottadozas()
+    {
         return $this->forditottadozas;
     }
 
     /**
      * @param bool $forditottadozas
      */
-    public function setForditottadozas($forditottadozas) {
+    public function setForditottadozas($forditottadozas)
+    {
         $this->forditottadozas = $forditottadozas;
     }
 
     /**
      * @return string
      */
-    public function getPartnerthirdadoszam() {
+    public function getPartnerthirdadoszam()
+    {
         return $this->partnerthirdadoszam;
     }
 
     /**
      * @param string $partnerthirdadoszam
      */
-    public function setPartnerthirdadoszam($partnerthirdadoszam) {
+    public function setPartnerthirdadoszam($partnerthirdadoszam)
+    {
         $this->partnerthirdadoszam = $partnerthirdadoszam;
     }
 
     /**
      * @return int
      */
-    public function getPartnervatstatus() {
+    public function getPartnervatstatus()
+    {
         if (!$this->partnervatstatus) {
             if ($this->partner) {
                 return $this->partner->getVatstatus();
@@ -4721,20 +5101,24 @@ class Bizonylatfej {
     /**
      * @param int $partnervatstatus
      */
-    public function setPartnervatstatus($partnervatstatus): void {
+    public function setPartnervatstatus($partnervatstatus): void
+    {
         $this->partnervatstatus = $partnervatstatus;
     }
 
-    public function getBizonylatDokok() {
+    public function getBizonylatDokok()
+    {
         return $this->bizonylatdokok;
     }
 
-    public function addBizonylatDok(BizonylatDok $dok) {
+    public function addBizonylatDok(BizonylatDok $dok)
+    {
         $this->bizonylatdokok->add($dok);
         $dok->setBizonylat($this);
     }
 
-    public function removeBizonylatDok(BizonylatDok $dok) {
+    public function removeBizonylatDok(BizonylatDok $dok)
+    {
         if ($this->bizonylatdokok->removeElement($dok)) {
             $dok->removeBizonylat($this);
             return true;
@@ -4745,15 +5129,37 @@ class Bizonylatfej {
     /**
      * @return string
      */
-    public function getPartnerszamlaegyeb() {
+    public function getPartnerszamlaegyeb()
+    {
         return $this->partnerszamlaegyeb;
     }
 
     /**
      * @param string $partnerszamlaegyeb
      */
-    public function setPartnerszamlaegyeb($partnerszamlaegyeb): void {
+    public function setPartnerszamlaegyeb($partnerszamlaegyeb): void
+    {
         $this->partnerszamlaegyeb = $partnerszamlaegyeb;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTermekertekelesid()
+    {
+        return $this->termekertekelesid;
+    }
+
+    /**
+     * @param mixed $termekertekelesid
+     */
+    public function setTermekertekelesid($termekertekelesid): void
+    {
+        $this->termekertekelesid = $termekertekelesid;
+    }
+
+    public function generateTermekertekelesid()
+    {
+        $this->setTermekertekelesid(md5(uniqid($this->getId(), true)));
+    }
 }

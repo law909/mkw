@@ -612,5 +612,6 @@ $(document).ready(function() {
     cart.initUI();
     checkout.initUI();
     fiok.initUI();
+    termekertekeles.initUI();
 
 });
