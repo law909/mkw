@@ -2,28 +2,30 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class tanarelszamolasController extends \mkwhelpers\Controller {
+class tanarelszamolasController extends \mkwhelpers\Controller
+{
 
     private $tolstr;
     private $igstr;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('tanarelszamolas.tpl');
 
         $view->setVar('pagetitle', t('Tanár elszámolás'));
 
         $view->printTemplateResult(false);
-
     }
 
-    public function getData($tanarid = null, $ptol = null, $pig = null) {
-
+    public function getData($tanarid = null, $ptol = null, $pig = null)
+    {
         if (!$ptol) {
             $ptol = $this->params->getStringRequestParam('tol');
         }
@@ -56,9 +58,10 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         return $tetelek;
     }
 
-    protected function reszletezoExport() {
-
-        function x($o) {
+    protected function reszletezoExport()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -73,7 +76,8 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
         $tanarid = $this->params->getIntRequestParam('id');
-        $tanar = $this->getRepo('\Entities\Dolgozo')->find($tanarid);
+        /** @var Dolgozo $tanar */
+        $tanar = $this->getRepo(Dolgozo::class)->find($tanarid);
         if ($tanar) {
             $tanarnev = $tanar->getNev();
         }
@@ -87,7 +91,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         }
         $filter->addFilter('_xx.tanar', '=', $tanarid);
 
-        $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter, arraY('datum' => 'ASC'));
+        $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter, array('datum' => 'ASC'));
 
         $excel = new Spreadsheet();
 
@@ -98,14 +102,15 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             ->setCellValue('D1', t('Jegy típus'))
             ->setCellValue('E1', t('Jutalék'));
 
+        $napokszama = [];
         $sor = 2;
         /** @var \Entities\JogaReszvetel $item */
         foreach ($adat as $item) {
+            $napokszama[$item->getDatumStr()] = 1;
             $fm = $item->getFizmod();
             if (\mkw\store::isAYCMFizmod($fm)) {
                 $termeknev = 'AYCM';
-            }
-            else {
+            } else {
                 $termeknev = $item->getTermekNev();
             }
             $excel->setActiveSheetIndex(0)
@@ -121,9 +126,15 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             ->setCellValue('A' . $sor, '')
             ->setCellValue('B' . $sor, '')
             ->setCellValue('C' . $sor, '')
-            ->setCellValue('D' . $sor, 'Járulék levonás')
+            ->setCellValue('D' . $sor, 'Havi járulék levonás')
             ->setCellValue('E' . $sor, $tanar->getHavilevonas() * -1 * $hokulonbseg);
-
+        $sor++;
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, '')
+            ->setCellValue('B' . $sor, '')
+            ->setCellValue('C' . $sor, '')
+            ->setCellValue('D' . $sor, 'Napi járulék levonás')
+            ->setCellValue('E' . $sor, $tanar->getNapilevonas() * -1 * count($napokszama));
         $sor++;
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A' . $sor, 'Összesen')
@@ -166,11 +177,10 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $writer->save($filepath);
 
         return $filepath;
-
     }
 
-    public function refresh() {
-
+    public function refresh()
+    {
         $res = $this->getData();
 
         $view = $this->createView('tanarelszamolastanarsum.tpl');
@@ -181,8 +191,8 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function reszletezo() {
-
+    public function reszletezo()
+    {
         $filepath = $this->reszletezoExport();
         $fileSize = filesize($filepath);
 
@@ -197,8 +207,8 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         \unlink($filepath);
     }
 
-    public function sendEmail() {
-
+    public function sendEmail()
+    {
         $tanarid = $this->params->getIntRequestParam('id');
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
@@ -249,7 +259,6 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             $mailer->send();
 
             \unlink($filepath);
-
         }
     }
 }

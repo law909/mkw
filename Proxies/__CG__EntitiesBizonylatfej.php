@@ -4988,4 +4988,15 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         parent::setTermekertekelesid($termekertekelesid);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function generateTermekertekelesid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateTermekertekelesid', []);
+
+        return parent::generateTermekertekelesid();
+    }
+
 }

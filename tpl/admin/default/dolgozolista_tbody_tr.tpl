@@ -16,6 +16,9 @@
             {if ($_egyed.havilevonas)}
                 <tr><td>{at('Havi levonás')}: {$_egyed.havilevonas}</td></tr>
             {/if}
+                {if ($_egyed.napilevonas)}
+                    <tr><td>{at('Napi levonás')}: {$_egyed.napilevonas}</td></tr>
+                {/if}
                 <tr><td>{$_egyed.fizmodnev}</td></tr>
             {if ($_egyed.szamlatad)}
                 <tr><td>Számlát ad</td></tr>

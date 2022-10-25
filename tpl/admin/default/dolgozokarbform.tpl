@@ -73,6 +73,8 @@
             <tr>
                 <td><label for="HavilevonasEdit">{at('Havi levonás')}</label></td>
                 <td><input id="HavilevonasEdit" name="havilevonas" type="number" step="any" value="{$egyed.havilevonas}"></td>
+				<td><label for="NapilevonasEdit">{at('Napi levonás')}</label></td>
+				<td><input id="NapilevonasEdit" name="napilevonas" type="number" step="any" value="{$egyed.napilevonas}"></td>
                 <td><label for="SzamlatadEdit">{at('Számlát ad')}</label></td>
                 <td><input id="SzamlatadEdit" name="szamlatad" type="checkbox"{if ($egyed.szamlatad)} checked="checked"{/if}></td>
             </tr>

@@ -2,12 +2,15 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
 use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
-class dolgozoController extends \mkwhelpers\MattableController {
+class dolgozoController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Dolgozo');
         $this->setKarbFormTplName('dolgozokarbform.tpl');
         $this->setKarbTplName('dolgozokarb.tpl');
@@ -16,7 +19,8 @@ class dolgozoController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t)
+    {
         $x = array();
         if (!$t) {
             $t = new \Entities\Dolgozo();
@@ -38,6 +42,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $x['munkakornev'] = $t->getMunkakorNev();
         $x['url'] = $t->getUrl();
         $x['havilevonas'] = $t->getHavilevonas();
+        $x['napilevonas'] = $t->getNapilevonas();
         $x['szamlatad'] = $t->getSzamlatad();
         $x['inaktiv'] = $t->isInaktiv();
         $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
@@ -45,7 +50,13 @@ class dolgozoController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj, $oper) {
+    /**
+     * @param Dolgozo $obj
+     * @param $oper
+     * @return mixed
+     */
+    protected function setFields($obj, $oper)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setIrszam($this->params->getStringRequestParam('irszam'));
         $obj->setVaros($this->params->getStringRequestParam('varos'));
@@ -58,6 +69,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $obj->setMunkaviszonykezdete($this->params->getStringRequestParam('munkaviszonykezdete'));
         $obj->setUrl($this->params->getStringRequestParam('url'));
         $obj->setHavilevonas($this->params->getFloatRequestParam('havilevonas'));
+        $obj->setNapilevonas($this->params->getFloatRequestParam('napilevonas'));
         $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
@@ -67,8 +79,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
             if ($pass1 && ($pass1 === $pass2)) {
                 $obj->setJelszo($pass1);
             }
-        }
-        else {
+        } else {
             if ($pass1 && ($pass1 === $pass2)) {
                 $obj->setJelszo($pass1);
             }
@@ -84,23 +95,29 @@ class dolgozoController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('dolgozolista_tbody.tpl');
 
         $filterarr = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filterarr->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filterarr));
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filterarr, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filterarr,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null, $csakaktiv = true) {
+    public function getSelectList($selid = null, $csakaktiv = true)
+    {
         if ($csakaktiv) {
             $filter = new FilterDescriptor();
             $filter->addFilter('inaktiv', '=', false);
@@ -113,14 +130,16 @@ class dolgozoController extends \mkwhelpers\MattableController {
         return $res;
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('dolgozolista.tpl');
 
         $view->setVar('pagetitle', t('Dolgozók'));
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('dolgozolista.tpl');
 
         $view->setVar('pagetitle', t('Dolgozók'));
@@ -129,7 +148,8 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -146,13 +166,15 @@ class dolgozoController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function showlogin() {
+    public function showlogin()
+    {
         $v = $this->createView('login.tpl');
         $v->setVar('loginurl', \mkw\store::getRouter()->generate('adminlogin'));
         $v->printTemplateResult(false);
     }
 
-    public function login() {
+    public function login()
+    {
         $email = $this->params->getStringRequestParam('email');
         $pass = $this->params->getStringRequestParam('jelszo');
         if ($email === 'sysadmin') {
@@ -160,8 +182,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
             $d->setNev('SYSADMIN');
             $d->setPlainJelszo('009f2afb1d051a50ab1416efd9105c88a98e6d46');
             $sysadmin = true;
-        }
-        else {
+        } else {
             $sysadmin = false;
             $d = $this->getRepo()->findOneByEmail($email);
         }
@@ -171,8 +192,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
                 \Zend_Session::regenerateId();
                 if ($sysadmin) {
                     \mkw\store::getAdminSession()->pk = -1;
-                }
-                else {
+                } else {
                     \mkw\store::getAdminSession()->pk = $d->getId();
                 }
                 \mkw\store::getAdminSession()->loggedinuser = array(
@@ -183,27 +203,29 @@ class dolgozoController extends \mkwhelpers\MattableController {
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
                 );
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
-            }
-            else {
+            } else {
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
             }
-        }
-        else {
+        } else {
             Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         \mkw\store::destroyAdminSession();
         Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
     }
 
-    public function showpubadminlogin() {
+    public function showpubadminlogin()
+    {
         $v = $this->createPubAdminView('login.tpl');
         $v->setVar('loginurl', \mkw\store::getRouter()->generate('pubadminlogin'));
         $v->printTemplateResult(false);
     }
-    public function pubadminlogin() {
+
+    public function pubadminlogin()
+    {
         $email = $this->params->getStringRequestParam('email');
         $pass = $this->params->getStringRequestParam('jelszo');
         if ($email === 'sysadmin') {
@@ -211,8 +233,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
             $d->setNev('SYSADMIN');
             $d->setPlainJelszo('009f2afb1d051a50ab1416efd9105c88a98e6d46');
             $sysadmin = true;
-        }
-        else {
+        } else {
             $sysadmin = false;
             $d = $this->getRepo()->findOneByEmail($email);
         }
@@ -222,8 +243,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
                 \Zend_Session::regenerateId();
                 if ($sysadmin) {
                     \mkw\store::getPubAdminSession()->pk = -1;
-                }
-                else {
+                } else {
                     \mkw\store::getPubAdminSession()->pk = $d->getId();
                 }
                 \mkw\store::getPubAdminSession()->loggedinuser = array(
@@ -234,17 +254,16 @@ class dolgozoController extends \mkwhelpers\MattableController {
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
                 );
                 Header('Location: ' . \mkw\store::getRouter()->generate('pubadminview'));
-            }
-            else {
+            } else {
                 Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
             }
-        }
-        else {
+        } else {
             Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
         }
     }
 
-    public function pubadminlogout() {
+    public function pubadminlogout()
+    {
         \mkw\store::destroyPubAdminSession();
         Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
     }
