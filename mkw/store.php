@@ -12,7 +12,8 @@ use Entities\TermekFa;
 use Entities\Valutanem;
 use http\Params;
 
-class store {
+class store
+{
 
     /**
      *
@@ -66,46 +67,43 @@ class store {
     public static $FullTimeFormat = 'H:i:s';
     private static $blameableListener;
 
-    public static function getJSVersion() {
+    public static function getJSVersion()
+    {
         switch (self::getTheme()) {
             case 'mkwcansas':
                 return 35;
         }
     }
 
-    public static function getBootstrapJSVersion() {
+    public static function getBootstrapJSVersion()
+    {
         switch (self::getTheme()) {
             case 'mkwcansas':
                 return 9;
         }
     }
 
-    public static function getClientIp() {
+    public static function getClientIp()
+    {
         $ipaddress = '';
         if (array_key_exists('HTTP_CLIENT_IP', $_SERVER) && $_SERVER['HTTP_CLIENT_IP']) {
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        else {
+        } else {
             if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) {
                 $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            }
-            else {
+            } else {
                 if (array_key_exists('HTTP_X_FORWARDED', $_SERVER) && $_SERVER['HTTP_X_FORWARDED']) {
                     $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-                }
-                else {
+                } else {
                     if (array_key_exists('HTTP_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_FORWARDED_FOR']) {
                         $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-                    }
-                    else {
+                    } else {
                         if (array_key_exists('HTTP_FORWARDED', $_SERVER) && $_SERVER['HTTP_FORWARDED']) {
                             $ipaddress = $_SERVER['HTTP_FORWARDED'];
-                        }
-                        else {
+                        } else {
                             if (array_key_exists('REMOTE_ADDR', $_SERVER) && $_SERVER['REMOTE_ADDR']) {
                                 $ipaddress = $_SERVER['REMOTE_ADDR'];
-                            }
-                            else {
+                            } else {
                                 $ipaddress = 'UNKNOWN';
                             }
                         }
@@ -116,7 +114,8 @@ class store {
         return $ipaddress;
     }
 
-    public static function writelog($text, $fname = 'log.txt') {
+    public static function writelog($text, $fname = 'log.txt')
+    {
         $handle = fopen(self::logsPath($fname), "a");
         $log = "";
         $separator = " ## ";
@@ -128,13 +127,15 @@ class store {
         fclose($handle);
     }
 
-    public static function deletelog($fname) {
+    public static function deletelog($fname)
+    {
         if ($fname) {
             @\unlink(self::logsPath($fname));
         }
     }
 
-    public static function writetranslation($text, $fname = 'log.txt') {
+    public static function writetranslation($text, $fname = 'log.txt')
+    {
         $handle = fopen($fname, "a");
         $log = "";
         $log .= '\'' . $text . '\' => \'\',';
@@ -143,11 +144,11 @@ class store {
         fclose($handle);
     }
 
-    public static function getMailer() {
+    public static function getMailer()
+    {
         if (self::getConfigValue('mail.mailer') === 'phpmailer') {
             return new mkwphpmailer();
-        }
-        elseif (self::getConfigValue('mail.smtp', 0)) {
+        } elseif (self::getConfigValue('mail.smtp', 0)) {
             return new mkwzendmailer();
         }
         return new mkwmailer();
@@ -156,59 +157,70 @@ class store {
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    public static function getEm() {
+    public static function getEm()
+    {
         return self::$em;
     }
 
-    public static function setEm($em) {
+    public static function setEm($em)
+    {
         self::$em = $em;
     }
 
     /**
      * @return \Gedmo\Translatable\TranslatableListener()
      */
-    public static function getTranslationListener() {
+    public static function getTranslationListener()
+    {
         return self::$translationListener;
     }
 
-    public static function setTranslationListener($l) {
+    public static function setTranslationListener($l)
+    {
         self::$translationListener = $l;
     }
 
-    public static function getConfig() {
+    public static function getConfig()
+    {
         return self::$config;
     }
 
-    public static function getConfigValue($key, $def = null) {
+    public static function getConfigValue($key, $def = null)
+    {
         if (array_key_exists($key, self::$config)) {
             return self::$config[$key];
         }
         return $def;
     }
 
-    public static function setConfig($config) {
+    public static function setConfig($config)
+    {
         self::$config = $config;
     }
 
-    public static function getSetup() {
+    public static function getSetup()
+    {
         return self::$setup;
     }
 
-    public static function getSetupValue($key, $def = null) {
+    public static function getSetupValue($key, $def = null)
+    {
         if (array_key_exists($key, self::$setup)) {
             return self::$setup[$key];
         }
         return $def;
     }
 
-    public static function setSetup($setup) {
+    public static function setSetup($setup)
+    {
         self::$setup = $setup;
         if (!array_key_exists('termekautocomplete', self::$setup)) {
             self::$setup['termekautocomplete'] = true;
         }
     }
 
-    public static function getIntParameter($par, $default = null) {
+    public static function getIntParameter($par, $default = null)
+    {
         $er = self::getParameter($par, $default);
         if (is_numeric($er)) {
             return (int)$er;
@@ -216,24 +228,24 @@ class store {
         return $default;
     }
 
-    public static function getParameter($par, $default = null) {
+    public static function getParameter($par, $default = null)
+    {
         $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
         if ($p) {
             return str_replace(chr(194) . chr(173), '', $p->getErtek());  // adoszam kotojelei ele text mezobe valamiert $C2 $AD-t ir
-        }
-        else {
+        } else {
             return $default;
         }
     }
 
-    public static function setParameter($par, $ertek, $specialchars = false) {
+    public static function setParameter($par, $ertek, $specialchars = false)
+    {
         /** @var \Entities\Parameterek $p */
         $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
         if ($p) {
             $p->setErtek($ertek);
             $p->setSpecialchars($specialchars);
-        }
-        else {
+        } else {
             $p = new \Entities\Parameterek();
             $p->setId($par);
             $p->setErtek($ertek);
@@ -245,19 +257,23 @@ class store {
 
     /* TODO ezen lehet h. csiszolni kell meg */
 
-    public static function convDate($DateString) {
+    public static function convDate($DateString)
+    {
         return str_replace('.', '-', rtrim($DateString, '.-/ '));
     }
 
-    public static function toDate($adat) {
+    public static function toDate($adat)
+    {
         return new \DateTime(\mkw\store::convDate($adat));
     }
 
-    public static function convTime($TimeString) {
+    public static function convTime($TimeString)
+    {
         return $TimeString;
     }
 
-    public static function DateToExcel($datum) {
+    public static function DateToExcel($datum)
+    {
         $dat = $datum;
         if (is_string($datum)) {
             $dat = self::toDate($datum);
@@ -265,16 +281,19 @@ class store {
         return $dat->format('Y-m-d');
     }
 
-    public static function isValidDate($date, $format = 'Y-m-d') {
+    public static function isValidDate($date, $format = 'Y-m-d')
+    {
         $d = \DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) === $date;
     }
 
-    public static function getDayname($day) {
+    public static function getDayname($day)
+    {
         return self::$daynames[$day - 1];
     }
 
-    public static function getDaynameSelectList($sel = null) {
+    public static function getDaynameSelectList($sel = null)
+    {
         $ret = array();
         foreach (self::$daynames as $k => $v) {
             $ret[] = array(
@@ -286,7 +305,8 @@ class store {
         return $ret;
     }
 
-    public static function getBarionEnvironmentSelectList($sel = null) {
+    public static function getBarionEnvironmentSelectList($sel = null)
+    {
         $ret = array();
         foreach (self::$BarionEnvironment as $k => $v) {
             $ret[] = array(
@@ -298,7 +318,8 @@ class store {
         return $ret;
     }
 
-    public static function getFoxpostAPIVersionSelectList($sel = null) {
+    public static function getFoxpostAPIVersionSelectList($sel = null)
+    {
         $ret = array();
         foreach (self::$FoxpostAPIVersions as $k => $v) {
             $ret[] = array(
@@ -310,32 +331,39 @@ class store {
         return $ret;
     }
 
-    public static function getExcelCoordinate($o, $sor) {
+    public static function getExcelCoordinate($o, $sor)
+    {
         if ($o < 26) {
             return chr(65 + $o) . (string)$sor;
         }
         return chr(65 + floor($o / 26) - 1) . chr(65 + ($o % 26)) . (string)$sor;
     }
 
-    public static function toBoolStr($i) {
+    public static function toBoolStr($i)
+    {
         if ($i) {
             return 'true';
         }
         return 'false';
     }
 
-    public static function toXMLNum($n) {
+    public static function toXMLNum($n)
+    {
         return number_format($n, 2, '.', '');
     }
 
-    public static function createUID($prefix = '') {
+    public static function createUID($prefix = '')
+    {
         return uniqid($prefix);//str_replace('.', '', microtime(true));
     }
 
-    public static function createGUID() {
-        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+    public static function createGUID()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
             // 16 bits for "time_mid"
             mt_rand(0, 0xffff),
             // 16 bits for "time_hi_and_version",
@@ -346,11 +374,14 @@ class store {
             // two most significant bits holds zero and one for variant DCE1.1
             mt_rand(0, 0x3fff) | 0x8000,
             // 48 bits for "node"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
         );
     }
 
-    public static function createSmallImageUrl($kepurl, $pre = '/') {
+    public static function createSmallImageUrl($kepurl, $pre = '/')
+    {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
         $result = implode('.', $t) . \mkw\store::getParameter('smallimgpost', '') . '.' . $ext;
@@ -360,7 +391,8 @@ class store {
         return $result;
     }
 
-    public static function createMediumImageUrl($kepurl, $pre = '/') {
+    public static function createMediumImageUrl($kepurl, $pre = '/')
+    {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
         $result = implode('.', $t) . \mkw\store::getParameter('mediumimgpost', '') . '.' . $ext;
@@ -370,7 +402,8 @@ class store {
         return $result;
     }
 
-    public static function createBigImageUrl($kepurl, $pre = '/') {
+    public static function createBigImageUrl($kepurl, $pre = '/')
+    {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
         $result = implode('.', $t) . \mkw\store::getParameter('bigimgpost', '') . '.' . $ext;
@@ -384,7 +417,8 @@ class store {
      *
      * @return \Zend_Session_Namespace
      */
-    public static function getMainSession() {
+    public static function getMainSession()
+    {
         if (!isset(self::$mainsession)) {
             self::$mainsession = new \Zend_Session_Namespace();
         }
@@ -395,7 +429,8 @@ class store {
         return self::$mainsession;
     }
 
-    public static function destroyMainSession() {
+    public static function destroyMainSession()
+    {
         if (isset(self::$mainsession)) {
             \Zend_Session::namespaceUnset('');
 //            \Zend_Session::destroy(true);
@@ -407,7 +442,8 @@ class store {
      *
      * @return \Zend_Session_Namespace
      */
-    public static function getAdminSession() {
+    public static function getAdminSession()
+    {
         if (!isset(self::$adminsession)) {
             self::$adminsession = new \Zend_Session_Namespace('a');
         }
@@ -418,7 +454,8 @@ class store {
         return self::$adminsession;
     }
 
-    public static function destroyAdminSession() {
+    public static function destroyAdminSession()
+    {
         if (isset(self::$adminsession)) {
             \Zend_Session::namespaceUnset('a');
 //            \Zend_Session::destroy(true);
@@ -430,7 +467,8 @@ class store {
      *
      * @return \Zend_Session_Namespace
      */
-    public static function getPubAdminSession() {
+    public static function getPubAdminSession()
+    {
         if (!isset(self::$pubadminsession)) {
             self::$pubadminsession = new \Zend_Session_Namespace('pa');
         }
@@ -441,7 +479,8 @@ class store {
         return self::$pubadminsession;
     }
 
-    public static function destroyPubAdminSession() {
+    public static function destroyPubAdminSession()
+    {
         if (isset(self::$pubadminsession)) {
             \Zend_Session::namespaceUnset('pa');
 //            \Zend_Session::destroy(true);
@@ -449,11 +488,13 @@ class store {
         }
     }
 
-    public static function getSalt() {
+    public static function getSalt()
+    {
         return self::getConfigValue('so');
     }
 
-    public static function getAdminSalt() {
+    public static function getAdminSalt()
+    {
         return self::getConfigValue('aso');
     }
 
@@ -461,7 +502,8 @@ class store {
      *
      * @return \mkwhelpers\TemplateFactory
      */
-    public static function getTemplateFactory() {
+    public static function getTemplateFactory()
+    {
         if (!isset(self::$templateFactory)) {
             self::$templateFactory = new \mkwhelpers\TemplateFactory(self::$config);
         }
@@ -473,7 +515,8 @@ class store {
      * @param $v
      * @param bool|true $needmenu
      */
-    public static function fillTemplate($v, $needmenu = true) {
+    public static function fillTemplate($v, $needmenu = true)
+    {
         $tf = new \Controllers\termekfaController(null);
         $v->setVar('GAFollow', self::getParameter('GAFollow'));
         $v->setVar('seodescription', self::getParameter('seodescription'));
@@ -529,8 +572,7 @@ class store {
                 !$u->getVaros() &&
                 !$u->getUtca() &&
                 !$u->getNev();
-        }
-        else {
+        } else {
             $user['szalladategyezik'] = true;
         }
         $v->setVar('user', $user);
@@ -554,8 +596,7 @@ class store {
                         $ukarr[] = $u->getId();
                     }
                     $ukpfilter->addFilter('uzletkoto', 'IN', $ukarr);
-                }
-                else {
+                } else {
                     $ukpfilter->addFilter('uzletkoto', '=', $uko);
                 }
                 $ukpartnerei = $pr->getAllForSelectList($ukpfilter, array('nev' => 'ASC'));
@@ -563,8 +604,7 @@ class store {
             }
             $v->setVar('uzletkoto', $uk);
             $v->setVar('myownaccount', \mkw\store::getMainSession()->pk === \mkw\store::getMainSession()->ukpartner);
-        }
-        else {
+        } else {
             $v->setVar('myownaccount', true);
         }
         if (\mkw\store::isMugenrace2021()) {
@@ -603,14 +643,16 @@ class store {
      *
      * @return \AltoRouter
      */
-    public static function getRouter() {
+    public static function getRouter()
+    {
         if (!isset(self::$router)) {
             self::$router = new \AltoRouter();
         }
         return self::$router;
     }
 
-    public static function getGdl() {
+    public static function getGdl()
+    {
         if (!isset(self::$gdl)) {
             self::$gdl = new generalDataLoader();
         }
@@ -621,18 +663,21 @@ class store {
      *
      * @return \mkwhelpers\HtmlPurifierSanitizer
      */
-    public static function getSanitizer() {
+    public static function getSanitizer()
+    {
         if (!isset(self::$sanitizer)) {
             self::$sanitizer = new \mkwhelpers\HtmlPurifierSanitizer();
         }
         return self::$sanitizer;
     }
 
-    public static function storePrevUri() {
+    public static function storePrevUri()
+    {
         \mkw\store::getMainSession()->prevuri = $_SERVER['REQUEST_URI'];
     }
 
-    public static function redirectTo404($keresendo, $params) {
+    public static function redirectTo404($keresendo, $params)
+    {
         $view = self::getTemplateFactory()->createMainView('404.tpl');
         $tc = new \Controllers\termekController($params);
         $view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
@@ -642,23 +687,22 @@ class store {
         $view->printTemplateResult(false);
     }
 
-    public static function getFullUrl($slug = null, $url = null) {
+    public static function getFullUrl($slug = null, $url = null)
+    {
         if (!$url) {
             if (array_key_exists('SCRIPT_URI', $_SERVER)) {
                 $uri = parse_url($_SERVER['SCRIPT_URI']);
                 if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
                     if (self::isSSL()) {
                         $uri['scheme'] = 'https';
-                    }
-                    else {
+                    } else {
                         $uri['scheme'] = 'http';
                     }
                 }
                 if (!array_key_exists('host', $uri) || !$uri['host']) {
                     $uri['host'] = '';
                 }
-            }
-            else {
+            } else {
                 $uri = array(
                     'scheme' => 'http',
                     'host' => $_SERVER['HTTP_HOST']
@@ -676,7 +720,8 @@ class store {
         return $url . $rag . $slug;
     }
 
-    public static function addHttp($url) {
+    public static function addHttp($url)
+    {
         if ($url && $ret = parse_url($url)) {
             if (!isset($ret['scheme'])) {
                 $url = 'http://' . $url;
@@ -685,7 +730,8 @@ class store {
         return $url;
     }
 
-    public static function prefixUrl($prefix, $url) {
+    public static function prefixUrl($prefix, $url)
+    {
         if ($url && $ret = parse_url($url)) {
             if (!isset($ret['scheme'])) {
                 $url = $prefix . $url;
@@ -694,7 +740,8 @@ class store {
         return $url;
     }
 
-    public static function calcSzallitasiKoltseg($ertek) {
+    public static function calcSzallitasiKoltseg($ertek)
+    {
         $ktg = 0;
         $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
         if (($ertek <= $h) || ($h == 0)) {
@@ -702,16 +749,14 @@ class store {
             if ($ertek >= $h) {
                 $ktg = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
             }
-        }
-        else {
+        } else {
             $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
             if (($ertek <= $h) || ($h == 0)) {
                 $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
                 if ($ertek >= $h) {
                     $ktg = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
                 }
-            }
-            else {
+            } else {
                 $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
                 if (($ertek <= $h) || ($h == 0)) {
                     $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
@@ -724,9 +769,25 @@ class store {
         return $ktg;
     }
 
-    private static function Szazas($szam) {
-        $szamok = array('nulla', 'egy', 'kettő', 'három', 'négy', 'öt',
-            'hat', 'hét', 'nyolc', 'kilenc', 'tíz', 'száz', 'ezer', 'millió', 'mínusz ');
+    private static function Szazas($szam)
+    {
+        $szamok = array(
+            'nulla',
+            'egy',
+            'kettő',
+            'három',
+            'négy',
+            'öt',
+            'hat',
+            'hét',
+            'nyolc',
+            'kilenc',
+            'tíz',
+            'száz',
+            'ezer',
+            'millió',
+            'mínusz '
+        );
         $szamok2 = array('X', 'tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
         $szamok3 = array('Y', 'tizen', 'huszon');
         $tt_txt = '';
@@ -767,17 +828,32 @@ class store {
         return $tt_txt;
     }
 
-    public static function Num2Text($num) {
-        $szamok = array('nulla', 'egy', 'kettő', 'három', 'négy', 'öt',
-            'hat', 'hét', 'nyolc', 'kilenc', 'tíz', 'száz', 'ezer', 'millió', 'mínusz ');
+    public static function Num2Text($num)
+    {
+        $szamok = array(
+            'nulla',
+            'egy',
+            'kettő',
+            'három',
+            'négy',
+            'öt',
+            'hat',
+            'hét',
+            'nyolc',
+            'kilenc',
+            'tíz',
+            'száz',
+            'ezer',
+            'millió',
+            'mínusz '
+        );
 
         $plus = $num >= 0;
         $num = abs($num);
         $t_txt = '';
         if ($num == 0) {
             $t_txt = $szamok[0];
-        }
-        else {
+        } else {
             if (floor($num / 1000000) > 0) {
                 $t_txt = $t_txt . \mkw\store::Szazas(floor($num / 1000000)) . $szamok[13];
                 if (($num % 1000000) > 0) {
@@ -810,7 +886,8 @@ class store {
      * @return string
      * @throws \Exception
      */
-    public static function calcEsedekesseg($kelt, $fizmod = null, $partner = null) {
+    public static function calcEsedekesseg($kelt, $fizmod = null, $partner = null)
+    {
         $fmhaladek = 0;
         $partnerhaladek = 0;
         $fmtipus = 'B';
@@ -825,8 +902,7 @@ class store {
         if ($fmtipus === 'B') {
             if ($partnerhaladek) {
                 $dkelt->add(new \DateInterval('P' . $partnerhaladek . 'D'));
-            }
-            else {
+            } else {
                 if ($fmhaladek) {
                     $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
                 }
@@ -835,15 +911,16 @@ class store {
         return $dkelt->format(self::$DateFormat);
     }
 
-    public static function urlize($text) {
+    public static function urlize($text)
+    {
         return \Gedmo\Sluggable\Util\Urlizer::urlize($text);
     }
 
-    public static function changeDirSeparator($dir) {
+    public static function changeDirSeparator($dir)
+    {
         if (DIRECTORY_SEPARATOR === "\\") {
             $dir = str_replace("/", "\\", $dir);
-        }
-        else {
+        } else {
             if (DIRECTORY_SEPARATOR === "/") {
                 $dir = str_replace("\\", "/", $dir);
             }
@@ -851,7 +928,8 @@ class store {
         return $dir;
     }
 
-    public static function createDirectoryRecursively($dir) {
+    public static function createDirectoryRecursively($dir)
+    {
         $dir = self::changeDirSeparator($dir);
 //            $oldUmask = umask(0);
 //            $bCreated = @mkdir($dir, $perms, true);
@@ -869,7 +947,8 @@ class store {
      * @param string $fileName
      * @return string
      */
-    public static function getExtension($fileName) {
+    public static function getExtension($fileName)
+    {
         $dotPos = strrpos($fileName, '.');
         if (false === $dotPos) {
             return "";
@@ -878,7 +957,8 @@ class store {
         return substr($fileName, strrpos($fileName, '.') + 1);
     }
 
-    public static function explodeCim($cim) {
+    public static function explodeCim($cim)
+    {
         if ($cim) {
             $ret = array();
             $c = explode(' ', $cim);
@@ -887,14 +967,14 @@ class store {
             unset($c[0]);
             unset($c[1]);
             $ret[] = implode(' ', $c);
-        }
-        else {
+        } else {
             $ret = array('', '', '');
         }
         return $ret;
     }
 
-    public static function implodeCim($irszam, $varos, $utca, $hazszam) {
+    public static function implodeCim($irszam, $varos, $utca, $hazszam)
+    {
         $cim = $irszam;
         if (($cim !== '') && ($varos !== '')) {
             $cim .= ' ';
@@ -909,10 +989,10 @@ class store {
         }
         $cim .= $hazszam;
         return $cim;
-
     }
 
-    public static function getAdminLocale() {
+    public static function getAdminLocale()
+    {
         $l = self::getSetupValue('adminlocale', 'hu');
         if ($l) {
             $l = self::getLocaleName($l);
@@ -920,27 +1000,26 @@ class store {
         return $l;
     }
 
-    public static function getLocale() {
+    public static function getLocale()
+    {
         $luser = self::getLoggedInUser();
         if (self::isMIJSZ() && $luser) {
             $l = $luser->getBizonylatnyelv();
-        }
-        elseif (self::isMugenrace2021()) {
+        } elseif (self::isMugenrace2021()) {
             $l = self::getMainLocale();
-        }
-        else {
+        } else {
             $l = self::getSetupValue('locale', false);
             if ($l) {
                 $l = self::getLocaleName($l);
-            }
-            else {
+            } else {
                 $l = self::getParameter(\mkw\consts::Locale);
             }
         }
         return $l;
     }
 
-    public static function getLocaleName($ny) {
+    public static function getLocaleName($ny)
+    {
         return self::$locales[$ny];
     }
 
@@ -948,17 +1027,20 @@ class store {
      * @param $ny
      * @return null|Valutanem
      */
-    public static function getValutanemForLocale($ny) {
+    public static function getValutanemForLocale($ny)
+    {
         $v = self::$valutanemperlocale[$ny];
         $valutanem = self::getEm()->getRepository(Valutanem::class)->findBy(['nev' => $v]);
         return $valutanem;
     }
 
-    public static function getLocaleList() {
+    public static function getLocaleList()
+    {
         return array_values(self::$locales);
     }
 
-    public static function toLocale($ny) {
+    public static function toLocale($ny)
+    {
         $a = self::getLocaleList();
         if (in_array($ny, $a, true)) {
             return $ny;
@@ -966,7 +1048,8 @@ class store {
         return null;
     }
 
-    public static function getLocaleSelectList($sel = null) {
+    public static function getLocaleSelectList($sel = null)
+    {
         $ret = array();
         foreach (self::$locales as $i => $v) {
             $ret[] = array(
@@ -981,7 +1064,8 @@ class store {
     /**
      * @return \Entities\Partner
      */
-    public static function getLoggedInUser() {
+    public static function getLoggedInUser()
+    {
         if (!self::$loggedinuser) {
             $pr = self::getEm()->getRepository('Entities\Partner');
             self::$loggedinuser = $pr->getLoggedInUser();
@@ -992,7 +1076,8 @@ class store {
     /**
      * @return \Entities\Uzletkoto
      */
-    public static function getLoggedInUK() {
+    public static function getLoggedInUK()
+    {
         if (!self::$loggedinuk) {
             $ur = self::getEm()->getRepository('Entities\Uzletkoto');
             self::$loggedinuk = $ur->getLoggedInUK();
@@ -1000,103 +1085,131 @@ class store {
         return self::$loggedinuk;
     }
 
-    public static function clearLoggedInUser() {
+    public static function clearLoggedInUser()
+    {
         self::$loggedinuser = null;
     }
 
-    public static function getTheme() {
+    public static function getTheme()
+    {
         return self::getConfigValue('main.theme');
     }
 
-    public static function isMailDebug() {
+    public static function isMailDebug()
+    {
         return self::getConfigValue('mail.debug');
     }
 
-    public static function isDeveloper() {
+    public static function isDeveloper()
+    {
         return self::getConfigValue('developer');
     }
 
-    public static function isReintexTeszt() {
+    public static function isReintexTeszt()
+    {
         return self::getConfigValue('reintexteszt');
     }
 
-    public static function isMultilang() {
+    public static function isMultilang()
+    {
         return self::getSetupValue('multilang');
     }
 
-    public static function isArsavok() {
+    public static function isArsavok()
+    {
         return self::getSetupValue('arsavok');
     }
 
-    public static function isOTPay() {
+    public static function isOTPay()
+    {
         return self::getSetupValue('otpay');
     }
 
-    public static function isMasterPass() {
+    public static function isMasterPass()
+    {
         return self::getSetupValue('masterpass');
     }
 
-    public static function isEmailTemplateCKEditor() {
+    public static function isEmailTemplateCKEditor()
+    {
         return self::getSetupValue('emailtemplateckeditor');
     }
 
-    public static function mustLogin() {
+    public static function mustLogin()
+    {
         return self::getSetupValue('mustlogin');
     }
 
-    public static function isOsztottFizmod() {
+    public static function isOsztottFizmod()
+    {
         return self::getSetupValue('osztottfizmod');
     }
 
-    public static function isFoglalas() {
+    public static function isFoglalas()
+    {
         return self::getSetupValue('foglalas');
     }
 
-    public static function isB2B() {
+    public static function isB2B()
+    {
         return self::getSetupValue('b2b');
     }
 
-    public static function isBankpenztar() {
+    public static function isBankpenztar()
+    {
         return self::getSetupValue('bankpenztar');
     }
 
-    public static function isMultiValuta() {
+    public static function isMultiValuta()
+    {
         return self::getSetupValue('multivaluta');
     }
 
-    public static function isFakeKintlevoseg() {
+    public static function isFakeKintlevoseg()
+    {
         return self::getSetupValue('fakekintlevoseg');
     }
 
-    public static function isPartnerAutocomplete() {
+    public static function isPartnerAutocomplete()
+    {
         return self::getSetupValue('partnerautocomplete');
     }
 
-    public static function isTermekAutocomplete() {
+    public static function isTermekAutocomplete()
+    {
         return self::getSetupValue('termekautocomplete', true);
     }
 
-    public static function isKPFolyoszamla() {
+    public static function isKPFolyoszamla()
+    {
         return self::getSetupValue('kpfolyoszamla');
     }
 
-    public static function isMultiShop() {
+    public static function isMultiShop()
+    {
         return self::getSetupValue('multishop');
     }
 
-    public static function isEmag() {
+    public static function isEmag()
+    {
         return self::getSetupValue('emag');
     }
 
-    public static function isPDF() {
+    public static function isPDF()
+    {
         return self::getSetupValue('pdf');
     }
 
-    public static function isSSL() {
+    public static function isSSL()
+    {
         return self::getSetupValue('ssl');
     }
 
-    public static function isFoxpostSzallitasimod($szm) {
+    public static function isFoxpostSzallitasimod($szm)
+    {
+        if (!self::getParameter(\mkw\consts::FoxpostSzallitasiMod)) {
+            return false;
+        }
         $i = $szm;
         if (is_a($szm, 'Entities\Szallitasimod')) {
             $i = $szm->getId();
@@ -1104,7 +1217,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
     }
 
-    public static function isTOFSzallitasimod($szm) {
+    public static function isTOFSzallitasimod($szm)
+    {
+        if (!self::getParameter(\mkw\consts::TOFSzallitasiMod)) {
+            return false;
+        }
         $i = $szm;
         if (is_a($szm, 'Entities\Szallitasimod')) {
             $i = $szm->getId();
@@ -1112,7 +1229,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::TOFSzallitasiMod);
     }
 
-    public static function isGLSSzallitasimod($szm) {
+    public static function isGLSSzallitasimod($szm)
+    {
+        if (!self::getParameter(\mkw\consts::GLSSzallitasiMod)) {
+            return false;
+        }
         $i = $szm;
         if (is_a($szm, 'Entities\Szallitasimod')) {
             $i = $szm->getId();
@@ -1120,7 +1241,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
     }
 
-    public static function isGLSFutarSzallitasimod($szm) {
+    public static function isGLSFutarSzallitasimod($szm)
+    {
+        if (!self::getParameter(\mkw\consts::GLSFutarSzallitasmod)) {
+            return false;
+        }
         $i = $szm;
         if (is_a($szm, 'Entities\Szallitasimod')) {
             $i = $szm->getId();
@@ -1128,7 +1253,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::GLSFutarSzallitasmod);
     }
 
-    public static function isUtanvetFizmod($fm) {
+    public static function isUtanvetFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::UtanvetFizmod)) {
+            return false;
+        }
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {
             $i = $fm->getId();
@@ -1136,7 +1265,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::UtanvetFizmod);
     }
 
-    public static function isAYCMFizmod($fm) {
+    public static function isAYCMFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::AYCMFizmod)) {
+            return false;
+        }
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {
             $i = $fm->getId();
@@ -1144,7 +1277,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::AYCMFizmod);
     }
 
-    public static function isBarionFizmod($fm) {
+    public static function isBarionFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::BarionFizmod)) {
+            return false;
+        }
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {
             $i = $fm->getId();
@@ -1152,7 +1289,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::BarionFizmod);
     }
 
-    public static function isSZEPFizmod($fm) {
+    public static function isSZEPFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::SZEPFizmod)) {
+            return false;
+        }
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {
             $i = $fm->getId();
@@ -1160,7 +1301,11 @@ class store {
         return $i == self::getParameter(\mkw\consts::SZEPFizmod);
     }
 
-    public static function isSportkartyaFizmod($fm) {
+    public static function isSportkartyaFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::SportkartyaFizmod)) {
+            return false;
+        }
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {
             $i = $fm->getId();
@@ -1168,47 +1313,58 @@ class store {
         return $i == self::getParameter(\mkw\consts::SportkartyaFizmod);
     }
 
-    public static function isSuperzoneB2B() {
+    public static function isSuperzoneB2B()
+    {
         return self::getTheme() === 'superzoneb2b';
     }
 
-    public static function isMindentkapni() {
+    public static function isMindentkapni()
+    {
         return self::getTheme() === 'mkwcansas';
     }
 
-    public static function isVarganyomda() {
+    public static function isVarganyomda()
+    {
         return self::getTheme() === 'varganyomda';
     }
 
-    public static function isMugenrace() {
+    public static function isMugenrace()
+    {
         return self::getTheme() === 'mugenrace';
     }
 
-    public static function isMugenrace2021() {
+    public static function isMugenrace2021()
+    {
         return self::getTheme() === 'mugenrace2021';
     }
 
-    public static function isKisszamlazo() {
+    public static function isKisszamlazo()
+    {
         return self::getTheme() === 'kisszamlazo';
     }
 
-    public static function isMIJSZ() {
+    public static function isMIJSZ()
+    {
         return self::getTheme() === 'mijsz';
     }
 
-    public static function isDarshan() {
+    public static function isDarshan()
+    {
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
     }
 
-    public static function isMPT() {
+    public static function isMPT()
+    {
         return self::getTheme() === 'mpt' || self::getSetupValue('mpt', false);
     }
 
-    public static function isMiniCRMOn() {
+    public static function isMiniCRMOn()
+    {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
     }
 
-    public static function getSzallitasiKoltsegMode() {
+    public static function getSzallitasiKoltsegMode()
+    {
         $szm = self::getSetupValue('szallitasikoltsegmode');
         switch ($szm) {
             case 'orszagonkent':
@@ -1218,59 +1374,71 @@ class store {
         }
     }
 
-    public static function setAdminMode() {
+    public static function setAdminMode()
+    {
         self::$adminmode = true;
         self::$mainmode = false;
     }
 
-    public static function setMainMode() {
+    public static function setMainMode()
+    {
         self::$adminmode = false;
         self::$mainmode = true;
     }
 
-    public static function isAdminMode() {
+    public static function isAdminMode()
+    {
         return self::$adminmode;
     }
 
-    public static function isMainMode() {
+    public static function isMainMode()
+    {
         return self::$mainmode;
     }
 
-    public static function getWebshopFieldName($fname) {
+    public static function getWebshopFieldName($fname)
+    {
         if (self::getWebshopNum() == 1) {
             return $fname;
         }
         return $fname . self::getWebshopNum();
     }
 
-    public static function getWebshopNum() {
+    public static function getWebshopNum()
+    {
         return self::getSetupValue('webshopnum', 1);
     }
 
-    public static function getEnabledWebshops() {
+    public static function getEnabledWebshops()
+    {
         return self::getSetupValue('enabledwebshops', 1);
     }
 
-    public static function setTranslationHint($q, $locale) {
+    public static function setTranslationHint($q, $locale)
+    {
         if (self::isMultilang() && $locale) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale);
         }
     }
 
-    public static function getAdminTemplatePath() {
+    public static function getAdminTemplatePath()
+    {
         return self::getConfigValue('path.template');
     }
 
-    public static function getAdminDefaultTemplatePath() {
+    public static function getAdminDefaultTemplatePath()
+    {
         return self::getConfigValue('path.template.default');
     }
 
-    public static function getTmpPath() {
+    public static function getTmpPath()
+    {
         return self::getConfigValue('path.tmp');
     }
 
-    public static function kerekit($mit, $mire) {
+    public static function kerekit($mit, $mire)
+    {
         if ($mire == 0) {
             return $mit;
         }
@@ -1285,7 +1453,8 @@ class store {
         return $s * $mire * $sg;
     }
 
-    public static function getPartnerValutanem($partner) {
+    public static function getPartnerValutanem($partner)
+    {
         if ($partner) {
             $valutanem = $partner->getValutanem();
         }
@@ -1301,7 +1470,8 @@ class store {
         return $valutanem;
     }
 
-    public static function getPartnerOrszag($partner) {
+    public static function getPartnerOrszag($partner)
+    {
         if ($partner) {
             $orszag = $partner->getOrszag();
         }
@@ -1311,40 +1481,43 @@ class store {
         return $orszag;
     }
 
-    public static function getSysValutanem() {
+    public static function getSysValutanem()
+    {
         if (self::getMainSession()->valutanem) {
             return self::getMainSession()->valutanem;
         }
         return self::getParameter(\mkw\consts::Valutanem);
     }
 
-    public static function getPenzugyiStatusz($esedekesseg, $egyenleg) {
+    public static function getPenzugyiStatusz($esedekesseg, $egyenleg)
+    {
         $ma = new \DateTime(self::convDate(date(self::$DateFormat)));
         if ($egyenleg != 0) {
             if ($egyenleg > 0) {
                 if ($esedekesseg < $ma) {
                     return -2;
-                }
-                else {
+                } else {
                     return -1;
                 }
-            }
-            else {
+            } else {
                 return 1;
             }
         }
         return 0;
     }
 
-    public static function setRouteName($name) {
+    public static function setRouteName($name)
+    {
         self::$routename = $name;
     }
 
-    public static function getRouteName() {
+    public static function getRouteName()
+    {
         return self::$routename;
     }
 
-    public static function haveJog($jog) {
+    public static function haveJog($jog)
+    {
         $lu = self::getAdminSession()->loggedinuser;
         if (is_array($lu) && array_key_exists('jog', $lu)) {
             return $lu['jog'] >= $jog;
@@ -1352,7 +1525,8 @@ class store {
         return false;
     }
 
-    public static function getJog() {
+    public static function getJog()
+    {
         $lu = self::getAdminSession()->loggedinuser;
         if (is_array($lu) && array_key_exists('jog', $lu)) {
             return $lu['jog'];
@@ -1360,7 +1534,8 @@ class store {
         return 0;
     }
 
-    public static function translate($mit, $mire = null) {
+    public static function translate($mit, $mire = null)
+    {
         $sz = array(
             'en' => array(
                 'Rendelés szám' => 'Order no.',
@@ -1384,7 +1559,8 @@ class store {
         return $mit;
     }
 
-    public static function toiso($mit) {
+    public static function toiso($mit)
+    {
         if (is_array($mit)) {
             return array_map(function ($el) {
                 return mb_convert_encoding($el, 'ISO-8859-2', 'UTF8');
@@ -1393,7 +1569,8 @@ class store {
         return mb_convert_encoding($mit, 'ISO-8859-2', 'UTF8');
     }
 
-    public static function toutf($mit) {
+    public static function toutf($mit)
+    {
         if (is_array($mit)) {
             return array_map(function ($el) {
                 return mb_convert_encoding($el, 'UTF8', 'ISO-8859-2');
@@ -1402,7 +1579,8 @@ class store {
         return mb_convert_encoding($mit, 'UTF8', 'ISO-8859-2');
     }
 
-    public static function generateEAN13($number) {
+    public static function generateEAN13($number)
+    {
         $code = '200' . str_pad($number, 9, '0');
         $weightflag = true;
         $sum = 0;
@@ -1420,18 +1598,21 @@ class store {
     /**
      * @return mixed
      */
-    public static function getBlameableListener() {
+    public static function getBlameableListener()
+    {
         return self::$blameableListener;
     }
 
     /**
      * @param mixed $blameableListener
      */
-    public static function setBlameableListener($blameableListener) {
+    public static function setBlameableListener($blameableListener)
+    {
         self::$blameableListener = $blameableListener;
     }
 
-    public static function cimletez($osszegek) {
+    public static function cimletez($osszegek)
+    {
         $cimletek = array(20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5);
         $kiszamolt = array();
         $ret = array();
@@ -1453,7 +1634,8 @@ class store {
         return $ret;
     }
 
-    public static function getIds($mibol) {
+    public static function getIds($mibol)
+    {
         $ret = array();
         foreach ($mibol as $m) {
             $ret[] = $m->getId();
@@ -1461,7 +1643,8 @@ class store {
         return $ret;
     }
 
-    public static function generateRandomStr($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+    public static function generateRandomStr($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    {
         $charactersLength = strlen($chars);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
@@ -1470,7 +1653,8 @@ class store {
         return $randomString;
     }
 
-    public static function watermark($img, $dest, $ext) {
+    public static function watermark($img, $dest, $ext)
+    {
         $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -1509,15 +1693,18 @@ class store {
         }
     }
 
-    public static function CData($s) {
+    public static function CData($s)
+    {
         return '<![CDATA[' . $s . ']]>';
     }
 
-    public static function NAVNum($num) {
+    public static function NAVNum($num)
+    {
         return number_format($num, 2, '.', '');
     }
 
-    public static function strpos_array($haystack, $needles) {
+    public static function strpos_array($haystack, $needles)
+    {
         if ($haystack && $needles && is_array($needles)) {
             foreach ($needles as $word) {
                 if ($word && strpos($haystack, $word) !== false) {
@@ -1528,25 +1715,27 @@ class store {
         return false;
     }
 
-    public static function n($mit) {
+    public static function n($mit)
+    {
         return ord($mit) - 97;
     }
 
-    public static function mb_ucfirst($str) {
+    public static function mb_ucfirst($str)
+    {
         $s = mb_strtolower($str);
         $fc = mb_strtoupper(mb_substr($s, 0, 1));
         return $fc . mb_substr($s, 1);
     }
 
-    public static function startOfWeek($date = null) {
+    public static function startOfWeek($date = null)
+    {
         if (is_a($date, 'DateTime')) {
             $d = clone $date;
             if ($d->format('N') === '1') {
                 return $d;
             }
             return $d->modify('last monday');
-        }
-        else {
+        } else {
             if ($date == '') {
                 $d = date(\mkw\store::$DateFormat);
             }
@@ -1558,15 +1747,15 @@ class store {
         }
     }
 
-    public static function endOfWeek($date = null) {
+    public static function endOfWeek($date = null)
+    {
         if (is_a($date, 'DateTime')) {
             $d = clone $date;
             if ($d->format('N') === '7') {
                 return $d;
             }
             return $d->modify('next sunday');
-        }
-        else {
+        } else {
             if ($date == '') {
                 $d = date(\mkw\store::$DateFormat);
             }
@@ -1578,59 +1767,70 @@ class store {
         }
     }
 
-    public static function getCommaList($vmi) {
+    public static function getCommaList($vmi)
+    {
         if (is_array($vmi)) {
             return implode(',', $vmi);
         }
         return $vmi;
     }
 
-    public static function isValidEmail($email) {
+    public static function isValidEmail($email)
+    {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    public static function isSendableEmail($email) {
+    public static function isSendableEmail($email)
+    {
         if (strpos($email, '@mail.local') || strpos($email, '_@jogadarshan.hu')) {
             return false;
         }
         return self::isValidEmail($email);
     }
 
-    public static function storagePath($filename) {
+    public static function storagePath($filename)
+    {
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
     }
 
-    public static function storageUrl($filename) {
+    public static function storageUrl($filename)
+    {
         return '/' . self::getConfigValue('path.storage', '') . $filename;
     }
 
-    public static function logsPath($filename) {
+    public static function logsPath($filename)
+    {
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . 'logs/' . $filename;
     }
 
-    public static function logsUrl($filename) {
+    public static function logsUrl($filename)
+    {
         return '/' . self::getConfigValue('path.storage', '') . 'logs/' . $filename;
     }
 
-    public static function getTulajAdoszam() {
+    public static function getTulajAdoszam()
+    {
         return self::getParameter(\mkw\consts::Tulajadoszam);
     }
 
-    public static function getNAVOnlineEnv() {
+    public static function getNAVOnlineEnv()
+    {
         if (self::isDeveloper()) {
             return 'dev';
         }
         return self::getParameter(\mkw\consts::NAVOnlineEnv);
     }
 
-    public static function getNAVOnlineErtekhatar() {
+    public static function getNAVOnlineErtekhatar()
+    {
         if (self::isDeveloper()) {
             return 0;
         }
         return (float)self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
     }
 
-    public static function isMagyarAdoszam($adoszam) {
+    public static function isMagyarAdoszam($adoszam)
+    {
         preg_match('/\d{8}-\d{1}-\d{2}/m', $adoszam, $out);
         if ($out) {
             return $out[0] == $adoszam;
@@ -1638,11 +1838,13 @@ class store {
         return false;
     }
 
-    public static function isClosed() {
+    public static function isClosed()
+    {
         return self::getConfigValue('closed', false);
     }
 
-    public static function calcSzallitasiidoAddition($date) {
+    public static function calcSzallitasiidoAddition($date)
+    {
         if ($date->format(self::$TimeFormat) > '13:00') {
             if ($date->format('N') < 6) {
                 return 1;
@@ -1661,15 +1863,18 @@ class store {
         }
     }
 
-    public static function getMainLocale() {
+    public static function getMainLocale()
+    {
         return \mkw\store::getMainSession()->locale;
     }
 
-    public static function getMainValutanemNev() {
+    public static function getMainValutanemNev()
+    {
         return \mkw\store::getMainSession()->valutanemnev;
     }
 
-    public static function getMainValutanemId() {
+    public static function getMainValutanemId()
+    {
         return \mkw\store::getMainSession()->valutanem;
     }
 

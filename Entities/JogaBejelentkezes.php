@@ -10,7 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="jogabejelentkezes",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class JogaBejelentkezes {
+class JogaBejelentkezes
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -84,7 +85,8 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="boolean") */
     private $lemondva = false;
 
-    public function createJogaReszvetel() {
+    public function createJogaReszvetel()
+    {
         $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
             $rvpartner = new Partner();
@@ -105,8 +107,7 @@ class JogaBejelentkezes {
         $helyettesito = $hr->getHelyettesito($this->getOrarend(), $this->getDatum());
         if ($helyettesito) {
             $jr->setTanar($helyettesito);
-        }
-        else {
+        } else {
             $jr->setTanar($this->getOrarend()->getDolgozo());
         }
         switch (true) {
@@ -140,7 +141,8 @@ class JogaBejelentkezes {
         \mkw\store::getEm()->flush();
     }
 
-    public function delJogaReszvetel() {
+    public function delJogaReszvetel()
+    {
         if ($this->getJogareszvetelid()) {
             $obj = \mkw\store::getEm()->getRepository('Entities\JogaReszvetel')->find($this->getJogareszvetelid());
             if ($obj) {
@@ -153,55 +155,65 @@ class JogaBejelentkezes {
         }
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -211,18 +223,21 @@ class JogaBejelentkezes {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
@@ -232,11 +247,13 @@ class JogaBejelentkezes {
     /**
      * @return \Entities\Orarend
      */
-    public function getOrarend() {
+    public function getOrarend()
+    {
         return $this->orarend;
     }
 
-    public function getOrarendId() {
+    public function getOrarendId()
+    {
         if ($this->orarend) {
             return $this->orarend->getId();
         }
@@ -246,67 +263,77 @@ class JogaBejelentkezes {
     /**
      * @param \Entities\Orarend $val
      */
-    public function setOrarend($val) {
+    public function setOrarend($val)
+    {
         if ($this->orarend !== $val) {
             $this->orarend = $val;
         }
     }
 
-    public function getPartnerKeresztnev() {
+    public function getPartnerKeresztnev()
+    {
         $x = explode(' ', $this->getPartnernev());
         return $x[1];
     }
 
-    public function getPartnerVezeteknev() {
+    public function getPartnerVezeteknev()
+    {
         $x = explode(' ', $this->getPartnernev());
         return $x[0];
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         return $this->partnernev;
     }
 
-    public function setPartnernev($val) {
+    public function setPartnernev($val)
+    {
         $this->partnernev = $val;
     }
 
     /**
      * @return mixed
      */
-    public function getPartneremail() {
+    public function getPartneremail()
+    {
         return $this->partneremail;
     }
 
     /**
      * @param mixed $partneremail
      */
-    public function setPartneremail($partneremail) {
+    public function setPartneremail($partneremail)
+    {
         $this->partneremail = $partneremail;
     }
 
-    public function getDatum() {
+    public function getDatum()
+    {
         return $this->datum;
     }
 
-    public function getDatumStr() {
+    public function getDatumStr()
+    {
         if ($this->getDatum()) {
             return $this->getDatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function getDatumNapnev() {
+    public function getDatumNapnev()
+    {
         if ($this->getDatum()) {
             return \mkw\store::getDayname($this->getDatum()->format('N'));
         }
         return '';
     }
 
-    public function setDatum($adat = '') {
+    public function setDatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->datum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -317,112 +344,128 @@ class JogaBejelentkezes {
     /**
      * @return bool
      */
-    public function isMegjelent() {
+    public function isMegjelent()
+    {
         return $this->megjelent;
     }
 
     /**
      * @param bool $megjelent
      */
-    public function setMegjelent($megjelent) {
+    public function setMegjelent($megjelent)
+    {
         $this->megjelent = $megjelent;
     }
 
     /**
      * @return mixed
      */
-    public function getTipus() {
+    public function getTipus()
+    {
         return $this->tipus;
     }
 
     /**
      * @param mixed $tipus
      */
-    public function setTipus($tipus) {
+    public function setTipus($tipus)
+    {
         $this->tipus = $tipus;
     }
 
     /**
      * @return mixed
      */
-    public function getAr() {
+    public function getAr()
+    {
         return $this->ar;
     }
 
     /**
      * @param mixed $ar
      */
-    public function setAr($ar) {
+    public function setAr($ar)
+    {
         $this->ar = $ar;
     }
 
     /**
      * @return mixed
      */
-    public function getJogareszvetelid() {
+    public function getJogareszvetelid()
+    {
         return $this->jogareszvetelid;
     }
 
     /**
      * @param mixed $jogareszvetelid
      */
-    public function setJogareszvetelid($jogareszvetelid) {
+    public function setJogareszvetelid($jogareszvetelid)
+    {
         $this->jogareszvetelid = $jogareszvetelid;
     }
 
     /**
      * @return bool
      */
-    public function isKesobbfizet() {
+    public function isKesobbfizet()
+    {
         return $this->kesobbfizet;
     }
 
     /**
      * @param bool $kesobbfizet
      */
-    public function setKesobbfizet($kesobbfizet) {
+    public function setKesobbfizet($kesobbfizet)
+    {
         $this->kesobbfizet = $kesobbfizet;
     }
 
     /**
      * @return mixed
      */
-    public function getMegjegyzes() {
+    public function getMegjegyzes()
+    {
         return $this->megjegyzes;
     }
 
     /**
      * @param mixed $megjegyzes
      */
-    public function setMegjegyzes($megjegyzes) {
+    public function setMegjegyzes($megjegyzes)
+    {
         $this->megjegyzes = $megjegyzes;
     }
 
     /**
      * @return integer
      */
-    public function getOnline() {
+    public function getOnline()
+    {
         return $this->online;
     }
 
     /**
      * @param integer $online
      */
-    public function setOnline($online): void {
+    public function setOnline($online): void
+    {
         $this->online = $online;
     }
 
     /**
      * @return bool
      */
-    public function isLemondva() {
+    public function isLemondva()
+    {
         return $this->lemondva;
     }
 
     /**
      * @param bool $lemondva
      */
-    public function setLemondva($lemondva): void {
+    public function setLemondva($lemondva): void
+    {
         $this->lemondva = $lemondva;
     }
 
