@@ -56,7 +56,7 @@
                     {if ($resztvevo.type2price > 0)}
                     <div class="col">
                         <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}" data-price="{$resztvevo.type2price}">
-                            5-ös bérlet
+                            4-es bérlet
                         </button>
                     </div>
                     {/if}

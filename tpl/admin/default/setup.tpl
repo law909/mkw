@@ -87,7 +87,7 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($maintheme == 'darshan')}
+                        {if ($setup.darshan)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>
                                 <select id="SZEPFizmodEdit" name="szepkartyafizmod">
