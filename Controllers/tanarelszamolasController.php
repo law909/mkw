@@ -109,7 +109,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         foreach ($adat as $item) {
             $napokszama[$item->getDatumStr()] = 1;
             $fm = $item->getFizmod();
-            if (\mkw\store::isAYCMFizmod($fm)) {
+            if ($fm && \mkw\store::isAYCMFizmod($fm)) {
                 $termeknev = 'AYCM';
             } else {
                 $termeknev = $item->getTermekNev();
