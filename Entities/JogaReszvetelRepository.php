@@ -1,20 +1,35 @@
 <?php
 namespace Entities;
 
-class JogaReszvetelRepository extends \mkwhelpers\Repository {
+use mkwhelpers\FilterDescriptor;
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+class JogaReszvetelRepository extends \mkwhelpers\Repository
+{
+
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\JogaReszvetel');
         $this->setOrders(array(
-            '1' => array('caption' => 'dátum és tanár szerint csökkenő', 'order' => array('_xx.datum' => 'DESC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
-            '2' => array('caption' => 'dátum és tanár szerint növekvő', 'order' => array('_xx.datum' => 'ASC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
-            '3' => array('caption' => 'tanár és dátum szerint növekvő', 'order' => array('ta.nev' => 'ASC', '_xx.datum' => 'ASC', 'pa.nev' => 'ASC'))
-        ));
+                             '1' => array(
+                                 'caption' => 'dátum és tanár szerint csökkenő',
+                                 'order' => array('_xx.datum' => 'DESC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')
+                             ),
+                             '2' => array(
+                                 'caption' => 'dátum és tanár szerint növekvő',
+                                 'order' => array('_xx.datum' => 'ASC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')
+                             ),
+                             '3' => array(
+                                 'caption' => 'tanár és dátum szerint növekvő',
+                                 'order' => array('ta.nev' => 'ASC', '_xx.datum' => 'ASC', 'pa.nev' => 'ASC')
+                             )
+                         ));
     }
 
-    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,jt,jot,f,p,ta,pa,t '
+    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,jt,jot,f,p,ta,pa,t '
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.jogaterem jt'
             . ' LEFT JOIN _xx.jogaoratipus jot'
@@ -24,7 +39,8 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.partner pa'
             . ' LEFT JOIN _xx.termek t'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -35,8 +51,10 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.jogaterem jt'
             . ' LEFT JOIN _xx.jogaoratipus jot'
@@ -44,13 +62,33 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.penztar p'
             . ' LEFT JOIN _xx.tanar ta'
             . ' LEFT JOIN _xx.partner pa'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
+    public function getTanarTanitasnap($filter)
+    {
+        $q = $this->_em->createQuery('SELECT DISTINCT(_xx.datum)'
+                                     . ' FROM Entities\JogaReszvetel _xx'
+                                     . ' LEFT JOIN _xx.tanar ta'
+                                     . ' LEFT JOIN ta.fizmod fm'
+                                     . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        $res = $q->getArrayResult();
+        return count($res);
+    }
+
+    /**
+     * @param FilterDescriptor $filter
+     * @param $honap
+     * @return array
+     */
     public function getTanarOsszesito($filter, $honap = 1) {
-        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id,ta.havilevonas*' . $honap . ' AS havilevonas,fm.nev AS fizmodnev'
+        $res = [];
+        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id,ta.havilevonas*' . $honap . ' AS havilevonas,fm.nev AS fizmodnev,'
+            . ' ta.napilevonas AS napilevonas'
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.tanar ta'
             . ' LEFT JOIN ta.fizmod fm'
@@ -58,7 +96,23 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
             . ' GROUP BY ta.id'
             . ' ORDER BY ta.nev');
         $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
+        $tos = $q->getResult();
+        $xfilter = new FilterDescriptor();
+        foreach ($tos as $to) {
+            $xfilter->clear();
+            $xfilter->addArray($filter->getArray());
+            $xfilter->addFilter('tanar', '=', $to['id']);
+            $napilevonas = $this->getTanarTanitasnap($xfilter) * $to['napilevonas'];
+            $res[] = [
+                'id' => $to['id'],
+                'nev' => $to['nev'],
+                'fizmodnev' => $to['fizmodnev'],
+                'jutalek' => $to['jutalek'],
+                'havilevonas' => $to['havilevonas'],
+                'napilevonas' => $napilevonas
+            ];
+        }
+        return $res;
     }
 
     public function getTermekOsszesito($filter, $honap = 1) {

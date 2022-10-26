@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\JogaReszvetel;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -53,7 +54,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         }
         $filter->addFilter('_xx.tisztaznikell', '=', false);
 
-        $tetelek = $this->getRepo('Entities\JogaReszvetel')->getTanarOsszesito($filter, $hokulonbseg);
+        $tetelek = $this->getRepo(JogaReszvetel::class)->getTanarOsszesito($filter, $hokulonbseg);
 
         return $tetelek;
     }
@@ -240,7 +241,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
                 $defakerekit = $defavaluta->getKerekit();
                 $mincimlet = $defavaluta->getMincimlet();
             }
-            $osszeg = $adat[0]['jutalek'];
+            $osszeg = $adat[0]['jutalek'] - $adat[0]['havilevonas'] - $adat[0]['napilevonas'];
             if ($defakerekit) {
                 $osszeg = round($osszeg);
             }
@@ -256,8 +257,12 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());
 
-            $mailer->send();
-
+            if (\mkw\store::isDeveloper()) {
+                \mkw\store::writelog($subject->getTemplateResult());
+                \mkw\store::writelog($body->getTemplateResult());
+            } else {
+                $mailer->send();
+            }
             \unlink($filepath);
         }
     }
