@@ -584,7 +584,7 @@ class JogaReszvetel {
             $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaUresTeremJutalek, 3000));
         }
         else {
-            if (\mkw\store::isAYCMFizmod($this->getFizmodId())) {
+            if ($this->getFizmodId() && \mkw\store::isAYCMFizmod($this->getFizmodId())) {
                 $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
             }
             else {
