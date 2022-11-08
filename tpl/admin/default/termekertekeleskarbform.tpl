@@ -10,6 +10,9 @@
             <table>
                 <tbody>
                 <tr>
+                    <span>Elutasítva: </span><input type="checkbox" name="elutasitva"{if ($egyed.elutasitva)} checked="checked"{/if}>
+                </tr>
+                <tr>
                     <td class="mattable-important"><label for="PartnerEdit">{at('Vevő')}:</label></td>
                     {if ($setup.partnerautocomplete)}
                         <td colspan="7">

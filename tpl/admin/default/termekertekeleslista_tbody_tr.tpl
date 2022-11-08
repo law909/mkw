@@ -9,6 +9,13 @@
                         <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                     </td>
                 </tr>
+            {if ($_egyed.elutasitva)}
+                <tr>
+                    <td>
+                        Elutasítva
+                    </td>
+                </tr>
+            {/if}
             </tbody>
         </table>
     </td>

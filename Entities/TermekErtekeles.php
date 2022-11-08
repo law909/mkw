@@ -53,6 +53,8 @@ class TermekErtekeles {
      * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $partner;
+    /** @ORM\Column(type="boolean",nullable=true) */
+    private $elutasitva = false;
 
 
     public function getId() {
@@ -219,6 +221,22 @@ class TermekErtekeles {
     public function setErtekeles($ertekeles): void
     {
         $this->ertekeles = $ertekeles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isElutasitva()
+    {
+        return $this->elutasitva;
+    }
+
+    /**
+     * @param bool $elutasitva
+     */
+    public function setElutasitva($elutasitva): void
+    {
+        $this->elutasitva = $elutasitva;
     }
 
 }

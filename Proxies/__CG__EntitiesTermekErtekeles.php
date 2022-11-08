@@ -67,10 +67,10 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'szoveg', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elony', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'hatrany', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'valasz', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'ertekeles', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'partner'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'szoveg', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elony', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'hatrany', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'valasz', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'ertekeles', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elutasitva'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'szoveg', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elony', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'hatrany', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'valasz', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'ertekeles', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'partner'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'szoveg', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elony', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'hatrany', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'valasz', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'ertekeles', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtekeles' . "\0" . 'elutasitva'];
     }
 
     /**
@@ -454,6 +454,28 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtekeles', [$ertekeles]);
 
         parent::setErtekeles($ertekeles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isElutasitva()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isElutasitva', []);
+
+        return parent::isElutasitva();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElutasitva($elutasitva): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElutasitva', [$elutasitva]);
+
+        parent::setElutasitva($elutasitva);
     }
 
 }

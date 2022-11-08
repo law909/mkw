@@ -173,6 +173,13 @@ if ($DBVersion < '0042') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0042');
 }
+
+if ($DBVersion < '0043') {
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termekertekeles SET elutasitva=0 WHERE elutasitva IS NULL');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0043');
+}
+
 /*********************************************************
  *
  * NAV ONLINE 1.1 (2019.06.01)

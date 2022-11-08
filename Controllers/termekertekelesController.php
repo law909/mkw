@@ -39,6 +39,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $x['partnernev'] = $t->getPartnerNev();
         $x['termek'] = $t->getTermekId();
         $x['termeknev'] = $t->getTermekNev();
+        $x['elutasitva'] = $t->isElutasitva();
         return $x;
     }
 
@@ -65,7 +66,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $obj->setHatrany($this->params->getStringRequestParam('hatrany'));
         $obj->setValasz($this->params->getStringRequestParam('valasz'));
         $obj->setErtekeles($this->params->getIntRequestParam('ertekeles'));
-
+        $obj->setElutasitva($this->params->getBoolRequestParam('elutasitva'));
         return $obj;
     }
 
