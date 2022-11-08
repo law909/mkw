@@ -191,7 +191,11 @@ $(document).ready(
             .on('click', '.js-partnerok', function(e) {
                 e.preventDefault();
                 $('#partnerModal').modal('hide');
-                const partnerid = $('#keresoedit').find(':selected')[0].value;
+                const keresoedit = $('#keresoedit').find(':selected');
+                let partnerid = false;
+                if (keresoedit.length) {
+                    partnerid = keresoedit[0].value;
+                }
                 if (partnerid) {
                     $.ajax({
                         method: 'POST',
