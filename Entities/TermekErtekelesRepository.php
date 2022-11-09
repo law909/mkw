@@ -42,4 +42,15 @@ class TermekErtekelesRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array('created' => 'ASC'));
     }
 
+    public function getAtlagByTermek($termek) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('termek', '=', $termek);
+        $filter->addFilter('elutasitva', '<>', true);
+        $q = $this->_em->createQuery('SELECT COUNT(_xx), SUM(_xx.ertekeles) '
+            . ' FROM Entities\Termekertekeles _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getArrayResult();
+    }
+
 }

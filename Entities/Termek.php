@@ -799,6 +799,15 @@ class Termek {
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $ert = \mkw\store::getEm()->getRepository(TermekErtekeles::class)->getAtlagByTermek($this);
+        if ($ert[0][1]) {
+            $x['ertekelesatlag'] = \mkw\store::quarterRound($ert[0][2] / $ert[0][1]);
+            $x['ertekelesdb'] = $ert[0][1];
+        }
+        else {
+            $x['ertekelesatlag'] = 0;
+            $x['ertekelesdb'] = 0;
+        }
         switch (true) {
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -990,6 +999,15 @@ class Termek {
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $ert = \mkw\store::getEm()->getRepository(TermekErtekeles::class)->getAtlagByTermek($this);
+        if ($ert[0][1]) {
+            $x['ertekelesatlag'] = \mkw\store::quarterRound($ert[0][2] / $ert[0][1]);
+            $x['ertekelesdb'] = $ert[0][1];
+        }
+        else {
+            $x['ertekelesatlag'] = 0;
+            $x['ertekelesdb'] = 0;
+        }
         switch (true) {
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();

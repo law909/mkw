@@ -71,6 +71,20 @@
                     </div>
                     <div class="span3 hatter">
                         <div class="korbepadding">
+                            {if ($termek.ertekelesdb)}
+                                <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                                    <div class="c-rating" data-rating-value="{$termek.ertekelesatlag}">
+                                        <button>1</button>
+                                        <button>2</button>
+                                        <button>3</button>
+                                        <button>4</button>
+                                        <button>5</button>
+                                    </div>
+                                    <span itemprop="ratingValue">{$termek.ertekelesatlag}</span>
+                                    <div itemprop="reviewCount"> {$termek.ertekelesdb} értékelésből</div>
+                                </div>
+                            </div>
+                            {/if}
                             <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
                             <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                             {if ($termek.me)}

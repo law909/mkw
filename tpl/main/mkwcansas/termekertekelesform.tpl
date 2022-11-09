@@ -36,7 +36,7 @@
 							{$tetel.cikkszam}
 						</div>
 							<label class="tert-label" for="ertekelesedit{$tetel.termekid}">Értékelés</label>
-							<div class="rating js-errorable">
+							<div class="rating js-rating_{$tetel.termekid} js-errorable">
 								<input type="radio" name="rating_{$tetel.termekid}" value="5" id="5"><label for="5">☆</label>
 								<input type="radio" name="rating_{$tetel.termekid}" value="4" id="4"><label for="4">☆</label>
 								<input type="radio" name="rating_{$tetel.termekid}" value="3" id="3"><label for="3">☆</label>

@@ -170,21 +170,23 @@ class termekertekelesController extends \mkwhelpers\MattableController
                     ]
                 );
                 if (!$ert) {
-                    $termek = $this->getRepo(Termek::class)->find($id);
-                    if ($termek) {
-                        $rating = $this->params->getIntRequestParam('rating_' . $id);
-                        $ertekeles = $this->params->getStringRequestParam('ertekeles_' . $id);
-                        $elony = $this->params->getStringRequestParam('elony_' . $id);
-                        $hatrany = $this->params->getStringRequestParam('hatrany_' . $id);
-                        $ert = new TermekErtekeles();
-                        $ert->setTermek($termek);
-                        $ert->setPartner($partner);
-                        $ert->setErtekeles($rating);
-                        $ert->setSzoveg($ertekeles);
-                        $ert->setElony($elony);
-                        $ert->setHatrany($hatrany);
-                        $this->getEm()->persist($ert);
-                        $this->getEm()->flush();
+                    $rating = $this->params->getIntRequestParam('rating_' . $id);
+                    $ertekeles = $this->params->getStringRequestParam('ertekeles_' . $id);
+                    $elony = $this->params->getStringRequestParam('elony_' . $id);
+                    $hatrany = $this->params->getStringRequestParam('hatrany_' . $id);
+                    if ($rating && $ertekeles) {
+                        $termek = $this->getRepo(Termek::class)->find($id);
+                        if ($termek) {
+                            $ert = new TermekErtekeles();
+                            $ert->setTermek($termek);
+                            $ert->setPartner($partner);
+                            $ert->setErtekeles($rating);
+                            $ert->setSzoveg($ertekeles);
+                            $ert->setElony($elony);
+                            $ert->setHatrany($hatrany);
+                            $this->getEm()->persist($ert);
+                            $this->getEm()->flush();
+                        }
                     }
                 }
             }

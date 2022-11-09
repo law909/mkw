@@ -1878,4 +1878,9 @@ class store
         return \mkw\store::getMainSession()->valutanem;
     }
 
+    public static function quarterRound($mit) {
+        $x = $mit * 4;
+        $x = ceil($x);
+        return $x / 4;
+    }
 }
