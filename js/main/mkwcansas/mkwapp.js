@@ -1451,9 +1451,9 @@ var termekertekeles = (function($) {
                     ertekeles = $('textarea[name="ertekeles_' + el + '"]'),
                     elony = $('textarea[name="elony_' + el + '"]'),
                     hatrany = $('textarea[name="hatrany_' + el + '"]');
-                if (hatrany.val() || elony.val()) {
+                if (hatrany.val() || elony.val() || ertekeles.val() || rating.val()) {
                     if (!rating.val()) {
-                        $('.rating').addClass('checkouterrorblock');
+                        $('.js-rating_' + el).addClass('checkouterrorblock');
                         error = true;
                     }
                     if (!ertekeles.val()) {
@@ -1463,7 +1463,7 @@ var termekertekeles = (function($) {
                 }
             });
             if (error) {
-                mkw.showMessage('Kérjük, töltse ki a hiányzó adatokat.');
+                mkw.showDialog('Kérjük, töltse ki a hiányzó adatokat.');
                 e.preventDefault();
             }
             return error;
