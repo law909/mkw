@@ -83,6 +83,20 @@
                 <div class="tl-termek-cikkszam">
                     <span>{$termek.cikkszam}</span>
                 </div>
+                {if ($termek.ertekelesdb)}
+                    <div class="tl-termek-ertekeles" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                        <div class="c-rating" data-rating-value="{$termek.ertekelesatlag}">
+                            <button>1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>4</button>
+                            <button>5</button>
+                        </div>
+                        <span itemprop="reviewCount"> ({$termek.ertekelesdb})</span>
+                    </div>
+                {else}
+                    <div class="tl-termek-ertekeles"></div>
+                {/if}
                 <div class="tl-termek-rovidleiras hide-on-mobile">
                     <span>{$termek.rovidleiras}</span>
                 </div>
@@ -148,7 +162,6 @@
                     <div>{t('RÉSZLETEK')}</div>
                     <div class="tl-details-text">{$termek.leiras}</div>
                 </div>
-                <div class="tl-termek-ertekeles"></div>
             </section>
         </div>
     </article>

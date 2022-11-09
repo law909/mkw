@@ -29,7 +29,20 @@
                 <span>{$_termek.rovidleiras}</span>
             </div>
             <div class="termek-ar-row">
-                <div class="termek-ertekeles"></div>
+                {if ($_termek.ertekelesdb)}
+                    <div class="termek-ertekeles" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                        <div class="c-rating" data-rating-value="{$_termek.ertekelesatlag}">
+                            <button>1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>4</button>
+                            <button>5</button>
+                        </div>
+                        <span itemprop="reviewCount"> ({$_termek.ertekelesdb})</span>
+                    </div>
+                {else}
+                    <div class="termek-ertekeles"></div>
+                {/if}
                 <div class="termek-ar" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <span itemprop="price">{number_format($_termek.brutto,0,',',' ')} {$_termek.valutanemnev}</span>
                 </div>
