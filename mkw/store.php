@@ -71,7 +71,7 @@ class store
     {
         switch (self::getTheme()) {
             case 'mkwcansas':
-                return 35;
+                return 36;
         }
     }
 
