@@ -88,7 +88,7 @@ a {
 .btn {
     display: inline-block;
     padding: 4px 12px;
-    font-size: 14px;
+    line-height: 2em;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
@@ -747,6 +747,27 @@ a {
     display: grid;
 }
 
+.cart-megrendelem-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.cart-megrendelem {
+    justify-self: end;
+}
+
+.cart-folytatom {
+    justify-self: start;
+}
+
+.cart-termeknev {
+    font-size: var(--termek-nev-font-size-m);
+}
+
+.cart-cikkszam {
+    font-size: var(--termek-cikkszam-font-size);
+}
+
 @media screen and (min-width: 761px) {
     .c-viewer__iframe {
         width: 50vw;
@@ -999,25 +1020,8 @@ a {
         justify-content: center;
     }
 
-    .cart-megrendelem-container {
-        display: grid;
-        grid-template-columns: 50% 50%;
-    }
-
-    .cart-megrendelem {
-        justify-self: end;
-    }
-
-    .cart-folytatom {
-        justify-self: start;
-    }
-
     .cart-termeknev {
         font-size: var(--termek-nev-font-size-d);
-    }
-
-    .cart-cikkszam {
-        font-size: var(--termek-cikkszam-font-size);
     }
 }
 

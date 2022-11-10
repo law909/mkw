@@ -6,7 +6,6 @@
 
 {block "prescript"}
     <script src="/themes/main/mugenrace2021/splide/splide.min.js?v=1"></script>
-    <script defer src="/js/alpine/cdn.min.js"></script>
 {/block}
 {block "script"}
     <script src="/js/main/mugenrace2021/termeklap.js?v=9"></script>

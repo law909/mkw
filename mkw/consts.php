@@ -373,4 +373,9 @@ class consts {
 
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
+
+    public static function getWebshopPriceConst()
+    {
+        return 'Webshop' . \mkw\store::getWebshopNum() . 'Price';
+    }
 }

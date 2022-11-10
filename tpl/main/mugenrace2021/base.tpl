@@ -11,8 +11,9 @@
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=9">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=10">
     {block "css"}{/block}
+    <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
     <script src="/js/main/mugenrace2021/base.js?v=5"></script>
     {block "script"}{/block}

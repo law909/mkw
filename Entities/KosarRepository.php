@@ -4,25 +4,31 @@ namespace Entities;
 
 use mkwhelpers\FilterDescriptor;
 
-class KosarRepository extends \mkwhelpers\Repository {
+class KosarRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Kosar');
-        $this->setOrders(array(
-            '1' => array('caption' => 'létrehozás dátuma szerint csökkenő', 'order' => array('_xx.created' => 'DESC', '_xx.sessionid' => 'ASC')),
-            '2' => array('caption' => 'létrehozás dátuma szerint növekvő', 'order' => array('_xx.created' => 'ASC', '_xx.sessionid' => 'ASC')),
-            '3' => array('caption' => 'session szerint növekvő', 'order' => array('_xx.sessionid' => 'ASC')),
-        ));
+        $this->setOrders([
+            '1' => ['caption' => 'létrehozás dátuma szerint csökkenő', 'order' => ['_xx.created' => 'DESC', '_xx.sessionid' => 'ASC']],
+            '2' => ['caption' => 'létrehozás dátuma szerint növekvő', 'order' => ['_xx.created' => 'ASC', '_xx.sessionid' => 'ASC']],
+            '3' => ['caption' => 'session szerint növekvő', 'order' => ['_xx.sessionid' => 'ASC']],
+        ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,p,t '
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,p,t,v '
             . ' FROM Entities\Kosar _xx'
             . ' LEFT OUTER JOIN _xx.partner p'
             . ' LEFT JOIN _xx.termek t'
+            . ' LEFT JOIN _xx.valutanem v'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -31,22 +37,26 @@ class KosarRepository extends \mkwhelpers\Repository {
             $q->setMaxResults($elemcount);
         }
         if (\mkw\store::isMainMode()) {
-            \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
+            \mkw\store::setTranslationHint($q, \mkw\store::getLocale());
         }
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Kosar _xx'
             . ' LEFT OUTER JOIN _xx.partner p'
             . ' LEFT JOIN _xx.termek t'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
-    public function getMiniDataBySessionId($sessionid) {
+    public function getMiniDataBySessionId($sessionid)
+    {
         $szktid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 
         $filter = new FilterDescriptor();
@@ -55,30 +65,35 @@ class KosarRepository extends \mkwhelpers\Repository {
             $filter->addFilter('termek', '<>', $szktid);
         }
 
-        $q = $this->_em->createQuery('SELECT SUM(_xx.mennyiseg),'
+        $q = $this->_em->createQuery(
+            'SELECT SUM(_xx.mennyiseg),'
             . ' SUM(_xx.bruttoegysar * _xx.mennyiseg),'
             . ' SUM(_xx.nettoegysar * _xx.mennyiseg)'
             . ' FROM Entities\Kosar _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getScalarResult();
     }
 
-    public function getDataBySessionId($sessionid) {
+    public function getDataBySessionId($sessionid)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('sessionid', '=', $sessionid);
 
-        return $this->getWithJoins($filter, array('_xx.sorrend' => 'ASC'));
+        return $this->getWithJoins($filter, ['_xx.sorrend' => 'ASC']);
     }
 
-    public function getDataByPartner($partner) {
+    public function getDataByPartner($partner)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('partner', '=', $partner);
 
-        return $this->getWithJoins($filter, array('_xx.sorrend' => 'ASC'));
+        return $this->getWithJoins($filter, ['_xx.sorrend' => 'ASC']);
     }
 
-    public function calcSumBySessionId($sessionid) {
+    public function calcSumBySessionId($sessionid)
+    {
         $szktid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 
         $filter = new FilterDescriptor();
@@ -87,27 +102,30 @@ class KosarRepository extends \mkwhelpers\Repository {
             $filter->addFilter('termek', '<>', $szktid);
         }
 
-        $q = $this->_em->createQuery('SELECT SUM(_xx.bruttoegysar * _xx.mennyiseg),'
+        $q = $this->_em->createQuery(
+            'SELECT SUM(_xx.bruttoegysar * _xx.mennyiseg),'
             . ' SUM(_xx.nettoegysar * _xx.mennyiseg),'
             . ' SUM(_xx.mennyiseg),'
             . ' COUNT(_xx)'
             . ' FROM Entities\Kosar _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         $res = $q->getScalarResult();
         if (count($res)) {
-            return array(
+            return [
                 'sum' => $res[0][1],
                 'bruttosum' => $res[0][1],
                 'nettosum' => $res[0][2],
                 'mennyisegsum' => $res[0][3],
                 'count' => $res[0][4]
-            );
+            ];
         }
         return 0;
     }
 
-    public function getTetelsor($sessionid, $partnerid, $termekid, $valtozatid = null, $valutanem = null) {
+    public function getTetelsor($sessionid, $partnerid, $termekid, $valtozatid = null, $valutanem = null)
+    {
         $filter = new FilterDescriptor();
         if ($sessionid) {
             $filter->addFilter('sessionid', '=', $sessionid);
@@ -128,9 +146,11 @@ class KosarRepository extends \mkwhelpers\Repository {
             $filter->addFilter('id', '<', 0);
         }
 
-        $q = $this->_em->createQuery('SELECT _xx'
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Kosar _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         $r = $q->getResult();
         if (count($r) > 0) {
@@ -140,7 +160,8 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     // MKW, egyesével lehet a kosárba rakni; a kosárban lehet mennyiséget módosítani
-    public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
+    public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null)
+    {
         $sessionid = \Zend_Session::getId();
 
 
@@ -152,11 +173,14 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
-        if (\mkw\store::isMugenrace()) {
-            $valutanemid = \mkw\store::getMainSession()->valutanem;
-        }
-        else {
-            $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        switch (true) {
+            case \mkw\store::isMugenrace():
+            case \mkw\store::isMugenrace2021():
+                $valutanemid = \mkw\store::getMainSession()->valutanem;
+                break;
+            default:
+                $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+                break;
         }
 
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
@@ -167,8 +191,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setAfa($nullasafa);
                 }
                 $k->setBruttoegysar($bruttoegysar);
-            }
-            else {
+            } else {
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
                     $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
@@ -187,17 +210,14 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setSorrend(100);
                 }
             }
-        }
-        else {
+        } else {
             if ($k) {
                 if ($mennyiseg) {
                     $k->setMennyiseg($mennyiseg);
-                }
-                else {
+                } else {
                     $k->novelMennyiseg();
                 }
-            }
-            else {
+            } else {
                 /** @var \Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
@@ -213,57 +233,72 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setSessionid($sessionid);
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
-                    if (\mkw\store::isMugenrace()) {
-                        if ($nullasafa) {
-                            $k->setAfa($nullasafa);
-                            $k->setNettoegysar($termek->getNettoAr(
-                                $termekvaltozat,
-                                $partner,
-                                $valutanemid,
-                                \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr(
-                                $termekvaltozat,
-                                $partner,
-                                $valutanemid,
-                                \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
-                            $k->setEbruttoegysar($k->getEnettoegysar());
-                        }
-                        else {
-                            $k->setBruttoegysar($termek->getBruttoAr(
-                                $termekvaltozat,
-                                $partner,
-                                $valutanemid,
-                                \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
-                            $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr(
-                                $termekvaltozat,
-                                $partner,
-                                $valutanemid,
-                                \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr(
-                                $termekvaltozat,
-                                $partner,
-                                $valutanemid,
-                                \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
-                        }
-                    }
-                    else {
-                        if ($nullasafa) {
-                            $k->setAfa($nullasafa);
-                            $k->setNettoegysar($termek->getNettoAr($termekvaltozat, $partner));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
-                            $k->setEbruttoegysar($k->getEnettoegysar());
-                        }
-                        else {
-                            $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
-                            $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
-                        }
+                    switch (true) {
+                        case \mkw\store::isMugenrace():
+                        case \mkw\store::isMugenrace2021():
+                            if ($nullasafa) {
+                                $k->setAfa($nullasafa);
+                                $k->setNettoegysar(
+                                    $termek->getNettoAr(
+                                        $termekvaltozat,
+                                        $partner,
+                                        $valutanemid,
+                                        \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                    )
+                                );
+                                $k->setEnettoegysar(
+                                    $termek->getKedvezmenynelkuliNettoAr(
+                                        $termekvaltozat,
+                                        $partner,
+                                        $valutanemid,
+                                        \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                    )
+                                );
+                                $k->setEbruttoegysar($k->getEnettoegysar());
+                            } else {
+                                $k->setBruttoegysar(
+                                    $termek->getBruttoAr(
+                                        $termekvaltozat,
+                                        $partner,
+                                        $valutanemid,
+                                        \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                    )
+                                );
+                                $k->setEbruttoegysar(
+                                    $termek->getKedvezmenynelkuliBruttoAr(
+                                        $termekvaltozat,
+                                        $partner,
+                                        $valutanemid,
+                                        \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                    )
+                                );
+                                $k->setEnettoegysar(
+                                    $termek->getKedvezmenynelkuliNettoAr(
+                                        $termekvaltozat,
+                                        $partner,
+                                        $valutanemid,
+                                        \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                    )
+                                );
+                            }
+                            break;
+                        default:
+                            if ($nullasafa) {
+                                $k->setAfa($nullasafa);
+                                $k->setNettoegysar($termek->getNettoAr($termekvaltozat, $partner));
+                                $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                                $k->setEbruttoegysar($k->getEnettoegysar());
+                            } else {
+                                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                                $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
+                                $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                            }
+                            break;
                     }
                     $k->setKedvezmeny($termek->getKedvezmeny($partner));
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);
-                    }
-                    else {
+                    } else {
                         $k->setMennyiseg(1);
                     }
                 }
@@ -276,7 +311,8 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     // Superzone, terméklistából is lehet mennyiséget megadni
-    public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $kedvezmeny = null) {
+    public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $kedvezmeny = null)
+    {
         $sessionid = \Zend_Session::getId();
 
         $partnerid = null;
@@ -300,8 +336,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setAfa($nullasafa);
                 }
                 $k->setBruttoegysar($bruttoegysar);
-            }
-            else {
+            } else {
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
                     $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
@@ -320,12 +355,10 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setSorrend(100);
                 }
             }
-        }
-        else {
+        } else {
             if ($k) {
                 $k->novelMennyiseg($mennyiseg);
-            }
-            else {
+            } else {
                 /** @var \Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
@@ -346,8 +379,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                         $eredetinetto = $termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner);
                         $k->setEnettoegysar($eredetinetto);
                         $k->setEbruttoegysar($eredetinetto);
-                    }
-                    else {
+                    } else {
                         $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
                         $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
                     }
@@ -361,8 +393,7 @@ class KosarRepository extends \mkwhelpers\Repository {
 
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);
-                    }
-                    else {
+                    } else {
                         $k->setMennyiseg(1);
                     }
                 }
@@ -374,7 +405,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function remove($termekid, $vid = null) {
+    public function remove($termekid, $vid = null)
+    {
         $sessionid = \Zend_Session::getId();
 
         $partnerid = null;
@@ -393,7 +425,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function del($id) {
+    public function del($id)
+    {
         $sessionid = \Zend_Session::getId();
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
@@ -405,7 +438,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function edit($id, $mennyiseg, $kedvezmeny = false) {
+    public function edit($id, $mennyiseg, $kedvezmeny = false)
+    {
         $sessionid = \Zend_Session::getId();
         /** @var \Entities\Kosar $sor */
         $sor = $this->find($id);
@@ -425,21 +459,19 @@ class KosarRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function clear($partnerid = false) {
+    public function clear($partnerid = false)
+    {
         if ($partnerid) {
             $partner = $this->getRepo('Entities\Partner')->find($partnerid);
-        }
-        else {
+        } else {
             $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
         }
         if ($partner) {
             $k = $this->getDataByPartner($partner);
-        }
-        else {
+        } else {
             if ($partnerid) {
                 $k = false;
-            }
-            else {
+            } else {
                 $k = $this->getDataBySessionId(\Zend_Session::getId());
             }
         }
@@ -451,7 +483,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null) {
+    public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
+    {
         $szamol = true;
         if ($szallmod) {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
@@ -461,7 +494,6 @@ class KosarRepository extends \mkwhelpers\Repository {
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
 
         if ($termekid && $termek) {
-
             $e = $this->calcSumBySessionId(\Zend_Session::getId());
             $ertek = $e['sum'];
             $cnt = $e['count'];
@@ -479,20 +511,20 @@ class KosarRepository extends \mkwhelpers\Repository {
                         $fizmod,
                         \mkw\store::getPartnerOrszag($partner),
                         \mkw\store::getPartnerValutanem($partner),
-                        $ertek);
+                        $ertek
+                    );
                     $this->add($termekid, null, $ktg);
-                }
-                else {
+                } else {
                     $this->remove($termek);
                 }
-            }
-            else {
+            } else {
                 $this->remove($termek);
             }
         }
     }
 
-    public function calcSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null) {
+    public function calcSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
+    {
         $ktg = 0;
         $szamol = true;
         if ($szallmod) {
@@ -517,21 +549,23 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $fizmod,
                     \mkw\store::getPartnerOrszag($partner),
                     \mkw\store::getPartnerValutanem($partner),
-                    $ertek);
+                    $ertek
+                );
             }
         }
         return $ktg;
     }
 
-    public function getHash() {
+    public function getHash()
+    {
         $sorok = $this->getDataBySessionId(\Zend_Session::getId());
-        $s = array();
+        $s = [];
         foreach ($sorok as $sor) {
             $s[] = $sor->toLista();
         }
-        return array(
+        return [
             'value' => md5(json_encode($s)),
             'cnt' => count($sorok)
-        );
+        ];
     }
 }

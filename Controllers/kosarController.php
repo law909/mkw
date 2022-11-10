@@ -4,9 +4,11 @@ namespace Controllers;
 
 use Entities\TermekValtozat;
 
-class kosarController extends \mkwhelpers\MattableController {
+class kosarController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Kosar');
 //		$this->setKarbFormTplName('kosarkarbform.tpl');
 //		$this->setKarbTplName('kosarkarb.tpl');
@@ -15,8 +17,9 @@ class kosarController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Kosar();
             $this->getEm()->detach($t);
@@ -33,23 +36,23 @@ class kosarController extends \mkwhelpers\MattableController {
             $x['termek'] = $term->getId();
             $x['termeknev'] = $term->getNev();
             $x['termekurl'] = $term->getSlug();
-        }
-        else {
+        } else {
             $x['termek'] = 0;
             $x['termeknev'] = '';
             $x['termekurl'] = '';
         }
-        $v = array();
+        $v = [];
         $tv = $t->getTermekvaltozat();
         if ($tv) {
-            $v[] = array('nev' => $tv->getAdatTipus1Nev(), 'ertek' => $tv->getErtek1());
-            $v[] = array('nev' => $tv->getAdatTipus2Nev(), 'ertek' => $tv->getErtek2());
+            $v[] = ['nev' => $tv->getAdatTipus1Nev(), 'ertek' => $tv->getErtek1()];
+            $v[] = ['nev' => $tv->getAdatTipus2Nev(), 'ertek' => $tv->getErtek2()];
         }
         $x['valtozat'] = $v;
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $ck = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
@@ -62,30 +65,37 @@ class kosarController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('kosarlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter->addFilter(array('_xx.sessionid', 'p.nev', 't.nev'), 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter(['_xx.sessionid', 'p.nev', 't.nev'], 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('kosarlista.tpl');
 
         $view->setVar('pagetitle', t('Kosár'));
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('kosarlista.tpl');
 
         $view->setVar('pagetitle', t('Kosár'));
@@ -94,7 +104,8 @@ class kosarController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -107,7 +118,8 @@ class kosarController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getMiniData() {
+    public function getMiniData()
+    {
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
@@ -116,8 +128,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 $partner = \mkw\store::getLoggedInUser();
                 if ($partner && $partner->getSzamlatipus()) {
                     $osszeg = (float)$m[0][3];
-                }
-                else {
+                } else {
                     $osszeg = (float)$m[0][2];
                 }
                 $valutanem = 'Ft';
@@ -127,12 +138,12 @@ class kosarController extends \mkwhelpers\MattableController {
                 if ($hatar && $osszeg && $osszeg < $hatar) {
                     $megingyeneshez = $hatar - $osszeg;
                 }
-                return array(
+                return [
                     'termekdb' => $m[0][1],
                     'osszeg' => $osszeg,
                     'megingyeneshez' => $megingyeneshez,
                     'valutanem' => $valutanem
-                );
+                ];
             case \mkw\store::isSuperzoneB2B():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
                 $partner = \mkw\store::getLoggedInUser();
@@ -145,63 +156,135 @@ class kosarController extends \mkwhelpers\MattableController {
                 if ($partner && $partner->getValutanem()) {
                     $valutanem = $partner->getValutanemnev();
                 }
-                return array(
+                return [
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
                     'valutanem' => $valutanem
-                );
-            case \mkw\store::isMugenrace2021():
+                ];
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
-                return array(
+                return [
+                    'netto' => $m[0][3],
+                    'brutto' => $m[0][2],
+                    'valutanem' => \mkw\store::getMainSession()->valutanemnev
+                ];
+            case \mkw\store::isMugenrace2021():
+                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                return [
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
                     'valutanem' => \mkw\store::getMainSession()->valutanemnev
-                );
+                ];
             default:
                 return false;
         }
     }
 
-    public function get() {
-        $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
-        \mkw\store::fillTemplate($v);
-        $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
-        $partner = \mkw\store::getLoggedInUser();
-        $valutanem = 'Ft';
-        if ($partner) {
-            $valutanem = $partner->getValutanemnev();
-        }
-        $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
-        $s = array();
-        $tids = array();
-        $szallido = 1;
-        /** @var \Entities\Kosar $sor */
-        foreach ($sorok as $sor) {
-            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
-            if ($szallido < $sorszallido) {
-                $szallido = $sorszallido;
-            }
-            $s[] = $sor->toLista($partner);
-            $tids[] = $sor->getTermekId();
-        }
-        $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
+    public function get()
+    {
+        switch (true) {
+            case \mkw\store::isMindentkapni():
+                $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
+                \mkw\store::fillTemplate($v);
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $partner = \mkw\store::getLoggedInUser();
+                $valutanem = 'Ft';
+                if ($partner) {
+                    $valutanem = $partner->getValutanemnev();
+                }
+                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $s = [];
+                $tids = [];
+                $szallido = 1;
+                /** @var \Entities\Kosar $sor */
+                foreach ($sorok as $sor) {
+                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
+                    if ($szallido < $sorszallido) {
+                        $szallido = $sorszallido;
+                    }
+                    $s[] = $sor->toLista($partner);
+                    $tids[] = $sor->getTermekId();
+                }
+                $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
 
-        $v->setVar('szallitasiido', $szallido);
-        $v->setVar('tetellista', $s);
-        $v->setVar('valutanem', $valutanem);
-        $tc = new termekController($this->params);
-        $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
-        $v->printTemplateResult(false);
+                $v->setVar('szallitasiido', $szallido);
+                $v->setVar('tetellista', $s);
+                $v->setVar('valutanem', $valutanem);
+                $tc = new termekController($this->params);
+                $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
+                $v->printTemplateResult(false);
+                break;
+            case \mkw\store::isMugenrace2021():
+                $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
+                \mkw\store::fillTemplate($v);
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $partner = \mkw\store::getLoggedInUser();
+                $valutanem = \mkw\store::getMainValutanemNev();
+                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $s = [];
+                $tids = [];
+                $szallido = 1;
+                /** @var \Entities\Kosar $sor */
+                foreach ($sorok as $sor) {
+                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
+                    if ($szallido < $sorszallido) {
+                        $szallido = $sorszallido;
+                    }
+                    $s[] = $sor->toLista($partner);
+                    $tids[] = $sor->getTermekId();
+                }
+                $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
+
+                $v->setVar('szallitasiido', $szallido);
+                $v->setVar('tetellista', $s);
+                $v->setVar('valutanem', $valutanem);
+                $tc = new termekController($this->params);
+                $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
+                $v->printTemplateResult(false);
+                break;
+            default:
+                $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
+                \mkw\store::fillTemplate($v);
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $partner = \mkw\store::getLoggedInUser();
+                $valutanem = 'HUF';
+                if ($partner) {
+                    $valutanem = $partner->getValutanemnev();
+                }
+                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $s = [];
+                $tids = [];
+                $szallido = 1;
+                /** @var \Entities\Kosar $sor */
+                foreach ($sorok as $sor) {
+                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
+                    if ($szallido < $sorszallido) {
+                        $szallido = $sorszallido;
+                    }
+                    $s[] = $sor->toLista($partner);
+                    $tids[] = $sor->getTermekId();
+                }
+                $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
+
+                $v->setVar('szallitasiido', $szallido);
+                $v->setVar('tetellista', $s);
+                $v->setVar('valutanem', $valutanem);
+                $tc = new termekController($this->params);
+                $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
+                $v->printTemplateResult(false);
+                break;
+        }
     }
 
-    public function clear($partnerid = false) {
+    public function clear($partnerid = false)
+    {
         $this->getRepo()->clear($partnerid);
     }
 
-    public function add() {
+    public function add()
+    {
         $termek = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('id'));
         $vid = null;
         switch ($this->params->getIntRequestParam('jax', 0)) {
@@ -238,17 +321,15 @@ class kosarController extends \mkwhelpers\MattableController {
                 $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
                 $v2->setVar('kosar', $minidata);
 
-                echo json_encode(array(
+                echo json_encode([
                     'termekdb' => \mkwhelpers\TypeConverter::toInt($minidata['termekdb']),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult()
-                ));
-            }
-            else {
+                ]);
+            } else {
                 if (\mkw\store::getMainSession()->prevuri) {
                     Header('Location: ' . \mkw\store::getMainSession()->prevuri);
-                }
-                else {
+                } else {
                     Header('Location: /');
                 }
             }
@@ -256,7 +337,8 @@ class kosarController extends \mkwhelpers\MattableController {
     }
 
     // Superzone
-    public function multiAdd() {
+    public function multiAdd()
+    {
         $termekid = $this->params->getIntRequestParam('termek');
         if ($termekid) {
             $termek = $this->getRepo('Entities\Termek')->find($termekid);
@@ -279,13 +361,14 @@ class kosarController extends \mkwhelpers\MattableController {
             $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
             $v->setVar('kosar', $minidata);
 
-            echo json_encode(array(
+            echo json_encode([
                 'minikosar' => $v->getTemplateResult()
-            ));
+            ]);
         }
     }
 
-    public function del() {
+    public function del()
+    {
         $id = $this->params->getIntRequestParam('id');
         if ($this->getRepo()->del($id)) {
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
@@ -293,19 +376,18 @@ class kosarController extends \mkwhelpers\MattableController {
 //				$v->setVar('kosar',$this->getMiniData());
 //				$v->printTemplateResult();
                 echo 'ok';
-            }
-            else {
+            } else {
                 if (\mkw\store::getMainSession()->prevuri) {
                     Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
-                }
-                else {
+                } else {
                     Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
                 }
             }
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $id = $this->params->getIntRequestParam('id');
         $menny = $this->params->getNumRequestParam('mennyiseg', false);
         $kedvezmeny = $this->params->getNumRequestParam('kedvezmeny', false);
@@ -315,8 +397,7 @@ class kosarController extends \mkwhelpers\MattableController {
 //				$v->setVar('kosar',$this->getMiniData());
 //				$v->printTemplateResult();
                 echo 'ok';
-            }
-            else {
+            } else {
                 $partner = \mkw\store::getLoggedInUser();
                 $minidata = $this->getMiniData();
                 $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
@@ -331,8 +412,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 if ($m) {
                     if ($partner && $partner->getSzamlatipus()) {
                         $sum = $m['nettosum'];
-                    }
-                    else {
+                    } else {
                         $sum = $m['bruttosum'];
                     }
                     $mennyisegsum = $m['mennyisegsum'];
@@ -361,7 +441,7 @@ class kosarController extends \mkwhelpers\MattableController {
 
                 $sorok = $this->getRepo()->find($id);
                 $s = $sorok->toLista($partner);
-                echo json_encode(array(
+                echo json_encode([
                     'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
                     'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
                     'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
@@ -372,15 +452,16 @@ class kosarController extends \mkwhelpers\MattableController {
                     'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult(),
-                ));
+                ]);
             }
         }
     }
 
-    public function replaceSessionIdAndAddPartner($oldid, $partner) {
+    public function replaceSessionIdAndAddPartner($oldid, $partner)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('sessionid', '=', $oldid);
-        $sorok = $this->getRepo()->getAll($filter, array());
+        $sorok = $this->getRepo()->getAll($filter, []);
         foreach ($sorok as $sor) {
             $sor->setSessionid(\Zend_Session::getId());
             $sor->setPartner($partner);
@@ -389,10 +470,11 @@ class kosarController extends \mkwhelpers\MattableController {
         $this->getEm()->flush();
     }
 
-    public function addSessionIdByPartner($partner) {
+    public function addSessionIdByPartner($partner)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('partner', '=', $partner);
-        $sorok = $this->getRepo()->getAll($filter, array());
+        $sorok = $this->getRepo()->getAll($filter, []);
         foreach ($sorok as $sor) {
             $sor->setSessionid(\Zend_Session::getId());
             $this->getEm()->persist($sor);
@@ -400,10 +482,11 @@ class kosarController extends \mkwhelpers\MattableController {
         $this->getEm()->flush();
     }
 
-    public function removeSessionId($id) {
+    public function removeSessionId($id)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('sessionid', '=', $id);
-        $sorok = $this->getRepo()->getAll($filter, array());
+        $sorok = $this->getRepo()->getAll($filter, []);
         foreach ($sorok as $sor) {
             $sor->setSessionid(null);
             $this->getEm()->persist($sor);
@@ -411,21 +494,26 @@ class kosarController extends \mkwhelpers\MattableController {
         $this->getEm()->flush();
     }
 
-    public function getHash() {
+    public function getHash()
+    {
         $sorok = $this->getRepo()->getHash();
         echo json_encode($sorok);
     }
 
-    public function recalcPrices() {
+    public function recalcPrices()
+    {
         $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
             if (\mkw\store::isMugenrace()) {
-                $sor->setBruttoegysar($sor->getTermek()->getBruttoAr(
-                    $sor->getTermekvaltozat(),
-                    \mkw\store::getLoggedInUser(),
-                    \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
+                $sor->setBruttoegysar(
+                    $sor->getTermek()->getBruttoAr(
+                        $sor->getTermekvaltozat(),
+                        \mkw\store::getLoggedInUser(),
+                        \mkw\store::getMainSession()->valutanem,
+                        \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                    )
+                );
                 $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
                 $this->getEm()->persist($sor);
             }
