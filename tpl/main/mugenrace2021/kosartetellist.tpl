@@ -18,8 +18,8 @@
                     <a href="{$tetel.link}">{$tetel.caption}</a>
                     {/if}
                 </div>
-				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
 				<div class="cart-cikkszam">{$tetel.cikkszam}</div>
+				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
 			</td>
 			<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} {$valutanemnev}</div></td>
 			<td>
