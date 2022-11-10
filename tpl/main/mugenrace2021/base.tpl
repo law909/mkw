@@ -11,10 +11,10 @@
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=8">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=9">
     {block "css"}{/block}
     {block "prescript"}{/block}
-    <script src="/js/main/mugenrace2021/base.js?v=4"></script>
+    <script src="/js/main/mugenrace2021/base.js?v=5"></script>
     {block "script"}{/block}
 </head>
 <body>
@@ -44,7 +44,15 @@
         <div></div>
         <a href="/" class="nav-logo hcenter"><img src="/themes/main/mugenrace2021/logo_w.png" class="nav-logoimg" alt="Home"></a>
         <a href="" class="nav-search"><img src="/themes/main/mugenrace2021/search_w.png" class="nav-img" alt="Search"></a>
-        <a href="" class="nav-cart"><img src="/themes/main/mugenrace2021/cart_w.png" class="nav-img" alt="Cart"></a>
+        <a href="/kosar/get" class="nav-cart">
+            <img src="/themes/main/mugenrace2021/cart_w.png" class="nav-img" alt="Cart">
+            <span class="nav-cart-counter"
+                  x-data
+                  x-init="$store.header.termekdb = {$termekdb}"
+                  x-text="$store.header.termekdb"
+                  x-show="$store.header.termekdb > 0"
+            ></span>
+        </a>
         <select class="nav-lang">
             {foreach $localelist as $locale}
                 <option value="{$locale.id}"{if ($locale.selected)} selected="selected"{/if}>{$locale.caption}</option>

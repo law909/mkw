@@ -2,6 +2,7 @@
     --font-bold: "Helvetica Neue Bd", Helvetica, Arial, sans-serif;
     --font-normal: "Helvetica Neue Lt", Helvetica, Arial, sans-serif;
     --brand-color: #C8FF00;
+    --secondary-color: #C3C3C3;
     --dark-font-color: black;
     --nav-background-color: black;
     --light-font-color: white;
@@ -28,6 +29,8 @@
     --tl-nav-spacer-height-m: 12vh;
     --tl-nav-spacer-height-d: 14vh;
     --tl-color-selector-img-width: 5vw;
+    --cart-nav-spacer-height-m: 12vh;
+    --cart-nav-spacer-height-d: 14vh;
 }
 
 @font-face {
@@ -80,6 +83,35 @@ a {
 
 .hide-on-desktop {
     display: block;
+}
+
+.btn {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-repeat: repeat-x;
+    border: 1px solid;
+    border-radius: 2px;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 1px 2px rgb(0 0 0 / 5%);
+    background: linear-gradient(#0000, rgb(0 0 0/20%)) top/100% 800%;
+    transition: .5s;
+}
+
+.btn:hover {
+    background-position: bottom;
+}
+
+.btn-primary {
+    font-weight: bold;
+    background-color: var(--brand-color);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
 }
 
 .menucontainer {
@@ -695,6 +727,26 @@ a {
     font-size: 150%;
 }
 
+.nav-cart {
+    position: relative;
+}
+
+.nav-cart-counter {
+    background: var(--brand-color);
+    padding: 4px 4px 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.cart-nav-spacer {
+    height: var(--cart-nav-spacer-height-m);
+}
+
+.cart-container {
+    display: grid;
+}
+
 @media screen and (min-width: 761px) {
     .c-viewer__iframe {
         width: 50vw;
@@ -936,6 +988,36 @@ a {
         border: var(--termek-border);
         padding: 9px;
         margin: 0 6px;
+    }
+
+    .cart-nav-spacer {
+        height: var(--cart-nav-spacer-height-d);
+    }
+
+    .cart-container {
+        display: grid;
+        justify-content: center;
+    }
+
+    .cart-megrendelem-container {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+
+    .cart-megrendelem {
+        justify-self: end;
+    }
+
+    .cart-folytatom {
+        justify-self: start;
+    }
+
+    .cart-termeknev {
+        font-size: var(--termek-nev-font-size-d);
+    }
+
+    .cart-cikkszam {
+        font-size: var(--termek-cikkszam-font-size);
     }
 }
 

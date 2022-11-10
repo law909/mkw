@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\TermekValtozat;
+
 class kosarController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -149,6 +151,7 @@ class kosarController extends \mkwhelpers\MattableController {
                     'brutto' => $m[0][2],
                     'valutanem' => $valutanem
                 );
+            case \mkw\store::isMugenrace2021():
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
                 return array(
@@ -204,14 +207,19 @@ class kosarController extends \mkwhelpers\MattableController {
         switch ($this->params->getIntRequestParam('jax', 0)) {
             case 2:
                 $vid = $this->params->getIntRequestParam('vid', null);
-                $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
                 break;
             case 3:
                 $tipusok = $this->params->getArrayRequestParam('tip');
                 $ertekek = $this->params->getArrayRequestParam('val');
-                $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->getByProperties($termek->getId(), $tipusok, $ertekek);
+                $termekvaltozat = $this->getRepo(TermekValtozat::class)->getByProperties($termek->getId(), $tipusok, $ertekek);
                 $vid = $termekvaltozat->getId();
                 break;
+            case 4:
+                $szin = $this->params->getStringRequestParam('color');
+                $meret = $this->params->getStringRequestParam('size');
+                $termekvaltozat = $this->getRepo(TermekValtozat::class)->getByColorSize($termek->getId(), $szin, $meret);
+                $vid = $termekvaltozat->getId();
             default:
                 $termekvaltozat = null;
                 break;
@@ -231,6 +239,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 $v2->setVar('kosar', $minidata);
 
                 echo json_encode(array(
+                    'termekdb' => \mkwhelpers\TypeConverter::toInt($minidata['termekdb']),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult()
                 ));

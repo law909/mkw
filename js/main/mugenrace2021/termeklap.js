@@ -40,7 +40,25 @@ document.addEventListener("alpine:init", () => {
             this.selectedColor = color;
         },
         addToCart() {
-            alert('A kosárban lesz majd: ' + this.selectedColor.value + ' - ' + this.selectedSize.value);
+            const fm = new FormData();
+            fm.append('jax', 4);
+            fm.append('id', this.termekid);
+            fm.append('color', this.selectedColor.value);
+            fm.append('size', this.selectedSize.value);
+            fetch('/kosar/add', {
+                method: 'POST',
+                //headers: {'Content-type': 'application/json'},
+                body: fm
+            })
+                .then((response) => response.json())
+                .then((respdata) => {
+                    Alpine.store('header').termekdb = respdata.termekdb;
+                })
+                .catch((error) => {
+                    alert(error);
+                })
+                .finally(() => {
+                });
         }
     }));
 });

@@ -9,7 +9,7 @@
     <script defer src="/js/alpine/cdn.min.js"></script>
 {/block}
 {block "script"}
-    <script src="/js/main/mugenrace2021/termeklap.js?v=8"></script>
+    <script src="/js/main/mugenrace2021/termeklap.js?v=9"></script>
 {/block}
 
 {block "body"}

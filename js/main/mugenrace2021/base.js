@@ -1,4 +1,10 @@
-window.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener("alpine:init", () => {
+    Alpine.store("header", {
+        termekdb: 0
+    });
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
 
     document.querySelector('.nav-menu').addEventListener('click', function(e) {
         e.preventDefault();

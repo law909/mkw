@@ -2,14 +2,16 @@
 
 namespace mkwhelpers;
 
-class TypeConverter {
+class TypeConverter
+{
 
-    public function toBool($value) {
+    public static function toBool($value)
+    {
         if (is_bool($value)) {
             return $value;
         }
         if ($value) {
-            $value = strtolower((string) $value);
+            $value = strtolower((string)$value);
             if ($value === 'false' || $value === 'no' || $value === 'off' || $value === 'not') {
                 return false;
             }
@@ -18,34 +20,39 @@ class TypeConverter {
         return false;
     }
 
-    public function toNum($value) {
+    public static function toNum($value)
+    {
         if (is_numeric($value)) {
             return $value * 1;
         }
         return 0;
     }
 
-    public function toInt($value) {
-        return (int) $value;
+    public static function toInt($value)
+    {
+        return (int)$value;
     }
 
-    public function toFloat($value) {
-        return (float) $value;
+    public static function toFloat($value)
+    {
+        return (float)$value;
     }
 
-    public function toString($value) {
-        return (string) $value;
+    public static function toString($value)
+    {
+        return (string)$value;
     }
 
-    public function toArray($value) {
+    public static function toArray($value)
+    {
         if (is_string($value)) {
             return explode(',', $value);
         }
-        return (array) $value;
+        return (array)$value;
     }
 
-    public function toDate($value) {
-        return (string) $value;
+    public static function toDate($value)
+    {
+        return (string)$value;
     }
-
 }
