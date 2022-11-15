@@ -4999,4 +4999,15 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         return parent::generateTermekertekelesid();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isVanMitErtekelni()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isVanMitErtekelni', []);
+
+        return parent::isVanMitErtekelni();
+    }
+
 }

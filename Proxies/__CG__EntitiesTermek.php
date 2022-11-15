@@ -3162,4 +3162,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::getMarka();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getErtekelesAtlag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtekelesAtlag', []);
+
+        return parent::getErtekelesAtlag();
+    }
+
 }

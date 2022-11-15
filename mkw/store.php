@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
+use Entities\Termek;
 use Entities\TermekFa;
 use Entities\Valutanem;
 use http\Params;
@@ -1205,6 +1206,15 @@ class store
     public static function isSSL()
     {
         return self::getSetupValue('ssl');
+    }
+
+    public static function isSzallitasiKtgTermek($termek)
+    {
+        $i = $termek;
+        if (is_a($termek, Termek::class)) {
+            $i = $termek->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::SzallitasiKtgTermek);
     }
 
     public static function isFoxpostSzallitasimod($szm)

@@ -2128,4 +2128,15 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         return parent::setEmagid($emagid);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isMarErtekelt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isMarErtekelt', []);
+
+        return parent::isMarErtekelt();
+    }
+
 }

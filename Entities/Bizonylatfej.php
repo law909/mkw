@@ -1164,6 +1164,7 @@ class Bizonylatfej
         $ret['szepkartyakifizetve'] = $this->getSzepkartyakifizetve();
         $ret['barionpaymentstatus'] = $this->getBarionpaymentstatus();
         $ret['termekertekelesid'] = $this->getTermekertekelesid();
+        $ret['termekertekelesurl'] = '/termekertekeles?b=' . $this->getId() . '&id=' . $this->getTermekertekelesid();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -1196,9 +1197,15 @@ class Bizonylatfej
                     break;
             }
         }
+        $ret['vanmitertekelni'] = false;
         $tetellist = array();
+        /** @var Bizonylattetel $tetel */
         foreach ($this->bizonylattetelek as $tetel) {
-            $tetellist[] = $tetel->toLista();
+            $_x = $tetel->toLista();
+            if (!$_x['marertekelt'] && !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())) {
+                $ret['vanmitertekelni'] = true;
+            }
+            $tetellist[] = $_x;
         }
         switch (true) {
             case \mkw\store::isSuperzoneB2B():
@@ -5161,5 +5168,19 @@ class Bizonylatfej
     public function generateTermekertekelesid()
     {
         $this->setTermekertekelesid(md5(uniqid($this->getId(), true)));
+    }
+
+    public function isVanMitErtekelni()
+    {
+        $vanmit = false;
+        /** @var Bizonylattetel $tetel */
+        foreach ($this->bizonylattetelek as $tetel) {
+            if (!$tetel->isMarErtekelt() &&
+                !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
+            ) {
+                $vanmit = true;
+            }
+        }
+        return $vanmit;
     }
 }

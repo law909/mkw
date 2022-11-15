@@ -5,7 +5,13 @@
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="form-header">
-				<h2>Értékelje megvásárolt termékeit</h2>
+				<h2>
+					{if ($megr.vanmitertekelni)}
+						Értékelje megvásárolt termékeit
+					{else}
+						Már értékelte termékeit, köszönjük
+					{/if}
+				</h2>
 			</div>
 			<div>
 				<table>
@@ -27,7 +33,7 @@
 				<form method="post" action="/termekertekeles/save" class="js-tert-form">
 					<input type="hidden" name="pid" value="{$megr.partnerid}">
 				{foreach $megr.tetellista as $tetel}
-					{if ($tetel.termekid != $szktgtermek)}
+					{if (($tetel.termekid != $szktgtermek) && (!$tetel.marertekelt))}
 					<div class="tert-termek">
 						<input type="hidden" class="js-termekids" name="termekids[]" value="{$tetel.termekid}">
 						<div class="tert-termekinfo">
@@ -37,11 +43,11 @@
 						</div>
 							<label class="tert-label" for="ertekelesedit{$tetel.termekid}">Értékelés</label>
 							<div class="rating js-rating_{$tetel.termekid} js-errorable">
-								<input type="radio" name="rating_{$tetel.termekid}" value="5" id="5"><label for="5">☆</label>
-								<input type="radio" name="rating_{$tetel.termekid}" value="4" id="4"><label for="4">☆</label>
-								<input type="radio" name="rating_{$tetel.termekid}" value="3" id="3"><label for="3">☆</label>
-								<input type="radio" name="rating_{$tetel.termekid}" value="2" id="2"><label for="2">☆</label>
-								<input type="radio" name="rating_{$tetel.termekid}" value="1" id="1"><label for="1">☆</label>
+								<input type="radio" name="rating_{$tetel.termekid}" value="5" id="5_{$tetel.termekid}"><label for="5_{$tetel.termekid}">☆</label>
+								<input type="radio" name="rating_{$tetel.termekid}" value="4" id="4_{$tetel.termekid}"><label for="4_{$tetel.termekid}">☆</label>
+								<input type="radio" name="rating_{$tetel.termekid}" value="3" id="3_{$tetel.termekid}"><label for="3_{$tetel.termekid}">☆</label>
+								<input type="radio" name="rating_{$tetel.termekid}" value="2" id="2_{$tetel.termekid}"><label for="2_{$tetel.termekid}">☆</label>
+								<input type="radio" name="rating_{$tetel.termekid}" value="1" id="1_{$tetel.termekid}"><label for="1_{$tetel.termekid}">☆</label>
 							</div>
 							<textarea id="ertekelesedit{$tetel.termekid}" name="ertekeles_{$tetel.termekid}" rows="5" class="js-errorable"></textarea>
 							<label class="tert-label" for="elonyedit{$tetel.termekid}">Előnyök</label>
@@ -52,7 +58,13 @@
 					{/if}
 				{/foreach}
 				<div class="tert-saverow">
+					{if ($megr.vanmitertekelni)}
 					<button type="submit" class="btn okbtn">Mentés</button>
+					{else}
+						<div>
+							<a href="/" class="btn okbtn">Folytatom a vásárlást</a>
+						</div>
+					{/if}
 				</div>
 				</form>
 			</div>
