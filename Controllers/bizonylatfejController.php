@@ -2130,6 +2130,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
+    public function sendEmailSablonok() {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
+        if ($sablon) {
+            foreach ($ids as $id) {
+                /** @var \Entities\Bizonylatfej $megrendfej */
+                $megrendfej = $this->getRepo()->find($id);
+                if ($megrendfej && $megrendfej->isVanMitErtekelni()) {
+                    $megrendfej->sendEmailSablon($sablon);
+                }
+            }
+        }
+    }
+
     public function calcNavEredmenyRiasztas() {
         $filter = new FilterDescriptor();
         $filter->addFilter('kelt', '>=', '2021-04-01');

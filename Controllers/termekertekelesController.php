@@ -151,7 +151,6 @@ class termekertekelesController extends \mkwhelpers\MattableController
             $view->setVar('pagetitle', t('Értékelés') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
 
             $view->setVar('megr', $biz->toLista());
-            $view->setVar('szktgtermek', \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
             $view->printTemplateResult();
         }
     }

@@ -878,6 +878,8 @@ class Bizonylatfej
             $subject->setVar('rendeles', $tpldata);
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
             $body->setVar('rendeles', $tpldata);
+            $body->setVar('szktgtermek', \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+            $body->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
             if (\mkw\store::getConfigValue('developer')) {
                 \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
                 \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');

@@ -549,6 +549,7 @@ class store
         }
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
+        $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = array();
         $user['loggedin'] = $pr->checkloggedin();

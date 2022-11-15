@@ -16,6 +16,7 @@ class megrendelesfejController extends bizonylatfejController {
         $this->getRepo()->addToBatches(array('foxpostlabel' => 'Foxpost címke letöltés'));
         $this->getRepo()->addToBatches(array('glssend' => 'Küldés GLS-nek'));
         $this->getRepo()->addToBatches(array('recalcprice' => 'Árak újra számolása'));
+        $this->getRepo()->addToBatches(array('sendemailek' => 'Email sablon küldés'));
     }
 
     public function setVars($view) {
