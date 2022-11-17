@@ -1209,6 +1209,9 @@ class Bizonylatfej
             }
             $tetellist[] = $_x;
         }
+        if ($this->getBizonylatstatusz()->getNemertekelheto()) {
+            $ret['vanmitertekelni'] = false;
+        }
         switch (true) {
             case \mkw\store::isSuperzoneB2B():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);

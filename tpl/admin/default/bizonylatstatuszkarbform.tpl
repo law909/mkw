@@ -16,6 +16,10 @@
 				<td><label for="CsoportEdit">{at('Csoport')}:</label></td>
 				<td><input id="CsoportEdit" name="csoport" type="text" size="80" maxlength="255" value="{$egyed.csoport}"></td>
 			</tr>
+			<tr>
+				<td><label for="NemertekelhetoEdit">{at('Nem értékelhető')}:</label></td>
+				<td><input id="NemertekelhetoEdit" name="nemertekelheto" type="checkbox"{if ($egyed.nemertekelheto)} checked="checked"{/if}"></td>
+			</tr>
             {if ($setup.foglalas)}
 			<tr>
 				<td><label for="FoglalEdit">{at('Foglal')}:</label></td>

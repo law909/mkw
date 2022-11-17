@@ -6,9 +6,11 @@ use Entities\Bizonylatstatusz;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
-class bizonylatstatuszController extends \mkwhelpers\MattableController {
+class bizonylatstatuszController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Bizonylatstatusz');
         $this->setKarbFormTplName('bizonylatstatuszkarbform.tpl');
         $this->setKarbTplName('bizonylatstatuszkarb.tpl');
@@ -17,8 +19,9 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Bizonylatstatusz();
             $this->getEm()->detach($t);
@@ -33,15 +36,18 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
+        $x['nemertekelheto'] = $t->getNemertekelheto();
         return $x;
     }
 
     /** @param \Entities\Bizonylatstatusz $obj */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setCsoport($this->params->getStringRequestParam('csoport'));
         $obj->setFoglal($this->params->getBoolRequestParam('foglal'));
+        $obj->setNemertekelheto($this->params->getBoolRequestParam('nemertekelheto'));
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
@@ -49,38 +55,45 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
             $obj->setFizmod($ck);
-        }
-        else {
+        } else {
             $obj->removeFizmod();
         }
         $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
         if ($ck) {
             $obj->setSzallitasimod($ck);
-        }
-        else {
+        } else {
             $obj->removeSzallitasimod();
         }
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('bizonylatstatuszlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
-            $this->getRepo()->getCount($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('bizonylatstatuszlista.tpl');
 
         $view->setVar('pagetitle', t('bizonylatstatusz'));
@@ -88,7 +101,8 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('bizonylatstatuszlista.tpl');
 
         $view->setVar('pagetitle', t('bizonylatstatusz'));
@@ -98,7 +112,8 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -119,13 +134,15 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null) {
+    public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null)
+    {
         $filter = new FilterDescriptor();
         if ($szallmodid && $fizmodid) {
-            $filter->addSql('((_xx.fizmod=' . $fizmodid . ') AND (_xx.szallitasimod=' . $szallmodid . '))' .
-                ' OR ((_xx.fizmod IS NULL) AND (_xx.szallitasimod IS NULL))');
-        }
-        else {
+            $filter->addSql(
+                '((_xx.fizmod=' . $fizmodid . ') AND (_xx.szallitasimod=' . $szallmodid . '))' .
+                ' OR ((_xx.fizmod IS NULL) AND (_xx.szallitasimod IS NULL))'
+            );
+        } else {
             if ($fizmodid) {
                 $filter->addSql('((_xx.fizmod=' . $fizmodid . ') OR (_xx.fizmod IS NULL))');
             }
@@ -133,22 +150,24 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
                 $filter->addSql('((_xx.szallitasimod=' . $szallmodid . ') OR (_xx.fizmod IS NULL))');
             }
         }
-        $rec = $this->getRepo()->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function getCsoportSelectList($sel = null) {
+    public function getCsoportSelectList($sel = null)
+    {
         $rec = $this->getRepo()->getExistingCsoportok();
-        $res = array();
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor['csoport'],
                 'caption' => $sor['csoport'],
-                'selected' => (!$sel ? false: $sor['csoport'] == $sel));
+                'selected' => (!$sel ? false : $sor['csoport'] == $sel)
+            ];
         }
         return $res;
     }

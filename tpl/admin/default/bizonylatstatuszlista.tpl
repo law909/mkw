@@ -41,6 +41,7 @@
         {if ($setup.foglalas)}
         <th>{at('Foglal')}</th>
         {/if}
+		<th>{at('Értékelhető')}</th>
         <th>{at('Csoport')}</th>
         <th>{at('Sorrend')}</th>
 	</tr>
