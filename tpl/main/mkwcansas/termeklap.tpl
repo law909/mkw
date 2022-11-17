@@ -83,7 +83,6 @@
                                     <span itemprop="ratingValue">{$termek.ertekelesatlag}</span>
                                     <div itemprop="reviewCount"> {$termek.ertekelesdb} értékelésből</div>
                                 </div>
-                            </div>
                             {/if}
                             <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
                             <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
