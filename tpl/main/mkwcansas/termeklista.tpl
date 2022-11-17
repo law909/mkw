@@ -178,6 +178,19 @@
                                         <span itemprop="sku" content="{$_termek.cikkszam}"></span>
                                         {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
+                                        {if ($_termek.ertekelesdb)}
+                                            <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                                                <div class="c-rating" data-rating-value="{$_termek.ertekelesatlag}">
+                                                    <button>1</button>
+                                                    <button>2</button>
+                                                    <button>3</button>
+                                                    <button>4</button>
+                                                    <button>5</button>
+                                                </div>
+                                                <span itemprop="ratingValue">{$_termek.ertekelesatlag}</span>
+                                                <div itemprop="reviewCount"> {$_termek.ertekelesdb} értékelésből</div>
+                                            </div>
+                                        {/if}
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                             <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$_termek.id}-{$_termek.valtozatid|default}">{if ($_termek.minszallitasiido)}{$_termek.minszallitasiido} - {/if}{$_termek.szallitasiido}</span> munkanap</div>
                                         {/if}
