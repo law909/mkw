@@ -1209,7 +1209,7 @@ class Bizonylatfej
             }
             $tetellist[] = $_x;
         }
-        if ($this->getBizonylatstatusz()->getNemertekelheto()) {
+        if ($this->getBizonylatstatusz() && $this->getBizonylatstatusz()->getNemertekelheto()) {
             $ret['vanmitertekelni'] = false;
         }
         switch (true) {
@@ -5178,12 +5178,14 @@ class Bizonylatfej
     public function isVanMitErtekelni()
     {
         $vanmit = false;
-        /** @var Bizonylattetel $tetel */
-        foreach ($this->bizonylattetelek as $tetel) {
-            if (!$tetel->isMarErtekelt() &&
-                !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
-            ) {
-                $vanmit = true;
+        if ($this->getBizonylatstatusz() && !$this->getBizonylatstatusz()->getNemertekelheto()) {
+            /** @var Bizonylattetel $tetel */
+            foreach ($this->bizonylattetelek as $tetel) {
+                if (!$tetel->isMarErtekelt() &&
+                    !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
+                ) {
+                    $vanmit = true;
+                }
             }
         }
         return $vanmit;
