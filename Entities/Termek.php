@@ -420,7 +420,7 @@ class Termek
 
     /**
      * @ORM\OneToMany(targetEntity="TermekErtekeles", mappedBy="termek",cascade={"persist"})
-     * @OrderBy({"created" = "DESC"})
+     * @ORM\OrderBy({"created" = "DESC"})
      */
     private $termekertekelesek;
 
