@@ -1134,13 +1134,20 @@ h5.termeklista {
 .rating:hover > input:checked ~ label:before {
   opacity: 0.4;
 }
+.ratinglist {
+  padding: 5px;
+}
+.ratinglist-odd {
+  background-color: #F0F0F0;
+}
 .c-rating {
   margin-right: 1em;
 }
+.c-rating-value {
+  vertical-align: middle;
+}
 .c-rating button {
   display: inline-block;
-  float: left;
-  width: 1.25em;
   height: 1.25em;
   border: 0;
   text-indent: -9999px;

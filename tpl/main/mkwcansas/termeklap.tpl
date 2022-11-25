@@ -79,9 +79,9 @@
                                         <button>3</button>
                                         <button>4</button>
                                         <button>5</button>
+                                        <span class="c-rating-value" itemprop="ratingValue">{$termek.ertekelesatlag}</span>
                                     </div>
-                                    <span itemprop="ratingValue">{$termek.ertekelesatlag}</span>
-                                    <div itemprop="reviewCount"> {$termek.ertekelesdb} értékelésből</div>
+                                    <div itemprop="reviewCount"> <a href="#ertekelesTab" class="js-showertekeles">{$termek.ertekelesdb} értékelésből</a></div>
                                 </div>
                             {/if}
                             <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
@@ -166,11 +166,11 @@
                         <div id="termekTabbable" class="tabbable">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
-                                {if (count($termek.cimkelapon)!=0)}<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>{/if}
-                                {if (count($termek.kapcsolodok)!=0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
-                                {if (count($termek.hasonlotermekek)!=0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
-                                <!--li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
-                                <li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
+                                {if (count($termek.cimkelapon) != 0)}<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>{/if}
+                                {if (count($termek.kapcsolodok) != 0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
+                                {if (count($termek.hasonlotermekek) != 0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
+                                {if (count($termek.ertekelesek) != 0)}<li><a href="#ertekelesTab" id="ertekelesa" data-toggle="tab">{t('Értékelések')}</a></li>{/if}
+                                <!--li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
                                 {if ($szallitasifeltetelsablon)}
                                 <li><a href="#szallitasTab" data-toggle="tab">{t('Szállítás és fizetés')}</a></li>
                                 {/if}
@@ -263,6 +263,31 @@
                                     </div>
                                 {/for}
                                 </div>
+                                {/if}
+                                {if (count($termek.ertekelesek) != 0)}
+                                    <div id="ertekelesTab" class="tab-pane">
+                                        {$ertcikl = 0}
+                                        {foreach $termek.ertekelesek as $ertekeles}
+                                            {$ertcikl = $ertcikl + 1}
+                                            <div class="ratinglist{if ($ertcikl mod 2 == 0)} ratinglist-odd{/if}">
+                                                <div><strong>{$ertekeles.partnernev} - {$ertekeles.datum}</strong></div>
+                                                <div>
+                                                <div class="c-rating" data-rating-value="{$ertekeles.ertekeles}">
+                                                    <button>1</button>
+                                                    <button>2</button>
+                                                    <button>3</button>
+                                                    <button>4</button>
+                                                    <button>5</button>
+                                                </div>
+                                                </div>
+                                                <p>{$ertekeles.szoveg}</p>
+                                                <div><strong>Előnyök</strong></div>
+                                                <p>{$ertekeles.elony}</p>
+                                                <div><strong>Hátrányok</strong></div>
+                                                <p>{$ertekeles.hatrany}</p>
+                                            </div>
+                                        {/foreach}
+                                    </div>
                                 {/if}
                                 <!--div id="ertekelesTab" class="tab-pane">
                                     <p>mindjart itt lesznek az ertekelesek</p>

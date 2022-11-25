@@ -186,8 +186,8 @@
                                                     <button>3</button>
                                                     <button>4</button>
                                                     <button>5</button>
+                                                    <span class="c-rating-value" itemprop="ratingValue">{$_termek.ertekelesatlag}</span>
                                                 </div>
-                                                <span itemprop="ratingValue">{$_termek.ertekelesatlag}</span>
                                                 <div itemprop="reviewCount"> {$_termek.ertekelesdb} értékelésből</div>
                                             </div>
                                         {/if}

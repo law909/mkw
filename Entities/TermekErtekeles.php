@@ -44,13 +44,13 @@ class TermekErtekeles
     private $ertekeles = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekertesitok")
+     * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekertekelesek")
      * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
      */
     private $termek;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="termekertesitok")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $partner;
@@ -68,8 +68,17 @@ class TermekErtekeles
             'ertekeles' => $this->getErtekeles(),
             'elony' => $this->getElony(),
             'hatrany' => $this->getHatrany(),
-            'szoveg' => $this->getSzoveg()
+            'szoveg' => $this->getSzoveg(),
+            'datum' => $this->getCreatedDateStr()
         ];
+    }
+
+    public function getCreatedDateStr()
+    {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\store::$DateFormat);
+        }
+        return '';
     }
 
     public function getId()

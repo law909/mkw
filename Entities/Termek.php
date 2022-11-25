@@ -418,6 +418,9 @@ class Termek
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $arukeresofanev;
 
+    /** @ORM\OneToMany(targetEntity="TermekErtekeles", mappedBy="termek",cascade={"persist"}) */
+    private $termekertekelesek;
+
 
     public function __toString()
     {
@@ -485,6 +488,7 @@ class Termek
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->blogposztok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekertekelesek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getUjTermek($min)
@@ -1023,6 +1027,14 @@ class Termek
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
+        $erts = [];
+        /** @var TermekErtekeles $ertekeles */
+        foreach ($this->getTermekErtekelesek() as $ertekeles) {
+            if (!$ertekeles->isElutasitva()) {
+                $erts[] = $ertekeles->toLista();
+            }
+        }
+        $x['ertekelesek'] = $erts;
         switch (true) {
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -3413,4 +3425,10 @@ class Termek
             ];
         }
     }
+
+    public function getTermekErtekelesek()
+    {
+        return $this->termekertekelesek;
+    }
+
 }

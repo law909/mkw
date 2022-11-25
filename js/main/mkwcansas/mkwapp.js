@@ -1519,6 +1519,9 @@ $(document).ready(function() {
     if ($.fn.tab) {
         $('#termekTabbable').tab('show');
         $('#adamodositasTabbable').tab('show');
+        $('.js-showertekeles').on('click', function (e) {
+            $('#ertekelesa').click();
+        });
     }
     if ($.fn.slider) {
         var $arslider = $('#ArSlider');
