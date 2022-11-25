@@ -105,6 +105,7 @@ class consts {
     const Hasonlotermekdb = 'hasonlotermekdb';
     const Hasonlotermekarkulonbseg = 'hasonlotermekarkulonbseg';
 
+    const ErtekelesErtesitoSablon = 'ertekelesertesitosablon';
     const SzallitasiFeltetelSablon = 'szallfeltsablon';
     const SzamlalevelSablon = 'szamlalevelsablon';
     const KonyvelolevelSablon = 'konyvelolevelsablon';
