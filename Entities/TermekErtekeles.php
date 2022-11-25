@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @ORM\HasLifecycleCallbacks
  */
-class TermekErtekeles {
+class TermekErtekeles
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -56,88 +57,117 @@ class TermekErtekeles {
     /** @ORM\Column(type="boolean",nullable=true) */
     private $elutasitva = false;
 
+    public function toLista()
+    {
+        return [
+            'id' => $this->getId(),
+            'termeknev' => $this->getTermekNev(),
+            'termekid' => $this->getTermekId(),
+            'partnernev' => $this->getPartnerNev(),
+            'partnerid' => $this->getPartnerId(),
+            'ertekeles' => $this->getErtekeles(),
+            'elony' => $this->getElony(),
+            'hatrany' => $this->getHatrany(),
+            'szoveg' => $this->getSzoveg()
+        ];
+    }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
         return '';
     }
 
-    public function getPartnerNev() {
+    public function getPartnerNev()
+    {
         if ($this->partner) {
             return $this->partner->getNev();
         }
         return '';
     }
 
-    public function setPartner(Partner $val) {
+    public function setPartner(Partner $val)
+    {
         if ($this->partner !== $val) {
             $this->partner = $val;
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
         }
     }
 
-    public function getTermek() {
+    public function getTermek()
+    {
         return $this->termek;
     }
 
-    public function getTermekId() {
+    public function getTermekId()
+    {
         if ($this->termek) {
             return $this->termek->getId();
         }
         return '';
     }
 
-    public function getTermekNev() {
+    public function getTermekNev()
+    {
         if ($this->termek) {
             return $this->termek->getNev();
         }
         return '';
     }
 
-    public function setTermek(Termek $val) {
+    public function setTermek(Termek $val)
+    {
         if ($this->termek !== $val) {
             $this->termek = $val;
         }
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
             $this->termek = null;
         }

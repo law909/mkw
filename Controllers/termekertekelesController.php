@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\Emailtemplate;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekErtekeles;
@@ -23,7 +24,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\TermekErtekeles();
             $this->getEm()->detach($t);
@@ -45,6 +46,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
     /**
      * @param \Entities\TermekErtekeles $obj
+     *
      * @return mixed
      */
     protected function setFields($obj)
@@ -185,6 +187,33 @@ class termekertekelesController extends \mkwhelpers\MattableController
                             $ert->setHatrany($hatrany);
                             $this->getEm()->persist($ert);
                             $this->getEm()->flush();
+
+                            $mailer = \mkw\store::getMailer();
+                            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::ErtekelesErtesitoSablon));
+                            if ($emailtpl) {
+                                $tpldata = $ert->toLista();
+
+                                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                                $subject->setVar('ertekeles', $tpldata);
+
+                                $body = \mkw\store::getTemplateFactory()->createMainView(
+                                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                                );
+                                $body->setVar('ertekeles', $tpldata);
+
+                                if (\mkw\store::isDeveloper()) {
+                                    \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
+                                    \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
+                                } else {
+                                    $email = \mkw\store::getParameter(\mkw\consts::EmailBcc);
+                                    if ($email) {
+                                        $mailer->addTo($email);
+                                        $mailer->setSubject($subject->getTemplateResult());
+                                        $mailer->setMessage($body->getTemplateResult());
+                                        $mailer->send();
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -199,6 +228,5 @@ class termekertekelesController extends \mkwhelpers\MattableController
         \mkw\store::fillTemplate($view);
 
         $view->printTemplateResult(false);
-
     }
 }
