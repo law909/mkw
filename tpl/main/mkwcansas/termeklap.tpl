@@ -372,6 +372,7 @@
                             <div class="kapcsolodoImageContainer">
                                 <img src="{$_nepszeru.minikepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
                             </div>
+                            {if ($_nepszeru.ertekelesdb > 0)}
                             <div class="c-rating" data-rating-value="{$_nepszeru.ertekelesatlag}">
                                 <button>1</button>
                                 <button>2</button>
@@ -379,6 +380,7 @@
                                 <button>4</button>
                                 <button>5</button>
                             </div>
+                            {/if}
                             <div>{$_nepszeru.caption}</div>
                             <h5>
                                 {if ($_nepszeru.akcios)}
