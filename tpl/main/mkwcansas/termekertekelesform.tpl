@@ -32,13 +32,15 @@
 				</table>
 				<form method="post" action="/termekertekeles/save" class="js-tert-form">
 					<input type="hidden" name="pid" value="{$megr.partnerid}">
+					{$tids = []}
 				{foreach $megr.tetellista as $tetel}
-					{if (($tetel.termekid != $szktgtermek) && (!$tetel.marertekelt))}
+					{if (!array_key_exists($tetel.termekid, $tids) && ($tetel.termekid != $szktgtermek) && (!$tetel.marertekelt))}
+						{$tids[$tetel.termekid] = $tetel.termekid}
 					<div class="tert-termek">
 						<input type="hidden" class="js-termekids" name="termekids[]" value="{$tetel.termekid}">
 						<div class="tert-termekinfo">
 							<img src="{$tetel.kiskepurl}" alt="{$tetel.termeknev}" title="{$tetel.termeknev}">{$tetel.termeknev}
-							<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
+							<!--div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div-->
 							{$tetel.cikkszam}
 						</div>
 							<label class="tert-label" for="ertekelesedit{$tetel.termekid}">Értékelés</label>
