@@ -167,9 +167,9 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
                                 {if (count($termek.cimkelapon) != 0)}<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>{/if}
+                                {if (count($termek.ertekelesek) != 0)}<li><a href="#ertekelesTab" id="ertekelesa" data-toggle="tab">{t('Értékelések')}</a></li>{/if}
                                 {if (count($termek.kapcsolodok) != 0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
                                 {if (count($termek.hasonlotermekek) != 0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
-                                {if (count($termek.ertekelesek) != 0)}<li><a href="#ertekelesTab" id="ertekelesa" data-toggle="tab">{t('Értékelések')}</a></li>{/if}
                                 <!--li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
                                 {if ($szallitasifeltetelsablon)}
                                 <li><a href="#szallitasTab" data-toggle="tab">{t('Szállítás és fizetés')}</a></li>
