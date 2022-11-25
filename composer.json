@@ -2,7 +2,7 @@
 	"require": {
 		"law909/altorouter": "1.0.*",
 		"zendframework/zendframework1": "1.*",
-		"smarty/smarty": "^3.0",
+		"smarty/smarty": "^4.0",
 		"ezyang/htmlpurifier": "v4.*",
         "myclabs/deep-copy": "1.*",
         "doctrine/orm": "^2.6.0",
