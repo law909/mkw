@@ -1177,6 +1177,9 @@ class Termek
         $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
+        $ert = $this->getErtekelesAtlag();
+        $x['ertekelesatlag'] = $ert['ertekelesatlag'];
+        $x['ertekelesdb'] = $ert['ertekelesdb'];
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr(
