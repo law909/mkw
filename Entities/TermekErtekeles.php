@@ -63,6 +63,7 @@ class TermekErtekeles
             'id' => $this->getId(),
             'termeknev' => $this->getTermekNev(),
             'termekid' => $this->getTermekId(),
+            'termekslug' => $this->getTermekSlug(),
             'partnernev' => $this->getPartnerNev(),
             'partnerid' => $this->getPartnerId(),
             'ertekeles' => $this->getErtekeles(),
@@ -164,6 +165,14 @@ class TermekErtekeles
     {
         if ($this->termek) {
             return $this->termek->getNev();
+        }
+        return '';
+    }
+
+    public function getTermekSlug()
+    {
+        if ($this->termek) {
+            return $this->termek->getSlug();
         }
         return '';
     }

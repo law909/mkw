@@ -20,7 +20,7 @@
         </table>
     </td>
     <td class="cell">
-        {$_egyed.termeknev}
+        <a href="{$mainurl}/termek/{$_egyed.termekslug}" target="_blank">{$_egyed.termeknev}</a>
     </td>
     <td class="cell">
         <div>{$_egyed.ertekeles} pont</div>

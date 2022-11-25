@@ -40,6 +40,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $x['partnernev'] = $t->getPartnerNev();
         $x['termek'] = $t->getTermekId();
         $x['termeknev'] = $t->getTermekNev();
+        $x['termekslug'] = $t->getTermekSlug();
         $x['elutasitva'] = $t->isElutasitva();
         return $x;
     }
