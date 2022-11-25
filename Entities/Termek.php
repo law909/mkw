@@ -418,7 +418,10 @@ class Termek
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $arukeresofanev;
 
-    /** @ORM\OneToMany(targetEntity="TermekErtekeles", mappedBy="termek",cascade={"persist"}) */
+    /**
+     * @ORM\OneToMany(targetEntity="TermekErtekeles", mappedBy="termek",cascade={"persist"})
+     * @OrderBy({"created" = "DESC"})
+     */
     private $termekertekelesek;
 
 
