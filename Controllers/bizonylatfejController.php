@@ -278,6 +278,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('erbizonylatszam', 'LIKE', '%' . $f . '%');
         }
 
+        $f = $this->params->getIntRequestParam('termekertekeleskikuldvefilter');
+        switch ($f) {
+            case 1:
+                $filter->addFilter('termekertekeleskikuldve', '=', false);
+                break;
+            case 2:
+                $filter->addFilter('termekertekeleskikuldve', '=', true);
+                break;
+        }
+
         $f = $this->params->getIntRequestParam('bizonylatrontottfilter');
         switch ($f) {
             case 1:
@@ -484,6 +494,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
         $x['forditottadozas'] = $t->isForditottadozas();
+        $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&
             (
                 ($t->getNaveredmeny() == 'ABORTED') ||
@@ -2139,6 +2150,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $megrendfej = $this->getRepo()->find($id);
                 if ($megrendfej && $megrendfej->isVanMitErtekelni()) {
                     $megrendfej->sendEmailSablon($sablon);
+                    $megrendfej->setSimpleedit(true);
+                    $megrendfej->setTermekertekeleskikuldve(true);
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
                 }
             }
         }

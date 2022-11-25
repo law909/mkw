@@ -166,6 +166,15 @@
         </select>
     </div>
     <div class="matt-hseparator"></div>
+    <div>
+        <label for="termekertekeleskikuldvefilter">{at('Termék értékelés kérő kiküldve')}:</label>
+        <select id="termekertekeleskikuldvefilter" name="termekertekeleskikuldvefilter">
+            <option value="0">{at('Mindegy')}</option>
+            <option value="1"{if ($termekertekeleskikuldvefilter === 1)} selected="selected"{/if}>{at('nem')}</option>
+            <option value="2"{if ($termekertekeleskikuldvefilter === 2)} selected="selected"{/if}>{at('igen')}</option>
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
     {include "comp_partnercimkefilter.tpl"}
 </div>
 <div class="mattable-pagerwrapper">

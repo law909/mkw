@@ -180,6 +180,17 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

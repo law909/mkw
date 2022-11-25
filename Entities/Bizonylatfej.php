@@ -641,6 +641,9 @@ class Bizonylatfej
     /** @ORM\Column(type="string", length=32,nullable=true) */
     private $termekertekelesid;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $termekertekeleskikuldve = false;
+
     public function __toString()
     {
         return (string)$this->id;
@@ -1167,6 +1170,7 @@ class Bizonylatfej
         $ret['barionpaymentstatus'] = $this->getBarionpaymentstatus();
         $ret['termekertekelesid'] = $this->getTermekertekelesid();
         $ret['termekertekelesurl'] = '/termekertekeles?b=' . $this->getId() . '&id=' . $this->getTermekertekelesid();
+        $ret['termekertekeleskikuldve'] = $this->isTermekertekeleskikuldve();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -5190,4 +5194,21 @@ class Bizonylatfej
         }
         return $vanmit;
     }
+
+    /**
+     * @return bool
+     */
+    public function isTermekertekeleskikuldve()
+    {
+        return $this->termekertekeleskikuldve;
+    }
+
+    /**
+     * @param bool $termekertekeleskikuldve
+     */
+    public function setTermekertekeleskikuldve($termekertekeleskikuldve): void
+    {
+        $this->termekertekeleskikuldve = $termekertekeleskikuldve;
+    }
+
 }

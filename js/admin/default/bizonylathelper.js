@@ -1116,7 +1116,8 @@ var bizonylathelper = function($) {
                         '#referrerfilter',
                         '#osszegtolfilter',
                         '#osszegigfilter',
-                        '#megjegyzesfilter'
+                        '#megjegyzesfilter',
+                        '#termekertekeleskikuldvefilter'
                     ],
                     onClear:function() {
                         $('.js-cimkefilter').removeClass('ui-state-hover');

@@ -117,6 +117,12 @@
                         </td>
                     </tr>
                 {/if}
+                {if ($_egyed.termekertekeleskikuldve)}
+                    <tr><td colspan="5">
+                        {at('Termék értékelés kérő kiküldve')}
+                        </td>
+                    </tr>
+                {/if}
                 {if ($_egyed.belsomegjegyzes)}
                     <tr><td colspan="5" class="guestpartner">
                             {$_egyed.belsomegjegyzes}
