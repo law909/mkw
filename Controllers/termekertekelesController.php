@@ -36,6 +36,9 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $x['valasz'] = $t->getValasz();
         $x['ertekeles'] = $t->getErtekeles();
         $x['created'] = $t->getCreatedStr();
+        $x['lastmod'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
+        $x['lastmodstr'] = $t->getLastmodStr();
         $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnerNev();
         $x['termek'] = $t->getTermekId();
