@@ -188,7 +188,7 @@
                                                     <button>5</button>
                                                     <span class="c-rating-value" itemprop="ratingValue">{$_termek.ertekelesatlag}</span>
                                                 </div>
-                                                <div><span itemprop="reviewCount"> {$_termek.ertekelesdb}</span> értékelésből</div>
+                                                <div><span itemprop="reviewCount">{$_termek.ertekelesdb}</span> értékelésből</div>
                                             </div>
                                         {/if}
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}

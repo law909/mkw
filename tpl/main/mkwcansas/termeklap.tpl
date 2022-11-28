@@ -81,7 +81,7 @@
                                         <button>5</button>
                                         <span class="c-rating-value" itemprop="ratingValue">{$termek.ertekelesatlag}</span>
                                     </div>
-                                    <div><a href="#ertekelesTab" class="js-showertekeles"><span itemprop="reviewCount"> {$termek.ertekelesdb}</span> értékelésből</a></div>
+                                    <div><a href="#ertekelesTab" class="js-showertekeles"><span itemprop="reviewCount">{$termek.ertekelesdb}</span> értékelésből</a></div>
                                 </div>
                             {/if}
                             <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
