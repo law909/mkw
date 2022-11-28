@@ -99,6 +99,7 @@ $evm->addEventSubscriber(new Listeners\SQLSessionInit('SET NAMES UTF8 COLLATE ut
 
 $sluggableListener = new SluggableListener;
 $sluggableListener->setAnnotationReader($cachedAnnotationReader);
+//$sluggableListener->setUrlizer();
 $evm->addEventSubscriber($sluggableListener);
 
 $timestampableListener = new TimestampableListener;
