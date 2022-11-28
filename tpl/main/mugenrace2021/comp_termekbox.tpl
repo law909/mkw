@@ -38,7 +38,7 @@
                             <button>4</button>
                             <button>5</button>
                         </div>
-                        <span itemprop="reviewCount"> ({$_termek.ertekelesdb})</span>
+                        <span> (</span><span  itemprop="reviewCount">{$_termek.ertekelesdb}</span><span>)</span>
                     </div>
                 {else}
                     <div class="termek-ertekeles"></div>

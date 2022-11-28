@@ -91,7 +91,7 @@
                             <button>4</button>
                             <button>5</button>
                         </div>
-                        <span itemprop="reviewCount"> ({$termek.ertekelesdb})</span>
+                        <span> (</span><span itemprop="reviewCount">{$termek.ertekelesdb}</span><span>)</span>
                     </div>
                 {else}
                     <div class="tl-termek-ertekeles"></div>
