@@ -6,6 +6,10 @@
     --dark-font-color: black;
     --nav-background-color: black;
     --light-font-color: white;
+    --default-radius: 5px;
+    --gutter: 1em;
+    --input-h-gutter: 1em;
+    --input-v-gutter: 0.5em;
     --default-font-size: 1em;
     --content-font-size: 1em;
     --header5-font-size: 1em;
@@ -31,6 +35,8 @@
     --tl-color-selector-img-width: 5vw;
     --cart-nav-spacer-height-m: 12vh;
     --cart-nav-spacer-height-d: 14vh;
+    --co-nav-spacer-height-m: 12vh;
+    --co-nav-spacer-height-d: 14vh;
 }
 
 @font-face {
@@ -94,15 +100,10 @@ a {
     cursor: pointer;
     background-repeat: repeat-x;
     border: 1px solid;
-    border-radius: 2px;
+    border-radius: var(--default-radius);
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 1px 2px rgb(0 0 0 / 5%);
-    background: linear-gradient(#0000, rgb(0 0 0/20%)) top/100% 800%;
+    background: linear-gradient(#0000, rgb(0 0 0/15%)) 100%;
     transition: .5s;
-}
-
-.btn:hover {
-    background-position: bottom;
 }
 
 .btn-primary {
@@ -768,6 +769,102 @@ a {
     font-size: var(--termek-cikkszam-font-size);
 }
 
+.co-nav-spacer {
+    height: var(--co-nav-spacer-height-m);
+}
+
+.co-container {
+    display: block;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.co-login-box {
+    padding: 1em;
+}
+
+.co-control-row {
+    margin-bottom: var(--gutter);
+}
+
+.co-label {
+    display: inline-block;
+    padding-left: var(--input-h-gutter);
+    margin-bottom: 4px;
+    font-size: 0.875em;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.co-input {
+    padding: var(--input-v-gutter) var(--input-h-gutter);
+    display: block;
+    width: 100%;
+    background: white;
+    border: 1px solid var(--brand-color);
+    border-radius: var(--default-radius);
+    transition: 0.3s all ease-in-out;
+}
+
+.co-radio-row {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.co-radio-button {
+    border-color: var(--brand-color);
+    border-style: solid;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.co-radio-button > input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    left: -200px;
+}
+
+.co-radio-row > .co-radio-button {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 0;
+}
+
+.co-radio-row > .co-radio-button:first-of-type {
+    border-radius: var(--default-radius) 0 0 var(--default-radius);
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+}
+
+.co-radio-row > .co-radio-button:last-of-type {
+    border-radius: 0 var(--default-radius) var(--default-radius) 0;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+}
+
+.co-radio-text {
+    display: inline-block;
+    height: 100%;
+    background: white;
+    transition: all 0.3s ease-in-out;
+    padding: var(--input-v-gutter) var(--input-h-gutter);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.co-radio-button > input[type="radio"]:checked + .co-radio-text {
+    background: var(--brand-color);
+}
+
 @media screen and (min-width: 761px) {
     .c-viewer__iframe {
         width: 50vw;
@@ -1022,6 +1119,71 @@ a {
 
     .cart-termeknev {
         font-size: var(--termek-nev-font-size-d);
+    }
+
+    .co-nav-spacer {
+        height: var(--co-nav-spacer-height-d);
+    }
+
+    .co-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 966px;
+    }
+
+    .co-data-container {
+        flex-basis: 80%;
+    }
+
+    .co-row {
+        display: flex;
+    }
+
+    .co-flex-dir-row {
+        flex-direction: row;
+    }
+
+    .co-flex-dir-column {
+        flex-direction: column;
+    }
+
+    .co-login-box {
+        flex-basis: 50%;
+    }
+
+    .co-summary-container {
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .co-col-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .co-col:first-of-type {
+        padding-right: calc(var(--gutter) / 2);
+    }
+
+    .co-col:last-of-type {
+        padding-left: calc(var(--gutter) / 2);
+    }
+
+    .co-col-20 {
+        flex-basis: 20%;
+    }
+
+    .co-col-80 {
+        flex-basis: 80%;
+    }
+
+}
+
+@media screen and (min-width: 992px) {
+    .co-container {
+        max-width: 1440px;
     }
 }
 

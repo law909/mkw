@@ -530,11 +530,11 @@ class store
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
             $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
-            $kc = new \Controllers\kosarController(null);
-            $minidata = $kc->getMiniData();
-            $v->setVar('kosar', $minidata);
-            $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
         }
+        $kc = new \Controllers\kosarController(null);
+        $minidata = $kc->getMiniData();
+        $v->setVar('kosar', $minidata);
+        $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $p = new \mkwhelpers\ParameterHandler();
