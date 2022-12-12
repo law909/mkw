@@ -26,8 +26,27 @@
         </table>
     </td>
     <td class="cell">
+        <span>{$_partner.megjegyzes}</span>
+    </td>
+    <td class="cell">
         {foreach $_partner.cimkek as $_cimke}
             {$_cimke.nev};
         {/foreach}
     </td>
+    <td class="cell">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <a href="#"
+                       data-id="{$_partner.id}"
+                       data-flag="inaktiv"
+                       class="js-flagcheckbox{if ($_partner.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+
 </tr>

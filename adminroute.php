@@ -775,6 +775,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/anonym/do', 'partnerController#doAnonym', 'adminpartnerdoanonym');
     $router->map('POST', '/admin/partner/arsavcsere', 'partnerController#arsavcsere', 'adminpartnerarsavcsere');
     $router->map('POST', '/admin/partner/tcskedit', 'partnerController#tcskedit', 'adminpartnertcskedit');
+    $router->map('POST', '/admin/partner/setflag', 'partnerController#setflag', 'adminpartnersetflag');
 }
 
 $router->map('GET', '/admin/termekfa/getkarb', 'termekfaController#getkarb', 'admintermekfagetkarb');

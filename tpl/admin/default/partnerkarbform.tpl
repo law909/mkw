@@ -22,6 +22,8 @@
             <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+            <input id="InaktivCheck" name="inaktiv" type="checkbox"
+                   {if ($partner.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
 			<table><tbody>
 			<tr>
 				<td><label for="NevEdit">{at('Név')}:</label></td>

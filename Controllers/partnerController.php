@@ -674,6 +674,10 @@ class partnerController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('orszagfilter', null))) {
             $filter->addFilter('orszag', '=', $this->params->getIntRequestParam('orszagfilter'));
         }
+        $f = $this->params->getNumRequestParam('inaktivfilter',9);
+        if ($f != 9) {
+            $filter->addFilter('inaktiv', '=', $f);
+        }
         if (!is_null($this->params->getRequestParam('cimkefilter', null))) {
             $fv = $this->params->getArrayRequestParam('cimkefilter');
             $cimkekodok = implode(',', $fv);
@@ -1773,4 +1777,22 @@ class partnerController extends \mkwhelpers\MattableController
             }
         }
     }
+
+    public function setflag() {
+        $id = $this->params->getIntRequestParam('id');
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        $flag = $this->params->getStringRequestParam('flag');
+        /** @var \Entities\Partner $obj */
+        $obj = $this->getRepo()->find($id);
+        if ($obj) {
+            switch ($flag) {
+                case 'inaktiv':
+                    $obj->setInaktiv($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
+
 }

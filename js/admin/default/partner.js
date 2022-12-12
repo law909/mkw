@@ -396,7 +396,8 @@ $(document).ready(function(){
                     '#szamlazasiutcafilter',
                     '#beszallitofilter',
                     '#partnertipusfilter',
-                    '#orszagfilter'
+                    '#orszagfilter',
+                    '#inaktivfilter'
                 ],
 				onClear:function() {
 					$('.js-cimkefilter').removeClass('ui-state-hover');
@@ -449,6 +450,32 @@ $(document).ready(function(){
 			},
 			karb:partner
 		});
+        $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
+            function doit(succ) {
+                var id = $this.attr('data-id'),
+                    flag = $this.attr('data-flag'),
+                    kibe = !$this.is('.ui-state-hover');
+                if (succ) {
+                    succ();
+                }
+                $.ajax({
+                    url: '/admin/partner/setflag',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        flag: flag,
+                        kibe: kibe
+                    },
+                    success: function () {
+                        $this.toggleClass('ui-state-hover');
+                    }
+                });
+            }
+
+            e.preventDefault();
+            var $this = $(this);
+            doit();
+        })
         $('.mattable-batchbtn').on('click', function(e) {
             var cbs;
             e.preventDefault();

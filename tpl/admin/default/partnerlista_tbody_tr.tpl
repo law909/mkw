@@ -62,4 +62,19 @@
             {$_cimke.nev};
         {/foreach}
     </td>
+    <td class="cell">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="#"
+                           data-id="{$_partner.id}"
+                           data-flag="inaktiv"
+                           class="js-flagcheckbox{if ($_partner.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
 </tr>

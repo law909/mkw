@@ -62,6 +62,14 @@
             {/foreach}
         </select>
     </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <select id="inaktivfilter" name="inaktivfilter">
+            <option value="0">{at('Aktív')}</option>
+            <option value="1">{at('Inaktív')}</option>
+            <option value="9">{at('Mindegy')}</option>
+        </select>
+    </div>
 	<div class="matt-hseparator"></div>
 	<div id="cimkefiltercontainer">
 	{foreach $cimkekat as $_cimkekat}
@@ -107,6 +115,7 @@
         <th>{at('Elérhetőségek')}</th>
         <th>{at('Megjegyzés')}</th>
     	<th>{at('Címkék')}</th>
+        <th></th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>
