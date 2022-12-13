@@ -7,6 +7,7 @@ use Entities\MPTTagozat;
 use Entities\MPTTagsagforma;
 use Entities\Partner;
 use Entities\PartnerTermekcsoportKedvezmeny;
+use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -767,9 +768,20 @@ class partnerController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * @param $selid
+     * @param FilterDescriptor | array $filter
+     *
+     * @return array
+     */
     public function getSelectList($selid = null, $filter = array())
     {
-        $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
+        $f = new FilterDescriptor();
+        $f->addFilter('inaktiv', '=', false);
+        if ($filter) {
+            $f->merge($filter);
+        }
+        $rec = $this->getRepo()->getAllForSelectList($f, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array(

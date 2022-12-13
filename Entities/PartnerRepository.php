@@ -117,6 +117,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
     public function getBizonylatfejLista($keresett) {
         $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter(array('_xx.nev', '_xx.email'), 'LIKE', '%' . $keresett . '%');
         $order = array('_xx.nev' => 'ASC');
         $a = $this->alias;
