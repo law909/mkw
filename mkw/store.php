@@ -1801,6 +1801,17 @@ class store
         return self::isValidEmail($email);
     }
 
+    public static function mainPath($filename)
+    {
+        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        } else {
+            $mainpath = getcwd() . '/';
+        }
+        return $mainpath . $filename;
+    }
+
     public static function storagePath($filename)
     {
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
