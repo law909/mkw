@@ -67,10 +67,10 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'aszfcsatolaskell'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'aszfcsatolaskell'];
     }
 
     /**
@@ -278,6 +278,28 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertForCKEditor', []);
 
         return parent::convertForCKEditor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAszfcsatolaskell()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAszfcsatolaskell', []);
+
+        return parent::isAszfcsatolaskell();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAszfcsatolaskell($aszfcsatolaskell)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAszfcsatolaskell', [$aszfcsatolaskell]);
+
+        return parent::setAszfcsatolaskell($aszfcsatolaskell);
     }
 
 }

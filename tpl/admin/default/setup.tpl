@@ -996,6 +996,15 @@
                         </tr>
                         </tbody>
                     </table>
+                    <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <tbody>
+                        <tr>
+                            <td><label for="ASZFUrlEdit">{at('ÁSZF URL')}:</label></td>
+                            <td colspan="3"><input id="ASZFUrlEdit" name="aszfurl" type="text" size="75" maxlength="255" value="{$aszfurl}">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div id="SzallitasiKtgTab" class="mattkarb-page" data-visible="visible">
                     <table>

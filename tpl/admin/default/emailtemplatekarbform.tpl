@@ -7,6 +7,8 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+			<input id="AszfCheck" name="aszfcsatolaskell" type="checkbox"
+				   {if ($egyed.aszfcsatolaskell)}checked="checked"{/if}>{at('ÁSZF csatolás kell')}
 			<table><tbody>
 			<tr>
 				<td><label for="NevEdit">{at('Azonosító')}:</label></td>

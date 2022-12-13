@@ -191,6 +191,17 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
+    public function getCreatedDateStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedDateStr', []);
+
+        return parent::getCreatedDateStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -333,6 +344,17 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
 
         return parent::getTermekNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTermekSlug()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekSlug', []);
+
+        return parent::getTermekSlug();
     }
 
     /**

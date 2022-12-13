@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
 use mkw\store;
 
 class emailtemplateController extends \mkwhelpers\MattableController {
@@ -25,13 +26,20 @@ class emailtemplateController extends \mkwhelpers\MattableController {
         $x['nev'] = $t->getNev();
         $x['targy'] = $t->getTargy();
         $x['szoveg'] = $t->getSzoveg();
+        $x['aszfcsatolaskell'] = $t->isAszfcsatolaskell();
         return $x;
     }
 
+    /**
+     * @param Emailtemplate $obj
+     *
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
         $obj->setTargy($this->params->getStringRequestParam('targy'));
+        $obj->setAszfcsatolaskell($this->params->getBoolRequestParam('aszfcsatolaskell'));
         return $obj;
     }
 

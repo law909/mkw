@@ -230,6 +230,9 @@ class setupController extends \mkwhelpers\Controller {
         $fofilter->addFilter('belso', '=', true);
         $view->setVar('belsouklist', $uk->getSelectList(($p ? $p->getErtek() : 0), $fofilter));
 
+        $p = $repo->find(\mkw\consts::ASZFUrl);
+        $view->setVar(\mkw\consts::ASZFUrl, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
         $p = $repo->find(\mkw\consts::Smallimagesize);
@@ -898,6 +901,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::AkcioJelolo, $this->params->getStringRequestParam('akciojelolo'));
         $this->setObj(\mkw\consts::IngyenszallitasJelolo, $this->params->getStringRequestParam('ingyenszallitasjelolo'));
         $this->setObj(\mkw\consts::Watermark, $this->params->getStringRequestParam('watermark'));
+
+        $this->setObj(\mkw\consts::ASZFUrl, $this->params->getStringRequestParam(\mkw\consts::ASZFUrl));
 
         $this->setObj(\mkw\consts::SzallitasiKtg1Tol, $this->params->getStringRequestParam('szallitasiktg1tol'));
         $this->setObj(\mkw\consts::SzallitasiKtg1Ig, $this->params->getStringRequestParam('szallitasiktg1ig'));

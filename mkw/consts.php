@@ -294,6 +294,8 @@ class consts {
     const MugenraceFooterLogo = 'mugenracefooterlogo';
     const MugenraceKatId = 'mugenracekatid';
 
+    const ASZFUrl = 'aszfurl';
+
     const Webshop1Name = 'webshop1name';
     const Webshop2Name = 'webshop2name';
     const Webshop3Name = 'webshop3name';
