@@ -854,6 +854,9 @@ class Bizonylatfej
                     $m = explode(',', $bf->getUzletkotoemail());
                     $mailer->addTo($m);
                 }
+                if ($emailtpl->isAszfcsatolaskell()) {
+                    $mailer->setAttachment(\mkw\store::mainPath(\mkw\consts::ASZFPDFName));
+                }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 if ($bf->getBizonylatstatuszId() == \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)) {
@@ -896,7 +899,6 @@ class Bizonylatfej
                 if ($emailtpl->isAszfcsatolaskell()) {
                     $mailer->setAttachment(\mkw\store::mainPath(\mkw\consts::ASZFPDFName));
                 }
-                \mkw\store::writelog($mailer->getAttachment());
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
