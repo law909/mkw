@@ -896,6 +896,7 @@ class Bizonylatfej
                 if ($emailtpl->isAszfcsatolaskell()) {
                     $mailer->setAttachment(\mkw\store::mainPath(\mkw\consts::ASZFPDFName));
                 }
+                \mkw\store::writelog($mailer->getAttachment());
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
