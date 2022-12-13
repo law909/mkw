@@ -4,6 +4,8 @@ namespace mkw;
 
 class consts {
 
+    const ASZFPDFName = 'aszf.pdf';
+
     const Uitheme = 'uitheme';
 
     const Tulajcrc = 'tulajcrc';

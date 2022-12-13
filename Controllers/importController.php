@@ -6735,4 +6735,14 @@ class importController extends \mkwhelpers\Controller {
             }
         }
     }
+
+    public function aszfdownload()
+    {
+        $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::ASZFUrl));
+        $fh = fopen(getcwd() . '/' . \mkw\consts::ASZFPDFName, 'w');
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        \curl_exec($ch);
+        fclose($fh);
+    }
 }

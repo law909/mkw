@@ -11,7 +11,7 @@ $(document).ready(function() {
             $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport,.js-silkoimport,.js-btechimport,'
                 + '.js-kressgepimport,.js-kresstartozekimport,.js-legavenueimport,.js-legavenueszotarimport,.js-nomadimport,.js-nikaimport,'
                 + '.js-haffner24import, .js-evonaimport, .js-evonaxmlimport, .js-netpressoimport, .js-gulfimport, .js-qmanimport,'
-                + '.js-smileebikeimport').on('click', function(e) {
+                + '.js-smileebikeimport, .js-aszfdownload').on('click', function(e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');

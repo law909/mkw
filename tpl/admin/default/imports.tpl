@@ -109,6 +109,10 @@
             <a href="/admin/import/foxpostterminal" class="js-foxpostterminalimport">Foxpost terminálok</a>
             <a href="/admin/import/glsterminal" class="js-glsterminalimport">GLS terminálok</a>
             </div>
+    <div class="matt-hseparator"></div>
+            <div>
+                <a href="/admin/import/aszfdownload" class="js-aszfdownload">ÁSZF letöltés</a>
+            </div>
 	<div class="matt-hseparator"></div>
             <div>
                 <div>

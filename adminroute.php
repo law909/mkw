@@ -845,6 +845,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
+    $router->map('POST', '/admin/import/aszfdownload', 'importController#aszfdownload', 'adminaszfdownload');
     $router->map('GET', '/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
 }
 

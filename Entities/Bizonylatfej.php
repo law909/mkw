@@ -894,7 +894,7 @@ class Bizonylatfej
                     $mailer->addTo($m);
                 }
                 if ($emailtpl->isAszfcsatolaskell()) {
-                    $mailer->setAttachment('aszf.pdf');
+                    $mailer->setAttachment(getcwd() . '/' . \mkw\consts::ASZFPDFName);
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
