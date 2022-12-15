@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="co-control-row">
-                        <label for="firstnameEdit" class="co-label">{t('Vezetéknév')} *</label>
+                        <label for="firstnameEdit" class="co-label">{t('Keresztnév')} *</label>
                         <input id="firstnameEdit" class="co-input" type="text" x-model="contact.firstName">
                     </div>
 
@@ -102,9 +102,21 @@
                     <h3>{t('Számlázási adatok')}</h3>
                     <div class="co-control-row">
                         <label for="inveqdeliveryEdit" class="co-label">
+                            <input id="inveqdeliveryEdit" type="checkbox" x-model="inveqdel">
                             {t('Megegyezik a szállítási adatokkal')}
-                            <input id="inveqdeliveryEdit" class="" type="checkbox" x-model="inveqdel">
                         </label>
+                    </div>
+                    <div class="co-control-row" x-show="!inveqdel">
+                        <label for="cegesEdit" class="co-label">
+                            <input id="cegesEdit" type="checkbox" x-model="cegesvasarlo">
+                            {t('Cégként vásárolok')}
+                        </label>
+                    </div>
+                    <div class="co-control-row co-col-container" x-show="!inveqdel && cegesvasarlo">
+                        <div class="=co-col co-col-20">
+                            <label for="invoiceadoszamEdit" class="co-label">{t('Adószám')}</label>
+                            <input id="invoiceadoszamEdit" class="co-input" type="text" x-model="invoice.adoszam">
+                        </div>
                     </div>
                     <div class="co-control-row" x-show="!inveqdel">
                         <label for="invoicenameEdit" class="co-label">{t('Számlázási név')}</label>
@@ -151,6 +163,36 @@
                             </label>
                         </div>
                     </template>
+                </div>
+
+                <div class="co-row co-flex-dir-column">
+                    <h3>{t('Üzenet a webáruháznak')}</h3>
+                    <textarea x-model="webshopmessage" class="co-input" name="webshopmessage" rows="2" placeholder="{t('pl. megrendeléssel, számlázással kapcsolatos kérések')}"></textarea>
+                </div>
+
+                <div class="co-row co-flex-dir-column">
+                    <h3>{t('Üzenet a futárnak')}</h3>
+                    <textarea x-model="couriermessage" class="co-input" name="couriermessage" rows="2" placeholder="{t('pl. kézbesítéssel kapcsolatos kérések')}"></textarea>
+                </div>
+
+                <div class="co-row co-flex-dir-column">
+                    <h3>{t('Véglegesítés')}</h3>
+                    <label class="co-label">
+                        <input x-model="akciohirlevel" name="akciohirlevel" type="checkbox">
+                        {t('Igen, értesítsenek az akciókról')}
+                    </label>
+                    <label class="co-label">
+                        <input x-model="ujdonsaghirlevel" name="ujdonsaghirlevel" type="checkbox">
+                        {t('Igen, értesítsenek az újdonságokról')}
+                    </label>
+                    <label class="co-label">
+                        <input x-model="aszfready" name="aszfready" type="checkbox">
+                        Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-ünket és adatvédelmi nyilatkozatunkat.
+                        Felhívjuk szíves figyelmét, hogy a „megrendelés elküldése” gombra történő kattintással Ön kötelező érvényű ajánlatot tesz a kosárba helyezett termék megvásárlására, ami fizetési kötelezettséget von maga után.
+                    </label>
+                    <div>
+                        <button class="btn btn-primary btn-order">{t('Megrendelés elküldése')}</button>
+                    </div>
                 </div>
 
             </div>

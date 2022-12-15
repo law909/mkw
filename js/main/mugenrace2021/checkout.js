@@ -25,6 +25,7 @@ document.addEventListener("alpine:init", () => {
             postalcode: null,
             city: null,
             street: null,
+            adoszam: null,
         },
         selectedSzallitasimod: null,
         selectedFizetesimod: null,
@@ -33,6 +34,12 @@ document.addEventListener("alpine:init", () => {
         areacodes: [],
         tetellist: [],
         szallmodlist: [],
+        webshopmessage: null,
+        couriermessage: null,
+        akciohirlevel: null,
+        ujdonsaghirlevel: null,
+        aszfready: null,
+        cegesvasarlo: false,
         getLists() {
             fetch(new URL('/checkout/gettetellistdata', location.origin))
                 .then((response) => response.json())
@@ -51,6 +58,19 @@ document.addEventListener("alpine:init", () => {
             });
             this.$watch('selectedFizetesimodIndex', (value) => {
                 this.selectFizetesimod(value);
+            });
+            this.$watch('inveqdel', (value) => {
+                if (value) {
+                    this.invoice.name = this.delivery.name;
+                    this.invoice.postalcode = this.delivery.postalcode;
+                    this.invoice.city = this.delivery.city;
+                    this.invoice.street = this.delivery.street;
+                }
+            });
+            this.$watch('contact.firstName', (value) => {
+                if (!this.delivery.name) {
+                    this.delivery.name = this.contact.lastName + ' ' + this.contact.firstName;
+                }
             });
         },
         selectSzallitasimod(szallmodindex) {

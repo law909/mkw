@@ -122,6 +122,10 @@ a {
     background-color: var(--secondary-color);
 }
 
+.btn-order {
+    width: 100%;
+}
+
 .menucontainer {
     z-index: 100000;
     position: absolute;
@@ -830,6 +834,7 @@ a {
 }
 
 .co-input {
+    font-family: var(--font-normal);
     padding: var(--input-v-gutter) var(--input-h-gutter);
     display: block;
     width: 100%;
