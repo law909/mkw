@@ -12,7 +12,7 @@
             {t('Megrendelem')}
         </button>
     </div>
-    <table class="table table-bordered">
+    <table class="cart-table">
         {include 'kosartetellist.tpl'}
     </table>
     <div class="cart-megrendelem-container">

@@ -768,12 +768,36 @@ a {
     justify-self: start;
 }
 
-.cart-termeknev {
-    font-size: var(--termek-nev-font-size-m);
+.cart-table {
+    border: none;
+    border-spacing: unset;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
-.cart-cikkszam {
-    font-size: var(--termek-cikkszam-font-size);
+.cart-table tbody tr:nth-child(odd) {
+    background-color: var(--brand-color);
+}
+
+.cart-table-cell {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.cart-row-noedit {
+    background-color: inherit !important;
+}
+
+.cart-row-noedit > td.cart-table-cell {
+    padding: 1em;
+}
+
+.cart-mennyiseg-input {
+    width: 5em;
+}
+
+.cart-table-link {
+    display: flex;
 }
 
 .co-nav-spacer {
@@ -1202,7 +1226,7 @@ a {
         padding: 1em;
     }
 
-    .co-termek-nev {
+    .co-termek-tul {
         font-family: var(--font-normal);
         font-size: var(--co-font-size-small-d);
     }
@@ -1242,4 +1266,12 @@ a {
 
 .font-normal {
     font-family: var(--font-normal);
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.text-align-right {
+    text-align: right;
 }

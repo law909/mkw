@@ -166,7 +166,7 @@
                         <div x-text="tetel.caption"></div>
                         <div class="termek-cikkszam" x-text="tetel.cikkszam"></div>
                         <template x-for="valtozat in tetel.valtozatok">
-                            <span class="co-termek-nev" x-text="valtozat.ertek + ' '"></span>
+                            <span class="co-termek-tul" x-text="valtozat.ertek + ' '"></span>
                         </template>
                         <div class="co-termek-ar-row">
                             <div class="co-termek-ar" x-text="tetel.bruttoegysar + ' ' + tetellist.valutanemnev"></div>
