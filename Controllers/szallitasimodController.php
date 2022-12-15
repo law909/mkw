@@ -287,7 +287,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 'tof' => ($sor->getId() == $tofid),
                 'gls' => ($sor->getId() == $glsid),
                 'terminaltipus' => $sor->getTerminaltipus(),
-                'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, null, $valutanem, $ertek)
+                'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, null, $valutanem, $ertek),
+                'fizmodok' => $sor->getFizmodok()
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

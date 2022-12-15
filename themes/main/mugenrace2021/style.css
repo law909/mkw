@@ -37,6 +37,9 @@
     --cart-nav-spacer-height-d: 14vh;
     --co-nav-spacer-height-m: 12vh;
     --co-nav-spacer-height-d: 14vh;
+    --co-font-size-small-d: 0.875em;
+
+    accent-color: var(--brand-color);
 }
 
 @font-face {
@@ -51,6 +54,10 @@
 
 * {
     box-sizing: border-box;
+}
+
+[x-cloak] {
+    display: none !important;
 }
 
 .hcenter {
@@ -102,7 +109,7 @@ a {
     border: 1px solid;
     border-radius: var(--default-radius);
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    background: linear-gradient(#0000, rgb(0 0 0/15%)) 100%;
+    background: linear-gradient(#0000, rgb(0 0 0/7%)) 100%;
     transition: .5s;
 }
 
@@ -1128,7 +1135,8 @@ a {
     .co-container {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        gap: 1em;
         max-width: 966px;
     }
 
@@ -1179,6 +1187,42 @@ a {
         flex-basis: 80%;
     }
 
+    .co-summary-container {
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        align-self: flex-start;
+        top: calc(var(--nav-spacer-height-d) * 3);
+        gap: 1em;
+        background-color: var(--brand-color);
+    }
+
+    .co-termek-box {
+        text-align: center;
+        padding: 1em;
+    }
+
+    .co-termek-nev {
+        font-family: var(--font-normal);
+        font-size: var(--co-font-size-small-d);
+    }
+
+    .co-termek-ar-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .co-termek-ar {
+        font-family: var(--font-normal);
+        font-size: var(--co-font-size-small-d);
+    }
+
+    .co-legend {
+        font-family: var(--font-normal);
+        font-size: var(--co-font-size-small-d);
+        margin-left: 2em;
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -1190,4 +1234,12 @@ a {
 .selected {
     background-color: var(--dark-font-color);
     color: var(--brand-color);
+}
+
+.font-bold {
+    font-family: var(--font-bold);
+}
+
+.font-normal {
+    font-family: var(--font-normal);
 }

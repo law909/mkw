@@ -26,61 +26,39 @@ document.addEventListener("alpine:init", () => {
             city: null,
             street: null,
         },
+        selectedSzallitasimod: null,
+        selectedFizetesimod: null,
+        selectedSzallitasimodIndex: null,
+        selectedFizetesimodIndex: null,
         areacodes: [],
-        init() {
-
-        },
+        tetellist: [],
+        szallmodlist: [],
         getLists() {
-            const url = new URL('/valtozatadatok', location.origin);
-            url.searchParams.append('tid', this.termekid);
-            fetch(url)
+            fetch(new URL('/checkout/gettetellistdata', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
-                    this.colors = data.szinek;
-                    this.sizes = data.meretek;
-                    this.stocks = data.keszlet;
+                    this.tetellist = data;
                 });
-            this.$watch('selectedColorIndex', (value) => {
-                this.selectColor(this.colors[value]);
-            });
-            this.$watch('selectedSizeIndex', (value) => {
-                this.selectSize(this.sizes[value]);
-            });
-        },
-        selectSize(size) {
-            this.canAddToCart = false;
-            if (this.selectedColor && size) {
-                this.canAddToCart = this.stocks[this.selectedColor.value + size.value];
-            }
-            this.selectedSize = size;
-        },
-        selectColor(color) {
-            this.canAddToCart = false;
-            if (this.selectedSize && color) {
-                this.canAddToCart = this.stocks[color.value + this.selectedSize.value];
-            }
-            this.selectedColor = color;
-        },
-        addToCart() {
-            const fm = new FormData();
-            fm.append('jax', 4);
-            fm.append('id', this.termekid);
-            fm.append('color', this.selectedColor.value);
-            fm.append('size', this.selectedSize.value);
-            fetch('/kosar/add', {
-                method: 'POST',
-                //headers: {'Content-type': 'application/json'},
-                body: fm
-            })
+            fetch(new URL('/checkout/getszallmodfizmodlist', location.origin))
                 .then((response) => response.json())
-                .then((respdata) => {
-                    Alpine.store('header').termekdb = respdata.termekdb;
-                })
-                .catch((error) => {
-                    alert(error);
-                })
-                .finally(() => {
+                .then((data) => {
+                    this.szallmodlist = data;
+                    this.selectedSzallitasimodIndex = 0;
                 });
+            this.$watch('selectedSzallitasimodIndex', (value) => {
+                this.selectSzallitasimod(value);
+                this.selectedFizetesimodIndex = this.selectedSzallitasimod.selectedFizetesimodIndex;
+            });
+            this.$watch('selectedFizetesimodIndex', (value) => {
+                this.selectFizetesimod(value);
+            });
+        },
+        selectSzallitasimod(szallmodindex) {
+            this.selectedSzallitasimod = this.szallmodlist[szallmodindex];
+        },
+        selectFizetesimod(fizmodindex) {
+            this.selectedFizetesimod = this.selectedSzallitasimod.fizmodlist[fizmodindex];
+            this.szallmodlist[this.selectedSzallitasimodIndex].selectedFizetesimodIndex = fizmodindex;
         }
     }));
 });

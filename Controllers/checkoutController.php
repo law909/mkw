@@ -2,41 +2,46 @@
 
 namespace Controllers;
 
+use Entities\Fizmod;
+use Entities\Kosar;
 use mkw\store;
 
-class checkoutController extends \mkwhelpers\MattableController {
+class checkoutController extends \mkwhelpers\MattableController
+{
 
-	public function __construct($params) {
-		$this->setEntityName('Entities\Kosar');
-		parent::__construct($params);
-	}
+    public function __construct($params)
+    {
+        $this->setEntityName('Entities\Kosar');
+        parent::__construct($params);
+    }
 
-    private function vv($a, $b) {
+    private function vv($a, $b)
+    {
         if ($a) {
             return $a;
         }
         return $b;
     }
 
-	public function getCheckout() {
+    public function getCheckout()
+    {
         $p = \mkw\store::getMainSession()->params;
         if (!$p) {
-            $p = new \mkwhelpers\ParameterHandler(array());
+            $p = new \mkwhelpers\ParameterHandler([]);
         }
         \mkw\store::getMainSession()->params = false;
 
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkout.tpl');
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkout.tpl');
         \mkw\store::fillTemplate($view, false);
 
         $partner = \mkw\store::getLoggedInUser();
         if ($partner) {
             $valu = $partner->getValutanemId();
-        }
-        else {
+        } else {
             $valu = \mkw\store::getMainSession()->valutanem;
         }
 
-        $kr = $this->getRepo('Entities\Kosar');
+        $kr = $this->getRepo(Kosar::class);
         $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
         $sum = 0;
         /** @var \Entities\Kosar $sor */
@@ -45,7 +50,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         }
 
         $szm = new szallitasimodController($this->params);
-		$szlist = $szm->getSelectList(null, false, $valu, $sum);
+        $szlist = $szm->getSelectList(null, false, $valu, $sum);
 
         $u = \mkw\store::getLoggedInUser();
         if ($u) {
@@ -65,17 +70,16 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['szallvaros'] = $u->getSzallvaros();
             $user['szallutca'] = $u->getSzallutca();
             $user['szalladategyezik'] = !$u->getNev() &&
-                    !$u->getIrszam() &&
-                    !$u->getVaros() &&
-                    !$u->getUtca() &&
-                    !$u->getNev();
+                !$u->getIrszam() &&
+                !$u->getVaros() &&
+                !$u->getUtca() &&
+                !$u->getNev();
             $user['akcioshirlevelkell'] = $u->getAkcioshirlevelkell();
             $user['ujdonsaghirlevelkell'] = $u->getUjdonsaghirlevelkell();
             $view->setVar('partnerszallitasimod', $u->getSzallitasimodNev());
             $view->setVar('partnerszallitasimodid', $u->getSzallitasimodId());
             $view->setVar('partnerfizetesimod', $u->getFizmodNev());
-        }
-        else {
+        } else {
             $user['nev'] = '';
             $user['email'] = '';
             $user['vezeteknev'] = '';
@@ -98,10 +102,10 @@ class checkoutController extends \mkwhelpers\MattableController {
             $view->setVar('partnerfizetesimod', '');
         }
 
-		$view->setVar('szallitasimodlist', $szlist);
-		$view->setVar('showerror', \mkw\store::getMainSession()->loginerror);
+        $view->setVar('szallitasimodlist', $szlist);
+        $view->setVar('showerror', \mkw\store::getMainSession()->loginerror);
         $view->setVar('checkouterrors', \mkw\store::getMainSession()->checkoutErrors);
-		$view->setVar('showaszflink', \mkw\store::getRouter()->generate('showstatlappopup', false, array('lap' => 'aszf')));
+        $view->setVar('showaszflink', \mkw\store::getRouter()->generate('showstatlappopup', false, ['lap' => 'aszf']));
         $view->setVar('regkell', $p->getIntRequestParam('regkell', 2));
         $view->setVar('vezeteknev', $this->vv($p->getStringRequestParam('vezeteknev'), $user['vezeteknev']));
         $view->setVar('keresztnev', $this->vv($p->getStringRequestParam('keresztnev'), $user['keresztnev']));
@@ -134,34 +138,95 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('telkorzetlist', $telkorzetc->getSelectList($this->vv($p->getStringRequestParam('telkorzet'), $user['telkorzet'])));
         \mkw\store::getMainSession()->loginerror = false;
         \mkw\store::getMainSession()->checkoutErrors = false;
-		$view->printTemplateResult(false);
-	}
+        $view->printTemplateResult(false);
+    }
 
-	public function getFizmodList() {
-	    $krepo = $this->getRepo('Entities\SzallitasimodFizmodNovelo');
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
-		$fm = new fizmodController($this->params);
-		$szm = $this->params->getIntRequestParam('szallitasimod');
-		$szlist = $fm->getSelectList(null, $szm);
-		$adat = array();
-		foreach ($szlist as $szl) {
-		    $x = $krepo->getBySzallitasimodFizmod($szm, $szl['id']);
-		    if ($x) {
-		        if (is_array($x)) {
-		            $x = $x[0];
+    public function getSzallmodFizmodList()
+    {
+        $partner = \mkw\store::getLoggedInUser();
+        if ($partner) {
+            $valu = $partner->getValutanemId();
+        } else {
+            $valu = \mkw\store::getMainSession()->valutanem;
+        }
+
+        $kr = $this->getRepo(Kosar::class);
+        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $sum = 0;
+        /** @var \Entities\Kosar $sor */
+        foreach ($sorok as $sor) {
+            $sum = $sum + $sor->getBruttoegysar() * $sor->getMennyiseg();
+        }
+
+        $ret = [];
+        $fr = $this->getRepo(Fizmod::class);
+        $fc = new fizmodController($this->params);
+        $szm = new szallitasimodController($this->params);
+        $szlist = $szm->getSelectList(null, false, $valu, $sum);
+        foreach ($szlist as $szallmod) {
+            $fmlist = explode(',', $szallmod['fizmodok']);
+            $fmarr = [];
+            foreach ($fmlist as $fmid) {
+                $fizmod = $fr->find($fmid);
+                if ($fizmod) {
+                    $fmarr[] = $fc->loadVars($fizmod, true);
+                }
+            }
+            $szallmod['fizmodlist'] = $fmarr;
+            $ret[] = $szallmod;
+        }
+        echo json_encode($ret);
+    }
+
+    public function getFizmodList()
+    {
+        $krepo = $this->getRepo('Entities\SzallitasimodFizmodNovelo');
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
+        $fm = new fizmodController($this->params);
+        $szm = $this->params->getIntRequestParam('szallitasimod');
+        $szlist = $fm->getSelectList(null, $szm);
+        $adat = [];
+        foreach ($szlist as $szl) {
+            $x = $krepo->getBySzallitasimodFizmod($szm, $szl['id']);
+            if ($x) {
+                if (is_array($x)) {
+                    $x = $x[0];
                 }
                 $szl['novelo'] = $x->getOsszeg();
             }
             $szl['biztonsagikerdeskell'] = $szl['bankkartyas'];
-		    $adat[] = $szl;
+            $adat[] = $szl;
         }
-		$view->setVar('fizmodlist', $adat);
-		echo json_encode(array(
+        $view->setVar('fizmodlist', $adat);
+        echo json_encode([
             'html' => $view->getTemplateResult()
-        ));
-	}
+        ]);
+    }
 
-	public function getTetelList() {
+    public function getTetelList()
+    {
+        $data = $this->_getTetelListData();
+
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
+
+        $view->setVar('valutanemnev', $data['valutanemnev']);
+        $view->setVar('szallitasiido', $data['szallitasiido']);
+        $view->setVar('tetellista', $data['tetellista']);
+        echo json_encode([
+            'html' => $view->getTemplateResult(),
+            'hash' => $data['hash'],
+            'kuponszoveg' => $data['kuponszoveg']
+        ]);
+    }
+
+    public function getTetelListData()
+    {
+        $data = $this->_getTetelListData();
+        echo json_encode($data);
+    }
+
+    private function _getTetelListData()
+    {
         $kr = $this->getRepo('Entities\Kosar');
         $kuponkod = $this->params->getStringRequestParam('kupon');
         $kuponszoveg = '';
@@ -175,34 +240,32 @@ class checkoutController extends \mkwhelpers\MattableController {
                     if ($kupon->isIngyenSzallitas()) {
                         if ($kupon->isMinimumosszegMegvan($ertek)) {
                             $kuponszoveg = $kupon->getTipusStr();
-                        }
-                        else {
+                        } else {
                             $kuponszoveg = 'Rendeljen még ' . bizformat($kupon->getMinimumosszeg() - $ertek) . ' Ft értékben a kupon használatához!';
                         }
                     }
-                }
-                else {
+                } else {
                     $kuponszoveg = $kupon->getLejartStr();
                 }
-            }
-            else {
+            } else {
                 $kuponszoveg = 'ismeretlen kupon';
             }
         }
         $this->getRepo('Entities\Kosar')->createSzallitasiKtg(
             $this->params->getIntRequestParam('szallitasimod'),
             $this->params->getIntRequestParam('fizmod'),
-            $kuponkod);
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
+            $kuponkod
+        );
 
-		$sorok = $kr->getDataBySessionId(\Zend_Session::getId());
-		$s = array();
+        $ret = [];
+
+        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $s = [];
         $partner = \mkw\store::getLoggedInUser();
         if ($partner) {
-            $view->setVar('valutanemnev', $partner->getValutanemnev());
-        }
-        else {
-            $view->setVar('valutanemnev', \mkw\store::getMainSession()->valutanemnev);
+            $ret['valutanemnev'] = $partner->getValutanemnev();
+        } else {
+            $ret['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
         }
         $szallido = 1;
         /** @var \Entities\Kosar $sor */
@@ -211,25 +274,24 @@ class checkoutController extends \mkwhelpers\MattableController {
             if ($szallido < $sorszallido) {
                 $szallido = $sorszallido;
             }
-			$s[] = $sor->toLista($partner);
-		}
+            $s[] = $sor->toLista($partner);
+        }
         $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
 
-        $view->setVar('szallitasiido', $szallido);
-		$view->setVar('tetellista', $s);
-		echo json_encode(array(
-            'html' => $view->getTemplateResult(),
-            'hash' => $kr->getHash(),
-            'kuponszoveg' => $kuponszoveg
-        ));
-	}
+        $ret['hash'] = $kr->getHash();
+        $ret['szallitasiido'] = $szallido;
+        $ret['tetellista'] = $s;
+        $ret['kuponszoveg'] = $kuponszoveg;
 
-	public function save() {
+        return $ret;
+    }
 
+    public function save()
+    {
         switch (true) {
             case \mkw\store::isMindentkapni():
-                $errorlogtext = array();
-                $errors = array();
+                $errorlogtext = [];
+                $errors = [];
 
                 $regkell = $this->params->getIntRequestParam('regkell');
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
@@ -268,15 +330,15 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $kuponkod = $this->params->getStringRequestParam('kupon');
 
                 $ok = ($vezeteknev && $keresztnev && $telkorzet && $telszam &&
-                        $szallirszam && $szallvaros && $szallutca && $szallnev &&
-                        (!$szamlaeqszall ? $szamlanev : true) &&
-                        (!$szamlaeqszall ? $szamlairszam : true) &&
-                        (!$szamlaeqszall ? $szamlavaros : true) &&
-                        (!$szamlaeqszall ? $szamlautca : true) &&
-                        $szallitasimod > 0 &&
-                        $fizetesimod > 0 &&
-                        $aszfready
-                        );
+                    $szallirszam && $szallvaros && $szallutca && $szallnev &&
+                    (!$szamlaeqszall ? $szamlanev : true) &&
+                    (!$szamlaeqszall ? $szamlairszam : true) &&
+                    (!$szamlaeqszall ? $szamlavaros : true) &&
+                    (!$szamlaeqszall ? $szamlautca : true) &&
+                    $szallitasimod > 0 &&
+                    $fizetesimod > 0 &&
+                    $aszfready
+                );
 
                 if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
                     $ok = $ok && $csomagterminalid;
@@ -342,8 +404,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         if (!$kapcsemail) {
                             $errorlogtext[] = '2vendegemail';
                             $errors[] = 'Nem adott meg emailcímet.';
-                        }
-                        else {
+                        } else {
                             if (!$validkapcsemail) {
                                 $errorlogtext[] = '2vendegemailhiba';
                                 $errors[] = 'A megadott emailcím hibás.';
@@ -359,8 +420,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         if (!$kapcsemail) {
                             $errorlogtext[] = '3regemail';
                             $errors[] = 'Nem adott meg emailcímet.';
-                        }
-                        else {
+                        } else {
                             if (!$validkapcsemail) {
                                 $errorlogtext[] = '3vendegemailhiba';
                                 $errors[] = 'A megadott emailcím hibás.';
@@ -372,14 +432,13 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
 
                 $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
-                $ok = $ok && count($kosartetelek)>0;
+                $ok = $ok && count($kosartetelek) > 0;
                 if (!count($kosartetelek)) {
                     $errorlogtext[] = '4ureskosar';
                     $errors[] = 'Üres a kosara.';
                 }
 
                 if ($ok) {
-
                     switch ($regkell) {
                         case 1: // vendég
                             $pc = new \Controllers\partnerController($this->params);
@@ -405,8 +464,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $partner->setIrszam($szallirszam);
                         $partner->setVaros($szallvaros);
                         $partner->setUtca($szallutca);
-                    }
-                    else {
+                    } else {
                         $partner->setNev($szamlanev);
                         $partner->setIrszam($szamlairszam);
                         $partner->setVaros($szamlavaros);
@@ -459,8 +517,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setCouriermessage($couriermessage);
                     if (\mkw\store::isBarionFizmod($fizetesimod)) {
                         $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
-                    }
-                    else {
+                    } else {
                         $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                     }
                     $megrendfej->setBizonylatstatusz($bizstatusz);
@@ -477,10 +534,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                         }
                     }
 
-                    $lasttermeknevek = array();
-                    $lasttermekids = array();
-                    $lasttermekadat = array();
-        //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+                    $lasttermeknevek = [];
+                    $lasttermekids = [];
+                    $lasttermekadat = [];
+                    //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
                     foreach ($kosartetelek as $kt) {
                         $t = new \Entities\Bizonylattetel();
                         $t->setBizonylatfej($megrendfej);
@@ -498,11 +555,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $t->calc();
                         $lasttermeknevek[] = $t->getTermeknev();
                         $lasttermekids[] = $t->getTermekId();
-                        $lasttermekadat[] = array(
+                        $lasttermekadat[] = [
                             'id' => $t->getTermekId(),
                             'unitprice' => $t->getBruttoegysar(),
                             'qty' => $t->getMennyiseg()
-                        );
+                        ];
                         $this->getEm()->persist($t);
                     }
                     $this->getEm()->persist($megrendfej);
@@ -520,8 +577,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                     if ($fizetesimod == \mkw\store::getParameter(\mkw\consts::OTPayFizmod)) {
                         Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
-                    }
-                    else {
+                    } else {
                         if ($bizstatusz) {
                             $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
                         }
@@ -530,25 +586,22 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $paymentres = $bc->startPayment($megrendfej);
                             if ($paymentres['result']) {
                                 Header('Location: ' . $paymentres['redirecturl']);
+                            } else {
+                                Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, [], ['mr' => $megrendfej->getId()]));
                             }
-                            else {
-                                Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, array(), array('mr' => $megrendfej->getId())));
-                            }
-                        }
-                        else {
+                        } else {
                             Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
                         }
                     }
-                }
-                else {
+                } else {
                     \mkw\store::getMainSession()->params = $this->params;
                     \mkw\store::getMainSession()->checkoutErrors = $errors;
                     Header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
                 }
                 break;
             case \mkw\store::isSuperzoneB2B():
-                $errorlogtext = array();
-                $errors = array();
+                $errorlogtext = [];
+                $errors = [];
 
                 $szamlanev = $this->params->getStringRequestParam('szamlanev');
                 $szamlairszam = $this->params->getStringRequestParam('szamlairszam');
@@ -570,7 +623,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
 
                 $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
-                        $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $hatarido);
+                    $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $hatarido);
 
                 if (!$ok) {
                     $errorlogtext[] = '1alapadat';
@@ -578,14 +631,13 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
 
                 $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
-                $ok = $ok && count($kosartetelek)>0;
+                $ok = $ok && count($kosartetelek) > 0;
                 if (!count($kosartetelek)) {
                     $errorlogtext[] = '4ureskosar';
                     $errors[] = 'Üres a kosara.';
                 }
 
                 if ($ok) {
-
                     $partner = \mkw\store::getLoggedInUser();
                     $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                     $biztetelcontroller = new bizonylattetelController($this->params);
@@ -627,8 +679,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                     $megrendfej->setBizonylatstatusz($bizstatusz);
 
-                    $lasttermeknevek = array();
-                    $lasttermekids = array();
+                    $lasttermeknevek = [];
+                    $lasttermekids = [];
                     foreach ($kosartetelek as $kt) {
                         $t = new \Entities\Bizonylattetel();
                         $t->setBizonylatfej($megrendfej);
@@ -643,8 +695,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setEnettoegysar($kt->getEnettoegysar());
                             $t->setEbruttoegysar($kt->getEnettoegysar());
-                        }
-                        else {
+                        } else {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setBruttoegysar($kt->getBruttoegysar());
                             $t->setEnettoegysar($kt->getEnettoegysar());
@@ -652,7 +703,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                         }
                         $t->setKedvezmeny($kt->getKedvezmeny());
                         $arak = $biztetelcontroller->calcAr(
-                            $t->getAfaId(), $t->getArfolyam(), $t->getNettoegysar(), $t->getEnettoegysar(), $t->getMennyiseg()
+                            $t->getAfaId(),
+                            $t->getArfolyam(),
+                            $t->getNettoegysar(),
+                            $t->getEnettoegysar(),
+                            $t->getMennyiseg()
                         );
                         $t->setNettoegysarhuf($arak['nettoegysarhuf']);
                         $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);
@@ -677,16 +732,15 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
                     }
                     Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
-                }
-                else {
+                } else {
                     \mkw\store::getMainSession()->params = $this->params;
                     \mkw\store::getMainSession()->checkoutErrors = $errors;
                     Header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
                 }
                 break;
             case \mkw\store::isMugenrace():
-                $errorlogtext = array();
-                $errors = array();
+                $errorlogtext = [];
+                $errors = [];
 
                 $regkell = $this->params->getIntRequestParam('regkell');
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
@@ -740,7 +794,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
 
                 if ($ok) {
-
                     switch ($regkell) {
                         case 1: // vendég
                             $pc = new \Controllers\partnerController($this->params);
@@ -770,8 +823,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $partner->setIrszam($szallirszam);
                         $partner->setVaros($szallvaros);
                         $partner->setUtca($szallutca);
-                    }
-                    else {
+                    } else {
                         $partner->setNev($szamlanev);
                         $partner->setIrszam($szamlairszam);
                         $partner->setVaros($szamlavaros);
@@ -841,14 +893,13 @@ class checkoutController extends \mkwhelpers\MattableController {
                     }
                     if (\mkw\store::isBarionFizmod($fizetesimod)) {
                         $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
-                    }
-                    else {
+                    } else {
                         $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                     }
                     $megrendfej->setBizonylatstatusz($bizstatusz);
 
-                    $lasttermeknevek = array();
-                    $lasttermekids = array();
+                    $lasttermeknevek = [];
+                    $lasttermekids = [];
                     foreach ($kosartetelek as $kt) {
                         $t = new \Entities\Bizonylattetel();
                         $t->setBizonylatfej($megrendfej);
@@ -863,8 +914,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setEnettoegysar($kt->getEnettoegysar());
                             $t->setEbruttoegysar($kt->getEnettoegysar());
-                        }
-                        else {
+                        } else {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setBruttoegysar($kt->getBruttoegysar());
                             $t->setEnettoegysar($kt->getEnettoegysar());
@@ -872,7 +922,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                         }
                         $t->setKedvezmeny($kt->getKedvezmeny());
                         $arak = $biztetelcontroller->calcAr(
-                            $t->getAfaId(), $t->getArfolyam(), $t->getNettoegysar(), $t->getEnettoegysar(), $t->getMennyiseg()
+                            $t->getAfaId(),
+                            $t->getArfolyam(),
+                            $t->getNettoegysar(),
+                            $t->getEnettoegysar(),
+                            $t->getMennyiseg()
                         );
                         $t->setNettoegysarhuf($arak['nettoegysarhuf']);
                         $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);
@@ -898,28 +952,26 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $paymentres = $bc->startPayment($megrendfej);
                         if ($paymentres['result']) {
                             Header('Location: ' . $paymentres['redirecturl']);
+                        } else {
+                            Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, [], ['mr' => $megrendfej->getId()]));
                         }
-                        else {
-                            Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, array(), array('mr' => $megrendfej->getId())));
-                        }
-                    }
-                    else {
+                    } else {
                         if ($bizstatusz) {
                             $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
                         }
                         Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
                     }
-                }
-                else {
+                } else {
                     \mkw\store::getMainSession()->params = $this->params;
                     \mkw\store::getMainSession()->checkoutErrors = $errors;
                     Header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
                 }
                 break;
         }
-	}
+    }
 
-	public function showCheckoutFizetes() {
+    public function showCheckoutFizetes()
+    {
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
         $szallmod = \mkw\store::getMainSession()->lastszallmod;
         $fizmod = \mkw\store::getMainSession()->lastfizmod;
@@ -935,7 +987,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $fizetendo = $mr->getFizetendo();
         }
 
-        $excfm = array();
+        $excfm = [];
         $ooo = \mkw\store::getParameter(\mkw\consts::OTPayFizmod);
         if ($ooo) {
             $excfm[] = $ooo;
@@ -945,32 +997,33 @@ class checkoutController extends \mkwhelpers\MattableController {
             $excfm[] = $ooo;
         }
 
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
-		$fm = new fizmodController($this->params);
-		$szlist = $fm->getSelectList($fizmod, $szallmod, $excfm);
-		$view->setVar('fizmodlist', $szlist);
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
+        $fm = new fizmodController($this->params);
+        $szlist = $fm->getSelectList($fizmod, $szallmod, $excfm);
+        $view->setVar('fizmodlist', $szlist);
         $fml = $view->getTemplateResult();
 
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizetes.tpl');
         \mkw\store::fillTemplate($view);
         $view->setVar('fizetendo', $fizetendo);
-		$view->setVar('megrendelesszam', $mrszam);
+        $view->setVar('megrendelesszam', $mrszam);
         $view->setVar('fizmodlist', $fml);
         $view->setVar('fizmodnev', $fizmodnev);
-        $view->setVar('checkouterrors',\mkw\store::getMainSession()->checkoutfizeteserrors);
-		$view->printTemplateResult(false);
+        $view->setVar('checkouterrors', \mkw\store::getMainSession()->checkoutfizeteserrors);
+        $view->printTemplateResult(false);
         \mkw\store::getMainSession()->checkoutfizeteserrors = false;
-	}
+    }
 
-    public function doCheckoutFizetes() {
+    public function doCheckoutFizetes()
+    {
         require_once('busvendor/OTPay/MerchTerm_umg_client.php');
 
         $error = false;
         \mkw\store::getMainSession()->fizetesdb = (int)\mkw\store::getMainSession()->fizetesdb + 1;
 
         $mrszam = $this->params->getStringRequestParam('megrendelesszam');
-        $mobilszam = preg_replace('/[^0-9]/','',$this->params->getStringRequestParam('mobilszam'));
-        $fizazon = preg_replace('/[^0-9]/','',$this->params->getStringRequestParam('fizazon'));
+        $mobilszam = preg_replace('/[^0-9]/', '', $this->params->getStringRequestParam('mobilszam'));
+        $fizazon = preg_replace('/[^0-9]/', '', $this->params->getStringRequestParam('fizazon'));
 
         if ($mrszam) {
             $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
@@ -981,14 +1034,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $clientId = new \ClientMsisdn();
                         $clientId->value = $mobilszam;
                         $mr->setOTPayMSISDN($mobilszam);
-                    }
-                    else {
+                    } else {
                         if ($fizazon) {
                             $clientId = new \ClientMpid();
                             $clientId->value = $fizazon;
                             $mr->setOTPayMPID($fizazon);
-                        }
-                        else {
+                        } else {
                             $error = 'Hiányzik a mobil szám vagy a fizetési azonosító';
                         }
                     }
@@ -1000,7 +1051,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $timeout->value = "mediumPeriod";
                         // Paraméterek
                         $mytrxid = $mr->getTrxId();
-                        $request = array(
+                        $request = [
                             'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
                             'merchTrxId' => $mytrxid,
                             'clientId' => $clientId,
@@ -1008,7 +1059,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                             'amount' => $fizetendo,
                             'description' => 'Mindentkapni.hu vásárlás',
                             'isRepeated' => (\mkw\store::getMainSession()->fizetesdb > 1)
-                        );
+                        ];
 
                         $client = null;
 
@@ -1023,10 +1074,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                                 $imnotiffilter = new \ImNotifFilterBankTrxId();
                                 $imnotiffilter->bankTrxId = $trxid;
-                                $request = array(
+                                $request = [
                                     'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
                                     'imNotifFilter' => $imnotiffilter
-                                );
+                                ];
                                 $response = $client->GetImNotif($request);
                                 if ($response->result == 0) {
                                     if (isset($response->ImNotifList)) {
@@ -1036,13 +1087,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                                                 $c = 0;
                                                 $response = -1;
                                                 while ($c < count($r)) {
-                                                    if (($r[$c]->message->bankTrxId == $trxid)&&($r[$c]->message->merchTrxId == $mytrxid)) {
+                                                    if (($r[$c]->message->bankTrxId == $trxid) && ($r[$c]->message->merchTrxId == $mytrxid)) {
                                                         $response = $r[$c]->message->bankTrxResult;
                                                     }
                                                     $c++;
                                                 }
-                                            }
-                                            else {
+                                            } else {
                                                 $response = $response->ImNotifList->ImNotifReq->message->bankTrxResult;
                                             }
                                             if ($response == 0) {
@@ -1051,42 +1101,35 @@ class checkoutController extends \mkwhelpers\MattableController {
                                                 $mr->setOTPayResultText($client->getErrorText($response));
                                                 $this->getEm()->persist($mr);
                                                 $this->getEm()->flush();
-                                            }
-                                            else {
+                                            } else {
                                                 $error = $client->getErrorText($response);
                                                 $mr->setOTPayResult($response);
                                                 $mr->setOTPayResultText($error);
                                                 $this->getEm()->persist($mr);
                                                 $this->getEm()->flush();
                                             }
-
-                                        }
-                                        else {
+                                        } else {
                                             $error = 'Ismeretlen UMG válasz.';
                                             $mr->setOTPayResult(-1);
                                             $mr->setOTPayResultText($error . ' => ' . print_r($response, true));
                                             $this->getEm()->persist($mr);
                                             $this->getEm()->flush();
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         $error = 'Ismeretlen UMG válasz.';
                                         $mr->setOTPayResult(-1);
                                         $mr->setOTPayResultText($error . ' => ' . print_r($response, true));
                                         $this->getEm()->persist($mr);
                                         $this->getEm()->flush();
                                     }
-                                }
-                                else {
+                                } else {
                                     $error = $client->getRCErrorText($response->result);
                                     $mr->setOTPayResult($response->result);
                                     $mr->setOTPayResultText($error);
                                     $this->getEm()->persist($mr);
                                     $this->getEm()->flush();
                                 }
-
-                            }
-                            else {
+                            } else {
                                 $error = $client->getRCErrorText($response->result);
                                 $mr->setOTPayResult($response->result);
                                 $mr->setOTPayResultText($error);
@@ -1098,37 +1141,34 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $error = $exception->getMessage();
                         }
                     }
-                }
-                else {
+                } else {
                     $error = 'A fizetendő összeg nem lehet nulla';
                 }
-            }
-            else {
+            } else {
                 $error = 'A megrendelés nem található';
             }
-        }
-        else {
+        } else {
             $error = 'Hiányzik a megrendelés azonosító';
         }
 
         if ($error) {
             \mkw\store::getMainSession()->checkoutfizeteserrors = $error;
             Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
-        }
-        else {
+        } else {
             Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
         }
     }
 
-    public function saveCheckoutFizmod() {
+    public function saveCheckoutFizmod()
+    {
         $megrendelesszam = $this->params->getStringRequestParam('megrendelesszam');
         $f = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizetesimod'));
 
         $mf = $this->getRepo('Entities\Bizonylatfej')->find($megrendelesszam);
         if ($mf && $f) {
             $mf->setFizmod($f);
-			$this->getEm()->persist($mf);
-			$this->getEm()->flush();
+            $this->getEm()->persist($mf);
+            $this->getEm()->flush();
             $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             if ($bizstatusz) {
                 $mf->sendStatuszEmail($bizstatusz->getEmailtemplate());
@@ -1136,15 +1176,15 @@ class checkoutController extends \mkwhelpers\MattableController {
         }
 
         Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
-
     }
 
-	public function thanks() {
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
+    public function thanks()
+    {
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
         \mkw\store::fillTemplate($view);
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
-		$view->setVar('megrendelesszam', $mrszam);
-		$view->setVar('megrendelesadat', \mkw\store::getMainSession()->lasttermekadat);
+        $view->setVar('megrendelesszam', $mrszam);
+        $view->setVar('megrendelesadat', \mkw\store::getMainSession()->lasttermekadat);
 //itt kell hozza vasarolt termeket keresni session->lasttermekids-re
 
         $aktsapikey = \mkw\store::getParameter(\mkw\consts::AKTrustedShopApiKey);
@@ -1158,7 +1198,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
             $ltn = \mkw\store::getMainSession()->lasttermeknevek;
             if ($ltn) {
-                foreach($ltn as $l) {
+                foreach ($ltn as $l) {
                     $ts->AddProduct($l);
                 }
             }
@@ -1173,17 +1213,18 @@ class checkoutController extends \mkwhelpers\MattableController {
         }
         \mkw\store::getMainSession()->lastmegrendeles = '';
         \mkw\store::getMainSession()->lastemail = '';
-        \mkw\store::getMainSession()->lasttermeknevek = array();
-        \mkw\store::getMainSession()->lasttermekids = array();
+        \mkw\store::getMainSession()->lasttermeknevek = [];
+        \mkw\store::getMainSession()->lasttermekids = [];
         \mkw\store::getMainSession()->lastszallmod = 0;
         \mkw\store::getMainSession()->lastfizmod = 0;
-        \mkw\store::getMainSession()->lasttermekadat = array();
+        \mkw\store::getMainSession()->lasttermekadat = [];
 
-		$view->printTemplateResult(false);
-	}
+        $view->printTemplateResult(false);
+    }
 
-	public function barionError() {
-	    $mrszam = $this->params->getStringRequestParam('mr');
+    public function barionError()
+    {
+        $mrszam = $this->params->getStringRequestParam('mr');
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutbarionerror.tpl');
         \mkw\store::fillTemplate($view);
         $view->setVar('megrendelesszam', $mrszam);
@@ -1191,14 +1232,15 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    public function saveTerminalSelection() {
-	    $szmid = $this->params->getIntRequestParam('szmid');
-	    $cs = $this->params->getStringRequestParam('cs');
-	    $t = $this->params->getIntRequestParam('t');
-	    \mkw\store::getMainSession()->lsszallmod = $szmid;
-	    $key = 'lscsoport' . $szmid;
-	    \mkw\store::getMainSession()->$key = $cs;
-	    $key = 'lsterminal' . $cs;
-	    \mkw\store::getMainSession()->$key = $t;
+    public function saveTerminalSelection()
+    {
+        $szmid = $this->params->getIntRequestParam('szmid');
+        $cs = $this->params->getStringRequestParam('cs');
+        $t = $this->params->getIntRequestParam('t');
+        \mkw\store::getMainSession()->lsszallmod = $szmid;
+        $key = 'lscsoport' . $szmid;
+        \mkw\store::getMainSession()->$key = $cs;
+        $key = 'lsterminal' . $cs;
+        \mkw\store::getMainSession()->$key = $t;
     }
 }

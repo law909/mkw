@@ -4,9 +4,11 @@ namespace Controllers;
 
 use Entities\Fizmod;
 
-class fizmodController extends \mkwhelpers\MattableController {
+class fizmodController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Fizmod');
         $this->setKarbFormTplName('fizetesimodkarbform.tpl');
         $this->setKarbTplName('fizetesimodkarb.tpl');
@@ -15,11 +17,12 @@ class fizmodController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
+    public function loadVars($t, $forKarb = false)
+    {
         $letezik = true;
         $translationsCtrl = new fizmodtranslationController($this->params);
-        $translations = array();
-        $x = array();
+        $translations = [];
+        $x = [];
         if (!$t) {
             $letezik = false;
             $t = new \Entities\Fizmod();
@@ -51,14 +54,14 @@ class fizmodController extends \mkwhelpers\MattableController {
             if ($letezik) {
                 $fhc = new fizmodhatarController($this->params);
                 $h = $this->getRepo('Entities\FizmodHatar')->getByFizmod($t);
-                $hatararr = array();
+                $hatararr = [];
                 foreach ($h as $hat) {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
                 }
                 $x['hatarok'] = $hatararr;
             }
             if (\mkw\store::isMultilang()) {
-                foreach($t->getTranslations() as $tr) {
+                foreach ($t->getTranslations() as $tr) {
                     $translations[] = $translationsCtrl->loadVars($tr, true);
                 }
                 $x['translations'] = $translations;
@@ -69,9 +72,11 @@ class fizmodController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Fizmod $obj
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
         $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
@@ -107,8 +112,7 @@ class fizmodController extends \mkwhelpers\MattableController {
                     $hatar->setValutanem($valutanem);
                 }
                 $this->getEm()->persist($hatar);
-            }
-            elseif ($oper == 'edit') {
+            } elseif ($oper == 'edit') {
                 $hatar = $this->getEm()->getRepository('Entities\FizmodHatar')->find($hatarid);
                 if ($hatar) {
                     $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
@@ -146,8 +150,7 @@ class fizmodController extends \mkwhelpers\MattableController {
                     );
                     $obj->addTranslation($translation);
                     $this->getEm()->persist($translation);
-                }
-                elseif ($oper === 'edit') {
+                } elseif ($oper === 'edit') {
                     $translation = $this->getEm()->getRepository('Entities\FizmodTranslation')->find($translationid);
                     if ($translation) {
                         $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
@@ -161,29 +164,33 @@ class fizmodController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('fizetesimodlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),
             $this->params->getIntRequestParam('elemperpage', 30),
-            $this->params->getIntRequestParam('pageno', 1));
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getAll(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('fizetesimodlista.tpl');
 
         $view->setVar('pagetitle', t('Fizetési módok'));
@@ -192,7 +199,8 @@ class fizmodController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -205,24 +213,24 @@ class fizmodController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $szallmod = null, $exc = null) {
+    public function getSelectList($selid = null, $szallmod = null, $exc = null)
+    {
         $szepfm = \mkw\store::getParameter(\mkw\consts::SZEPFizmod);
         $sportfm = \mkw\store::getParameter(\mkw\consts::SportkartyaFizmod);
         $aycmfm = \mkw\store::getParameter(\mkw\consts::AYCMFizmod);
 
         if (\mkw\store::isAdminMode()) {
             $rec = $this->getRepo()->getAllBySzallitasimod($szallmod, $exc);
-        }
-        else {
+        } else {
             $rec = $this->getRepo()->getAllWebesBySzallitasimod($szallmod, $exc);
         }
 
-        $res = array();
+        $res = [];
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = \mkw\store::getTheme() !== 'mkwcansas';
         /** @var Fizmod $sor */
         foreach ($rec as $sor) {
-            $r = array(
+            $r = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'fizhatido' => $sor->getHaladek(),
@@ -233,16 +241,14 @@ class fizmodController extends \mkwhelpers\MattableController {
                 'aycm' => $sor->getId() == $aycmfm,
                 'nincspenzmozgas' => $sor->getNincspenzmozgas(),
                 'bankkartyas' => $sor->getNavtipus() == 'CARD'
-            );
+            ];
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
-            }
-            else {
+            } else {
                 if (!$vanvalasztott) {
                     $r['selected'] = true;
                     $vanvalasztott = true;
-                }
-                else {
+                } else {
                     $r['selected'] = false;
                 }
             }
@@ -251,8 +257,9 @@ class fizmodController extends \mkwhelpers\MattableController {
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';

@@ -118,7 +118,9 @@ $router->map('GET', '/checkout/pay', 'checkoutController#showCheckoutFizetes', '
 $router->map('POST', '/checkout/pay/ment', 'checkoutController#doCheckoutFizetes', 'docheckoutfizetes');
 $router->map('POST', '/checkout/newfizmod/ment', 'checkoutController#saveCheckoutFizmod', 'savecheckoutfizmod');
 $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList', 'checkoutgetfizmod');
+$router->map('GET', '/checkout/getszallmodfizmodlist', 'checkoutController#getSzallmodFizmodList', 'checkoutgetszallmodfizmod');
 $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
+$router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
 $router->map('POST', '/checkout/ment', 'checkoutController#save', 'checkoutment');
 $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
 $router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
