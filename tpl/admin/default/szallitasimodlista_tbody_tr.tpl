@@ -10,6 +10,7 @@
             <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
             <div>{if ($_egyed.webes2)}{at('Webes 2')}{else}{at('Nem webes 2')}{/if}</div>
             <div>{if ($_egyed.webes3)}{at('Webes 3')}{else}{at('Nem webes 3')}{/if}</div>
+            <div>{if ($_egyed.webes4)}{at('Webes 4')}{else}{at('Nem webes 4')}{/if}</div>
         {else}
             <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
         {/if}

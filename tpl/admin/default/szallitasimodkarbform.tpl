@@ -43,6 +43,8 @@
                             <td><input id="Webes2Edit" name="webes2" type="checkbox"{if ($egyed.webes2)} checked="checked"{/if}></td>
                             <td><label for="Webes3Edit">{at('Webes 3')}:</label></td>
                             <td><input id="Webes3Edit" name="webes3" type="checkbox"{if ($egyed.webes3)} checked="checked"{/if}></td>
+                            <td><label for="Webes4Edit">{at('Webes 4')}:</label></td>
+                            <td><input id="Webes4Edit" name="webes4" type="checkbox"{if ($egyed.webes4)} checked="checked"{/if}></td>
                         </tr>
 
                     {else}

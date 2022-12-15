@@ -60,6 +60,8 @@ class Szallitasimod {
     private $webes2 = false;
     /** @ORM\Column(type="boolean") */
     private $webes3 = false;
+    /** @ORM\Column(type="boolean") */
+    private $webes4 = false;
 
 
     public static function getTranslatedFields() {
@@ -206,4 +208,17 @@ class Szallitasimod {
         $this->webes3 = $webes3;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getWebes4() {
+        return $this->webes4;
+    }
+
+    /**
+     * @param mixed $webes4
+     */
+    public function setWebes4($webes4) {
+        $this->webes4 = $webes4;
+    }
 }

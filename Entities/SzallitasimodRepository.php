@@ -25,6 +25,9 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
             case 3:
                 $filter->addFilter('webes3', '=', true);
                 break;
+            case 4:
+                $filter->addFilter('webes4', '=', true);
+                break;
             default:
                 $filter->addFilter('webes', '=', true);
                 break;
