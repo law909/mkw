@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mugenrace2021/checkout.js?v=2"></script>
+    <script src="/js/main/mugenrace2021/checkout.js?v=3"></script>
 {/block}
 
 {block "body"}
