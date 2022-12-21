@@ -85,39 +85,48 @@ class Kosar
      */
     private $afa;
 
-    public function toLista($partner = null)
+    private function r($v, $kerekit)
     {
+        if ($kerekit) {
+            return round($v);
+        }
+        return $v;
+    }
+
+    public function toLista($partner = null, $kerekit = false)
+    {
+
         $ret = [];
         $termek = $this->getTermek();
         $ret = $ret + $termek->toKosar($this->getTermekvaltozat());
         $ret['noedit'] = $termek->getId() == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $ret['id'] = $this->getId();
         if ($partner && $partner->getSzamlatipus()) {
-            $ret['nettoegysarhuf'] = (float)$this->getNettoegysar();
-            $ret['nettoegysar'] = (float)$this->getNettoegysar();
-            $ret['enettoegysarhuf'] = (float)$this->getEnettoegysar();
-            $ret['enettoegysar'] = (float)$this->getEnettoegysar();
-            $ret['nettohuf'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
-            $ret['netto'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
-            $ret['bruttoegysarhuf'] = (float)$this->getNettoegysar();
-            $ret['bruttoegysar'] = (float)$this->getNettoegysar();
-            $ret['ebruttoegysarhuf'] = (float)$this->getEnettoegysar();
-            $ret['ebruttoegysar'] = (float)$this->getEnettoegysar();
-            $ret['bruttohuf'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
-            $ret['brutto'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
+            $ret['nettoegysarhuf'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['nettoegysar'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['enettoegysarhuf'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['enettoegysar'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['nettohuf'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['netto'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['bruttoegysarhuf'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['bruttoegysar'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['ebruttoegysarhuf'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['ebruttoegysar'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['bruttohuf'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['brutto'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
         } else {
-            $ret['nettoegysarhuf'] = (float)$this->getNettoegysar();
-            $ret['nettoegysar'] = (float)$this->getNettoegysar();
-            $ret['enettoegysarhuf'] = (float)$this->getEnettoegysar();
-            $ret['enettoegysar'] = (float)$this->getEnettoegysar();
-            $ret['nettohuf'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
-            $ret['netto'] = (float)$this->getNettoegysar() * (float)$this->getMennyiseg();
-            $ret['bruttoegysarhuf'] = (float)$this->getBruttoegysar();
-            $ret['bruttoegysar'] = (float)$this->getBruttoegysar();
-            $ret['ebruttoegysarhuf'] = (float)$this->getEbruttoegysar();
-            $ret['ebruttoegysar'] = (float)$this->getEbruttoegysar();
-            $ret['bruttohuf'] = (float)$this->getBruttoegysar() * (float)$this->getMennyiseg();
-            $ret['brutto'] = (float)$this->getBruttoegysar() * (float)$this->getMennyiseg();
+            $ret['nettoegysarhuf'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['nettoegysar'] = $this->r((float)$this->getNettoegysar(), $kerekit);
+            $ret['enettoegysarhuf'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['enettoegysar'] = $this->r((float)$this->getEnettoegysar(), $kerekit);
+            $ret['nettohuf'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['netto'] = $this->r((float)$this->getNettoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['bruttoegysarhuf'] = $this->r((float)$this->getBruttoegysar(), $kerekit);
+            $ret['bruttoegysar'] = $this->r((float)$this->getBruttoegysar(), $kerekit);
+            $ret['ebruttoegysarhuf'] = $this->r((float)$this->getEbruttoegysar(), $kerekit);
+            $ret['ebruttoegysar'] = $this->r((float)$this->getEbruttoegysar(), $kerekit);
+            $ret['bruttohuf'] = $this->r((float)$this->getBruttoegysar(), $kerekit) * (float)$this->getMennyiseg();
+            $ret['brutto'] = $this->r((float)$this->getBruttoegysar(), $kerekit) * (float)$this->getMennyiseg();
         }
         $ret['kedvezmeny'] = $this->getKedvezmeny();
         $ret['mennyiseg'] = (float)$this->getMennyiseg();
@@ -130,6 +139,13 @@ class Kosar
             }
             if ($valt->getAdatTipus2()) {
                 $v[] = ['nev' => $valt->getAdatTipus2Nev(), 'ertek' => $valt->getErtek2()];
+            }
+            if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                $ret['szin'] = $valt->getErtek1();
+                $ret['meret'] = $valt->getErtek2();
+            } else {
+                $ret['szin'] = $valt->getErtek2();
+                $ret['meret'] = $valt->getErtek1();
             }
         }
         $ret['valtozatok'] = $v;
@@ -220,6 +236,9 @@ class Kosar
         }
     }
 
+    /**
+     * @return TermekValtozat
+     */
     public function getTermekvaltozat()
     {
         return $this->termekvaltozat;

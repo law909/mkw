@@ -112,6 +112,7 @@ $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultia
 $router->map('POST|GET', '/kosar/edit', 'kosarController#edit', 'kosaredit');
 $router->map('POST|GET', '/kosar/del', 'kosarController#del', 'kosardel');
 $router->map('GET', '/kosar/get', 'kosarController#get', 'kosarget');
+$router->map('GET', '/kosar/getdata', 'kosarController#getData', 'kosargetdata');
 $router->map('GET', '/kosar/gethash', 'kosarController#getHash', 'kosargethash');
 $router->map('GET', '/checkout', 'checkoutController#getCheckout', 'showcheckout');
 $router->map('GET', '/checkout/pay', 'checkoutController#showCheckoutFizetes', 'showcheckoutfizetes');

@@ -182,6 +182,36 @@ class kosarController extends \mkwhelpers\MattableController
         }
     }
 
+    public function getData()
+    {
+        switch (true) {
+            case \mkw\store::isMugenrace2021():
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $partner = \mkw\store::getLoggedInUser();
+                $valutanem = \mkw\store::getMainValutanemNev();
+                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $s = [];
+                $szallido = 1;
+                /** @var \Entities\Kosar $sor */
+                foreach ($sorok as $sor) {
+                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
+                    if ($szallido < $sorszallido) {
+                        $szallido = $sorszallido;
+                    }
+                    $s[] = $sor->toLista($partner, true);
+                }
+                $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
+
+                $ret = [
+                    'szallitasiido' => $szallido,
+                    'tetellista' => $s,
+                    'valutanem' => $valutanem
+                ];
+                echo json_encode($ret);
+                break;
+        }
+    }
+
     public function get()
     {
         switch (true) {
@@ -219,29 +249,6 @@ class kosarController extends \mkwhelpers\MattableController
             case \mkw\store::isMugenrace2021():
                 $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
                 \mkw\store::fillTemplate($v);
-                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
-                $partner = \mkw\store::getLoggedInUser();
-                $valutanem = \mkw\store::getMainValutanemNev();
-                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
-                $s = [];
-                $tids = [];
-                $szallido = 1;
-                /** @var \Entities\Kosar $sor */
-                foreach ($sorok as $sor) {
-                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
-                    if ($szallido < $sorszallido) {
-                        $szallido = $sorszallido;
-                    }
-                    $s[] = $sor->toLista($partner);
-                    $tids[] = $sor->getTermekId();
-                }
-                $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
-
-                $v->setVar('szallitasiido', $szallido);
-                $v->setVar('tetellista', $s);
-                $v->setVar('valutanem', $valutanem);
-                $tc = new termekController($this->params);
-                $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
                 $v->printTemplateResult(false);
                 break;
             default:
