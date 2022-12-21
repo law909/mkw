@@ -140,6 +140,10 @@ class setupController extends \mkwhelpers\Controller {
         $eesablon = new emailtemplateController($this->params);
         $view->setVar('ertekelesertesitosablonlist', $eesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::ErtekelesKeroSablon);
+        $eesablon = new emailtemplateController($this->params);
+        $view->setVar('ertekeleskerosablonlist', $eesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::RendezvenySablonDijbekero);
         $rsdsablon = new emailtemplateController($this->params);
         $view->setVar('rendezvenysablondijbekerolist', $rsdsablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1118,6 +1122,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::ErtekelesErtesitoSablon, '');
+        }
+
+        $eesablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('ertekeleskerosablon', 0));
+        if ($eesablon) {
+            $this->setObj(\mkw\consts::ErtekelesKeroSablon, $eesablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::ErtekelesKeroSablon, '');
         }
 
         $konyvelolevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('konyvelolevelsablon', 0));

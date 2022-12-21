@@ -2136,24 +2136,43 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($bf) {
             $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
             if ($sablon) {
+                if ($sablon->getId() == \mkw\store::getParameter(\mkw\consts::ErtekelesKeroSablon)) {
+                    if ($bf->isVanMitErtekelni()) {
+                        $bf->sendEmailSablon($sablon);
+                        $bf->setSimpleedit(true);
+                        $bf->setTermekertekeleskikuldve(true);
+                        $this->getEm()->persist($bf);
+                        $this->getEm()->flush();
+                    }
+                }
+                else {
                     $bf->sendEmailSablon($sablon);
+                }
             }
         }
     }
 
     public function sendEmailSablonok() {
         $ids = $this->params->getArrayRequestParam('ids');
+        $keroid = \mkw\store::getParameter(\mkw\consts::ErtekelesKeroSablon);
         $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
         if ($sablon) {
             foreach ($ids as $id) {
                 /** @var \Entities\Bizonylatfej $megrendfej */
                 $megrendfej = $this->getRepo()->find($id);
-                if ($megrendfej && $megrendfej->isVanMitErtekelni()) {
-                    $megrendfej->sendEmailSablon($sablon);
-                    $megrendfej->setSimpleedit(true);
-                    $megrendfej->setTermekertekeleskikuldve(true);
-                    $this->getEm()->persist($megrendfej);
-                    $this->getEm()->flush();
+                if ($megrendfej) {
+                    if ($sablon->getId() == $keroid) {
+                        if ($megrendfej->isVanMitErtekelni()) {
+                            $megrendfej->sendEmailSablon($sablon);
+                            $megrendfej->setSimpleedit(true);
+                            $megrendfej->setTermekertekeleskikuldve(true);
+                            $this->getEm()->persist($megrendfej);
+                            $this->getEm()->flush();
+                        }
+                    }
+                    else {
+                        $megrendfej->sendEmailSablon($sablon);
+                    }
                 }
             }
         }
