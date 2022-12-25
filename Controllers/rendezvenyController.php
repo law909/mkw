@@ -347,6 +347,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
 
             $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
             $v->setVar('kellszamlazasiadat', $kellszamlazasiadat);
+            $v->setVar('jelentkezes', $jel->toLista());
             echo $v->getTemplateResult();
         }
     }
