@@ -15,6 +15,8 @@ if (typeof billyloader !== "object") {
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         },
         IFrameOnLoad: function() {
+            console.log('iframeonload: ' + billyloader.iFrameId);
+
             iFrameResize({ log: true }, '#' + billyloader.iFrameId);
         },
         Init: function() {
@@ -35,6 +37,8 @@ if (typeof billyloader !== "object") {
             billyloader.params = '?' + src[1];
             billyloader.SetBaseUrl(src[0]);
             billyloader.iFrameId = 'rendezvenyregframe' + billyloader.getUrlParameter('i');
+
+            console.log('init: ' + billyloader.iFrameId);
 
             var iframe = document.createElement("iframe");
             if (iframe.attachEvent) {
