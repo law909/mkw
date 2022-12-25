@@ -41,16 +41,16 @@
             <div class="form-group row">
                 <div class="col">
                     <div class="form-check">
-                        Kérek értesítést a stúdió programjairól
                         <input class="form-check-input" type="checkbox" id="gridCheck1" name="ujdonsaghirlevelkell">
+                        Kérek értesítést a stúdió programjairól
                     </div>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-2">A lemondási feltételeket elfogadom</div>
                 <div class="col">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="gridCheck2" name="lemondasi" required>
+                        A lemondási feltételeket elfogadom
                     </div>
                 </div>
             </div>
@@ -98,10 +98,10 @@
                 </div>
             {/if}
             <div class="form-group row">
-                <div class="col-sm-2">Adatkezelési hozzájárulás</div>
                 <div class="col">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="gridCheck3" name="gdpr" required>
+                        Adatkezelési hozzájárulás
                     </div>
                 </div>
             </div>
