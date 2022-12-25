@@ -47,7 +47,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['uid'] = $t->getUid();
         $x['url'] = $t->getUrl();
         $x['onlineurl'] = $t->getOnlineurl();
-        $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid() . '\'></script>';
+        $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';
 
         if ($forKarb) {
             foreach ($t->getRendezvenyDokok() as $kepje) {

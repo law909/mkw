@@ -1,6 +1,6 @@
 if (typeof billyloader !== "object") {
     billyloader = {
-        iFrameId : 'rendezvenyregframe',
+        iFrameId : null,
         params: '',
         BaseUrl: '',
         SetBaseUrl: function(Url) {
@@ -34,7 +34,7 @@ if (typeof billyloader !== "object") {
             var src = me.src.split("?");
             billyloader.params = '?' + src[1];
             billyloader.SetBaseUrl(src[0]);
-            billyloader.iFrameId = billyloader.iFrameId + billyloader.getUrlParameter('r');
+            billyloader.iFrameId = 'rendezvenyregframe' + billyloader.getUrlParameter('i');
 
             var iframe = document.createElement("iframe");
             if (iframe.attachEvent) {
