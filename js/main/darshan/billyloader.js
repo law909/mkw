@@ -1,12 +1,13 @@
-export default class {
+class billyloader {
 
-    constructor(frameid, baseurl, params) {
+    constructor(frameid, baseurl, path, params) {
 
         const me = new URL(document.currentScript.src);
 
-        this.baseUrl = me.origin;
-        this.params = new URLSearchParams(me.search);
-        this.iFrameId = frameid + this.params.get('i');
+        this.baseUrl = baseurl;
+        this.params = params;
+        this.iFrameId = frameid;
+        this.path = path;
 
         console.log('init: ' + this.iFrameId);
 
@@ -20,7 +21,7 @@ export default class {
                 this.IFrameOnLoad()
             }, false)
         }
-        iframe.setAttribute('src', new URL(this.baseUrl + '/rendezveny/reg?' + this.params.toString()));
+        iframe.setAttribute('src', new URL(this.baseUrl + this.path + this.params.toString()));
         iframe.setAttribute('id', this.iFrameId);
         iframe.setAttribute('height', '100%');
         iframe.setAttribute('width', '100%');
