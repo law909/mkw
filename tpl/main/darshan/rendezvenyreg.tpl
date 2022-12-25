@@ -39,9 +39,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-2">Kérek értesítést a stúdió programjairól</div>
                 <div class="col">
                     <div class="form-check">
+                        Kérek értesítést a stúdió programjairól
                         <input class="form-check-input" type="checkbox" id="gridCheck1" name="ujdonsaghirlevelkell">
                     </div>
                 </div>
