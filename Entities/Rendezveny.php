@@ -176,6 +176,9 @@ class Rendezveny
         if ($this->getKezdodatumStr()) {
             $r .= ' ' . $this->getKezdodatumStr();
         }
+        if ($this->getKezdoido()) {
+            $r .= ' ' . $this->getKezdoido();
+        }
         return $r;
     }
 
