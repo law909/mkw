@@ -15,7 +15,7 @@ if (typeof billyloader !== "object") {
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         },
         IFrameOnLoad: function() {
-            iFrameResize({}, '#' + billyloader.iFrameId);
+            iFrameResize({ log: true }, '#' + billyloader.iFrameId);
         },
         Init: function() {
             var scripts = document.getElementsByTagName("script");
