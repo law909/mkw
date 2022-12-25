@@ -20,7 +20,7 @@ class billyloader {
                 this.IFrameOnLoad()
             }, false)
         }
-        iframe.setAttribute('src', new URL(this.baseUrl + 'rendezveny/reg?' + this.params.toString()));
+        iframe.setAttribute('src', new URL(this.baseUrl + '/rendezveny/reg?' + this.params.toString()));
         iframe.setAttribute('id', this.iFrameId);
         iframe.setAttribute('height', '100%');
         iframe.setAttribute('width', '100%');
