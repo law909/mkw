@@ -21,6 +21,7 @@
                 {/if}
             </div>
         </div>
+        {if ($szabadhelyszam || !$szabadhelykovetes)}
         <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">
             <div class="form-group row">
                 <label for="vnevedit" class="col-sm-2 col-form-label">Vezetéknév</label>
@@ -121,5 +122,6 @@
                 </div>
             </div>
         </form>
+        {/if}
     </div>
 {/block}
