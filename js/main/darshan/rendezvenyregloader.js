@@ -1,65 +1,40 @@
-if (typeof billyloader !== "object") {
-    billyloader = {
-        iFrameId : null,
-        params: '',
-        BaseUrl: '',
-        SetBaseUrl: function(Url) {
-            if (billyloader.BaseUrl != '') return;
-            matches = String(Url).toLowerCase().match(/(http|https):\/\/(.[^\/]+)\//i);
-            billyloader.BaseUrl = matches[0]
-        },
-        getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(billyloader.params);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        },
-        IFrameOnLoad: function() {
-            console.log('iframeonload: ' + billyloader.iFrameId);
+class billyloader {
 
-            iFrameResize({ log: true }, '#' + billyloader.iFrameId);
-        },
-        Init: function() {
-            var scripts = document.getElementsByTagName("script");
+    constructor(frameid) {
 
-            function _toConsumableArray(arr) {
-                for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-                    arr2[i] = arr[i]
-                }
-                return arr2
-            }
+        const me = new URL(document.currentScript.src);
 
-            var myScripts = [].concat(_toConsumableArray(scripts)).filter(function (x) {
-                return x.src.match(/rendezvenyregloader\.js/)
-            });
-            var me = myScripts[myScripts.length - 1];
-            var src = me.src.split("?");
-            billyloader.params = '?' + src[1];
-            billyloader.SetBaseUrl(src[0]);
-            billyloader.iFrameId = 'rendezvenyregframe' + billyloader.getUrlParameter('i');
+        this.baseUrl = me.origin;
+        this.params = new URLSearchParams(me.search);
+        this.iFrameId = frameid + this.params.get('i');
 
-            console.log('init: ' + billyloader.iFrameId);
+        console.log('init: ' + this.iFrameId);
 
-            var iframe = document.createElement("iframe");
-            if (iframe.attachEvent) {
-                iframe.attachEvent("onload", function () {
-                    billyloader.IFrameOnLoad()
-                })
-            } else {
-                iframe.addEventListener("load", function () {
-                    billyloader.IFrameOnLoad()
-                }, false)
-            }
-            iframe.setAttribute('src', 'http://darshan.billy.hu/rendezveny/reg?r=' + billyloader.getUrlParameter('r'));
-            iframe.setAttribute('id', billyloader.iFrameId);
-            iframe.setAttribute('height', '100%');
-            iframe.setAttribute('width', '100%');
-            iframe.style.overflow = 'hidden';
-            iframe.style.border = 'none';
-            me.parentNode.appendChild(iframe);
-            setTimeout(function () {
-            }, 1e3)
+        let iframe = document.createElement("iframe");
+        if (iframe.attachEvent) {
+            iframe.attachEvent("onload", function () {
+                this.IFrameOnLoad()
+            })
+        } else {
+            iframe.addEventListener("load", function () {
+                this.IFrameOnLoad()
+            }, false)
         }
-    };
+        iframe.setAttribute('src', new URL(this.baseUrl + 'rendezveny/reg?' + this.params.toString()));
+        iframe.setAttribute('id', this.iFrameId);
+        iframe.setAttribute('height', '100%');
+        iframe.setAttribute('width', '100%');
+        iframe.style.overflow = 'hidden';
+        iframe.style.border = 'none';
+        me.parentNode.appendChild(iframe);
+        setTimeout(function () {
+        }, 1e3)
+    }
+    IFrameOnLoad() {
+        console.log('iframeonload: ' + this.iFrameId);
+
+        iFrameResize({ log: true }, '#' + this.iFrameId);
+    }
 }
-billyloader.Init();
+
+new billyloader('rendezvenyregframe');
