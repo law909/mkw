@@ -26,7 +26,7 @@ class billyloader {
         iframe.setAttribute('width', '100%');
         iframe.style.overflow = 'hidden';
         iframe.style.border = 'none';
-        me.parentNode.appendChild(iframe);
+        document.currentScript.parentNode.appendChild(iframe);
         setTimeout(function () {
         }, 1e3)
     }
