@@ -34,6 +34,7 @@ if (typeof billyloader !== "object") {
             var src = me.src.split("?");
             billyloader.params = '?' + src[1];
             billyloader.SetBaseUrl(src[0]);
+            billyloader.iFrameId = billyloader.iFrameId + billyloader.getUrlParameter('r');
 
             var iframe = document.createElement("iframe");
             if (iframe.attachEvent) {

@@ -10,6 +10,7 @@
             <div class="col">
                 <h4 class="color-darshan">JELENTKEZÉS</h4>
                 <div class="color-darshan">{$rendezvenynev}</div>
+                <div class="color-darshan">Szabad helyek száma:</div>
             </div>
         </div>
         <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">
@@ -53,47 +54,49 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col topmargin10">
-                    <h5 class="color-darshan">Számlázási adatok</h5>
+            {if ($kellszamlazasiadat)}
+                <div class="row">
+                    <div class="col topmargin10">
+                        <h5 class="color-darshan">Számlázási adatok</h5>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="nevedit" class="col-sm-2 col-form-label">Név/Cégnév</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="nevedit" name="nev" required>
+                <div class="form-group row">
+                    <label for="nevedit" class="col-sm-2 col-form-label">Név/Cégnév</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="nevedit" name="nev" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="adoszamedit" class="col-sm-2 col-form-label">Adószám</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="adoszamedit" name="adoszam">
+                <div class="form-group row">
+                    <label for="adoszamedit" class="col-sm-2 col-form-label">Adószám</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="adoszamedit" name="adoszam">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="irszamedit" class="col-sm-2 col-form-label">Irányítószám</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="irszamedit" name="irszam" required>
+                <div class="form-group row">
+                    <label for="irszamedit" class="col-sm-2 col-form-label">Irányítószám</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="irszamedit" name="irszam" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="varosedit" class="col-sm-2 col-form-label">Város</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="varosedit" name="varos" required>
+                <div class="form-group row">
+                    <label for="varosedit" class="col-sm-2 col-form-label">Város</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="varosedit" name="varos" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="utcaedit" class="col-sm-2 col-form-label">Utca</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="utcaedit" name="utca" required>
+                <div class="form-group row">
+                    <label for="utcaedit" class="col-sm-2 col-form-label">Utca</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="utcaedit" name="utca" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="hszedit" class="col-sm-2 col-form-label">Házszám</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="hszedit" name="hazszam" required>
+                <div class="form-group row">
+                    <label for="hszedit" class="col-sm-2 col-form-label">Házszám</label>
+                    <div class="col">
+                        <input type="text" class="form-control" id="hszedit" name="hazszam" required>
+                    </div>
                 </div>
-            </div>
+            {/if}
             <div class="form-group row">
                 <div class="col-sm-2">Adatkezelési hozzájárulás</div>
                 <div class="col">
