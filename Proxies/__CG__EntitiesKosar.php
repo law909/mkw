@@ -180,12 +180,12 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function toLista($partner = NULL)
+    public function toLista($partner = NULL, $kerekit = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', [$partner]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', [$partner, $kerekit]);
 
-        return parent::toLista($partner);
+        return parent::toLista($partner, $kerekit);
     }
 
     /**

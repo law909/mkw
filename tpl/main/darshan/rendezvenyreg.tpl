@@ -10,7 +10,15 @@
             <div class="col">
                 <h4 class="color-darshan">JELENTKEZÉS</h4>
                 <div class="color-darshan">{$rendezvenynev}</div>
-                <div class="color-darshan">Szabad helyek száma:</div>
+                {if ($szabadhelykovetes)}
+                <div class="color-darshan">
+                    {if ($szabadhelyszam)}
+                        Szabad helyek száma: {$szabadhelyszam}
+                    {else}
+                        Sajnáljuk, nincs szabad hely.
+                    {/if}
+                </div>
+                {/if}
             </div>
         </div>
         <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">

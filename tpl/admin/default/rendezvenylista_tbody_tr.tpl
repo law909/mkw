@@ -16,6 +16,7 @@
                 <tr><td>Számlázási adat bekérés:</td><td>{if ($_egyed.kellszamlazasiadat)}van{else}nincs{/if}</td></tr>
                 <tr><td>Órarendben szerepel:</td><td>{if ($_egyed.orarendbenszerepel)}igen{else}nem{/if}</td></tr>
                 <tr><td>Regisztrációs form:</td><td><a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">Másolás vágólapra</a></td></tr>
+                <tr><td>Max. férőhely:</td><td>{$_egyed.maxferohely}</td></tr>
             </tbody>
         </table>
     </td>

@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"}
  * )
  */
-class Rendezveny {
+class Rendezveny
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -137,31 +138,40 @@ class Rendezveny {
      */
     private $onlineurl = '';
 
-    public function __construct() {
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $maxferohely = 0;
+
+    public function __construct()
+    {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function generateUId() {
+    public function generateUId()
+    {
         $this->uid = uniqid('', true);
         return $this->uid;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getUid() {
+    public function getUid()
+    {
         return $this->uid;
     }
 
     /**
      * @return mixed
      */
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
-    public function getTeljesNev() {
+    public function getTeljesNev()
+    {
         $r = $this->getNev();
         if ($this->getKezdodatumStr()) {
             $r .= ' ' . $this->getKezdodatumStr();
@@ -172,72 +182,83 @@ class Rendezveny {
     /**
      * @param mixed $nev
      */
-    public function setNev($nev) {
+    public function setNev($nev)
+    {
         $this->nev = $nev;
     }
 
 
-    public function getKezdodatum() {
+    public function getKezdodatum()
+    {
         return $this->kezdodatum;
     }
 
-    public function getKezdodatumStr() {
+    public function getKezdodatumStr()
+    {
         if ($this->getKezdodatum()) {
             return $this->getKezdodatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setKezdodatum($adat = '') {
+    public function setKezdodatum($adat = '')
+    {
         if ($adat != '') {
             $this->kezdodatum = new \DateTime(\mkw\store::convDate($adat));
-        }
-        else {
+        } else {
             $this->kezdodatum = null;
         }
     }
 
-    public function getNap() {
+    public function getNap()
+    {
         if ($this->kezdodatum) {
             return $this->kezdodatum->format('N');
         }
         return false;
     }
 
-    public function getTanar() {
+    public function getTanar()
+    {
         return $this->tanar;
     }
 
-    public function getTanarNev() {
+    public function getTanarNev()
+    {
         if ($this->tanar) {
             return $this->tanar->getNev();
         }
         return '';
     }
 
-    public function getTanarId() {
+    public function getTanarId()
+    {
         if ($this->tanar) {
             return $this->tanar->getId();
         }
         return '';
     }
 
-    public function getTanarUrl() {
+    public function getTanarUrl()
+    {
         if ($this->tanar) {
             return $this->tanar->getUrl();
         }
         return '';
     }
 
-    public function setTanar($tanar) {
+    public function setTanar($tanar)
+    {
         $this->tanar = $tanar;
     }
 
-    public function getTermek() {
+    public function getTermek()
+    {
         return $this->termek;
     }
 
-    public function getTermekId() {
+    public function getTermekId()
+    {
         if ($this->termek) {
             return $this->termek->getId();
         }
@@ -245,7 +266,8 @@ class Rendezveny {
     }
 
 
-    public function getTermekNev() {
+    public function getTermekNev()
+    {
         if ($this->termek) {
             return $this->termek->getNev();
         }
@@ -255,18 +277,19 @@ class Rendezveny {
     /**
      * @param \Entities\Termek $val
      */
-    public function setTermek($val) {
+    public function setTermek($val)
+    {
         if ($this->termek !== $val) {
             if (!$val) {
                 $this->removeTermek();
-            }
-            else {
+            } else {
                 $this->termek = $val;
             }
         }
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
             $this->termek = null;
         }
@@ -275,18 +298,21 @@ class Rendezveny {
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -296,263 +322,306 @@ class Rendezveny {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
         return null;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
-    public function getRendezvenyallapot() {
+    public function getRendezvenyallapot()
+    {
         return $this->rendezvenyallapot;
     }
 
-    public function getRendezvenyallapotNev() {
+    public function getRendezvenyallapotNev()
+    {
         if ($this->rendezvenyallapot) {
             return $this->rendezvenyallapot->getNev();
         }
         return '';
     }
 
-    public function getRendezvenyallapotId() {
+    public function getRendezvenyallapotId()
+    {
         if ($this->rendezvenyallapot) {
             return $this->rendezvenyallapot->getId();
         }
         return '';
     }
 
-    public function setRendezvenyallapot($ra) {
+    public function setRendezvenyallapot($ra)
+    {
         $this->rendezvenyallapot = $ra;
     }
 
-    public function getJogaterem() {
+    public function getJogaterem()
+    {
         return $this->jogaterem;
     }
 
-    public function getJogateremNev() {
+    public function getJogateremNev()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getNev();
         }
         return '';
     }
 
-    public function getJogateremOrarendclass() {
+    public function getJogateremOrarendclass()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getOrarendclass();
         }
         return '';
     }
 
-    public function getJogateremId() {
+    public function getJogateremId()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getId();
         }
         return '';
     }
 
-    public function setJogaterem($ra) {
+    public function setJogaterem($ra)
+    {
         $this->jogaterem = $ra;
     }
 
-    public function getHelyszin() {
+    public function getHelyszin()
+    {
         return $this->helyszin;
     }
 
-    public function getHelyszinNev() {
+    public function getHelyszinNev()
+    {
         if ($this->helyszin) {
             return $this->helyszin->getNev();
         }
         return '';
     }
 
-    public function getHelyszinId() {
+    public function getHelyszinId()
+    {
         if ($this->helyszin) {
             return $this->helyszin->getId();
         }
         return '';
     }
 
-    public function setHelyszin($ra) {
+    public function setHelyszin($ra)
+    {
         $this->helyszin = $ra;
     }
 
     /**
      * @return mixed
      */
-    public function getTodonaptar() {
+    public function getTodonaptar()
+    {
         return $this->todonaptar;
     }
 
     /**
      * @param mixed $todonaptar
      */
-    public function setTodonaptar($todonaptar) {
+    public function setTodonaptar($todonaptar)
+    {
         $this->todonaptar = $todonaptar;
     }
 
     /**
      * @return mixed
      */
-    public function getTodowebposzt() {
+    public function getTodowebposzt()
+    {
         return $this->todowebposzt;
     }
 
     /**
      * @param mixed $todowebposzt
      */
-    public function setTodowebposzt($todowebposzt) {
+    public function setTodowebposzt($todowebposzt)
+    {
         $this->todowebposzt = $todowebposzt;
     }
 
     /**
      * @return mixed
      */
-    public function getTodourlap() {
+    public function getTodourlap()
+    {
         return $this->todourlap;
     }
 
     /**
      * @param mixed $todourlap
      */
-    public function setTodourlap($todourlap) {
+    public function setTodourlap($todourlap)
+    {
         $this->todourlap = $todourlap;
     }
 
     /**
      * @return mixed
      */
-    public function getTodowebslider() {
+    public function getTodowebslider()
+    {
         return $this->todowebslider;
     }
 
     /**
      * @param mixed $todowebslider
      */
-    public function setTodowebslider($todowebslider) {
+    public function setTodowebslider($todowebslider)
+    {
         $this->todowebslider = $todowebslider;
     }
 
     /**
      * @return mixed
      */
-    public function getTodofbevent() {
+    public function getTodofbevent()
+    {
         return $this->todofbevent;
     }
 
     /**
      * @param mixed $todofbevent
      */
-    public function setTodofbevent($todofbevent) {
+    public function setTodofbevent($todofbevent)
+    {
         $this->todofbevent = $todofbevent;
     }
 
     /**
      * @return mixed
      */
-    public function getTodofbhirdetes() {
+    public function getTodofbhirdetes()
+    {
         return $this->todofbhirdetes;
     }
 
     /**
      * @param mixed $todofbhirdetes
      */
-    public function setTodofbhirdetes($todofbhirdetes) {
+    public function setTodofbhirdetes($todofbhirdetes)
+    {
         $this->todofbhirdetes = $todofbhirdetes;
     }
 
     /**
      * @return mixed
      */
-    public function getTodoplakat() {
+    public function getTodoplakat()
+    {
         return $this->todoplakat;
     }
 
     /**
      * @param mixed $todoplakat
      */
-    public function setTodoplakat($todoplakat) {
+    public function setTodoplakat($todoplakat)
+    {
         $this->todoplakat = $todoplakat;
     }
 
     /**
      * @return mixed
      */
-    public function getTodofotobe() {
+    public function getTodofotobe()
+    {
         return $this->todofotobe;
     }
 
     /**
      * @param mixed $todofotobe
      */
-    public function setTodofotobe($todofotobe) {
+    public function setTodofotobe($todofotobe)
+    {
         $this->todofotobe = $todofotobe;
     }
 
     /**
      * @return mixed
      */
-    public function getTodoleirasbe() {
+    public function getTodoleirasbe()
+    {
         return $this->todoleirasbe;
     }
 
     /**
      * @param mixed $todoleirasbe
      */
-    public function setTodoleirasbe($todoleirasbe) {
+    public function setTodoleirasbe($todoleirasbe)
+    {
         $this->todoleirasbe = $todoleirasbe;
     }
 
-    public function getRendezvenyDokok() {
+    public function getRendezvenyDokok()
+    {
         return $this->rendezvenydokok;
     }
 
-    public function addRendezvenyDok(RendezvenyDok $dok) {
+    public function addRendezvenyDok(RendezvenyDok $dok)
+    {
         $this->rendezvenydokok->add($dok);
         $dok->setRendezveny($this);
     }
 
-    public function removeRendezvenyDok(RendezvenyDok $dok) {
+    public function removeRendezvenyDok(RendezvenyDok $dok)
+    {
         if ($this->rendezvenydokok->removeElement($dok)) {
             $dok->removeRendezveny($this);
             return true;
@@ -563,85 +632,113 @@ class Rendezveny {
     /**
      * @return mixed
      */
-    public function getKezdoido() {
+    public function getKezdoido()
+    {
         return $this->kezdoido;
     }
 
     /**
      * @param mixed $kezdoido
      */
-    public function setKezdoido($kezdoido) {
+    public function setKezdoido($kezdoido)
+    {
         $this->kezdoido = $kezdoido;
     }
 
     /**
      * @return mixed
      */
-    public function getAr() {
+    public function getAr()
+    {
         return $this->ar;
     }
 
     /**
      * @param mixed $ar
      */
-    public function setAr($ar) {
+    public function setAr($ar)
+    {
         $this->ar = $ar;
     }
 
     /**
      * @return mixed
      */
-    public function getKellszamlazasiadat() {
+    public function getKellszamlazasiadat()
+    {
         return $this->kellszamlazasiadat;
     }
 
     /**
      * @param mixed $kellszamlazasiadat
      */
-    public function setKellszamlazasiadat($kellszamlazasiadat) {
+    public function setKellszamlazasiadat($kellszamlazasiadat)
+    {
         $this->kellszamlazasiadat = $kellszamlazasiadat;
     }
 
     /**
      * @return bool
      */
-    public function getOrarendbenszerepel() {
+    public function getOrarendbenszerepel()
+    {
         return $this->orarendbenszerepel;
     }
 
     /**
      * @param bool $orarendbenszerepel
      */
-    public function setOrarendbenszerepel($orarendbenszerepel) {
+    public function setOrarendbenszerepel($orarendbenszerepel)
+    {
         $this->orarendbenszerepel = $orarendbenszerepel;
     }
 
     /**
      * @return mixed
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->url;
     }
 
     /**
      * @param mixed $url
      */
-    public function setUrl($url) {
+    public function setUrl($url)
+    {
         $this->url = $url;
     }
 
     /**
      * @return string
      */
-    public function getOnlineurl() {
+    public function getOnlineurl()
+    {
         return $this->onlineurl;
     }
 
     /**
      * @param string $onlineurl
      */
-    public function setOnlineurl($onlineurl) {
+    public function setOnlineurl($onlineurl)
+    {
         $this->onlineurl = $onlineurl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxferohely()
+    {
+        return $this->maxferohely;
+    }
+
+    /**
+     * @param int $maxferohely
+     */
+    public function setMaxferohely($maxferohely): void
+    {
+        $this->maxferohely = $maxferohely;
     }
 
 }

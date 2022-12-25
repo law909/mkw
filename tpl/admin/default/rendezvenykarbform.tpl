@@ -101,6 +101,10 @@
                     <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
                                            value="{$egyed.onlineurl}"></td>
                 </tr>
+                <tr>
+                    <td><label for="MaxferohelyEdit">{at('Max.férphely')}:</label></td>
+                    <td><input id="MaxferohelyEdit" type="number" name="maxferohely" step="any" value="{$egyed.maxferohely}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
