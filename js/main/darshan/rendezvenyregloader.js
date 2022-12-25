@@ -12,11 +12,11 @@ class billyloader {
 
         let iframe = document.createElement("iframe");
         if (iframe.attachEvent) {
-            iframe.attachEvent("onload", function () {
+            iframe.attachEvent("onload", () => {
                 this.IFrameOnLoad()
             })
         } else {
-            iframe.addEventListener("load", function () {
+            iframe.addEventListener("load", () => {
                 this.IFrameOnLoad()
             }, false)
         }
@@ -30,6 +30,7 @@ class billyloader {
         setTimeout(function () {
         }, 1e3)
     }
+
     IFrameOnLoad() {
         console.log('iframeonload: ' + this.iFrameId);
 
