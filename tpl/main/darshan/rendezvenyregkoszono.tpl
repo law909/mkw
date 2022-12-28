@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col">
                 Küldtünk neked egy emailt a részletekkel.
-                {if ($jelentkezes.rendezvenyar)}
+                {if ($jelentkezes.rendezvenyar > 0)}
                 Nézd meg az email fiókod és utald el nekünk a részvételi díjat, hogy le tudjuk foglalni a helyed!
                 {/if}
             </div>

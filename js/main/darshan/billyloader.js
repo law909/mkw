@@ -2,23 +2,19 @@ class billyloader {
 
     constructor(frameid, baseurl, path, params) {
 
-        const me = new URL(document.currentScript.src);
-
         this.baseUrl = baseurl;
         this.params = params;
         this.iFrameId = frameid;
         this.path = path;
 
-        console.log('init: ' + this.iFrameId);
-
         let iframe = document.createElement("iframe");
         if (iframe.attachEvent) {
             iframe.attachEvent("onload", () => {
-                this.IFrameOnLoad()
+                iFrameResize({}, '#' + this.iFrameId);
             })
         } else {
             iframe.addEventListener("load", () => {
-                this.IFrameOnLoad()
+                iFrameResize({}, '#' + this.iFrameId);
             }, false)
         }
         iframe.setAttribute('src', new URL(this.baseUrl + this.path + this.params.toString()));
@@ -30,11 +26,5 @@ class billyloader {
         document.currentScript.parentNode.appendChild(iframe);
         setTimeout(function () {
         }, 1e3)
-    }
-
-    IFrameOnLoad() {
-        console.log('iframeonload: ' + this.iFrameId);
-
-        iFrameResize({ log: true }, '#' + this.iFrameId);
     }
 }
