@@ -141,6 +141,18 @@
                 <table id="mpttagsagformagrid"></table>
                 <div id="mpttagsagformagridpager"></div>
             </div>
+            <div class="egyebadat-grid">
+                <table id="mptngytemakorgrid"></table>
+                <div id="mptngytemakorgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mptngyszakmaianyagtipusgrid"></table>
+                <div id="mptngyszakmaianyagtipusgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mptngyszerepkorgrid"></table>
+                <div id="mptngyszerepkorgridpager"></div>
+            </div>
         {/if}
         <div class="egyebadat-grid">
             <table id="jogateremgrid"></table>

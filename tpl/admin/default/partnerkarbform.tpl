@@ -13,13 +13,20 @@
                 <li><a href="#MPTTab">{at('MPT adatok')}</a></li>
                 <li><a href="#MPTFolyoszamlaTab">{at('MPT folyószámla')}</a></li>
             {/if}
+            {if ($setup.mptngy)}
+                <li><a href="#MPTNGYTab">{at('MPT nagygyűlés')}</a></li>
+            {/if}
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
+            {if (!$setup.mptngy)}
 			<li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
             <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
+            {/if}
 			<li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
-			<li><a href="#BankTab">{at('Banki adatok')}</a></li>
+            {if (!$setup.mptngy)}
+            <li><a href="#BankTab">{at('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{at('Egyéb azonosító adatok')}</a></li>
             <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
+            {/if}
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
@@ -359,6 +366,51 @@
 
             </div>
         {/if}
+        {if ($setup.mptngy)}
+
+            <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
+            <table>
+                <tbody>
+                <tr>
+                    <td><label for="mptngyszlanevedit">{at('Számlázási név')}:</label></td>
+                    <td><input id="mptngyszlanevedit" type="text" name="szlanev" value="{$partner.szlanev}"></td>
+                </tr>
+                <tr>
+                    <td><label>Részt vesz:</label></td>
+                    <td>
+                        <label>1. nap<input type="checkbox" name="mptngynapreszvetel1"{if ($partner.mptngynapreszvetel1)} checked{/if}></label>
+                        <label>2. nap<input type="checkbox" name="mptngynapreszvetel2"{if ($partner.mptngynapreszvetel2)} checked{/if}></label>
+                        <label>3. nap<input type="checkbox" name="mptngynapreszvetel3"{if ($partner.mptngynapreszvetel3)} checked{/if}></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="mptngyvipvacsoraEdit">VIP vacsora:</label></td>
+                    <td><input id="mptngyvipvacsoraEdit" type="checkbox" name="mptngyvipvacsora"{if ($partner.mptngyvipvacsora)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="mptngydiakEdit">Diák:</label></td>
+                    <td><input id="mptngydiakEdit" type="checkbox" name="mptngydiak"{if ($partner.mptngydiak)} checked{/if}></td>
+                    <td><label for="mptngympttagEdit">MPT tag:</label></td>
+                    <td><input id="mptngympttagEdit" type="checkbox" name="mptngympttag"{if ($partner.mptngympttag)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="mptngyszerepkorEdit">Szerepkör:</label></td>
+                    <td><select id="mptngyszerepkorEdit" name="mptngyszerepkor">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $mptngyszerepkorlist as $tk}
+                                <option value="{$tk.id}"{if ($tk.selected)} selected="selected"{/if}>{$tk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="mptngybankszamlaszamEdit">Bankszámlaszám:</label></td>
+                    <td><input id="mptngybankszamlaszamEdit" type="text" name="mptngybankszamlaszam" value="{$partner.mptngybankszamlaszam}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        {/if}
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
             {if ($maintheme === 'mkwcansas' && $partner.telefon && (!$partner.telkorzet || !$partner.telszam))}
@@ -419,7 +471,8 @@
             <label for="MegjegyzesEdit"></label>
             <textarea id="MegjegyzesEdit" name="megjegyzes" cols=120 rows="10">{$partner.megjegyzes}</textarea>
         </div>
-		<div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
+        {if (!$setup.mptngy)}
+        <div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
 			{foreach $partner.termekcsoportkedvezmenyek as $kd}
 				{include 'partnertermekcsoportkedvezmenykarb.tpl'}
 			{/foreach}
@@ -435,6 +488,7 @@
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>
+        {/if}
 		<div id="LoginTab" class="mattkarb-page" data-visible="visible">
 			<table>
                 <tbody>
@@ -451,6 +505,7 @@
                 </tbody>
             </table>
         </div>
+        {if (!$setup.mptngy)}
 		<div id="BankTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -516,6 +571,7 @@
             {/foreach}
             <a class="js-doknewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
+        {/if}
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$partner.id}">

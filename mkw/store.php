@@ -1371,6 +1371,11 @@ class store
         return self::getTheme() === 'mpt' || self::getSetupValue('mpt', false);
     }
 
+    public static function isMPTNGY()
+    {
+        return self::getTheme() === 'mptngy' || self::getSetupValue('mptngy', false);
+    }
+
     public static function isMiniCRMOn()
     {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;

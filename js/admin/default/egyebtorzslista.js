@@ -990,6 +990,144 @@ $().ready(
             $(_mptszekcio.pager + '_center').hide();
             $(_mptszekcio.pager + '_right').hide();
 
+            // mptngytemakor grid
+            var _mptngytemakor = {
+                grid: '#mptngytemakorgrid',
+                pager: '#mptngytemakorgridpager'
+            };
+            var mptngytemakorgrid = $(_mptngytemakor.grid).jqGrid({
+                url: '/admin/mptngytemakor/jsonlist',
+                editurl: '/admin/mptngytemakor/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mptngytemakor.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT NGY témakörök'});
+            $(_mptngytemakor.grid).jqGrid('navGrid', _mptngytemakor.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mptngytemakor.grid).jqGrid('navButtonAdd', _mptngytemakor.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mptngytemakorgrid[0].toggleToolbar();
+                }
+            });
+            $(_mptngytemakor.grid).jqGrid('navButtonAdd', _mptngytemakor.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mptngytemakorgrid[0].clearToolbar();
+                }
+            });
+            $(_mptngytemakor.grid).jqGrid('filterToolbar');
+            $(_mptngytemakor.pager + '_center').hide();
+            $(_mptngytemakor.pager + '_right').hide();
+
+            // mptngyszerepkor grid
+            var _mptngyszerepkor = {
+                grid: '#mptngyszerepkorgrid',
+                pager: '#mptngyszerepkorgridpager'
+            };
+            var mptngyszerepkorgrid = $(_mptngyszerepkor.grid).jqGrid({
+                url: '/admin/mptngyszerepkor/jsonlist',
+                editurl: '/admin/mptngyszerepkor/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mptngyszerepkor.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT NGY szerepkörök'});
+            $(_mptngyszerepkor.grid).jqGrid('navGrid', _mptngyszerepkor.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mptngyszerepkor.grid).jqGrid('navButtonAdd', _mptngyszerepkor.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mptngyszerepkorgrid[0].toggleToolbar();
+                }
+            });
+            $(_mptngyszerepkor.grid).jqGrid('navButtonAdd', _mptngyszerepkor.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mptngyszerepkorgrid[0].clearToolbar();
+                }
+            });
+            $(_mptngyszerepkor.grid).jqGrid('filterToolbar');
+            $(_mptngyszerepkor.pager + '_center').hide();
+            $(_mptngyszerepkor.pager + '_right').hide();
+
+            // mptngyszakmaianyagtipus grid
+            var _mptngyszakmaianyagtipus = {
+                grid: '#mptngyszakmaianyagtipusgrid',
+                pager: '#mptngyszakmaianyagtipusgridpager'
+            };
+            var mptngyszakmaianyagtipusgrid = $(_mptngyszakmaianyagtipus.grid).jqGrid({
+                url: '/admin/mptngyszakmaianyagtipus/jsonlist',
+                editurl: '/admin/mptngyszakmaianyagtipus/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mptngyszakmaianyagtipus.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'MPT NGY szakmai anyag típus'});
+            $(_mptngyszakmaianyagtipus.grid).jqGrid('navGrid', _mptngyszakmaianyagtipus.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mptngyszakmaianyagtipus.grid).jqGrid('navButtonAdd', _mptngyszakmaianyagtipus.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mptngyszakmaianyagtipusgrid[0].toggleToolbar();
+                }
+            });
+            $(_mptngyszakmaianyagtipus.grid).jqGrid('navButtonAdd', _mptngyszakmaianyagtipus.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mptngyszakmaianyagtipusgrid[0].clearToolbar();
+                }
+            });
+            $(_mptngyszakmaianyagtipus.grid).jqGrid('filterToolbar');
+            $(_mptngyszakmaianyagtipus.pager + '_center').hide();
+            $(_mptngyszakmaianyagtipus.pager + '_right').hide();
+
             // mpttagozat grid
             var _mpttagozat = {
                 grid: '#mpttagozatgrid',
@@ -1081,6 +1219,7 @@ $().ready(
             $(_mpttagsagforma.grid).jqGrid('filterToolbar');
             $(_mpttagsagforma.pager + '_center').hide();
             $(_mpttagsagforma.pager + '_right').hide();
+
 
             // Partnertipus grid
             var _partnertipus = {

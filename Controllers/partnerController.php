@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\MPTNGYSzerepkor;
 use Entities\MPTSzekcio;
 use Entities\MPTTagozat;
 use Entities\MPTTagsagforma;
@@ -168,6 +169,16 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mpt_egyebdiploma'] = $t->getMptEgyebdiploma();
         $x['mpt_privatemail'] = $t->getMptPrivatemail();
         $x['mpt_tagsagdatestr'] = $t->getMptTagsagdateStr();
+        $x['mptngynapreszvetel1'] = $t->isMptngynapreszvetel1();
+        $x['mptngynapreszvetel2'] = $t->isMptngynapreszvetel2();
+        $x['mptngynapreszvetel3'] = $t->isMptngynapreszvetel3();
+        $x['mptngycsoportosfizetes'] = $t->getMptngycsoportosfizetes();
+        $x['mptngyvipvacsora'] = $t->isMptngyvipvacsora();
+        $x['mptngykapcsolatnev'] = $t->getMptngykapcsolatnev();
+        $x['mptngybankszamlaszam'] = $t->getMptngybankszamlaszam();
+        $x['szlanev'] = $t->getSzlanev();
+        $x['mptngydiak'] = $t->isMptngydiak();
+        $x['mptngympttag'] = $t->isMptngympttag();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -278,6 +289,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMennyisegetlathat($this->params->getBoolRequestParam('mennyisegetlathat'));
             $obj->setVatstatus($this->params->getIntRequestParam('vatstatus'));
             $obj->setSzamlaegyeb($this->params->getStringRequestParam('szamlaegyeb'));
+            $obj->setSzlanev($this->params->getStringRequestParam('szlanev'));
             if ($this->params->getIntRequestParam('minicrmprojectid')) {
                 $obj->setMinicrmprojectid($this->params->getIntRequestParam('minicrmprojectid'));
             }
@@ -306,6 +318,22 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
             $obj->setMptPrivatemail($this->params->getStringRequestParam('mpt_privatemail'));
             $obj->setMptTagsagdate($this->params->getStringRequestParam('mpt_tagsagdate'));
+            $obj->setMptngycsoportosfizetes($this->params->getStringRequestParam('mptngycsoportosfizetes'));
+            $obj->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
+            $obj->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
+            $obj->setMptngyvipvacsora($this->params->getBoolRequestParam('mptngyvipvacsora'));
+            $obj->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));
+            $obj->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
+            $obj->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
+            $obj->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
+            $obj->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
+            $obj->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
+            $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
+            if ($mptngyszerepkor) {
+                $obj->setMptngyszerepkor($mptngyszerepkor);
+            } else {
+                $obj->setMptngyszerepkor(null);
+            }
             $mptszekcio = \mkw\store::getEm()->getRepository(MPTSzekcio::class)->find($this->params->getIntRequestParam('mpt_szekcio1', 0));
             if ($mptszekcio) {
                 $obj->setMptSzekcio1($mptszekcio);
@@ -737,32 +765,35 @@ class partnerController extends \mkwhelpers\MattableController
         $cimkek = $partner ? $partner->getCimkek() : null;
         $view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
         $fizmod = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($partner ? $partner->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList($partner?->getFizmodId()));
         $uk = new uzletkotoController($this->params);
-        $view->setVar('uzletkotolist', $uk->getSelectList(($partner ? $partner->getUzletkotoId() : 0)));
+        $view->setVar('uzletkotolist', $uk->getSelectList($partner?->getUzletkotoId()));
         $valutanem = new valutanemController($this->params);
-        $view->setVar('valutanemlist', $valutanem->getSelectList(($partner ? $partner->getValutanemId() : 0)));
+        $view->setVar('valutanemlist', $valutanem->getSelectList($partner?->getValutanemId()));
         $termekar = new termekarController($this->params);
-        $view->setVar('termekarazonositolist', $termekar->getSelectList(($partner ? $partner->getTermekarazonosito() : '')));
+        $view->setVar('termekarazonositolist', $termekar->getSelectList($partner?->getTermekarazonosito()));
         $szallmod = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getSzallitasimodId() : 0)));
+        $view->setVar('szallitasimodlist', $szallmod->getSelectList($partner?->getSzallitasimodId()));
         $orszag = new orszagController($this->params);
-        $view->setVar('orszaglist', $orszag->getSelectList(($partner ? $partner->getOrszagId() : 0), true));
+        $view->setVar('orszaglist', $orszag->getSelectList($partner?->getOrszagId(), true));
         $partnertipus = new partnertipusController($this->params);
-        $view->setVar('partnertipuslist', $partnertipus->getSelectList(($partner ? $partner->getPartnertipusId() : 0)));
+        $view->setVar('partnertipuslist', $partnertipus->getSelectList($partner?->getPartnertipusId()));
         $mpttagsagforma = new mpttagsagformaController($this->params);
-        $view->setVar('mpttagsagformalist', $mpttagsagforma->getSelectList(($partner ? $partner->getMptTagsagformaId() : 0)));
+        $view->setVar('mpttagsagformalist', $mpttagsagforma->getSelectList($partner?->getMptTagsagformaId()));
         $mptszekcio = new mptszekcioController($this->params);
-        $view->setVar('mptszekcio1list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio1Id() : 0)));
-        $view->setVar('mptszekcio2list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio2Id() : 0)));
-        $view->setVar('mptszekcio3list', $mptszekcio->getSelectList(($partner ? $partner->getMptSzekcio3Id() : 0)));
+        $view->setVar('mptszekcio1list', $mptszekcio->getSelectList($partner?->getMptSzekcio1Id()));
+        $view->setVar('mptszekcio2list', $mptszekcio->getSelectList($partner?->getMptSzekcio2Id()));
+        $view->setVar('mptszekcio3list', $mptszekcio->getSelectList($partner?->getMptSzekcio3Id()));
         $mpttagozat = new mpttagozatController($this->params);
-        $view->setVar('mpttagozatlist', $mpttagozat->getSelectList(($partner ? $partner->getMptTagozatId() : 0)));
+        $view->setVar('mpttagozatlist', $mpttagozat->getSelectList($partner?->getMptTagozatId()));
 
-        $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getBizonylatnyelv() : ''));
+        $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner?->getBizonylatnyelv()));
 
         $telkorzetc = new korzetszamController($this->params);
-        $view->setVar('telkorzetlist', $telkorzetc->getSelectList($partner ? $partner->getTelkorzet() : ''));
+        $view->setVar('telkorzetlist', $telkorzetc->getSelectList($partner?->getTelkorzet()));
+
+        $mptngyszkc = new mptngyszerepkorController($this->params);
+        $view->setVar('mptngyszerepkorlist', $mptngyszkc->getSelectList($partner?->getMptngyszerepkorId()));
 
         $view->setVar('partner', $this->loadVars($partner, true));
         $view->printTemplateResult();

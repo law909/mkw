@@ -114,6 +114,20 @@ if (\mkw\store::isMPT()) {
     $router->map('POST', '/admin/mpttagsagforma/save', 'mpttagsagformaController#save', 'adminmpttagsagformasave');
 }
 
+if (\mkw\store::isMPTNGY()) {
+    $router->map('GET', '/admin/mptngytemakor/jsonlist', 'mptngytemakorController#jsonlist', 'adminmptngytemakorjsonlist');
+    $router->map('GET', '/admin/mptngytemakor/htmllist', 'mptngytemakorController#htmllist', 'adminmptngytemakorhtmllist');
+    $router->map('POST', '/admin/mptngytemakor/save', 'mptngytemakorController#save', 'adminmptngytemakorsave');
+
+    $router->map('GET', '/admin/mptngyszerepkor/jsonlist', 'mptngyszerepkorController#jsonlist', 'adminmptngyszerepkorjsonlist');
+    $router->map('GET', '/admin/mptngyszerepkor/htmllist', 'mptngyszerepkorController#htmllist', 'adminmptngyszerepkorhtmllist');
+    $router->map('POST', '/admin/mptngyszerepkor/save', 'mptngyszerepkorController#save', 'adminmptngyszerepkorsave');
+
+    $router->map('GET', '/admin/mptngyszakmaianyagtipus/jsonlist', 'mptngyszakmaianyagtipusController#jsonlist', 'adminmptngyszakmaianyagtipusjsonlist');
+    $router->map('GET', '/admin/mptngyszakmaianyagtipus/htmllist', 'mptngyszakmaianyagtipusController#htmllist', 'adminmptngyszakmaianyagtipushtmllist');
+    $router->map('POST', '/admin/mptngyszakmaianyagtipus/save', 'mptngyszakmaianyagtipusController#save', 'adminmptngyszakmaianyagtipussave');
+}
+
 if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
     $router->map('GET', '/admin/jogcim/htmllist', 'jogcimController#htmllist', 'adminjogcimhtmllist');
