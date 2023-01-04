@@ -126,6 +126,17 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/jsonlist', 'mptngyszakmaianyagtipusController#jsonlist', 'adminmptngyszakmaianyagtipusjsonlist');
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/htmllist', 'mptngyszakmaianyagtipusController#htmllist', 'adminmptngyszakmaianyagtipushtmllist');
     $router->map('POST', '/admin/mptngyszakmaianyagtipus/save', 'mptngyszakmaianyagtipusController#save', 'adminmptngyszakmaianyagtipussave');
+
+    $router->map('GET', '/admin/mptngyszakmaianyag/viewlist', 'mptngyszakmaianyagController#viewlist', 'adminmptngyszakmaianyagviewlist');
+    $router->map('GET', '/admin/mptngyszakmaianyag/getlistbody', 'mptngyszakmaianyagController#getlistbody', 'adminmptngyszakmaianyaggetlistbody');
+    $router->map('GET', '/admin/mptngyszakmaianyag/getkarb', 'mptngyszakmaianyagController#getkarb', 'adminmptngyszakmaianyaggetkarb');
+    $router->map('GET', '/admin/mptngyszakmaianyag/viewkarb', 'mptngyszakmaianyagController#viewkarb', 'adminmptngyszakmaianyagviewkarb');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/mptngyszakmaianyag/save', 'mptngyszakmaianyagController#save', 'adminmptngyszakmaianyagsave');
+        $router->map('POST', '/admin/mptngyszakmaianyag/ront', 'mptngyszakmaianyagController#ront', 'adminmptngyszakmaianyagront');
+        $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
+    }
+    $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
 }
 
 if (\mkw\store::isBankpenztar()) {

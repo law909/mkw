@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\MPTNGYSzakmaianyag;
+use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 
@@ -31,31 +32,45 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['cim'] = $t->getCim();
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
+        $x['tartalom'] = $t->getTartalom();
+        $x['tulajdonos'] = $t->getTulajdonosId();
+        $x['tulajdonosnev'] = $t->getTulajdonos()?->getNev();
+        $x['szerzo1'] = $t->getSzerzo1Id();
+        $x['szerzo1nev'] = $t->getSzerzo1Nev();
+        $x['szerzo2'] = $t->getSzerzo2Id();
+        $x['szerzo2nev'] = $t->getSzerzo2Nev();
+        $x['szerzo3'] = $t->getSzerzo3Id();
+        $x['szerzo3nev'] = $t->getSzerzo3Nev();
+        $x['szerzo4'] = $t->getSzerzo4Id();
+        $x['szerzo4nev'] = $t->getSzerzo4Nev();
+        $x['kezdodatum'] = $t->getKezdodatumStr();
+        $x['kezdoido'] = $t->getKezdoido();
+        $x['tipus'] = $t->getTipusId();
+        $x['tipusnev'] = $t->getTipus()?->getNev();
+        $x['eloadas1'] = $t->getEloadas1Id();
+        $x['eloadas1cim'] = $t->getEloadas1Cim();
+        $x['eloadas2'] = $t->getEloadas2Id();
+        $x['eloadas2cim'] = $t->getEloadas2Cim();
+        $x['eloadas3'] = $t->getEloadas3Id();
+        $x['eloadas3cim'] = $t->getEloadas3Cim();
+        $x['eloadas4'] = $t->getEloadas4Id();
+        $x['eloadas4cim'] = $t->getEloadas4Cim();
+        $x['eloadas5'] = $t->getEloadas5Id();
+        $x['eloadas5cim'] = $t->getEloadas5Cim();
+        $x['kulcsszo1'] = $t->getKulcsszo1();
+        $x['kulcsszo2'] = $t->getKulcsszo2();
+        $x['kulcsszo3'] = $t->getKulcsszo3();
+        $x['kulcsszo4'] = $t->getKulcsszo4();
+        $x['kulcsszo5'] = $t->getKulcsszo5();
+        $x['biralatkesz'] = $t->isBiralatkesz();
+        $x['konferencianszerepelhet'] = $t->isKonferencianszerepelhet();
+        $x['biralo1'] = $t->getBiralo1Id();
+        $x['biralo1nev'] = $t->getBiralo1Nev();
+        $x['biralo2'] = $t->getBiralo2Id();
+        $x['biralo2nev'] = $t->getBiralo2Nev();
+        $x['biralo3'] = $t->getBiralo3Id();
+        $x['biralo3nev'] = $t->getBiralo3Nev();
         if ($forKarb) {
-            $kedv = array();
-            foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
-                $kedv[] = $kedvCtrl->loadVars($tar, true);
-            }
-            $x['termekcsoportkedvezmenyek'] = $kedv;
-            $kedv = array();
-            foreach ($t->getTermekkedvezmenyek() as $tar) {
-                $kedv[] = $termekkedvCtrl->loadVars($tar, true);
-            }
-            $x['termekkedvezmenyek'] = $kedv;
-
-            $dok = array();
-            foreach ($t->getPartnerDokok() as $kepje) {
-                $dok[] = $dokCtrl->loadVars($kepje);
-            }
-            $x['dokok'] = $dok;
-        }
-
-        if (\mkw\store::isMPT()) {
-            $fsz = [];
-            foreach ($t->getMPTFolyoszamlak() as $item) {
-                $fsz[] = $mptfolyoszamlaCtrl->loadVars($item, true);
-            }
-            $x['mptfolyoszamla'] = $fsz;
         }
 
         return $x;
@@ -78,6 +93,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
         $obj->setKulcsszo4($this->params->getStringRequestParam('kulcsszo4'));
         $obj->setKulcsszo5($this->params->getStringRequestParam('kulcsszo5'));
+
+        $tipus = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('tipus'));
+        if ($tipus) {
+            $obj->setTipus($tipus);
+        } else {
+            $obj->removeTipus();
+        }
 
         $tulaj = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tulajdonos'));
         if ($tulaj) {
@@ -130,6 +152,37 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->removeBiralo3();
         }
 
+        $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas1'));
+        if ($eloadas) {
+            $obj->setEloadas1($eloadas);
+        } else {
+            $obj->removeEloadas1();
+        }
+        $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas2'));
+        if ($eloadas) {
+            $obj->setEloadas2($eloadas);
+        } else {
+            $obj->removeEloadas2();
+        }
+        $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas3'));
+        if ($eloadas) {
+            $obj->setEloadas3($eloadas);
+        } else {
+            $obj->removeEloadas3();
+        }
+        $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas4'));
+        if ($eloadas) {
+            $obj->setEloadas4($eloadas);
+        } else {
+            $obj->removeEloadas4();
+        }
+        $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas5'));
+        if ($eloadas) {
+            $obj->setEloadas5($eloadas);
+        } else {
+            $obj->removeEloadas5();
+        }
+
         return $obj;
     }
 
@@ -152,7 +205,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $this->getPager()->getElemPerPage()
         );
 
-        echo json_encode($this->loadDataToView($egyedek, 'lista', $view));
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
     public function viewlist()

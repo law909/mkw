@@ -945,7 +945,14 @@ class MPTNGYSzakmaianyag
      */
     public function setKezdodatum($kezdodatum): void
     {
-        $this->kezdodatum = $kezdodatum;
+        if (is_a($kezdodatum, 'DateTime')) {
+            $this->kezdodatum = $kezdodatum;
+        } else {
+            if ($kezdodatum == '') {
+                $kezdodatum = date(\mkw\store::$DateFormat);
+            }
+            $this->kezdodatum = new \DateTime(\mkw\store::convDate($kezdodatum));
+        }
     }
 
     /**
