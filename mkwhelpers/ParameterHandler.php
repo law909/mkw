@@ -13,6 +13,10 @@ class ParameterHandler implements IParameterHandler
     public function __construct($par = null)
     {
         $this->params = $par;
+        $x = $this->getBody();
+        if ($x) {
+            $this->params['requestparams'] = $x;
+        }
     }
 
     public function trim($arr)
@@ -49,10 +53,11 @@ class ParameterHandler implements IParameterHandler
             if ($sanitize) {
                 $data = \mkw\store::getSanitizer()->sanitize($data);
             }
-            return $this->trim($data);
-        } else {
-            return $default;
+            if ($data !== 'null') {
+                return $this->trim($data);
+            }
         }
+        return $default;
     }
 
     public function getRequestParam($key, $default = null, $sanitize = true)
@@ -62,10 +67,16 @@ class ParameterHandler implements IParameterHandler
             if ($sanitize) {
                 $data = \mkw\store::getSanitizer()->sanitize($data);
             }
-            return $this->trim($data);
-        } else {
-            return $default;
+            if ($data !== 'null') {
+                return $this->trim($data);
+            }
         }
+        return $default;
+    }
+
+    public function getBody()
+    {
+        return json_decode(file_get_contents('php://input'), true);
     }
 
     public function getBoolParam($key, $default = false)

@@ -67,6 +67,13 @@ class MPTNGYSzakmaianyag
     private $szerzo4;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo5;
+
+    /**
      * @ORM\ManyToOne(targetEntity="MPTNGYSzakmaianyagtipus")
      * @ORM\JoinColumn(name="tipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\MPTNGYSzakmaianyagtipus
@@ -178,6 +185,53 @@ class MPTNGYSzakmaianyag
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $konferencianszerepelhet = false;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo1email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo2email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo3email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo4email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo5email;
+
+    public function isSzerzoRegistered($num) {
+        $f1 = "getSzerzo{$num}email";
+        $f2 = "getSzerzo{$num}";
+
+        if ($this->$f1()) {
+            return !is_null($this->$f2());
+        }
+        return true;
+    }
+
+    public function isAllSzerzoRegistered() {
+        $ret = $this->isSzerzoRegistered(1) &&
+            $this->isSzerzoRegistered(2) &&
+            $this->isSzerzoRegistered(3) &&
+            $this->isSzerzoRegistered(4);
+
+        if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)) {
+            $ret = $ret && $this->isSzerzoRegistered(5);
+        }
+        return $ret;
+    }
 
     public function getId()
     {
@@ -414,6 +468,49 @@ class MPTNGYSzakmaianyag
     {
         if ($this->szerzo4 !== null) {
             $this->szerzo4 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo5()
+    {
+        return $this->szerzo5;
+    }
+
+    public function getSzerzo5Id()
+    {
+        if ($this->szerzo5) {
+            return $this->szerzo5->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo5Nev()
+    {
+        if ($this->szerzo5) {
+            return $this->szerzo5->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo5($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo5();
+        } else {
+            $this->szerzo5 = $val;
+        }
+    }
+
+    public function removeSzerzo5()
+    {
+        if ($this->szerzo5 !== null) {
+            $this->szerzo5 = null;
         }
     }
 
@@ -987,5 +1084,84 @@ class MPTNGYSzakmaianyag
         $this->konferencianszerepelhet = $konferencianszerepelhet;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSzerzo1email()
+    {
+        return $this->szerzo1email;
+    }
+
+    /**
+     * @param mixed $szerzo1email
+     */
+    public function setSzerzo1email($szerzo1email): void
+    {
+        $this->szerzo1email = $szerzo1email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo2email()
+    {
+        return $this->szerzo2email;
+    }
+
+    /**
+     * @param mixed $szerzo2email
+     */
+    public function setSzerzo2email($szerzo2email): void
+    {
+        $this->szerzo2email = $szerzo2email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo3email()
+    {
+        return $this->szerzo3email;
+    }
+
+    /**
+     * @param mixed $szerzo3email
+     */
+    public function setSzerzo3email($szerzo3email): void
+    {
+        $this->szerzo3email = $szerzo3email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo4email()
+    {
+        return $this->szerzo4email;
+    }
+
+    /**
+     * @param mixed $szerzo4email
+     */
+    public function setSzerzo4email($szerzo4email): void
+    {
+        $this->szerzo4email = $szerzo4email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo5email()
+    {
+        return $this->szerzo5email;
+    }
+
+    /**
+     * @param mixed $szerzo5email
+     */
+    public function setSzerzo5email($szerzo5email): void
+    {
+        $this->szerzo5email = $szerzo5email;
+    }
 
 }

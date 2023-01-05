@@ -24,5 +24,10 @@
                 Konferencián nem szerepelhet
             {/if}
         </div>
+        {if (!allszerzoregistered)}
+        <div class="redtext">
+            Nincs minden szerző regisztrálva
+        </div>
+        {/if}
     </td>
 </tr>

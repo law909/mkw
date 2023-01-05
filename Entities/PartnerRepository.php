@@ -182,7 +182,14 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		return $this->getAll($filter, array());
 	}
 
-	public function findByIdSessionid($id, $sessionid) {
+    public function findByEmail($email) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $email);
+        return $this->getAll($filter, array());
+    }
+
+    public function findByIdSessionid($id, $sessionid) {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('id', '=', $id)

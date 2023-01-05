@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Emailtemplate;
+use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Partner;
 use Entities\Statlap;
 use Entities\Szallitasimod;
@@ -123,6 +124,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Watermark);
         $view->setVar(\mkw\consts::Watermark, ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumTipus);
+        $sza = new mptngyszakmaianyagtipusController($this->params);
+        $view->setVar('mptngyszakmaianyagtipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
         $szallstatlap = new statlapController($this->params);
@@ -982,6 +987,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, '');
+        }
+
+        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('mptngyszimpoziumtipus', 0));
+        if ($sza) {
+            $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, $sza->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, '');
         }
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));

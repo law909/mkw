@@ -380,6 +380,8 @@ class consts {
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
 
+    const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';
+
     public static function getWebshopPriceConst()
     {
         return 'Webshop' . \mkw\store::getWebshopNum() . 'Price';

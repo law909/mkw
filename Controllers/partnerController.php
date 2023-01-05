@@ -325,7 +325,6 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));
             $obj->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
             $obj->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
-            $obj->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
             $obj->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
             $obj->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
             $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));

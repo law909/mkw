@@ -639,6 +639,19 @@
                             </div>
                         {/if}
                     </div>
+                    {if ($setup.mptngy == 1)}
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="mptngyszimpoziumtipusEdit">{at('Szimpózium')}:</label></span>
+                                <select id="mptngyszimpoziumtipusEdit" name="mptngyszimpoziumtipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngyszakmaianyagtipuslist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
                             <span class="setuplabel"><label for="AdminroleEdit">{at('Admin szerepkör')}:</label></span>

@@ -43,6 +43,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo3nev'] = $t->getSzerzo3Nev();
         $x['szerzo4'] = $t->getSzerzo4Id();
         $x['szerzo4nev'] = $t->getSzerzo4Nev();
+        $x['szerzo5'] = $t->getSzerzo5Id();
+        $x['szerzo5nev'] = $t->getSzerzo5Nev();
         $x['kezdodatum'] = $t->getKezdodatumStr();
         $x['kezdoido'] = $t->getKezdoido();
         $x['tipus'] = $t->getTipusId();
@@ -70,6 +72,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['biralo2nev'] = $t->getBiralo2Nev();
         $x['biralo3'] = $t->getBiralo3Id();
         $x['biralo3nev'] = $t->getBiralo3Nev();
+        $x['allszerzoregistered'] = $t->isAllSzerzoRegistered();
         if ($forKarb) {
         }
 
@@ -93,6 +96,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
         $obj->setKulcsszo4($this->params->getStringRequestParam('kulcsszo4'));
         $obj->setKulcsszo5($this->params->getStringRequestParam('kulcsszo5'));
+        $obj->setSzerzo1email($this->params->getStringRequestParam('szerzo1email'));
+        $obj->setSzerzo2email($this->params->getStringRequestParam('szerzo2email'));
+        $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
+        $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
+        $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
 
         $tipus = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('tipus'));
         if ($tipus) {
@@ -131,6 +139,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setSzerzo4($szerzo);
         } else {
             $obj->removeSzerzo4();
+        }
+        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo5'));
+        if ($szerzo) {
+            $obj->setSzerzo5($szerzo);
+        } else {
+            $obj->removeSzerzo5();
         }
 
         $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo1'));
@@ -239,6 +253,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('szerzo2list', $pc->getSelectList($anyag?->getSzerzo2Id()));
         $view->setVar('szerzo3list', $pc->getSelectList($anyag?->getSzerzo3Id()));
         $view->setVar('szerzo4list', $pc->getSelectList($anyag?->getSzerzo4Id()));
+        $view->setVar('szerzo5list', $pc->getSelectList($anyag?->getSzerzo5Id()));
 
         $ac = new mptngyszakmaianyagController($this->params);
         $view->setVar('eloadas1list', $ac->getSelectList($anyag?->getEloadas1Id()));
@@ -276,6 +291,21 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             );
         }
         return $res;
+    }
+
+    public function showAnyagList() {
+        if ($this->getRepo(Partner::class)->checkloggedin()) {
+            $v = $this->createMainView('anyaglist.tpl');
+            $v->printTemplateResult();
+        } else {
+            $pc = new partnerController($this->params);
+            $pc->showLoginForm();
+        }
+    }
+
+    public function getAnyagList() {
+        $partner = $this->getRepo(Partner::class)->getLoggedInUser();
+
     }
 
 }

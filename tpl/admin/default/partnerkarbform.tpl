@@ -407,6 +407,14 @@
                     <td><label for="mptngybankszamlaszamEdit">Bankszámlaszám:</label></td>
                     <td><input id="mptngybankszamlaszamEdit" type="text" name="mptngybankszamlaszam" value="{$partner.mptngybankszamlaszam}"></td>
                 </tr>
+                <tr>
+                    <td><label for="mptngycsfEdit">Csoportos fizetés:</label></td>
+                    <td><input id="mptngycsfEdit" type="text" name="mptngycsoportosfizetes" value="{$partner.mptngycsoportosfizetes}"></td>
+                </tr>
+                <tr>
+                    <td><label for="mptngyknEdit">Kapcsolat név:</label></td>
+                    <td><input id="mptngyknEdit" type="text" name="mptngykapcsolatnev" value="{$partner.mptngykapcsolatnev}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

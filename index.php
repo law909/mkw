@@ -219,7 +219,7 @@ else {
                     elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
                             'mugenraceexport', 'superzonehuexport', 'pubregistration', 'savepubregistration', 'pubregistrationthx',
                             'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint', 'szamlapdf', 'a2aprocesscmd',
-                            'kaposimotoexport'))) {
+                            'kaposimotoexport', 'mptngygetszerepkorlist', 'mptngysaveregistration'))) {
                         $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                         $redirected = true;
                         header('Location: ' . $router->generate('showlogin'));

@@ -66,10 +66,20 @@ if (\mkw\store::isMugenrace2021()) {
     $router->map('POST', '/setlocale', 'mainController#setLocale', 'setmainlocale');
 }
 
+if (\mkw\store::isMPTNGY()) {
+    $router->map('GET', '/szerepkorlist', 'mptngyszerepkorController#getApiList', 'mptngygetszerepkorlist');
+    $router->map('GET', '/anyaglist', 'mptngyszakmaianyagController#showAnyagList', 'mptngyshowanyaglist');
+    $router->map('POST', '/regisztracio/ment', 'mptngypartnerController#saveRegistration', 'mptngysaveregistration');
+}
+
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
+if (\mkw\store::isMPTNGY()) {
+    $router->map('POST', '/login/ment', 'mptngypartnerController#doLogin', 'dologin');
+} else {
+    $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
+}
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');
-$router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
 $router->map('GET', '/logout', 'partnerController#doLogout', 'dologout');
 $router->map('GET', '/fiok', 'partnerController#showAccount', 'showaccount');
 

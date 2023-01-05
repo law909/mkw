@@ -7,6 +7,8 @@ interface IParameterHandler {
 
 	public function getRequestParam($key,$default=null,$sanitize=true);
 
+    public function getBody();
+
 	public function getBoolParam($key,$default=false);
 
 	public function getNumParam($key,$default=0);

@@ -70,6 +70,12 @@ abstract class Controller {
         return $view;
     }
 
+    public function createMainView($tplfilename) {
+        $view = $this->getTemplateFactory()->createMainView($tplfilename);
+        $this->generalDataLoader->loadData($view);
+        return $view;
+    }
+
     public function createPubAdminView($tplfilename) {
         $view = $this->getTemplateFactory()->createPubAdminView($tplfilename);
         $this->generalDataLoader->loadData($view);

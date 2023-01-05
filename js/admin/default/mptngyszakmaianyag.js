@@ -1,11 +1,32 @@
 $(document).ready(function () {
-    var mattkarbconfig = {
+
+    function szimpoziumShow() {
+        let sb = document.getElementById('tipusEdit'),
+            so = sb.options[sb.selectedIndex];
+        if (so.dataset['szimpozium']) {
+            document.querySelectorAll('.onlyszimpozium').forEach((elem) => {
+                elem.classList.remove('hidden');
+            });
+        }
+        else {
+            document.querySelectorAll('.onlyszimpozium').forEach((elem) => {
+                elem.classList.add('hidden');
+            });
+        }
+    }
+
+    let mattkarbconfig = {
         container: '#mattkarb',
         viewUrl: '/admin/mptngyszakmaianyag/getkarb',
         newWindowUrl: '/admin/mptngyszakmaianyag/viewkarb',
         saveUrl: '/admin/mptngyszakmaianyag/save',
         beforeShow: function () {
             mkwcomp.datumEdit.init('#kezdodatumEdit');
+            szimpoziumShow();
+            let sb = document.getElementById('tipusEdit');
+            sb.addEventListener('change', (event) => {
+                szimpoziumShow();
+            })
         },
         onSubmit: function () {
             $('#messagecenter')
