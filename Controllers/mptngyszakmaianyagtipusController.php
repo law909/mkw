@@ -61,4 +61,18 @@ class mptngyszakmaianyagtipusController extends \mkwhelpers\JQGridController
         $ret .= '</select>';
         echo $ret;
     }
+
+    public function getApiList()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'szimpozium' => ($sor->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus))
+            ];
+        }
+        echo json_encode($res);
+    }
 }

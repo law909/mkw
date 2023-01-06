@@ -123,8 +123,9 @@ a {
     margin-right: auto;
 }
 
-.co-login-box {
-    padding: 1em;
+.co-header {
+    align-items: center;
+    justify-content: space-between;
 }
 
 .co-control-row {
@@ -208,6 +209,13 @@ a {
     background: var(--brand-color);
 }
 
+.co-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
 @media screen and (min-width: 761px) {
     .hide-on-mobile {
         display: block;
@@ -241,10 +249,6 @@ a {
         flex-direction: column;
     }
 
-    .co-login-box {
-        flex-basis: 100%;
-    }
-
     .co-col-container {
         display: flex;
         flex-direction: row;
@@ -270,10 +274,19 @@ a {
         flex-basis: 50%;
     }
 
+    .co-col-100 {
+        flex-basis: 100%;
+    }
+
     .co-legend {
         font-family: var(--font-normal);
         font-size: var(--co-font-size-small-d);
         margin-left: 2em;
+    }
+
+    .co-hint {
+        margin-top: 4px;
+        font-size: 0.75rem;
     }
 
 }

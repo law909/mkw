@@ -47,6 +47,8 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function view() {
+        $toPrint = true;
+
 		$this->view = $this->getTemplateFactory()->createMainView('main.tpl');
         \mkw\store::fillTemplate($this->view);
 		$hc = new hirController($this->params);
@@ -85,8 +87,15 @@ class mainController extends \mkwhelpers\Controller {
                 $r = $rs[0];
                 $this->view->setVar('mnrlanding', $r->toPublic());
                 break;
+
+            case \mkw\store::isMPTNGY():
+                $toPrint = false;
+                header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
+                break;
         }
-		$this->view->printTemplateResult(true);
+        if ($toPrint) {
+            $this->view->printTemplateResult(true);
+        }
 	}
 
 	public function termekfa() {

@@ -30,7 +30,7 @@ class mptngypartnerController extends partnerController
             $this->login($email, $jelszo1);
             \Zend_Session::writeClose();
             echo json_encode([
-                'url' => \mkw\store::getRouter()->generate('mptngygetanyaglist')
+                'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok')
             ]);
         } else {
             echo json_encode($hibak);
@@ -43,7 +43,7 @@ class mptngypartnerController extends partnerController
             $route = \mkw\store::getMainSession()->redirafterlogin;
             unset(\mkw\store::getMainSession()->redirafterlogin);
         } else {
-            $route = \mkw\store::getRouter()->generate('mptngygetanyaglist');
+            $route = \mkw\store::getRouter()->generate('mptngyszakmaianyagok');
         }
         if (!$this->checkloggedin()) {
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
@@ -67,4 +67,14 @@ class mptngypartnerController extends partnerController
         ]);
     }
 
+    public function checkPartnerUnknown() {
+        $email = $this->params->getStringRequestParam('email');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $email);
+        $cnt = $this->getRepo()->getCount($filter);
+        echo json_encode([
+            'unknown' => ($cnt === 0)
+        ]);
+    }
 }

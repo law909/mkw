@@ -37,14 +37,19 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['tulajdonosnev'] = $t->getTulajdonos()?->getNev();
         $x['szerzo1'] = $t->getSzerzo1Id();
         $x['szerzo1nev'] = $t->getSzerzo1Nev();
+        $x['szerzo1email'] = $t->getSzerzo1email();
         $x['szerzo2'] = $t->getSzerzo2Id();
         $x['szerzo2nev'] = $t->getSzerzo2Nev();
+        $x['szerzo2email'] = $t->getSzerzo2email();
         $x['szerzo3'] = $t->getSzerzo3Id();
         $x['szerzo3nev'] = $t->getSzerzo3Nev();
+        $x['szerzo3email'] = $t->getSzerzo3email();
         $x['szerzo4'] = $t->getSzerzo4Id();
         $x['szerzo4nev'] = $t->getSzerzo4Nev();
+        $x['szerzo4email'] = $t->getSzerzo4email();
         $x['szerzo5'] = $t->getSzerzo5Id();
         $x['szerzo5nev'] = $t->getSzerzo5Nev();
+        $x['szerzo5email'] = $t->getSzerzo5email();
         $x['kezdodatum'] = $t->getKezdodatumStr();
         $x['kezdoido'] = $t->getKezdoido();
         $x['tipus'] = $t->getTipusId();
@@ -73,6 +78,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['biralo3'] = $t->getBiralo3Id();
         $x['biralo3nev'] = $t->getBiralo3Nev();
         $x['allszerzoregistered'] = $t->isAllSzerzoRegistered();
+        $x['szimpozium'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
         if ($forKarb) {
         }
 
@@ -293,7 +299,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    public function showAnyagList() {
+    public function showSzakmaianyagok() {
         if ($this->getRepo(Partner::class)->checkloggedin()) {
             $v = $this->createMainView('anyaglist.tpl');
             $v->printTemplateResult();
@@ -304,8 +310,40 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
     }
 
     public function getAnyagList() {
+        $res = [];
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
+        if ($partner) {
+            $filter = new FilterDescriptor();
+            $filter->addSql(
+                '(_xx.tulajdonos=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo1=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo2=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo3=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo4=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo5=' . $partner->getId() . ')'
+            );
 
+            $anyagok = $this->getRepo()->getAll($filter);
+            foreach ($anyagok as $anyag) {
+                $res[] = $this->loadVars($anyag);
+            }
+        }
+        echo json_encode($res);
+    }
+
+    public function getSajatAnyagList() {
+        $res = [];
+        $partner = $this->getRepo(Partner::class)->getLoggedInUser();
+        if ($partner) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter('tulajdonos', '=', $partner);
+
+            $anyagok = $this->getRepo()->getAll($filter);
+            foreach ($anyagok as $anyag) {
+                $res[] = $this->loadVars($anyag);
+            }
+        }
+        echo json_encode($res);
     }
 
 }
