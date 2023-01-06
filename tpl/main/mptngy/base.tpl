@@ -10,6 +10,7 @@
     {block "precss"}{/block}
     <link type="text/css" rel="stylesheet" href="/themes/main/mptngy2023/style.css?v=3">
     {block "css"}{/block}
+    <script src="/js/main/mptngy/iframeResizer.contentWindow.min.js"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
     {block "script"}{/block}
