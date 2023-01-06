@@ -381,6 +381,9 @@ class consts {
     const DefaultTermek = 'defaulttermek';
 
     const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';
+    const MPTNGYDatum1 = 'mptngydatum1';
+    const MPTNGYDatum2 = 'mptngydatum2';
+    const MPTNGYDatum3 = 'mptngydatum3';
 
     public static function getWebshopPriceConst()
     {

@@ -206,6 +206,9 @@ $(document).ready(function() {
                     }
                 })
             }).button();
+            mkwcomp.datumEdit.init('#mptngydatum1edit');
+            mkwcomp.datumEdit.init('#mptngydatum2edit');
+            mkwcomp.datumEdit.init('#mptngydatum3edit');
         },
         onSubmit: function() {
             pleaseWait('A mentés sikerült.');

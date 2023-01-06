@@ -1912,4 +1912,17 @@ class store
         $x = ceil($x);
         return $x / 4;
     }
+
+    public static function getMPTNGYDateList($day = null) {
+        return [
+            1 => ['id' => 1, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum1)],
+            2 => ['id' => 2, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum2)],
+            3 => ['id' => 3, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum3)]
+        ];
+    }
+
+    public static function getMPTNGYDate($day) {
+        $l = self::getMPTNGYDateList();
+        return $l[$day]['caption'];
+    }
 }

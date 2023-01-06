@@ -129,6 +129,13 @@ class setupController extends \mkwhelpers\Controller {
         $sza = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('mptngyszakmaianyagtipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::MPTNGYDatum1);
+        $view->setVar(\mkw\consts::MPTNGYDatum1, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYDatum2);
+        $view->setVar(\mkw\consts::MPTNGYDatum2, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYDatum3);
+        $view->setVar(\mkw\consts::MPTNGYDatum3, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
         $szallstatlap = new statlapController($this->params);
         $view->setVar('szallitasifeltetelstatlaplist', $szallstatlap->getSelectList(($p ? $p->getErtek() : 0)));
@@ -996,6 +1003,10 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, '');
         }
+
+        $this->setObj(\mkw\consts::MPTNGYDatum1, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum1));
+        $this->setObj(\mkw\consts::MPTNGYDatum2, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum2));
+        $this->setObj(\mkw\consts::MPTNGYDatum3, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum3));
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
         $this->setObj(\mkw\consts::Smallimagesize, $this->params->getIntRequestParam('smallimagesize'));

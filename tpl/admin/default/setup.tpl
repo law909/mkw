@@ -30,6 +30,9 @@
                     {else}
                         <li><a href="#WebTab">{at('Web beállítások')}</a></li>
                     {/if}
+                    {if ($setup.mptngy)}
+                        <li><a href="#MPTNGYTab">{at('MPT nagygyűlés')}</a></li>
+                    {/if}
                     <li><a href="#SzallitasiKtgTab">{at('Szállítási költség')}</a></li>
                     {if ($maintheme == 'mkwcansas')}
                         <li><a href="#ImportTab">{at('Import')}</a></li>
@@ -639,19 +642,6 @@
                             </div>
                         {/if}
                     </div>
-                    {if ($setup.mptngy == 1)}
-                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="mptngyszimpoziumtipusEdit">{at('Szimpózium')}:</label></span>
-                                <select id="mptngyszimpoziumtipusEdit" name="mptngyszimpoziumtipus">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $mptngyszakmaianyagtipuslist as $_role}
-                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        </div>
-                    {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
                             <span class="setuplabel"><label for="AdminroleEdit">{at('Admin szerepkör')}:</label></span>
@@ -1028,6 +1018,35 @@
                         </tbody>
                     </table>
                 </div>
+                {if ($setup.mptngy)}
+                    <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <label for="mptngyszimpoziumtipusEdit" class="setuplabel">{at('Szimpózium')}:</label>
+                                <select id="mptngyszimpoziumtipusEdit" name="mptngyszimpoziumtipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngyszakmaianyagtipuslist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <label for="mptngydatum1edit" class="setuplabel">{at('Első nap dátuma')}:</label>
+                                <input id="mptngydatum1edit" name="mptngydatum1" data-datum="{$mptngydatum1}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngydatum2edit" class="setuplabel">{at('Második nap dátuma')}:</label>
+                                <input id="mptngydatum2edit" name="mptngydatum2" data-datum="{$mptngydatum2}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngydatum3edit" class="setuplabel">{at('Harmadik nap dátuma')}:</label>
+                                <input id="mptngydatum3edit" name="mptngydatum3" data-datum="{$mptngydatum3}">
+                            </div>
+                        </div>
+                    </div>
+                {/if}
                 <div id="SzallitasiKtgTab" class="mattkarb-page" data-visible="visible">
                     <table>
                         <tbody>
