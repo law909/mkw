@@ -8,7 +8,7 @@
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mptngy2023/style.css?v=11">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mptngy2023/style.css?v=12">
     {block "css"}{/block}
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
