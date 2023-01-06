@@ -166,6 +166,20 @@
             <table id="rendezvenyallapotgrid"></table>
             <div id="rendezvenyallapotgridpager"></div>
         </div>
+        {if ($setup.mptngy)}
+            <div class="egyebadat-grid">
+                <table id="mptngytemakorgrid"></table>
+                <div id="mptngytemakorgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mptngyszerepkorgrid"></table>
+                <div id="mptngyszerepkorgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mptngyszakmaianyagtipusgrid"></table>
+                <div id="mptngyszakmaianyagtipusgridpager"></div>
+            </div>
+        {/if}
 
     </div>
     <div class="egyebadat-longwrapper">
