@@ -13,6 +13,8 @@
 				<tr>
 					<td></td>
 					<td>
+						<label for="biralatkeszEdit">{at('Beküldve')}:</label>
+						<input id="veglegesEdit" type="checkbox" name="vegleges"{if ($egyed.vegleges)} checked{/if}>
 						<label for="biralatkeszEdit">{at('Bírálat kész')}:</label>
 						<input id="biralatkeszEdit" type="checkbox" name="biralatkesz"{if ($egyed.biralatkesz)} checked{/if}>
 						<label for="kszEdit">{at('Konferencián szerepelhet')}:</label>
@@ -182,6 +184,29 @@
 						<select id="eloadas5Edit" name="eloadas5">
 							<option value="">{at('válasszon')}</option>
 							{foreach $eloadas5list as $_mk}
+								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+							{/foreach}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="temakor1Edit">{at('Témakörök')}:</label></td>
+					<td>
+						<select id="temakor1Edit" name="temakor1">
+							<option value="">{at('válasszon')}</option>
+							{foreach $temakor1list as $_mk}
+								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+							{/foreach}
+						</select>
+						<select id="temakor2Edit" name="temakor2">
+							<option value="">{at('válasszon')}</option>
+							{foreach $temakor2list as $_mk}
+								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+							{/foreach}
+						</select>
+						<select id="temakor3Edit" name="temakor3">
+							<option value="">{at('válasszon')}</option>
+							{foreach $temakor3list as $_mk}
 								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 							{/foreach}
 						</select>

@@ -69,12 +69,15 @@ if (\mkw\store::isMugenrace2021()) {
 if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/szerepkorlist', 'mptngyszerepkorController#getApiList', 'mptngygetszerepkorlist');
     $router->map('GET', '/szakmaianyagtipuslist', 'mptngyszakmaianyagtipusController#getApiList', 'mptngygetszakmaianyagtipuslist');
+    $router->map('GET', '/temakorlist', 'mptngytemakorController#getApiList', 'mptngygettemakorlist');
     $router->map('GET', '/szakmaianyagok', 'mptngyszakmaianyagController#showSzakmaianyagok', 'mptngyszakmaianyagok');
     $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'mptngypartnergetdata');
     $router->map('GET', '/anyaglist', 'mptngyszakmaianyagController#getAnyagList', 'mptngygetanyaglist');
     $router->map('GET', '/sajatanyaglist', 'mptngyszakmaianyagController#getSajatAnyagList', 'mptngygetsajatanyaglist');
     $router->map('GET', '/checkpartnerunknown', 'mptngypartnerController#checkPartnerUnknown', 'mptngycheckpartnerunknown');
+    $router->map('GET', '/datumlist', 'mptngyszakmaianyagController#getDatumList', 'mptngygetdatumlist');
     $router->map('POST', '/regisztracio/ment', 'mptngypartnerController#saveRegistration', 'mptngysaveregistration');
+    $router->map('POST', '/szakmaianyag/ment', 'mptngyszakmaianyagController#pubSave', 'mptngypubsave');
 }
 
 $router->map('GET', '', 'mainController#view', 'home');

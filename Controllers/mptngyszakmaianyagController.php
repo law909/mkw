@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\Dolgozo;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzakmaianyagtipus;
+use Entities\MPTNGYTemakor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 
@@ -79,7 +80,19 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['biralo3'] = $t->getBiralo3Id();
         $x['biralo3nev'] = $t->getBiralo3Nev();
         $x['allszerzoregistered'] = $t->isAllSzerzoRegistered();
+        $x['szerzo1registered'] = $t->isSzerzoRegistered(1);
+        $x['szerzo2registered'] = $t->isSzerzoRegistered(2);
+        $x['szerzo3registered'] = $t->isSzerzoRegistered(3);
+        $x['szerzo4registered'] = $t->isSzerzoRegistered(4);
+        $x['szerzo5registered'] = $t->isSzerzoRegistered(5);
         $x['szimpozium'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
+        $x['vegleges'] = $t->isVegleges();
+        $x['temakor1'] = $t->getTemakor1()?->getId();
+        $x['temakor1nev'] = $t->getTemakor1()?->getNev();
+        $x['temakor2'] = $t->getTemakor2()?->getId();
+        $x['temakor2nev'] = $t->getTemakor2()?->getNev();
+        $x['temakor3'] = $t->getTemakor3()?->getId();
+        $x['temakor3nev'] = $t->getTemakor3()?->getNev();
         if ($forKarb) {
         }
 
@@ -90,14 +103,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
      * @param \Entities\MPTNGYSzakmaianyag $obj
      * @return \Entities\MPTNGYSzakmaianyag
      */
-    public function setFields($obj)
+    public function setFields($obj, $pub = false)
     {
         $obj->setCim($this->params->getStringRequestParam('cim'));
         $obj->setTartalom($this->params->getStringRequestParam('tartalom'));
-        $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
         $obj->setKezdodatum($this->params->getIntRequestParam('kezdodatum'));
         $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
-        $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
         $obj->setKulcsszo1($this->params->getStringRequestParam('kulcsszo1'));
         $obj->setKulcsszo2($this->params->getStringRequestParam('kulcsszo2'));
         $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
@@ -108,6 +119,15 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
         $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
         $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
+        if (!$pub) {
+            $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
+            $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
+            $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
+        } else {
+            if ($this->params->getBoolRequestParam('vegleges')) {
+                $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
+            }
+        }
 
         $tipus = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('tipus'));
         if ($tipus) {
@@ -116,61 +136,63 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->removeTipus();
         }
 
-        $tulaj = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tulajdonos'));
-        if ($tulaj) {
-            $obj->setTulajdonos($tulaj);
-        } else {
-            $obj->removeTulajdonos();
-        }
+        if (!$pub) {
+            $tulaj = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tulajdonos'));
+            if ($tulaj) {
+                $obj->setTulajdonos($tulaj);
+            } else {
+                $obj->removeTulajdonos();
+            }
 
-        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo1'));
-        if ($szerzo) {
-            $obj->setSzerzo1($szerzo);
-        } else {
-            $obj->removeSzerzo1();
-        }
-        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo2'));
-        if ($szerzo) {
-            $obj->setSzerzo2($szerzo);
-        } else {
-            $obj->removeSzerzo2();
-        }
-        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo3'));
-        if ($szerzo) {
-            $obj->setSzerzo3($szerzo);
-        } else {
-            $obj->removeSzerzo3();
-        }
-        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo4'));
-        if ($szerzo) {
-            $obj->setSzerzo4($szerzo);
-        } else {
-            $obj->removeSzerzo4();
-        }
-        $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo5'));
-        if ($szerzo) {
-            $obj->setSzerzo5($szerzo);
-        } else {
-            $obj->removeSzerzo5();
-        }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo1'));
+            if ($szerzo) {
+                $obj->setSzerzo1($szerzo);
+            } else {
+                $obj->removeSzerzo1();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo2'));
+            if ($szerzo) {
+                $obj->setSzerzo2($szerzo);
+            } else {
+                $obj->removeSzerzo2();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo3'));
+            if ($szerzo) {
+                $obj->setSzerzo3($szerzo);
+            } else {
+                $obj->removeSzerzo3();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo4'));
+            if ($szerzo) {
+                $obj->setSzerzo4($szerzo);
+            } else {
+                $obj->removeSzerzo4();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo5'));
+            if ($szerzo) {
+                $obj->setSzerzo5($szerzo);
+            } else {
+                $obj->removeSzerzo5();
+            }
 
-        $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo1'));
-        if ($biralo) {
-            $obj->setBiralo1($biralo);
-        } else {
-            $obj->removeBiralo1();
-        }
-        $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo2'));
-        if ($biralo) {
-            $obj->setBiralo2($biralo);
-        } else {
-            $obj->removeBiralo2();
-        }
-        $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo3'));
-        if ($biralo) {
-            $obj->setBiralo3($biralo);
-        } else {
-            $obj->removeBiralo3();
+            $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo1'));
+            if ($biralo) {
+                $obj->setBiralo1($biralo);
+            } else {
+                $obj->removeBiralo1();
+            }
+            $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo2'));
+            if ($biralo) {
+                $obj->setBiralo2($biralo);
+            } else {
+                $obj->removeBiralo2();
+            }
+            $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo3'));
+            if ($biralo) {
+                $obj->setBiralo3($biralo);
+            } else {
+                $obj->removeBiralo3();
+            }
         }
 
         $eloadas = \mkw\store::getEm()->getRepository(\Entities\MPTNGYSzakmaianyag::class)->find($this->params->getIntRequestParam('eloadas1'));
@@ -202,6 +224,27 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setEloadas5($eloadas);
         } else {
             $obj->removeEloadas5();
+        }
+
+        $temakor = \mkw\store::getEm()->getRepository(MPTNGYTemakor::class)->find($this->params->getIntRequestParam('temakor1'));
+        if ($temakor) {
+            $obj->setTemakor1($temakor);
+        } else {
+            $obj->removeTemakor1();
+        }
+
+        $temakor = \mkw\store::getEm()->getRepository(MPTNGYTemakor::class)->find($this->params->getIntRequestParam('temakor2'));
+        if ($temakor) {
+            $obj->setTemakor2($temakor);
+        } else {
+            $obj->removeTemakor2();
+        }
+
+        $temakor = \mkw\store::getEm()->getRepository(MPTNGYTemakor::class)->find($this->params->getIntRequestParam('temakor3'));
+        if ($temakor) {
+            $obj->setTemakor3($temakor);
+        } else {
+            $obj->removeTemakor3();
         }
 
         return $obj;
@@ -274,6 +317,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id()));
         $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id()));
 
+        $tk = new mptngytemakorController($this->params);
+        $view->setVar('temakor1list', $tk->getSelectList($anyag?->getTemakor1()?->getId()));
+        $view->setVar('temakor2list', $tk->getSelectList($anyag?->getTemakor2()?->getId()));
+        $view->setVar('temakor3list', $tk->getSelectList($anyag?->getTemakor3()?->getId()));
+
         $view->setVar('datumlist', \mkw\store::getMPTNGYDateList($anyag?->getKezdodatum()));
 
         $view->setVar('egyed', $this->loadVars($anyag, true));
@@ -301,7 +349,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    public function showSzakmaianyagok() {
+    public function showSzakmaianyagok()
+    {
         if ($this->getRepo(Partner::class)->checkloggedin()) {
             $v = $this->createMainView('anyaglist.tpl');
             $v->printTemplateResult();
@@ -311,7 +360,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
     }
 
-    public function getAnyagList() {
+    public function getAnyagList()
+    {
         $res = [];
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         if ($partner) {
@@ -327,13 +377,16 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
             $anyagok = $this->getRepo()->getAll($filter);
             foreach ($anyagok as $anyag) {
-                $res[] = $this->loadVars($anyag);
+                $x = $this->loadVars($anyag);
+                $x['editable'] = $anyag->getTulajdonosId() === $partner->getId();
+                $res[] = $x;
             }
         }
         echo json_encode($res);
     }
 
-    public function getSajatAnyagList() {
+    public function getSajatAnyagList()
+    {
         $res = [];
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         if ($partner) {
@@ -341,11 +394,56 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('tulajdonos', '=', $partner);
 
             $anyagok = $this->getRepo()->getAll($filter);
+            /** @var MPTNGYSzakmaianyag $anyag */
             foreach ($anyagok as $anyag) {
-                $res[] = $this->loadVars($anyag);
+                $x = $this->loadVars($anyag);
+                $x['editable'] = $anyag->getTulajdonosId() === $partner->getId();
+                $res[] = $x;
             }
         }
         echo json_encode($res);
+    }
+
+    public function getDatumList()
+    {
+        echo json_encode(\mkw\store::getMPTNGYDateList());
+    }
+
+    protected function setSzerzoByEmail($obj, $num)
+    {
+        $email = $this->params->getStringRequestParam("szerzo{$num}email");
+        $g = "getSzerzo{$num}email";
+        $s = "setSzerzo{$num}";
+        if ($obj->$g() !== $email) {
+            $obj->$s($this->getRepo(Partner::class)->findOneBy(['email' => $email]));
+        }
+        return $obj;
+    }
+
+    public function pubSave()
+    {
+        $partner = $this->getRepo(Partner::class)->getLoggedInUser();
+        if ($partner) {
+            $anyag = null;
+            if ($this->params->getIntRequestParam('id')) {
+                $anyag = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+            }
+            if (!$anyag) {
+                $anyag = new MPTNGYSzakmaianyag();
+            }
+            $anyag = $this->setSzerzoByEmail($anyag, 1);
+            $anyag = $this->setSzerzoByEmail($anyag, 2);
+            $anyag = $this->setSzerzoByEmail($anyag, 3);
+            $anyag = $this->setSzerzoByEmail($anyag, 4);
+            $anyag = $this->setSzerzoByEmail($anyag, 5);
+            $anyag = $this->setFields($anyag, true);
+            $anyag->setTulajdonos($partner);
+            $this->getEm()->persist($anyag);
+            $this->getEm()->flush();
+        }
+        echo json_encode([
+            'result' => 'ok'
+        ]);
     }
 
 }

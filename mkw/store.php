@@ -1915,9 +1915,21 @@ class store
 
     public static function getMPTNGYDateList($day = null) {
         return [
-            1 => ['id' => 1, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum1)],
-            2 => ['id' => 2, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum2)],
-            3 => ['id' => 3, 'caption' => self::getParameter(\mkw\consts::MPTNGYDatum3)]
+            1 => [
+                'id' => 1,
+                'caption' => self::getParameter(\mkw\consts::MPTNGYDatum1),
+                'selected' => $day === 1
+            ],
+            2 => [
+                'id' => 2,
+                'caption' => self::getParameter(\mkw\consts::MPTNGYDatum2),
+                'selected' => $day === 2
+            ],
+            3 => [
+                'id' => 3,
+                'caption' => self::getParameter(\mkw\consts::MPTNGYDatum3),
+                'selected' => $day === 3
+            ]
         ];
     }
 

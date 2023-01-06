@@ -48,4 +48,18 @@ class mptngytemakorController extends \mkwhelpers\JQGridController {
         $ret .= '</select>';
         echo $ret;
     }
+
+    public function getApiList()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev()
+            ];
+        }
+        echo json_encode($res);
+    }
+
 }

@@ -10,6 +10,16 @@
         <div>Tulajdonos: {$_egyed.tulajdonosnev}</div>
     </td>
     <td class="cell">
+        <div>{$_egyed.temakor1nev}</div>
+        <div>{$_egyed.temakor2nev}</div>
+        <div>{$_egyed.temakor3nev}</div>
+    </td>
+    <td class="cell">
+        {if ($_egyed.vegleges)}
+        <div class="greentext">
+            BEKÜLDVE
+        </div>
+        {/if}
         <div>
         {if ($_egyed.biralatkesz)}
             Bírálat kész

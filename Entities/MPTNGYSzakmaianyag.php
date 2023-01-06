@@ -211,6 +211,32 @@ class MPTNGYSzakmaianyag
      */
     private $szerzo5email;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $vegleges = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYTemakor")
+     * @ORM\JoinColumn(name="temakor1_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\MPTNGYTemakor
+     */
+    private $temakor1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYTemakor")
+     * @ORM\JoinColumn(name="temakor2_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\MPTNGYTemakor
+     */
+    private $temakor2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYTemakor")
+     * @ORM\JoinColumn(name="temakor3_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\MPTNGYTemakor
+     */
+    private $temakor3;
+
     public function isSzerzoRegistered($num) {
         $f1 = "getSzerzo{$num}email";
         $f2 = "getSzerzo{$num}";
@@ -1152,6 +1178,103 @@ class MPTNGYSzakmaianyag
     public function setSzerzo5email($szerzo5email): void
     {
         $this->szerzo5email = $szerzo5email;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVegleges()
+    {
+        return $this->vegleges;
+    }
+
+    /**
+     * @param bool $vegleges
+     */
+    public function setVegleges($vegleges): void
+    {
+        $this->vegleges = $vegleges;
+    }
+
+    /**
+     * @return \Entities\MPTNGYTemakor
+     */
+    public function getTemakor1()
+    {
+        return $this->temakor1;
+    }
+
+    /**
+     * @param \Entities\MPTNGYTemakor $val
+     */
+    public function setTemakor1($val)
+    {
+        if (!$val) {
+            $this->removeTemakor1();
+        } else {
+            $this->temakor1 = $val;
+        }
+    }
+
+    public function removeTemakor1()
+    {
+        if ($this->temakor1 !== null) {
+            $this->temakor1 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\MPTNGYTemakor
+     */
+    public function getTemakor2()
+    {
+        return $this->temakor2;
+    }
+
+    /**
+     * @param \Entities\MPTNGYTemakor $val
+     */
+    public function setTemakor2($val)
+    {
+        if (!$val) {
+            $this->removeTemakor2();
+        } else {
+            $this->temakor2 = $val;
+        }
+    }
+
+    public function removeTemakor2()
+    {
+        if ($this->temakor2 !== null) {
+            $this->temakor2 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\MPTNGYTemakor
+     */
+    public function getTemakor3()
+    {
+        return $this->temakor3;
+    }
+
+    /**
+     * @param \Entities\MPTNGYTemakor $val
+     */
+    public function setTemakor3($val)
+    {
+        if (!$val) {
+            $this->removeTemakor3();
+        } else {
+            $this->temakor3 = $val;
+        }
+    }
+
+    public function removeTemakor3()
+    {
+        if ($this->temakor3 !== null) {
+            $this->temakor3 = null;
+        }
     }
 
 }

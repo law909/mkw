@@ -216,7 +216,100 @@ a {
     font-style: italic;
 }
 
+table {
+    border: 0;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+    padding: .35em;
+}
+
+table th,
+table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    padding: .625em;
+    text-align: right;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+table td:last-child {
+    border-bottom: 0;
+}
+
 @media screen and (min-width: 761px) {
+
+    table {
+        border: 1px solid #ccc;
+        margin-bottom: 1em;
+    }
+
+    table thead {
+        position: inherit;
+    }
+
+    table tr {
+        display: table-row;
+    }
+
+    table th,
+    table td {
+        display: table-cell;
+        text-align: left;
+    }
+
+    table td {
+        text-align: left;
+    }
+
+    table td::before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: inherit;
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
     .hide-on-mobile {
         display: block;
     }
@@ -276,6 +369,10 @@ a {
 
     .co-col-100 {
         flex-basis: 100%;
+    }
+
+    .co-col-33 {
+        flex-basis: 33.3333333333%;
     }
 
     .co-legend {
