@@ -175,7 +175,7 @@ class MPTNGYSzakmaianyag
      */
     private $biralo3;
 
-    /** @ORM\Column(type="date",nullable=true) */
+    /** @ORM\Column(type="integer",nullable=true) */
     private $kezdodatum;
 
     /** @ORM\Column(type="string",length=10,nullable=true) */
@@ -1031,10 +1031,7 @@ class MPTNGYSzakmaianyag
 
     public function getKezdodatumStr()
     {
-        if ($this->getKezdodatum()) {
-            return $this->getKezdodatum()->format(\mkw\store::$DateFormat);
-        }
-        return '';
+        return \mkw\store::getMPTNGYDate($this->kezdodatum);
     }
 
     /**
@@ -1042,14 +1039,7 @@ class MPTNGYSzakmaianyag
      */
     public function setKezdodatum($kezdodatum): void
     {
-        if (is_a($kezdodatum, 'DateTime')) {
-            $this->kezdodatum = $kezdodatum;
-        } else {
-            if ($kezdodatum == '') {
-                $kezdodatum = date(\mkw\store::$DateFormat);
-            }
-            $this->kezdodatum = new \DateTime(\mkw\store::convDate($kezdodatum));
-        }
+        $this->kezdodatum = $kezdodatum;
     }
 
     /**

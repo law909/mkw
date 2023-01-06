@@ -21,7 +21,6 @@ $(document).ready(function () {
         newWindowUrl: '/admin/mptngyszakmaianyag/viewkarb',
         saveUrl: '/admin/mptngyszakmaianyag/save',
         beforeShow: function () {
-            mkwcomp.datumEdit.init('#kezdodatumEdit');
             szimpoziumShow();
             let sb = document.getElementById('tipusEdit');
             sb.addEventListener('change', (event) => {

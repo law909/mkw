@@ -180,6 +180,28 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
+    public function isSzerzoRegistered($num)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isSzerzoRegistered', [$num]);
+
+        return parent::isSzerzoRegistered($num);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAllSzerzoRegistered()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAllSzerzoRegistered', []);
+
+        return parent::isAllSzerzoRegistered();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

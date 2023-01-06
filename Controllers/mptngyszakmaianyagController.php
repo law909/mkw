@@ -50,8 +50,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo5'] = $t->getSzerzo5Id();
         $x['szerzo5nev'] = $t->getSzerzo5Nev();
         $x['szerzo5email'] = $t->getSzerzo5email();
-        $x['kezdodatum'] = $t->getKezdodatumStr();
+        $x['kezdodatum'] = $t->getKezdodatum();
         $x['kezdoido'] = $t->getKezdoido();
+        $x['kezdodatumstr'] = $t->getKezdodatumStr();
         $x['tipus'] = $t->getTipusId();
         $x['tipusnev'] = $t->getTipus()?->getNev();
         $x['eloadas1'] = $t->getEloadas1Id();
@@ -94,7 +95,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setCim($this->params->getStringRequestParam('cim'));
         $obj->setTartalom($this->params->getStringRequestParam('tartalom'));
         $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
-        $obj->setKezdodatum($this->params->getStringRequestParam('kezdodatum'));
+        $obj->setKezdodatum($this->params->getIntRequestParam('kezdodatum'));
         $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
         $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
         $obj->setKulcsszo1($this->params->getStringRequestParam('kulcsszo1'));
@@ -273,6 +274,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id()));
         $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id()));
 
+        $view->setVar('datumlist', \mkw\store::getMPTNGYDateList($anyag?->getKezdodatum()));
 
         $view->setVar('egyed', $this->loadVars($anyag, true));
         $view->printTemplateResult();

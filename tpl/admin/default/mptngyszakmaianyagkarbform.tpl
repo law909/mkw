@@ -26,7 +26,15 @@
 				<tr>
 					<td><label for="kezdodatumEdit">{at('Kezdés')}:</label></td>
 					<td>
-						<input id="kezdodatumEdit" name="kezdodatum" type="text" size="12" data-datum="{$egyed.kezdodatum}">
+						<select id="kezdodatumEdit" name="kezdodatum">
+							<option value="">{at('válasszon')}</option>
+							{foreach $datumlist as $_mk}
+								<option
+									value="{$_mk.id}"
+									{if ($_mk.selected)} selected="selected"{/if}
+								>{$_mk.caption}</option>
+							{/foreach}
+						</select>
 						<input name="kezdoido" value="{$egyed.kezdoido}">
 					</td>
 				</tr>
@@ -180,8 +188,18 @@
 					</td>
 				</tr>
 				<tr>
+					<td><label for="kulcsszo1Edit">{at('Kulcsszavak')}:</label></td>
+					<td>
+						<input id="kulcsszo1Edit" name="kulcsszo1" type="text" value="{$egyed.kulcsszo1}">
+						<input name="kulcsszo2" type="text" value="{$egyed.kulcsszo2}">
+						<input name="kulcsszo3" type="text" value="{$egyed.kulcsszo3}">
+						<input name="kulcsszo4" type="text" value="{$egyed.kulcsszo4}">
+						<input name="kulcsszo5" type="text" value="{$egyed.kulcsszo5}">
+					</td>
+				</tr>
+				<tr>
 					<td><label for="tartalomEdit">{at('Tartalom')}:</label></td>
-					<td><textarea id="tartalomEdit" name="tartalom" required>{$egyed.tartalom}</textarea></td>
+					<td><textarea id="tartalomEdit" name="tartalom" rows="20" cols="80" required>{$egyed.tartalom}</textarea></td>
 				</tr>
 				</tbody>
 			</table>
