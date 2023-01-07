@@ -61,10 +61,14 @@ class mptngypartnerController extends partnerController
                 \mkw\store::getMainSession()->loginerror = true;
                 $route = \mkw\store::getRouter()->generate('showlogin', true);
             }
+            echo json_encode([
+                'url' => $route
+            ]);
+        } else {
+            echo json_encode([
+                'error' => true
+            ]);
         }
-        echo json_encode([
-            'url' => $route
-        ]);
     }
 
     public function checkPartnerUnknown() {
