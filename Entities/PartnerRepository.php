@@ -206,8 +206,10 @@ class PartnerRepository extends \mkwhelpers\Repository {
     }
 
     public function checkloggedin() {
+        \mkw\store::writelog('session pk=' . \mkw\store::getMainSession()->pk);
         if (isset(\mkw\store::getMainSession()->pk)) {
             $users = $this->findByIdSessionid(\mkw\store::getMainSession()->pk, \Zend_Session::getId());
+            \mkw\store::writelog(count($users));
             return count($users) == 1;
         }
         return false;
