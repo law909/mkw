@@ -45,22 +45,28 @@ class mptngypartnerController extends partnerController
         } else {
             $route = \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true);
         }
+        \mkw\store::writelog('dologin 1');
         if (!$this->checkloggedin()) {
+            \mkw\store::writelog('dologin 2');
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
+                \mkw\store::writelog('dologin 3');
 //				\Zend_Session::writeClose();
                 /** @var \Entities\Partner $partnerobj */
                 $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {
+                    \mkw\store::writelog('dologin 31');
                     $mc = new mainController($this->params);
                     $mc->setOrszag($partnerobj->getOrszagId());
                 }
             } else {
+                \mkw\store::writelog('dologin 4');
                 \mkw\store::clearLoggedInUser();
                 $mc = new mainController($this->params);
                 $mc->clearOrszag();
                 \mkw\store::getMainSession()->loginerror = true;
                 $route = \mkw\store::getRouter()->generate('showlogin', true);
             }
+            \mkw\store::writelog('dologin 5');
             echo json_encode([
                 'url' => $route
             ]);
