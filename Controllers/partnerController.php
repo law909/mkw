@@ -1170,7 +1170,11 @@ class partnerController extends \mkwhelpers\MattableController
     {
         if ($this->checkloggedin()) {
             \Zend_Session::writeClose();
-            header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
+            if (\mkw\store::isMPTNGY()) {
+                header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
+            } else {
+                header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
+            }
         } else {
             $view = $this->getTemplateFactory()->createMainView('login.tpl');
             \mkw\store::fillTemplate($view, (!\mkw\store::isSuperzoneB2B()));
