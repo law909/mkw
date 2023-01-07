@@ -30,7 +30,7 @@ class mptngypartnerController extends partnerController
             $this->login($email, $jelszo1);
             \Zend_Session::writeClose();
             echo json_encode([
-                'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok')
+                'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true)
             ]);
         } else {
             echo json_encode($hibak);
@@ -43,7 +43,7 @@ class mptngypartnerController extends partnerController
             $route = \mkw\store::getMainSession()->redirafterlogin;
             unset(\mkw\store::getMainSession()->redirafterlogin);
         } else {
-            $route = \mkw\store::getRouter()->generate('mptngyszakmaianyagok');
+            $route = \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true);
         }
         if (!$this->checkloggedin()) {
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
@@ -59,7 +59,7 @@ class mptngypartnerController extends partnerController
                 $mc = new mainController($this->params);
                 $mc->clearOrszag();
                 \mkw\store::getMainSession()->loginerror = true;
-                $route = \mkw\store::getRouter()->generate('showlogin');
+                $route = \mkw\store::getRouter()->generate('showlogin', true);
             }
         }
         echo json_encode([
