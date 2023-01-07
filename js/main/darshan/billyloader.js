@@ -6,6 +6,9 @@ class billyloader {
         this.params = params;
         this.iFrameId = frameid;
         this.path = path;
+        if (this.params && (this.path.slice(-1) !== '?')) {
+            this.path = this.path + '?';
+        }
 
         let iframe = document.createElement("iframe");
         if (iframe.attachEvent) {
