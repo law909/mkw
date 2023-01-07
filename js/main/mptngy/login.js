@@ -82,9 +82,10 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => response.json())
                 .then((respdata) => {
                     if (respdata.url) {
-                        console.log(location.href);
+                        console.log(location);
+                        console.log(respdata);
                         location.href = respdata.url;
-                        console.log(location.href);
+                        console.log(location);
                     }
                 })
                 .catch((error) => {
