@@ -93,7 +93,6 @@ if ($ini['developer']) {
     }
 }
 
-\mkw\store::writelog('script_uri' . $_SERVER['SCRIPT_URI']);
 if (mkw\store::isMPTNGY()) {
     ini_set('session.cookie_samesite', 'None');
     ini_set('session.cookie_secure', '1');
