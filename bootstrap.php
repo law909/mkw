@@ -65,7 +65,7 @@ if ($ini['developer']) {
     $config->setAutoGenerateProxyClasses(false);
 }
 
-AnnotationRegistry::registerFile('vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+//AnnotationRegistry::registerFile('vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
 
 $annotationReader = new AnnotationReader;
 $cachedAnnotationReader = new PsrCachedReader(
