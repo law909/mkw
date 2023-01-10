@@ -489,7 +489,17 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $v->setVar('jelentkezes', $jel->toLista());
             echo $v->getTemplateResult();
         } else {
-            header('Location: ' . \mkw\store::getRouter()->generate('showrendezvenyreg', true));
+            header(
+                'Location: ' . \mkw\store::getRouter()->generate(
+                    'showrendezvenyreg',
+                    true,
+                    [],
+                    [
+                        'r' => $rendezveny->getUid(),
+                        'i' => $rendezveny->getId()
+                    ]
+                )
+            );
         }
     }
 
