@@ -16,7 +16,7 @@
                         {if ($szabadhelyszam)}
                             Szabad helyek száma: {$szabadhelyszam}
                         {else}
-                            Sajnos csak várólistára tudunk felvenni.
+                            Várólistára tudunk felvenni.
                         {/if}
                     {else}
                         {if ($szabadhelyszam)}

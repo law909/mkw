@@ -318,6 +318,8 @@ class rendezvenyController extends \mkwhelpers\MattableController
                 'partneremail' => $email
             ]);
 
+            $szabadhely = $rendezveny->calcSzabadhely();
+
             if (!$jel) {
                 $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
                 if (!$partner) {
@@ -335,13 +337,14 @@ class rendezvenyController extends \mkwhelpers\MattableController
                 $jel->setPartner($partner);
                 $jel->setRendezveny($rendezveny);
                 $jel->setEmailregkoszono(true);
+                $jel->setVarolistas($rendezveny->isVarolistavan() && $szabadhely > 0);
                 $this->getEm()->persist($jel);
 
                 $this->getEm()->flush();
                 $sendemails = true;
             } else {
                 if (!$jel->getLemondva() && $jel->isVarolistas()) {
-                    if ($rendezveny->calcSzabadhely()) {
+                    if ($szabadhely > 0) {
                         $jel->setVarolistas(false);
                         $this->getEm()->persist($jel);
                         $this->getEm()->flush();

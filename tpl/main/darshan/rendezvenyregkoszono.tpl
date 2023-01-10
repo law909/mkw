@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col">
                 {if (!$lemondas)}
-                    Küldtünk neked egy emailt a részletekkel.
+                    {if ($jelentkezes.varolistas)}Felvettünk a várólistára és küldtünk neked egy emailt a részletekkel.{else}Küldtünk neked egy emailt a részletekkel.{/if}
                     {if ($jelentkezes.rendezvenyar > 0)}
                         Nézd meg az email fiókod és utald el nekünk a részvételi díjat, hogy le tudjuk foglalni a helyed!
                     {/if}

@@ -156,7 +156,7 @@ class Rendezveny
         $filter->addFilter('rendezveny', '=', $this);
         $filter->addFilter('lemondva', '=', false);
         $filter->addFilter('varolistas', '=', false);
-        return $this->getMaxferohely() - $rjr->getCount($filter);
+        return max($this->getMaxferohely() - $rjr->getCount($filter), 0);
     }
 
     public function generateUId()
