@@ -124,6 +124,7 @@ $router->map('GET', '/termekertekeles/koszonjuk', 'termekertekelesController#tha
 
 $router->map('GET', '/rendezveny/reg', 'rendezvenyController#regView', 'showrendezvenyreg');
 $router->map('POST', '/rendezveny/reg/save', 'rendezvenyController#regSave', 'saverendezvenyreg');
+$router->map('POST', '/rendezveny/lemond', 'rendezvenyController#regLemond', 'lemondrendezvenyreg');
 
 $router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
 $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');

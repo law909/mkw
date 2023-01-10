@@ -1,20 +1,28 @@
 var rendezvenyreg = (function($) {
 
-    var regform;
+    let regform;
 
     function initUI() {
 
         regform = $('#rendezvenyregform');
 
         regform.on('submit', function(e) {
-            var hibas = false;
+            const hibas = false;
 
             return !hibas;
         })
         .on('change', '#knevedit', function(e) {
-            var $edit = $('#nevedit');
+            const $edit = $('#nevedit');
             if (!$edit.val()) {
                 $edit.val($('#vnevedit').val() + ' ' + $('#knevedit').val());
+            }
+        })
+        .on('click', '.js-lemond', function(e) {
+            const email = $('#emailedit').val();
+            if (email) {
+                $.ajax({
+                    url: ''
+                })
             }
         });
     }

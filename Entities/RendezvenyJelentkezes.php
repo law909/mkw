@@ -228,6 +228,9 @@ class RendezvenyJelentkezes {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $emailrendezvenykezdes = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $varolistas = false;
+
     public function toLista() {
         $x = array();
         $x['id'] = $this->getId();
@@ -283,6 +286,8 @@ class RendezvenyJelentkezes {
         $x['emaildijbekero'] = $this->getEmaildijbekero();
         $x['emaildijbekerodatum'] = $this->getEmaildijbekerodatumStr();
         $x['emailrendezvenykezdes'] = $this->getEmailrendezvenykezdes();
+
+        $x['varolistas'] = $this->isVarolistas();
         return $x;
     }
 
@@ -1355,6 +1360,22 @@ class RendezvenyJelentkezes {
      */
     public function setEmailrendezvenykezdes($emailrendezvenykezdes) {
         $this->emailrendezvenykezdes = $emailrendezvenykezdes;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVarolistas()
+    {
+        return $this->varolistas;
+    }
+
+    /**
+     * @param bool $varolistas
+     */
+    public function setVarolistas($varolistas): void
+    {
+        $this->varolistas = $varolistas;
     }
 
 }

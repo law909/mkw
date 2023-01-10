@@ -12,16 +12,24 @@
                 <div class="color-darshan">{$rendezvenynev}</div>
                 {if ($szabadhelykovetes)}
                 <div class="color-darshan">
-                    {if ($szabadhelyszam)}
-                        Szabad helyek száma: {$szabadhelyszam}
+                    {if ($varolistavan)}
+                        {if ($szabadhelyszam)}
+                            Szabad helyek száma: {$szabadhelyszam}
+                        {else}
+                            Sajnos csak várólistára tudunk felvenni.
+                        {/if}
                     {else}
-                        Sajnáljuk, nincs szabad hely.
+                        {if ($szabadhelyszam)}
+                            Szabad helyek száma: {$szabadhelyszam}
+                        {else}
+                            Sajnáljuk, nincs szabad hely.
+                        {/if}
                     {/if}
                 </div>
                 {/if}
             </div>
         </div>
-        {if ($szabadhelyszam || !$szabadhelykovetes)}
+        {if ($szabadhelyszam || !$szabadhelykovetes || $varolistavan)}
         <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">
             <div class="form-group row">
                 <label for="vnevedit" class="col-sm-2 col-form-label">Vezetéknév</label>
@@ -119,6 +127,7 @@
                     <input type="hidden" name="r" value="{$uid}">
                     <input type="hidden" name="kellszamlazasiadat" value="{$kellszamlazasiadat}">
                     <button type="submit" class="btn btn-darshan">Regisztrálok</button>
+                    <button class="js-lemond btn">Lemondom</button>
                 </div>
             </div>
         </form>

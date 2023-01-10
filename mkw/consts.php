@@ -368,6 +368,7 @@ class consts {
     const RendezvenySablonFizetesKoszono = 'rendezvenysablonfizeteskoszono';
     const RendezvenySablonKezdesEmlekezteto = 'rendezvenysablonkezdesemlekezteto';
     const RendezvenySablonRegErtesito = 'rendezvenysablonregertesito';
+    const RendezvenySablonFelszabadultHelyErtesito = 'rendezvenysablonfelszabadulthelyertesito';
     const RendezvenyRegErtesitoEmail = 'rendezvenyregertesitoemail';
 
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';

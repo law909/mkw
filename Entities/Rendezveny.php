@@ -4,6 +4,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkwhelpers\FilterDescriptor;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\RendezvenyRepository")
@@ -130,6 +131,9 @@ class Rendezveny
     /** @ORM\Column(type="boolean",nullable=false) */
     private $orarendbenszerepel = true;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $varolistavan = true;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $url;
 
@@ -144,6 +148,15 @@ class Rendezveny
     public function __construct()
     {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function calcSzabadhely() {
+        $rjr = \mkw\store::getEm()->getRepository(RendezvenyJelentkezes::class);
+        $filter = new FilterDescriptor();
+        $filter->addFilter('rendezveny', '=', $this);
+        $filter->addFilter('lemondva', '=', false);
+        $filter->addFilter('varolistas', '=', false);
+        return $this->getMaxferohely() - $rjr->getCount($filter);
     }
 
     public function generateUId()
@@ -742,6 +755,22 @@ class Rendezveny
     public function setMaxferohely($maxferohely): void
     {
         $this->maxferohely = $maxferohely;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVarolistavan()
+    {
+        return $this->varolistavan;
+    }
+
+    /**
+     * @param bool $varolistavan
+     */
+    public function setVarolistavan($varolistavan): void
+    {
+        $this->varolistavan = $varolistavan;
     }
 
 }

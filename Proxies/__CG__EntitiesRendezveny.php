@@ -67,10 +67,10 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'ar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'helyszin', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'orarendbenszerepel', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'url', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'maxferohely'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'ar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'helyszin', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'orarendbenszerepel', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'url', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'maxferohely'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'ar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'helyszin', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'orarendbenszerepel', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'url', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'maxferohely'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'ar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'helyszin', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'orarendbenszerepel', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'url', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'maxferohely'];
     }
 
     /**
@@ -177,6 +177,17 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function calcSzabadhely()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzabadhely', []);
+
+        return parent::calcSzabadhely();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -1059,6 +1070,28 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMaxferohely', [$maxferohely]);
 
         parent::setMaxferohely($maxferohely);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isVarolistavan()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isVarolistavan', []);
+
+        return parent::isVarolistavan();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVarolistavan($varolistavan): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVarolistavan', [$varolistavan]);
+
+        parent::setVarolistavan($varolistavan);
     }
 
 }

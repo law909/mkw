@@ -1671,6 +1671,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="RRegFelszabadultHelyEdit">{at('Felszabadult hely levél sablon')}:</label></span>
+                            <select id="RRegFelszabadultHelyEdit" name="rendezvenysablonfelszabadulthelyertesito">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablonfelszabadulthelyertesitolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="RDijbekeroSablonEdit">{at('Díjbekérő levél sablon')}:</label></span>
                             <select id="RDijbekeroSablonEdit" name="rendezvenysablondijbekero">
                                 <option value="">{at('válasszon')}</option>

@@ -69,6 +69,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $x['emaildijbekero'] = $t->getEmaildijbekero();
         $x['emaildijbekerodatum'] = $t->getEmaildijbekerodatumStr();
         $x['emailrendezvenykezdes'] = $t->getEmailrendezvenykezdes();
+
+        $x['varolistas'] = $t->isVarolistas();
         return $x;
     }
 
@@ -623,4 +625,49 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             echo json_encode($ret);
         }
     }
+
+    public function sendFelszabadultHelyEmail($id = null) {
+        $ret = array('msg' => at('A kezdés emlékeztető levél kiküldve.'));
+        $kellecho = false;
+        if (!$id) {
+            $kellecho = true;
+            $id = $this->params->getIntRequestParam('id');
+        }
+        /** @var \Entities\RendezvenyJelentkezes $jel */
+        $jel = $this->getRepo()->find($id);
+        if ($jel) {
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito));
+            if ($emailtpl) {
+                $tpldata = $jel->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
+                    $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
+                }
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyfelszabadulthelyemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyfelszabadulthelyemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($jel->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
+            else {
+                $ret['msg'] = at('Kezdés emlékeztető levél sablon nem található.');
+            }
+        }
+        else {
+            $ret['msg'] = at('A jelentkezés nem található.');
+        }
+        if ($kellecho) {
+            echo json_encode($ret);
+        }
+    }
+
 }
