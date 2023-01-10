@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\RendezvenyJelentkezes;
+
 class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -526,9 +528,49 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $rj->setLemondva(true);
             $rj->setLemondasdatum($datum);
             $rj->setLemondasoka($ok);
+            $rj->setVarolistas(false);
 
             $this->getEm()->persist($rj);
             $this->getEm()->flush();
+
+            $rendezveny = $rj->getRendezveny();
+
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
+            if ($emailtpl) {
+                $tpldata = $rj->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $subject->setVar('lemondas', true);
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
+                $body->setVar('jelentkezes', $tpldata);
+                $body->setVar('lemondas', true);
+                if ($rendezveny && $rendezveny->getHelyszin()) {
+                    $body->setVar('helyszin', $rendezveny->getHelyszin()->getEmailsablon());
+                }
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyregkoszonoemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyregkoszonoemail.html');
+                } else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($rj->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
+
+            $rjc = new \Controllers\rendezvenyjelentkezesController($this->params);
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('rendezveny', '=', $rendezveny);
+            $filter->addFilter('lemondva', '=', false);
+            $filter->addFilter('varolistas', '=', true);
+            $jelek = $this->getRepo(RendezvenyJelentkezes::class)->getAll($filter);
+            /** @var \Entities\RendezvenyJelentkezes $jel */
+            foreach ($jelek as $jel) {
+                $rjc->sendFelszabadultHelyEmail($jel->getId());
+            }
 
             echo json_encode(array('result' => 'ok'));
         }

@@ -18,6 +18,7 @@ var rendezvenyreg = (function($) {
             }
         })
         .on('click', '.js-lemond', function(e) {
+            e.preventDefault();
             if ($('#emailedit').val()) {
                 const url = new URL('/rendezveny/lemond');
                 url.searchParams.append('email', $('#emailedit').val());
