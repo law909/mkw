@@ -407,7 +407,10 @@ class rendezvenyController extends \mkwhelpers\MattableController
     public function regLemond()
     {
         /** @var RendezvenyJelentkezes $jel */
-        $jel = $this->getRepo(RendezvenyJelentkezes::class)->find($this->params->getIntRequestParam('id'));
+        $jel = $this->getRepo(RendezvenyJelentkezes::class)->findOneBy([
+            'rendezveny' => $this->params->getIntRequestParam('rid'),
+            'partneremail' => $this->params->getStringRequestParam('email')
+        ]);
         if ($jel) {
             $rendezveny = $jel->getRendezveny();
             $jel->setLemondva(true);
@@ -472,7 +475,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $jelek = $this->getRepo(RendezvenyJelentkezes::class)->getAll($filter);
             /** @var \Entities\RendezvenyJelentkezes $jel */
             foreach ($jelek as $jel) {
-                $rjc->sendKezdesEmail($jel->getId());
+                $rjc->sendFelszabadultHelyEmail($jel->getId());
             }
 
             $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
