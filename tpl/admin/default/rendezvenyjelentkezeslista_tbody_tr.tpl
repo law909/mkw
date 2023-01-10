@@ -21,6 +21,13 @@
     <td class="cell">
         <table>
             <tbody>
+            {if ($_egyed.varolistas)}
+                <tr>
+                    <td>
+                        Várólistás
+                    </td>
+                </tr>
+            {/if}
             {if ($_egyed.visszautalva)}
                 <tr>
                     <td>

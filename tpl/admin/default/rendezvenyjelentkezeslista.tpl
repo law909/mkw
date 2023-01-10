@@ -43,6 +43,15 @@
             {/foreach}
         </select>
     </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="varolistasfilter">{at('Várólistás')}:</label>
+        <select id="varolistasfilter" name="varolistasfilter">
+            <option value="9">{at('Mindegy')}</option>
+            <option value="0">{at('Nem')}</option>
+            <option value="1">{at('Igen')}</option>
+        </select>
+    </div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

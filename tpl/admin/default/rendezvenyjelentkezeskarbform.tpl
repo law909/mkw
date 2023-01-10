@@ -11,11 +11,15 @@
             <table>
                 <tbody>
                 <tr>
+                    <td><label for="VarolistasEdit">{at('Várólistás')}:</label></td>
+                    <td><input id="VarolistasEdit" name="varolistas" type="checkbox"{if ($egyed.varolistas)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
                     {if ($setup.partnerautocomplete)}
                         <td colspan="7">
                             <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 autofocus>
-                            <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
+                            <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partnerid}">
                             <input class="js-ujpartnercb" type="checkbox">Új</input>
                         </td>
                     {else}

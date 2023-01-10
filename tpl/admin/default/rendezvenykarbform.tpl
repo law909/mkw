@@ -105,6 +105,10 @@
                     <td><label for="MaxferohelyEdit">{at('Max.férphely')}:</label></td>
                     <td><input id="MaxferohelyEdit" type="number" name="maxferohely" step="any" value="{$egyed.maxferohely}"></td>
                 </tr>
+                <tr>
+                    <td><label for="VanvarolistaEdit">{at('Van várólista')}:</label></td>
+                    <td><input id="VanvarolistaEdit" name="varolistavan" type="checkbox"{if ($egyed.varolistavan)} checked="checked"{/if}></td>
+                </tr>
                 </tbody>
             </table>
         </div>

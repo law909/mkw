@@ -25,6 +25,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $x['rendezvenynev'] = $t->getRendezvenyNev();
         $x['rendezvenykezdodatum'] = $t->getRendezvenyDatumStr();
         $x['rendezvenytanarnev'] = $t->getRendezvenyTanarNev();
+        $x['partnerid'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
         $x['partnercim'] = $t->getPartnerCim();
         $x['partneremail'] = $t->getPartneremail();
@@ -126,6 +127,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         if ($ck) {
             $obj->setRendezveny($ck);
         }
+        $obj->setVarolistas($this->params->getBoolRequestParam('varolistas'));
         return $obj;
     }
 
@@ -172,6 +174,11 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         }
         if ($ig) {
             $filter->addFilter('datum', '<=', $ig);
+        }
+
+        $f = $this->params->getIntRequestParam('varolistasfilter', 9);
+        if ($f !== 9) {
+            $filter->addFilter('varolistas', '=', $f);
         }
 
         $this->initPager($this->getRepo()->getCount($filter));

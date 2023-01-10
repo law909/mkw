@@ -117,7 +117,8 @@ $(document).ready(function() {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#fizmodfilter',
-                    '#rendezvenyfilter'
+                    '#rendezvenyfilter',
+                    '#varolistasfilter'
                 ]
             },
             tablebody: {

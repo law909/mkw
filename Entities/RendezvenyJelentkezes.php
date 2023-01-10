@@ -242,6 +242,7 @@ class RendezvenyJelentkezes {
         $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
         $x['rendezvenyar'] = $this->getRendezveny()->getAr();
         $x['kellszamlazasiadat'] = $this->getRendezveny()->getKellszamlazasiadat();
+        $x['partnerid'] = $this->getPartnerId();
         $x['partnernev'] = $this->getPartnernev();
         $x['partnercim'] = $this->getPartnerCim();
         $x['partneremail'] = $this->getPartneremail();
