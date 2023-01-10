@@ -411,7 +411,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
     {
         /** @var \Entities\Rendezveny $rendezveny */
         $rendezveny = $this->getRepo()->findOneBy([
-            'uid' => $this->params->getIntRequestParam('rid')
+            'uid' => $this->params->getStringRequestParam('rid')
         ]);
         /** @var RendezvenyJelentkezes $jel */
         $jel = $this->getRepo(RendezvenyJelentkezes::class)->findOneBy([
