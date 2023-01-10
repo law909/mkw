@@ -179,9 +179,9 @@ class rendezvenyController extends \mkwhelpers\MattableController
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null)
+    public function getSelectList($selid = null, $order = ['nev' => 'ASC', 'kezdodatum' => 'DESC'])
     {
-        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC', 'kezdodatum' => 'DESC']);
+        $rec = $this->getRepo()->getAll([], $order);
         $res = [];
         /** @var \Entities\Rendezveny $sor */
         foreach ($rec as $sor) {
@@ -230,15 +230,15 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record, true));
         $tanar = new dolgozoController($this->params);
-        $view->setVar('tanarlist', $tanar->getSelectList(($record ? $record->getTanarId() : 0)));
+        $view->setVar('tanarlist', $tanar->getSelectList($record?->getTanarId()));
         $termek = new termekController($this->params);
-        $view->setVar('termeklist', $termek->getSelectList(($record ? $record->getTermekId() : 0)));
+        $view->setVar('termeklist', $termek->getSelectList($record?->getTermekId()));
         $rcs = new rendezvenyallapotController($this->params);
-        $view->setVar('rendezvenyallapotlist', $rcs->getSelectList(($record ? $record->getRendezvenyallapotId() : 0)));
+        $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapotId()));
         $jtcs = new jogateremController($this->params);
-        $view->setVar('jogateremlist', $jtcs->getSelectList(($record ? $record->getJogateremId() : 0)));
+        $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogateremId()));
         $hcs = new helyszinController($this->params);
-        $view->setVar('helyszinlist', $hcs->getSelectList(($record ? $record->getHelyszinId() : 0)));
+        $view->setVar('helyszinlist', $hcs->getSelectList($record?->getHelyszinId()));
         return $view->getTemplateResult();
     }
 

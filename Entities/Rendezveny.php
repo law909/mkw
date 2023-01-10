@@ -192,6 +192,9 @@ class Rendezveny
         if ($this->getKezdoido()) {
             $r .= ' ' . $this->getKezdoido();
         }
+        if ($this->getTanarNev()) {
+            $r .= ' (' . $this->getTanarNev() . ')';
+        }
         return $r;
     }
 

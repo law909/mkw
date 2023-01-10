@@ -206,16 +206,24 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Rendezvény jelentkezések'));
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController($this->params);
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList());
         $penztar = new penztarController($this->params);
         $view->setVar('penztarlist', $penztar->getSelectList());
         $bankszamla = new bankszamlaController($this->params);
         $view->setVar('bankszamlalist', $bankszamla->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
+        $view->setVar('rendezvenylist',
+            $rendezveny->getSelectList(
+                null,
+                [
+                    'kezdodatum' => 'DESC',
+                    'nev' => 'ASC'
+                ]
+            )
+        );
         $view->printTemplateResult(false);
     }
 
@@ -227,10 +235,10 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController($this->params);
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList());
         $penztar = new penztarController($this->params);
         $view->setVar('penztarlist', $penztar->getSelectList());
         $bankszamla = new bankszamlaController($this->params);
@@ -238,7 +246,15 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $jogcim = new jogcimController($this->params);
         $view->setVar('jogcimlist', $jogcim->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
+        $view->setVar('rendezvenylist',
+            $rendezveny->getSelectList(
+                null,
+                [
+                    'kezdodatum' => 'DESC',
+                    'nev' => 'ASC'
+                ]
+            )
+        );
         $view->printTemplateResult(false);
     }
 
@@ -255,14 +271,22 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view->setVar('egyed', $this->loadVars($record));
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController($this->params);
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList($record?->getPartnerId()));
         }
         $fizmod = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList($record?->getFizmodId()));
         $jogcim = new jogcimController($this->params);
         $view->setVar('jogcimlist', $jogcim->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
+        $view->setVar('rendezvenylist',
+            $rendezveny->getSelectList(
+                $record?->getRendezvenyId(),
+                [
+                    'kezdodatum' => 'DESC',
+                    'nev' => 'ASC'
+                ]
+            )
+        );
 
         return $view->getTemplateResult();
     }
