@@ -1,7 +1,7 @@
 {extends "basestone.tpl"}
 
 {block "script"}
-    <script src="/js/main/darshan/rendezvenyreg.js?v=2"></script>
+    <script src="/js/main/darshan/rendezvenyreg.js?v=3"></script>
 {/block}
 
 {block "stonebody"}

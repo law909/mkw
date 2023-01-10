@@ -20,7 +20,7 @@ var rendezvenyreg = (function($) {
         .on('click', '.js-lemond', function(e) {
             e.preventDefault();
             if ($('#emailedit').val()) {
-                const url = new URL('/rendezveny/lemond');
+                const url = new URL('/rendezveny/lemond', location.origin);
                 url.searchParams.append('email', $('#emailedit').val());
                 url.searchParams.append('rid', $('input[name="r"]').val());
                 location.href = url.href;
