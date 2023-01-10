@@ -337,7 +337,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                 $jel->setPartner($partner);
                 $jel->setRendezveny($rendezveny);
                 $jel->setEmailregkoszono(true);
-                $jel->setVarolistas($rendezveny->isVarolistavan() && $szabadhely > 0);
+                $jel->setVarolistas($rendezveny->isVarolistavan() && !$szabadhely);
                 $this->getEm()->persist($jel);
 
                 $this->getEm()->flush();
