@@ -11,7 +11,7 @@
                 <h4 class="color-darshan">JELENTKEZÉS</h4>
                 <div class="color-darshan">{$rendezvenynev}</div>
                 {if ($szabadhelykovetes)}
-                <div class="color-darshan">
+                <div class="color-darshan{if ($varolistavan && !$szabadhelyszam)} bold{/if}">
                     {if ($varolistavan)}
                         {if ($szabadhelyszam)}
                             Szabad helyek száma: {$szabadhelyszam}

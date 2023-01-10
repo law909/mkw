@@ -12,6 +12,10 @@
     margin-top: 10px;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 @media (min-width: 576px) {
     .container {
         max-width: 570px
