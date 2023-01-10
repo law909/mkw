@@ -409,13 +409,16 @@ class rendezvenyController extends \mkwhelpers\MattableController
 
     public function regLemond()
     {
+        /** @var \Entities\Rendezveny $rendezveny */
+        $rendezveny = $this->getRepo()->findOneBy([
+            'uid' => $this->params->getIntRequestParam('rid')
+        ]);
         /** @var RendezvenyJelentkezes $jel */
         $jel = $this->getRepo(RendezvenyJelentkezes::class)->findOneBy([
-            'rendezveny' => $this->params->getIntRequestParam('rid'),
+            'rendezveny' => $rendezveny,
             'partneremail' => $this->params->getStringRequestParam('email')
         ]);
         if ($jel) {
-            $rendezveny = $jel->getRendezveny();
             $jel->setLemondva(true);
             $jel->setVarolistas(false);
             $jel->setLemondasdatum();
@@ -485,7 +488,8 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $v->setVar('lemondas', true);
             $v->setVar('jelentkezes', $jel->toLista());
             echo $v->getTemplateResult();
-
+        } else {
+            header('Location: ' . \mkw\store::getRouter()->generate('showrendezvenyreg', true));
         }
     }
 
