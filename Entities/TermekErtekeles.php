@@ -56,6 +56,8 @@ class TermekErtekeles
     private $partner;
     /** @ORM\Column(type="boolean",nullable=true) */
     private $elutasitva = false;
+    /** @ORM\Column(type="boolean",nullable=true) */
+    private $anonim = false;
 
     public function toLista()
     {
@@ -64,7 +66,7 @@ class TermekErtekeles
             'termeknev' => $this->getTermekNev(),
             'termekid' => $this->getTermekId(),
             'termekslug' => $this->getTermekSlug(),
-            'partnernev' => $this->getPartnerNev(),
+            'partnernev' => $this->isAnonim() ? $this->getPartner()?->getMonogram() : $this->getPartnerNev(),
             'partnerid' => $this->getPartnerId(),
             'ertekeles' => $this->getErtekeles(),
             'elony' => $this->getElony(),
@@ -285,6 +287,22 @@ class TermekErtekeles
     public function setElutasitva($elutasitva): void
     {
         $this->elutasitva = $elutasitva;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAnonim()
+    {
+        return $this->anonim;
+    }
+
+    /**
+     * @param bool $anonim
+     */
+    public function setAnonim($anonim): void
+    {
+        $this->anonim = $anonim;
     }
 
 }

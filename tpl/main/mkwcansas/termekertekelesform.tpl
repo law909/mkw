@@ -56,6 +56,7 @@
 							<textarea id="elonyedit{$tetel.termekid}" name="elony_{$tetel.termekid}" rows="5" class="js-errorable"></textarea>
 							<label class="tert-label" for="hatranyedit{$tetel.termekid}">Hátrányok</label>
 							<textarea id="hatranyedit{$tetel.termekid}" name="hatrany_{$tetel.termekid}" rows="5" class="js-errorable"></textarea>
+						<label class="tert-label" for="anonimedit{$tetel.termekid}">Anonim <input id="anonimedit{$tetel.termekid}" name="anonim_{$tetel.termekid}" type="checkbox"></label>
 					</div>
 					{/if}
 				{/foreach}

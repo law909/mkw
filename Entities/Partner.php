@@ -703,6 +703,17 @@ class Partner
         return $this->nev;
     }
 
+    public function getMonogram() {
+        if ($this->keresztnev || $this->vezeteknev) {
+            return mb_substr($this->vezeteknev, 0, 1) . '.'
+                . mb_substr($this->keresztnev, 0, 1) . '.';
+        } else {
+            $nevek = explode(' ', $this->nev);
+            return mb_substr($nevek, 0, 1) . '.'
+                . mb_substr($nevek, 0, 1) . '.';
+        }
+    }
+
     public function setNev($nev)
     {
         $this->nev = $nev;

@@ -45,6 +45,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $x['termeknev'] = $t->getTermekNev();
         $x['termekslug'] = $t->getTermekSlug();
         $x['elutasitva'] = $t->isElutasitva();
+        $x['anonim'] = $t->isAnonim();
         return $x;
     }
 
@@ -73,6 +74,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $obj->setValasz($this->params->getStringRequestParam('valasz'));
         $obj->setErtekeles($this->params->getIntRequestParam('ertekeles'));
         $obj->setElutasitva($this->params->getBoolRequestParam('elutasitva'));
+        $obj->setAnonim($this->params->getBoolRequestParam('anonim'));
         return $obj;
     }
 
@@ -179,6 +181,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
                     $ertekeles = $this->params->getStringRequestParam('ertekeles_' . $id);
                     $elony = $this->params->getStringRequestParam('elony_' . $id);
                     $hatrany = $this->params->getStringRequestParam('hatrany_' . $id);
+                    $anonim = $this->params->getBoolRequestParam('anonim_' . $id);
                     if ($rating && $ertekeles) {
                         $termek = $this->getRepo(Termek::class)->find($id);
                         if ($termek) {
@@ -189,6 +192,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
                             $ert->setSzoveg($ertekeles);
                             $ert->setElony($elony);
                             $ert->setHatrany($hatrany);
+                            $ert->setAnonim($anonim);
                             $this->getEm()->persist($ert);
                             $this->getEm()->flush();
 

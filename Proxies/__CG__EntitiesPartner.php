@@ -305,6 +305,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getMonogram()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMonogram', []);
+
+        return parent::getMonogram();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setNev($nev)
     {
 

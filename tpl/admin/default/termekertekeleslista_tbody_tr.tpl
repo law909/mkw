@@ -16,6 +16,13 @@
                     </td>
                 </tr>
             {/if}
+                {if ($_egyed.anonim)}
+                    <tr>
+                        <td>
+                            Anonim
+                        </td>
+                    </tr>
+                {/if}
                 <tr><td>{at('Létrehozva')}:</td><td>{$_egyed.createdstr}</td></tr>
                 <tr><td>{at('Módosítva')}:</td><td>{$_egyed.lastmodstr}</td></tr>
             </tbody>

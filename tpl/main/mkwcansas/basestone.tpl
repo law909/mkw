@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
         <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/mkw.css">
-        <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css?v=2">
+        <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css?v=3">
 		{block "css"}{/block}
         {if ($dev)}
         <script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>

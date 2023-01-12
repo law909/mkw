@@ -10,7 +10,14 @@
             <table>
                 <tbody>
                 <tr>
-                    <span>Elutasítva: </span><input type="checkbox" name="elutasitva"{if ($egyed.elutasitva)} checked="checked"{/if}>
+                    <td>
+                        <span>Elutasítva: </span><input type="checkbox" name="elutasitva"{if ($egyed.elutasitva)} checked="checked"{/if}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Anonim: </span><input type="checkbox" name="anonim"{if ($egyed.anonim)} checked="checked"{/if}>
+                    </td>
                 </tr>
                 <tr>
                     <td class="mattable-important"><label for="PartnerEdit">{at('Vevő')}:</label></td>
