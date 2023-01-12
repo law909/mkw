@@ -949,6 +949,7 @@ class termekController extends \mkwhelpers\MattableController {
 
         $v = $this->getTemplateFactory()->createMainView('meretselect.tpl');
 	    $v->setVar('sizes', $ret);
+        $v->setVar('meretek', $ret);
 	    $v->setVar('termekid', $termekid);
         echo $v->getTemplateResult();
     }
