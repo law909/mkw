@@ -856,25 +856,19 @@ class partnerController extends \mkwhelpers\MattableController
 
     public function getPartnerData()
     {
-        if (\mkw\store::isMPTNGY()) {
-            $pid = $this->params->getIntRequestParam('partnerid');
-            if (!$pid) {
-                /** @var Partner $partner */
-                $partner = $this->getRepo()->getLoggedInUser();
-            } else {
-                /** @var Partner $partner */
-                $partner = $this->getRepo()->find($pid);
-            }
+        $pid = $this->params->getIntRequestParam('partnerid');
+        $email = $this->params->getStringRequestParam('email');
+        if ($pid) {
+            /** @var Partner $partner */
+            $partner = $this->getRepo()->find($pid);
+        } elseif ($email) {
+            /** @var Partner $partner */
+            $partner = $this->getRepo()->findOneBy(array('email' => $email));
         } else {
-            $email = $this->params->getStringRequestParam('email');
-            if ($pid) {
-                /** @var Partner $partner */
-                $partner = $this->getRepo()->find($pid);
-            } elseif ($email) {
-                /** @var Partner $partner */
-                $partner = $this->getRepo()->findOneBy(['email' => $email]);
-            }
+            /** @var Partner $partner */
+            $partner = $this->getRepo()->getLoggedInUser();
         }
+
         $ret = array();
         if ($partner) {
             $ret = array(
