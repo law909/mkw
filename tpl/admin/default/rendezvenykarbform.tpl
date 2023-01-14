@@ -12,6 +12,10 @@
             <table>
                 <tbody>
                 <tr>
+                    <td><label for="CsomagEdit">{at('Csomag')}:</label></td>
+                    <td><input id="CsomagEdit" name="csomag" type="checkbox"{if ($egyed.csomag)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="AllapotEdit">{at('Rendezvény állapota')}:</label></td>
                     <td><select id="AllapotEdit" name="rendezvenyallapot">
                             <option value="">{at('válasszon')}</option>

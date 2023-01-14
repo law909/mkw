@@ -237,11 +237,13 @@ class RendezvenyJelentkezes {
         $x['megjegyzes'] = $this->getMegjegyzes();
         $x['datum'] = $this->getDatumStr();
         $x['rendezvenynev'] = $this->getRendezvenyNev();
+        $x['rendezvenyteljesnev'] = $this->getRendezveny()?->getTeljesNev();
         $x['rendezvenykezdodatum'] = $this->getRendezvenyDatumStr();
-        $x['rendezvenykezdoido'] = $this->getRendezveny()->getKezdoido();
+        $x['rendezvenykezdoido'] = $this->getRendezveny()?->getKezdoido();
         $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
-        $x['rendezvenyar'] = $this->getRendezveny()->getAr();
-        $x['kellszamlazasiadat'] = $this->getRendezveny()->getKellszamlazasiadat();
+        $x['rendezvenyar'] = $this->getRendezveny()?->getAr();
+        $x['kellszamlazasiadat'] = $this->getRendezveny()?->getKellszamlazasiadat();
+        $x['csomag'] = $this->getRendezveny()?->isCsomag();
         $x['partnerid'] = $this->getPartnerId();
         $x['partnernev'] = $this->getPartnernev();
         $x['partnercim'] = $this->getPartnerCim();

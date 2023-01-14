@@ -145,6 +145,9 @@ class Rendezveny
     /** @ORM\Column(type="integer",nullable=true) */
     private $maxferohely = 0;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $csomag = false;
+
     public function __construct()
     {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
@@ -185,15 +188,19 @@ class Rendezveny
 
     public function getTeljesNev()
     {
-        $r = $this->getNev();
-        if ($this->getKezdodatumStr()) {
-            $r .= ' ' . $this->getKezdodatumStr();
-        }
-        if ($this->getKezdoido()) {
-            $r .= ' ' . $this->getKezdoido();
-        }
-        if ($this->getTanarNev()) {
-            $r .= ' (' . $this->getTanarNev() . ')';
+        if ($this->csomag) {
+            $r = $this->getNev();
+        } else {
+            $r = $this->getNev();
+            if ($this->getKezdodatumStr()) {
+                $r .= ' ' . $this->getKezdodatumStr();
+            }
+            if ($this->getKezdoido()) {
+                $r .= ' ' . $this->getKezdoido();
+            }
+            if ($this->getTanarNev()) {
+                $r .= ' (' . $this->getTanarNev() . ')';
+            }
         }
         return $r;
     }
@@ -774,6 +781,22 @@ class Rendezveny
     public function setVarolistavan($varolistavan): void
     {
         $this->varolistavan = $varolistavan;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCsomag()
+    {
+        return $this->csomag;
+    }
+
+    /**
+     * @param bool $csomag
+     */
+    public function setCsomag($csomag): void
+    {
+        $this->csomag = $csomag;
     }
 
 }

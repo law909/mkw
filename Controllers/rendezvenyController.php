@@ -54,6 +54,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $x['onlineurl'] = $t->getOnlineurl();
         $x['maxferohely'] = $t->getMaxferohely();
         $x['varolistavan'] = $t->isVarolistavan();
+        $x['csomag'] = $t->isCsomag();
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue(
                 'main.theme'
             ) . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';
@@ -85,6 +86,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $obj->setOnlineurl($this->params->getStringRequestParam('onlineurl'));
         $obj->setMaxferohely($this->params->getIntRequestParam('maxferohely'));
         $obj->setVarolistavan($this->params->getBoolRequestParam('varolistavan'));
+        $obj->setCsomag($this->params->getBoolRequestParam('csomag'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
@@ -293,10 +295,11 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
             $v->setVar('uid', $rendezveny->getUid());
             $v->setVar('kellszamlazasiadat', $rendezveny->getKellszamlazasiadat());
-            $v->setVar('rendezvenynev', $rendezveny->getTeljesNev() . ' - ' . $rendezveny->getTanarNev());
+            $v->setVar('rendezvenynev', $rendezveny->getTeljesNev());
             $v->setVar('szabadhelykovetes', $rendezveny->getMaxferohely() > 0);
             $v->setVar('varolistavan', $rendezveny->isVarolistavan());
             $v->setVar('szabadhelyszam', $rendezveny->calcSzabadhely());
+            $v->setVar('csomag', $rendezveny->isCsomag());
             echo $v->getTemplateResult();
         }
     }
