@@ -387,3 +387,7 @@ table td:last-child {
     }
 
 }
+
+.error {
+    border-color: red;
+}

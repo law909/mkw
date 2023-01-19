@@ -8,9 +8,10 @@
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mptngy2023/style.css?v=3">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mptngy2023/style.css?v=4">
     {block "css"}{/block}
     <script src="/js/main/mptngy/iframeResizer.contentWindow.min.js"></script>
+    <script defer src="/js/iodine/iodine.min.umd.js"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
     {block "script"}{/block}

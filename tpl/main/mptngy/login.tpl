@@ -35,24 +35,24 @@
                     <div class="co-row co-flex-dir-column">
                         <h3>{t('Regisztráció')}</h3>
                         <div class="co-control-row">
-                            <label for="regNevEdit" class="co-label">{t('Név')}</label>
+                            <label for="regNevEdit" class="co-label">{t('Név')}*</label>
                             <input id="regNevEdit" class="co-input" type="text" x-model="reg.nev">
                         </div>
                         <div class="co-control-row">
-                            <label for="regTelEdit" class="co-label">{t('Telefon')}</label>
+                            <label for="regTelEdit" class="co-label">{t('Telefon')}*</label>
                             <input id="regTelEdit" class="co-input" type="text" x-model="reg.telefon">
                         </div>
                         <div class="co-control-row">
-                            <label for="regEmailEdit" class="co-label">{t('Email')}</label>
+                            <label for="regEmailEdit" class="co-label">{t('Email')}*</label>
                             <input id="regEmailEdit" class="co-input" type="text" x-model="reg.email">
                         </div>
                         <div class="co-control-row co-col-container">
                             <div class="co-col co-col-50">
-                                <label for="regPw1Edit" class="co-label">{t('Jelszó')}</label>
+                                <label for="regPw1Edit" class="co-label">{t('Jelszó')}*</label>
                                 <input id="regPw1Edit" class="co-input" type="password" x-model="reg.jelszo1">
                             </div>
                             <div class="co-col co-col-50">
-                                <label for="regPw2Edit" class="co-label">{t('Jelszó ismét')}</label>
+                                <label for="regPw2Edit" class="co-label">{t('Jelszó ismét')}*</label>
                                 <input id="regPw2Edit" class="co-input" type="password" x-model="reg.jelszo2">
                             </div>
                         </div>
@@ -61,21 +61,21 @@
                     <div class="co-row co-flex-dir-column">
                         <h4>{t('Számlázási adatok')}</h4>
                         <div class="co-control-row">
-                            <label for="regInvNevEdit" class="co-label">{t('Név')}</label>
+                            <label for="regInvNevEdit" class="co-label">{t('Név')}*</label>
                             <input id="regInvNevEdit" class="co-input" type="text" x-model="reg.szlanev">
                         </div>
                         <div class="co-control-row co-col-container">
                             <div class="co-col co-col-20">
-                                <label for="regInvIrszamEdit" class="co-label">{t('Ir.szám')}</label>
+                                <label for="regInvIrszamEdit" class="co-label">{t('Ir.szám')}*</label>
                                 <input id="regInvIrszamEdit" class="co-input" type="text" x-model="reg.irszam">
                             </div>
                             <div class="co-col co-col-80">
-                                <label for="regInvVarosEdit" class="co-label">{t('Város')}</label>
+                                <label for="regInvVarosEdit" class="co-label">{t('Város')}*</label>
                                 <input id="regInvVarosEdit" class="co-input" type="text" x-model="reg.varos">
                             </div>
                         </div>
                         <div class="co-control-row">
-                            <label for="regInvUtcaEdit" class="co-label">{t('Utca')}</label>
+                            <label for="regInvUtcaEdit" class="co-label">{t('Utca')}*</label>
                             <input id="regInvUtcaEdit" class="co-input" type="text" x-model="reg.utca">
                         </div>
                         <div class="co-control-row">

@@ -1,8 +1,14 @@
+document.addEventListener('DOMContentLoaded', () => {
+});
+
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
+        loadCount: 6,
+        loaded: 0,
         showEditor: false,
         anyaglist: [],
         sajatanyaglist: [],
+        sajatanyaglistLoaded: false,
         anyagtipuslist: [],
         datumlist: [],
         temakorlist: [],
@@ -15,7 +21,42 @@ document.addEventListener("alpine:init", () => {
         szerzo3unknown: null,
         szerzo4unknown: null,
         szerzo5unknown: null,
-
+        rules: {
+            cim: ['required'],
+            tipus: ['required'],
+            szerzo1email: ['optional', 'email'],
+            szerzo2email: ['optional', 'email'],
+            szerzo3email: ['optional', 'email'],
+            szerzo4email: ['optional', 'email'],
+            szerzo5email: ['optional', 'email'],
+            eloadas1: ['eloadas'],
+            eloadas2: ['eloadas'],
+            eloadas3: ['eloadas'],
+            eloadas4: ['eloadas'],
+            eloadas5: ['eloadas'],
+            tartalom: ['required'],
+            temakor1: ['temakor'],
+            temakor2: ['temakor'],
+            temakor3: ['temakor'],
+        },
+        selectors: {
+            cim: '#cimEdit',
+            tipus: '#tipusEdit',
+            szerzo1email: '#szerzo1Edit',
+            szerzo2email: '#szerzo2Edit',
+            szerzo3email: '#szerzo3Edit',
+            szerzo4email: '#szerzo4Edit',
+            szerzo5email: '#szerzo5Edit',
+            eloadas1: '#eloadas1Edit',
+            eloadas2: '#eloadas2Edit',
+            eloadas3: '#eloadas3Edit',
+            eloadas4: '#eloadas4Edit',
+            eloadas5: '#eloadas5Edit',
+            tartalom: '#tartalomEdit',
+            temakor1: '#temakor1Edit',
+            temakor2: '#temakor2Edit',
+            temakor3: '#temakor3Edit',
+        },
         initVars() {
             this.anyag = {
                 id: null,
@@ -52,6 +93,14 @@ document.addEventListener("alpine:init", () => {
             this.szerzo5unknown = null;
 
         },
+        clearErrors() {
+            Object.values(this.selectors).forEach((val) => {
+                const els = document.querySelectorAll(val);
+                els.forEach((el) => {
+                    el.classList.remove('error');
+                });
+            });
+        },
         createNew() {
             this.anyag.tulajdonosnev = this.me.nev;
             this.showEditor = true;
@@ -75,36 +124,54 @@ document.addEventListener("alpine:init", () => {
         },
         getLists() {
             this.initVars();
+
+            Iodine.rule('eloadas', (value) => true);
+            Iodine.setErrorMessage('eloadas', '');
+
+            Iodine.rule('temakor', () => {
+                return Iodine.assertRequired(this.anyag.temakor1) ||
+                    Iodine.assertRequired(this.anyag.temakor2) ||
+                    Iodine.assertRequired(this.anyag.temakor3);
+            });
+            Iodine.setErrorMessage('temakor', '');
+
             fetch(new URL('/anyaglist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.anyaglist = data;
+                    this.loaded++;
                 });
             fetch(new URL('/temakorlist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.temakorlist = data;
+                    this.loaded++;
                 });
             fetch(new URL('/sajatanyaglist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.sajatanyaglist = data;
+                    this.sajatanyaglistLoaded = true;
+                    this.loaded++;
                 });
             fetch(new URL('/szakmaianyagtipuslist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.anyagtipuslist = data;
+                    this.loaded++;
                 });
             fetch(new URL('/datumlist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.datumlist = data;
+                    this.loaded++;
                 });
             fetch(new URL('/partner/getdata', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
                     this.me = data;
                     this.anyag.tulajdonosnev = this.me.nev;
+                    this.loaded++;
                 });
 
         },
@@ -131,22 +198,37 @@ document.addEventListener("alpine:init", () => {
             this.save();
         },
         save() {
-            fetch(new URL('/szakmaianyag/ment', location.origin), {
-                method: 'POST',
-                body: new URLSearchParams(this.anyag)
-            })
-                .then((response) => response.json())
-                .then((respdata) => {
-                    if (respdata.result === 'ok') {
-                        this.showEditor = false;
-                        this.getLists();
+            const valid = Iodine.assert(this.anyag, this.rules);
+            this.clearErrors();
+            if (valid.valid) {
+                fetch(new URL('/szakmaianyag/ment', location.origin), {
+                    method: 'POST',
+                    body: new URLSearchParams(this.anyag)
+                })
+                    .then((response) => response.json())
+                    .then((respdata) => {
+                        if (respdata.result === 'ok') {
+                            this.showEditor = false;
+                            this.getLists();
+                        }
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    })
+                    .finally(() => {
+                    });
+            } else {
+                for (const [key, value] of Object.entries(valid.fields)) {
+                    if (!value.valid) {
+                        console.log(key);
+                        const els = document.querySelectorAll(this.selectors[key]);
+                        els.forEach((el) => {
+                            el.classList.add('error');
+                        });
                     }
-                })
-                .catch((error) => {
-                    alert(error);
-                })
-                .finally(() => {
-                });
+                }
+                alert('Kérjük javítsa a pirossal jelölt mezőket.');
+            }
         },
     }));
 });

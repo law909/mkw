@@ -93,7 +93,7 @@ if ($ini['developer']) {
     }
 }
 
-if (mkw\store::isMPTNGY()) {
+if (\mkw\store::isMPTNGY() && !\mkw\store::isDeveloper()) {
     ini_set('session.cookie_samesite', 'None');
     ini_set('session.cookie_secure', '1');
 }
