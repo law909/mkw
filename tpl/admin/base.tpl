@@ -22,6 +22,9 @@
 {if ($bekuldetlenszamlacnt > 0)}
     <h1 id="naveredmenyriasztas">{$bekuldetlenszamlacnt} db számla nincs beküldve a NAV-nak!</h1>
 {/if}
+{if ($nominkeszlet)}
+    <h2 id="nominkeszletriasztas">Minimum készlet figyelés ki van kapcsolva!</h2>
+{/if}
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
 <div class="screen">

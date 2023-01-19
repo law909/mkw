@@ -573,6 +573,24 @@ class setupController extends \mkwhelpers\Controller {
             ));
         }
 
+        $p = $repo->find(\mkw\consts::NoMinKeszletTermekkat);
+        $inkid = $p ? $p->getErtek() : 0;
+        $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+        if ($importnewkat) {
+            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, array(
+                'caption' => $importnewkat->getNev(),
+                'id' => $importnewkat->getId()
+            ));
+        }
+        else {
+            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, array(
+                'caption' => '',
+                'id' => ''
+            ));
+        }
+        $p = $repo->find(\mkw\consts::NoMinKeszlet);
+        $view->setVar(\mkw\consts::NoMinKeszlet, ($p ? $p->getErtek() : 0));
+
         $p = $repo->find(\mkw\consts::MugenraceKatId);
         $inkid = $p ? $p->getErtek() : 0;
         $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
@@ -1605,6 +1623,16 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::ImportNewKatId, 0);
         }
+        $inkid = $this->params->getIntRequestParam(\mkw\consts::NoMinKeszletTermekkat);
+        if ($inkid) {
+            $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+            $this->setObj(\mkw\consts::NoMinKeszletTermekkat, $importnewkat->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::ImportNewKatId, 0);
+        }
+        $this->setObj(\mkw\consts::NoMinKeszlet, $this->params->getBoolRequestParam(\mkw\consts::NoMinKeszlet));
+
         $inkid = $this->params->getIntRequestParam('mugenracekatid');
         if ($inkid) {
             $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);

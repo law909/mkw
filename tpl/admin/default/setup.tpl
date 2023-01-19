@@ -715,6 +715,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="nominkeszletEdit">{at('Min. bolti készlet NEM számít')}:</label></span>
+                            <input id="nominkeszletEdit" name="nominkeszlet" type="checkbox"{if ($nominkeszlet)} checked="checked"{/if}>
+                        </div>
+                        <div class="setuprow">
+                            <span class="js-nominkeszlettermekkat">{$nominkeszlettermekkat.caption|default:'nincs megadva'}</span>
+                            <input name="nominkeszlettermekkat" type="hidden" value="{$nominkeszlettermekkat.id}">
+                        </div>
+                    </div>
                     <table>
                         <tbody>
                         <tr>

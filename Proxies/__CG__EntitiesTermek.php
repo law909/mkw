@@ -3184,4 +3184,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::getTermekErtekelesek();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isInTermekKategoria($kat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isInTermekKategoria', [$kat]);
+
+        return parent::isInTermekKategoria($kat);
+    }
+
 }

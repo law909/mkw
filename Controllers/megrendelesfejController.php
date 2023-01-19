@@ -223,6 +223,8 @@ class megrendelesfejController extends bizonylatfejController {
         $id = $this->params->getStringRequestParam('id');
         $regibiz = $this->getRepo()->find($id);
         if ($regibiz) {
+            $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
+            $nominkeszletkat = \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat);
             $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
             $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
             $this->getEm()->beginTransaction();
@@ -236,11 +238,18 @@ class megrendelesfejController extends bizonylatfejController {
                     if ($t && $t->getMozgat()) {
                         $v = $regitetel->getTermekvaltozat();
                         $keszlet = 0;
-                        if ($v) {
-                            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
-                        }
-                        else {
-                            $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
+                        if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
+                            if ($v) {
+                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId());
+                            } else {
+                                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId());
+                            }
+                        } else {
+                            if ($v) {
+                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
+                            } else {
+                                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
+                            }
                         }
                     }
                     if ($keszlet < 0) {
@@ -290,11 +299,18 @@ class megrendelesfejController extends bizonylatfejController {
                         if ($t && $t->getMozgat()) {
                             $v = $regitetel->getTermekvaltozat();
                             $keszlet = 0;
-                            if ($v) {
-                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
-                            }
-                            else {
-                                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
+                            if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
+                                if ($v) {
+                                    $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId());
+                                } else {
+                                    $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId());
+                                }
+                            } else {
+                                if ($v) {
+                                    $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
+                                } else {
+                                    $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
+                                }
                             }
                         }
                         if ($keszlet < 0) {
@@ -353,6 +369,10 @@ class megrendelesfejController extends bizonylatfejController {
         $ret = array();
         $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
         if ($backorder) {
+
+            $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
+            $nominkeszletkat = \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat);
+
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
@@ -368,17 +388,31 @@ class megrendelesfejController extends bizonylatfejController {
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
-                                $vankeszlet = true;
-                                break;
+                            if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
+                                if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
+                                    $vankeszlet = true;
+                                    break;
+                                }
+                            } else {
+                                if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
+                                    $vankeszlet = true;
+                                    break;
+                                }
                             }
                         }
                         else {
                             $termek = $tetel->getTermek();
                             if ($termek) {
-                                if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() - $termek->getMinboltikeszlet() > 0) {
-                                    $vankeszlet = true;
-                                    break;
+                                if ($nominkeszlet && $termek->isInTermekKategoria($nominkeszletkat)) {
+                                    if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() > 0) {
+                                        $vankeszlet = true;
+                                        break;
+                                    }
+                                } else {
+                                    if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() - $termek->getMinboltikeszlet() > 0) {
+                                        $vankeszlet = true;
+                                        break;
+                                    }
                                 }
                             }
                         }

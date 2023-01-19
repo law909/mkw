@@ -386,6 +386,9 @@ class consts {
     const MPTNGYDatum2 = 'mptngydatum2';
     const MPTNGYDatum3 = 'mptngydatum3';
 
+    const NoMinKeszlet = 'nominkeszlet';
+    const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
+
     public static function getWebshopPriceConst()
     {
         return 'Webshop' . \mkw\store::getWebshopNum() . 'Price';

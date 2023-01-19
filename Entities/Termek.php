@@ -3437,4 +3437,11 @@ class Termek
         return $this->termekertekelesek;
     }
 
+    public function isInTermekKategoria($kat)
+    {
+        return str_starts_with($this->termekfa1karkod, $kat) ||
+            str_starts_with($this->termekfa2karkod, $kat) ||
+            str_starts_with($this->termekfa3karkod, $kat);
+    }
+
 }
