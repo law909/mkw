@@ -16,6 +16,7 @@ document.addEventListener("alpine:init", () => {
             nev: null,
         },
         anyag: null,
+        szimpozium: false,
         szerzo1unknown: null,
         szerzo2unknown: null,
         szerzo3unknown: null,
@@ -125,7 +126,28 @@ document.addEventListener("alpine:init", () => {
         getLists() {
             this.initVars();
 
-            Iodine.rule('eloadas', (value) => true);
+            Iodine.rule('eloadas', () => {
+                if (this.szimpozium) {
+                    let db = 0;
+                    if (Iodine.assertRequired(this.anyag.eloadas1)) {
+                        db++;
+                    }
+                    if (Iodine.assertRequired(this.anyag.eloadas2)) {
+                        db++;
+                    }
+                    if (Iodine.assertRequired(this.anyag.eloadas3)) {
+                        db++;
+                    }
+                    if (Iodine.assertRequired(this.anyag.eloadas4)) {
+                        db++;
+                    }
+                    if (Iodine.assertRequired(this.anyag.eloadas5)) {
+                        db++;
+                    }
+                    return db === 4 || db === 5;
+                }
+                return true;
+            });
             Iodine.setErrorMessage('eloadas', '');
 
             Iodine.rule('temakor', () => {
@@ -174,6 +196,10 @@ document.addEventListener("alpine:init", () => {
                     this.loaded++;
                 });
 
+            this.$watch('anyag.tipus', (value) => {
+                const atl = this.anyagtipuslist.find(el => el.id === parseInt(value));
+                this.szimpozium = (atl && atl.szimpozium);
+            });
         },
         checkSzerzo(num) {
             let url = new URL('/checkpartnerunknown', location.origin),

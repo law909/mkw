@@ -174,7 +174,7 @@
                                 </div>
                                 <div
                                     class="co-control-row"
-                                    x-show="anyag.tipus ? anyagtipuslist.find(el => el.id === parseInt(anyag.tipus)).szimpozium : false"
+                                    x-show="szimpozium"
                                 >
                                     <label for="szerzo5Edit" class="co-label">{t('Szerző')} 5 email</label>
                                     <input
@@ -189,64 +189,64 @@
                             </div>
                             <div
                                 class="co-row co-flex-dir-column"
-                                x-show="anyag.tipus ? anyagtipuslist.find(el => el.id === parseInt(anyag.tipus)).szimpozium : false"
+                                x-show="szimpozium"
                             >
                                 <div class="co-control-row">
                                     <label for="eloadas1Edit" class="co-label">{t('Előadás')} 1</label>
-                                    <select class="co-input" x-model="anyag.eloadas1">
+                                    <select id="eloadas1Edit" class="co-input" x-model="anyag.eloadas1">
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
                                                 :value="eloadas.id"
-                                                x-text="eloadas.caption"
+                                                x-text="eloadas.cim"
                                             ></option>
                                         </template>
                                     </select>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas2Edit" class="co-label">{t('Előadás')} 2</label>
-                                    <select class="co-input" x-model="anyag.eloadas2">
+                                    <select id="eloadas2Edit" class="co-input" x-model="anyag.eloadas2">
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
                                                 :value="eloadas.id"
-                                                x-text="eloadas.caption"
+                                                x-text="eloadas.cim"
                                             ></option>
                                         </template>
                                     </select>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas3Edit" class="co-label">{t('Előadás')} 3</label>
-                                    <select class="co-input" x-model="anyag.eloadas3">
+                                    <select id="eloadas3Edit" class="co-input" x-model="anyag.eloadas3">
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
                                                 :value="eloadas.id"
-                                                x-text="eloadas.caption"
+                                                x-text="eloadas.cim"
                                             ></option>
                                         </template>
                                     </select>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas4Edit" class="co-label">{t('Előadás')} 4</label>
-                                    <select class="co-input" x-model="anyag.eloadas4">
+                                    <select id="eloadas4Edit" class="co-input" x-model="anyag.eloadas4">
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
                                                 :value="eloadas.id"
-                                                x-text="eloadas.caption"
+                                                x-text="eloadas.cim"
                                             ></option>
                                         </template>
                                     </select>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas5Edit" class="co-label">{t('Előadás')} 5</label>
-                                    <select class="co-input" x-model="anyag.eloadas5">
+                                    <select id="eloadas5Edit" class="co-input" x-model="anyag.eloadas5">
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
                                                 :value="eloadas.id"
-                                                x-text="eloadas.caption"
+                                                x-text="eloadas.cim"
                                             ></option>
                                         </template>
                                     </select>
