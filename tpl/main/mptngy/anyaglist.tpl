@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=4"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=5"></script>
 {/block}
 
 {block "body"}
