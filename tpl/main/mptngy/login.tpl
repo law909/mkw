@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=2"></script>
+    <script src="/js/main/mptngy/login.js?v=3"></script>
 {/block}
 
 {block "body"}
@@ -60,6 +60,28 @@
 
                     <div class="co-row co-flex-dir-column">
                         <h4>{t('Számlázási adatok')}</h4>
+                        <div class="co-control-row js-invcsoportos">
+                            <label for="regInvSajatEdit" class="co-label">
+                                <input id="regInvSajatEdit" type="radio" x-model="reg.invcsoportos" name="reginvcsoportos" value="2">
+                                <span>{t('Én/saját cégem fog fizetni')}</span>
+                            </label>
+                            <label for="regInvCsoportosEdit" class="co-label">
+                                <input id="regInvCsoportosEdit" type="radio" x-model="reg.invcsoportos" name="reginvcsoportos" value="1">
+                                <span>{t('A munkáltatóm fog fizetni')}</span>
+                            </label>
+
+                        </div>
+                        <div class="co-control-row js-invmaganszemely" x-show="reg.invcsoportos === '2'">
+                            <label for="regInvMaganszemelyEdit" class="co-label">
+                                <input id="regInvMaganszemelyEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="1">
+                                <span>{t('Magánszemélyként fogadom be a számlát')}</span>
+                            </label>
+                            <label for="regInvCegEdit" class="co-label">
+                                <input id="regInvCegEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="2">
+                                <span>{t('Cégként fogadom be a számlát')}</span>
+                            </label>
+
+                        </div>
                         <div class="co-control-row">
                             <label for="regInvNevEdit" class="co-label">{t('Név')}*</label>
                             <input id="regInvNevEdit" class="co-input" type="text" x-model="reg.szlanev">
@@ -158,14 +180,12 @@
                                 {t('MPT tag vagyok')}
                             </label>
                         </div>
-                        <div class="co-control-row">
+                        <div class="co-control-row js-szerepkor">
                             <template x-for="(szkor, i) in szerepkorlist">
-                                <div>
                                     <label class="co-label">
                                         <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
                                         <span x-text="szkor.nev"></span>
                                     </label>
-                                </div>
                             </template>
                         </div>
                     </div>

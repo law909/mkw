@@ -12,6 +12,8 @@ document.addEventListener("alpine:init", () => {
             email: null,
             jelszo1: null,
             jelszo2: null,
+            invcsoportos: null,
+            invmaganszemely: null,
             szlanev: null,
             irszam: null,
             varos: null,
@@ -42,6 +44,8 @@ document.addEventListener("alpine:init", () => {
             varos: ['required'],
             utca: ['required'],
             mptngyszerepkor: ['required'],
+            invcsoportos: ['required'],
+            invmaganszemely: ['requiredIfCsoportos'],
         },
         selectors: {
             nev: '#regNevEdit',
@@ -53,23 +57,44 @@ document.addEventListener("alpine:init", () => {
             irszam: '#regInvIrszamEdit',
             varos: '#regInvVarosEdit',
             utca: '#regInvUtcaEdit',
-            mptngyszerepkor: 'input[name="szerepkor"]',
+            mptngyszerepkor: '.js-szerepkor',
+            invcsoportos: '.js-invcsoportos',
+            invmaganszemely: '.js-invmaganszemely'
+        },
+        errorClasses: {
+            mptngyszerepkor: 'error-border',
+            invcsoportos: 'error-border',
+            invmaganszemely: 'error-border',
         },
         szerepkorlist: [],
         selectedSzerepkorIndex: null,
         selectedSzerepkor: null,
 
         clearErrors() {
-            Object.values(this.selectors).forEach((val) => {
-                const els = document.querySelectorAll(val);
+            for (const [key, value] of Object.entries(this.selectors)) {
+                const els = document.querySelectorAll(value);
+                let errorClass;
+                if (Object.keys(this.errorClasses).find(el => el === key) !== key) {
+                    errorClass = 'error';
+                } else {
+                    errorClass = this.errorClasses[key];
+                }
                 els.forEach((el) => {
-                    el.classList.remove('error');
+                    el.classList.remove(errorClass);
                 });
-            });
+            }
         },
         getLists() {
             Iodine.rule('passwordsSame', (value) => value === this.reg.jelszo2);
             Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
+
+            Iodine.rule('requiredIfCsoportos', (value) => {
+                if (this.reg.invcsoportos === '2') {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('requiredIfCsoportos', '');
 
             fetch(new URL('/szerepkorlist', location.origin))
                 .then((response) => response.json())
@@ -115,8 +140,14 @@ document.addEventListener("alpine:init", () => {
                 for (const [key, value] of Object.entries(valid.fields)) {
                     if (!value.valid) {
                         const els = document.querySelectorAll(this.selectors[key]);
+                        let errorClass;
+                        if (Object.keys(this.errorClasses).find(el => el === key) !== key) {
+                            errorClass = 'error';
+                        } else {
+                            errorClass = this.errorClasses[key];
+                        }
                         els.forEach((el) => {
-                            el.classList.add('error');
+                            el.classList.add(errorClass);
                         });
                     }
                 }
