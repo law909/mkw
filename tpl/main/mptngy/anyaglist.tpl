@@ -31,11 +31,7 @@
                                     <tbody>
                                     <template x-for="any in anyaglist" :key="any.id">
                                         <tr
-                                            :class="(!any.szerzo1registered ||
-                                                !any.szerzo2registered ||
-                                                !any.szerzo3registered ||
-                                                !any.szerzo4registered ||
-                                                !any.szerzo5registered) ? 'red' : ''"
+                                            :class="!any.allszerzoregistered ? 'red' : ''"
                                         >
                                             <td x-text="any.cim" data-label="{t('Cím')}"></td>
                                             <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
