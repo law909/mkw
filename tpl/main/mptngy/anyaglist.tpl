@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=6"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=7"></script>
 {/block}
 
 {block "body"}
@@ -41,6 +41,7 @@
                                                     @click="edit(any.id)"
                                                     x-show="any.editable && loaded >= loadCount"
                                                 >{t('Módosítás')}</button>
+                                                <span x-show="!any.editable">Beküldve</span>
                                             </td>
                                         </tr>
                                     </template>
@@ -67,6 +68,7 @@
                                     type="text"
                                     x-model="anyag.cim"
                                 >
+                                <div class="co-error" x-text="validationErrors.cim ? validationErrors.cim.error : ''"></div>
                             </div>
                             <div class="co-control-row">
                                 <label for="tulajEdit" class="co-label">{t('Tulajdonos')}</label>
@@ -77,6 +79,7 @@
                                     x-model="anyag.tulajdonosnev"
                                     disabled
                                 >
+                                <div class="co-error" x-text="validationErrors.tulajdonosnev ? validationErrors.tulajdonosnev.error : ''"></div>
                             </div>
                             <div class="co-control-row">
                                 <label for="tipusEdit" class="co-label">{t('Típus')}</label>
@@ -92,6 +95,7 @@
                                         ></option>
                                     </template>
                                 </select>
+                                <div class="co-error" x-text="validationErrors.tipus ? validationErrors.tipus.error : ''"></div>
                             </div>
                             <div class="co-control-row co-col-container">
                                 <div class="co-col co-col-50">
@@ -135,6 +139,7 @@
                                             @change="checkSzerzo(1)"
                                         >
                                         <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-error" x-text="validationErrors.szerzo1email ? validationErrors.szerzo1email.error : ''"></div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
@@ -146,6 +151,7 @@
                                             @change="checkSzerzo(2)"
                                         >
                                         <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-error" x-text="validationErrors.szerzo2email ? validationErrors.szerzo2email.error : ''"></div>
                                     </div>
                                 </div>
                                 <div class="co-control-row co-col-container">
@@ -159,6 +165,7 @@
                                             @change="checkSzerzo(3)"
                                         >
                                         <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-error" x-text="validationErrors.szerzo3email ? validationErrors.szerzo3email.error : ''"></div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
@@ -170,6 +177,7 @@
                                             @change="checkSzerzo(4)"
                                         >
                                         <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-error" x-text="validationErrors.szerzo4email ? validationErrors.szerzo4email.error : ''"></div>
                                     </div>
                                 </div>
                                 <div
@@ -185,6 +193,7 @@
                                         @change="checkSzerzo(5)"
                                     >
                                     <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validationErrors.szerzo5email ? validationErrors.szerzo5email.error : ''"></div>
                                 </div>
                             </div>
                             <div
@@ -193,7 +202,11 @@
                             >
                                 <div class="co-control-row">
                                     <label for="eloadas1Edit" class="co-label">{t('Előadás')} 1</label>
-                                    <select id="eloadas1Edit" class="co-input" x-model="anyag.eloadas1">
+                                    <select
+                                        id="eloadas1Edit"
+                                        class="co-input js-eloadas"
+                                        x-model="anyag.eloadas1"
+                                    >
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
@@ -202,10 +215,15 @@
                                             ></option>
                                         </template>
                                     </select>
+                                    <div class="co-error" x-text="validationErrors.eloadas1 ? validationErrors.eloadas1.error : ''"></div>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas2Edit" class="co-label">{t('Előadás')} 2</label>
-                                    <select id="eloadas2Edit" class="co-input" x-model="anyag.eloadas2">
+                                    <select
+                                        id="eloadas2Edit"
+                                        class="co-input js-eloadas"
+                                        x-model="anyag.eloadas2"
+                                    >
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
@@ -217,7 +235,11 @@
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas3Edit" class="co-label">{t('Előadás')} 3</label>
-                                    <select id="eloadas3Edit" class="co-input" x-model="anyag.eloadas3">
+                                    <select
+                                        id="eloadas3Edit"
+                                        class="co-input js-eloadas"
+                                        x-model="anyag.eloadas3"
+                                    >
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
@@ -229,7 +251,11 @@
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas4Edit" class="co-label">{t('Előadás')} 4</label>
-                                    <select id="eloadas4Edit" class="co-input" x-model="anyag.eloadas4">
+                                    <select
+                                        id="eloadas4Edit"
+                                        class="co-input js-eloadas"
+                                        x-model="anyag.eloadas4"
+                                    >
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
@@ -241,7 +267,11 @@
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas5Edit" class="co-label">{t('Előadás')} 5</label>
-                                    <select id="eloadas5Edit" class="co-input" x-model="anyag.eloadas5">
+                                    <select
+                                        id="eloadas5Edit"
+                                        class="co-input js-eloadas"
+                                        x-model="anyag.eloadas5"
+                                    >
                                         <option value="">{t('válasszon')}</option>
                                         <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
                                             <option
@@ -256,7 +286,11 @@
                                 <div class="co-control-row co-col-container">
                                     <div class="co-col co-col-33">
                                         <label for="temakor1Edit" class="co-label">{t('Témakör')} 1</label>
-                                        <select id="temakor1Edit" class="co-input" x-model="anyag.temakor1">
+                                        <select
+                                            id="temakor1Edit"
+                                            class="co-input js-temakor"
+                                            x-model="anyag.temakor1"
+                                        >
                                             <option value="">{t('válasszon')}</option>
                                             <template x-for="temakor in temakorlist" :key="temakor.id">
                                                 <option
@@ -265,10 +299,15 @@
                                                 ></option>
                                             </template>
                                         </select>
+                                        <div class="co-error" x-text="validationErrors.temakor1 ? validationErrors.temakor1.error : ''"></div>
                                     </div>
                                     <div class="co-col co-col-33">
                                         <label for="temakor2Edit" class="co-label">{t('Témakör')} 2</label>
-                                        <select id="temakor2Edit" class="co-input" x-model="anyag.temakor2">
+                                        <select
+                                            id="temakor2Edit"
+                                            class="co-input js-temakor"
+                                            x-model="anyag.temakor2"
+                                        >
                                             <option value="">{t('válasszon')}</option>
                                             <template x-for="temakor in temakorlist" :key="temakor.id">
                                                 <option
@@ -280,7 +319,11 @@
                                     </div>
                                     <div class="co-col co-col-33">
                                         <label for="temakor3Edit" class="co-label">{t('Témakör')} 3</label>
-                                        <select id="temakor3Edit" class="co-input" x-model="anyag.temakor3">
+                                        <select
+                                            id="temakor3Edit"
+                                            class="co-input js-temakor"
+                                            x-model="anyag.temakor3"
+                                        >
                                             <option value="">{t('válasszon')}</option>
                                             <template x-for="temakor in temakorlist" :key="temakor.id">
                                                 <option
@@ -296,16 +339,17 @@
                                         <label for="kulcsszo1Edit" class="co-label">{t('Kulcsszó')} 1</label>
                                         <input
                                             id="kulcsszo1Edit"
-                                            class="co-input"
+                                            class="co-input js-kulcsszo"
                                             type="text"
                                             x-model="anyag.kulcsszo1"
                                         >
+                                        <div class="co-error" x-text="validationErrors.kulcsszo1 ? validationErrors.kulcsszo1.error : ''"></div>
                                     </div>
                                     <div class="co-col co-col-33">
                                         <label for="kulcsszo2Edit" class="co-label">{t('Kulcsszó')} 2</label>
                                         <input
                                             id="kulcsszo2Edit"
-                                            class="co-input"
+                                            class="co-input js-kulcsszo"
                                             type="text"
                                             x-model="anyag.kulcsszo2"
                                         >
@@ -314,7 +358,7 @@
                                         <label for="kulcsszo3Edit" class="co-label">{t('Kulcsszó')} 3</label>
                                         <input
                                             id="kulcsszo3Edit"
-                                            class="co-input"
+                                            class="co-input js-kulcsszo"
                                             type="text"
                                             x-model="anyag.kulcsszo3"
                                         >
@@ -325,7 +369,7 @@
                                         <label for="kulcsszo4Edit" class="co-label">{t('Kulcsszó')} 4</label>
                                         <input
                                             id="kulcsszo4Edit"
-                                            class="co-input"
+                                            class="co-input js-kulcsszo"
                                             type="text"
                                             x-model="anyag.kulcsszo4"
                                         >
@@ -334,20 +378,21 @@
                                         <label for="kulcsszo5Edit" class="co-label">{t('Kulcsszó')} 5</label>
                                         <input
                                             id="kulcsszo5Edit"
-                                            class="co-input"
+                                            class="co-input js-kulcsszo"
                                             type="text"
                                             x-model="anyag.kulcsszo5"
                                         >
                                     </div>
                                 </div>
                                 <div class="co-control-row">
-                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')} (<span x-text="anyag.tartalom.length"></span> {t('karakter, minimum 1500, maximum 3000')})</label>
+                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')} (<span x-text="anyag.tartalom.length"></span> karakter)</label>
                                     <textarea
                                         id="tartalomEdit"
                                         class="co-input"
                                         rows="10"
                                         x-model="anyag.tartalom"
                                     ></textarea>
+                                    <div class="co-error" x-text="validationErrors.tartalom ? validationErrors.tartalom.error : ''"></div>
                                 </div>
                             </div>
                             <div class="co-control-row">

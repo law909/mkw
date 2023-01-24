@@ -216,6 +216,15 @@ a {
     font-style: italic;
 }
 
+.co-error-container {
+    margin-bottom: 1em;
+}
+
+.co-error {
+    color: red;
+    font-size: 0.75rem;
+}
+
 table {
     border: 0;
     border-collapse: collapse;

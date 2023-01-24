@@ -3,6 +3,7 @@ document.addEventListener("alpine:init", () => {
         loadCount: 6,
         loaded: 0,
         showEditor: false,
+        validationErrors: [],
         anyaglist: [],
         sajatanyaglist: [],
         sajatanyaglistLoaded: false,
@@ -28,18 +29,13 @@ document.addEventListener("alpine:init", () => {
             szerzo4email: ['optional', 'email'],
             szerzo5email: ['optional', 'email'],
             eloadas1: ['eloadas'],
-            eloadas2: ['eloadas'],
-            eloadas3: ['eloadas'],
-            eloadas4: ['eloadas'],
-            eloadas5: ['eloadas'],
             tartalom: [
                 'required',
                 {rule: 'minLength', param: 1500},
                 {rule: 'maxLength', param: 3000}
             ],
             temakor1: ['temakor'],
-            temakor2: ['temakor'],
-            temakor3: ['temakor'],
+            kulcsszo1: ['kulcsszo'],
         },
         selectors: {
             cim: '#cimEdit',
@@ -49,15 +45,10 @@ document.addEventListener("alpine:init", () => {
             szerzo3email: '#szerzo3Edit',
             szerzo4email: '#szerzo4Edit',
             szerzo5email: '#szerzo5Edit',
-            eloadas1: '#eloadas1Edit',
-            eloadas2: '#eloadas2Edit',
-            eloadas3: '#eloadas3Edit',
-            eloadas4: '#eloadas4Edit',
-            eloadas5: '#eloadas5Edit',
+            eloadas1: '.js-eloadas',
             tartalom: '#tartalomEdit',
-            temakor1: '#temakor1Edit',
-            temakor2: '#temakor2Edit',
-            temakor3: '#temakor3Edit',
+            temakor1: '.js-temakor',
+            kulcsszo1: '.js-kulcsszo',
         },
         initVars() {
             this.anyag = {
@@ -96,6 +87,7 @@ document.addEventListener("alpine:init", () => {
 
         },
         clearErrors() {
+            this.validationErrors = [];
             Object.values(this.selectors).forEach((val) => {
                 const els = document.querySelectorAll(val);
                 els.forEach((el) => {
@@ -127,6 +119,11 @@ document.addEventListener("alpine:init", () => {
         getLists() {
             this.initVars();
 
+            Iodine.setErrorMessage('required', 'Kötelező kitölteni');
+            Iodine.setErrorMessage('email', 'Valódi email címet adjon meg');
+            Iodine.setErrorMessage('minLength', 'Legalább [PARAM] karakter hosszú legyen');
+            Iodine.setErrorMessage('maxLength', 'Legfeljebb [PARAM] karakter hosszú legyen');
+
             Iodine.rule('eloadas', () => {
                 if (this.szimpozium) {
                     let db = 0;
@@ -149,14 +146,14 @@ document.addEventListener("alpine:init", () => {
                 }
                 return true;
             });
-            Iodine.setErrorMessage('eloadas', '');
+            Iodine.setErrorMessage('eloadas', 'Szimpóziumban minimum 4 előadásnak kell lennie');
 
             Iodine.rule('temakor', () => {
                 return Iodine.assertRequired(this.anyag.temakor1) ||
                     Iodine.assertRequired(this.anyag.temakor2) ||
                     Iodine.assertRequired(this.anyag.temakor3);
             });
-            Iodine.setErrorMessage('temakor', '');
+            Iodine.setErrorMessage('temakor', 'Legalább egy témakört meg kell adni');
 
             Iodine.rule('kulcsszo', () => {
                 let db = 0;
@@ -177,7 +174,7 @@ document.addEventListener("alpine:init", () => {
                 }
                 return db >= 3;
             });
-            Iodine.setErrorMessage('kulcsszo', '');
+            Iodine.setErrorMessage('kulcsszo', 'Legalább 3 kulcsszót meg kell adni');
 
             fetch(new URL('/anyaglist', location.origin))
                 .then((response) => response.json())
@@ -275,6 +272,7 @@ document.addEventListener("alpine:init", () => {
                         });
                     }
                 }
+                this.validationErrors = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         },

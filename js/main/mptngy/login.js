@@ -2,6 +2,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("login", () => ({
         regNeeded: false,
         postaleqinv: false,
+        validationErrors: [],
         login: {
             email: null,
             jelszo: null,
@@ -72,6 +73,7 @@ document.addEventListener("alpine:init", () => {
         selectedSzerepkor: null,
 
         clearErrors() {
+            this.validationErrors = [];
             for (const [key, value] of Object.entries(this.selectors)) {
                 const els = document.querySelectorAll(value);
                 let errorClass;
@@ -86,6 +88,7 @@ document.addEventListener("alpine:init", () => {
             }
         },
         getLists() {
+            Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.rule('passwordsSame', (value) => value === this.reg.jelszo2);
             Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
 
@@ -95,7 +98,7 @@ document.addEventListener("alpine:init", () => {
                 }
                 return true;
             });
-            Iodine.setErrorMessage('requiredIfCsoportos', '');
+            Iodine.setErrorMessage('requiredIfCsoportos', 'Válassza ki, hogy magánszemélyként vagy cégként fogadja be a számlát');
 
             fetch(new URL('/szerepkorlist', location.origin))
                 .then((response) => response.json())
@@ -160,6 +163,7 @@ document.addEventListener("alpine:init", () => {
                         });
                     }
                 }
+                this.validationErrors = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         },
