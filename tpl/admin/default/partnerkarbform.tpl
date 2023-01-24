@@ -390,6 +390,12 @@
                 <tr>
                     <td><label for="mptngydiakEdit">Diák:</label></td>
                     <td><input id="mptngydiakEdit" type="checkbox" name="mptngydiak"{if ($partner.mptngydiak)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="mptngynyugdijasEdit">Nyugdíjas:</label></td>
+                    <td><input id="mptngynyugdijasEdit" type="checkbox" name="mptngynyugdijas"{if ($partner.mptngynyugdijas)} checked{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="mptngympttagEdit">MPT tag:</label></td>
                     <td><input id="mptngympttagEdit" type="checkbox" name="mptngympttag"{if ($partner.mptngympttag)} checked{/if}></td>
                 </tr>

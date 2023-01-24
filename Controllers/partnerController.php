@@ -178,6 +178,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngybankszamlaszam'] = $t->getMptngybankszamlaszam();
         $x['szlanev'] = $t->getSzlanev();
         $x['mptngydiak'] = $t->isMptngydiak();
+        $x['mptngynyugdijas'] = $t->isMptngynyugdijas();
         $x['mptngympttag'] = $t->isMptngympttag();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
@@ -326,6 +327,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
             $obj->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
             $obj->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
+            $obj->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
             $obj->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
             $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
             if ($mptngyszerepkor) {

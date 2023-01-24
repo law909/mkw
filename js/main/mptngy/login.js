@@ -31,6 +31,7 @@ document.addEventListener("alpine:init", () => {
             mptngyvipvacsora: false,
             mptngykapcsolatnev: null,
             mptngydiak: false,
+            mptngynyugdijas: false,
             mptngympttag: false,
         },
         rules: {
@@ -102,15 +103,23 @@ document.addEventListener("alpine:init", () => {
                     this.szerepkorlist = data;
                 });
             this.$watch('reg.nev', (value) => {
-                if (!this.reg.szlanev) {
-                    this.reg.szlanev = value;
-                }
+                this.reg.szlanev = value;
             });
             this.$watch('postaleqinv', (value) => {
                 if (value) {
                     this.reg.lirszam = this.reg.irszam;
                     this.reg.lvaros = this.reg.varos;
                     this.reg.lutca = this.reg.utca;
+                }
+            });
+            this.$watch('reg.mptngynyugdijas', (value) => {
+                if (value) {
+                    this.reg.mptngydiak = false;
+                }
+            });
+            this.$watch('reg.mptngydiak', (value) => {
+                if (value) {
+                    this.reg.mptngynyugdijas = false;
                 }
             });
         },

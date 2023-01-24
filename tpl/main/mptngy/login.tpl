@@ -171,7 +171,13 @@
                         <div class="co-control-row">
                             <label for="diakEdit" class="co-label">
                                 <input id="diakEdit" type="checkbox" x-model="reg.mptngydiak">
-                                {t('Diák/nyugdíjas vagyok')}
+                                {t('Diák vagyok')}
+                            </label>
+                        </div>
+                        <div class="co-control-row">
+                            <label for="nyugdijasEdit" class="co-label">
+                                <input id="nyugdijasEdit" type="checkbox" x-model="reg.mptngynyugdijas">
+                                {t('Nyugdíjas vagyok')}
                             </label>
                         </div>
                         <div class="co-control-row">

@@ -1,6 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-});
-
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
         loadCount: 6,
@@ -156,6 +153,27 @@ document.addEventListener("alpine:init", () => {
                     Iodine.assertRequired(this.anyag.temakor3);
             });
             Iodine.setErrorMessage('temakor', '');
+
+            Iodine.rule('kulcsszo', () => {
+                let db = 0;
+                if (Iodine.assertRequired(this.anyag.kulcsszo1)) {
+                    db++;
+                }
+                if (Iodine.assertRequired(this.anyag.kulcsszo2)) {
+                    db++;
+                }
+                if (Iodine.assertRequired(this.anyag.kulcsszo3)) {
+                    db++;
+                }
+                if (Iodine.assertRequired(this.anyag.kulcsszo4)) {
+                    db++;
+                }
+                if (Iodine.assertRequired(this.anyag.kulcsszo5)) {
+                    db++;
+                }
+                return db >= 3;
+            });
+            Iodine.setErrorMessage('kulcsszo', '');
 
             fetch(new URL('/anyaglist', location.origin))
                 .then((response) => response.json())

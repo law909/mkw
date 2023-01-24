@@ -538,6 +538,9 @@ class Partner
     private $mptngydiak = false;
 
     /** @ORM\Column(type="boolean") */
+    private $mptngynyugdijas = false;
+
+    /** @ORM\Column(type="boolean") */
     private $mptngympttag = false;
 
     public function __construct()
@@ -3150,6 +3153,22 @@ class Partner
     public function setMptngympttag($mptngympttag): void
     {
         $this->mptngympttag = $mptngympttag;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMptngynyugdijas()
+    {
+        return $this->mptngynyugdijas;
+    }
+
+    /**
+     * @param bool $mptngynyugdijas
+     */
+    public function setMptngynyugdijas($mptngynyugdijas): void
+    {
+        $this->mptngynyugdijas = $mptngynyugdijas;
     }
 
 }
