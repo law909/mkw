@@ -103,6 +103,11 @@
 								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 							{/foreach}
 						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="opponensEdit">{at('Opponens')}:</label></td>
+					<td>
 						<select id="szerzo5Edit" name="szerzo5" class="onlyszimpozium hidden">
 							<option value="">{at('válasszon')}</option>
 							{foreach $szerzo5list as $_mk}
@@ -173,17 +178,6 @@
 						<select id="eloadas4Edit" name="eloadas4">
 							<option value="">{at('válasszon')}</option>
 							{foreach $eloadas4list as $_mk}
-								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-							{/foreach}
-						</select>
-					</td>
-				</tr>
-				<tr class="onlyszimpozium hidden">
-					<td><label for="eloadas5Edit">{at('Előadás 5')}:</label></td>
-					<td>
-						<select id="eloadas5Edit" name="eloadas5">
-							<option value="">{at('válasszon')}</option>
-							{foreach $eloadas5list as $_mk}
 								<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 							{/foreach}
 						</select>

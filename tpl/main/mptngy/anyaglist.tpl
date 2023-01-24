@@ -265,22 +265,6 @@
                                         </template>
                                     </select>
                                 </div>
-                                <div class="co-control-row">
-                                    <label for="eloadas5Edit" class="co-label">{t('Előadás')} 5</label>
-                                    <select
-                                        id="eloadas5Edit"
-                                        class="co-input js-eloadas"
-                                        x-model="anyag.eloadas5"
-                                    >
-                                        <option value="">{t('válasszon')}</option>
-                                        <template x-for="eloadas in sajatanyaglist" :key="eloadas.id">
-                                            <option
-                                                :value="eloadas.id"
-                                                x-text="eloadas.cim"
-                                            ></option>
-                                        </template>
-                                    </select>
-                                </div>
                             </div>
                             <div class="co-row co-flex-dir-column">
                                 <div class="co-control-row co-col-container">
