@@ -30,9 +30,7 @@
                                     </thead>
                                     <tbody>
                                     <template x-for="any in anyaglist" :key="any.id">
-                                        <tr
-                                            :class="!any.allszerzoregistered ? 'red' : ''"
-                                        >
+                                        <tr :class="!any.allszerzoregistered ? 'red' : ''">
                                             <td x-text="any.cim" data-label="{t('Cím')}"></td>
                                             <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
                                             <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
