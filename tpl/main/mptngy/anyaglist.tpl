@@ -134,7 +134,7 @@
                                             x-model="anyag.szerzo1email"
                                             @change="checkSzerzo(1)"
                                         >
-                                        <div class="co-hint" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
@@ -145,7 +145,7 @@
                                             x-model="anyag.szerzo2email"
                                             @change="checkSzerzo(2)"
                                         >
-                                        <div class="co-hint" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
                                     </div>
                                 </div>
                                 <div class="co-control-row co-col-container">
@@ -158,7 +158,7 @@
                                             x-model="anyag.szerzo3email"
                                             @change="checkSzerzo(3)"
                                         >
-                                        <div class="co-hint" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
@@ -169,14 +169,14 @@
                                             x-model="anyag.szerzo4email"
                                             @change="checkSzerzo(4)"
                                         >
-                                        <div class="co-hint" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
+                                        <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
                                     </div>
                                 </div>
                                 <div
                                     class="co-control-row"
                                     x-show="szimpozium"
                                 >
-                                    <label for="szerzo5Edit" class="co-label">{t('Szerző')} 5 email</label>
+                                    <label for="szerzo5Edit" class="co-label">{t('Opponens')} email</label>
                                     <input
                                         id="szerzo5Edit"
                                         class="co-input"
@@ -184,7 +184,7 @@
                                         x-model="anyag.szerzo5email"
                                         @change="checkSzerzo(5)"
                                     >
-                                    <div class="co-hint" x-show="szerzo5unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
                                 </div>
                             </div>
                             <div
