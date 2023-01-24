@@ -32,7 +32,11 @@ document.addEventListener("alpine:init", () => {
             eloadas3: ['eloadas'],
             eloadas4: ['eloadas'],
             eloadas5: ['eloadas'],
-            tartalom: ['required'],
+            tartalom: [
+                'required',
+                {rule: 'minLength', param: 1500},
+                {rule: 'maxLength', param: 3000}
+            ],
             temakor1: ['temakor'],
             temakor2: ['temakor'],
             temakor3: ['temakor'],
@@ -73,7 +77,7 @@ document.addEventListener("alpine:init", () => {
                 eloadas3: null,
                 eloadas4: null,
                 eloadas5: null,
-                tartalom: null,
+                tartalom: '',
                 kulcsszo1: null,
                 kulcsszo2: null,
                 kulcsszo3: null,

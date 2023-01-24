@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=5"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=6"></script>
 {/block}
 
 {block "body"}
@@ -341,7 +341,7 @@
                                     </div>
                                 </div>
                                 <div class="co-control-row">
-                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')}</label>
+                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')} (<span x-text="anyag.tartalom.length"></span> {t('karakter, minimum 1500, maximum 3000')})</label>
                                     <textarea
                                         id="tartalomEdit"
                                         class="co-input"
