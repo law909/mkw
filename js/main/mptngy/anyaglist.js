@@ -3,7 +3,7 @@ document.addEventListener("alpine:init", () => {
         loadCount: 6,
         loaded: 0,
         showEditor: false,
-        validationErrors: [],
+        validation: {},
         anyaglist: [],
         sajatanyaglist: [],
         sajatanyaglistLoaded: false,
@@ -27,7 +27,6 @@ document.addEventListener("alpine:init", () => {
             szerzo2email: ['optional', 'email'],
             szerzo3email: ['optional', 'email'],
             szerzo4email: ['optional', 'email'],
-            szerzo5email: ['optional', 'email'],
             eloadas1: ['eloadas'],
             tartalom: [
                 'required',
@@ -37,18 +36,9 @@ document.addEventListener("alpine:init", () => {
             temakor1: ['temakor'],
             kulcsszo1: ['kulcsszo'],
         },
-        selectors: {
-            cim: '#cimEdit',
-            tipus: '#tipusEdit',
-            szerzo1email: '#szerzo1Edit',
-            szerzo2email: '#szerzo2Edit',
-            szerzo3email: '#szerzo3Edit',
-            szerzo4email: '#szerzo4Edit',
-            szerzo5email: '#szerzo5Edit',
-            eloadas1: '.js-eloadas',
-            tartalom: '#tartalomEdit',
-            temakor1: '.js-temakor',
-            kulcsszo1: '.js-kulcsszo',
+        bekuldRules: {
+            szerzo5email: ['opponensrequired', 'opponensregistered'],
+            szerzo1email: ['allszerzoregistered']
         },
         initVars() {
             this.anyag = {
@@ -87,13 +77,7 @@ document.addEventListener("alpine:init", () => {
 
         },
         clearErrors() {
-            this.validationErrors = [];
-            Object.values(this.selectors).forEach((val) => {
-                const els = document.querySelectorAll(val);
-                els.forEach((el) => {
-                    el.classList.remove('error');
-                });
-            });
+            this.validation = {};
         },
         createNew() {
             this.anyag.tulajdonosnev = this.me.nev;
@@ -120,7 +104,7 @@ document.addEventListener("alpine:init", () => {
             this.initVars();
 
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
-            Iodine.setErrorMessage('email', 'Valódi email címet adjon meg');
+            Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('minLength', 'Legalább [PARAM] karakter hosszú legyen');
             Iodine.setErrorMessage('maxLength', 'Legfeljebb [PARAM] karakter hosszú legyen');
 
@@ -176,6 +160,40 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('kulcsszo', 'Legalább 3 kulcsszót meg kell adni');
 
+            Iodine.rule('opponensrequired', (value) => {
+                if (this.anyag.szimpozium) {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('opponensrequired', 'Kötelező kitölteni');
+
+            Iodine.rule('opponensregistered', () => {
+                if (this.anyag.szimpozium) {
+                    return !this.szerzo5unknown;
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('opponensregistered', 'Az opponensnek regisztrálnia kell');
+
+            Iodine.rule('allszerzoregistered', () => {
+                let ret = true;
+                if (this.anyag.szerzo1email && this.szerzo1unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo2email && this.szerzo2unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo3email && this.szerzo3unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo4email && this.szerzo4unknown) {
+                    ret = false;
+                }
+                return ret;
+            });
+            Iodine.setErrorMessage('allszerzoregistered', 'Minden szerzőnek regisztrálnia kell');
+
             fetch(new URL('/anyaglist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -224,7 +242,7 @@ document.addEventListener("alpine:init", () => {
             let url = new URL('/checkpartnerunknown', location.origin),
                 f = 'szerzo' + num + 'email',
                 t = 'szerzo' + num + 'unknown';
-            if (this.anyag[f]) {
+            if (this.anyag[f] && Iodine.assertEmail(this.anyag[f])) {
                 url.searchParams.append('email', this.anyag[f]);
                 fetch(url)
                     .then((response) => response.json())
@@ -238,14 +256,19 @@ document.addEventListener("alpine:init", () => {
         logout() {
             location.href = '/logout';
         },
-        send() {
-            this.anyag.vegleges = true;
-            this.save();
-        },
-        save() {
-            const valid = Iodine.assert(this.anyag, this.rules);
+        save(send = false) {
+            let rules = this.rules;
+            if (send) {
+                rules = {...this.rules, ...this.bekuldRules}
+            }
+            const valid = Iodine.assert(this.anyag, rules);
+
             this.clearErrors();
+
             if (valid.valid) {
+                if (send) {
+                    this.anyag.vegleges = true;
+                }
                 fetch(new URL('/szakmaianyag/ment', location.origin), {
                     method: 'POST',
                     body: new URLSearchParams(this.anyag)
@@ -263,16 +286,7 @@ document.addEventListener("alpine:init", () => {
                     .finally(() => {
                     });
             } else {
-                for (const [key, value] of Object.entries(valid.fields)) {
-                    if (!value.valid) {
-                        console.log(key);
-                        const els = document.querySelectorAll(this.selectors[key]);
-                        els.forEach((el) => {
-                            el.classList.add('error');
-                        });
-                    }
-                }
-                this.validationErrors = valid.fields;
+                this.validation = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         },
