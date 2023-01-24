@@ -39,9 +39,9 @@
                                                 <button
                                                     class="btn btn-secondary"
                                                     @click="edit(any.id)"
-                                                    x-show="any.editable && loaded >= loadCount"
+                                                    x-show="!any.vegleges && any.editable && loaded >= loadCount"
                                                 >{t('Módosítás')}</button>
-                                                <span x-show="!any.editable">Beküldve</span>
+                                                <span x-show="any.vegleges">Beküldve</span>
                                             </td>
                                         </tr>
                                     </template>
