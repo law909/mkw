@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=5"></script>
+    <script src="/js/main/mptngy/login.js?v=6"></script>
 {/block}
 
 {block "body"}
@@ -168,7 +168,14 @@
                         </div>
                         <div class="co-control-row">
                             <label for="regInvAdoszamEdit" class="co-label">{t('Adószám')}</label>
-                            <input id="regInvAdoszamEdit" class="co-input" type="text" x-model="reg.adoszam">
+                            <input
+                                id="regInvAdoszamEdit"
+                                class="co-input"
+                                :class="validation.adoszam && !validation.adoszam.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.adoszam"
+                            >
+                            <div class="co-error" x-text="validation.adoszam && validation.adoszam.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="regInvBankEdit" class="co-label">{t('Bankszámlaszám')}</label>
@@ -181,6 +188,10 @@
                         <div class="co-control-row">
                             <label for="regKapcsolatEdit" class="co-label">{t('Kapcsolat név')}</label>
                             <input id="regKapcsolatEdit" class="co-input" type="text" x-model="reg.mptngykapcsolatnev">
+                        </div>
+                        <div class="co-control-row">
+                            <label for="regMunkahelyEdit" class="co-label">{t('Munkahely')}</label>
+                            <input id="regMunkahelyEdit" class="co-input" type="text" x-model="reg.mpt_munkahelynev">
                         </div>
                     </div>
 
@@ -217,21 +228,27 @@
                             </label>
                         </div>
                         <div class="co-control-row">
+                            <label for="vipvacsEdit" class="co-label">
+                                <input id="vipvacsEdit" type="checkbox" x-model="reg.mptngyvipvacsora">
+                                {t('1. nap állófogadáson részt veszek')}
+                            </label>
+                        </div>
+                        <div class="co-control-row">
                             <label for="nap2Edit" class="co-label">
                                 <input id="nap2Edit" type="checkbox" x-model="reg.mptngynapreszvetel2">
                                 {t('2. nap részt veszek')}
                             </label>
                         </div>
                         <div class="co-control-row">
-                            <label for="nap3Edit" class="co-label">
-                                <input id="nap3Edit" type="checkbox" x-model="reg.mptngynapreszvetel3">
-                                {t('3. nap részt veszek')}
+                            <label for="bankettEdit" class="co-label">
+                                <input id="bankettEdit" type="checkbox" x-model="reg.mptngybankett">
+                                {t('2. nap banketten részt veszek')}
                             </label>
                         </div>
                         <div class="co-control-row">
-                            <label for="vipvacsEdit" class="co-label">
-                                <input id="vipvacsEdit" type="checkbox" x-model="reg.mptngyvipvacsora">
-                                {t('VIP vacsorán részt veszek')}
+                            <label for="nap3Edit" class="co-label">
+                                <input id="nap3Edit" type="checkbox" x-model="reg.mptngynapreszvetel3">
+                                {t('3. nap részt veszek')}
                             </label>
                         </div>
                         <div class="co-control-row">

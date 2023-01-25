@@ -15,6 +15,7 @@ document.addEventListener("alpine:init", () => {
             jelszo2: null,
             invcsoportos: null,
             invmaganszemely: null,
+            vatstatus: null,
             szlanev: null,
             irszam: null,
             varos: null,
@@ -42,31 +43,13 @@ document.addEventListener("alpine:init", () => {
             jelszo1: ['required', 'passwordsSame'],
             jelszo2: ['required'],
             szlanev: ['required'],
+            adoszam: ['adoszam'],
             irszam: ['required'],
             varos: ['required'],
             utca: ['required'],
             mptngyszerepkor: ['required'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
-        },
-        selectors: {
-            nev: '#regNevEdit',
-            telefon: '#regTelEdit',
-            email: '#regEmailEdit',
-            jelszo1: '#regPw1Edit',
-            jelszo2: '#regPw2Edit',
-            szlanev: '#regInvNevEdit',
-            irszam: '#regInvIrszamEdit',
-            varos: '#regInvVarosEdit',
-            utca: '#regInvUtcaEdit',
-            mptngyszerepkor: '.js-szerepkor',
-            invcsoportos: '.js-invcsoportos',
-            invmaganszemely: '.js-invmaganszemely'
-        },
-        errorClasses: {
-            mptngyszerepkor: 'error-border',
-            invcsoportos: 'error-border',
-            invmaganszemely: 'error-border',
         },
         szerepkorlist: [],
         selectedSzerepkorIndex: null,
@@ -77,6 +60,7 @@ document.addEventListener("alpine:init", () => {
         },
         getLists() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
+
             Iodine.rule('passwordsSame', (value) => value === this.reg.jelszo2);
             Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
 
@@ -86,7 +70,15 @@ document.addEventListener("alpine:init", () => {
                 }
                 return true;
             });
-            Iodine.setErrorMessage('requiredIfCsoportos', 'Válassza ki, hogy magánszemélyként vagy cégként fogadja be a számlát');
+            Iodine.setErrorMessage('requiredIfCsoportos', 'Válassza ki, hogy hogyan fogadja be a számlát');
+
+            Iodine.rule('adoszam', (value) => {
+                if (this.reg.invmaganszemely === '2') {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('adoszam', 'Céges fizetés esetén kötelező megadni')
 
             fetch(new URL('/szerepkorlist', location.origin))
                 .then((response) => response.json())
@@ -111,6 +103,18 @@ document.addEventListener("alpine:init", () => {
             this.$watch('reg.mptngydiak', (value) => {
                 if (value) {
                     this.reg.mptngynyugdijas = false;
+                }
+            });
+            this.$watch('reg.invmaganszemely', (value) => {
+                switch (value) {
+                    case "1":
+                        this.reg.vatstatus = 2;
+                        break;
+                    case "2":
+                        this.reg.vatstatus = 1;
+                        break;
+                    default:
+                        this.reg.vatstatus = null;
                 }
             });
         },

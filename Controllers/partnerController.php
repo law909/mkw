@@ -174,6 +174,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngynapreszvetel3'] = $t->isMptngynapreszvetel3();
         $x['mptngycsoportosfizetes'] = $t->getMptngycsoportosfizetes();
         $x['mptngyvipvacsora'] = $t->isMptngyvipvacsora();
+        $x['mptngybankett'] = $t->isMptngybankett();
         $x['mptngykapcsolatnev'] = $t->getMptngykapcsolatnev();
         $x['mptngybankszamlaszam'] = $t->getMptngybankszamlaszam();
         $x['szlanev'] = $t->getSzlanev();
@@ -323,6 +324,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
             $obj->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
             $obj->setMptngyvipvacsora($this->params->getBoolRequestParam('mptngyvipvacsora'));
+            $obj->setMptngybankett($this->params->getBoolRequestParam('mptngybankett'));
             $obj->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));
             $obj->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
             $obj->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));

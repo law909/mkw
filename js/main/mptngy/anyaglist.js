@@ -123,9 +123,6 @@ document.addEventListener("alpine:init", () => {
                     if (Iodine.assertRequired(this.anyag.eloadas4)) {
                         db++;
                     }
-                    if (Iodine.assertRequired(this.anyag.eloadas5)) {
-                        db++;
-                    }
                     return db === 4 || db === 5;
                 }
                 return true;

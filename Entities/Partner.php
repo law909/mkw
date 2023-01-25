@@ -528,6 +528,9 @@ class Partner
     /** @ORM\Column(type="boolean") */
     private $mptngyvipvacsora = false;
 
+    /** @ORM\Column(type="boolean") */
+    private $mptngybankett = false;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $mptngykapcsolatnev = false;
 
@@ -3169,6 +3172,22 @@ class Partner
     public function setMptngynyugdijas($mptngynyugdijas): void
     {
         $this->mptngynyugdijas = $mptngynyugdijas;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMptngybankett()
+    {
+        return $this->mptngybankett;
+    }
+
+    /**
+     * @param bool $mptngybankett
+     */
+    public function setMptngybankett($mptngybankett): void
+    {
+        $this->mptngybankett = $mptngybankett;
     }
 
 }

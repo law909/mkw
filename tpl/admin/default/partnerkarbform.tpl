@@ -384,8 +384,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="mptngyvipvacsoraEdit">VIP vacsora:</label></td>
+                    <td><label for="mptngyvipvacsoraEdit">1. nap állófogadás:</label></td>
                     <td><input id="mptngyvipvacsoraEdit" type="checkbox" name="mptngyvipvacsora"{if ($partner.mptngyvipvacsora)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="mptngybankettEdit">2. nap bankett:</label></td>
+                    <td><input id="mptngybankettEdit" type="checkbox" name="mptngybankett"{if ($partner.mptngybankett)} checked{/if}></td>
                 </tr>
                 <tr>
                     <td><label for="mptngydiakEdit">Diák:</label></td>
@@ -420,6 +424,10 @@
                 <tr>
                     <td><label for="mptngyknEdit">Kapcsolat név:</label></td>
                     <td><input id="mptngyknEdit" type="text" name="mptngykapcsolatnev" value="{$partner.mptngykapcsolatnev}"></td>
+                </tr>
+                <tr>
+                    <td><label for="MPTMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
+                    <td><input id="MPTMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
                 </tr>
                 </tbody>
             </table>
