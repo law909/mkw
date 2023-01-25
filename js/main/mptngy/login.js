@@ -2,7 +2,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("login", () => ({
         regNeeded: false,
         postaleqinv: false,
-        validationErrors: [],
+        validation: [],
         login: {
             email: null,
             jelszo: null,
@@ -73,19 +73,7 @@ document.addEventListener("alpine:init", () => {
         selectedSzerepkor: null,
 
         clearErrors() {
-            this.validationErrors = [];
-            for (const [key, value] of Object.entries(this.selectors)) {
-                const els = document.querySelectorAll(value);
-                let errorClass;
-                if (Object.keys(this.errorClasses).find(el => el === key) !== key) {
-                    errorClass = 'error';
-                } else {
-                    errorClass = this.errorClasses[key];
-                }
-                els.forEach((el) => {
-                    el.classList.remove(errorClass);
-                });
-            }
+            this.validation = {};
         },
         getLists() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
@@ -149,21 +137,7 @@ document.addEventListener("alpine:init", () => {
                     .finally(() => {
                     });
             } else {
-                for (const [key, value] of Object.entries(valid.fields)) {
-                    if (!value.valid) {
-                        const els = document.querySelectorAll(this.selectors[key]);
-                        let errorClass;
-                        if (Object.keys(this.errorClasses).find(el => el === key) !== key) {
-                            errorClass = 'error';
-                        } else {
-                            errorClass = this.errorClasses[key];
-                        }
-                        els.forEach((el) => {
-                            el.classList.add(errorClass);
-                        });
-                    }
-                }
-                this.validationErrors = valid.fields;
+                this.validation = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         },

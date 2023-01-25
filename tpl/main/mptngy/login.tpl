@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=4"></script>
+    <script src="/js/main/mptngy/login.js?v=5"></script>
 {/block}
 
 {block "body"}
@@ -36,28 +36,58 @@
                         <h3>{t('Regisztráció')}</h3>
                         <div class="co-control-row">
                             <label for="regNevEdit" class="co-label">{t('Név')}*</label>
-                            <input id="regNevEdit" class="co-input" type="text" x-model="reg.nev">
-                            <div class="co-error" x-text="validationErrors.nev ? validationErrors.nev.error : ''"></div>
+                            <input
+                                id="regNevEdit"
+                                class="co-input"
+                                :class="validation.nev && !validation.nev.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.nev"
+                            >
+                            <div class="co-error" x-text="validation.nev && validation.nev.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="regTelEdit" class="co-label">{t('Telefon')}*</label>
-                            <input id="regTelEdit" class="co-input" type="text" x-model="reg.telefon">
-                            <div class="co-error" x-text="validationErrors.telefon ? validationErrors.telefon.error : ''"></div>
+                            <input
+                                id="regTelEdit"
+                                class="co-input"
+                                :class="validation.telefon && !validation.telefon.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.telefon"
+                            >
+                            <div class="co-error" x-text="validation.telefon && validation.telefon.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="regEmailEdit" class="co-label">{t('Email')}*</label>
-                            <input id="regEmailEdit" class="co-input" type="text" x-model="reg.email">
-                            <div class="co-error" x-text="validationErrors.email ? validationErrors.email.error : ''"></div>
+                            <input
+                                id="regEmailEdit"
+                                class="co-input"
+                                :class="validation.email && !validation.email.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.email"
+                            >
+                            <div class="co-error" x-text="validation.email && validation.email.error"></div>
                         </div>
                         <div class="co-control-row co-col-container">
                             <div class="co-col co-col-50">
                                 <label for="regPw1Edit" class="co-label">{t('Jelszó')}*</label>
-                                <input id="regPw1Edit" class="co-input" type="password" x-model="reg.jelszo1">
-                                <div class="co-error" x-text="validationErrors.jelszo1 ? validationErrors.jelszo1.error : ''"></div>
+                                <input
+                                    id="regPw1Edit"
+                                    class="co-input"
+                                    :class="validation.jelszo1 && !validation.jelszo1.valid ? 'error' : ''"
+                                    type="password"
+                                    x-model="reg.jelszo1"
+                                >
+                                <div class="co-error" x-text="validation.jelszo1 && validation.jelszo1.error"></div>
                             </div>
                             <div class="co-col co-col-50">
                                 <label for="regPw2Edit" class="co-label">{t('Jelszó ismét')}*</label>
-                                <input id="regPw2Edit" class="co-input" type="password" x-model="reg.jelszo2">
+                                <input
+                                    id="regPw2Edit"
+                                    class="co-input"
+                                    :class="validation.jelszo2 && !validation.jelszo2.valid ? 'error' : ''"
+                                    type="password"
+                                    x-model="reg.jelszo2"
+                                >
                             </div>
                         </div>
                     </div>
@@ -65,7 +95,7 @@
                     <div class="co-row co-flex-dir-column">
                         <h4>{t('Számlázási adatok')}</h4>
                         <div class="co-control-row">
-                            <div class="js-invcsoportos">
+                            <div :class="validation.invcsoportos && !validation.invcsoportos.valid ? 'error-border' : ''">
                                 <label for="regInvSajatEdit" class="co-label">
                                     <input id="regInvSajatEdit" type="radio" x-model="reg.invcsoportos" name="reginvcsoportos" value="2">
                                     <span>{t('Én/saját cégem fog fizetni')}</span>
@@ -75,40 +105,66 @@
                                     <span>{t('A munkáltatóm fog fizetni')}</span>
                                 </label>
                             </div>
-                            <div class="co-error" x-text="validationErrors.invcsoportos ? validationErrors.invcsoportos.error : ''"></div>
+                            <div class="co-error" x-text="validation.invcsoportos && validation.invcsoportos.error"></div>
                         </div>
-                        <div class="co-control-row js-invmaganszemely" x-show="reg.invcsoportos === '2'">
-                            <label for="regInvMaganszemelyEdit" class="co-label">
-                                <input id="regInvMaganszemelyEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="1">
-                                <span>{t('Magánszemélyként fogadom be a számlát')}</span>
-                            </label>
-                            <label for="regInvCegEdit" class="co-label">
-                                <input id="regInvCegEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="2">
-                                <span>{t('Cégként fogadom be a számlát')}</span>
-                            </label>
-                            <div class="co-error" x-text="validationErrors.invmaganszemely ? validationErrors.invmaganszemely.error : ''"></div>
+                        <div class="co-control-row" x-show="reg.invcsoportos === '2'">
+                            <div :class="validation.invmaganszemely && !validation.invmaganszemely.valid ? 'error-border' : ''">
+                                <label for="regInvMaganszemelyEdit" class="co-label">
+                                    <input id="regInvMaganszemelyEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="1">
+                                    <span>{t('Magánszemélyként fogadom be a számlát')}</span>
+                                </label>
+                                <label for="regInvCegEdit" class="co-label">
+                                    <input id="regInvCegEdit" type="radio" x-model="reg.invmaganszemely" name="reginvmaganszemely" value="2">
+                                    <span>{t('Cégként fogadom be a számlát')}</span>
+                                </label>
+                            </div>
+                            <div class="co-error" x-text="validation.invmaganszemely && validation.invmaganszemely.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="regInvNevEdit" class="co-label">{t('Név')}*</label>
-                            <input id="regInvNevEdit" class="co-input" type="text" x-model="reg.szlanev">
-                            <div class="co-error" x-text="validationErrors.szlanev ? validationErrors.szlanev.error : ''"></div>
+                            <input
+                                id="regInvNevEdit"
+                                class="co-input"
+                                :class="validation.szlanev && !validation.szlanev.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.szlanev"
+                            >
+                            <div class="co-error" x-text="validation.szlanev && validation.szlanev.error"></div>
                         </div>
                         <div class="co-control-row co-col-container">
                             <div class="co-col co-col-20">
                                 <label for="regInvIrszamEdit" class="co-label">{t('Ir.szám')}*</label>
-                                <input id="regInvIrszamEdit" class="co-input" type="text" x-model="reg.irszam">
-                                <div class="co-error" x-text="validationErrors.irszam ? validationErrors.irszam.error : ''"></div>
+                                <input
+                                    id="regInvIrszamEdit"
+                                    class="co-input"
+                                    :class="validation.irszam && !validation.irszam.valid ? 'error' : ''"
+                                    type="text"
+                                    x-model="reg.irszam"
+                                >
+                                <div class="co-error" x-text="validation.irszam && validation.irszam.error"></div>
                             </div>
                             <div class="co-col co-col-80">
                                 <label for="regInvVarosEdit" class="co-label">{t('Város')}*</label>
-                                <input id="regInvVarosEdit" class="co-input" type="text" x-model="reg.varos">
-                                <div class="co-error" x-text="validationErrors.varos ? validationErrors.varos.error : ''"></div>
+                                <input
+                                    id="regInvVarosEdit"
+                                    class="co-input"
+                                    :class="validation.varos && !validation.varos.valid ? 'error' : ''"
+                                    type="text"
+                                    x-model="reg.varos"
+                                >
+                                <div class="co-error" x-text="validation.varos && validation.varos.error"></div>
                             </div>
                         </div>
                         <div class="co-control-row">
                             <label for="regInvUtcaEdit" class="co-label">{t('Utca')}*</label>
-                            <input id="regInvUtcaEdit" class="co-input" type="text" x-model="reg.utca">
-                            <div class="co-error" x-text="validationErrors.utca ? validationErrors.utca.error : ''"></div>
+                            <input
+                                id="regInvUtcaEdit"
+                                class="co-input"
+                                :class="validation.utca && !validation.utca.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.utca"
+                            >
+                            <div class="co-error" x-text="validation.utca && validation.utca.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="regInvAdoszamEdit" class="co-label">{t('Adószám')}</label>
@@ -197,7 +253,7 @@
                             </label>
                         </div>
                         <div class="co-control-row">
-                            <div class="js-szerepkor">
+                            <div :class="validation.mptngyszerepkor && !validation.mptngyszerepkor.valid ? 'error-border' : ''">
                             <template x-for="(szkor, i) in szerepkorlist">
                                     <label class="co-label">
                                         <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
@@ -205,7 +261,7 @@
                                     </label>
                             </template>
                             </div>
-                            <div class="co-error" x-text="validationErrors.mptngyszerepkor ? validationErrors.mptngyszerepkor.error : ''"></div>
+                            <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
                         </div>
                     </div>
 
