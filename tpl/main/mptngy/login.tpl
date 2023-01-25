@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=6"></script>
+    <script src="/js/main/mptngy/login.js?v=7"></script>
 {/block}
 
 {block "body"}
@@ -64,6 +64,7 @@
                                 :class="validation.email && !validation.email.valid ? 'error' : ''"
                                 type="text"
                                 x-model="reg.email"
+                                @change="checkEmail()"
                             >
                             <div class="co-error" x-text="validation.email && validation.email.error"></div>
                         </div>

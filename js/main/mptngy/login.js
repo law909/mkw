@@ -2,6 +2,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("login", () => ({
         regNeeded: false,
         postaleqinv: false,
+        emailFoglalt: false,
         validation: [],
         login: {
             email: null,
@@ -39,7 +40,7 @@ document.addEventListener("alpine:init", () => {
         rules: {
             nev: ['required'],
             telefon: ['required'],
-            email: ['required', 'email'],
+            email: ['required', 'email', 'emailFoglalt'],
             jelszo1: ['required', 'passwordsSame'],
             jelszo2: ['required'],
             szlanev: ['required'],
@@ -80,6 +81,11 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('adoszam', 'Céges fizetés esetén kötelező megadni')
 
+            Iodine.rule('emailFoglalt', () => {
+                return !this.emailFoglalt;
+            });
+            Iodine.setErrorMessage('emailFoglalt', 'Az email már foglalt')
+
             fetch(new URL('/szerepkorlist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -117,6 +123,20 @@ document.addEventListener("alpine:init", () => {
                         this.reg.vatstatus = null;
                 }
             });
+        },
+        checkEmail() {
+            let url = new URL('/checkemail', location.origin);
+            if (Iodine.assertEmail(this.reg.email)) {
+                url.searchParams.append('email', this.reg.email);
+                fetch(url, {
+                    method: 'POST',
+                    body: new URLSearchParams({email: this.reg.email})
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.emailFoglalt = data.hibas;
+                    });
+            }
         },
         save() {
             const valid = Iodine.assert(this.reg, this.rules);
