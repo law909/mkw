@@ -75,6 +75,7 @@ return array(
     'A bejelentkezés nem sikerült' => 'Login is unsuccessful',
     'Email' => 'Email',
     'Jelszó' => 'Password',
+    'Jelszó ismét' => 'Password again',
     'Belépés' => 'Login',
     'Kapcsolati adatok' => 'Contact details',
     'Vezetéknév' => 'Last name',
@@ -225,4 +226,12 @@ return array(
     'VÁLASSZ MÉRETET' => 'SELECT SIZE',
     'RÉSZLETEK' => 'DETAILS',
     'KOSÁRBA' => 'ADD TO CART',
+    'vagy' => 'or',
+    'Bankszámlaszám' => 'Bank account no.',
+    'Csoportos fizetés' => 'Group pay',
+    'Kapcsolat név' => 'Contact name',
+    'Megegyezik a számlázási adatokkal' => 'Same as billing details',
+    'Levelezési adatok' => 'Postal details',
+    'Egyéb adatok' => 'Other',
+
 );

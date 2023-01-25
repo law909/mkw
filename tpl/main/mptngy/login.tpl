@@ -22,7 +22,7 @@
                         <button class="btn btn-primary" @click="dologin()">{t('Belépés')}</button>
                     </div>
                     <div class="co-control-row">
-                        <span> - vagy - </span>
+                        <span> - {t('vagy')} - </span>
                     </div>
                     <div class="co-control-row">
                         <button class="btn btn-secondary" @click="regNeeded = true">{t('Regisztráció')}</button>
