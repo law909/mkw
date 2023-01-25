@@ -1011,6 +1011,8 @@ class store
             $l = $luser->getBizonylatnyelv();
         } elseif (self::isMugenrace2021()) {
             $l = self::getMainLocale();
+        } elseif (self::isMPTNGY()) {
+            $l = self::getMainLocale();
         } else {
             $l = self::getSetupValue('locale', false);
             if ($l) {
@@ -1034,7 +1036,7 @@ class store
     public static function getValutanemForLocale($ny)
     {
         $v = self::$valutanemperlocale[$ny];
-        $valutanem = self::getEm()->getRepository(Valutanem::class)->findBy(['nev' => $v]);
+        $valutanem = self::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => $v]);
         return $valutanem;
     }
 

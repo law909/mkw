@@ -194,6 +194,18 @@ else {
                             'locale' => 'en_us'
                         )
                     );
+
+                    if (\mkw\store::isMPTNGY()) {
+                        $params = new mkwhelpers\ParameterHandler($match);
+                        if ($params->getStringRequestParam('lang')) {
+                            if ($params->getStringRequestParam('lang') === 'en') {
+                                store::setMainLocale('en_us');
+                            } elseif ($params->getStringRequestParam('lang') === 'hu') {
+                                store::setMainLocale('hu_hu');
+                            }
+                        }
+                    }
+
                     $mainlocale = store::getLocale();
                     if ($mainlocale) {
                         $__maintranslate->setLocale($mainlocale);
