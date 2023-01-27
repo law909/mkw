@@ -118,7 +118,6 @@
                                     {/foreach}
                                 </select>
                             </div>
-
                         {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="SzallmodEdit">{at('Szállítási mód')}:</label></span>
@@ -256,7 +255,8 @@
                                 <option value="1"{if ($szamlaorzesalap=='1')} selected="selected"{/if}>{at('kelt')}</option>
                                 <option value="2"{if ($szamlaorzesalap=='2')} selected="selected"{/if}>{at('teljesítés')}</option>
                             </select>
-                            <span> {at('évének utolsó napja +')} </span><input name="szamlaorzesev" type="number" value="{$szamlaorzesev}"><span> {at('év')}</span>
+                            <span> {at('évének utolsó napja +')} </span><input name="szamlaorzesev" type="number"
+                                                                               value="{$szamlaorzesev}"><span> {at('év')}</span>
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="EsedAlapEdit">{at('Esedékesség alapja')}:</label></span>
@@ -360,166 +360,171 @@
                         </div>
                     </div>
                     {if ($maintheme === 'darshan' || $setup.darshan == 1)}
-                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaJutalekEdit">{at('Jutalék százalék')}:</label></span>
-                            <span><input id="JogaJutalekEdit" name="jogajutalek" type="text" value="{$jogajutalek}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaUresTeremJutalekEdit">{at('Üres terem jutalék')}:</label></span>
-                            <span><input id="JogaUresTeremJutalekEdit" name="jogauresteremjutalek" type="text" value="{$jogauresteremjutalek}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaAYCMJutalekEdit">{at('AYCM jutalék')}:</label></span>
-                            <span><input id="JogaAYCMJutalekEdit" name="jogaaycmjutalek" type="text" value="{$jogaaycmjutalek}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="TanarelszmolasSablonEdit">{at('Tanár elszámolás sablon')}:</label></span>
-                            <select id="TanarelszmolasSablonEdit" name="tanarelszamolassablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $tanarelszamolassablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="NemjonsenkiSablonEdit">{at('Nem jön senki sablon (tanárnak)')}:</label></span>
-                            <select id="NemjonsenkiSablonEdit" name="nemjonsenkisablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $nemjonsenkisablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="nemjelentkeztekelegentanarnakSablonEdit">{at('Nem jelentkeztek elegen sablon (tanárnak)')}:</label></span>
-                            <select id="nemjelentkeztekelegentanarnakSablonEdit" name="nemjelentkeztekelegentanarnaksablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $nemjelentkeztekelegentanarnaksablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="nemjelentkeztekelegengyakorlonaksablonEdit">{at('Nem jelentkeztek elegen sablon (gyakorlónak)')}:</label></span>
-                            <select id="nemjelentkeztekelegengyakorlonaksablonEdit" name="nemjelentkeztekelegengyakorlonaksablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $nemjelentkeztekelegengyakorlonaksablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="elegenjelentkeztektanarnaksablonEdit">{at('Elegen jelentkeztek sablon (tanárnak)')}:</label></span>
-                            <select id="elegenjelentkeztektanarnaksablonEdit" name="elegenjelentkeztektanarnaksablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $elegenjelentkeztektanarnaksablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogabejelentkezeskoszonoSablonEdit">{at('Óra bejelentkezés köszönő sablon')}:</label></span>
-                            <select id="jogabejelentkezeskoszonoSablonEdit" name="jogabejelentkezeskoszonosablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogabejelentkezeskoszonosablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogalemondaskoszonoSablonEdit">{at('Óra lemondás köszönő sablon')}:</label></span>
-                            <select id="jogalemondaskoszonoSablonEdit" name="jogalemondaskoszonosablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogalemondaskoszonosablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaelmaradasertesitoSablonEdit">{at('Elmaradás értesítő')}:</label></span>
-                            <select id="jogaelmaradasertesitoSablonEdit" name="jogaelmaradasertesitosablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaelmaradasertesitosablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaelmaradaskonyvelonekSablonEdit">{at('Óra elmaradás könyvelőnek sablon')}:</label></span>
-                            <select id="jogaelmaradaskonyvelonekSablonEdit" name="jogaelmaradaskonyveloneksablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaelmaradaskonyveloneksablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaJutalekEdit">{at('Jutalék százalék')}:</label></span>
+                                <span><input id="JogaJutalekEdit" name="jogajutalek" type="text" value="{$jogajutalek}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaUresTeremJutalekEdit">{at('Üres terem jutalék')}:</label></span>
+                                <span><input id="JogaUresTeremJutalekEdit" name="jogauresteremjutalek" type="text" value="{$jogauresteremjutalek}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaAYCMJutalekEdit">{at('AYCM jutalék')}:</label></span>
+                                <span><input id="JogaAYCMJutalekEdit" name="jogaaycmjutalek" type="text" value="{$jogaaycmjutalek}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="TanarelszmolasSablonEdit">{at('Tanár elszámolás sablon')}:</label></span>
+                                <select id="TanarelszmolasSablonEdit" name="tanarelszamolassablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $tanarelszamolassablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="NemjonsenkiSablonEdit">{at('Nem jön senki sablon (tanárnak)')}:</label></span>
+                                <select id="NemjonsenkiSablonEdit" name="nemjonsenkisablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $nemjonsenkisablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="nemjelentkeztekelegentanarnakSablonEdit">{at('Nem jelentkeztek elegen sablon (tanárnak)')}:</label></span>
+                                <select id="nemjelentkeztekelegentanarnakSablonEdit" name="nemjelentkeztekelegentanarnaksablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $nemjelentkeztekelegentanarnaksablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="nemjelentkeztekelegengyakorlonaksablonEdit">{at('Nem jelentkeztek elegen sablon (gyakorlónak)')}:</label></span>
+                                <select id="nemjelentkeztekelegengyakorlonaksablonEdit" name="nemjelentkeztekelegengyakorlonaksablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $nemjelentkeztekelegengyakorlonaksablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="elegenjelentkeztektanarnaksablonEdit">{at('Elegen jelentkeztek sablon (tanárnak)')}:</label></span>
+                                <select id="elegenjelentkeztektanarnaksablonEdit" name="elegenjelentkeztektanarnaksablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $elegenjelentkeztektanarnaksablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="jogabejelentkezeskoszonoSablonEdit">{at('Óra bejelentkezés köszönő sablon')}:</label></span>
+                                <select id="jogabejelentkezeskoszonoSablonEdit" name="jogabejelentkezeskoszonosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogabejelentkezeskoszonosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogalemondaskoszonoSablonEdit">{at('Óra lemondás köszönő sablon')}:</label></span>
+                                <select id="jogalemondaskoszonoSablonEdit" name="jogalemondaskoszonosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogalemondaskoszonosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaelmaradasertesitoSablonEdit">{at('Elmaradás értesítő')}:</label></span>
+                                <select id="jogaelmaradasertesitoSablonEdit" name="jogaelmaradasertesitosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaelmaradasertesitosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="jogaelmaradaskonyvelonekSablonEdit">{at('Óra elmaradás könyvelőnek sablon')}:</label></span>
+                                <select id="jogaelmaradaskonyvelonekSablonEdit" name="jogaelmaradaskonyveloneksablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaelmaradaskonyveloneksablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
 
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaberletfelszolitosablonEdit">{at('Jóga bérlet fizetés emlékeztető')}:</label></span>
-                            <select id="jogaberletfelszolitosablonEdit" name="jogaberletfelszolitosablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberletfelszolitosablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaberletlefogjarnisablonEdit">{at('Jóga bérlet le fog járni')}:</label></span>
-                            <select id="jogaberletlefogjarnisablonEdit" name="jogaberletlefogjarnisablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberletlefogjarnisablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaberletlejartsablonEdit">{at('Jóga bérlet lejárt')}:</label></span>
-                            <select id="jogaberletlejartsablonEdit" name="jogaberletlejartsablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberletlejartsablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="jogaberletdatumlejartsablonEdit">{at('Jóga bérlet dátum lejárt')}:</label></span>
-                            <select id="jogaberletdatumlejartsablonEdit" name="jogaberletdatumlejartsablon">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberletdatumlejartsablonlist as $_belsouk}
-                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaberletfelszolitosablonEdit">{at('Jóga bérlet fizetés emlékeztető')}:</label></span>
+                                <select id="jogaberletfelszolitosablonEdit" name="jogaberletfelszolitosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberletfelszolitosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaberletlefogjarnisablonEdit">{at('Jóga bérlet le fog járni')}:</label></span>
+                                <select id="jogaberletlefogjarnisablonEdit" name="jogaberletlefogjarnisablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberletlefogjarnisablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaberletlejartsablonEdit">{at('Jóga bérlet lejárt')}:</label></span>
+                                <select id="jogaberletlejartsablonEdit" name="jogaberletlejartsablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberletlejartsablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaberletdatumlejartsablonEdit">{at('Jóga bérlet dátum lejárt')}:</label></span>
+                                <select id="jogaberletdatumlejartsablonEdit" name="jogaberletdatumlejartsablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberletdatumlejartsablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
 
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaOrajegyTermekEdit">{at('Jóga órajegy termék')}:</label></span>
-                            <select id="JogaOrajegyTermekEdit" name="jogaorajegytermek">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaorajegytermeklist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaOrajegyTermekEdit">{at('Jóga órajegy termék')}:</label></span>
+                                <select id="JogaOrajegyTermekEdit" name="jogaorajegytermek">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaorajegytermeklist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaBerlet4TermekEdit">{at('Jóga bérlet 4 termék')}:</label></span>
+                                <select id="Jogaberlet4TermekEdit" name="jogaberlet4termek">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberlet4termeklist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaBerlet10TermekEdit">{at('Jóga bérlet 10 termék')}:</label></span>
+                                <select id="JogaBerlet10TermekEdit" name="jogaberlet10termek">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberlet10termeklist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaBerlet4TermekEdit">{at('Jóga bérlet 4 termék')}:</label></span>
-                            <select id="Jogaberlet4TermekEdit" name="jogaberlet4termek">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberlet4termeklist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="JogaBerlet10TermekEdit">{at('Jóga bérlet 10 termék')}:</label></span>
-                            <select id="JogaBerlet10TermekEdit" name="jogaberlet10termek">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $jogaberlet10termeklist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                    </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         {if ($maintheme === 'mijsz')}
@@ -792,10 +797,10 @@
                         <tr>
                             <td><label for="TulajpartnerEdit">Partner:</label></td>
                             <td><select id="TulajpartnerEdit" name="tulajpartner">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $tulajpartnerlist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $tulajpartnerlist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
                                 </select></td>
                         </tr>
                         <tr>
@@ -1040,6 +1045,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <label for="mptngyszimpoziumeloadastipusEdit" class="setuplabel">{at('Szimpózium előadás')}:</label>
+                                <select id="mptngyszimpoziumeloadastipusEdit" name="mptngyszimpoziumeloadastipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngyszatipuslist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
@@ -1112,11 +1126,11 @@
                             <tr>
                                 <td><label for="WS2PriceEdit">{at('Ársáv')}:</label></td>
                                 <td><select id="WS2PriceEdit" name="arsav2">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $arsav2list as $_arsav}
-                                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
-                                    {/foreach}
-                                </select></td>
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $arsav2list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
                             </tr>
                             <tr>
                                 <td><label for="WS2DiscountPriceEdit">{at('Akciós ársáv')}:</label></td>
@@ -1259,23 +1273,23 @@
                         <div class="matt-hseparator"></div>
                         <div>
                             <div>
-                            <label for="ReintexEdit">Reintex:</label>
-                            <select id="ReintexEdit" name="gyartoreintex">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $gyartoreintexlist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
-                            <label for="PathReintexEdit">Képek mappája:</label>
-                            <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
-                            <label for="UrlReintexEdit">URL:</label>
-                            <input id="UrlReintexEdit" name="urlreintex" value="{$urlreintex}">
-                            <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
-                            <a href="#" class="js-repairimport" data-href="{$repairreinteximporturl}">Javít</a>
+                                <label for="ReintexEdit">Reintex:</label>
+                                <select id="ReintexEdit" name="gyartoreintex">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartoreintexlist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="PathReintexEdit">Képek mappája:</label>
+                                <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
+                                <label for="UrlReintexEdit">URL:</label>
+                                <input id="UrlReintexEdit" name="urlreintex" value="{$urlreintex}">
+                                <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairreinteximporturl}">Javít</a>
                             </div>
                             <div>
-                            <label for="ExcludeReintex">Kihagyandó cikkszámok:</label>
-                            <input id="'ExcludeReintex" name="excludereintex" value="{$excludereintex}" size="80" title="Vesszővel elválasztva">
+                                <label for="ExcludeReintex">Kihagyandó cikkszámok:</label>
+                                <input id="'ExcludeReintex" name="excludereintex" value="{$excludereintex}" size="80" title="Vesszővel elválasztva">
                             </div>
                         </div>
                         <div class="matt-hseparator"></div>
@@ -1581,7 +1595,8 @@
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="MugenraceFooldalSzovegEdit">{at('Főoldali szöveg')}:</label></span>
-                                <span><textarea id="MugenraceFooldalSzovegEdit" name="mugenracefooldalszoveg" cols="75">{$mugenracefooldalszoveg}</textarea></span>
+                                <span><textarea id="MugenraceFooldalSzovegEdit" name="mugenracefooldalszoveg"
+                                                cols="75">{$mugenracefooldalszoveg}</textarea></span>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label>{at('Mugenrace kategória')}:</label></span>
@@ -1593,67 +1608,67 @@
                     </div>
                 {/if}
                 {if ($setup.barion)}
-                <div id="BarionTab" class="mattkarb-page" data-visible="visible">
-                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionPOSkeyEdit">{at('POS key')}:</label></span>
-                            <input id="BarionPOSkeyEdit" name="barionposkey" value="{$barionposkey}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionAPIVersionEdit">{at('API verzió')}:</label></span>
-                            <input id="BarionAPIVersionEdit" name="barionapiversion" value="{$barionapiversion}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionPayeeEmailEdit">{at('Barionos fogadó email')}:</label></span>
-                            <input id="BarionPayeeEmailEdit" name="barionpayeeemail" value="{$barionpayeeemail}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionEnvironmentEdit">{at('Barion környezet')}:</label></span>
-                            <select id="BarionEnvironmentEdit" name="barionenvironment">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $barionenvironmentlist as $_fizmod}
-                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionFizmodEdit">{at('Barion fizetési mód')}:</label></span>
-                            <select id="BarionFizmodEdit" name="barionfizmod">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $barionfizmodlist as $_fizmod}
-                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionStatuszFizetesrevarEdit">{at('"Fizetésre vár" biz.státusz')}:</label></span>
-                            <select id="BarionStatuszFizetesrevarEdit" name="barionfizetesrevarstatusz">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $barionfizetesrevarstatuszlist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionStatuszFizetveEdit">{at('"Fizetve" biz.státusz')}:</label></span>
-                            <select id="BarionStatuszFizetveEdit" name="barionfizetvestatusz">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $barionfizetvestatuszlist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BarionStatuszRefundedEdit">{at('"Refunded" biz.státusz')}:</label></span>
-                            <select id="BarionStatuszRefundedEdit" name="barionrefundedstatusz">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $barionrefundedstatuszlist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
+                    <div id="BarionTab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionPOSkeyEdit">{at('POS key')}:</label></span>
+                                <input id="BarionPOSkeyEdit" name="barionposkey" value="{$barionposkey}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionAPIVersionEdit">{at('API verzió')}:</label></span>
+                                <input id="BarionAPIVersionEdit" name="barionapiversion" value="{$barionapiversion}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionPayeeEmailEdit">{at('Barionos fogadó email')}:</label></span>
+                                <input id="BarionPayeeEmailEdit" name="barionpayeeemail" value="{$barionpayeeemail}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionEnvironmentEdit">{at('Barion környezet')}:</label></span>
+                                <select id="BarionEnvironmentEdit" name="barionenvironment">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $barionenvironmentlist as $_fizmod}
+                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionFizmodEdit">{at('Barion fizetési mód')}:</label></span>
+                                <select id="BarionFizmodEdit" name="barionfizmod">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $barionfizmodlist as $_fizmod}
+                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionStatuszFizetesrevarEdit">{at('"Fizetésre vár" biz.státusz')}:</label></span>
+                                <select id="BarionStatuszFizetesrevarEdit" name="barionfizetesrevarstatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $barionfizetesrevarstatuszlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionStatuszFizetveEdit">{at('"Fizetve" biz.státusz')}:</label></span>
+                                <select id="BarionStatuszFizetveEdit" name="barionfizetvestatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $barionfizetvestatuszlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionStatuszRefundedEdit">{at('"Refunded" biz.státusz')}:</label></span>
+                                <select id="BarionStatuszRefundedEdit" name="barionrefundedstatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $barionrefundedstatuszlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {/if}
 
                 <div id="RendezvenyTab" class="mattkarb-page" data-visible="visible">
@@ -1669,7 +1684,8 @@
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="RendezvenyRegErtesitoEmailEdit">{at('Jelentkezés értesítés email')}:</label></span>
-                            <input id="RendezvenyRegErtesitoEmailEdit" name="rendezvenyregertesitoemail" value="{$rendezvenyregertesitoemail}" title="Vesszővel elválasztva">
+                            <input id="RendezvenyRegErtesitoEmailEdit" name="rendezvenyregertesitoemail" value="{$rendezvenyregertesitoemail}"
+                                   title="Vesszővel elválasztva">
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="RRegKoszonoSablonEdit">{at('Jelentkezés köszönő levél sablon')}:</label></span>
@@ -1743,7 +1759,8 @@
                             <td><select name="foxpostapiversion">
                                     <option value="">válasszon</option>
                                     {foreach $foxpostapiversionlist as $_fpapiversion}
-                                        <option value="{$_fpapiversion.id}"{if ($_fpapiversion.selected)} selected="selected"{/if}>{$_fpapiversion.caption}</option>
+                                        <option
+                                            value="{$_fpapiversion.id}"{if ($_fpapiversion.selected)} selected="selected"{/if}>{$_fpapiversion.caption}</option>
                                     {/foreach}
                                 </select></td>
                         </tr>
@@ -1818,7 +1835,8 @@
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="MiniCRMRendezvenyJelentkezesEdit">{at('Rendezvény modul')}:</label></span>
-                            <input id="MiniCRMRendezvenyJelentkezesEdit" name="minicrmrendezvenyjelentkezes" type="text" value="{$minicrmrendezvenyjelentkezes}">
+                            <input id="MiniCRMRendezvenyJelentkezesEdit" name="minicrmrendezvenyjelentkezes" type="text"
+                                   value="{$minicrmrendezvenyjelentkezes}">
                         </div>
                     </div>
                 </div>

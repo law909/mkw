@@ -2,7 +2,8 @@
 
 namespace mkw;
 
-class consts {
+class consts
+{
 
     const ASZFPDFName = 'aszf.pdf';
 
@@ -382,6 +383,7 @@ class consts {
     const DefaultTermek = 'defaulttermek';
 
     const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';
+    const MPTNGYSzimpoziumEloadasTipus = 'mptngyszimpoziumeloadastipus';
     const MPTNGYDatum1 = 'mptngydatum1';
     const MPTNGYDatum2 = 'mptngydatum2';
     const MPTNGYDatum3 = 'mptngydatum3';

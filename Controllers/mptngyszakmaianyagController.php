@@ -393,6 +393,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         if ($partner) {
             $filter = new FilterDescriptor();
             $filter->addFilter('tulajdonos', '=', $partner);
+            $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus));
 
             $anyagok = $this->getRepo()->getAll($filter);
             /** @var MPTNGYSzakmaianyag $anyag */

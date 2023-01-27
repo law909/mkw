@@ -10,14 +10,17 @@ use Entities\Szallitasimod;
 use Entities\Termek;
 use Entities\Uzletkoto;
 
-class setupController extends \mkwhelpers\Controller {
+class setupController extends \mkwhelpers\Controller
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Parameterek');
         parent::__construct($params);
     }
 
-    public function view() {
+    public function view()
+    {
         $repo = \mkw\store::getEm()->getRepository($this->getEntityName());
         $view = $this->createView('setup.tpl');
         $view->setVar('pagetitle', t('Beállítások'));
@@ -128,6 +131,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumTipus);
         $sza = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('mptngyszakmaianyagtipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumEloadasTipus);
+        $sza = new mptngyszakmaianyagtipusController($this->params);
+        $view->setVar('mptngyszatipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MPTNGYDatum1);
         $view->setVar(\mkw\consts::MPTNGYDatum1, ($p ? $p->getErtek() : ''));
@@ -561,32 +567,30 @@ class setupController extends \mkwhelpers\Controller {
         $inkid = $p ? $p->getErtek() : 0;
         $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
         if ($importnewkat) {
-            $view->setVar('importnewkat', array(
+            $view->setVar('importnewkat', [
                 'caption' => $importnewkat->getNev(),
                 'id' => $importnewkat->getId()
-            ));
-        }
-        else {
-            $view->setVar('importnewkat', array(
+            ]);
+        } else {
+            $view->setVar('importnewkat', [
                 'caption' => '',
                 'id' => ''
-            ));
+            ]);
         }
 
         $p = $repo->find(\mkw\consts::NoMinKeszletTermekkat);
         $inkid = $p ? $p->getErtek() : 0;
         $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
         if ($importnewkat) {
-            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, array(
+            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, [
                 'caption' => $importnewkat->getNev(),
                 'id' => $importnewkat->getId()
-            ));
-        }
-        else {
-            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, array(
+            ]);
+        } else {
+            $view->setVar(\mkw\consts::NoMinKeszletTermekkat, [
                 'caption' => '',
                 'id' => ''
-            ));
+            ]);
         }
         $p = $repo->find(\mkw\consts::NoMinKeszlet);
         $view->setVar(\mkw\consts::NoMinKeszlet, ($p ? $p->getErtek() : 0));
@@ -595,32 +599,30 @@ class setupController extends \mkwhelpers\Controller {
         $inkid = $p ? $p->getErtek() : 0;
         $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
         if ($mugenracekat) {
-            $view->setVar('mugenracekat', array(
+            $view->setVar('mugenracekat', [
                 'caption' => $mugenracekat->getNev(),
                 'id' => $mugenracekat->getId()
-            ));
-        }
-        else {
-            $view->setVar('mugenracekat', array(
+            ]);
+        } else {
+            $view->setVar('mugenracekat', [
                 'caption' => '',
                 'id' => ''
-            ));
+            ]);
         }
 
         $p = $repo->find(\mkw\consts::Web4DefaKatId);
         $inkid = $p ? $p->getErtek() : 0;
         $web4defakat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
         if ($web4defakat) {
-            $view->setVar('web4defakat', array(
+            $view->setVar('web4defakat', [
                 'caption' => $web4defakat->getNev(),
                 'id' => $web4defakat->getId()
-            ));
-        }
-        else {
-            $view->setVar('web4defakat', array(
+            ]);
+        } else {
+            $view->setVar('web4defakat', [
                 'caption' => '',
                 'id' => ''
-            ));
+            ]);
         }
 
         $p = $repo->find(\mkw\consts::ValtozatTipusMeret);
@@ -819,49 +821,50 @@ class setupController extends \mkwhelpers\Controller {
         $termek = new termekController($this->params);
         $view->setVar('defaulttermeklist', $termek->getSelectList(($tc ? $tc->getErtek() : 0)));
 
-        $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
-        $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
-        $view->setVar('stopreinteximporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
-        $view->setVar('stoptutisportimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'tutisport')));
-        $view->setVar('stopmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'maxutov')));
-        $view->setVar('stopsilkoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'silko')));
-        $view->setVar('stopbtechimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'btech')));
-        $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
-        $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
-        $view->setVar('stoplegavenueimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'legavenue')));
-        $view->setVar('stopnomadimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'nomad')));
-        $view->setVar('stopnikaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'nika')));
-        $view->setVar('stophaffner24importurl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'haffner24')));
-        $view->setVar('stopevonaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evona')));
-        $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evonaxml')));
-        $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
-        $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'gulf')));
-        $view->setVar('stopqmanimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'qman')));
-        $view->setVar('stopsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'smileebike')));
+        $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'kreativ']));
+        $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'delton']));
+        $view->setVar('stopreinteximporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'reintex']));
+        $view->setVar('stoptutisportimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'tutisport']));
+        $view->setVar('stopmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'maxutov']));
+        $view->setVar('stopsilkoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'silko']));
+        $view->setVar('stopbtechimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'btech']));
+        $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'kressgep']));
+        $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'kresstartozek']));
+        $view->setVar('stoplegavenueimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'legavenue']));
+        $view->setVar('stopnomadimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'nomad']));
+        $view->setVar('stopnikaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'nika']));
+        $view->setVar('stophaffner24importurl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'haffner24']));
+        $view->setVar('stopevonaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'evona']));
+        $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'evonaxml']));
+        $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'netpresso']));
+        $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'gulf']));
+        $view->setVar('stopqmanimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'qman']));
+        $view->setVar('stopsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'smileebike']));
 
-        $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
-        $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
-        $view->setVar('repairreinteximporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'reintex')));
-        $view->setVar('repairtutisportimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'tutisport')));
-        $view->setVar('repairmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'maxutov')));
-        $view->setVar('repairsilkoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'silko')));
-        $view->setVar('repairbtechimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'btech')));
-        $view->setVar('repairkressimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kress')));
-        $view->setVar('repairlegavenueimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'legavenue')));
-        $view->setVar('repairnomadimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'nomad')));
-        $view->setVar('repairnikaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'nika')));
-        $view->setVar('repairhaffner24importurl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'haffner24')));
-        $view->setVar('repairevonaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evona')));
-        $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evonaxml')));
-        $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
-        $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'gulf')));
-        $view->setVar('repairqmanimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'qman')));
-        $view->setVar('repairsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'smileebike')));
+        $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'kreativ']));
+        $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'delton']));
+        $view->setVar('repairreinteximporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'reintex']));
+        $view->setVar('repairtutisportimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'tutisport']));
+        $view->setVar('repairmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'maxutov']));
+        $view->setVar('repairsilkoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'silko']));
+        $view->setVar('repairbtechimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'btech']));
+        $view->setVar('repairkressimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'kress']));
+        $view->setVar('repairlegavenueimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'legavenue']));
+        $view->setVar('repairnomadimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'nomad']));
+        $view->setVar('repairnikaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'nika']));
+        $view->setVar('repairhaffner24importurl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'haffner24']));
+        $view->setVar('repairevonaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'evona']));
+        $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'evonaxml']));
+        $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'netpresso']));
+        $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'gulf']));
+        $view->setVar('repairqmanimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'qman']));
+        $view->setVar('repairsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'smileebike']));
 
         $view->printTemplateResult();
     }
 
-    private function setObj($par, $value, $specialchars = false) {
+    private function setObj($par, $value, $specialchars = false)
+    {
         $en = $this->getEntityName();
         /** @var \Entities\Parameterek $p */
         $p = \mkw\store::getEm()->getRepository($en)->find($par);
@@ -874,8 +877,7 @@ class setupController extends \mkwhelpers\Controller {
         if ($p) {
             $p->setErtek($value);
             $p->setSpecialchars($specialchars);
-        }
-        else {
+        } else {
             $p = new $en();
             $p->setId($par);
             $p->setErtek($value);
@@ -884,7 +886,8 @@ class setupController extends \mkwhelpers\Controller {
         \mkw\store::getEm()->persist($p);
     }
 
-    public function save() {
+    public function save()
+    {
         // tulaj
         $this->setObj(\mkw\consts::Tulajnev, $this->params->getStringRequestParam('tulajnev'));
         $this->setObj(\mkw\consts::Tulajirszam, $this->params->getStringRequestParam('tulajirszam'));
@@ -908,8 +911,7 @@ class setupController extends \mkwhelpers\Controller {
         $partner = $tulajpartner->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::Tulajpartner, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::Tulajpartner, '');
         }
 
@@ -917,8 +919,7 @@ class setupController extends \mkwhelpers\Controller {
         $partner = $tulajpartner->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::DefaultPartner, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::DefaultPartner, '');
         }
 
@@ -957,73 +958,70 @@ class setupController extends \mkwhelpers\Controller {
         $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, '');
         }
 
         $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('defaulttermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::DefaultTermek, $szkt->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::DefaultTermek, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('foxpostszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('tofszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::TOFSzallitasiMod, $szm->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::TOFSzallitasiMod, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('glsszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, $szm->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('glsfutarszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, $szm->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, '');
         }
 
         $belsouk = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouk', 0));
         if ($belsouk) {
             $this->setObj(\mkw\consts::BelsoUzletkoto, $belsouk->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BelsoUzletkoto, '');
         }
 
         $szallfeltsablon = \mkw\store::getEm()->getRepository(Statlap::class)->find($this->params->getIntRequestParam('szallitasifeltetelsablon', 0));
         if ($szallfeltsablon) {
             $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, $szallfeltsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, '');
         }
 
         $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('mptngyszimpoziumtipus', 0));
         if ($sza) {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, $sza->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, '');
+        }
+        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('mptngyszimpoziumeloadastipus', 0));
+        if ($sza) {
+            $this->setObj(\mkw\consts::MPTNGYSzimpoziumEloadasTipus, $sza->getId());
+        } else {
+            $this->setObj(\mkw\consts::MPTNGYSzimpoziumEloadasTipus, '');
         }
 
         $this->setObj(\mkw\consts::MPTNGYDatum1, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum1));
@@ -1108,105 +1106,103 @@ class setupController extends \mkwhelpers\Controller {
         $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('tanarelszamolassablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, '');
         }
         $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjonsenkisablon', 0));
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjonsenkiSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaNemjonsenkiSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjelentkeztekelegentanarnaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('nemjelentkeztekelegentanarnaksablon', 0)
+        );
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjelenteztekelegenTanarnakSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaNemjelenteztekelegenTanarnakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('nemjelentkeztekelegengyakorlonaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('nemjelentkeztekelegengyakorlonaksablon', 0)
+        );
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaNemjelentkeztekelegenGyakorlonakSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaNemjelentkeztekelegenGyakorlonakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('elegenjelentkeztektanarnaksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('elegenjelentkeztektanarnaksablon', 0)
+        );
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('jogabejelentkezeskoszonosablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('jogabejelentkezeskoszonosablon', 0)
+        );
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, '');
         }
-        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('jogaelmaradaskonyveloneksablon', 0));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('jogaelmaradaskonyveloneksablon', 0)
+        );
         if ($tanarelszsablon) {
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, $tanarelszsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, '');
         }
         $szamlalevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
         if ($szamlalevelsablon) {
             $this->setObj(\mkw\consts::SzamlalevelSablon, $szamlalevelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SzamlalevelSablon, '');
         }
 
         $eesablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('ertekelesertesitosablon', 0));
         if ($eesablon) {
             $this->setObj(\mkw\consts::ErtekelesErtesitoSablon, $eesablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ErtekelesErtesitoSablon, '');
         }
 
         $eesablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('ertekeleskerosablon', 0));
         if ($eesablon) {
             $this->setObj(\mkw\consts::ErtekelesKeroSablon, $eesablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ErtekelesKeroSablon, '');
         }
 
         $konyvelolevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('konyvelolevelsablon', 0));
         if ($konyvelolevelsablon) {
             $this->setObj(\mkw\consts::KonyvelolevelSablon, $konyvelolevelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::KonyvelolevelSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonfelszabadulthelyertesito', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('rendezvenysablonfelszabadulthelyertesito', 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito, '');
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonregkoszono', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, '');
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonregertesito', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonRegErtesito, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonRegErtesito, '');
         }
 
@@ -1215,72 +1211,77 @@ class setupController extends \mkwhelpers\Controller {
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablondijbekero', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonDijbekero, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonDijbekero, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonkezdesemlekezteto', 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam('rendezvenysablonkezdesemlekezteto', 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, '');
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('rendezvenysablonfizeteskoszono', 0));
         if ($levelsablon) {
             $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletFelszolitoSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletFelszolitoSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLefogjarniSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletLefogjarniSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletLefogjarniSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerletLefogjarniSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletLejartSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletLejartSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletLejartSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerletLejartSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaBerletDatumLejartSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletDatumLejartSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaBerletDatumLejartSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerletDatumLejartSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaLemondasKoszonoSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaLemondasKoszonoSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaLemondasKoszonoSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaLemondasKoszonoSablon, '');
         }
 
-        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam(\mkw\consts::JogaElmaradasErtesitoSablon, 0));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaElmaradasErtesitoSablon, 0)
+        );
         if ($levelsablon) {
             $this->setObj(\mkw\consts::JogaElmaradasErtesitoSablon, $levelsablon->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaElmaradasErtesitoSablon, '');
         }
 
@@ -1299,22 +1300,19 @@ class setupController extends \mkwhelpers\Controller {
         $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaorajegytermek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaOrajegyTermek, $vut->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaOrajegyTermek, null);
         }
         $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet4termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet4Termek, $vut->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerlet4Termek, null);
         }
         $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('jogaberlet10termek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, null);
         }
 
@@ -1326,44 +1324,38 @@ class setupController extends \mkwhelpers\Controller {
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('utanvetfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::UtanvetFizmod, $fizmod->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::SZEPFizmod, $fizmod->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SZEPFizmod, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('sportkartyafizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::SportkartyaFizmod, $fizmod->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SportkartyaFizmod, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('aycmfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::AYCMFizmod, $fizmod->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::AYCMFizmod, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('barionfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::BarionFizmod, $fizmod->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BarionFizmod, '');
         }
 
         $j = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('munkajelenlet', 0));
         if ($j) {
             $this->setObj(\mkw\consts::MunkaJelenlet, $j->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::MunkaJelenlet, '');
         }
 
@@ -1375,8 +1367,7 @@ class setupController extends \mkwhelpers\Controller {
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
-            }
-            else {
+            } else {
                 $this->setObj(\mkw\consts::OTPayFizmod, '');
             }
         }
@@ -1384,8 +1375,7 @@ class setupController extends \mkwhelpers\Controller {
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
-            }
-            else {
+            } else {
                 $this->setObj(\mkw\consts::MasterPassFizmod, '');
             }
         }
@@ -1434,123 +1424,111 @@ class setupController extends \mkwhelpers\Controller {
         $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {
             $this->setObj(\mkw\consts::MarkaCs, $markacs->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::MarkaCs, '');
         }
 
         $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('dencs', 0));
         if ($dencs) {
             $this->setObj(\mkw\consts::DENCs, $dencs->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::DENCs, '');
         }
         $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('epitoelemszamcs', 0));
         if ($dencs) {
             $this->setObj(\mkw\consts::EpitoelemszamCs, $dencs->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::EpitoelemszamCs, '');
         }
         $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('csomagoltmeretcs', 0));
         if ($dencs) {
             $this->setObj(\mkw\consts::CsomagoltmeretCs, $dencs->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::CsomagoltmeretCs, '');
         }
         $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('ajanlottkorosztalycs', 0));
         if ($dencs) {
             $this->setObj(\mkw\consts::AjanlottkorosztalyCs, $dencs->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::AjanlottkorosztalyCs, '');
         }
 
         $kiskercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kiskercimke', 0));
         if ($kiskercimke) {
             $this->setObj(\mkw\consts::KiskerCimke, $kiskercimke->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::KiskerCimke, '');
         }
 
         $nagykercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('nagykercimke', 0));
         if ($nagykercimke) {
             $this->setObj(\mkw\consts::NagykerCimke, $nagykercimke->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::NagykerCimke, '');
         }
 
-        $felvetelalattcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('felvetelalattcimke', 0));
+        $felvetelalattcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find(
+            $this->params->getIntRequestParam('felvetelalattcimke', 0)
+        );
         if ($felvetelalattcimke) {
             $this->setObj(\mkw\consts::FelvetelAlattCimke, $felvetelalattcimke->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::FelvetelAlattCimke, '');
         }
 
-        $felvetelalattpartnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find($this->params->getIntRequestParam('felvetelalattpartnertipus', 0));
+        $felvetelalattpartnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find(
+            $this->params->getIntRequestParam('felvetelalattpartnertipus', 0)
+        );
         if ($felvetelalattpartnertipus) {
             $this->setObj(\mkw\consts::FelvetelAlattTipus, $felvetelalattpartnertipus->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::FelvetelAlattTipus, '');
         }
 
         $spanyolcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));
         if ($spanyolcimke) {
             $this->setObj(\mkw\consts::SpanyolCimke, $spanyolcimke->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::SpanyolCimke, '');
         }
 
         $spanyolorszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('spanyolorszag', 0));
         if ($spanyolorszag) {
             $this->setObj(\mkw\consts::Spanyolorszag, $spanyolorszag->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::Spanyolorszag, '');
         }
         $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
         if ($orszag) {
             $this->setObj(\mkw\consts::Orszag, $orszag->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::Orszag, '');
         }
         $magyarorszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('magyarorszag', 0));
         if ($magyarorszag) {
             $this->setObj(\mkw\consts::Magyarorszag, $magyarorszag->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::Magyarorszag, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::ValtozatTipusSzin, $sz->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ValtozatTipusSzin, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusmeret', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::ValtozatTipusMeret, $sz->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ValtozatTipusMeret, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('rendezendovaltozat', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::RendezendoValtozat, $sz->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::RendezendoValtozat, '');
         }
 
@@ -1571,44 +1549,38 @@ class setupController extends \mkwhelpers\Controller {
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszfuggoben', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, '');
         }
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszteljesitheto', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, '');
         }
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszbackorder', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszBackorder, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BizonylatStatuszBackorder, '');
         }
         $this->setObj(\mkw\consts::MegrendelesFilterStatuszCsoport, $this->params->getStringRequestParam('megrendelesfilterstatuszcsoport'));
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionfizetesrevarstatusz', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BarionFizetesrevarStatusz, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BarionFizetesrevarStatusz, '');
         }
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionfizetvestatusz', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BarionFizetveStatusz, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BarionFizetveStatusz, '');
         }
         $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionrefundedstatusz', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BarionRefundedStatusz, $bsf->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::BarionRefundedStatusz, '');
         }
 
@@ -1619,16 +1591,14 @@ class setupController extends \mkwhelpers\Controller {
         if ($inkid) {
             $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::ImportNewKatId, $importnewkat->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ImportNewKatId, 0);
         }
         $inkid = $this->params->getIntRequestParam(\mkw\consts::NoMinKeszletTermekkat);
         if ($inkid) {
             $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::NoMinKeszletTermekkat, $importnewkat->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::ImportNewKatId, 0);
         }
         $this->setObj(\mkw\consts::NoMinKeszlet, $this->params->getBoolRequestParam(\mkw\consts::NoMinKeszlet));
@@ -1637,16 +1607,14 @@ class setupController extends \mkwhelpers\Controller {
         if ($inkid) {
             $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::MugenraceKatId, $mugenracekat->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::MugenraceKatId, 0);
         }
         $inkid = $this->params->getIntRequestParam('web4defakatid');
         if ($inkid) {
             $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::Web4DefaKatId, $importnewkat->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::Web4DefaKatId, 0);
         }
         //feed
@@ -1679,144 +1647,126 @@ class setupController extends \mkwhelpers\Controller {
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoBtech, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoBtech, '');
         }
         $x = $this->params->getIntRequestParam('gyartodelton', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoDelton, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoDelton, '');
         }
         $x = $this->params->getIntRequestParam('gyartokreativ', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoKreativ, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoKreativ, '');
         }
         $x = $this->params->getIntRequestParam('gyartomaxutov', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoMaxutov, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoMaxutov, '');
         }
         $x = $this->params->getIntRequestParam('gyartoreintex', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoReintex, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoReintex, '');
         }
         $x = $this->params->getIntRequestParam('gyartotutisport', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoTutisport, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoTutisport, '');
         }
         $x = $this->params->getIntRequestParam('gyartosilko', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoSilko, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoSilko, '');
         }
         $x = $this->params->getIntRequestParam('gyartokress', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoKress, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoKress, '');
         }
         $x = $this->params->getIntRequestParam('gyartolegavenue', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoLegavenue, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoLegavenue, '');
         }
         $x = $this->params->getIntRequestParam('gyartonomad', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoNomad, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoNomad, '');
         }
         $x = $this->params->getIntRequestParam('gyartonika', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoNika, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoNika, '');
         }
         $x = $this->params->getIntRequestParam('gyartohaffner24', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoHaffner24, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoHaffner24, '');
         }
         $x = $this->params->getIntRequestParam('gyartoevona', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoEvona, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoEvona, '');
         }
         $x = $this->params->getIntRequestParam('gyartoevonaxml', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoEvonaXML, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoEvonaXML, '');
         }
         $x = $this->params->getIntRequestParam('gyartonetpresso', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoNetpresso, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoNetpresso, '');
         }
         $x = $this->params->getIntRequestParam('gyartogulf', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoGulf, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoGulf, '');
         }
         $x = $this->params->getIntRequestParam('gyartoqman', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoQman, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoQman, '');
         }
         $x = $this->params->getIntRequestParam('gyartosmileebike', 0);
         $partner = $gyarto->find($x);
         if ($partner) {
             $this->setObj(\mkw\consts::GyartoSmileebike, $partner->getId());
-        }
-        else {
+        } else {
             $this->setObj(\mkw\consts::GyartoSmileebike, '');
         }
 
@@ -1860,7 +1810,6 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MugenraceFooldalSzoveg, $this->params->getStringRequestParam('mugenracefooldalszoveg'));
 
         \mkw\store::getEm()->flush();
-
     }
 
 }
