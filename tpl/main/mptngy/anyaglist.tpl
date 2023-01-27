@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=9"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=10"></script>
 {/block}
 
 {block "body"}
@@ -18,42 +18,41 @@
                     <div class="co-col-100 padding">
                         <h2>{t('Szakmai anyagok')}</h2>
                         <div x-show="!showEditor">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>{t('Cím')}</th>
-                                            <th>{t('Tulajdonos')}</th>
-                                            <th>{t('Típus')}</th>
-                                            <th>{t('Kezdés')}</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <template x-for="any in anyaglist" :key="any.id">
-                                        <tr :class="!any.allszerzoregistered ? 'red' : ''">
-                                            <td x-text="any.cim" data-label="{t('Cím')}"></td>
-                                            <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
-                                            <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
-                                            <td x-text="any.kezdodatumstr + ' - ' + any.kezdoido" data-label="{t('Kezdés')}"></td>
-                                            <td>
-                                                <button
-                                                    class="btn btn-secondary"
-                                                    @click="edit(any.id)"
-                                                    x-show="!any.vegleges && any.editable && loaded >= loadCount"
-                                                >{t('Módosítás')}</button>
-                                                <span x-show="any.vegleges">Beküldve</span>
-                                            </td>
-                                        </tr>
-                                    </template>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>{t('Cím')}</th>
+                                    <th>{t('Tulajdonos')}</th>
+                                    <th>{t('Típus')}</th>
+                                    <th>{t('Kezdés')}</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <template x-for="any in anyaglist" :key="any.id">
+                                    <tr :class="!any.allszerzoregistered ? 'red' : ''">
+                                        <td x-text="any.cim" data-label="{t('Cím')}"></td>
+                                        <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
+                                        <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
+                                        <td x-text="any.kezdodatumstr + ' - ' + any.kezdoido" data-label="{t('Kezdés')}"></td>
+                                        <td>
+                                            <button
+                                                class="btn btn-secondary"
+                                                @click="edit(any.id)"
+                                                x-show="!any.vegleges && any.editable && loaded >= loadCount"
+                                            >{t('Módosítás')}</button>
+                                            <span x-show="any.vegleges">Beküldve</span>
+                                        </td>
+                                    </tr>
+                                </template>
 
-                                    </tbody>
-                                </table>
+                                </tbody>
+                            </table>
                             <div class="co-control-row">
                                 <button
                                     x-cloak
                                     class="btn btn-primary"
                                     @click="createNew()"
-                                    x-show="sajatanyaglistLoaded && sajatanyaglist.length < 2"
                                 >{t('Új anyag')}</button>
                             </div>
                         </div>
@@ -76,11 +75,12 @@
                                 <input
                                     id="tulajEdit"
                                     class="co-input"
+                                    :class="validation.tulajdonosnev && !validation.tulajdonosnev.valid ? 'error' : ''"
                                     type="text"
                                     x-model="anyag.tulajdonosnev"
                                     disabled
                                 >
-                                <div class="co-error" x-text="validation.tulajdonosnev ? validation.tulajdonosnev.error : ''"></div>
+                                <div class="co-error" x-text="validation.tulajdonosnev && validation.tulajdonosnev.error"></div>
                             </div>
                             <div class="co-control-row">
                                 <label for="tipusEdit" class="co-label">{t('Típus')}</label>
@@ -98,7 +98,7 @@
                                         ></option>
                                     </template>
                                 </select>
-                                <div class="co-error" x-text="validation.tipus ? validation.tipus.error : ''"></div>
+                                <div class="co-error" x-text="validation.tipus && validation.tipus.error"></div>
                             </div>
                             <div class="co-control-row co-col-container">
                                 <div class="co-col co-col-50">
@@ -143,7 +143,7 @@
                                             @change="checkSzerzo(1)"
                                         >
                                         <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo1email ? validation.szerzo1email.error : ''"></div>
+                                        <div class="co-error" x-text="validation.szerzo1email && validation.szerzo1email.error"></div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
@@ -156,7 +156,7 @@
                                             @change="checkSzerzo(2)"
                                         >
                                         <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo2email ? validation.szerzo2email.error : ''"></div>
+                                        <div class="co-error" x-text="validation.szerzo2email && validation.szerzo2email.error"></div>
                                     </div>
                                 </div>
                                 <div class="co-control-row co-col-container">
@@ -171,7 +171,7 @@
                                             @change="checkSzerzo(3)"
                                         >
                                         <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo3email ? validation.szerzo3email.error : ''"></div>
+                                        <div class="co-error" x-text="validation.szerzo3email && validation.szerzo3email.error"></div>
                                     </div>
                                     <div class="co-col co-col-50">
                                         <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
@@ -184,7 +184,7 @@
                                             @change="checkSzerzo(4)"
                                         >
                                         <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo4email ? validation.szerzo4email.error : ''"></div>
+                                        <div class="co-error" x-text="validation.szerzo4email && validation.szerzo4email.error"></div>
                                     </div>
                                 </div>
                                 <div
@@ -201,7 +201,7 @@
                                         @change="checkSzerzo(5)"
                                     >
                                     <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
-                                    <div class="co-error" x-text="validation.szerzo5email ? validation.szerzo5email.error : ''"></div>
+                                    <div class="co-error" x-text="validation.szerzo5email && validation.szerzo5email.error"></div>
                                 </div>
                             </div>
                             <div
@@ -224,7 +224,7 @@
                                             ></option>
                                         </template>
                                     </select>
-                                    <div class="co-error" x-text="validation.eloadas1 ? validation.eloadas1.error : ''"></div>
+                                    <div class="co-error" x-text="validation.eloadas1 && validation.eloadas1.error"></div>
                                 </div>
                                 <div class="co-control-row">
                                     <label for="eloadas2Edit" class="co-label">{t('Előadás')} 2</label>
@@ -296,7 +296,7 @@
                                                 ></option>
                                             </template>
                                         </select>
-                                        <div class="co-error" x-text="validation.temakor1 ? validation.temakor1.error : ''"></div>
+                                        <div class="co-error" x-text="validation.temakor1 && validation.temakor1.error"></div>
                                     </div>
                                     <div class="co-col co-col-33">
                                         <label for="temakor2Edit" class="co-label">{t('Témakör')} 2</label>
@@ -343,7 +343,7 @@
                                             type="text"
                                             x-model="anyag.kulcsszo1"
                                         >
-                                        <div class="co-error" x-text="validation.kulcsszo1 ? validation.kulcsszo1.error : ''"></div>
+                                        <div class="co-error" x-text="validation.kulcsszo1 && validation.kulcsszo1.error"></div>
                                     </div>
                                     <div class="co-col co-col-33">
                                         <label for="kulcsszo2Edit" class="co-label">{t('Kulcsszó')} 2</label>
@@ -397,7 +397,7 @@
                                         rows="10"
                                         x-model="anyag.tartalom"
                                     ></textarea>
-                                    <div class="co-error" x-text="validation.tartalom ? validation.tartalom.error : ''"></div>
+                                    <div class="co-error" x-text="validation.tartalom && validation.tartalom.error"></div>
                                 </div>
                             </div>
                             <div class="co-control-row">

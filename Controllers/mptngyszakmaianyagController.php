@@ -24,7 +24,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\MPTNGYSzakmaianyag();
             $this->getEm()->detach($t);
@@ -101,6 +101,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
     /**
      * @param \Entities\MPTNGYSzakmaianyag $obj
+     *
      * @return \Entities\MPTNGYSzakmaianyag
      */
     public function setFields($obj, $pub = false)
@@ -334,17 +335,17 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
      *
      * @return array
      */
-    public function getSelectList($selid = null, $filter = array())
+    public function getSelectList($selid = null, $filter = [])
     {
         $f = new FilterDescriptor();
-        $rec = $this->getRepo()->getAll($f, array('cim' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAll($f, ['cim' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getCim(),
                 'selected' => ($sor->getId() == $selid)
-            );
+            ];
         }
         return $res;
     }
@@ -422,28 +423,81 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
     public function pubSave()
     {
+        $ret = ['success' => false];
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
+        $anyagid = $this->params->getIntRequestParam('id');
         if ($partner) {
-            $anyag = null;
-            if ($this->params->getIntRequestParam('id')) {
-                $anyag = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+            if ($this->params->getBoolRequestParam('vegleges')) {
+                $pc = new mptngypartnerController($this->params);
+                $ell = $pc->getPartnerInfoForCheck($partner, $anyagid);
+            } else {
+                $ell['success'] = true;
             }
-            if (!$anyag) {
-                $anyag = new MPTNGYSzakmaianyag();
+            if ($ell) {
+                if ($ell['success']) {
+                    $ret['success'] = true;
+                    $anyag = null;
+                    if ($anyagid) {
+                        $anyag = $this->getRepo()->find($anyagid);
+                    }
+                    if (!$anyag) {
+                        $anyag = new MPTNGYSzakmaianyag();
+                    }
+                    $anyag = $this->setSzerzoByEmail($anyag, 1);
+                    $anyag = $this->setSzerzoByEmail($anyag, 2);
+                    $anyag = $this->setSzerzoByEmail($anyag, 3);
+                    $anyag = $this->setSzerzoByEmail($anyag, 4);
+                    $anyag = $this->setSzerzoByEmail($anyag, 5);
+                    $anyag = $this->setFields($anyag, true);
+                    $anyag->setTulajdonos($partner);
+                    $this->getEm()->persist($anyag);
+                    $this->getEm()->flush();
+                } else {
+                    $msg = [];
+                    if (!$ell['elsoszerzo']) {
+                        $msg[] = t('Maximum két anyagnak lehet az első szerzője');
+                    }
+                    if (!$ell['szimpoziumelnok']) {
+                        $msg[] = t('Maximum egy szimpóziumnak lehet az elnöke');
+                    }
+                    if (!$ell['opponens']) {
+                        $msg[] = t('Maximum egy szimpóziumnak lehet az opponense');
+                    }
+                    if (!$ell['szerzo']) {
+                        $msg[] = t('Maximum öt anyagnak lehet a szerzője');
+                    }
+                    $ret['fields']['tulajdonosnev'] = [
+                        'valid' => false,
+                        'error' => implode(' ', $msg)
+                    ];
+                    if (!$ell['szerzo1']) {
+                        $ret['fields']['szerzo1email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo2']) {
+                        $ret['fields']['szerzo2email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo3']) {
+                        $ret['fields']['szerzo3email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo4']) {
+                        $ret['fields']['szerzo4email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                }
             }
-            $anyag = $this->setSzerzoByEmail($anyag, 1);
-            $anyag = $this->setSzerzoByEmail($anyag, 2);
-            $anyag = $this->setSzerzoByEmail($anyag, 3);
-            $anyag = $this->setSzerzoByEmail($anyag, 4);
-            $anyag = $this->setSzerzoByEmail($anyag, 5);
-            $anyag = $this->setFields($anyag, true);
-            $anyag->setTulajdonos($partner);
-            $this->getEm()->persist($anyag);
-            $this->getEm()->flush();
         }
-        echo json_encode([
-            'result' => 'ok'
-        ]);
+        echo json_encode($ret);
     }
 
 }

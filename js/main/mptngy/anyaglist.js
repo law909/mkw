@@ -27,6 +27,10 @@ document.addEventListener("alpine:init", () => {
             szerzo2email: ['optional', 'email'],
             szerzo3email: ['optional', 'email'],
             szerzo4email: ['optional', 'email'],
+        },
+        bekuldRules: {
+            szerzo5email: ['opponensrequired', 'opponensregistered'],
+            szerzo1email: ['allszerzoregistered'],
             eloadas1: ['eloadas'],
             tartalom: [
                 'required',
@@ -36,10 +40,6 @@ document.addEventListener("alpine:init", () => {
             temakor1: ['temakor'],
             kulcsszo1: ['kulcsszo'],
         },
-        bekuldRules: {
-            szerzo5email: ['opponensrequired', 'opponensregistered'],
-            szerzo1email: ['allszerzoregistered']
-        },
         initVars() {
             this.anyag = {
                 id: null,
@@ -48,6 +48,7 @@ document.addEventListener("alpine:init", () => {
                 kezdodatum: null,
                 kezdoido: null,
                 tipus: null,
+                szimpozium: false,
                 szerzo1email: null,
                 szerzo2email: null,
                 szerzo3email: null,
@@ -109,7 +110,7 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('maxLength', 'Legfeljebb [PARAM] karakter hosszú legyen');
 
             Iodine.rule('eloadas', () => {
-                if (this.szimpozium) {
+                if (this.anyag.szimpozium) {
                     let db = 0;
                     if (Iodine.assertRequired(this.anyag.eloadas1)) {
                         db++;
@@ -233,6 +234,7 @@ document.addEventListener("alpine:init", () => {
             this.$watch('anyag.tipus', (value) => {
                 const atl = this.anyagtipuslist.find(el => el.id === parseInt(value));
                 this.szimpozium = (atl && atl.szimpozium);
+                this.anyag.szimpozium = (atl && atl.szimpozium);
             });
         },
         checkSzerzo(num) {
@@ -272,9 +274,12 @@ document.addEventListener("alpine:init", () => {
                 })
                     .then((response) => response.json())
                     .then((respdata) => {
-                        if (respdata.result === 'ok') {
+                        if (respdata.success) {
                             this.showEditor = false;
                             this.getLists();
+                        } else {
+                            this.validation = respdata.fields;
+                            alert('Kérjük javítsa a pirossal jelölt mezőket.');
                         }
                     })
                     .catch((error) => {

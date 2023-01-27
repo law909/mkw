@@ -12,7 +12,11 @@
     {block "css"}{/block}
     <script src="/js/main/mptngy/iframeResizer.contentWindow.min.js"></script>
     <script defer src="/js/iodine/iodine.min.umd.js"></script>
-    <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
+    {if ($dev)}
+        <script defer src="/js/alpine/cdn.js?v=3.10.5"></script>
+    {else}
+        <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
+    {/if}
     {block "prescript"}{/block}
     {block "script"}{/block}
 </head>
