@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=7"></script>
+    <script src="/js/main/mptngy/login.js?v=8"></script>
 {/block}
 
 {block "body"}
@@ -89,6 +89,7 @@
                                     type="password"
                                     x-model="reg.jelszo2"
                                 >
+                                <div class="co-error" x-text="validation.jelszo2 && validation.jelszo2.error"></div>
                             </div>
                         </div>
                     </div>
@@ -272,12 +273,12 @@
                         </div>
                         <div class="co-control-row">
                             <div :class="validation.mptngyszerepkor && !validation.mptngyszerepkor.valid ? 'error-border' : ''">
-                            <template x-for="(szkor, i) in szerepkorlist">
+                                <template x-for="(szkor, i) in szerepkorlist">
                                     <label class="co-label">
                                         <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
                                         <span x-text="szkor.nev"></span>
                                     </label>
-                            </template>
+                                </template>
                             </div>
                             <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
                         </div>
