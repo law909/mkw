@@ -431,11 +431,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         if ($partner) {
             if ($this->params->getBoolRequestParam('vegleges')) {
                 $pc = new mptngypartnerController($this->params);
-                $ell = $pc->getPartnerInfoForCheck(
-                    $partner,
-                    $anyagid,
-                    $this->params->getIntRequestParam('tipus') != \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus)
-                );
+                $ell = $pc->getPartnerInfoForCheck($partner, $anyagid);
             } else {
                 $ell['success'] = true;
             }
@@ -461,25 +457,21 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 } else {
                     $msg = [];
                     if (!$ell['elsoszerzo']) {
-                        $msg[] = t('Maximum két anyagnak lehet az első szerzője');
-                    }
-                    if (!$ell['szimpoziumelnok']) {
-                        $msg[] = t('Maximum egy szimpóziumnak lehet az elnöke');
-                    }
-                    if (!$ell['opponens']) {
-                        $msg[] = t('Maximum egy szimpóziumnak lehet az opponense');
-                    }
-                    if (!$ell['szerzo']) {
-                        $msg[] = t('Maximum öt anyagnak lehet a szerzője');
-                    }
-                    $ret['fields']['tulajdonosnev'] = [
-                        'valid' => false,
-                        'error' => implode(' ', $msg)
-                    ];
-                    if (!$ell['szerzo1']) {
                         $ret['fields']['szerzo1email'] = [
                             'valid' => false,
-                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                            'error' => t('Maximum két anyagnak lehet az első szerzője')
+                        ];
+                    }
+                    if (!$ell['szimpoziumelnok']) {
+                        $ret['fields']['tulajdonosnev'] = [
+                            'valid' => false,
+                            'error' => t('Maximum egy szimpóziumnak lehet az elnöke')
+                        ];
+                    }
+                    if (!$ell['opponens']) {
+                        $ret['fields']['szerzo5email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum egy szimpóziumnak lehet az opponense')
                         ];
                     }
                     if (!$ell['szerzo2']) {

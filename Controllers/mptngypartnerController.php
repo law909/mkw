@@ -91,7 +91,7 @@ class mptngypartnerController extends partnerController
     {
         if ($email) {
             $filter = new FilterDescriptor();
-            $filter->addSql("(_xx.szerzo1email='$email') OR (_xx.szerzo2email='$email') OR (_xx.szerzo3='$email') OR (_xx.szerzo4='$email')");
+            $filter->addSql("(_xx.szerzo2email='$email') OR (_xx.szerzo3='$email') OR (_xx.szerzo4='$email')");
             if ($anyag) {
                 $filter->addFilter('id', '<>', $anyag);
             }
@@ -101,61 +101,59 @@ class mptngypartnerController extends partnerController
         return 0;
     }
 
-    public function getPartnerInfoForCheck($partner, $anyag, $checktulaj)
+    public function getPartnerInfoForCheck($partner, $anyag)
     {
         $res = [];
         if ($partner) {
             $partnerid = $partner->getId();
 
+            $isSzimpozium = $this->params->getIntRequestParam('tipus') == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus);
+            $isSzimpoziumEloadas = $this->params->getIntRequestParam('tipus') == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus);
+
+            $elsoszerzoemail = $this->params->getStringRequestParam('szerzo1email');
+            $opponensemail = $this->params->getStringRequestParam('szerzo5email');
+
             // egy résztvevő első szerző maximum kétszer lehet
-            if ($checktulaj) {
-                $filter = new FilterDescriptor();
+            $filter = new FilterDescriptor();
+            $filter->addFilter('szerzo1email', '=', $elsoszerzoemail);
+            if ($anyag) {
+                $filter->addFilter('id', '<>', $anyag);
+            }
+            $filter->addFilter('vegleges', '=', true);
+            $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
+            $res['elsoszerzo'] = $res['elsoszerzodb'] < 2;
+
+            // egy résztvevő egy esetben lehet szimpóziumi elnök
+            if ($isSzimpozium) {
+                $filter->clear();
                 $filter->addFilter('tulajdonos', '=', $partner);
                 if ($anyag) {
                     $filter->addFilter('id', '<>', $anyag);
                 }
-                $filter->addFilter('tipus', '<>', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus));
                 $filter->addFilter('vegleges', '=', true);
-                $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
+                $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
+                $res['szimpoziumelnokdb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
             } else {
-                $res['elsoszerzodb'] = 0;
+                $res['szimpoziumelnokdb'] = 0;
             }
-            $res['elsoszerzo'] = $res['elsoszerzodb'] < 2;
-
-            // egy résztvevő egy esetben lehet szimpóziumi elnök
-            $filter->clear();
-            $filter->addFilter('tulajdonos', '=', $partner);
-            if ($anyag) {
-                $filter->addFilter('id', '<>', $anyag);
-            }
-            $filter->addFilter('vegleges', '=', true);
-            $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
-            $res['szimpoziumelnokdb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
             $res['szimpoziumelnok'] = $res['szimpoziumelnokdb'] == 0;
 
             // egy résztvevő egy esetben lehet opponens
-            $filter->clear();
-            $filter->addFilter('szerzo5', '=', $partner);
-            if ($anyag) {
-                $filter->addFilter('id', '<>', $anyag);
+            if ($isSzimpozium) {
+                $filter->clear();
+                $filter->addFilter('szerzo5email', '=', $opponensemail);
+                if ($anyag) {
+                    $filter->addFilter('id', '<>', $anyag);
+                }
+                $filter->addFilter('vegleges', '=', true);
+                $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
+                $res['opponensdb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
+            } else {
+                $res['opponensdb'] = 0;
             }
-            $filter->addFilter('vegleges', '=', true);
-            $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
-            $res['opponensdb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
             $res['opponens'] = $res['opponensdb'] == 0;
 
             // Egy személy max. 5 helyen lehessen II-III-IV szerző
-            $filter->clear();
-            $filter->addSql("(_xx.szerzo1=$partnerid) OR (_xx.szerzo2=$partnerid) OR (_xx.szerzo3=$partnerid) OR (_xx.szerzo4=$partnerid)");
-            if ($anyag) {
-                $filter->addFilter('id', '<>', $anyag);
-            }
-            $filter->addFilter('vegleges', '=', true);
-            $res['szerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
-            $res['szerzo'] = $res['szerzodb'] < 5;
-
-            $res['szerzo1db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo1email'), $anyag);
-            $res['szerzo1'] = $res['szerzo1db'] < 5;
             $res['szerzo2db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo2email'), $anyag);
             $res['szerzo2'] = $res['szerzo2db'] < 5;
             $res['szerzo3db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo3email'), $anyag);
@@ -163,8 +161,8 @@ class mptngypartnerController extends partnerController
             $res['szerzo4db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo4email'), $anyag);
             $res['szerzo4'] = $res['szerzo4db'] < 5;
 
-            $res['success'] = $res['elsoszerzo'] && $res['szimpoziumelnok'] && $res['opponens'] && $res['szerzo'] &&
-                $res['szerzo1'] && $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'];
+            $res['success'] = $res['elsoszerzo'] && $res['szimpoziumelnok'] && $res['opponens'] &&
+                $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'];
         }
         return $res;
     }

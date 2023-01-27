@@ -131,21 +131,21 @@
                             </div>
 
                             <div class="co-row co-flex-dir-column">
+                                <div class="co-control-row">
+                                    <label for="szerzo1Edit" class="co-label">{t('Első szerző')} email</label>
+                                    <input
+                                        id="szerzo1Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo1email && !validation.szerzo1email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo1email"
+                                        @change="checkSzerzo(1)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo1email && validation.szerzo1email.error"></div>
+                                </div>
                                 <div class="co-control-row co-col-container">
-                                    <div class="co-col co-col-50">
-                                        <label for="szerzo1Edit" class="co-label">{t('Szerző')} 1 email</label>
-                                        <input
-                                            id="szerzo1Edit"
-                                            class="co-input"
-                                            :class="validation.szerzo1email && !validation.szerzo1email.valid ? 'error' : ''"
-                                            type="email"
-                                            x-model="anyag.szerzo1email"
-                                            @change="checkSzerzo(1)"
-                                        >
-                                        <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo1email && validation.szerzo1email.error"></div>
-                                    </div>
-                                    <div class="co-col co-col-50">
+                                    <div class="co-col co-col-33">
                                         <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
                                         <input
                                             id="szerzo2Edit"
@@ -158,9 +158,7 @@
                                         <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
                                         <div class="co-error" x-text="validation.szerzo2email && validation.szerzo2email.error"></div>
                                     </div>
-                                </div>
-                                <div class="co-control-row co-col-container">
-                                    <div class="co-col co-col-50">
+                                    <div class="co-col co-col-33">
                                         <label for="szerzo3Edit" class="co-label">{t('Szerző')} 3 email</label>
                                         <input
                                             id="szerzo3Edit"
@@ -173,7 +171,7 @@
                                         <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
                                         <div class="co-error" x-text="validation.szerzo3email && validation.szerzo3email.error"></div>
                                     </div>
-                                    <div class="co-col co-col-50">
+                                    <div class="co-col co-col-33">
                                         <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
                                         <input
                                             id="szerzo4Edit"
