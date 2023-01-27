@@ -101,20 +101,25 @@ class mptngypartnerController extends partnerController
         return 0;
     }
 
-    public function getPartnerInfoForCheck($partner, $anyag = null)
+    public function getPartnerInfoForCheck($partner, $anyag, $checktulaj)
     {
         $res = [];
         if ($partner) {
             $partnerid = $partner->getId();
 
             // egy résztvevő első szerző maximum kétszer lehet
-            $filter = new FilterDescriptor();
-            $filter->addFilter('tulajdonos', '=', $partner);
-            if ($anyag) {
-                $filter->addFilter('id', '<>', $anyag);
+            if ($checktulaj) {
+                $filter = new FilterDescriptor();
+                $filter->addFilter('tulajdonos', '=', $partner);
+                if ($anyag) {
+                    $filter->addFilter('id', '<>', $anyag);
+                }
+                $filter->addFilter('tipus', '<>', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus));
+                $filter->addFilter('vegleges', '=', true);
+                $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
+            } else {
+                $res['elsoszerzodb'] = 0;
             }
-            $filter->addFilter('vegleges', '=', true);
-            $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
             $res['elsoszerzo'] = $res['elsoszerzodb'] < 2;
 
             // egy résztvevő egy esetben lehet szimpóziumi elnök

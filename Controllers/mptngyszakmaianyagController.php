@@ -394,6 +394,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter = new FilterDescriptor();
             $filter->addFilter('tulajdonos', '=', $partner);
             $filter->addFilter('tipus', '=', \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus));
+            $filter->addFilter('vegleges', '=', true);
 
             $anyagok = $this->getRepo()->getAll($filter);
             /** @var MPTNGYSzakmaianyag $anyag */
@@ -430,7 +431,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         if ($partner) {
             if ($this->params->getBoolRequestParam('vegleges')) {
                 $pc = new mptngypartnerController($this->params);
-                $ell = $pc->getPartnerInfoForCheck($partner, $anyagid);
+                $ell = $pc->getPartnerInfoForCheck(
+                    $partner,
+                    $anyagid,
+                    $this->params->getIntRequestParam('tipus') != \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus)
+                );
             } else {
                 $ell['success'] = true;
             }
