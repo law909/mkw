@@ -276,7 +276,7 @@
                                 <template x-for="(szkor, i) in szerepkorlist">
                                     <label class="co-label">
                                         <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
-                                        <span x-text="szkor.nev"></span>
+                                        <span x-text="szkor.nevtr"></span>
                                     </label>
                                 </template>
                             </div>

@@ -18,6 +18,7 @@ class mptngyszerepkorController extends \mkwhelpers\JQGridController
         $t = [];
         $t['id'] = $obj->getId();
         $t['nev'] = $obj->getNev();
+        $t['nevtr'] = t($obj->getNev());
         return $t;
     }
 

@@ -41,7 +41,7 @@
                                                 @click="edit(any.id)"
                                                 x-show="!any.vegleges && any.editable && loaded >= loadCount"
                                             >{t('Módosítás')}</button>
-                                            <span x-show="any.vegleges">Beküldve</span>
+                                            <span x-show="any.vegleges">{t('Beküldve')}</span>
                                         </td>
                                     </tr>
                                 </template>
