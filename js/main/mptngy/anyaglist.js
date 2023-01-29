@@ -29,7 +29,7 @@ document.addEventListener("alpine:init", () => {
             szerzo4email: ['optional', 'email'],
         },
         bekuldRules: {
-            szerzo5email: ['opponensrequired', 'opponensregistered'],
+            szerzo5email: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
             szerzo1email: ['allszerzoregistered'],
             eloadas1: ['eloadas'],
             tartalom: [
@@ -124,11 +124,11 @@ document.addEventListener("alpine:init", () => {
                     if (Iodine.assertRequired(this.anyag.eloadas4)) {
                         db++;
                     }
-                    return db === 4 || db === 5;
+                    return db === 3 || db === 4;
                 }
                 return true;
             });
-            Iodine.setErrorMessage('eloadas', 'Szimpóziumban minimum 4 előadásnak kell lennie');
+            Iodine.setErrorMessage('eloadas', 'Szimpóziumban minimum 3 előadásnak kell lennie');
 
             Iodine.rule('temakor', () => {
                 return Iodine.assertRequired(this.anyag.temakor1) ||
@@ -173,6 +173,11 @@ document.addEventListener("alpine:init", () => {
                 return true;
             });
             Iodine.setErrorMessage('opponensregistered', 'Az opponensnek regisztrálnia kell');
+
+            Iodine.rule('opponensvstulaj', () => {
+
+            });
+            Iodine.setErrorMessage('opponensvstulaj', 'Az elnök és az opponens nem lehet ugyanaz');
 
             Iodine.rule('allszerzoregistered', () => {
                 let ret = true;
