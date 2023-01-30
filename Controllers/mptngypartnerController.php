@@ -91,7 +91,7 @@ class mptngypartnerController extends partnerController
     {
         if ($email) {
             $filter = new FilterDescriptor();
-            $filter->addSql("(_xx.szerzo2email='$email') OR (_xx.szerzo3='$email') OR (_xx.szerzo4='$email')");
+            $filter->addSql("(_xx.szerzo2email='$email') OR (_xx.szerzo3email='$email') OR (_xx.szerzo4email='$email')");
             if ($anyag) {
                 $filter->addFilter('id', '<>', $anyag);
             }
@@ -161,8 +161,29 @@ class mptngypartnerController extends partnerController
             $res['szerzo4db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo4email'), $anyag);
             $res['szerzo4'] = $res['szerzo4db'] < 5;
 
+            // az opponens nem lehet szerzője azoknak a szimpózium előadásoknak amelyiknek opponense
+            if ($isSzimpozium) {
+                $eloadasids = [];
+                for ($c = 1; $c < 5; $c++) {
+                    if ($this->params->getIntRequestParam("eloadas$c")) {
+                        $eloadasids[] = $this->params->getIntRequestParam("eloadas$c");
+                    }
+                }
+                $filter->clear();
+                $filter->addSql(
+                    "(_xx.szerzo1email='$opponensemail') OR (_xx.szerzo2email='$opponensemail') OR " .
+                    "(_xx.szerzo3email='$opponensemail') OR (_xx.szerzo4email='$opponensemail')"
+                );
+                $filter->addFilter('id', 'IN', $eloadasids);
+                $res['opponensszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
+            } else {
+                $res['opponensszerzodb'] = 0;
+            }
+            $res['opponensszerzo'] = $res['opponensszerzodb'] == 0;
+
             $res['success'] = $res['elsoszerzo'] && $res['szimpoziumelnok'] && $res['opponens'] &&
-                $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'];
+                $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'] &&
+                $res['opponensszerzo'];
         }
         return $res;
     }

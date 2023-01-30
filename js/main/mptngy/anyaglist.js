@@ -124,6 +124,7 @@ document.addEventListener("alpine:init", () => {
                     if (Iodine.assertRequired(this.anyag.eloadas4)) {
                         db++;
                     }
+                    console.log(this.anyag.eloadas1);
                     return db === 3 || db === 4;
                 }
                 return true;
@@ -174,9 +175,7 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('opponensregistered', 'Az opponensnek regisztrálnia kell');
 
-            Iodine.rule('opponensvstulaj', () => {
-
-            });
+            Iodine.rule('opponensvstulaj', () => this.anyag.szerzo5email !== this.me.email);
             Iodine.setErrorMessage('opponensvstulaj', 'Az elnök és az opponens nem lehet ugyanaz');
 
             Iodine.rule('allszerzoregistered', () => {

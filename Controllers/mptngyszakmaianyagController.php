@@ -492,6 +492,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                             'error' => t('Maximum öt anyagnak lehet a szerzője')
                         ];
                     }
+                    if (!$ell['opponensszerzo']) {
+                        $ret['fields']['szerzo5email'] = [
+                            'valid' => false,
+                            'error' => t('Nem lehet opponense olyan előadásnak, aminek a szerzője')
+                        ];
+                    }
                 }
             }
         }
