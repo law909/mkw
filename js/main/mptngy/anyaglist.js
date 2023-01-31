@@ -31,7 +31,7 @@ document.addEventListener("alpine:init", () => {
         bekuldRules: {
             szerzo5email: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
             szerzo1email: ['allszerzoregistered'],
-            eloadas1: ['eloadas'],
+            eloadas1: ['eloadas', 'eloadasnotsame'],
             tartalom: [
                 'required',
                 {rule: 'minLength', param: 1500},
@@ -112,16 +112,16 @@ document.addEventListener("alpine:init", () => {
             Iodine.rule('eloadas', () => {
                 if (this.anyag.szimpozium) {
                     let db = 0;
-                    if (Iodine.assertRequired(this.anyag.eloadas1)) {
+                    if (this.anyag.eloadas1) {
                         db++;
                     }
-                    if (Iodine.assertRequired(this.anyag.eloadas2)) {
+                    if (this.anyag.eloadas2) {
                         db++;
                     }
-                    if (Iodine.assertRequired(this.anyag.eloadas3)) {
+                    if (this.anyag.eloadas3) {
                         db++;
                     }
-                    if (Iodine.assertRequired(this.anyag.eloadas4)) {
+                    if (this.anyag.eloadas4) {
                         db++;
                     }
                     console.log(this.anyag.eloadas1);
@@ -131,28 +131,55 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('eloadas', 'Szimpóziumban minimum 3 előadásnak kell lennie');
 
+            Iodine.rule('eloadasnotsame', () => {
+                if (this.anyag.szimpozium) {
+                    let eloadasok = [],
+                        ret;
+                    if (this.anyag.eloadas1) {
+                        eloadasok[this.anyag.eloadas1]++;
+                    }
+                    if (this.anyag.eloadas2) {
+                        eloadasok[this.anyag.eloadas2]++;
+                    }
+                    if (this.anyag.eloadas3) {
+                        eloadasok[this.anyag.eloadas3]++;
+                    }
+                    if (this.anyag.eloadas4) {
+                        eloadasok[this.anyag.eloadas4]++;
+                    }
+                    eloadasok.forEach((val) => {
+                        if (val > 1) {
+                            ret = true;
+                        }
+                    });
+                    return ret;
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('eloadasnotsame', 'Az előadásoknak különbözniük kell');
+
             Iodine.rule('temakor', () => {
-                return Iodine.assertRequired(this.anyag.temakor1) ||
-                    Iodine.assertRequired(this.anyag.temakor2) ||
-                    Iodine.assertRequired(this.anyag.temakor3);
+                return (this.anyag.temakor1) ||
+                    (this.anyag.temakor2) ||
+                    (this.anyag.temakor3);
             });
             Iodine.setErrorMessage('temakor', 'Legalább egy témakört meg kell adni');
 
             Iodine.rule('kulcsszo', () => {
                 let db = 0;
-                if (Iodine.assertRequired(this.anyag.kulcsszo1)) {
+                if (this.anyag.kulcsszo1) {
                     db++;
                 }
-                if (Iodine.assertRequired(this.anyag.kulcsszo2)) {
+                if (this.anyag.kulcsszo2) {
                     db++;
                 }
-                if (Iodine.assertRequired(this.anyag.kulcsszo3)) {
+                if (this.anyag.kulcsszo3) {
                     db++;
                 }
-                if (Iodine.assertRequired(this.anyag.kulcsszo4)) {
+                if (this.anyag.kulcsszo4) {
                     db++;
                 }
-                if (Iodine.assertRequired(this.anyag.kulcsszo5)) {
+                if (this.anyag.kulcsszo5) {
                     db++;
                 }
                 return db >= 3;
