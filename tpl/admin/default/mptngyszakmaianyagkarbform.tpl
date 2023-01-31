@@ -70,8 +70,6 @@
                     <td><label for="szerzo1Edit">{at('Szerzők')}:</label></td>
                     <td>
                         <input id="szerzo1emailEdit" name="szerzo1email" type="email" value="{$egyed.szerzo1email}">
-                    </td>
-                    <td>
                         <select id="szerzo1Edit" name="szerzo1">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo1list as $_mk}
@@ -84,8 +82,6 @@
                     <td></td>
                     <td>
                         <input name="szerzo2email" type="email" value="{$egyed.szerzo2email}">
-                    </td>
-                    <td>
                         <select id="szerzo2Edit" name="szerzo2">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo2list as $_mk}
@@ -98,8 +94,6 @@
                     <td></td>
                     <td>
                         <input name="szerzo3email" type="email" value="{$egyed.szerzo3email}">
-                    </td>
-                    <td>
                         <select id="szerzo3Edit" name="szerzo3">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo3list as $_mk}
@@ -112,8 +106,6 @@
                     <td></td>
                     <td>
                         <input name="szerzo4email" type="email" value="{$egyed.szerzo4email}">
-                    </td>
-                    <td>
                         <select id="szerzo4Edit" name="szerzo4">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo4list as $_mk}
@@ -126,8 +118,6 @@
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
                         <input name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
-                    </td>
-                    <td>
                         <select id="szerzo5Edit" name="szerzo5" class="onlyszimpozium hidden">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo5list as $_mk}
