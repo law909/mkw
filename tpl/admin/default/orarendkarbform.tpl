@@ -16,6 +16,8 @@
                    {if ($egyed.bejelentkezeskell)}checked="checked"{/if}>{at('Bejelentkezés kell')}
             <input id="LemondhatoCheck" name="lemondhato" type="checkbox"
                    {if ($egyed.lemondhato)}checked="checked"{/if}>{at('Lemondható')}
+            <input id="OrarendbennincsCheck" name="orarendbennincs" type="checkbox"
+                   {if ($egyed.orarendbennincs)}checked="checked"{/if}>{at('Órarendben NEM látszik')}
             <table>
                 <tbody>
                 <tr>
@@ -38,7 +40,8 @@
                     <td><select id="JogateremEdit" name="jogaterem" required="required">
                             <option value="">{at('válasszon')}</option>
                             {foreach $jogateremlist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if} data-maxferohely="{$_tcs.maxferohely}">{$_tcs.caption}</option>
+                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}
+                                        data-maxferohely="{$_tcs.maxferohely}">{$_tcs.caption}</option>
                             {/foreach}
                         </select></td>
                 </tr>

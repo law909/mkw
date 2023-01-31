@@ -7,13 +7,13 @@ $(document).ready(function () {
         newWindowUrl: '/admin/orarend/viewkarb',
         saveUrl: '/admin/orarend/save',
         beforeShow: function (form, opt) {
-            $('#JogateremEdit').on('blur', function(e) {
+            $('#JogateremEdit').on('blur', function (e) {
                 var $mfe = $('#MaxferohelyEdit');
                 if ($mfe.val() * 1 === 0) {
                     $mfe.val($('option:selected', $(this)).data('maxferohely'));
                 }
             });
-            $('#JogaoratipusEdit').on('blur', function(e) {
+            $('#JogaoratipusEdit').on('blur', function (e) {
                 var $mfe = $('#NevEdit');
                 if ($mfe.val() === '') {
                     $mfe.val($('option:selected', $(this)).text());
@@ -44,9 +44,9 @@ $(document).ready(function () {
             },
             tablebody: {
                 url: '/admin/orarend/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                 },
-                onDoEditLink: function() {
+                onDoEditLink: function () {
                 }
             },
             karb: orarend
@@ -107,8 +107,7 @@ $(document).ready(function () {
                         });
                         break;
                 }
-            }
-            else {
+            } else {
                 dialogcenter.html('Válasszon ki legalább egy órát!').dialog({
                     resizable: false,
                     height: 140,
@@ -161,6 +160,9 @@ $(document).ready(function () {
             if ($this.attr('data-flag') === 'lemondhato') {
                 doit();
             }
+            if ($this.attr('data-flag') === 'orarendbennincs') {
+                doit();
+            }
             if ($this.attr('data-flag') === 'inaktiv') {
                 if (!$this.is('.ui-state-hover')) {
                     dialogcenter.html('Biztos, hogy inaktívvá teszi az órát? Az óra ezután a naptárból is kikerül.').dialog({
@@ -178,15 +180,13 @@ $(document).ready(function () {
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     doit();
                 }
             }
         })
 
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb($.extend({}, orarend, {independent: true}));
         }

@@ -15,7 +15,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * })
  * @ORM\HasLifecycleCallbacks
  */
-class Orarend {
+class Orarend
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -100,94 +101,113 @@ class Orarend {
     /** @ORM\Column(type="integer",nullable=true) */
     private $jutalekszazalek = 0;
 
-    public function __construct() {
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $orarendbennincs = false;
+
+    public function __construct()
+    {
         $this->bejelentkezesek = new ArrayCollection();
     }
 
-    public function getBejelentkezesek() {
+    public function getBejelentkezesek()
+    {
         return $this->bejelentkezesek;
     }
 
     /**
      * @return Dolgozo
      */
-    public function getDolgozo() {
+    public function getDolgozo()
+    {
         return $this->dolgozo;
     }
 
-    public function getDolgozoNev() {
+    public function getDolgozoNev()
+    {
         if ($this->dolgozo) {
             return $this->dolgozo->getNev();
         }
         return '';
     }
 
-    public function getDolgozoId() {
+    public function getDolgozoId()
+    {
         if ($this->dolgozo) {
             return $this->dolgozo->getId();
         }
         return '';
     }
 
-    public function getDolgozoEmail() {
+    public function getDolgozoEmail()
+    {
         if ($this->dolgozo) {
             return $this->dolgozo->getEmail();
         }
         return '';
     }
 
-    public function setDolgozo($dolgozo) {
+    public function setDolgozo($dolgozo)
+    {
         $this->dolgozo = $dolgozo;
     }
 
-    public function getJogaterem() {
+    public function getJogaterem()
+    {
         return $this->jogaterem;
     }
 
-    public function getJogateremNev() {
+    public function getJogateremNev()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getNev();
         }
         return '';
     }
 
-    public function getJogateremOrarendclass() {
+    public function getJogateremOrarendclass()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getOrarendclass();
         }
         return '';
     }
 
-    public function getJogateremId() {
+    public function getJogateremId()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getId();
         }
         return '';
     }
 
-    public function setJogaterem($jogaterem) {
+    public function setJogaterem($jogaterem)
+    {
         $this->jogaterem = $jogaterem;
     }
 
-    public function getJogaoratipus() {
+    public function getJogaoratipus()
+    {
         return $this->jogaoratipus;
     }
 
-    public function getJogaoratipusNev() {
+    public function getJogaoratipusNev()
+    {
         if ($this->jogaoratipus) {
             return $this->jogaoratipus->getNev();
         }
         return '';
     }
 
-    public function getJogaoratipusId() {
+    public function getJogaoratipusId()
+    {
         if ($this->jogaoratipus) {
             return $this->jogaoratipus->getId();
         }
         return '';
     }
 
-    public function setJogaoratipus($jogaoratipus) {
+    public function setJogaoratipus($jogaoratipus)
+    {
         $this->jogaoratipus = $jogaoratipus;
         if (!$this->nev) {
             $this->setNev($this->getJogaoratipusNev());
@@ -197,65 +217,75 @@ class Orarend {
     /**
      * @return mixed
      */
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
-    public function getNevTanar() {
-        $arr = array(
+    public function getNevTanar()
+    {
+        $arr = [
             $this->getNev(),
             $this->getDolgozoNev()
-        );
+        ];
         return implode(', ', $arr);
     }
 
     /**
      * @param mixed $nev
      */
-    public function setNev($nev) {
+    public function setNev($nev)
+    {
         $this->nev = $nev;
     }
 
     /**
      * @return mixed
      */
-    public function getMaxferohely() {
+    public function getMaxferohely()
+    {
         return $this->maxferohely;
     }
 
     /**
      * @param mixed $maxferohely
      */
-    public function setMaxferohely($maxferohely) {
+    public function setMaxferohely($maxferohely)
+    {
         $this->maxferohely = $maxferohely;
     }
 
     /**
      * @return mixed
      */
-    public function getNap() {
+    public function getNap()
+    {
         return $this->nap;
     }
 
-    public function getNapNev() {
+    public function getNapNev()
+    {
         return \mkw\store::getDayname($this->nap);
     }
 
     /**
      * @param mixed $nap
      */
-    public function setNap($nap) {
+    public function setNap($nap)
+    {
         $this->nap = $nap;
     }
 
     /**
      * @return mixed
      */
-    public function getKezdet() {
+    public function getKezdet()
+    {
         return $this->kezdet;
     }
 
-    public function getKezdetStr() {
+    public function getKezdetStr()
+    {
         if ($this->getKezdet()) {
             return $this->getKezdet()->format(\mkw\store::$TimeFormat);
         }
@@ -265,11 +295,11 @@ class Orarend {
     /**
      * @param mixed $kezdet
      */
-    public function setKezdet($kezdet) {
+    public function setKezdet($kezdet)
+    {
         if (is_a($kezdet, 'DateTime')) {
             $this->kezdet = $kezdet;
-        }
-        else {
+        } else {
             if ($kezdet == '') {
                 $kezdet = date(\mkw\store::$DateFormat);
             }
@@ -280,11 +310,13 @@ class Orarend {
     /**
      * @return mixed
      */
-    public function getVeg() {
+    public function getVeg()
+    {
         return $this->veg;
     }
 
-    public function getVegStr() {
+    public function getVegStr()
+    {
         if ($this->getVeg()) {
             return $this->getVeg()->format(\mkw\store::$TimeFormat);
         }
@@ -294,11 +326,11 @@ class Orarend {
     /**
      * @param mixed $veg
      */
-    public function setVeg($veg) {
+    public function setVeg($veg)
+    {
         if (is_a($veg, 'DateTime')) {
             $this->veg = $veg;
-        }
-        else {
+        } else {
             if ($veg == '') {
                 $veg = date(\mkw\store::$DateFormat);
             }
@@ -309,36 +341,42 @@ class Orarend {
     /**
      * @return mixed
      */
-    public function getInaktiv() {
+    public function getInaktiv()
+    {
         return $this->inaktiv;
     }
 
     /**
      * @param mixed $inaktiv
      */
-    public function setInaktiv($inaktiv) {
+    public function setInaktiv($inaktiv)
+    {
         $this->inaktiv = $inaktiv;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getDolgozoUrl() {
+    public function getDolgozoUrl()
+    {
         if ($this->dolgozo) {
             return $this->dolgozo->getUrl();
         }
         return '';
     }
 
-    public function getJogaoratipusUrl() {
+    public function getJogaoratipusUrl()
+    {
         if ($this->jogaoratipus) {
             return $this->jogaoratipus->getUrl();
         }
         return '';
     }
 
-    public function isDelelottKezdodik() {
+    public function isDelelottKezdodik()
+    {
         $noon = '12:00:00';
         return $this->getKezdetStr() <= $noon;
     }
@@ -346,99 +384,129 @@ class Orarend {
     /**
      * @return mixed
      */
-    public function getAtlagresztvevoszam() {
+    public function getAtlagresztvevoszam()
+    {
         return $this->atlagresztvevoszam;
     }
 
     /**
      * @param mixed $atlagresztvevoszam
      */
-    public function setAtlagresztvevoszam($atlagresztvevoszam) {
+    public function setAtlagresztvevoszam($atlagresztvevoszam)
+    {
         $this->atlagresztvevoszam = $atlagresztvevoszam;
     }
 
     /**
      * @return mixed
      */
-    public function getMultilang() {
+    public function getMultilang()
+    {
         return $this->multilang;
     }
 
     /**
      * @param mixed $multilang
      */
-    public function setMultilang($multilang) {
+    public function setMultilang($multilang)
+    {
         $this->multilang = $multilang;
     }
 
     /**
      * @return string
      */
-    public function getOnlineurl() {
+    public function getOnlineurl()
+    {
         return $this->onlineurl;
     }
 
     /**
      * @param string $onlineurl
      */
-    public function setOnlineurl($onlineurl) {
+    public function setOnlineurl($onlineurl)
+    {
         $this->onlineurl = $onlineurl;
     }
 
     /**
      * @return bool
      */
-    public function isBejelentkezeskell() {
+    public function isBejelentkezeskell()
+    {
         return $this->bejelentkezeskell;
     }
 
     /**
      * @param bool $bejelentkezeskell
      */
-    public function setBejelentkezeskell($bejelentkezeskell) {
+    public function setBejelentkezeskell($bejelentkezeskell)
+    {
         $this->bejelentkezeskell = $bejelentkezeskell;
     }
 
     /**
      * @return int
      */
-    public function getMinbejelentkezes() {
+    public function getMinbejelentkezes()
+    {
         return $this->minbejelentkezes;
     }
 
     /**
      * @param int $minbejelentkezes
      */
-    public function setMinbejelentkezes($minbejelentkezes) {
+    public function setMinbejelentkezes($minbejelentkezes)
+    {
         $this->minbejelentkezes = $minbejelentkezes;
     }
 
     /**
      * @return bool
      */
-    public function getLemondhato() {
+    public function getLemondhato()
+    {
         return $this->lemondhato;
     }
 
     /**
      * @param bool $lemondhato
      */
-    public function setLemondhato($lemondhato) {
+    public function setLemondhato($lemondhato)
+    {
         $this->lemondhato = $lemondhato;
     }
 
     /**
      * @return int
      */
-    public function getJutalekszazalek() {
+    public function getJutalekszazalek()
+    {
         return $this->jutalekszazalek;
     }
 
     /**
      * @param int $jutalekszazalek
      */
-    public function setJutalekszazalek($jutalekszazalek) {
+    public function setJutalekszazalek($jutalekszazalek)
+    {
         $this->jutalekszazalek = $jutalekszazalek;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrarendbennincs()
+    {
+        return $this->orarendbennincs;
+    }
+
+    /**
+     * @param bool $orarendbennincs
+     */
+    public function setOrarendbennincs($orarendbennincs): void
+    {
+        $this->orarendbennincs = $orarendbennincs;
     }
 
 }
