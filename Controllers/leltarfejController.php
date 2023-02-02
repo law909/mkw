@@ -358,8 +358,8 @@ class leltarfejController extends \mkwhelpers\MattableController
         if ($leltar) {
             $l = $this->getRepo('Entities\Leltarfej')->find($leltar);
             if ($l) {
-                $filenev = $_FILES['toimport']['name'];
-                move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
+                $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+                move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
 
                 $filetype = IOFactory::identify($filenev);
                 $reader = IOFactory::createReader($filetype);
