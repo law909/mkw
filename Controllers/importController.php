@@ -6012,6 +6012,8 @@ class importController extends \mkwhelpers\Controller
                 $dbtol = 1;
             }
 
+            \mkw\store::writelog(print_r($_FILES['toimport'], true));
+
             $filenev = $_FILES['toimport']['name'];
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
