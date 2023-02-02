@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\TermekFa;
 
 class megrendelesfejController extends bizonylatfejController
 {
@@ -371,7 +372,7 @@ class megrendelesfejController extends bizonylatfejController
         $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
         if ($backorder) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
-            $nominkeszletkat = \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat);
+            $nominkeszletkat = $this->getRepo(TermekFa::class)->find(\mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat))?->getKarkod();
 
             \mkw\store::writelog('nominkeszlet: ' . $nominkeszlet);
             \mkw\store::writelog('nominkeszlettermekkat: ' . $nominkeszletkat);
