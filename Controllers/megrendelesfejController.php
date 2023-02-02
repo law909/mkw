@@ -394,11 +394,10 @@ class megrendelesfejController extends bizonylatfejController
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
                             \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getCikkszam() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
-                            \mkw\store::writelog('isintermekkategoria start');
-                            \mkw\store::writelog(print_r($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat), true));
-                            \mkw\store::writelog('isintermekkategoria stop');
 
                             if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
+                                \mkw\store::writelog('keszlet: ' . $termekv->getKeszlet());
+                                \mkw\store::writelog('foglalt: ' . $termekv->getFoglaltMennyiseg());
                                 if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
                                     $vankeszlet = true;
                                     break;
