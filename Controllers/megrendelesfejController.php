@@ -5,53 +5,58 @@ namespace Controllers;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 
-class megrendelesfejController extends bizonylatfejController {
+class megrendelesfejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->biztipus = 'megrendeles';
         $this->setPageTitle('Megrendelés');
         $this->setPluralPageTitle('Megrendelések');
         parent::__construct($params);
-        $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
-        $this->getRepo()->addToBatches(array('foxpostlabel' => 'Foxpost címke letöltés'));
-        $this->getRepo()->addToBatches(array('glssend' => 'Küldés GLS-nek'));
-        $this->getRepo()->addToBatches(array('recalcprice' => 'Árak újra számolása'));
-        $this->getRepo()->addToBatches(array('sendemailek' => 'Email sablon küldés'));
+        $this->getRepo()->addToBatches(['foxpostsend' => 'Küldés Foxpostnak']);
+        $this->getRepo()->addToBatches(['foxpostlabel' => 'Foxpost címke letöltés']);
+        $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);
+        $this->getRepo()->addToBatches(['recalcprice' => 'Árak újra számolása']);
+        $this->getRepo()->addToBatches(['sendemailek' => 'Email sablon küldés']);
     }
 
-    public function setVars($view) {
+    public function setVars($view)
+    {
         parent::setVars($view);
         $view->setVar('datumtolfilter', null);
     }
 
-    public function getszamlakarb() {
+    public function getszamlakarb()
+    {
         $megrendszam = $this->params->getStringRequestParams('id');
         $szamlac = new SzamlafejController($this->params);
         $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 
-    public function doPrintelolegbekero() {
+    public function doPrintelolegbekero()
+    {
         $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
         if ($o) {
             $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             if ($biztip) {
                 if (\mkw\store::isSuperzoneB2B()) {
                     $view = $this->createView('biz_elolegbekero_eng.tpl');
-                }
-                else {
+                } else {
                     $view = $this->createView('biz_elolegbekero.tpl');
                 }
                 $this->setVars($view);
                 $view->setVar('egyed', $o->toLista());
-                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+                $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
                 echo $view->getTemplateResult();
             }
         }
     }
 
-    public function sendToFoxPost() {
+    public function sendToFoxPost()
+    {
         $ids = $this->params->getArrayRequestParam('ids');
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             /** @var \Entities\Bizonylatfej $megrendfej */
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
@@ -81,8 +86,7 @@ class megrendelesfejController extends bizonylatfejController {
                                     $megrendfej->setSysmegjegyzes('');
                                     $this->getEm()->persist($megrendfej);
                                     $this->getEm()->flush();
-                                }
-                                else {
+                                } else {
                                     $megrendfej->setSysmegjegyzes(json_encode($fpres['errors']));
                                     $this->getEm()->persist($megrendfej);
                                     $this->getEm()->flush();
@@ -95,10 +99,11 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    public function generateFoxpostLabel() {
+    public function generateFoxpostLabel()
+    {
         $ids = $this->params->getArrayRequestParam('ids');
         $clfids = [];
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             /** @var \Entities\Bizonylatfej $megrendfej */
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && $megrendfej->getFoxpostBarcode()) {
@@ -109,7 +114,7 @@ class megrendelesfejController extends bizonylatfejController {
             $cstc = new csomagterminalController(null);
             $res = $cstc->generateFoxpostLabels($clfids);
             if ($res && $res['success']) {
-                foreach($ids as $id) {
+                foreach ($ids as $id) {
                     /** @var \Entities\Bizonylatfej $megrendfej */
                     $megrendfej = $this->getRepo()->find($id);
                     $megrendfej->setSimpleedit(true);
@@ -118,9 +123,8 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
                 }
-            }
-            else {
-                foreach($ids as $id) {
+            } else {
+                foreach ($ids as $id) {
                     /** @var \Entities\Bizonylatfej $megrendfej */
                     $megrendfej = $this->getRepo()->find($id);
                     $megrendfej->setSimpleedit(true);
@@ -132,7 +136,8 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    private function _sendToGLS($glsmegrend, $pdfname) {
+    private function _sendToGLS($glsmegrend, $pdfname)
+    {
         $glsapi = new \mkwhelpers\GLSAPI([
                 'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
                 'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
@@ -162,20 +167,20 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    public function sendToGLS() {
+    public function sendToGLS()
+    {
         $ids = $this->params->getArrayRequestParam('ids');
         $db = 0;
         $pdfname = false;
         $glsmegrend = [];
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             /** @var Bizonylatfej $megrendfej */
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej
                 && (\mkw\store::isGLSSzallitasimod($megrendfej->getSzallitasimodId())
                     || \mkw\store::isGLSFutarSzallitasimod($megrendfej->getSzallitasimodId()))
                 && (!$megrendfej->getGlsparcelid())
-            )
-            {
+            ) {
                 if (!$pdfname) {
                     $pdfname = $megrendfej->getSanitizedId() . '_parcel_label.pdf';
                 }
@@ -194,7 +199,8 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    public function delGLSParcel() {
+    public function delGLSParcel()
+    {
         $id = $this->params->getStringRequestParam('id');
         /** @var \Entities\Bizonylatfej $megrendfej */
         $megrendfej = $this->getRepo()->find($id);
@@ -219,7 +225,8 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    public function backOrder() {
+    public function backOrder()
+    {
         $id = $this->params->getStringRequestParam('id');
         $regibiz = $this->getRepo()->find($id);
         if ($regibiz) {
@@ -232,7 +239,7 @@ class megrendelesfejController extends bizonylatfejController {
                 $ujdb = 0;
                 $regidb = 0;
                 /** @var \Entities\Bizonylattetel $regitetel */
-                foreach($regibiz->getBizonylattetelek() as $regitetel) {
+                foreach ($regibiz->getBizonylattetelek() as $regitetel) {
                     /** @var \Entities\Termek $t */
                     $t = $regitetel->getTermek();
                     if ($t && $t->getMozgat()) {
@@ -260,8 +267,7 @@ class megrendelesfejController extends bizonylatfejController {
                         if ($keszlet > 0) {
                             $regidb++;
                         }
-                    }
-                    else {
+                    } else {
                         $regidb++;
                     }
                 }
@@ -269,22 +275,20 @@ class megrendelesfejController extends bizonylatfejController {
                     $result = 0;
                     if ($ujdb == 0) {
                         $regibiz->setBizonylatstatusz($teljesitheto);
-                        foreach($regibiz->getBizonylattetelek() AS $regitetel) {
+                        foreach ($regibiz->getBizonylattetelek() as $regitetel) {
                             $regitetel->fillEgysar();
                             $regitetel->calc();
                             $this->getEm()->persist($regitetel);
                         }
-                    }
-                    elseif ($regidb == 0) {
+                    } elseif ($regidb == 0) {
                         $regibiz->setBizonylatstatusz($backorder);
                         $result = 1;
                     }
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
-                    echo json_encode(array('refresh' => $result));
-                }
-                else {
+                    echo json_encode(['refresh' => $result]);
+                } else {
                     $ujbiz = new \Entities\Bizonylatfej();
                     $ujbiz->duplicateFrom($regibiz);
                     $ujbiz->clearId();
@@ -293,7 +297,7 @@ class megrendelesfejController extends bizonylatfejController {
                     $ujbiz->setKelt();
                     $ujbiz->setBizonylatstatusz($backorder);
                     /** @var \Entities\Bizonylattetel $regitetel */
-                    foreach($regibiz->getBizonylattetelek() as $regitetel) {
+                    foreach ($regibiz->getBizonylattetelek() as $regitetel) {
                         /** @var \Entities\Termek $t */
                         $t = $regitetel->getTermek();
                         if ($t && $t->getMozgat()) {
@@ -321,7 +325,7 @@ class megrendelesfejController extends bizonylatfejController {
                             $ujtetel->duplicateFrom($regitetel);
                             $ujtetel->clearCreated();
                             $ujtetel->clearLastmod();
-                            foreach($regitetel->getTranslations() as $trans) {
+                            foreach ($regitetel->getTranslations() as $trans) {
                                 $ujtrans = clone $trans;
                                 $ujtetel->addTranslation($ujtrans);
                                 $this->getEm()->persist($ujtrans);
@@ -333,15 +337,13 @@ class megrendelesfejController extends bizonylatfejController {
                             if ($keszlet <= 0) {
                                 $regibiz->removeBizonylattetel($regitetel);
                                 $this->getEm()->remove($regitetel);
-                            }
-                            else {
+                            } else {
                                 $regitetel->setMennyiseg($keszlet);
                                 $regitetel->fillEgysar();
                                 $regitetel->calc();
                                 $this->getEm()->persist($regitetel);
                             }
-                        }
-                        else {
+                        } else {
                             $regitetel->fillEgysar();
                             $regitetel->calc();
                             $this->getEm()->persist($regitetel);
@@ -352,32 +354,33 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->persist($ujbiz);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
-                    echo json_encode(array('refresh' => 1));
+                    echo json_encode(['refresh' => 1]);
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $this->getEm()->rollback();
                 throw $e;
             }
-        }
-        else {
-            echo json_encode(array('refresh' => 0));
+        } else {
+            echo json_encode(['refresh' => 0]);
         }
     }
 
-    public function getTeljesithetoBackorderLista() {
-        $ret = array();
+    public function getTeljesithetoBackorderLista()
+    {
+        $ret = [];
         $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
         if ($backorder) {
-
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat);
+
+            \mkw\store::writelog('nominkeszlet: ' . $nominkeszlet);
+            \mkw\store::writelog('nominkeszlettermekkat: ' . $nominkeszletkat);
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
             $filter->addFilter('rontott', '=', false);
-            $fejek = $this->getRepo()->getWithTetelek($filter, array('hatarido' => 'ASC'));
+            $fejek = $this->getRepo()->getWithTetelek($filter, ['hatarido' => 'ASC']);
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {
@@ -388,6 +391,11 @@ class megrendelesfejController extends bizonylatfejController {
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
+                            \mkw\store::writelog('termekv: ' . $termekv->getAdatTipus1Nev() . ' ' . $termekv->getAdatTipus2Nev());
+                            \mkw\store::writelog('isintermekkategoria start');
+                            \mkw\store::writelog($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat));
+                            \mkw\store::writelog('isintermekkategoria stop');
+
                             if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
                                 if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
                                     $vankeszlet = true;
@@ -399,8 +407,7 @@ class megrendelesfejController extends bizonylatfejController {
                                     break;
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             $termek = $tetel->getTermek();
                             if ($termek) {
                                 if ($nominkeszlet && $termek->isInTermekKategoria($nominkeszletkat)) {
@@ -418,19 +425,19 @@ class megrendelesfejController extends bizonylatfejController {
                         }
                     }
                     if ($vankeszlet) {
-                        $ret[] = array(
+                        $ret[] = [
                             'id' => $fej->getId(),
                             'kelt' => $fej->getKeltStr(),
                             'hatarido' => $fej->getHataridoStr(),
                             'partnernev' => $fej->getPartnernev(),
-                            'printurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejprint', false, array(), array(
+                            'printurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejprint', false, [], [
                                 'id' => $fej->getId()
-                            )),
-                            'editurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejviewkarb', false, array(), array(
+                            ]),
+                            'editurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejviewkarb', false, [], [
                                 'id' => $fej->getId(),
                                 'oper' => 'edit'
-                            ))
-                        );
+                            ])
+                        ];
                     }
                 }
             }
@@ -457,8 +464,7 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->getEm()->rollback();
                     throw $e;
                 }
