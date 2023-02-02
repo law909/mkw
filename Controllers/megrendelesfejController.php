@@ -232,7 +232,7 @@ class megrendelesfejController extends bizonylatfejController
         $regibiz = $this->getRepo()->find($id);
         if ($regibiz) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
-            $nominkeszletkat = \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat);
+            $nominkeszletkat = $this->getRepo(TermekFa::class)->find(\mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat))?->getKarkod();
             $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
             $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
             $this->getEm()->beginTransaction();
@@ -378,26 +378,18 @@ class megrendelesfejController extends bizonylatfejController
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
             $filter->addFilter('rontott', '=', false);
-            $filter->addFilter('id', '=', 'MR2023/000106');
             $fejek = $this->getRepo()->getWithTetelek($filter, ['hatarido' => 'ASC']);
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {
-                    \mkw\store::writelog($fej->getId());
-
                     $vankeszlet = false;
                     $tetelek = $fej->getBizonylattetelek();
                     /** @var \Entities\Bizonylattetel $tetel */
                     foreach ($tetelek as $tetel) {
-                        \mkw\store::writelog($tetel->getId());
                         /** @var \Entities\TermekValtozat $termekv */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getCikkszam() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
-
                             if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
-                                \mkw\store::writelog('keszlet: ' . $termekv->getKeszlet());
-                                \mkw\store::writelog('foglalt: ' . $termekv->getFoglaltMennyiseg());
                                 if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
                                     $vankeszlet = true;
                                     break;

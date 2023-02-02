@@ -3438,11 +3438,6 @@ class Termek
 
     public function isInTermekKategoria($kat)
     {
-        \mkw\store::writelog('kat: ' . $kat);
-        \mkw\store::writelog('fakarkod1: ' . $this->termekfa1karkod);
-        \mkw\store::writelog('fakarkod2: ' . $this->termekfa2karkod);
-        \mkw\store::writelog('fakarkod3: ' . $this->termekfa3karkod);
-
         return str_starts_with($this->termekfa1karkod, $kat) ||
             str_starts_with($this->termekfa2karkod, $kat) ||
             str_starts_with($this->termekfa3karkod, $kat);
