@@ -2562,7 +2562,7 @@ class importController extends \mkwhelpers\Controller
                 \curl_close($ch);
             } else {
                 if (\mkw\store::isDeveloper()) {
-                    move_uploaded_file($_FILES['toimport']['tmp_name'], 'reintex.csv');
+                    move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath('reintex.csv'));
                 } else {
                     $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
                     $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'w');
@@ -2944,7 +2944,7 @@ class importController extends \mkwhelpers\Controller
             $createuj = $this->params->getBoolRequestParam('createuj', false);
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
-            move_uploaded_file($_FILES['toimport']['tmp_name'], 'tutisportimport.csv');
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath('tutisportimport.csv'));
 
             $fh = fopen('tutisportimport.csv', 'r');
             if ($fh) {
@@ -3509,7 +3509,7 @@ class importController extends \mkwhelpers\Controller
             }
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -3695,7 +3695,7 @@ class importController extends \mkwhelpers\Controller
             }
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -4010,7 +4010,7 @@ class importController extends \mkwhelpers\Controller
             }
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -4090,7 +4090,7 @@ class importController extends \mkwhelpers\Controller
             }
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -4249,8 +4249,8 @@ class importController extends \mkwhelpers\Controller
     {
         $sep = ';';
 
-        move_uploaded_file($_FILES['vaterarendeles']['tmp_name'], 'vaterarendeles.csv');
-        move_uploaded_file($_FILES['vateratermek']['tmp_name'], 'vateratermek.csv');
+        move_uploaded_file($_FILES['vaterarendeles']['tmp_name'], \mkw\store::storagePath('vaterarendeles.csv'));
+        move_uploaded_file($_FILES['vateratermek']['tmp_name'], \mkw\store::storagePath('vateratermek.csv'));
 
         $fhrendeles = fopen('vaterarendeles.csv', 'r');
         $fhtermek = fopen('vateratermek.csv', 'r');
@@ -5058,7 +5058,7 @@ class importController extends \mkwhelpers\Controller
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -6015,7 +6015,7 @@ class importController extends \mkwhelpers\Controller
             \mkw\store::writelog(print_r($_FILES['toimport'], true));
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -6098,7 +6098,7 @@ class importController extends \mkwhelpers\Controller
             }
 
             $filenev = $_FILES['toimport']['name'];
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -6534,7 +6534,7 @@ class importController extends \mkwhelpers\Controller
         }
 
         $filenev = $_FILES['toimport']['name'];
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
