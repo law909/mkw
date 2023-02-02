@@ -391,12 +391,13 @@ class megrendelesfejController extends bizonylatfejController
                     $tetelek = $fej->getBizonylattetelek();
                     /** @var \Entities\Bizonylattetel $tetel */
                     foreach ($tetelek as $tetel) {
+                        \mkw\store::writelog($tetel->getTermek()?->getCikkszam());
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
                             \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getCikkszam() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
                             \mkw\store::writelog('isintermekkategoria start');
-                            \mkw\store::writelog($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat));
+                            \mkw\store::writelog(print_r($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat), true));
                             \mkw\store::writelog('isintermekkategoria stop');
 
                             if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
