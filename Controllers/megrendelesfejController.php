@@ -374,9 +374,6 @@ class megrendelesfejController extends bizonylatfejController
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = $this->getRepo(TermekFa::class)->find(\mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat))?->getKarkod();
 
-            \mkw\store::writelog('nominkeszlet: ' . $nominkeszlet);
-            \mkw\store::writelog('nominkeszlettermekkat: ' . $nominkeszletkat);
-
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
@@ -392,7 +389,7 @@ class megrendelesfejController extends bizonylatfejController
                     $tetelek = $fej->getBizonylattetelek();
                     /** @var \Entities\Bizonylattetel $tetel */
                     foreach ($tetelek as $tetel) {
-                        \mkw\store::writelog($tetel->getTermek()?->getCikkszam());
+                        \mkw\store::writelog($tetel->getId());
                         /** @var \Entities\TermekValtozat $termekv */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
