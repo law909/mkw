@@ -7,11 +7,13 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class leltarfejController extends \mkwhelpers\MattableController {
+class leltarfejController extends \mkwhelpers\MattableController
+{
 
     private $raktarnev;
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Leltarfej');
         $this->setKarbFormTplName('leltarfejkarbform.tpl');
         $this->setKarbTplName('leltarfejkarb.tpl');
@@ -20,7 +22,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    public function viewExport() {
+    public function viewExport()
+    {
         $id = $this->params->getRequestParam('leltar', 0);
 
         $leltarfej = $this->getRepo()->findWithJoins($id);
@@ -35,7 +38,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function viewImport() {
+    public function viewImport()
+    {
         $id = $this->params->getRequestParam('leltar', 0);
 
         $leltarfej = $this->getRepo()->findWithJoins($id);
@@ -47,8 +51,9 @@ class leltarfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Leltarfej();
             $this->getEm()->detach($t);
@@ -64,45 +69,51 @@ class leltarfejController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Leltarfej $obj
+     *
      * @return \Entities\Leltarfej
      */
-    protected function setFields($obj, $parancs, $subject = 'minden') {
-
+    protected function setFields($obj, $parancs, $subject = 'minden')
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setNyitas();
 
         $r = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($r) {
             $obj->setRaktar($r);
-        }
-        else {
+        } else {
             $obj->removeRaktar();
         }
 
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('leltarfejlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
-            $filter->addFilter(array('nev','keresztnev','vezeteknev','szallnev'), 'LIKE', '%' . $fv . '%');
+            $filter->addFilter(['nev', 'keresztnev', 'vezeteknev', 'szallnev'], 'LIKE', '%' . $fv . '%');
         }
         if (!is_null($this->params->getRequestParam('raktarfilter', null))) {
-            $filter->addFilter('raktar' , '=', $this->params->getIntRequestParam('raktarfilter'));
+            $filter->addFilter('raktar', '=', $this->params->getIntRequestParam('raktarfilter'));
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'leltarfejlista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('leltarfejlista.tpl');
 
         $view->setVar('pagetitle', t('Leltárak'));
@@ -113,7 +124,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function _getkarb($tplname) {
+    public function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -129,21 +141,23 @@ class leltarfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getSelectList($selid = null, $filter = array()) {
-        $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null, $filter = [])
+    {
+        $rec = $this->getRepo()->getAllForSelectList($filter, ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor['id'],
                 'caption' => $sor['nev'],
                 'nev' => $sor['nev'],
                 'selected' => ($sor['id'] == $selid)
-            );
+            ];
         }
         return $res;
     }
 
-    protected function createFilter() {
+    protected function createFilter()
+    {
         $leltar = $this->params->getIntRequestParam('leltarid');
         if ($leltar) {
             $l = $this->getRepo('Entities\Leltarfej')->find($leltar);
@@ -161,8 +175,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
 
         if ($foglalas) {
             $filter->addSql('((bt.mozgat=1) OR (bt.foglal=1))');
-        }
-        else {
+        } else {
             $filter->addFilter('bt.mozgat', '=', true);
         }
         if ($raktar) {
@@ -171,26 +184,29 @@ class leltarfejController extends \mkwhelpers\MattableController {
 
         return $filter;
     }
-    protected function createTermekFilter() {
+
+    protected function createTermekFilter()
+    {
         $filter = new FilterDescriptor();
         $fv = $this->params->getArrayRequestParam('fafilter');
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
 
         return $filter;
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('id', 'termekvaltozat_id');
@@ -224,7 +240,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
 
         $termekfilter = $this->createTermekFilter();
 
-        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+        $q = $this->getEm()->createNativeQuery(
+            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -234,7 +251,9 @@ class leltarfejController extends \mkwhelpers\MattableController {
             . $translationjoin
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
-            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2', $rsm);
+            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2',
+            $rsm
+        );
 
         $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
         $d = $q->getScalarResult();
@@ -254,7 +273,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $valutanem = $as[1];
-        $ret = array();
+        $ret = [];
         foreach ($d as $sor) {
             if ($as) {
                 /** @var \Entities\Termek $t */
@@ -278,9 +297,10 @@ class leltarfejController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    public function export() {
-
-        function x($o) {
+    public function export()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -332,14 +352,14 @@ class leltarfejController extends \mkwhelpers\MattableController {
         \unlink($filepath);
     }
 
-    public function import() {
+    public function import()
+    {
         $leltar = $this->params->getIntRequestParam('leltarid');
         if ($leltar) {
             $l = $this->getRepo('Entities\Leltarfej')->find($leltar);
             if ($l) {
-
                 $filenev = $_FILES['toimport']['name'];
-                move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+                move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath($filenev));
 
                 $filetype = IOFactory::identify($filenev);
                 $reader = IOFactory::createReader($filetype);
@@ -357,7 +377,9 @@ class leltarfejController extends \mkwhelpers\MattableController {
                         if ($valtozatid) {
                             $valtozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
                             if ($valtozat) {
-                                $tetel = $this->getEm()->getRepository('Entities\Leltartetel')->findOneBy(array('leltarfej' => $l, 'termek' => $termek, 'termekvaltozat' => $valtozat));
+                                $tetel = $this->getEm()->getRepository('Entities\Leltartetel')->findOneBy(
+                                    ['leltarfej' => $l, 'termek' => $termek, 'termekvaltozat' => $valtozat]
+                                );
                                 if (!$tetel) {
                                     $tetel = new \Entities\Leltartetel();
                                     $tetel->setLeltarfej($l);
@@ -369,9 +391,10 @@ class leltarfejController extends \mkwhelpers\MattableController {
                                 $this->getEm()->persist($tetel);
                                 $db++;
                             }
-                        }
-                        else {
-                            $tetel = $this->getEm()->getRepository('Entities\Leltartetel')->findOneBy(array('leltarfej' => $l, 'termek' => $termek, 'termekvaltozat' => null));
+                        } else {
+                            $tetel = $this->getEm()->getRepository('Entities\Leltartetel')->findOneBy(
+                                ['leltarfej' => $l, 'termek' => $termek, 'termekvaltozat' => null]
+                            );
                             if (!$tetel) {
                                 $tetel = new \Entities\Leltartetel();
                                 $tetel->setLeltarfej($l);
@@ -393,16 +416,16 @@ class leltarfejController extends \mkwhelpers\MattableController {
                 $this->getEm()->clear();
             }
         }
-
     }
 
-    public function zar() {
+    public function zar()
+    {
         $hianybt = $this->getRepo('Entities\Bizonylattipus')->find('leltarhiany');
         $tobbletbt = $this->getRepo('Entities\Bizonylattipus')->find('leltartobblet');
 
         if ($hianybt && $tobbletbt) {
-            $hianyok = array();
-            $tobbletek = array();
+            $hianyok = [];
+            $tobbletek = [];
 
             $leltarid = $this->params->getIntRequestParam('leltarid');
             $zarasstr = $this->params->getStringRequestParam('datum');
@@ -420,20 +443,19 @@ class leltarfejController extends \mkwhelpers\MattableController {
                     $valtozat = $tetel->getTermekvaltozat();
                     $keszlet = $valtozat->getKeszlet($zarasstr, $raktarid);
                     if ($keszlet < $tetel->getTenymennyiseg()) {
-                        $tobbletek[] = array(
+                        $tobbletek[] = [
                             'termek' => $tetel->getTermek(),
                             'valtozat' => $tetel->getTermekvaltozat(),
                             'keszlet' => $keszlet,
                             'teny' => $tetel->getTenymennyiseg()
-                        );
-                    }
-                    elseif ($keszlet > $tetel->getTenymennyiseg()) {
-                        $hianyok[] = array(
+                        ];
+                    } elseif ($keszlet > $tetel->getTenymennyiseg()) {
+                        $hianyok[] = [
                             'termek' => $tetel->getTermek(),
                             'valtozat' => $tetel->getTermekvaltozat(),
                             'keszlet' => $keszlet,
                             'teny' => $tetel->getTenymennyiseg()
-                        );
+                        ];
                     }
                 }
 
