@@ -394,7 +394,7 @@ class megrendelesfejController extends bizonylatfejController
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getNev() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
+                            \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getCikkszam() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
                             \mkw\store::writelog('isintermekkategoria start');
                             \mkw\store::writelog($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat));
                             \mkw\store::writelog('isintermekkategoria stop');
