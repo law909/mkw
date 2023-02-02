@@ -3423,8 +3423,7 @@ class Termek
                 'ertekelesatlag' => \mkw\store::quarterRound($ert[0][2] / $ert[0][1]),
                 'ertekelesdb' => $ert[0][1]
             ];
-        }
-        else {
+        } else {
             return [
                 'ertekelesatlag' => 0,
                 'ertekelesdb' => 0
@@ -3439,6 +3438,11 @@ class Termek
 
     public function isInTermekKategoria($kat)
     {
+        \mkw\store::writelog('kat: ' . $kat);
+        \mkw\store::writelog('fakarkod1: ' . $this->termekfa1karkod);
+        \mkw\store::writelog('fakarkod2: ' . $this->termekfa2karkod);
+        \mkw\store::writelog('fakarkod3: ' . $this->termekfa3karkod);
+
         return str_starts_with($this->termekfa1karkod, $kat) ||
             str_starts_with($this->termekfa2karkod, $kat) ||
             str_starts_with($this->termekfa3karkod, $kat);
