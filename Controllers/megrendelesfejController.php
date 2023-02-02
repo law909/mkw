@@ -384,6 +384,8 @@ class megrendelesfejController extends bizonylatfejController
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {
+                    \mkw\store::writelog($fej->getId());
+
                     $vankeszlet = false;
                     $tetelek = $fej->getBizonylattetelek();
                     /** @var \Entities\Bizonylattetel $tetel */
@@ -391,7 +393,7 @@ class megrendelesfejController extends bizonylatfejController
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            \mkw\store::writelog('termekv: ' . $termekv->getAdatTipus1Nev() . ' ' . $termekv->getAdatTipus2Nev());
+                            \mkw\store::writelog('termekv: ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
                             \mkw\store::writelog('isintermekkategoria start');
                             \mkw\store::writelog($tetel->getTermek()?->isInTermekKategoria($nominkeszletkat));
                             \mkw\store::writelog('isintermekkategoria stop');
