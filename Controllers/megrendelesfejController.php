@@ -381,6 +381,7 @@ class megrendelesfejController extends bizonylatfejController
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
             $filter->addFilter('rontott', '=', false);
+            $filter->addFilter('id', '=', 'MR2023/000106');
             $fejek = $this->getRepo()->getWithTetelek($filter, ['hatarido' => 'ASC']);
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
@@ -392,7 +393,7 @@ class megrendelesfejController extends bizonylatfejController
                     /** @var \Entities\Bizonylattetel $tetel */
                     foreach ($tetelek as $tetel) {
                         \mkw\store::writelog($tetel->getTermek()?->getCikkszam());
-                        /** @var \Entities\TermekValtozat $termek */
+                        /** @var \Entities\TermekValtozat $termekv */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
                             \mkw\store::writelog('termekv: ' . $tetel->getTermek()?->getCikkszam() . ' ' . $termekv->getErtek1() . ' ' . $termekv->getErtek2());
