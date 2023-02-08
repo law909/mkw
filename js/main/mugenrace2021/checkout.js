@@ -6,6 +6,12 @@ document.addEventListener("alpine:init", () => {
             email: null,
             password: null,
         },
+        loginRules: {
+            email: ['required', 'email'],
+            password: ['required'],
+        },
+        loginValidation: {},
+        validation: {},
         contact: {
             lastName: null,
             firstName: null,
@@ -79,6 +85,28 @@ document.addEventListener("alpine:init", () => {
         selectFizetesimod(fizmodindex) {
             this.selectedFizetesimod = this.selectedSzallitasimod.fizmodlist[fizmodindex];
             this.szallmodlist[this.selectedSzallitasimodIndex].selectedFizetesimodIndex = fizmodindex;
-        }
+        },
+        clearLoginErrors() {
+            this.loginValidation = {};
+        },
+        clearErrors() {
+            this.validation = {};
+        },
+        dologin() {
+            const valid = Iodine.assert(this.login, this.loginRules);
+
+            this.clearLoginErrors();
+
+            if (valid.valid) {
+                this.login.c = 'c';
+                fetch(new URL('/login/ment', location.origin), {
+                    method: 'POST',
+                    body: new URLSearchParams(this.login)
+                });
+            } else {
+                this.loginValidation = valid.fields;
+                alert('Kérjük javítsa a pirossal jelölt mezőket.');
+            }
+        },
     }));
 });

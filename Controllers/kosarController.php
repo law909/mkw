@@ -448,18 +448,33 @@ class kosarController extends \mkwhelpers\MattableController
 
                 $sorok = $this->getRepo()->find($id);
                 $s = $sorok->toLista($partner);
-                echo json_encode([
-                    'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                    'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
-                    'minikosar' => $v->getTemplateResult(),
-                    'minikosaringyenes' => $v2->getTemplateResult(),
-                ]);
+                switch (true) {
+                    case \mkw\store::isMugenrace2021():
+                        echo json_encode([
+                            'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' '),
+                            'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
+                            'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' '),
+                            'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
+                            'kosarertek' => number_format($sum, $ker, ',', ' '),
+                            'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' '),
+                            'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' '),
+                            'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
+                        ]);
+                        break;
+                    default:
+                        echo json_encode([
+                            'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                            'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
+                            'minikosar' => $v->getTemplateResult(),
+                            'minikosaringyenes' => $v2->getTemplateResult(),
+                        ]);
+                }
             }
         }
     }

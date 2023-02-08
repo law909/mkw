@@ -43,17 +43,17 @@ class store
     private static $gdl;
     private static $sanitizer;
     private static $translationListener;
-    private static $locales = array('hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de', 'it' => 'it_it');
-    private static $valutanemperlocale = array('hu_hu' => 'HUF', 'en_us' => 'EUR', 'de_de' => 'EUR', 'it_it' => 'EUR');
+    private static $locales = ['hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de', 'it' => 'it_it'];
+    private static $valutanemperlocale = ['hu_hu' => 'HUF', 'en_us' => 'EUR', 'de_de' => 'EUR', 'it_it' => 'EUR'];
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
     private static $loggedinuk;
     private static $loggedinukpartner;
     private static $routename;
-    private static $daynames = array('hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap');
-    private static $BarionEnvironment = array('teszt', 'éles');
-    private static $FoxpostAPIVersions = array('v1', 'v2');
+    private static $daynames = ['hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap'];
+    private static $BarionEnvironment = ['teszt', 'éles'];
+    private static $FoxpostAPIVersions = ['v1', 'v2'];
     public static $DateFormat = 'Y.m.d';
     public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
@@ -295,39 +295,39 @@ class store
 
     public static function getDaynameSelectList($sel = null)
     {
-        $ret = array();
+        $ret = [];
         foreach (self::$daynames as $k => $v) {
-            $ret[] = array(
+            $ret[] = [
                 'id' => $k + 1,
                 'caption' => $v,
                 'selected' => ($k + 1 === $sel)
-            );
+            ];
         }
         return $ret;
     }
 
     public static function getBarionEnvironmentSelectList($sel = null)
     {
-        $ret = array();
+        $ret = [];
         foreach (self::$BarionEnvironment as $k => $v) {
-            $ret[] = array(
+            $ret[] = [
                 'id' => $k + 1,
                 'caption' => $v,
                 'selected' => ($k + 1 === $sel)
-            );
+            ];
         }
         return $ret;
     }
 
     public static function getFoxpostAPIVersionSelectList($sel = null)
     {
-        $ret = array();
+        $ret = [];
         foreach (self::$FoxpostAPIVersions as $k => $v) {
-            $ret[] = array(
+            $ret[] = [
                 'id' => $v,
                 'caption' => $v,
                 'selected' => ($v === $sel)
-            );
+            ];
         }
         return $ret;
     }
@@ -513,6 +513,7 @@ class store
 
     /**
      * Main sablonokhoz kell
+     *
      * @param $v
      * @param bool|true $needmenu
      */
@@ -551,7 +552,7 @@ class store
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
         $pr = self::getEm()->getRepository('Entities\Partner');
-        $user = array();
+        $user = [];
         $user['loggedin'] = $pr->checkloggedin();
         if ($user['loggedin']) {
             /** @var \Entities\Partner $u */
@@ -583,7 +584,7 @@ class store
         if (self::isB2B()) {
             /** @var \Entities\UzletkotoRepository $ukr */
             $ukr = self::getEm()->getRepository('Entities\Uzletkoto');
-            $uk = array();
+            $uk = [];
             $uk['loggedin'] = $ukr->checkloggedin();
             if ($uk['loggedin']) {
                 /** @var \Entities\Uzletkoto $uko */
@@ -595,7 +596,7 @@ class store
                 $ukpfilter = new \mkwhelpers\FilterDescriptor();
                 if ($uko->getFo()) {
                     $uklista = $ukr->getByFoUzletkoto($uko->getId());
-                    $ukarr = array($uko->getId());
+                    $ukarr = [$uko->getId()];
                     foreach ($uklista as $u) {
                         $ukarr[] = $u->getId();
                     }
@@ -603,7 +604,7 @@ class store
                 } else {
                     $ukpfilter->addFilter('uzletkoto', '=', $uko);
                 }
-                $ukpartnerei = $pr->getAllForSelectList($ukpfilter, array('nev' => 'ASC'));
+                $ukpartnerei = $pr->getAllForSelectList($ukpfilter, ['nev' => 'ASC']);
                 $v->setVar('ukpartnerlist', $ukpartnerei);
             }
             $v->setVar('uzletkoto', $uk);
@@ -707,10 +708,10 @@ class store
                     $uri['host'] = '';
                 }
             } else {
-                $uri = array(
+                $uri = [
                     'scheme' => 'http',
                     'host' => $_SERVER['HTTP_HOST']
-                );
+                ];
                 if (self::isSSL()) {
                     $uri['scheme'] = 'https';
                 }
@@ -775,7 +776,7 @@ class store
 
     private static function Szazas($szam)
     {
-        $szamok = array(
+        $szamok = [
             'nulla',
             'egy',
             'kettő',
@@ -791,9 +792,9 @@ class store
             'ezer',
             'millió',
             'mínusz '
-        );
-        $szamok2 = array('X', 'tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
-        $szamok3 = array('Y', 'tizen', 'huszon');
+        ];
+        $szamok2 = ['X', 'tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven'];
+        $szamok3 = ['Y', 'tizen', 'huszon'];
         $tt_txt = '';
         if ($szam >= 100) {
             $tt_txt = $tt_txt . $szamok[floor($szam / 100)] . $szamok[11];
@@ -834,7 +835,7 @@ class store
 
     public static function Num2Text($num)
     {
-        $szamok = array(
+        $szamok = [
             'nulla',
             'egy',
             'kettő',
@@ -850,7 +851,7 @@ class store
             'ezer',
             'millió',
             'mínusz '
-        );
+        ];
 
         $plus = $num >= 0;
         $num = abs($num);
@@ -887,6 +888,7 @@ class store
      * @param $kelt
      * @param Fizmod $fizmod
      * @param Partner $partner
+     *
      * @return string
      * @throws \Exception
      */
@@ -948,7 +950,9 @@ class store
      *
      * @static
      * @access public
+     *
      * @param string $fileName
+     *
      * @return string
      */
     public static function getExtension($fileName)
@@ -964,7 +968,7 @@ class store
     public static function explodeCim($cim)
     {
         if ($cim) {
-            $ret = array();
+            $ret = [];
             $c = explode(' ', $cim);
             $ret[] = array_key_exists(0, $c) ? $c[0] : '';
             $ret[] = array_key_exists(1, $c) ? $c[1] : '';
@@ -972,7 +976,7 @@ class store
             unset($c[1]);
             $ret[] = implode(' ', $c);
         } else {
-            $ret = array('', '', '');
+            $ret = ['', '', ''];
         }
         return $ret;
     }
@@ -1031,6 +1035,7 @@ class store
 
     /**
      * @param $ny
+     *
      * @return null|Valutanem
      */
     public static function getValutanemForLocale($ny)
@@ -1056,13 +1061,13 @@ class store
 
     public static function getLocaleSelectList($sel = null)
     {
-        $ret = array();
+        $ret = [];
         foreach (self::$locales as $i => $v) {
-            $ret[] = array(
+            $ret[] = [
                 'id' => $v,
                 'caption' => strtoupper($i),
                 'selected' => ($v === $sel)
-            );
+            ];
         }
         return $ret;
     }
@@ -1556,16 +1561,16 @@ class store
 
     public static function translate($mit, $mire = null)
     {
-        $sz = array(
-            'en' => array(
+        $sz = [
+            'en' => [
                 'Rendelés szám' => 'Order no.',
                 'Szállítólevél szám' => 'Delivery bill no.'
-            ),
-            'hu' => array(
+            ],
+            'hu' => [
                 'Rendelés szám' => 'Rendelés szám',
                 'Szállítólevél szám' => 'Szállítólevél szám'
-            )
-        );
+            ]
+        ];
 
         $mire = substr($mire, 0, 2);
 
@@ -1633,9 +1638,9 @@ class store
 
     public static function cimletez($osszegek)
     {
-        $cimletek = array(20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5);
-        $kiszamolt = array();
-        $ret = array();
+        $cimletek = [20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5];
+        $kiszamolt = [];
+        $ret = [];
         $sum = 0;
         foreach ($cimletek as $e) {
             $kiszamolt[$e] = 0;
@@ -1656,7 +1661,7 @@ class store
 
     public static function getIds($mibol)
     {
-        $ret = array();
+        $ret = [];
         foreach ($mibol as $m) {
             $ret[] = $m->getId();
         }
@@ -1808,13 +1813,13 @@ class store
         return self::isValidEmail($email);
     }
 
-    public static function mainPath($filename)
+    public static function mainStoragePath($filename)
     {
-        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainstoragepath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         } else {
-            $mainpath = getcwd() . '/';
+            $mainpath = getcwd() . '/storage/';
         }
         return $mainpath . $filename;
     }
@@ -1909,13 +1914,15 @@ class store
         return \mkw\store::getMainSession()->valutanem;
     }
 
-    public static function quarterRound($mit) {
+    public static function quarterRound($mit)
+    {
         $x = $mit * 4;
         $x = ceil($x);
         return $x / 4;
     }
 
-    public static function getMPTNGYDateList($day = null) {
+    public static function getMPTNGYDateList($day = null)
+    {
         return [
             1 => [
                 'id' => 1,
@@ -1935,7 +1942,8 @@ class store
         ];
     }
 
-    public static function getMPTNGYDate($day) {
+    public static function getMPTNGYDate($day)
+    {
         $l = self::getMPTNGYDateList();
         return $l[$day]['caption'];
     }

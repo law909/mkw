@@ -27,16 +27,36 @@
                     </div>
                     <div class="co-login-box">
                         <h3>{t('Regisztrált vásárló')}</h3>
+                        {if ($showerror)}
+                            <h4>{t('A bejelentkezés nem sikerült')}...</h4>
+                        {/if}
                         <div class="co-control-row">
                             <label for="loginUserEdit" class="co-label">{t('Email')}</label>
-                            <input id="loginUserEdit" class="co-input" type="text" x-model="login.email">
+                            <input
+                                id="loginUserEdit"
+                                class="co-input"
+                                :class="loginValidation.email && !loginValidation.email.valid ? 'error' : ''"
+                                type="text"
+                                x-model="login.email"
+                            >
+                            <div class="co-error" x-text="loginValidation.email && loginValidation.email.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="loginPasswordEdit" class="co-label">{t('Jelszó')}</label>
-                            <input id="loginPasswordEdit" class="co-input" type="password" x-model="login.password">
+                            <input
+                                id="loginPasswordEdit"
+                                class="co-input"
+                                :class="loginValidation.email && !loginValidation.email.valid ? 'error' : ''"
+                                type="password"
+                                x-model="login.password"
+                            >
+                            <div class="co-error" x-text="loginValidation.password && loginValidation.password.error"></div>
                         </div>
                         <div class="co-control-row">
-                            <button class="btn btn-primary">{t('Belépés')}</button>
+                            <button
+                                class="btn btn-primary"
+                                @click="dologin()"
+                            >{t('Belépés')}</button>
                         </div>
                     </div>
                 </div>
@@ -167,12 +187,14 @@
 
                 <div class="co-row co-flex-dir-column">
                     <h3>{t('Üzenet a webáruháznak')}</h3>
-                    <textarea x-model="webshopmessage" class="co-input" name="webshopmessage" rows="2" placeholder="{t('pl. megrendeléssel, számlázással kapcsolatos kérések')}"></textarea>
+                    <textarea x-model="webshopmessage" class="co-input" name="webshopmessage" rows="2"
+                              placeholder="{t('pl. megrendeléssel, számlázással kapcsolatos kérések')}"></textarea>
                 </div>
 
                 <div class="co-row co-flex-dir-column">
                     <h3>{t('Üzenet a futárnak')}</h3>
-                    <textarea x-model="couriermessage" class="co-input" name="couriermessage" rows="2" placeholder="{t('pl. kézbesítéssel kapcsolatos kérések')}"></textarea>
+                    <textarea x-model="couriermessage" class="co-input" name="couriermessage" rows="2"
+                              placeholder="{t('pl. kézbesítéssel kapcsolatos kérések')}"></textarea>
                 </div>
 
                 <div class="co-row co-flex-dir-column">
@@ -187,8 +209,11 @@
                     </label>
                     <label class="co-label">
                         <input x-model="aszfready" name="aszfready" type="checkbox">
-                        Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-ünket és adatvédelmi nyilatkozatunkat.
-                        Felhívjuk szíves figyelmét, hogy a „megrendelés elküldése” gombra történő kattintással Ön kötelező érvényű ajánlatot tesz a kosárba helyezett termék megvásárlására, ami fizetési kötelezettséget von maga után.
+                        Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta <a href="{$showaszflink}" target="empty"
+                                                                                                                          class="js-chkaszf">ÁSZF</a>-ünket és
+                        adatvédelmi nyilatkozatunkat.
+                        Felhívjuk szíves figyelmét, hogy a „megrendelés elküldése” gombra történő kattintással Ön kötelező érvényű ajánlatot tesz a kosárba
+                        helyezett termék megvásárlására, ami fizetési kötelezettséget von maga után.
                     </label>
                     <div>
                         <button class="btn btn-primary btn-order">{t('Megrendelés elküldése')}</button>

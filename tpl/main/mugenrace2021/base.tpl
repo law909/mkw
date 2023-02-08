@@ -13,6 +13,7 @@
     {block "precss"}{/block}
     <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=11">
     {block "css"}{/block}
+    <script defer src="/js/iodine/iodine.min.umd.js?v=1"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
     <script src="/js/main/mugenrace2021/base.js?v=5"></script>
@@ -24,15 +25,17 @@
         <a href="" class="menu-close"><img src="/themes/main/mugenrace2021/close_b.png" class="nav-img" alt="Close menu">{t('BEZÁR')}</a>
     </div>
     <nav>
-    {foreach $mnrnavigation as $mnrnavi}
-        <div class="menu-line">
-            <div>
-            <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}" class="menu-nav-num">{$mnrnavi.szam}</a>
-            <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}" class="menu-nav-text">{$mnrnavi.nev}</a>
+        {foreach $mnrnavigation as $mnrnavi}
+            <div class="menu-line">
+                <div>
+                    <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}"
+                       class="menu-nav-num">{$mnrnavi.szam}</a>
+                    <a href="{if ($mnrnavi.mnrstatic.slug)}/mnrstatic/{$mnrnavi.mnrstatic.slug}{else}/termekfa/{$mnrdefaultkat.slug}{/if}"
+                       class="menu-nav-text">{$mnrnavi.nev}</a>
+                </div>
+                <div class="menu-nav-slogen">{$mnrnavi.szlogen}</div>
             </div>
-            <div class="menu-nav-slogen">{$mnrnavi.szlogen}</div>
-        </div>
-    {/foreach}
+        {/foreach}
     </nav>
     <svg class="menu-bottom-triangle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <polygon fill="black" points="0,100 100,100 100,0"/>

@@ -855,7 +855,7 @@ class Bizonylatfej
                     $mailer->addTo($m);
                 }
                 if ($emailtpl->isAszfcsatolaskell()) {
-                    $mailer->setAttachment(\mkw\store::mainPath(\mkw\consts::ASZFPDFName));
+                    $mailer->setAttachment(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName));
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
@@ -897,7 +897,7 @@ class Bizonylatfej
                     $mailer->addTo($m);
                 }
                 if ($emailtpl->isAszfcsatolaskell()) {
-                    $mailer->setAttachment(\mkw\store::mainPath(\mkw\consts::ASZFPDFName));
+                    $mailer->setAttachment(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName));
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
@@ -908,13 +908,13 @@ class Bizonylatfej
 
     public function toFoxpostv2API()
     {
-        $fields = array(
+        $fields = [
             'recipientName' => (\mkw\store::getConfigValue('developer') ? 'teszt' : $this->getSzallnev()),
             'recipientPhone' => $this->getPartnertelefon(),
             'recipientEmail' => $this->getPartneremail(),
             'refCode' => $this->getId(),
             'size' => 'M'
-        );
+        ];
         if ($this->getCsomagterminalIdegenId()) {
             $fields['destination'] = $this->getCsomagterminalIdegenId();
         } else {
@@ -1022,7 +1022,7 @@ class Bizonylatfej
         $ppr = new \PreparePaymentRequestModel();
         $ppr->GuestCheckout = true;
         $ppr->PaymentType = \PaymentType::Immediate;
-        $ppr->FundingSources = array(\FundingSourceType::All);
+        $ppr->FundingSources = [\FundingSourceType::All];
         $ppr->PaymentRequestId = $this->getId();
         $ppr->PayerHint = $this->getPartneremail();
         switch ($this->getBizonylatnyelv()) {
@@ -1054,7 +1054,7 @@ class Bizonylatfej
 
     public function toLista()
     {
-        $ret = array();
+        $ret = [];
         $ret['id'] = $this->getId();
         $ret['lastmodstr'] = $this->getLastmodStr();
         $ret['createdstr'] = $this->getCreatedStr();
@@ -1178,14 +1178,14 @@ class Bizonylatfej
         $ret['termekertekelesurl'] = '/termekertekeles?b=' . $this->getId() . '&id=' . $this->getTermekertekelesid();
         $ret['termekertekeleskikuldve'] = $this->isTermekertekeleskikuldve();
         if (\mkw\store::getConfigValue('admin', false)) {
-            $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
+            $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, [], [
                 'id' => $this->getId()
-            ));
+            ]);
             if (!$this->getNyomtatva()) {
-                $ret['editurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejviewkarb', false, array(), array(
+                $ret['editurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejviewkarb', false, [], [
                     'id' => $this->getId(),
                     'oper' => 'edit'
-                ));
+                ]);
             } else {
                 $ret['editurl'] = $ret['printurl'];
             }
@@ -1210,7 +1210,7 @@ class Bizonylatfej
             }
         }
         $ret['vanmitertekelni'] = false;
-        $tetellist = array();
+        $tetellist = [];
         /** @var Bizonylattetel $tetel */
         foreach ($this->bizonylattetelek as $tetel) {
             $_x = $tetel->toLista();
@@ -1356,7 +1356,7 @@ class Bizonylatfej
             $result = $result . '</base:postalCode>';
             $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
             $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
-                    implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                    implode(' ', [$this->getPartnerutca(), $this->getPartnerhazszam()])
                 ) . '</base:additionalAddressDetail>';
             $result = $result . '</base:simpleAddress></customerAddress>';
         } elseif ($this->getPartnervatstatus() == 2) {
@@ -1383,7 +1383,7 @@ class Bizonylatfej
                 $result = $result . '</base:postalCode>';
                 $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
                 $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
-                        implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                        implode(' ', [$this->getPartnerutca(), $this->getPartnerhazszam()])
                     ) . '</base:additionalAddressDetail>';
                 $result = $result . '</base:simpleAddress></customerAddress>';
             } elseif ($this->getPartnerthirdadoszam() || ($this->getPartnerSzamlatipus() == 2)) { // EUn kivuli
@@ -1406,7 +1406,7 @@ class Bizonylatfej
                 $result = $result . '</base:postalCode>';
                 $result = $result . '<base:city>' . \mkw\store::CData($this->getPartnervaros()) . '</base:city>';
                 $result = $result . '<base:additionalAddressDetail>' . \mkw\store::CData(
-                        implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                        implode(' ', [$this->getPartnerutca(), $this->getPartnerhazszam()])
                     ) . '</base:additionalAddressDetail>';
                 $result = $result . '</base:simpleAddress></customerAddress>';
             }
@@ -1453,10 +1453,10 @@ class Bizonylatfej
                 $result = $result . '<lineOperation>MODIFY</lineOperation>';
                 $result = $result . '</lineModificationReference>';
             }
-            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
+            if (str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam())) {
                 $result = $result . '<productCodes><productCode>';
                 $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
-                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
+                $result = $result . '<productCodeValue>' . str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam()) . '</productCodeValue>';
                 $result = $result . '</productCode></productCodes>';
             }
             $result = $result . '<lineExpressionIndicator>true</lineExpressionIndicator>';
@@ -1661,7 +1661,7 @@ class Bizonylatfej
         $result = $result . '</postalCode>';
         $result = $result . '<city>' . \mkw\store::CData($this->getPartnervaros()) . '</city>';
         $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(
-                implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))
+                implode(' ', [$this->getPartnerutca(), $this->getPartnerhazszam()])
             ) . '</additionalAddressDetail>';
         $result = $result . '</simpleAddress></customerAddress>';
         $result = $result . '</customerInfo>';
@@ -1705,10 +1705,10 @@ class Bizonylatfej
                 $result = $result . '<lineOperation>MODIFY</lineOperation>';
                 $result = $result . '</lineModificationReference>';
             }
-            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
+            if (str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam())) {
                 $result = $result . '<productCodes><productCode>';
                 $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
-                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
+                $result = $result . '<productCodeValue>' . str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam()) . '</productCodeValue>';
                 $result = $result . '</productCode></productCodes>';
             }
             $result = $result . '<lineExpressionIndicator>true</lineExpressionIndicator>';
@@ -1950,7 +1950,7 @@ class Bizonylatfej
             $ev = $this->getKelt()->format('Y');
             if (!$from) {
                 $q = \mkw\store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
-                $q->setParameters(array('p' => $bt));
+                $q->setParameters(['p' => $bt]);
                 if ($q->getSingleScalarResult() > 0) {
                     $kezdo = 1;
                 }
@@ -1959,10 +1959,10 @@ class Bizonylatfej
                 }
                 $szam = $kezdo;
                 $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
-                                      'p1' => $bt,
-                                      'p2' => $ev
-                                  ));
+                $q->setParameters([
+                    'p1' => $bt,
+                    'p2' => $ev
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -1973,10 +1973,10 @@ class Bizonylatfej
             } else {
                 $szam = $from;
                 $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
-                                      'p1' => $bt,
-                                      'p2' => $ev
-                                  ));
+                $q->setParameters([
+                    'p1' => $bt,
+                    'p2' => $ev
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -3492,6 +3492,7 @@ class Bizonylatfej
 
     /**
      * @param \Entities\Bizonylatfej $val
+     *
      * @return bool
      */
     public function removeSzulobizonylatfej($val)
@@ -3505,9 +3506,9 @@ class Bizonylatfej
 
     public function getPartnerCim()
     {
-        $a = array($this->partnerirszam, $this->partnervaros);
+        $a = [$this->partnerirszam, $this->partnervaros];
         $cim = implode(' ', $a);
-        $a = array($cim, $this->partnerutca);
+        $a = [$cim, $this->partnerutca];
         return implode(', ', $a);
     }
 
@@ -3910,7 +3911,7 @@ class Bizonylatfej
     public function duplicateFrom($entityB)
     {
         $this->duplication = true;
-        $kivetel = array('setParbizonylatfej');
+        $kivetel = ['setParbizonylatfej'];
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
@@ -4570,7 +4571,7 @@ class Bizonylatfej
 
     public function getSzepkartyatipusNev()
     {
-        $szp = array(1 => 'OTP', 2 => 'MKB', 3 => 'K&H');
+        $szp = [1 => 'OTP', 2 => 'MKB', 3 => 'K&H'];
         if ($this->szepkartyatipus >= 1 && $this->szepkartyatipus <= 3) {
             return $szp[$this->szepkartyatipus];
         }
@@ -4716,9 +4717,9 @@ class Bizonylatfej
 
     public function getSzallitasiCim()
     {
-        $a = array($this->szallirszam, $this->szallvaros);
+        $a = [$this->szallirszam, $this->szallvaros];
         $cim = implode(' ', $a);
-        $a = array($cim, $this->szallutca);
+        $a = [$cim, $this->szallutca];
         return implode(', ', $a);
     }
 

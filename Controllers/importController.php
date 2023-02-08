@@ -6730,7 +6730,7 @@ class importController extends \mkwhelpers\Controller
     public function aszfdownload()
     {
         $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::ASZFUrl));
-        $fh = fopen(\mkw\store::mainPath(\mkw\consts::ASZFPDFName), 'w');
+        $fh = fopen(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName), 'w');
         \curl_setopt($ch, CURLOPT_FILE, $fh);
         \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         \curl_exec($ch);
