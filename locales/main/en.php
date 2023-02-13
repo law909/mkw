@@ -255,7 +255,7 @@ return [
     'Tulajdonos' => 'Owner',
     'Cím' => 'Title',
     'Módosítás' => 'Edit',
-    'Új anyag' => 'New abstract',
+    'Új anyag feltöltése' => 'New abstract',
     'Új felvitel' => 'New',
     'Kezdő dátum' => 'Starting date',
     'Kezdő időpont' => 'Starting time',
@@ -267,4 +267,8 @@ return [
     'Kulcsszó' => 'Keyword',
     'Tartalom' => 'Content',
     'Beküldés' => 'Submit',
+    'Nyugdíjas' => 'Retired',
+    'Diák' => 'Student',
+    'MPT tag' => 'MPT member',
+    'nem MPT tag' => 'Not MPT member',
 ];

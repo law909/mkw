@@ -7,7 +7,11 @@
 {block "body"}
     <div x-data="anyaglist" x-init="getLists">
         <div class="co-container co-header" x-cloak>
-            <div class="co-col-50 padding" x-text="me.nev"></div>
+            <div class="co-col-50 padding">
+                <div x-text="me.nev"></div>
+                <div x-text="me.mpttag"></div>
+                <div x-text="me.mptnyugdijasdiak"></div>
+            </div>
             <div class="padding">
                 <button class="btn btn-secondary" @click="logout()">{t('Kijelentkezés')}</button>
             </div>
@@ -53,7 +57,7 @@
                                     x-cloak
                                     class="btn btn-primary"
                                     @click="createNew()"
-                                >{t('Új anyag')}</button>
+                                >{t('Új anyag feltöltése')}</button>
                             </div>
                         </div>
                         <div x-show="showEditor">

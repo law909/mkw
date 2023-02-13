@@ -35,7 +35,7 @@ class partnerController extends \mkwhelpers\MattableController
         $mijsztanitasCtrl = new \Controllers\partnermijsztanitasController($this->params);
         $dokCtrl = new partnerdokController($this->params);
         $mptfolyoszamlaCtrl = new mptfolyoszamlaController($this->params);
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\Partner();
             $this->getEm()->detach($t);
@@ -189,18 +189,18 @@ class partnerController extends \mkwhelpers\MattableController
             }
         }
         if ($forKarb) {
-            $kedv = array();
+            $kedv = [];
             foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
                 $kedv[] = $kedvCtrl->loadVars($tar, true);
             }
             $x['termekcsoportkedvezmenyek'] = $kedv;
-            $kedv = array();
+            $kedv = [];
             foreach ($t->getTermekkedvezmenyek() as $tar) {
                 $kedv[] = $termekkedvCtrl->loadVars($tar, true);
             }
             $x['termekkedvezmenyek'] = $kedv;
 
-            $dok = array();
+            $dok = [];
             foreach ($t->getPartnerDokok() as $kepje) {
                 $dok[] = $dokCtrl->loadVars($kepje);
             }
@@ -216,22 +216,22 @@ class partnerController extends \mkwhelpers\MattableController
         }
 
         if (\mkw\store::isMIJSZ()) {
-            $okl = array();
+            $okl = [];
             foreach ($t->getMijszoklevelek() as $tar) {
                 $okl[] = $mijszokCtrl->loadVars($tar, true);
             }
             $x['mijszoklevelek'] = $okl;
-            $pune = array();
+            $pune = [];
             foreach ($t->getMijszpune() as $tar) {
                 $pune[] = $mijszpuneCtrl->loadVars($tar, true);
             }
             $x['mijszpune'] = $pune;
-            $oralatogatas = array();
+            $oralatogatas = [];
             foreach ($t->getMijszoralatogatas() as $tar) {
                 $oralatogatas[] = $mijszoralatogatasCtrl->loadVars($tar, true);
             }
             $x['mijszoralatogatas'] = $oralatogatas;
-            $tanitas = array();
+            $tanitas = [];
             foreach ($t->getMijsztanitas() as $tar) {
                 $tanitas[] = $mijsztanitasCtrl->loadVars($tar, true);
             }
@@ -242,6 +242,7 @@ class partnerController extends \mkwhelpers\MattableController
 
     /**
      * @param \Entities\Partner $obj
+     *
      * @return \Entities\Partner
      */
     public function setFields($obj, $parancs, $subject = 'minden')
@@ -603,7 +604,7 @@ class partnerController extends \mkwhelpers\MattableController
 
     public function checkApiRegData($data)
     {
-        $ret = array();
+        $ret = [];
         if (!$data['email']) {
             $ret[] = 'Empty field: email';
         }
@@ -627,7 +628,7 @@ class partnerController extends \mkwhelpers\MattableController
 
     public function saveApiRegData($data, $consumer)
     {
-        $p = $this->getRepo()->findOneBy(array('email' => $data['email']));
+        $p = $this->getRepo()->findOneBy(['email' => $data['email']]);
         if (!$p) {
             $p = new \Entities\Partner();
         }
@@ -666,7 +667,7 @@ class partnerController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
-            $filter->addFilter(array('nev', 'keresztnev', 'vezeteknev', 'szallnev'), 'LIKE', '%' . $fv . '%');
+            $filter->addFilter(['nev', 'keresztnev', 'vezeteknev', 'szallnev'], 'LIKE', '%' . $fv . '%');
         }
         $f = $this->params->getStringRequestParam('emailfilter');
         if ($f) {
@@ -706,7 +707,7 @@ class partnerController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('orszagfilter', null))) {
             $filter->addFilter('orszag', '=', $this->params->getIntRequestParam('orszagfilter'));
         }
-        $f = $this->params->getNumRequestParam('inaktivfilter',9);
+        $f = $this->params->getNumRequestParam('inaktivfilter', 9);
         if ($f != 9) {
             $filter->addFilter('inaktiv', '=', $f);
         }
@@ -808,17 +809,17 @@ class partnerController extends \mkwhelpers\MattableController
      *
      * @return array
      */
-    public function getSelectList($selid = null, $filter = array())
+    public function getSelectList($selid = null, $filter = [])
     {
         $f = new FilterDescriptor();
         $f->addFilter('inaktiv', '=', false);
         if ($filter) {
             $f->merge($filter);
         }
-        $rec = $this->getRepo()->getAllForSelectList($f, array('nev' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAllForSelectList($f, ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor['id'],
                 'caption' => $sor['nev'] . ' ' . $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
                 'nevvaros' => $sor['nev'] . ' ' . $sor['varos'],
@@ -826,7 +827,7 @@ class partnerController extends \mkwhelpers\MattableController
                 'cim' => $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
                 'email' => $sor['email'],
                 'selected' => ($sor['id'] == $selid)
-            );
+            ];
         }
         return $res;
     }
@@ -834,7 +835,7 @@ class partnerController extends \mkwhelpers\MattableController
     public function getBizonylatfejSelectList()
     {
         $term = trim($this->params->getStringRequestParam('term'));
-        $ret = array();
+        $ret = [];
         if ($term) {
             $r = \mkw\store::getEm()->getRepository('Entities\Partner');
             $res = $r->getBizonylatfejLista($term);
@@ -844,10 +845,10 @@ class partnerController extends \mkwhelpers\MattableController
             $partnerafakulcs = $afa->getErtek();
 
             foreach ($res as $r) {
-                $x = array(
+                $x = [
                     'id' => $r['id'],
                     'value' => $r['nev'] . ' ' . \mkw\store::implodeCim($r['irszam'], $r['varos'], $r['utca'], $r['hazszam']) . ' (' . $r['email'] . ')'
-                );
+                ];
                 if ($r['szamlatipus'] > 0) {
                     $x['afa'] = $partnerafa;
                     $x['afakulcs'] = $partnerafakulcs;
@@ -867,15 +868,15 @@ class partnerController extends \mkwhelpers\MattableController
             $partner = $this->getRepo()->find($pid);
         } elseif ($email) {
             /** @var Partner $partner */
-            $partner = $this->getRepo()->findOneBy(array('email' => $email));
+            $partner = $this->getRepo()->findOneBy(['email' => $email]);
         } else {
             /** @var Partner $partner */
             $partner = $this->getRepo()->getLoggedInUser();
         }
 
-        $ret = array();
+        $ret = [];
         if ($partner) {
-            $ret = array(
+            $ret = [
                 'id' => $partner->getId(),
                 'fizmod' => $partner->getFizmodId(),
                 'fizhatido' => $partner->getFizhatido(),
@@ -903,8 +904,11 @@ class partnerController extends \mkwhelpers\MattableController
                 'orszag' => $partner->getOrszagId(),
                 'vatstatus' => $partner->getVatstatus(),
                 'szamlatipus' => $partner->getSzamlatipus(),
-                'szamlaegyeb' => $partner->getSzamlaegyeb()
-            );
+                'szamlaegyeb' => $partner->getSzamlaegyeb(),
+                'mptmunkahelynev' => $partner->getMptMunkahelynev(),
+                'mptnyugdijasdiak' => $partner->isMptngynyugdijas() ? t('Nyugdíjas') : ($partner->isMptngydiak() ? t('Diák') : ''),
+                'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),
+            ];
             if ($partner->getSzamlatipus() > 0) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 $ret['afa'] = $afa->getId();
@@ -918,10 +922,10 @@ class partnerController extends \mkwhelpers\MattableController
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('szallito', '=', true);
-        $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
@@ -931,7 +935,7 @@ class partnerController extends \mkwhelpers\MattableController
                 'varos' => $sor->getVaros(),
                 'utca' => $sor->getUtca(),
                 'hazszam' => $sor->getHazszam()
-            );
+            ];
         }
         return $res;
     }
@@ -942,7 +946,7 @@ class partnerController extends \mkwhelpers\MattableController
 
         \mkw\store::writelog($email);
 
-        $ret = array();
+        $ret = [];
         $ret['hibas'] = !\Zend_Validate::is($email, 'EmailAddress');
         if (!$ret['hibas']) {
             if (!$this->params->getBoolRequestParam('dce')) {
@@ -1102,7 +1106,7 @@ class partnerController extends \mkwhelpers\MattableController
     public function saveRegistration()
     {
         $hibas = false;
-        $hibak = array();
+        $hibak = [];
 
         $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
         $keresztnev = $this->params->getStringRequestParam('keresztnev');
@@ -1130,12 +1134,12 @@ class partnerController extends \mkwhelpers\MattableController
             $this->login($email, $jelszo1);
             $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
             if ($emailtpl) {
-                $tpldata = array(
+                $tpldata = [
                     'keresztnev' => $keresztnev,
                     'vezeteknev' => $vezeteknev,
                     'fiokurl' => \mkw\store::getRouter()->generate('showaccount', true),
                     'url' => \mkw\store::getFullUrl()
-                );
+                ];
                 $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('user', $tpldata);
                 $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
@@ -1155,7 +1159,7 @@ class partnerController extends \mkwhelpers\MattableController
         }
     }
 
-    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = array())
+    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = [])
     {
         $view = $this->getTemplateFactory()->createMainView('regisztracio.tpl');
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
@@ -1292,13 +1296,14 @@ class partnerController extends \mkwhelpers\MattableController
     /**
      * @param $subject
      * @param \Entities\Partner|null $user
+     *
      * @return array
      */
     public function checkPartnerData($subject)
     {
-        $ret = array();
+        $ret = [];
         $hibas = false;
-        $hibak = array();
+        $hibak = [];
         switch ($subject) {
             case 'adataim':
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
@@ -1347,10 +1352,10 @@ class partnerController extends \mkwhelpers\MattableController
             case 'b2bregistration':
                 break;
         }
-        $ret = array(
+        $ret = [
             'hibas' => $hibas,
             'hibak' => $hibak
-        );
+        ];
         return $ret;
     }
 
@@ -1411,15 +1416,15 @@ class partnerController extends \mkwhelpers\MattableController
                 $this->getEm()->flush();
                 $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('jelszoemlekezteto');
                 if ($emailtpl) {
-                    $tpldata = array(
+                    $tpldata = [
                         'keresztnev' => $p->getKeresztnev(),
                         'vezeteknev' => $p->getVezeteknev(),
                         'fiokurl' => \mkw\store::getRouter()->generate('showaccount', true),
                         'url' => \mkw\store::getFullUrl(),
-                        'reminder' => \mkw\store::getRouter()->generate('showpassreminder', true, array(
+                        'reminder' => \mkw\store::getRouter()->generate('showpassreminder', true, [
                             'id' => $pr
-                        ))
-                    );
+                        ])
+                    ];
                     $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $subject->setVar('user', $tpldata);
                     $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
@@ -1482,7 +1487,7 @@ class partnerController extends \mkwhelpers\MattableController
         $irany = $this->params->getIntRequestParam('irany', 1);
         $br = $this->getRepo('Entities\Bizonylatfej');
         $bizs = $this->getRepo('Entities\Folyoszamla')->getSumByPartner($partnerid, $irany);
-        $adat = array();
+        $adat = [];
         foreach ($bizs as $biz) {
             if ($biz['hivatkozottdatum']) {
                 $datum = $biz['hivatkozottdatum']->format(\mkw\store::$DateFormat);
@@ -1496,19 +1501,19 @@ class partnerController extends \mkwhelpers\MattableController
             } else {
                 $erbizszam = '';
             }
-            $adat[] = array(
+            $adat[] = [
                 'bizszam' => $biz['hivatkozottbizonylat'],
                 'erbizszam' => $erbizszam,
                 'datum' => $datum,
                 'egyenleg' => $biz['egyenleg'] * 1 * $irany,
                 'fizmod' => $biz['fizmodnev']
-            );
+            ];
         }
         $view = $this->createView('kiegyenlitetlenselect.tpl');
         $view->setVar('bizonylatok', $adat);
-        $ret = array(
+        $ret = [
             'html' => $view->getTemplateResult()
-        );
+        ];
         echo json_encode($ret);
     }
 
@@ -1530,7 +1535,7 @@ class partnerController extends \mkwhelpers\MattableController
             $filter->addFilter('mijszexporttiltva', '=', false);
         }
 
-        $partnerek = $this->getRepo()->getAll($filter, array('keresztnev' => 'ASC', 'vezeteknev' => 'ASC'));
+        $partnerek = $this->getRepo()->getAll($filter, ['keresztnev' => 'ASC', 'vezeteknev' => 'ASC']);
 
         $o = 0;
         $excel = new Spreadsheet();
@@ -1624,7 +1629,7 @@ class partnerController extends \mkwhelpers\MattableController
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
 
-        $partnerek = $this->getRepo()->getAll($filter, array('vezeteknev' => 'ASC', 'keresztnev' => 'ASC'));
+        $partnerek = $this->getRepo()->getAll($filter, ['vezeteknev' => 'ASC', 'keresztnev' => 'ASC']);
 
         $o = 0;
         $excel = new Spreadsheet();
@@ -1675,7 +1680,7 @@ class partnerController extends \mkwhelpers\MattableController
         $filepath = uniqid('roadrecordpartner') . '.csv';
         $csv = fopen($filepath, 'w');
 
-        $fej = array(
+        $fej = [
             'partner',
             'iranyitoszam',
             'helyseg',
@@ -1686,7 +1691,7 @@ class partnerController extends \mkwhelpers\MattableController
             'utazas celja',
             'latitude',
             'longitude'
-        );
+        ];
         fwrite($csv, implode(';', $fej) . "\n");
 
         $ids = $this->params->getStringRequestParam('ids');
@@ -1696,11 +1701,11 @@ class partnerController extends \mkwhelpers\MattableController
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
 
-        $partnerek = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
+        $partnerek = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
         if ($partnerek) {
             /** @var \Entities\Partner $partner */
             foreach ($partnerek as $partner) {
-                $sor = array(
+                $sor = [
                     \mkw\store::toiso($partner->getNev()),
                     \mkw\store::toiso($partner->getIrszam()),
                     \mkw\store::toiso($partner->getVaros()),
@@ -1711,7 +1716,7 @@ class partnerController extends \mkwhelpers\MattableController
                     '',
                     '',
                     ''
-                );
+                ];
                 fwrite($csv, implode(';', $sor) . "\n");
             }
         }
@@ -1746,7 +1751,7 @@ class partnerController extends \mkwhelpers\MattableController
         $filter->addFilter('akcioshirlevelkell', '=', true);
         $filter->addFilter('ujdonsaghirlevelkell', '=', true);
 
-        $partnerek = $this->getRepo()->getAll($filter, array('vezeteknev' => 'ASC', 'keresztnev' => 'ASC'));
+        $partnerek = $this->getRepo()->getAll($filter, ['vezeteknev' => 'ASC', 'keresztnev' => 'ASC']);
 
         $o = 0;
         $excel = new Spreadsheet();
@@ -1835,7 +1840,8 @@ class partnerController extends \mkwhelpers\MattableController
         }
     }
 
-    public function setflag() {
+    public function setflag()
+    {
         $id = $this->params->getIntRequestParam('id');
         $kibe = $this->params->getBoolRequestParam('kibe');
         $flag = $this->params->getStringRequestParam('flag');
