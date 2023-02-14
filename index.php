@@ -8,22 +8,23 @@ date_default_timezone_set('Europe/Budapest');
 require_once('bootstrap.php');
 
 $__maintranslate = new Zend_Translate(
-		array(
-	'adapter' => 'array',
-	'content' => 'locales/main/hu.php',
-	'locale' => 'hu_hu'
-		)
+    [
+        'adapter' => 'array',
+        'content' => 'locales/main/hu.php',
+        'locale' => 'hu_hu'
+    ]
 );
 
 $__admintranslate = new Zend_Translate(
-    array(
+    [
         'adapter' => 'array',
         'content' => 'locales/admin/hu.php',
         'locale' => 'hu_hu'
-    )
+    ]
 );
 
-function t($msgid) {
+function t($msgid)
+{
     global $__maintranslate;
     $x = $__maintranslate->_($msgid);
     if (\mkw\store::getSetupValue('translate') && $x === $msgid) {
@@ -32,32 +33,37 @@ function t($msgid) {
     return $x;
 }
 
-function at($msgid) {
-	global $__admintranslate;
-	$x = $__admintranslate->_($msgid);
-	if (\mkw\store::getSetupValue('translate') && $x === $msgid) {
-	    store::writetranslation($msgid, 'transadmin' . $__admintranslate->getLocale() . '.txt');
+function at($msgid)
+{
+    global $__admintranslate;
+    $x = $__admintranslate->_($msgid);
+    if (\mkw\store::getSetupValue('translate') && $x === $msgid) {
+        store::writetranslation($msgid, 'transadmin' . $__admintranslate->getLocale() . '.txt');
     }
-	return $x;
+    return $x;
 }
 
-function haveJog($jog) {
+function haveJog($jog)
+{
     return \mkw\store::haveJog($jog);
 }
 
-function bizformat($mit, $mire = false) {
+function bizformat($mit, $mire = false)
+{
     if ($mire === false) {
         $mire = 2;
     }
     return number_format($mit, $mire, ',', ' ');
 }
 
-function prefixUrl($prefix, $url) {
+function prefixUrl($prefix, $url)
+{
     return \mkw\store::prefixUrl($prefix, $url);
 }
 
 // TODO find an appropriate place
-function callTheController($target, $params) {
+function callTheController($target, $params)
+{
     if ($target) {
         $methodname = '';
         $a = explode('#', $target);
@@ -77,18 +83,20 @@ function callTheController($target, $params) {
             return true;
         }
     }
-	return false;
+    return false;
 }
 
-function exc_handler($e) {
+function exc_handler($e)
+{
     if (is_a($e, '\Doctrine\ORM\Query\QueryException')) {
         error_log($e->getMessage());
     }
 }
+
 //set_exception_handler('exc_handler');
 
 if ($ini['developer']) {
-    if (in_array(\mkw\store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
+    if (in_array(\mkw\store::getExtension($_SERVER['REQUEST_URI']), ['jpg', 'gif', 'png', 'jpeg'])) {
         die();
     }
 }
@@ -102,13 +110,12 @@ $mainsess = store::getMainSession();
 
 try {
     $conn = store::getEm()->getConnection()->connect();
-}
-catch (\Exception $e) {
+} catch (\Exception $e) {
     throw $e;
 }
 
 if (store::getSetupValue('rewrite301')) {
-    $rw301c = new \Controllers\rewrite301Controller(array());
+    $rw301c = new \Controllers\rewrite301Controller([]);
     $rw301c->rewrite();
 }
 
@@ -130,9 +137,8 @@ if ($webshopnum == '1') {
 }
 $match = $router->match();
 if (store::getParameter(\mkw\consts::Off . $webshopnum) && substr($match['name'], 0, 5) !== 'admin') {
-    callTheController('mainController#showOff', array());
-}
-else {
+    callTheController('mainController#showOff', []);
+} else {
     if ($match) {
         store::setRouteName($match['name']);
         switch (true) {
@@ -143,17 +149,17 @@ else {
                     require_once 'runonce.php';
 
                     $__admintranslate->addTranslation(
-                        array(
+                        [
                             'adapter' => 'array',
                             'content' => 'locales/admin/en.php',
                             'locale' => 'en_us'
-                        )
+                        ]
                     );
                     if (store::getAdminLocale()) {
                         $__admintranslate->setLocale(store::getAdminLocale());
                     }
 
-                    if ((!in_array($match['name'], array('admincron', 'adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
+                    if ((!in_array($match['name'], ['admincron', 'adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail']))) {
                         $linuser = store::getAdminSession()->pk;
                         if (!$linuser) {
                             $redirected = true;
@@ -165,7 +171,7 @@ else {
                 break;
             case (substr($match['name'], 0, 8) === 'pubadmin'):
                 if ($ini['pubadmin']) {
-                    if ((!in_array($match['name'], array('pubadminshowlogin', 'pubadminlogin')))) {
+                    if ((!in_array($match['name'], ['pubadminshowlogin', 'pubadminlogin']))) {
                         $linuser = store::getPubAdminSession()->pk;
                         if (!$linuser) {
                             $redirected = true;
@@ -188,11 +194,11 @@ else {
                     }
 
                     $__maintranslate->addTranslation(
-                        array(
+                        [
                             'adapter' => 'array',
                             'content' => 'locales/main/en.php',
                             'locale' => 'en_us'
-                        )
+                        ]
                     );
 
                     if (\mkw\store::isMPTNGY()) {
@@ -216,7 +222,7 @@ else {
 
                     if (!$mainsess->referrer) {
                         if (array_key_exists('HTTP_REFERER', $_SERVER)) {
-                            $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+                            $mainsess->referrer = substr($_SERVER['HTTP_REFERER'], 0, 255);
                         }
                     }
                     $pc = new \Controllers\partnerController(null);
@@ -228,24 +234,39 @@ else {
                         if ($pc->autoLogout()) {
                             $redirected = true;
                             header('Location: ' . $prevuri);
-                        }
-                        else {
+                        } else {
                             $pc->setUtolsoKlikk();
                         }
-                    }
-                    elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
-                            'mugenraceexport', 'superzonehuexport', 'pubregistration', 'savepubregistration', 'pubregistrationthx',
-                            'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint', 'szamlapdf', 'a2aprocesscmd',
-                            'kaposimotoexport', 'mptngygetszerepkorlist', 'mptngysaveregistration', 'partnercheckemail'))) {
+                    } elseif (store::mustLogin() && !in_array($match['name'], [
+                            'showlogin',
+                            'dologin',
+                            'showfanta',
+                            'dofanta',
+                            'fcmotoexport',
+                            'mugenraceexport',
+                            'superzonehuexport',
+                            'pubregistration',
+                            'savepubregistration',
+                            'pubregistrationthx',
+                            'createpassreminder',
+                            'showpassreminder',
+                            'savepassreminder',
+                            'szamlaprint',
+                            'szamlapdf',
+                            'a2aprocesscmd',
+                            'kaposimotoexport',
+                            'mptngygetszerepkorlist',
+                            'mptngysaveregistration',
+                            'partnercheckemail'
+                        ])) {
                         $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                         $redirected = true;
                         header('Location: ' . $router->generate('showlogin'));
                     }
-                }
-                else {
+                } else {
                     $redirected = true;
                     header('HTTP/1.1 404 Not found');
-                    callTheController('mainController#show404', array());
+                    callTheController('mainController#show404', []);
                 }
                 break;
         }
@@ -255,7 +276,7 @@ else {
         try {
             if (!callTheController($match['target'], $match)) {
                 header('HTTP/1.1 404 Not found');
-                callTheController('mainController#show404', array());
+                callTheController('mainController#show404', []);
             }
         } catch (\Doctrine\ORM\Query\QueryException $e) {
             error_log($e->getMessage());
