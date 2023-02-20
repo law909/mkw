@@ -1599,7 +1599,7 @@ class setupController extends \mkwhelpers\Controller
             $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::NoMinKeszletTermekkat, $importnewkat->getId());
         } else {
-            $this->setObj(\mkw\consts::ImportNewKatId, 0);
+            $this->setObj(\mkw\consts::NoMinKeszletTermekkat, 0);
         }
         $this->setObj(\mkw\consts::NoMinKeszlet, $this->params->getBoolRequestParam(\mkw\consts::NoMinKeszlet));
 
