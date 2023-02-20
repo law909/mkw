@@ -488,6 +488,8 @@ a {
 
 .termek-img {
     width: 100%;
+    object-fit: contain;
+    height: 150px;
 }
 
 .termek-infobox {
@@ -1142,6 +1144,10 @@ a {
 
     .termek-innerbox {
         padding: var(--termek-padding-d);
+    }
+
+    .termek-img {
+        height: 300px;
     }
 
     .termek-nev {
