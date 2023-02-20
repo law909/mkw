@@ -95,7 +95,6 @@ class Kosar
 
     public function toLista($partner = null, $kerekit = false)
     {
-
         $ret = [];
         $termek = $this->getTermek();
         $ret = $ret + $termek->toKosar($this->getTermekvaltozat());
@@ -150,6 +149,7 @@ class Kosar
         }
         $ret['valtozatok'] = $v;
         $ret['editlink'] = \mkw\store::getRouter()->generate('kosaredit');
+        $ret['dellink'] = \mkw\store::getRouter()->generate('kosardel');
         $ret['showcheckoutlink'] = \mkw\store::getRouter()->generate('showcheckout');
         return $ret;
     }

@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mugenrace2021/kosar.js?v=1"></script>
+    <script src="/js/main/mugenrace2021/kosar.js?v=2"></script>
 {/block}
 
 {block "body"}
@@ -28,7 +28,10 @@
                                         <div class="termek-cikkszam" x-text="tetel.rovidleiras"></div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-secondary">{t('Törlés')}</button>
+                                        <button
+                                            class="btn btn-secondary"
+                                            @click="delTetel(index)"
+                                        >{t('Törlés')}</button>
                                     </div>
                                 </div>
                                 <div class="cart-table-data-line padding-top">

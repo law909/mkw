@@ -377,19 +377,24 @@ class kosarController extends \mkwhelpers\MattableController
     public function del()
     {
         $id = $this->params->getIntRequestParam('id');
-        if ($this->getRepo()->del($id)) {
-            if ($this->params->getIntRequestParam('jax', 0) > 0) {
-//				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
-//				$v->setVar('kosar',$this->getMiniData());
-//				$v->printTemplateResult();
-                echo 'ok';
-            } else {
-                if (\mkw\store::getMainSession()->prevuri) {
-                    Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
-                } else {
-                    Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
+        switch (true) {
+            case \mkw\store::isMugenrace2021():
+                if ($this->getRepo()->del($id)) {
+                    echo 'ok';
                 }
-            }
+                break;
+            default:
+                if ($this->getRepo()->del($id)) {
+                    if ($this->params->getIntRequestParam('jax', 0) > 0) {
+                        echo 'ok';
+                    } else {
+                        if (\mkw\store::getMainSession()->prevuri) {
+                            Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
+                        } else {
+                            Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
+                        }
+                    }
+                }
         }
     }
 
@@ -400,82 +405,84 @@ class kosarController extends \mkwhelpers\MattableController
         $kedvezmeny = $this->params->getNumRequestParam('kedvezmeny', false);
         if ($this->getRepo()->edit($id, $menny, $kedvezmeny)) {
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
-//				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
-//				$v->setVar('kosar',$this->getMiniData());
-//				$v->printTemplateResult();
                 echo 'ok';
             } else {
-                $partner = \mkw\store::getLoggedInUser();
-                $minidata = $this->getMiniData();
-                $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
-                $v->setVar('kosar', $minidata);
-
-                $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
-                $v2->setVar('kosar', $minidata);
-
-                $sum = 0;
-                $mennyisegsum = 0;
-                $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
-                if ($m) {
-                    if ($partner && $partner->getSzamlatipus()) {
-                        $sum = $m['nettosum'];
-                    } else {
-                        $sum = $m['bruttosum'];
-                    }
-                    $mennyisegsum = $m['mennyisegsum'];
-                }
-                $valutanemnev = 'Ft';
-                if (\mkw\store::getTheme() !== 'mkwcansas') {
-                    if ($partner) {
-                        $valutanemnev = $partner->getValutanemnev();
-                        $valutanem = $partner->getValutanem();
-                    }
-                    if (!$valutanem) {
-                        $valutanem = $this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem);
-                        $valutanemnev = \mkw\store::getMainSession()->valutanemnev;
-                    }
-                }
-                $ker = 0;
-                if (!$valutanem) {
-                    $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
-                }
-                if ($valutanem) {
-                    $ker = 2;
-                    if ($valutanem->getKerekit()) {
-                        $ker = 0;
-                    }
-                }
-
-                $sorok = $this->getRepo()->find($id);
-                $s = $sorok->toLista($partner);
-                switch (true) {
-                    case \mkw\store::isMugenrace2021():
-                        echo json_encode([
-                            'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' '),
-                            'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
-                            'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' '),
-                            'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
-                            'kosarertek' => number_format($sum, $ker, ',', ' '),
-                            'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' '),
-                            'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' '),
-                            'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
-                        ]);
-                        break;
-                    default:
-                        echo json_encode([
-                            'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
-                            'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
-                            'minikosar' => $v->getTemplateResult(),
-                            'minikosaringyenes' => $v2->getTemplateResult(),
-                        ]);
-                }
+                echo json_encode($this->calcKosarData($id));
             }
+        }
+    }
+
+    protected function calcKosarData($id)
+    {
+        $partner = \mkw\store::getLoggedInUser();
+        $minidata = $this->getMiniData();
+        $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
+        $v->setVar('kosar', $minidata);
+
+        $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
+        $v2->setVar('kosar', $minidata);
+
+        $sum = 0;
+        $mennyisegsum = 0;
+        $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+        if ($m) {
+            if ($partner && $partner->getSzamlatipus()) {
+                $sum = $m['nettosum'];
+            } else {
+                $sum = $m['bruttosum'];
+            }
+            $mennyisegsum = $m['mennyisegsum'];
+        }
+        $valutanemnev = 'Ft';
+        if (\mkw\store::getTheme() !== 'mkwcansas') {
+            if ($partner) {
+                $valutanemnev = $partner->getValutanemnev();
+                $valutanem = $partner->getValutanem();
+            }
+            if (!$valutanem) {
+                $valutanem = $this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem);
+                $valutanemnev = \mkw\store::getMainSession()->valutanemnev;
+            }
+        }
+        $ker = 0;
+        if (!$valutanem) {
+            $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        }
+        if ($valutanem) {
+            $ker = 2;
+            if ($valutanem->getKerekit()) {
+                $ker = 0;
+            }
+        }
+
+        $sorok = $this->getRepo()->find($id);
+        $s = $sorok->toLista($partner);
+        switch (true) {
+            case \mkw\store::isMugenrace2021():
+                return [
+                    'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' '),
+                    'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
+                    'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' '),
+                    'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' '),
+                    'kosarertek' => number_format($sum, $ker, ',', ' '),
+                    'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' '),
+                    'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' '),
+                    'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
+                ];
+                break;
+            default:
+                return [
+                    'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
+                    'minikosar' => $v->getTemplateResult(),
+                    'minikosaringyenes' => $v2->getTemplateResult(),
+                ];
         }
     }
 

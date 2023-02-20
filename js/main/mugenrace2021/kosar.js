@@ -28,19 +28,30 @@ document.addEventListener("alpine:init", () => {
             if (i !== undefined && this.tetellist[i].mennyiseg < 1) {
                 this.tetellist[i].mennyiseg = 1;
             }
-            console.log(this.tetellist[i].editlink);
-            fetch(new URL(this.tetellist[i].editlink, location.origin), {
-                method: 'POST',
-                body: new URLSearchParams({
-                    id: this.tetellist[i].id,
-                    mennyiseg: this.tetellist[i].mennyiseg
+            if (i !== undefined) {
+                fetch(new URL(this.tetellist[i].editlink, location.origin), {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        id: this.tetellist[i].id,
+                        mennyiseg: this.tetellist[i].mennyiseg
+                    })
                 })
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    this.sum = data.kosarertek;
-                    console.log(data);
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.sum = data.kosarertek;
+                    });
+            }
+        },
+        delTetel(i) {
+            if (i !== undefined) {
+                fetch(new URL(this.tetellist[i].dellink, location.origin), {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        id: this.tetellist[i].id,
+                    })
+                })
+                    .then(() => location.reload());
+            }
         },
     }));
 });
