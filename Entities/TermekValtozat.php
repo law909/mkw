@@ -58,6 +58,28 @@ class TermekValtozat
 
     /** @ORM\Column(type="boolean") */
     private $lathato4 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato5 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato6 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato7 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato8 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato9 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato10 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato11 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato12 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato13 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato14 = true;
+    /** @ORM\Column(type="boolean") */
+    private $lathato15 = true;
 
     /** @ORM\Column(type="boolean") */
     private $elerheto = true;
@@ -70,6 +92,28 @@ class TermekValtozat
 
     /** @ORM\Column(type="boolean") */
     private $elerheto4 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto5 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto6 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto7 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto8 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto9 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto10 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto11 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto12 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto13 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto14 = true;
+    /** @ORM\Column(type="boolean") */
+    private $elerheto15 = true;
 
     /** @ORM\Column(type="boolean") */
     private $termekfokep = false;
@@ -174,12 +218,12 @@ class TermekValtozat
         } else {
             $x['status'] = 0;
         }
-        $x['stock'] = array(
-            array(
+        $x['stock'] = [
+            [
                 'warehouse_id' => 1,
                 'value' => $this->getKeszlet()
-            )
-        );
+            ]
+        ];
         return $x;
     }
 
@@ -237,7 +281,7 @@ class TermekValtozat
             }
         }
         */
-        $this->keszletinfo = array('keszlet' => $k, 'mozgasdb' => $db);
+        $this->keszletinfo = ['keszlet' => $k, 'mozgasdb' => $db];
         return $this->keszletinfo;
     }
 
@@ -281,7 +325,7 @@ class TermekValtozat
         $k = $d[0]['mennyiseg'] * -1;
         $db = $d[0]['mozgasdb'];
 
-        $this->foglalasinfo = array('foglalas' => $k, 'mozgasdb' => $db);
+        $this->foglalasinfo = ['foglalas' => $k, 'mozgasdb' => $db];
         return $this->foglalasinfo;
     }
 
@@ -615,7 +659,7 @@ class TermekValtozat
 
     public function getNev()
     {
-        return implode(' - ', array($this->getErtek1(), $this->getErtek2()));
+        return implode(' - ', [$this->getErtek1(), $this->getErtek2()]);
     }
 
     public function getVonalkod()
@@ -783,6 +827,28 @@ class TermekValtozat
                 return $this->getElerheto3();
             case 4:
                 return $this->getElerheto4();
+            case 5:
+                return $this->getElerheto5();
+            case 6:
+                return $this->getElerheto6();
+            case 7:
+                return $this->getElerheto7();
+            case 8:
+                return $this->getElerheto8();
+            case 9:
+                return $this->getElerheto9();
+            case 10:
+                return $this->getElerheto10();
+            case 11:
+                return $this->getElerheto11();
+            case 12:
+                return $this->getElerheto12();
+            case 13:
+                return $this->getElerheto13();
+            case 14:
+                return $this->getElerheto14();
+            case 15:
+                return $this->getElerheto15();
             default:
                 return $this->getElerheto();
         }
@@ -799,6 +865,28 @@ class TermekValtozat
                 return $this->getLathato3();
             case 4:
                 return $this->getLathato4();
+            case 5:
+                return $this->getLathato5();
+            case 6:
+                return $this->getLathato6();
+            case 7:
+                return $this->getLathato7();
+            case 8:
+                return $this->getLathato8();
+            case 9:
+                return $this->getLathato9();
+            case 10:
+                return $this->getLathato10();
+            case 11:
+                return $this->getLathato11();
+            case 12:
+                return $this->getLathato12();
+            case 13:
+                return $this->getLathato13();
+            case 14:
+                return $this->getLathato14();
+            case 15:
+                return $this->getLathato15();
             default:
                 return $this->getLathato();
         }
@@ -827,6 +915,358 @@ class TermekValtozat
     public function setMinboltikeszlet($minboltikeszlet)
     {
         $this->minboltikeszlet = $minboltikeszlet;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato5()
+    {
+        return $this->lathato5;
+    }
+
+    /**
+     * @param bool $lathato5
+     */
+    public function setLathato5($lathato5): void
+    {
+        $this->lathato5 = $lathato5;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato6()
+    {
+        return $this->lathato6;
+    }
+
+    /**
+     * @param bool $lathato6
+     */
+    public function setLathato6($lathato6): void
+    {
+        $this->lathato6 = $lathato6;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato7()
+    {
+        return $this->lathato7;
+    }
+
+    /**
+     * @param bool $lathato7
+     */
+    public function setLathato7($lathato7): void
+    {
+        $this->lathato7 = $lathato7;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato8()
+    {
+        return $this->lathato8;
+    }
+
+    /**
+     * @param bool $lathato8
+     */
+    public function setLathato8($lathato8): void
+    {
+        $this->lathato8 = $lathato8;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato9()
+    {
+        return $this->lathato9;
+    }
+
+    /**
+     * @param bool $lathato9
+     */
+    public function setLathato9($lathato9): void
+    {
+        $this->lathato9 = $lathato9;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato10()
+    {
+        return $this->lathato10;
+    }
+
+    /**
+     * @param bool $lathato10
+     */
+    public function setLathato10($lathato10): void
+    {
+        $this->lathato10 = $lathato10;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato11()
+    {
+        return $this->lathato11;
+    }
+
+    /**
+     * @param bool $lathato11
+     */
+    public function setLathato11($lathato11): void
+    {
+        $this->lathato11 = $lathato11;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato12()
+    {
+        return $this->lathato12;
+    }
+
+    /**
+     * @param bool $lathato12
+     */
+    public function setLathato12($lathato12): void
+    {
+        $this->lathato12 = $lathato12;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato13()
+    {
+        return $this->lathato13;
+    }
+
+    /**
+     * @param bool $lathato13
+     */
+    public function setLathato13($lathato13): void
+    {
+        $this->lathato13 = $lathato13;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato14()
+    {
+        return $this->lathato14;
+    }
+
+    /**
+     * @param bool $lathato14
+     */
+    public function setLathato14($lathato14): void
+    {
+        $this->lathato14 = $lathato14;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLathato15()
+    {
+        return $this->lathato15;
+    }
+
+    /**
+     * @param bool $lathato15
+     */
+    public function setLathato15($lathato15): void
+    {
+        $this->lathato15 = $lathato15;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto5()
+    {
+        return $this->elerheto5;
+    }
+
+    /**
+     * @param bool $elerheto5
+     */
+    public function setElerheto5($elerheto5): void
+    {
+        $this->elerheto5 = $elerheto5;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto6()
+    {
+        return $this->elerheto6;
+    }
+
+    /**
+     * @param bool $elerheto6
+     */
+    public function setElerheto6($elerheto6): void
+    {
+        $this->elerheto6 = $elerheto6;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto7()
+    {
+        return $this->elerheto7;
+    }
+
+    /**
+     * @param bool $elerheto7
+     */
+    public function setElerheto7($elerheto7): void
+    {
+        $this->elerheto7 = $elerheto7;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto8()
+    {
+        return $this->elerheto8;
+    }
+
+    /**
+     * @param bool $elerheto8
+     */
+    public function setElerheto8($elerheto8): void
+    {
+        $this->elerheto8 = $elerheto8;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto9()
+    {
+        return $this->elerheto9;
+    }
+
+    /**
+     * @param bool $elerheto9
+     */
+    public function setElerheto9($elerheto9): void
+    {
+        $this->elerheto9 = $elerheto9;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto10()
+    {
+        return $this->elerheto10;
+    }
+
+    /**
+     * @param bool $elerheto10
+     */
+    public function setElerheto10($elerheto10): void
+    {
+        $this->elerheto10 = $elerheto10;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto11()
+    {
+        return $this->elerheto11;
+    }
+
+    /**
+     * @param bool $elerheto11
+     */
+    public function setElerheto11($elerheto11): void
+    {
+        $this->elerheto11 = $elerheto11;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto12()
+    {
+        return $this->elerheto12;
+    }
+
+    /**
+     * @param bool $elerheto12
+     */
+    public function setElerheto12($elerheto12): void
+    {
+        $this->elerheto12 = $elerheto12;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto13()
+    {
+        return $this->elerheto13;
+    }
+
+    /**
+     * @param bool $elerheto13
+     */
+    public function setElerheto13($elerheto13): void
+    {
+        $this->elerheto13 = $elerheto13;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto14()
+    {
+        return $this->elerheto14;
+    }
+
+    /**
+     * @param bool $elerheto14
+     */
+    public function setElerheto14($elerheto14): void
+    {
+        $this->elerheto14 = $elerheto14;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getElerheto15()
+    {
+        return $this->elerheto15;
+    }
+
+    /**
+     * @param bool $elerheto15
+     */
+    public function setElerheto15($elerheto15): void
+    {
+        $this->elerheto15 = $elerheto15;
     }
 
 }

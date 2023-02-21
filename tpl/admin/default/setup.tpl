@@ -26,6 +26,7 @@
                         <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
                         <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
                         <li><a href="#Web4Tab">{$webshop4name} {at('beállítások')}</a></li>
+                        <li><a href="#Web5Tab">{$webshop5name} {at('beállítások')}</a></li>
                         <li><a href="#WebshopSetupTab">{at('Webshopok beállításai')}</a></li>
                     {else}
                         <li><a href="#WebTab">{at('Web beállítások')}</a></li>
@@ -1216,6 +1217,41 @@
                                     <span class="js-web4defakatid">{$web4defakat.caption|default:'nincs megadva'}</span>
                                     <input name="web4defakatid" type="hidden" value="{$web4defakat.id}">
                                 </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="Web5Tab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Off5Edit">{at('Publikus felület kikapcsolva')}:</label></span>
+                                <input id="Off5Edit" name="off5" type="checkbox"{if ($off2)} checked="checked"{/if}>
+                            </div>
+                        </div>
+                        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <tbody>
+                            <tr>
+                                <td><label>{at('Logo')}:</label></td>
+                                <td><input name="logo5" type="text" value="{$logo5}"></td>
+                                <td><a class="js-kepbrowsebutton" data-name="logo5" href="#" title="{at('Browse')}">{at('...')}</a></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS5PriceEdit">{at('Ársáv')}:</label></td>
+                                <td><select id="WS5PriceEdit" name="arsav5">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $arsav5list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS5DiscountPriceEdit">{at('Akciós ársáv')}:</label></td>
+                                <td><select id="WS5DiscountPriceEdit" name="akciosarsav5">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $akciosarsav5list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
                             </tr>
                             </tbody>
                         </table>

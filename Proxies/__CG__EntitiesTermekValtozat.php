@@ -67,10 +67,10 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet'];
     }
 
     /**
@@ -949,6 +949,490 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMinboltikeszlet', [$minboltikeszlet]);
 
         return parent::setMinboltikeszlet($minboltikeszlet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato5', []);
+
+        return parent::getLathato5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato5($lathato5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato5', [$lathato5]);
+
+        parent::setLathato5($lathato5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato6', []);
+
+        return parent::getLathato6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato6($lathato6): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato6', [$lathato6]);
+
+        parent::setLathato6($lathato6);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato7', []);
+
+        return parent::getLathato7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato7($lathato7): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato7', [$lathato7]);
+
+        parent::setLathato7($lathato7);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato8', []);
+
+        return parent::getLathato8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato8($lathato8): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato8', [$lathato8]);
+
+        parent::setLathato8($lathato8);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato9', []);
+
+        return parent::getLathato9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato9($lathato9): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato9', [$lathato9]);
+
+        parent::setLathato9($lathato9);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato10', []);
+
+        return parent::getLathato10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato10($lathato10): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato10', [$lathato10]);
+
+        parent::setLathato10($lathato10);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato11()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato11', []);
+
+        return parent::getLathato11();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato11($lathato11): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato11', [$lathato11]);
+
+        parent::setLathato11($lathato11);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato12()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato12', []);
+
+        return parent::getLathato12();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato12($lathato12): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato12', [$lathato12]);
+
+        parent::setLathato12($lathato12);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato13()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato13', []);
+
+        return parent::getLathato13();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato13($lathato13): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato13', [$lathato13]);
+
+        parent::setLathato13($lathato13);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato14()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato14', []);
+
+        return parent::getLathato14();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato14($lathato14): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato14', [$lathato14]);
+
+        parent::setLathato14($lathato14);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato15()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato15', []);
+
+        return parent::getLathato15();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato15($lathato15): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato15', [$lathato15]);
+
+        parent::setLathato15($lathato15);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto5', []);
+
+        return parent::getElerheto5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto5($elerheto5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto5', [$elerheto5]);
+
+        parent::setElerheto5($elerheto5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto6', []);
+
+        return parent::getElerheto6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto6($elerheto6): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto6', [$elerheto6]);
+
+        parent::setElerheto6($elerheto6);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto7', []);
+
+        return parent::getElerheto7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto7($elerheto7): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto7', [$elerheto7]);
+
+        parent::setElerheto7($elerheto7);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto8', []);
+
+        return parent::getElerheto8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto8($elerheto8): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto8', [$elerheto8]);
+
+        parent::setElerheto8($elerheto8);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto9', []);
+
+        return parent::getElerheto9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto9($elerheto9): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto9', [$elerheto9]);
+
+        parent::setElerheto9($elerheto9);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto10', []);
+
+        return parent::getElerheto10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto10($elerheto10): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto10', [$elerheto10]);
+
+        parent::setElerheto10($elerheto10);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto11()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto11', []);
+
+        return parent::getElerheto11();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto11($elerheto11): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto11', [$elerheto11]);
+
+        parent::setElerheto11($elerheto11);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto12()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto12', []);
+
+        return parent::getElerheto12();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto12($elerheto12): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto12', [$elerheto12]);
+
+        parent::setElerheto12($elerheto12);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto13()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto13', []);
+
+        return parent::getElerheto13();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto13($elerheto13): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto13', [$elerheto13]);
+
+        parent::setElerheto13($elerheto13);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto14()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto14', []);
+
+        return parent::getElerheto14();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto14($elerheto14): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto14', [$elerheto14]);
+
+        parent::setElerheto14($elerheto14);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto15()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto15', []);
+
+        return parent::getElerheto15();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto15($elerheto15): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto15', [$elerheto15]);
+
+        parent::setElerheto15($elerheto15);
     }
 
 }

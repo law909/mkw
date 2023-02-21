@@ -358,6 +358,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Off3, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Off4);
         $view->setVar(\mkw\consts::Off4, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::Off5);
+        $view->setVar(\mkw\consts::Off5, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaUresTeremJutalek);
         $view->setVar(\mkw\consts::JogaUresTeremJutalek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaJutalek);
@@ -485,18 +487,26 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Webshop14Name, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Webshop15Name);
         $view->setVar(\mkw\consts::Webshop15Name, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::Webshop2Price);
         $view->setVar('arsav2list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::Webshop2Discount);
         $view->setVar('akciosarsav2list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+
         $p = $repo->find(\mkw\consts::Webshop3Price);
         $view->setVar('arsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::Webshop3Discount);
         $view->setVar('akciosarsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+
         $p = $repo->find(\mkw\consts::Webshop4Price);
         $view->setVar('arsav4list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::Webshop4Discount);
         $view->setVar('akciosarsav4list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+
+        $p = $repo->find(\mkw\consts::Webshop5Price);
+        $view->setVar('arsav5list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop5Discount);
+        $view->setVar('akciosarsav5list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::MarkaCs);
         $markacs = new termekcimkekatController($this->params);
@@ -1100,6 +1110,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Off2, $this->params->getBoolRequestParam(\mkw\consts::Off2));
         $this->setObj(\mkw\consts::Off3, $this->params->getBoolRequestParam(\mkw\consts::Off3));
         $this->setObj(\mkw\consts::Off4, $this->params->getBoolRequestParam(\mkw\consts::Off4));
+        $this->setObj(\mkw\consts::Off5, $this->params->getBoolRequestParam(\mkw\consts::Off5));
         $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
         $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
         $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
@@ -1420,6 +1431,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Webshop3Discount, $this->params->getStringRequestParam('akciosarsav3'));
         $this->setObj(\mkw\consts::Webshop4Price, $this->params->getStringRequestParam('arsav4'));
         $this->setObj(\mkw\consts::Webshop4Discount, $this->params->getStringRequestParam('akciosarsav4'));
+        $this->setObj(\mkw\consts::Webshop5Price, $this->params->getStringRequestParam('arsav5'));
+        $this->setObj(\mkw\consts::Webshop5Discount, $this->params->getStringRequestParam('akciosarsav5'));
 
         $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {

@@ -39,6 +39,7 @@ class consts
     const Off2 = 'off2';
     const Off3 = 'off3';
     const Off4 = 'off4';
+    const Off5 = 'off5';
     const Orszag = 'orszag';
     const Magyarorszag = 'magyarorszag';
     const Watermark = 'watermark';
@@ -323,6 +324,8 @@ class consts
     const Webshop4Price = 'Webshop4Price';
     const Webshop4Discount = 'Webshop4Discount';
     const Web4DefaKatId = 'Web4DefaKatId';
+    const Webshop5Price = 'Webshop5Price';
+    const Webshop5Discount = 'Webshop5Discount';
 
     const SZEPFizmod = 'szepkartyafizmod';
     const SportkartyaFizmod = 'sportkartyafizmod';
