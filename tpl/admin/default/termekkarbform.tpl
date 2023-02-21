@@ -10,7 +10,7 @@
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
             {if ($setup.darshan)}
-            <li><a href="#JogaTab">{at('Jóga adatok')}</a></li>
+                <li><a href="#JogaTab">{at('Jóga adatok')}</a></li>
             {/if}
             {if ($setup.arsavok)}
                 <li><a href="#ArsavTab">{at('Ársávok')}</a></li>
@@ -291,34 +291,22 @@
                         </td>
                     </tr>
                     {if ($setup.multishop)}
-                        <tr>
-                            <td class="mattable-cell">
-                                <label for="VElerheto2Edit">{at('Elérhető 2')}:
-                                    <input id="VElerheto2Edit" form="valtozatgeneratorform" name="valtozatelerheto2"
-                                           type="checkbox">
-                                </label>
-                            </td>
-                            <td class="mattable-cell">
-                                <label for="VLathato2Edit">{at('Látható 2')}:
-                                    <input id="VLathato2Edit" form="valtozatgeneratorform" name="valtozatlathato2"
-                                           type="checkbox">
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="mattable-cell">
-                                <label for="VElerheto3Edit">{at('Elérhető 3')}:
-                                    <input id="VElerheto3Edit" form="valtozatgeneratorform" name="valtozatelerheto3"
-                                           type="checkbox">
-                                </label>
-                            </td>
-                            <td class="mattable-cell">
-                                <label for="VLathato3Edit">{at('Látható 3')}:
-                                    <input id="VLathato3Edit" form="valtozatgeneratorform" name="valtozatlathato3"
-                                           type="checkbox">
-                                </label>
-                            </td>
-                        </tr>
+                        {for $cikl = 2 to $enabledwebshops}
+                            <tr>
+                                <td class="mattable-cell">
+                                    <label for="VElerheto{$cikl}Edit">{at('Elérhető')} {$webshop{$cikl}name}:
+                                        <input id="VElerheto{$cikl}Edit" form="valtozatgeneratorform" name="valtozatelerheto{$cikl}"
+                                               type="checkbox">
+                                    </label>
+                                </td>
+                                <td class="mattable-cell">
+                                    <label for="VLathato{$cikl}Edit">{at('Látható')} {$webshop{$cikl}name}:
+                                        <input id="VLathato{$cikl}Edit" form="valtozatgeneratorform" name="valtozatlathato{$cikl}"
+                                               type="checkbox">
+                                    </label>
+                                </td>
+                            </tr>
+                        {/for}
                     {/if}
                     <tr>
                         <td class="mattable-cell">
@@ -415,7 +403,8 @@
                 {foreach $egyed.valtozatok as $valtozat}
                     <div>
                         <label for="ValtozatMinBoltKeszletEdit_{$valtozat.id}">{$valtozat.ertek1} - {$valtozat.ertek2}</label>
-                        <input id="ValtozatMinBoltKeszletEdit_{$valtozat.id}" name="valtozatminboltikeszlet_{$valtozat.id}" type="number" step="any" value="{$valtozat.minboltikeszlet}">
+                        <input id="ValtozatMinBoltKeszletEdit_{$valtozat.id}" name="valtozatminboltikeszlet_{$valtozat.id}" type="number" step="any"
+                               value="{$valtozat.minboltikeszlet}">
                         <input name="valtozatminboltikeszletid[]" type="hidden" value="{$valtozat.id}">
                     </div>
                 {/foreach}
@@ -432,14 +421,14 @@
         {/if}
         <div id="WebTab" class="mattkarb-page">
             <div>
-            <input id="LathatoCheck" name="lathato" type="checkbox"
-                   {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
-            {if ($setup.multishop)}
-                {for $cikl = 2 to $enabledwebshops}
-                    <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"
-                           {if ($egyed["lathato$cikl"])}checked="checked"{/if}>{at('Látható')} {$webshop{$cikl}name}
-                {/for}
-            {/if}
+                <input id="LathatoCheck" name="lathato" type="checkbox"
+                       {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
+                {if ($setup.multishop)}
+                    {for $cikl = 2 to $enabledwebshops}
+                        <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"
+                               {if ($egyed["lathato$cikl"])}checked="checked"{/if}>{at('Látható')} {$webshop{$cikl}name}
+                    {/for}
+                {/if}
             </div>
             <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
                    {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}
@@ -454,8 +443,8 @@
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
                    {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
             {if ($setup.emag)}
-            <input id="EmagtiltvaCheck" name="emagtiltva" type="checkbox"
-                   {if ($egyed.emagtiltva)}checked="checked"{/if}>{at('eMAG tiltva')}
+                <input id="EmagtiltvaCheck" name="emagtiltva" type="checkbox"
+                       {if ($egyed.emagtiltva)}checked="checked"{/if}>{at('eMAG tiltva')}
             {/if}
             <table>
                 <tbody>

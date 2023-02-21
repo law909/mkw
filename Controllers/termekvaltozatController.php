@@ -6,9 +6,11 @@ use Entities\Termek;
 use Entities\TermekValtozat;
 use mkw\store;
 
-class termekvaltozatController extends \mkwhelpers\MattableController {
+class termekvaltozatController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\TermekValtozat');
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
@@ -17,19 +19,19 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    public function loadVars($t, $termek, $forKarb = false) {
+    public function loadVars($t, $termek, $forKarb = false)
+    {
         $tvatc = new termekvaltozatadattipusController($this->params);
         $tkepc = new termekkepController($this->params);
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\TermekValtozat();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = store::createUID();
             $x['termek']['id'] = $termek ? $termek->getId() : null;
-            $x['keplista'] = $termek ? $tkepc->getSelectList($termek, NULL) : array();
-        }
-        else {
+            $x['keplista'] = $termek ? $tkepc->getSelectList($termek, null) : [];
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
             $x['keplista'] = $tkepc->getSelectList($t->getTermek(), $t->getKepid());
@@ -67,7 +69,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setLathato($this->params->getBoolRequestParam('lathato', false));
         /* MINTA ha nem kell, dobd ki
           $ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntRequestParam('cimkecsoport'));
@@ -78,14 +81,16 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
         $view = $this->createView('termektermekvaltozatkarb.tpl');
         $view->setVar('valtozat', $this->loadVars(null, $termek, true));
         echo $view->getTemplateResult();
     }
 
-    public function delall() {
+    public function delall()
+    {
         $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
         $valtozatok = $termek->getValtozatok();
         foreach ($valtozatok as $valt) {
@@ -95,7 +100,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $this->getEm()->flush();
     }
 
-    public function generate() {
+    public function generate()
+    {
         $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
 
         $adattipus1 = $this->params->getIntRequestParam('valtozatadattipus1');
@@ -110,10 +116,32 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $elerheto2 = $this->params->getBoolRequestParam('valtozatelerheto2', false);
         $elerheto3 = $this->params->getBoolRequestParam('valtozatelerheto3', false);
         $elerheto4 = $this->params->getBoolRequestParam('valtozatelerheto4', false);
+        $elerheto5 = $this->params->getBoolRequestParam('valtozatelerheto5', false);
+        $elerheto6 = $this->params->getBoolRequestParam('valtozatelerheto6', false);
+        $elerheto7 = $this->params->getBoolRequestParam('valtozatelerheto7', false);
+        $elerheto8 = $this->params->getBoolRequestParam('valtozatelerheto8', false);
+        $elerheto9 = $this->params->getBoolRequestParam('valtozatelerheto9', false);
+        $elerheto10 = $this->params->getBoolRequestParam('valtozatelerheto10', false);
+        $elerheto11 = $this->params->getBoolRequestParam('valtozatelerheto11', false);
+        $elerheto12 = $this->params->getBoolRequestParam('valtozatelerheto12', false);
+        $elerheto13 = $this->params->getBoolRequestParam('valtozatelerheto13', false);
+        $elerheto14 = $this->params->getBoolRequestParam('valtozatelerheto14', false);
+        $elerheto15 = $this->params->getBoolRequestParam('valtozatelerheto15', false);
         $lathato = $this->params->getBoolRequestParam('valtozatlathato', false);
         $lathato2 = $this->params->getBoolRequestParam('valtozatlathato2', false);
         $lathato3 = $this->params->getBoolRequestParam('valtozatlathato3', false);
         $lathato4 = $this->params->getBoolRequestParam('valtozatlathato4', false);
+        $lathato5 = $this->params->getBoolRequestParam('valtozatlathato5', false);
+        $lathato6 = $this->params->getBoolRequestParam('valtozatlathato6', false);
+        $lathato7 = $this->params->getBoolRequestParam('valtozatlathato7', false);
+        $lathato8 = $this->params->getBoolRequestParam('valtozatlathato8', false);
+        $lathato9 = $this->params->getBoolRequestParam('valtozatlathato9', false);
+        $lathato10 = $this->params->getBoolRequestParam('valtozatlathato10', false);
+        $lathato11 = $this->params->getBoolRequestParam('valtozatlathato11', false);
+        $lathato12 = $this->params->getBoolRequestParam('valtozatlathato12', false);
+        $lathato13 = $this->params->getBoolRequestParam('valtozatlathato13', false);
+        $lathato14 = $this->params->getBoolRequestParam('valtozatlathato14', false);
+        $lathato15 = $this->params->getBoolRequestParam('valtozatlathato15', false);
         $termekfokep = $this->params->getBoolRequestParam('valtozattermekfokep', false);
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
@@ -134,17 +162,49 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
                     $valtozat->setLathato2($lathato2);
                     $valtozat->setLathato3($lathato3);
                     $valtozat->setLathato4($lathato4);
+                    $valtozat->setLathato5($lathato5);
+                    $valtozat->setLathato6($lathato6);
+                    $valtozat->setLathato7($lathato7);
+                    $valtozat->setLathato8($lathato8);
+                    $valtozat->setLathato9($lathato9);
+                    $valtozat->setLathato10($lathato10);
+                    $valtozat->setLathato11($lathato11);
+                    $valtozat->setLathato12($lathato12);
+                    $valtozat->setLathato13($lathato13);
+                    $valtozat->setLathato14($lathato14);
+                    $valtozat->setLathato15($lathato15);
                     if ($termek->getNemkaphato()) {
                         $valtozat->setElerheto(false);
                         $valtozat->setElerheto2(false);
                         $valtozat->setElerheto3(false);
                         $valtozat->setElerheto4(false);
-                    }
-                    else {
+                        $valtozat->setElerheto5(false);
+                        $valtozat->setElerheto6(false);
+                        $valtozat->setElerheto7(false);
+                        $valtozat->setElerheto8(false);
+                        $valtozat->setElerheto9(false);
+                        $valtozat->setElerheto10(false);
+                        $valtozat->setElerheto11(false);
+                        $valtozat->setElerheto12(false);
+                        $valtozat->setElerheto13(false);
+                        $valtozat->setElerheto14(false);
+                        $valtozat->setElerheto15(false);
+                    } else {
                         $valtozat->setElerheto($elerheto);
                         $valtozat->setElerheto2($elerheto2);
                         $valtozat->setElerheto3($elerheto3);
-                        $valtozat->setElerheto4($elerheto3);
+                        $valtozat->setElerheto4($elerheto4);
+                        $valtozat->setElerheto5($elerheto5);
+                        $valtozat->setElerheto6($elerheto6);
+                        $valtozat->setElerheto7($elerheto7);
+                        $valtozat->setElerheto8($elerheto8);
+                        $valtozat->setElerheto9($elerheto9);
+                        $valtozat->setElerheto10($elerheto10);
+                        $valtozat->setElerheto11($elerheto11);
+                        $valtozat->setElerheto12($elerheto12);
+                        $valtozat->setElerheto13($elerheto13);
+                        $valtozat->setElerheto14($elerheto14);
+                        $valtozat->setElerheto15($elerheto15);
                     }
                     //					$valtozat->setBrutto($brutto);
                     $valtozat->setNetto($netto);
@@ -152,16 +212,14 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
                     if (count($cikkszamok) > 0) {
                         if (count($cikkszamok) == 1) {
                             $valtozat->setCikkszam($cikkszamok[0]);
-                        }
-                        elseif (array_key_exists($cikl, $cikkszamok)) {
+                        } elseif (array_key_exists($cikl, $cikkszamok)) {
                             $valtozat->setCikkszam($cikkszamok[$cikl]);
                         }
                     }
                     if (count($idegencikkszamok) > 0) {
                         if (count($idegencikkszamok) == 1) {
                             $valtozat->setIdegencikkszam($idegencikkszamok[0]);
-                        }
-                        elseif (array_key_exists($cikl, $idegencikkszamok)) {
+                        } elseif (array_key_exists($cikl, $idegencikkszamok)) {
                             $valtozat->setIdegencikkszam($idegencikkszamok[$cikl]);
                         }
                     }
@@ -185,8 +243,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 
                     if ($valtdb > 0) {
                         $this->getEm()->persist($valtozat);
-                    }
-                    else {
+                    } else {
                         $termek->removeValtozat($valtozat);
                     }
                     $cikl++;
@@ -200,30 +257,32 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $result = '';
         foreach ($valtozatok as $valt) {
             $view->setVar('valtozat', $this->loadVars($valt, $termek, true));
-            $result.=$view->getTemplateResult();
+            $result .= $view->getTemplateResult();
         }
         echo $result;
     }
 
-    public function getKeszletByRaktar() {
+    public function getKeszletByRaktar()
+    {
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $valtozat = $this->getRepo()->find($valtozatid);
         $raktarak = $this->getRepo('Entities\Raktar')->getAllActive();
         if ($valtozat) {
-            $klist = array();
-            foreach($raktarak as $raktar) {
-                $klist[] = array(
+            $klist = [];
+            foreach ($raktarak as $raktar) {
+                $klist[] = [
                     'raktarnev' => $raktar->getNev(),
                     'keszlet' => $valtozat->getKeszlet(null, $raktar->getId())
-                );
+                ];
             }
-    		$view = $this->createView('termekkeszletreszletezo.tpl');
+            $view = $this->createView('termekkeszletreszletezo.tpl');
             $view->setVar('lista', $klist);
             $view->printTemplateResult();
         }
     }
 
-    public function getValtozatAdatok() {
+    public function getValtozatAdatok()
+    {
         $x = [];
         $tid = $this->params->getIntRequestParam('tid');
         $termek = $this->getRepo(Termek::class)->find($tid);
@@ -250,7 +309,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
                     }
                 }
                 $x['szinek'] = $vtt;
-                $vtt = array();
+                $vtt = [];
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
                         if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
