@@ -546,6 +546,19 @@ class Partner
     /** @ORM\Column(type="boolean") */
     private $mptngympttag = false;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $mptngybefizetesdatum;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="mptngyfizmod_id",referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $mptngybefizetesmod;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $mptngybefizetes;
+
+
     public function __construct()
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -709,7 +722,8 @@ class Partner
         return $this->nev;
     }
 
-    public function getMonogram() {
+    public function getMonogram()
+    {
         if ($this->keresztnev || $this->vezeteknev) {
             return mb_substr($this->vezeteknev, 0, 1) . '.'
                 . mb_substr($this->keresztnev, 0, 1) . '.';
@@ -3188,6 +3202,60 @@ class Partner
     public function setMptngybankett($mptngybankett): void
     {
         $this->mptngybankett = $mptngybankett;
+    }
+
+    public function getMptngybefizetesdatum()
+    {
+        if (!$this->id && !$this->mptngybefizetesdatum) {
+            $this->mptngybefizetesdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
+        }
+        return $this->mptngybefizetesdatum;
+    }
+
+    public function getMptngybefizetesdatumStr()
+    {
+        if ($this->getMptngybefizetesdatum()) {
+            return $this->getMptngybefizetesdatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setMptngybefizetesdatum($adat = '')
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->mptngybefizetesdatum = $adat;
+        } else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->mptngybefizetesdatum = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    public function getMptngybefizetesmod()
+    {
+        return $this->mptngybefizetesmod;
+    }
+
+    public function setMptngybefizetesmod(Fizmod $fizmod = null)
+    {
+        $this->mptngybefizetesmod = $fizmod;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMptngybefizetes()
+    {
+        return $this->mptngybefizetes;
+    }
+
+    /**
+     * @param mixed $mptngybefizetes
+     */
+    public function setMptngybefizetes($mptngybefizetes): void
+    {
+        $this->mptngybefizetes = $mptngybefizetes;
     }
 
 }

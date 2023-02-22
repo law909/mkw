@@ -181,6 +181,9 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngydiak'] = $t->isMptngydiak();
         $x['mptngynyugdijas'] = $t->isMptngynyugdijas();
         $x['mptngympttag'] = $t->isMptngympttag();
+        $x['mptngybefizetes'] = $t->getMptngybefizetes();
+        $x['mptngybefizetesdatum'] = $t->getMptngybefizetesdatumStr();
+        $x['mptngybefizetesmodnev'] = $t->getMptngybefizetesmod()?->getNev();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -332,6 +335,14 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
             $obj->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
             $obj->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
+            $obj->setMptngybefizetes($this->params->getNumRequestParam('mptngybefizetes'));
+            $obj->setMptngybefizetesdatum($this->params->getStringRequestParam('mptngybefizetesdatum'));
+            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('mptngybefizetesmod', 0));
+            if ($fizmod) {
+                $obj->setMptngybefizetesmod($fizmod);
+            } else {
+                $obj->setMptngybefizetesmod(null);
+            }
             $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
             if ($mptngyszerepkor) {
                 $obj->setMptngyszerepkor($mptngyszerepkor);
@@ -798,6 +809,8 @@ class partnerController extends \mkwhelpers\MattableController
 
         $mptngyszkc = new mptngyszerepkorController($this->params);
         $view->setVar('mptngyszerepkorlist', $mptngyszkc->getSelectList($partner?->getMptngyszerepkorId()));
+        $fizmod = new fizmodController($this->params);
+        $view->setVar('mptngybefizetesmodlist', $fizmod->getSelectList($partner?->getMptngybefizetesmod()?->getId()));
 
         $view->setVar('partner', $this->loadVars($partner, true));
         $view->printTemplateResult();
