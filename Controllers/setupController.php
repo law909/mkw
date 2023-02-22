@@ -132,8 +132,9 @@ class setupController extends \mkwhelpers\Controller
         $sza = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('mptngyszakmaianyagtipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumEloadasTipus);
-        $sza = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('mptngyszatipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::MPTNGYKonyvbemutatoTipus);
+        $view->setVar('mptngykonyvbemutatotipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MPTNGYDatum1);
         $view->setVar(\mkw\consts::MPTNGYDatum1, ($p ? $p->getErtek() : ''));
@@ -1021,17 +1022,29 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, '');
         }
 
-        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('mptngyszimpoziumtipus', 0));
+        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::MPTNGYSzimpoziumTipus, 0)
+        );
         if ($sza) {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, $sza->getId());
         } else {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumTipus, '');
         }
-        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('mptngyszimpoziumeloadastipus', 0));
+        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::MPTNGYSzimpoziumEloadasTipus, 0)
+        );
         if ($sza) {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumEloadasTipus, $sza->getId());
         } else {
             $this->setObj(\mkw\consts::MPTNGYSzimpoziumEloadasTipus, '');
+        }
+        $sza = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::MPTNGYKonyvbemutatoTipus, 0)
+        );
+        if ($sza) {
+            $this->setObj(\mkw\consts::MPTNGYKonyvbemutatoTipus, $sza->getId());
+        } else {
+            $this->setObj(\mkw\consts::MPTNGYKonyvbemutatoTipus, '');
         }
 
         $this->setObj(\mkw\consts::MPTNGYDatum1, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum1));

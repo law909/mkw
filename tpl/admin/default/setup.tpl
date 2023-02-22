@@ -1055,6 +1055,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <label for="mptngykonyvbemutatotipusEdit" class="setuplabel">{at('Könyvbemutató')}:</label>
+                                <select id="mptngykonyvbemutatotipusEdit" name="mptngykonyvbemutatotipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngykonyvbemutatotipuslist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">

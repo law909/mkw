@@ -387,6 +387,7 @@ class consts
 
     const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';
     const MPTNGYSzimpoziumEloadasTipus = 'mptngyszimpoziumeloadastipus';
+    const MPTNGYKonyvbemutatoTipus = 'mptngykonyvbemutatotipus';
     const MPTNGYDatum1 = 'mptngydatum1';
     const MPTNGYDatum2 = 'mptngydatum2';
     const MPTNGYDatum3 = 'mptngydatum3';
