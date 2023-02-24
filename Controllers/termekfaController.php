@@ -350,7 +350,7 @@ class termekfaController extends \mkwhelpers\MattableController
                     $kulfoldi = $cimkek->contains($cimke1) || $cimkek->contains($cimke2) || $cimkek->contains($cimke3);
                 }
                 $repo = $this->getRepo();
-                $f = $repo->getForMenu($menunum);
+                $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());
                 $x = [];
                 foreach ($f as $o) {
                     if (!$kulfoldi || ($kulfoldi && (strncmp($o['karkod'], '0000100032', strlen('0000100032')) === 0))) {

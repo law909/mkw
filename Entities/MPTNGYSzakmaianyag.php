@@ -248,6 +248,11 @@ class MPTNGYSzakmaianyag
      */
     private $temakor3;
 
+    /**
+     * @ORM\Column(type="string", length=7,nullable=true)
+     */
+    private $konyvkiadasho;
+
     public function isSzerzoRegistered($num)
     {
         $f1 = "getSzerzo{$num}email";
@@ -1355,6 +1360,22 @@ class MPTNGYSzakmaianyag
     public function setBeszelgetopartneremail($beszelgetopartneremail): void
     {
         $this->beszelgetopartneremail = $beszelgetopartneremail;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKonyvkiadasho()
+    {
+        return $this->konyvkiadasho;
+    }
+
+    /**
+     * @param mixed $konyvkiadasho
+     */
+    public function setKonyvkiadasho($konyvkiadasho): void
+    {
+        $this->konyvkiadasho = $konyvkiadasho;
     }
 
 }
