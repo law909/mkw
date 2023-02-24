@@ -1,11 +1,17 @@
 <thead>
-    <tr>
-        <th></th>
-        <th>Item</th>
-        <th><div class="textalignright">Unit price</div></th>
-        <th><div class="textaligncenter">Qty</div></th>
-        <th><div class="textalignright">Price</div></th>
-    </tr>
+<tr>
+    <th></th>
+    <th>Item</th>
+    <th>
+        <div class="textalignright">Unit price</div>
+    </th>
+    <th>
+        <div class="textaligncenter">Qty</div>
+    </th>
+    <th>
+        <div class="textalignright">Price</div>
+    </th>
+</tr>
 </thead>
 <tbody>
 {$osszesen=0}
@@ -14,24 +20,37 @@
     {$osszesen=$osszesen+$tetel.brutto}
     {$dbosszesen=$dbosszesen+$tetel.mennyiseg}
     <tr class="clickable" data-href="{$tetel.link}">
-        <td><div class="textaligncenter"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div></td>
-        <td><div>{$tetel.caption}</div>
+        <td>
+            <div class="textaligncenter"><img src="{$imagepath}{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div>
+        </td>
+        <td>
+            <div>{$tetel.caption}</div>
             <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
             {$tetel.cikkszam}</td>
-        <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
+        <td>
+            <div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div>
+        </td>
         <td>
             <div>
                 <div class="textalignright">{number_format($tetel.mennyiseg, 0, ',', ' ')}</div>
             </div>
         </td>
-        <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$valutanem}</div></td>
+        <td>
+            <div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$valutanem}</div>
+        </td>
     </tr>
 {/foreach}
 </tbody>
 <tfoot>
-    <tr>
-        <th colspan="3"><div class="textalignright">Summary:</div></th>
-        <th><div class="textalignright">{number_format($dbosszesen, 0, ',', ' ')}</div></th>
-        <th><div class="textalignright">{number_format($osszesen, 2, ',', ' ')} {$valutanem}</div></th>
-    </tr>
+<tr>
+    <th colspan="3">
+        <div class="textalignright">Summary:</div>
+    </th>
+    <th>
+        <div class="textalignright">{number_format($dbosszesen, 0, ',', ' ')}</div>
+    </th>
+    <th>
+        <div class="textalignright">{number_format($osszesen, 2, ',', ' ')} {$valutanem}</div>
+    </th>
+</tr>
 </tfoot>

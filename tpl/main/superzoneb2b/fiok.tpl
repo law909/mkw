@@ -14,7 +14,7 @@
             <li><a href="#szamlaadatok" data-toggle="pill">Billing address</a></li>
             <li><a href="#szallitasiadatok" data-toggle="pill">Delivery address</a></li>
             {if ($uzletkoto.loggedin)}
-            <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
+                <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
             {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
             <li><a href="#szamla" data-toggle="pill">My invoices</a></li>
@@ -77,29 +77,46 @@
                                             <thead class="acc-megrendelestetellist">
                                             <td></td>
                                             <td>{t('Item')}</td>
-                                            <td><div class="textalignright">{t('Unit price')}</div></td>
-                                            <td><div class="textaligncenter">{t('Qty')}</div></td>
-                                            <td><div class="textalignright">{t('Price')}</div></td>
+                                            <td>
+                                                <div class="textalignright">{t('Unit price')}</div>
+                                            </td>
+                                            <td>
+                                                <div class="textaligncenter">{t('Qty')}</div>
+                                            </td>
+                                            <td>
+                                                <div class="textalignright">{t('Price')}</div>
+                                            </td>
                                             </thead>
                                             <tbody>
                                             {foreach $megr.tetellista as $tetel}
                                                 <tr class="clickable" data-href="{$tetel.link}">
-                                                    <td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
-                                                    <td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                    <td>
+                                                        <div class="textaligncenter"><a href="{$tetel.link}"><img src="{$imagepath}{$tetel.kiskepurl}"
+                                                                                                                  alt="{$tetel.caption}"
+                                                                                                                  title="{$tetel.caption}"></a></div>
+                                                    </td>
+                                                    <td>
+                                                        <div><a href="{$tetel.link}">{$tetel.caption}</a></div>
                                                         <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
                                                         {$tetel.cikkszam}</td>
-                                                    <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                    <td>
+                                                        <div
+                                                            class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                    </td>
                                                     <td>
                                                         <div class="textaligncenter">
                                                             <div>{number_format($tetel.mennyiseg,0,',','')}</div>
                                                         </div>
                                                     </td>
-                                                    <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                    <td>
+                                                        <div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                    </td>
                                                 </tr>
                                             {/foreach}
                                             </tbody>
                                         </table>
-                                        <div class="textalignright bold"><b>Summary: {number_format($megr.fizetendo, 2, ',', ' ')} {$tetel.valutanemnev}</b></div>
+                                        <div class="textalignright bold"><b>Summary: {number_format($megr.fizetendo, 2, ',', ' ')} {$tetel.valutanemnev}</b>
+                                        </div>
                                         {if ($megr.megjegyzes|default)}
                                             <div class="acc-megrendelescaption">Comment from the shop:</div>
                                             <div>{$megr.megjegyzes}</div>
@@ -238,22 +255,23 @@
                 </form>
             </div>
             {if ($uzletkoto.loggedin)}
-            <div class="tab-pane" id="discounts">
-                <form id="FiokDiscounts" class="form-horizontal" action="/fiok/ment/discounts" method="post">
-                    {foreach $discountlist as $discount}
-                        <div>
-                            <label class="control-label" for="KedvEdit_{$discount.id}">{$discount.nev}:</label>
-                            <div class="controls">
-                                <input id="KedvEdit_{$discount.id}" name="kedvezmeny_{$discount.id}" type="number" class="form-control" value="{$discount.kedvezmeny}">
-                                <input type="hidden" name="kedvezmenyid[]" value="{$discount.id}">
-                                <input type="hidden" name="kedvezmenyoper_{$discount.id}" value="{$discount.oper}">
-                                <input type="hidden" name="kedvezmenytermekcsoport_{$discount.id}" value="{$discount.tcsid}">
+                <div class="tab-pane" id="discounts">
+                    <form id="FiokDiscounts" class="form-horizontal" action="/fiok/ment/discounts" method="post">
+                        {foreach $discountlist as $discount}
+                            <div>
+                                <label class="control-label" for="KedvEdit_{$discount.id}">{$discount.nev}:</label>
+                                <div class="controls">
+                                    <input id="KedvEdit_{$discount.id}" name="kedvezmeny_{$discount.id}" type="number" class="form-control"
+                                           value="{$discount.kedvezmeny}">
+                                    <input type="hidden" name="kedvezmenyid[]" value="{$discount.id}">
+                                    <input type="hidden" name="kedvezmenyoper_{$discount.id}" value="{$discount.oper}">
+                                    <input type="hidden" name="kedvezmenytermekcsoport_{$discount.id}" value="{$discount.tcsid}">
+                                </div>
                             </div>
-                        </div>
-                    {/foreach}
-                    <button type="submit" class="btn okbtn">Save</button>
-                </form>
-            </div>
+                        {/foreach}
+                        <button type="submit" class="btn okbtn">Save</button>
+                    </form>
+                </div>
             {/if}
             <div class="tab-pane" id="megrend">
                 {if (count($megrendeleslist)>0)}
@@ -304,24 +322,38 @@
                                         <thead class="acc-megrendelestetellist">
                                         <td></td>
                                         <td>{t('Item')}</td>
-                                        <td><div class="textalignright">{t('Unit price')}</div></td>
-                                        <td><div class="textaligncenter">{t('Qty')}</div></td>
-                                        <td><div class="textalignright">{t('Price')}</div></td>
+                                        <td>
+                                            <div class="textalignright">{t('Unit price')}</div>
+                                        </td>
+                                        <td>
+                                            <div class="textaligncenter">{t('Qty')}</div>
+                                        </td>
+                                        <td>
+                                            <div class="textalignright">{t('Price')}</div>
+                                        </td>
                                         </thead>
                                         <tbody>
                                         {foreach $megr.tetellista as $tetel}
                                             <tr class="clickable" data-href="{$tetel.link}">
-                                                <td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
-                                                <td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                <td>
+                                                    <div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}"
+                                                                                                              title="{$tetel.caption}"></a></div>
+                                                </td>
+                                                <td>
+                                                    <div><a href="{$tetel.link}">{$tetel.caption}</a></div>
                                                     <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
                                                     {$tetel.cikkszam}</td>
-                                                <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                <td>
+                                                    <div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                </td>
                                                 <td>
                                                     <div class="textaligncenter">
                                                         <div>{number_format($tetel.mennyiseg,0,',','')}</div>
                                                     </div>
                                                 </td>
-                                                <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                <td>
+                                                    <div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                </td>
                                             </tr>
                                         {/foreach}
                                         </tbody>
@@ -391,24 +423,38 @@
                                         <thead class="acc-megrendelestetellist">
                                         <td></td>
                                         <td>{t('Item')}</td>
-                                        <td><div class="textalignright">{t('Unit price')}</div></td>
-                                        <td><div class="textaligncenter">{t('Qty')}</div></td>
-                                        <td><div class="textalignright">{t('Price')}</div></td>
+                                        <td>
+                                            <div class="textalignright">{t('Unit price')}</div>
+                                        </td>
+                                        <td>
+                                            <div class="textaligncenter">{t('Qty')}</div>
+                                        </td>
+                                        <td>
+                                            <div class="textalignright">{t('Price')}</div>
+                                        </td>
                                         </thead>
                                         <tbody>
                                         {foreach $szamla.tetellista as $tetel}
                                             <tr class="clickable" data-href="{$tetel.link}">
-                                                <td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
-                                                <td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                <td>
+                                                    <div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}"
+                                                                                                              title="{$tetel.caption}"></a></div>
+                                                </td>
+                                                <td>
+                                                    <div><a href="{$tetel.link}">{$tetel.caption}</a></div>
                                                     <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
                                                     {$tetel.cikkszam}</td>
-                                                <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                <td>
+                                                    <div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                </td>
                                                 <td>
                                                     <div class="textaligncenter">
                                                         <div>{number_format($tetel.mennyiseg,0,',','')}</div>
                                                     </div>
                                                 </td>
-                                                <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                <td>
+                                                    <div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div>
+                                                </td>
                                             </tr>
                                         {/foreach}
                                         </tbody>
@@ -438,7 +484,7 @@
                             <label class="control-label" for="RegijelszoEdit">{t('Old password')}:</label>
                             <div class="controls">
                                 <input id="RegijelszoEdit" name="regijelszo" type="password" class="form-control">
-                                <input name="checkregijelszo" type="hidden"  value="1" class="form-control">
+                                <input name="checkregijelszo" type="hidden" value="1" class="form-control">
                             </div>
                         </div>
                         <div>

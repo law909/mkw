@@ -12,7 +12,7 @@
                 <div class="col-md-4">
                     <div class="szindoboz">
                         <a href="{$_valt.link}">
-                            <img src="{$_valt.kepurlmedium}" class="szinkep">
+                            <img src="{$imagepath}{$_valt.kepurlmedium}" class="szinkep">
                             <div class="szinszoveg">{$_valt.caption}</div>
                         </a>
                     </div>

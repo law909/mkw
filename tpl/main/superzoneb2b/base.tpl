@@ -7,7 +7,7 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="{$logo}">
+                    <img src="{$imagepath}{$logo}">
                 </a>
                 <ul class="nav navbar-nav top-navbar-nav">
                     <li{if ($uzletkoto.loggedin)} title="You are logged in as agent {$uzletkoto.nev}"{/if}>
@@ -54,23 +54,23 @@
         </div>
     </nav>
     {if ($uzletkoto.loggedin)}
-    <div class="container content-back content-back-uk">
-        <div>
-            <span>You are ordering for <span class="bold">{$user.nev}.</span></span>
-            <label>Choose an other customer:</label>
-            <select name="partner" class="js-uzletkotopartnerselect">
-                {foreach $ukpartnerlist as $ukp}
-                <option value="{$ukp.id}">{$ukp.nev}</option>
-                {/foreach}
-            </select>
-            <button type="button" class="js-changepartner btn btn-primary">Select</button>
-            <span>or <a href="{$showregisztraciolink}">create</a> a new one.</span>
-            <a class="pull-right" href="{$dologoutlink}">Logout</a>
+        <div class="container content-back content-back-uk">
+            <div>
+                <span>You are ordering for <span class="bold">{$user.nev}.</span></span>
+                <label>Choose an other customer:</label>
+                <select name="partner" class="js-uzletkotopartnerselect">
+                    {foreach $ukpartnerlist as $ukp}
+                        <option value="{$ukp.id}">{$ukp.nev}</option>
+                    {/foreach}
+                </select>
+                <button type="button" class="js-changepartner btn btn-primary">Select</button>
+                <span>or <a href="{$showregisztraciolink}">create</a> a new one.</span>
+                <a class="pull-right" href="{$dologoutlink}">Logout</a>
+            </div>
+            {if ($uzletkoto.fo)}
+                <div>You are executive agent {$uzletkoto.nev}. You can watch all of your agent's customers's orders in "All orders" menu.</div>
+            {/if}
         </div>
-        {if ($uzletkoto.fo)}
-            <div>You are executive agent {$uzletkoto.nev}. You can watch all of your agent's customers's orders in "All orders" menu.</div>
-        {/if}
-    </div>
     {/if}
     <div class="container content-back">
         {block "body"}{/block}

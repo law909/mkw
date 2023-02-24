@@ -10,11 +10,11 @@
     <div class="container content-back checkout-content">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <a href="/"><img src="{$logo}"></a><span class="checkout-header">Checkout</span>
+                <a href="/"><img src="{$imagepath}{$logo}"></a><span class="checkout-header">Checkout</span>
             </div>
         </div>
         <div class="row">
-			<form id="CheckoutForm" class="col-md-8 col-md-offset-2 form-horizontal" action="/checkout/ment" method="post">
+            <form id="CheckoutForm" class="col-md-8 col-md-offset-2 form-horizontal" action="/checkout/ment" method="post">
                 <fieldset>
                     <h3>Billing address</h3>
                     <div class="form-group col-md-12">
