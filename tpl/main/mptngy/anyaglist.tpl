@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=13"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=15"></script>
 {/block}
 
 {block "body"}
@@ -205,10 +205,12 @@
                                     <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
                                     <div class="co-error" x-text="validation.szerzo5email && validation.szerzo5email.error"></div>
                                 </div>
-                                <div
-                                    class="co-control-row"
-                                    x-show="konyvbemutato"
-                                >
+                            </div>
+                            <div
+                                class="co-control-row co-col-container"
+                                x-show="konyvbemutato"
+                            >
+                                <div class="co-col co-col-50">
                                     <label for="beszelgetopartnerEdit" class="co-label">{t('Beszélgetőpartner')} email</label>
                                     <input
                                         id="beszelgetopartnerEdit"
@@ -220,6 +222,19 @@
                                     >
                                     <div class="co-hint red" x-show="beszelgetopartnerunknown">{t('A beszélgetőpartner még nem regisztrált')}</div>
                                     <div class="co-error" x-text="validation.beszelgetopartneremail && validation.beszelgetopartneremail.error"></div>
+                                </div>
+                                <div class="co-col co-col-50">
+                                    <label for="konyvkiadashoEdit" class="co-label">{t('Könyv kiadásának ideje')}</label>
+                                    <input
+                                        id="konyvkiadashoEdit"
+                                        class="co-input"
+                                        :class="validation.konyvkiadasho && !validation.konyvkiadasho.valid ? 'error' : ''"
+                                        type="text"
+                                        x-model="anyag.konyvkiadasho"
+                                        x-mask="9999.99"
+                                        placeholder="éééé.hh"
+                                    >
+                                    <div class="co-error" x-text="validation.konyvkiadasho && validation.konyvkiadasho.error"></div>
                                 </div>
                             </div>
                             <div

@@ -1,5 +1,7 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
+        konyvkiadashoTol: '2021.09',
+        konyvkiadashoIg: '2023.06',
         loadCount: 6,
         loaded: 0,
         showEditor: false,
@@ -29,10 +31,12 @@ document.addEventListener("alpine:init", () => {
             szerzo2email: ['optional', 'email'],
             szerzo3email: ['optional', 'email'],
             szerzo4email: ['optional', 'email'],
+            konyvkiadasho: ['konyvkiadashoreal'],
         },
         bekuldRules: {
             szerzo5email: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
             beszelgetopartneremail: ['beszelgetorequired', 'beszelgetoregistered', 'beszelgetovstulaj'],
+            konyvkiadasho: ['konyvkiadashorequired', 'konyvkiadashoreal', 'konyvkiadashorange'],
             szerzo1email: ['allszerzoregistered'],
             eloadas1: ['eloadas', 'eloadasnotsame'],
             tartalom: [
@@ -73,6 +77,7 @@ document.addEventListener("alpine:init", () => {
                 temakor1: null,
                 temakor2: null,
                 temakor3: null,
+                konyvkiadasho: null,
             };
             this.szerzo1unknown = null;
             this.szerzo2unknown = null;
@@ -114,6 +119,27 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('minLength', 'Legalább [PARAM] karakter hosszú legyen');
             Iodine.setErrorMessage('maxLength', 'Legfeljebb [PARAM] karakter hosszú legyen');
+
+            Iodine.rule('konyvkiadashorequired', (value) => {
+                if (this.anyag.konyvbemutato) {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('konyvkiadashorequired', 'Kötelező kitölteni');
+
+            Iodine.rule('konyvkiadashoreal', (value) => {
+                const evho = value.split('.');
+                return evho[1] >= '01' && evho[1] <= '12';
+            });
+            Iodine.setErrorMessage('konyvkiadashoreal', 'Létező hónapot adjon meg');
+            Iodine.rule('konyvkiadashorange', (value) => {
+                if (this.anyag.konyvbemutato) {
+                    return value >= this.konyvkiadashoTol && value <= this.konyvkiadashoIg;
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('konyvkiadashorange', this.konyvkiadashoTol + ' - ' + this.konyvkiadashoIg + ' között kell lennie');
 
             Iodine.rule('eloadas', () => {
                 if (this.anyag.szimpozium) {
