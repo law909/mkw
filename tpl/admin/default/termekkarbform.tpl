@@ -278,13 +278,13 @@
                     <tbody>
                     <tr>
                         <td class="mattable-cell">
-                            <label for="VElerhetoEdit">{at('Elérhető')}:
+                            <label for="VElerhetoEdit">{at('Elérhető')} {$webshop1name}:
                                 <input id="VElerhetoEdit" form="valtozatgeneratorform" name="valtozatelerheto"
                                        type="checkbox">
                             </label>
                         </td>
                         <td class="mattable-cell">
-                            <label for="VLathatoEdit">{at('Látható')}:
+                            <label for="VLathatoEdit">{at('Látható')} {$webshop1name}:
                                 <input id="VLathatoEdit" form="valtozatgeneratorform" name="valtozatlathato"
                                        type="checkbox">
                             </label>
