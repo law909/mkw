@@ -15,11 +15,13 @@ document.addEventListener("alpine:init", () => {
         },
         anyag: null,
         szimpozium: false,
+        konyvbemutato: false,
         szerzo1unknown: null,
         szerzo2unknown: null,
         szerzo3unknown: null,
         szerzo4unknown: null,
         szerzo5unknown: null,
+        beszelgetopartnerunknown: null,
         rules: {
             cim: ['required'],
             tipus: ['required'],
@@ -30,6 +32,7 @@ document.addEventListener("alpine:init", () => {
         },
         bekuldRules: {
             szerzo5email: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
+            beszelgetopartneremail: ['beszelgetorequired', 'beszelgetoregistered', 'beszelgetovstulaj'],
             szerzo1email: ['allszerzoregistered'],
             eloadas1: ['eloadas', 'eloadasnotsame'],
             tartalom: [
@@ -54,6 +57,7 @@ document.addEventListener("alpine:init", () => {
                 szerzo3email: null,
                 szerzo4email: null,
                 szerzo5email: null,
+                beszelgetopartneremail: null,
                 eloadas1: null,
                 eloadas2: null,
                 eloadas3: null,
@@ -75,6 +79,7 @@ document.addEventListener("alpine:init", () => {
             this.szerzo3unknown = null;
             this.szerzo4unknown = null;
             this.szerzo5unknown = null;
+            this.beszelgetopartnerunknown = null;
 
         },
         clearErrors() {
@@ -95,6 +100,7 @@ document.addEventListener("alpine:init", () => {
             this.szerzo3unknown = !a.szerzo3registered;
             this.szerzo4unknown = !a.szerzo4registered;
             this.szerzo5unknown = !a.szerzo5registered;
+            this.beszelgetopartnerunknown = !a.beszelgetopartnerregistered;
             this.showEditor = true;
         },
         cancel() {
@@ -124,7 +130,6 @@ document.addEventListener("alpine:init", () => {
                     if (this.anyag.eloadas4) {
                         db++;
                     }
-                    console.log(this.anyag.eloadas1);
                     return db === 3 || db === 4;
                 }
                 return true;
@@ -205,6 +210,25 @@ document.addEventListener("alpine:init", () => {
             Iodine.rule('opponensvstulaj', () => this.anyag.szerzo5email !== this.me.email);
             Iodine.setErrorMessage('opponensvstulaj', 'Az elnök és az opponens nem lehet ugyanaz');
 
+            Iodine.rule('beszelgetorequired', (value) => {
+                if (this.anyag.konyvbemutato) {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('beszelgetorequired', 'Kötelező kitölteni');
+
+            Iodine.rule('beszelgetoregistered', () => {
+                if (this.anyag.konyvbemutato) {
+                    return !this.beszelgetopartnerunknown;
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('beszelgetoregistered', 'A beszélgetőpartnernek regisztrálnia kell');
+
+            Iodine.rule('beszelgetovstulaj', () => this.anyag.beszelgetopartneremail !== this.me.email);
+            Iodine.setErrorMessage('beszelgetovstulaj', 'A beszélgetőpartner nem lehet saját maga');
+
             Iodine.rule('allszerzoregistered', () => {
                 let ret = true;
                 if (this.anyag.szerzo1email && this.szerzo1unknown) {
@@ -266,17 +290,25 @@ document.addEventListener("alpine:init", () => {
                 const atl = this.anyagtipuslist.find(el => el.id === parseInt(value));
                 this.szimpozium = (atl && atl.szimpozium);
                 this.anyag.szimpozium = (atl && atl.szimpozium);
+                this.konyvbemutato = (atl && atl.konyvbemutato);
+                this.anyag.konyvbemutato = (atl && atl.konyvbemutato);
             });
         },
         checkSzerzo(num) {
             let url = new URL('/checkpartnerunknown', location.origin),
                 f = 'szerzo' + num + 'email',
                 t = 'szerzo' + num + 'unknown';
+            if (num === 6) {
+                f = 'beszelgetopartneremail';
+                t = 'beszelgetopartnerunknown';
+            }
             if (this.anyag[f] && Iodine.assertEmail(this.anyag[f])) {
                 url.searchParams.append('email', this.anyag[f]);
                 fetch(url)
                     .then((response) => response.json())
                     .then((data) => {
+                        this.validation[f].valid = true;
+                        this.validation[f].error = null;
                         this[t] = data.unknown;
                     });
             } else {

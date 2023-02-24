@@ -70,7 +70,8 @@ class mptngyszakmaianyagtipusController extends \mkwhelpers\JQGridController
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
-                'szimpozium' => ($sor->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus))
+                'szimpozium' => ($sor->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)),
+                'konyvbemutato' => ($sor->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus))
             ];
         }
         echo json_encode($res);

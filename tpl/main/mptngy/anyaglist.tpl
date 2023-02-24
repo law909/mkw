@@ -205,6 +205,22 @@
                                     <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
                                     <div class="co-error" x-text="validation.szerzo5email && validation.szerzo5email.error"></div>
                                 </div>
+                                <div
+                                    class="co-control-row"
+                                    x-show="konyvbemutato"
+                                >
+                                    <label for="beszelgetopartnerEdit" class="co-label">{t('Beszélgetőpartner')} email</label>
+                                    <input
+                                        id="beszelgetopartnerEdit"
+                                        class="co-input"
+                                        :class="validation.beszelgetopartneremail && !validation.beszelgetopartneremail.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.beszelgetopartneremail"
+                                        @change="checkSzerzo(6)"
+                                    >
+                                    <div class="co-hint red" x-show="beszelgetopartnerunknown">{t('A beszélgetőpartner még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.beszelgetopartneremail && validation.beszelgetopartneremail.error"></div>
+                                </div>
                             </div>
                             <div
                                 class="co-row co-flex-dir-column"

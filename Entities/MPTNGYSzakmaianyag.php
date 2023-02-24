@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="mptngyszakmaianyag",
  *    options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * */
-
 class MPTNGYSzakmaianyag
 {
 
@@ -72,6 +71,13 @@ class MPTNGYSzakmaianyag
      * @var \Entities\Partner
      */
     private $szerzo5;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="beszelgetopartner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $beszelgetopartner;
 
     /**
      * @ORM\ManyToOne(targetEntity="MPTNGYSzakmaianyagtipus")
@@ -212,6 +218,11 @@ class MPTNGYSzakmaianyag
     private $szerzo5email;
 
     /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $beszelgetopartneremail;
+
+    /**
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $vegleges = false;
@@ -237,9 +248,15 @@ class MPTNGYSzakmaianyag
      */
     private $temakor3;
 
-    public function isSzerzoRegistered($num) {
+    public function isSzerzoRegistered($num)
+    {
         $f1 = "getSzerzo{$num}email";
         $f2 = "getSzerzo{$num}";
+
+        if ($num === 6) {
+            $f1 = 'getBeszelgetopartneremail';
+            $f2 = 'getBeszelgetopartner';
+        }
 
         if ($this->$f1()) {
             return !is_null($this->$f2());
@@ -247,7 +264,8 @@ class MPTNGYSzakmaianyag
         return true;
     }
 
-    public function isAllSzerzoRegistered() {
+    public function isAllSzerzoRegistered()
+    {
         $ret = $this->isSzerzoRegistered(1) &&
             $this->isSzerzoRegistered(2) &&
             $this->isSzerzoRegistered(3) &&
@@ -255,6 +273,9 @@ class MPTNGYSzakmaianyag
 
         if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)) {
             $ret = $ret && $this->isSzerzoRegistered(5);
+        }
+        if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus)) {
+            $ret = $ret && $this->isSzerzoRegistered(6);
         }
         return $ret;
     }
@@ -1275,6 +1296,65 @@ class MPTNGYSzakmaianyag
         if ($this->temakor3 !== null) {
             $this->temakor3 = null;
         }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getBeszelgetopartner()
+    {
+        return $this->beszelgetopartner;
+    }
+
+    public function getBeszelgetopartnerId()
+    {
+        if ($this->beszelgetopartner) {
+            return $this->beszelgetopartner->getId();
+        }
+        return '';
+    }
+
+    public function getBeszelgetopartnerNev()
+    {
+        if ($this->beszelgetopartner) {
+            return $this->beszelgetopartner->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setBeszelgetopartner($val)
+    {
+        if (!$val) {
+            $this->removeBeszelgetopartner();
+        } else {
+            $this->beszelgetopartner = $val;
+        }
+    }
+
+    public function removeBeszelgetopartner()
+    {
+        if ($this->beszelgetopartner !== null) {
+            $this->beszelgetopartner = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBeszelgetopartneremail()
+    {
+        return $this->beszelgetopartneremail;
+    }
+
+    /**
+     * @param mixed $beszelgetopartneremail
+     */
+    public function setBeszelgetopartneremail($beszelgetopartneremail): void
+    {
+        $this->beszelgetopartneremail = $beszelgetopartneremail;
     }
 
 }

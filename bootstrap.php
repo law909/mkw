@@ -22,6 +22,7 @@ use Listeners\BankbizonylatfejListener;
 use Listeners\BizonylattetelListener;
 use Listeners\JogareszvetelListener;
 use Listeners\KuponListener;
+use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\RendezvenyListener;
 use Doctrine\DBAL\Event\Listeners;
@@ -49,8 +50,7 @@ if (array_key_exists('cache', $ini)) {
             $querycache = new ArrayAdapter();
             break;
     }
-}
-else {
+} else {
     $metacache = new ArrayAdapter();
     $querycache = new ArrayAdapter();
 }
@@ -85,7 +85,7 @@ $driverchain->addDriver($defaultDriverImpl, 'Entities');
 $config->setMetadataDriverImpl($driverchain);
 
 if ($ini['sqllog']) {
-	$config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
+    $config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
 }
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
@@ -121,22 +121,23 @@ if (mkw\store::isMultilang()) {
     mkw\store::setTranslationListener($translatableListener);
 }
 
-$evm->addEventListener(array('onFlush', 'prePersist'), new BizonylatfejListener());
-$evm->addEventListener(array('onFlush', 'prePersist'), new BankbizonylatfejListener());
-$evm->addEventListener(array('onFlush', 'prePersist'), new PenztarbizonylatfejListener());
-$evm->addEventListener(array('onFlush'), new BizonylattetelListener());
-$evm->addEventListener(array('prePersist'), new KuponListener());
-$evm->addEventListener(array('prePersist'), new RendezvenyListener());
-$evm->addEventListener(array('onFlush'), new JogareszvetelListener());
+$evm->addEventListener(['onFlush', 'prePersist'], new BizonylatfejListener());
+$evm->addEventListener(['onFlush', 'prePersist'], new BankbizonylatfejListener());
+$evm->addEventListener(['onFlush', 'prePersist'], new PenztarbizonylatfejListener());
+$evm->addEventListener(['onFlush'], new BizonylattetelListener());
+$evm->addEventListener(['prePersist'], new KuponListener());
+$evm->addEventListener(['prePersist'], new RendezvenyListener());
+$evm->addEventListener(['onFlush'], new JogareszvetelListener());
+$evm->addEventListener(['onFlush'], new PartnerListener());
 
-$connectionOptions = array(
-    'driver'   => $ini['db.driver'],
-    'user'     => $ini['db.username'],
+$connectionOptions = [
+    'driver' => $ini['db.driver'],
+    'user' => $ini['db.username'],
     'password' => $ini['db.password'],
-    'host'     => $ini['db.host'],
-    'dbname'   => $ini['db.dbname'],
-    'port'     => $ini['db.port']
-);
+    'host' => $ini['db.host'],
+    'dbname' => $ini['db.dbname'],
+    'port' => $ini['db.port']
+];
 
 $entityManager = EntityManager::create($connectionOptions, $config, $evm);
 

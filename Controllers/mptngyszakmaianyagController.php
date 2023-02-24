@@ -51,6 +51,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo5'] = $t->getSzerzo5Id();
         $x['szerzo5nev'] = $t->getSzerzo5Nev();
         $x['szerzo5email'] = $t->getSzerzo5email();
+        $x['beszelgetopartner'] = $t->getBeszelgetopartnerId();
+        $x['beszelgetopartnernev'] = $t->getBeszelgetopartnerNev();
+        $x['beszelgetopartneremail'] = $t->getBeszelgetopartneremail();
         $x['kezdodatum'] = $t->getKezdodatum();
         $x['kezdoido'] = $t->getKezdoido();
         $x['kezdodatumstr'] = $t->getKezdodatumStr();
@@ -85,7 +88,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo3registered'] = $t->isSzerzoRegistered(3);
         $x['szerzo4registered'] = $t->isSzerzoRegistered(4);
         $x['szerzo5registered'] = $t->isSzerzoRegistered(5);
+        $x['beszelgetopartnerregistered'] = $t->isSzerzoRegistered(6);
         $x['szimpozium'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
+        $x['konyvbemutato'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus));
         $x['vegleges'] = $t->isVegleges();
         $x['temakor1'] = $t->getTemakor1()?->getId();
         $x['temakor1nev'] = $t->getTemakor1()?->getNev();
@@ -120,6 +125,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
         $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
         $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
+        $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         if (!$pub) {
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
@@ -174,6 +180,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 $obj->setSzerzo5($szerzo);
             } else {
                 $obj->removeSzerzo5();
+            }
+            $bp = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('beszelgetopartner'));
+            if ($bp) {
+                $obj->setBeszelgetopartner($bp);
+            } else {
+                $obj->removeBeszelgetopartner();
             }
 
             $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo1'));
@@ -305,6 +317,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('szerzo3list', $pc->getSelectList($anyag?->getSzerzo3Id()));
         $view->setVar('szerzo4list', $pc->getSelectList($anyag?->getSzerzo4Id()));
         $view->setVar('szerzo5list', $pc->getSelectList($anyag?->getSzerzo5Id()));
+        $view->setVar('beszelgetopartnerlist', $pc->getSelectList($anyag?->getBeszelgetopartnerId()));
 
         $ac = new mptngyszakmaianyagController($this->params);
         $view->setVar('eloadas1list', $ac->getSelectList($anyag?->getEloadas1Id()));
@@ -373,7 +386,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 '(_xx.szerzo2=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo3=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo4=' . $partner->getId() . ') OR ' .
-                '(_xx.szerzo5=' . $partner->getId() . ')'
+                '(_xx.szerzo5=' . $partner->getId() . ') OR ' .
+                '(_xx.beszelgetopartner=' . $partner->getId() . ')'
             );
 
             $anyagok = $this->getRepo()->getAll($filter);
@@ -416,8 +430,20 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
     {
         $email = $this->params->getStringRequestParam("szerzo{$num}email");
         $g = "getSzerzo{$num}email";
+        $go = "getSzerzo{$num}";
         $s = "setSzerzo{$num}";
-        if ($obj->$g() !== $email) {
+        $se = "setSzerzo{$num}email";
+        /* Beszelgetopartner */
+        if ($num === 6) {
+            $email = $this->params->getStringRequestParam('beszelgetopartneremail');
+            $g = 'getBeszelgetopartneremail';
+            $go = 'getBeszelgetopartner';
+            $s = 'setBeszelgetopartner';
+            $se = 'setBeszelgetopartneremail';
+        }
+
+        if (!$obj->$go()) {
+            $obj->$se($email);
             $obj->$s($this->getRepo(Partner::class)->findOneBy(['email' => $email]));
         }
         return $obj;
@@ -450,6 +476,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                     $anyag = $this->setSzerzoByEmail($anyag, 3);
                     $anyag = $this->setSzerzoByEmail($anyag, 4);
                     $anyag = $this->setSzerzoByEmail($anyag, 5);
+                    $anyag = $this->setSzerzoByEmail($anyag, 6);
                     $anyag = $this->setFields($anyag, true);
                     $anyag->setTulajdonos($partner);
                     $this->getEm()->persist($anyag);
