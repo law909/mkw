@@ -9,7 +9,7 @@
     </div>
     <div class="row valtozatcontainer">
         <div class="col-md-4 valtozatnagykep">
-            <a href="{$termek.kepurllarge}" class="js-lightbox" title="{$termek.caption}">
+            <a href="{$imagepath}{$termek.kepurllarge}" class="js-lightbox" title="{$termek.caption}">
                 <img src="{$imagepath}{$termek.kepurlmedium}">
             </a>
             <div class="textalignnone">{$termek.leiras}</div>
