@@ -5,7 +5,8 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
-class BankbizonylatfejListener {
+class BankbizonylatfejListener
+{
 
     private $em;
     private $uow;
@@ -18,7 +19,8 @@ class BankbizonylatfejListener {
      * @param \Entities\Bankbizonylatfej $entity
      * @param null $from
      */
-    public function generateId($entity, $from = null) {
+    public function generateId($entity, $from = null)
+    {
         if ($entity->getId()) {
             return $entity->getId();
         }
@@ -34,7 +36,7 @@ class BankbizonylatfejListener {
             $ev = $entity->getKelt()->format('Y');
             if (!$from) {
                 $q = $this->em->createQuery('SELECT COUNT(bf) FROM Entities\Bankbizonylatfej bf WHERE bf.bizonylattipus=:p');
-                $q->setParameters(array('p' => $bt));
+                $q->setParameters(['p' => $bt]);
                 if ($q->getSingleScalarResult() > 0) {
                     $kezdo = 1;
                 }
@@ -43,10 +45,10 @@ class BankbizonylatfejListener {
                 }
                 $szam = $kezdo;
                 $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Bankbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
+                $q->setParameters([
                     'p1' => $bt,
                     'p2' => $ev
-                ));
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -54,14 +56,13 @@ class BankbizonylatfejListener {
                         $szam = $szam[1] + 1;
                     }
                 }
-            }
-            else {
+            } else {
                 $szam = $from;
                 $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Bankbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
+                $q->setParameters([
                     'p1' => $bt,
                     'p2' => $ev
-                ));
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -81,15 +82,15 @@ class BankbizonylatfejListener {
     /**
      * @param \Entities\Bankbizonylatfej $bizonylat
      */
-    protected function createFolyoszamla($bizonylat) {
-
-        foreach($bizonylat->getFolyoszamlak() as $fsz) {
+    protected function createFolyoszamla($bizonylat)
+    {
+        foreach ($bizonylat->getFolyoszamlak() as $fsz) {
             $this->em->remove($fsz);
         }
         $bizonylat->clearFolyoszamlak();
 
         /** @var \Entities\Bankbizonylattetel $tetel */
-        foreach($bizonylat->getBizonylattetelek() as $tetel) {
+        foreach ($bizonylat->getBizonylattetelek() as $tetel) {
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
                 /** @var \Entities\Bizonylatfej $bf */
@@ -124,7 +125,8 @@ class BankbizonylatfejListener {
     /**
      * @param \Entities\Bankbizonylatfej $entity
      */
-    public function calcOsszesen($entity) {
+    public function calcOsszesen($entity)
+    {
         $mincimlet = 0;
         $kerekit = false;
         if ($entity->getValutanem()) {
@@ -148,24 +150,24 @@ class BankbizonylatfejListener {
         }
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bankbizonylatfej');
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bankbizonylattetel');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
 
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof \Entities\Bankbizonylatfej) {
             $this->generateId($entity);
         }
     }
 
-    public function onFlush(OnFlushEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bankbizonylatfej');
@@ -180,7 +182,6 @@ class BankbizonylatfejListener {
         $ujak = $this->uow->getScheduledEntityInsertions();
         foreach ($ujak as $entity) {
             if ($entity instanceof \Entities\Bankbizonylatfej) {
-
                 $this->generateId($entity);
 
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
@@ -189,7 +190,6 @@ class BankbizonylatfejListener {
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bankbizonylatfej) {
-
                 $this->calcOsszesen($entity);
                 $this->createFolyoszamla($entity);
 

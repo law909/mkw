@@ -4,17 +4,18 @@ namespace Listeners;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-class KuponListener {
+class KuponListener
+{
 
     private $em;
     private $uow;
 
-    public function prePersist(LifecycleEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof \Entities\Kupon) {
             \mkw\store::writelog('listener' . $entity->getId());
             $entity->generateId();

@@ -4,7 +4,8 @@ namespace Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
-class BizonylattetelListener {
+class BizonylattetelListener
+{
 
     private $em;
     private $uow;
@@ -15,7 +16,8 @@ class BizonylattetelListener {
     /**
      * @param \Entities\Bizonylattetel $entity
      */
-    private function addTermekTranslations($entity) {
+    private function addTermekTranslations($entity)
+    {
         $termek = $entity->getTermek();
         if ($termek) {
             foreach ($termek->getTranslations() as $trans) {
@@ -40,9 +42,9 @@ class BizonylattetelListener {
         }
     }
 
-    public function onFlush(OnFlushEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
@@ -55,9 +57,7 @@ class BizonylattetelListener {
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-
                 $this->addTermekTranslations($entity);
-
             }
         }
     }

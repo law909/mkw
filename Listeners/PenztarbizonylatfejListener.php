@@ -5,7 +5,8 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
-class PenztarbizonylatfejListener {
+class PenztarbizonylatfejListener
+{
 
     private $em;
     private $uow;
@@ -18,7 +19,8 @@ class PenztarbizonylatfejListener {
      * @param \Entities\Penztarbizonylatfej $entity
      * @param null $from
      */
-    public function generateId($entity, $from = null) {
+    public function generateId($entity, $from = null)
+    {
         if ($entity->getId()) {
             return $entity->getId();
         }
@@ -44,12 +46,14 @@ class PenztarbizonylatfejListener {
             $kezdo = $bt->getKezdosorszam();
             $ev = $entity->getKelt()->format('Y');
             if (!$from) {
-                $q = $this->em->createQuery('SELECT COUNT(bf) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
-                $q->setParameters(array(
+                $q = $this->em->createQuery(
+                    'SELECT COUNT(bf) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p) AND (bf.penztar=:pid) AND (bf.irany=:pir)'
+                );
+                $q->setParameters([
                     'p' => $bt,
                     'pid' => $penztarid,
                     'pir' => $irany
-                ));
+                ]);
                 if ($q->getSingleScalarResult() > 0) {
                     $kezdo = 1;
                 }
@@ -57,13 +61,15 @@ class PenztarbizonylatfejListener {
                     $kezdo = 1;
                 }
                 $szam = $kezdo;
-                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
-                $q->setParameters(array(
+                $q = $this->em->createQuery(
+                    'SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)'
+                );
+                $q->setParameters([
                     'p1' => $bt,
                     'p2' => $ev,
                     'pid' => $penztarid,
                     'pir' => $irany
-                ));
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -71,16 +77,17 @@ class PenztarbizonylatfejListener {
                         $szam = $szam[1] + 1;
                     }
                 }
-            }
-            else {
+            } else {
                 $szam = $from;
-                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
-                $q->setParameters(array(
+                $q = $this->em->createQuery(
+                    'SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)'
+                );
+                $q->setParameters([
                     'p1' => $bt,
                     'p2' => $ev,
                     'pid' => $penztarid,
                     'pir' => $irany
-                ));
+                ]);
                 $max = $q->getSingleScalarResult();
                 if ($max) {
                     $szam = explode('/', $max);
@@ -100,15 +107,15 @@ class PenztarbizonylatfejListener {
     /**
      * @param \Entities\Penztarbizonylatfej $bizonylat
      */
-    protected function createFolyoszamla($bizonylat) {
-
-        foreach($bizonylat->getFolyoszamlak() as $fsz) {
+    protected function createFolyoszamla($bizonylat)
+    {
+        foreach ($bizonylat->getFolyoszamlak() as $fsz) {
             $this->em->remove($fsz);
         }
         $bizonylat->clearFolyoszamlak();
 
         /** @var \Entities\Penztarbizonylattetel $tetel */
-        foreach($bizonylat->getBizonylattetelek() as $tetel) {
+        foreach ($bizonylat->getBizonylattetelek() as $tetel) {
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
                 /** @var \Entities\Bizonylatfej $bf */
@@ -143,7 +150,8 @@ class PenztarbizonylatfejListener {
     /**
      * @param \Entities\Penztarbizonylatfej $entity
      */
-    public function calcOsszesen($entity) {
+    public function calcOsszesen($entity)
+    {
         $mincimlet = 0;
         $kerekit = false;
         if ($entity->getValutanem()) {
@@ -167,24 +175,24 @@ class PenztarbizonylatfejListener {
         }
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Penztarbizonylattetel');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
 
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof \Entities\Penztarbizonylatfej) {
             $this->generateId($entity);
         }
     }
 
-    public function onFlush(OnFlushEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
@@ -199,7 +207,6 @@ class PenztarbizonylatfejListener {
         $ujak = $this->uow->getScheduledEntityInsertions();
         foreach ($ujak as $entity) {
             if ($entity instanceof \Entities\Penztarbizonylatfej) {
-
                 $this->generateId($entity);
 
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
@@ -208,7 +215,6 @@ class PenztarbizonylatfejListener {
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Penztarbizonylatfej) {
-
                 $this->calcOsszesen($entity);
                 $this->createFolyoszamla($entity);
 
