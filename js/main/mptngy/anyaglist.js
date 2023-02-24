@@ -129,8 +129,11 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('konyvkiadashorequired', 'Kötelező kitölteni');
 
             Iodine.rule('konyvkiadashoreal', (value) => {
-                const evho = value.split('.');
-                return evho[1] >= '01' && evho[1] <= '12';
+                if (value) {
+                    const evho = value.split('.');
+                    return evho[1] >= '01' && evho[1] <= '12';
+                }
+                return true;
             });
             Iodine.setErrorMessage('konyvkiadashoreal', 'Létező hónapot adjon meg');
             Iodine.rule('konyvkiadashorange', (value) => {
