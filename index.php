@@ -167,6 +167,10 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) && substr($match['name']
                         }
                         \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
                     }
+                } else {
+                    $redirected = true;
+                    header('HTTP/1.1 404 Not found');
+                    callTheController('mainController#show404', []);
                 }
                 break;
             case (substr($match['name'], 0, 8) === 'pubadmin'):
@@ -179,6 +183,10 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) && substr($match['name']
                         }
                         \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
                     }
+                } else {
+                    $redirected = true;
+                    header('HTTP/1.1 404 Not found');
+                    callTheController('mainController#show404', []);
                 }
                 break;
             default:
