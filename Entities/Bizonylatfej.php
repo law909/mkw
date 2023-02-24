@@ -644,6 +644,11 @@ class Bizonylatfej
     /** @ORM\Column(type="boolean",nullable=false) */
     private $termekertekeleskikuldve = false;
 
+    /**
+     * @ORM\Column(type="smallint",nullable=true)
+     */
+    private $webshopnum;
+
     public function __toString()
     {
         return (string)$this->id;
@@ -5216,6 +5221,22 @@ class Bizonylatfej
     public function setTermekertekeleskikuldve($termekertekeleskikuldve): void
     {
         $this->termekertekeleskikuldve = $termekertekeleskikuldve;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebshopnum()
+    {
+        return $this->webshopnum;
+    }
+
+    /**
+     * @param mixed $webshopnum
+     */
+    public function setWebshopnum($webshopnum): void
+    {
+        $this->webshopnum = $webshopnum;
     }
 
 }

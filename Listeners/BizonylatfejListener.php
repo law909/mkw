@@ -5,7 +5,8 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
-class BizonylatfejListener {
+class BizonylatfejListener
+{
 
     private $em;
     private $uow;
@@ -20,7 +21,8 @@ class BizonylatfejListener {
     /**
      * @param \Entities\Bizonylatfej $entity
      */
-    private function generateTrxId($entity) {
+    private function generateTrxId($entity)
+    {
         $conn = $this->em->getConnection();
         $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
         $stmt->executeStatement();
@@ -32,7 +34,8 @@ class BizonylatfejListener {
      * @param \Entities\Bizonylatfej $bizonylat
      * @param $szam
      */
-    private function createFSzla($bizonylat, $szam) {
+    private function createFSzla($bizonylat, $szam)
+    {
         $fszla = new \Entities\Folyoszamla();
         $fszla->setDatum($bizonylat->getKelt());
         $fszla->setFizmod($bizonylat->getFizmod());
@@ -79,14 +82,14 @@ class BizonylatfejListener {
     /**
      * @param \Entities\Bizonylatfej $bizonylat
      */
-    private function createFolyoszamla($bizonylat) {
+    private function createFolyoszamla($bizonylat)
+    {
         if (!$bizonylat->getPenztmozgat() || $bizonylat->getNincspenzmozgas()) {
             foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                 $this->em->remove($fsz);
             }
             $bizonylat->clearFolyoszamlak();
-        }
-        else {
+        } else {
             $fm = $bizonylat->getFizmod();
             $fmt = '';
             if ($fm) {
@@ -123,12 +126,10 @@ class BizonylatfejListener {
                     if (!$volt) {
                         $this->createFSzla($bizonylat, 0);
                     }
-                }
-                else {
+                } else {
                     $this->createFSzla($bizonylat, 0);
                 }
-            }
-            else {
+            } else {
                 foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                     $this->em->remove($fsz);
                 }
@@ -141,8 +142,8 @@ class BizonylatfejListener {
      * @param \Entities\Bizonylatfej $bizfej
      * @param \Entities\Kupon $kupon
      */
-    private function createSzallitasiKtg($bizfej, $kupon) {
-
+    private function createSzallitasiKtg($bizfej, $kupon)
+    {
         if (!$bizfej->isKellszallitasikoltsegetszamolni()) {
             return;
         }
@@ -164,7 +165,6 @@ class BizonylatfejListener {
 
         // $bruttoegysar csak vatera megrendeles importkor van megadva, ilyenkor mindegy, hogy milyen szall.mod van
         if ($szamol || $bruttoegysar) {
-
             $ertek = 0;
             $cnt = 0;
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
@@ -184,9 +184,9 @@ class BizonylatfejListener {
                         $bizfej->getFizmod(),
                         $bizfej->getPartner()->getOrszag(),
                         $bizfej->getValutanem(),
-                        $ertek);
-                }
-                else {
+                        $ertek
+                    );
+                } else {
                     $ktg = $bruttoegysar;
                 }
                 $ktg = $ktg * 1;
@@ -201,8 +201,7 @@ class BizonylatfejListener {
                         $k->setMennyiseg(1);
                         if ($nullasafa) {
                             $k->setAfa($nullasafa);
-                        }
-                        else {
+                        } else {
                             $k->setAfa($termek->getAfa());
                         }
                         $k->setBruttoegysar($ktg);
@@ -210,8 +209,7 @@ class BizonylatfejListener {
                         $k->calc();
                         $this->em->persist($k);
                         $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
-                    }
-                    else {
+                    } else {
                         $k = new \Entities\Bizonylattetel();
                         $bizfej->addBizonylattetel($k);
                         $k->setPersistentData();
@@ -226,8 +224,7 @@ class BizonylatfejListener {
                             $k->setAfa($nullasafa);
                             $k->setNettoegysar($ktg);
                             $k->setNettoegysarhuf($ktg * $k->getArfolyam());
-                        }
-                        else {
+                        } else {
                             $k->setAfa($termek->getAfa());
                             $k->setBruttoegysar($ktg);
                             $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
@@ -236,21 +233,19 @@ class BizonylatfejListener {
                         $this->em->persist($k);
                         $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
                     }
-                }
-                else {
+                } else {
                     $this->removeBiztetel($bizfej, $termekid);
                 }
-            }
-            else {
+            } else {
                 $this->removeBiztetel($bizfej, $termekid);
             }
-        }
-        else {
+        } else {
             $this->removeBiztetel($bizfej, $termekid);
         }
     }
 
-    private function removeBiztetel($bizfej, $termekid) {
+    private function removeBiztetel($bizfej, $termekid)
+    {
         foreach ($bizfej->getBizonylattetelek() as $tetel) {
             if ($tetel->getTermekId() == $termekid) {
                 $bizfej->removeBizonylattetel($tetel);
@@ -259,7 +254,8 @@ class BizonylatfejListener {
         }
     }
 
-    private function rontPenztarBizonylat($bizfej) {
+    private function rontPenztarBizonylat($bizfej)
+    {
         /** @var \Entities\PenztarbizonylatfejRepository $prep */
         $pfrep = $this->em->getRepository('Entities\Penztarbizonylatfej');
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -277,8 +273,8 @@ class BizonylatfejListener {
      * @param \Entities\Bizonylatfej $bizfej
      * @param \Entities\Kupon $kupon
      */
-    private function createVasarlasiUtalvany($bizfej, $kupon) {
-
+    private function createVasarlasiUtalvany($bizfej, $kupon)
+    {
         if (!$kupon || !$kupon->isVasarlasiUtalvany() || !$kupon->isErvenyes()) {
             return;
         }
@@ -289,7 +285,6 @@ class BizonylatfejListener {
         $termek = $this->em->getRepository('Entities\Termek')->find($termekid);
 
         if ($termek && $bruttoegysar != 0) {
-
             if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
                 $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
@@ -303,8 +298,7 @@ class BizonylatfejListener {
                 $k->setMennyiseg(1);
                 if ($nullasafa) {
                     $k->setAfa($nullasafa);
-                }
-                else {
+                } else {
                     $k->setAfa($termek->getAfa());
                 }
                 $k->setBruttoegysar($bruttoegysar);
@@ -312,8 +306,7 @@ class BizonylatfejListener {
                 $k->calc();
                 $this->em->persist($k);
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
-            }
-            else {
+            } else {
                 $k = new \Entities\Bizonylattetel();
                 $bizfej->addBizonylattetel($k);
                 $k->setPersistentData();
@@ -328,8 +321,7 @@ class BizonylatfejListener {
                     $k->setAfa($nullasafa);
                     $k->setNettoegysar($bruttoegysar);
                     $k->setNettoegysarhuf($bruttoegysar * $k->getArfolyam());
-                }
-                else {
+                } else {
                     $k->setAfa($termek->getAfa());
                     $k->setBruttoegysar($bruttoegysar);
                     $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
@@ -344,7 +336,8 @@ class BizonylatfejListener {
     /**
      * @param \Entities\Bizonylatfej $entity
      */
-    private function addFizmodTranslations($entity) {
+    private function addFizmodTranslations($entity)
+    {
         $fizmod = $entity->getFizmod();
         if ($fizmod) {
             foreach ($fizmod->getTranslations() as $trans) {
@@ -372,7 +365,8 @@ class BizonylatfejListener {
     /**
      * @param \Entities\Bizonylatfej $entity
      */
-    private function addSzallmodTranslations($entity) {
+    private function addSzallmodTranslations($entity)
+    {
         $szallmod = $entity->getSzallitasimod();
         if ($szallmod) {
             foreach ($szallmod->getTranslations() as $trans) {
@@ -397,9 +391,9 @@ class BizonylatfejListener {
         }
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bizonylatfej');
@@ -409,15 +403,15 @@ class BizonylatfejListener {
         $this->penztarbizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
 
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof \Entities\Bizonylatfej) {
             $entity->generateId();
         }
     }
 
-    public function onFlush(OnFlushEventArgs $args) {
-
-        $this->em = $args->getEntityManager();
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
         $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bizonylatfej');
@@ -435,7 +429,6 @@ class BizonylatfejListener {
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
-
                 /** @var \Entities\Bizonylattetel $tetel */
                 foreach ($entity->getBizonylattetelek() as $tetel) {
                     if (!$tetel->getStorno() && !$tetel->getStornozott()) {
@@ -448,7 +441,6 @@ class BizonylatfejListener {
                 }
 
                 if (!$entity->isSimpleedit()) {
-
                     /** @var \Entities\Kupon $kupon */
                     $kupon = $entity->getKuponObject();
 
@@ -466,8 +458,7 @@ class BizonylatfejListener {
                     if ($fok === false) {
                         $entity->setPartnerfeketelistas(false);
                         $entity->setPartnerfeketelistaok(null);
-                    }
-                    else {
+                    } else {
                         $entity->setPartnerfeketelistas(true);
                         $entity->setPartnerfeketelistaok($fok);
                     }
@@ -482,11 +473,13 @@ class BizonylatfejListener {
 
                     $this->createFolyoszamla($entity);
 
+                    if (!$entity->getWebshopnum()) {
+                        $entity->setWebshopnum(\mkw\store::getWebshopNum());
+                    }
+
                     if ($entity->getStorno() || $entity->getRontott()) {
                         $this->rontPenztarBizonylat($entity);
-                    }
-                    else {
-
+                    } else {
                     }
                     $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
                 }
