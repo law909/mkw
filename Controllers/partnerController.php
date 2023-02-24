@@ -957,8 +957,6 @@ class partnerController extends \mkwhelpers\MattableController
     {
         $email = $this->params->getStringRequestParam('email');
 
-        \mkw\store::writelog($email);
-
         $ret = [];
         $ret['hibas'] = !\Zend_Validate::is($email, 'EmailAddress');
         if (!$ret['hibas']) {

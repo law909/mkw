@@ -187,7 +187,6 @@ class PartnerRepository extends \mkwhelpers\Repository
         $filter
             ->addFilter('email', '=', $user)
             ->addFilter('jelszo', '=', sha1(strtoupper(md5($pass)) . \mkw\store::getSalt()));
-        \mkw\store::writelog(print_r($filter->getArray(), true));
         return $this->getAll($filter, []);
     }
 
