@@ -953,7 +953,7 @@ class termekController extends \mkwhelpers\MattableController
                             'id' => $valt->getId(),
                             'caption' => $valt->getNev(),
                             'selected' => $sel == $valt->getId(),
-                            'elerheto' => $valt->getElerheto(),
+                            'elerheto' => $valt->getXElerheto(),
                             'keszlet' => $valt->getKeszlet(null, $raktarid) * 1
                         ];
                     }
@@ -1063,7 +1063,7 @@ class termekController extends \mkwhelpers\MattableController
                     'slug' => $termek->getSlug(),
                     'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $termek->getSlug()]),
                     'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                    'nemlathato' => (!$termek->getLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
+                    'nemlathato' => (!$termek->getXLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
                     'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                     'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $termek->getId()])
                 ];
@@ -1093,7 +1093,7 @@ class termekController extends \mkwhelpers\MattableController
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
                                 'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];
@@ -1119,7 +1119,7 @@ class termekController extends \mkwhelpers\MattableController
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
                                 'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];
@@ -1144,7 +1144,7 @@ class termekController extends \mkwhelpers\MattableController
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
                                 'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];

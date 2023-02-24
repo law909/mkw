@@ -233,7 +233,7 @@ class mainController extends \mkwhelpers\Controller
                     $termek = $termek[0];
                 }
                 //$termek = $tc->getRepo()->findOneBySlug($com);
-                if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
+                if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
                     $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
                     \mkw\store::fillTemplate($this->view);
                     $this->view->setVar('pagetitle', $termek->getShowOldalcim());
@@ -366,7 +366,7 @@ class mainController extends \mkwhelpers\Controller
         $tc = new termekController($this->params);
         /** @var \Entities\Termek $termek */
         $termek = $tc->getRepo()->findOneBySlug($com);
-        if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
+        if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
             $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
             \mkw\store::fillTemplate($this->view);
             $this->view->setVar('pagetitle', $termek->getShowOldalcim());
@@ -402,7 +402,7 @@ class mainController extends \mkwhelpers\Controller
             $ma = new \DateTime();
             /** @var TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
-                if ($valt->getElerheto() && $valt->getLathato()) {
+                if ($valt->getXElerheto() && $valt->getXLathato()) {
                     $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                     if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
                         $t['kepurllarge'] = $valt->getKepurlLarge();
@@ -500,7 +500,7 @@ class mainController extends \mkwhelpers\Controller
 
         $valtozatok = $termek->getValtozatok();
         foreach ($valtozatok as $valtozat) {
-            if ($valtozat->getElerheto()) {
+            if ($valtozat->getXElerheto()) {
                 if ($valtozat->getAdatTipus1Id() == $tipusid && ($valtozat->getErtek1() == $valtozatertek || !$valtozatertek)) {
                     $ret['adat'][$valtozat->getErtek2()] = ['value' => $valtozat->getErtek2(), 'sel' => $masikselected == $valtozat->getErtek2()];
                 } elseif ($valtozat->getAdatTipus2Id() == $tipusid && ($valtozat->getErtek2() == $valtozatertek || !$valtozatertek)) {
