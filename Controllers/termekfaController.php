@@ -1034,7 +1034,7 @@ class termekfaController extends \mkwhelpers\MattableController
                         $keresofilter->addFilter(['_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'], 'LIKE', '%' . $keresoszo . '%');
                     }
                 }
-                $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'ASC']);
+                $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
                 $t = [];
                 foreach ($termekek as $te) {
                     $tete = $te->toMenu();
@@ -1116,7 +1116,7 @@ class termekfaController extends \mkwhelpers\MattableController
                     $pager = $tc->getPager();
                     $elemperpage = $pager->getElemPerPage();
 
-                    $order = ['_xx.cikkszam' => 'ASC'];
+                    $order = ['_xx.cikkszam' => 'DESC'];
 
                     $ujtermekminid = $termekrepo->getUjTermekId();
                     $top10min = $termekrepo->getTop10Mennyiseg();
