@@ -77,7 +77,7 @@ document.addEventListener("alpine:init", () => {
                 temakor1: null,
                 temakor2: null,
                 temakor3: null,
-                konyvkiadasho: null,
+                konyvkiadasho: '',
             };
             this.szerzo1unknown = null;
             this.szerzo2unknown = null;

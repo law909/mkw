@@ -251,7 +251,7 @@ class MPTNGYSzakmaianyag
     /**
      * @ORM\Column(type="string", length=7,nullable=true)
      */
-    private $konyvkiadasho;
+    private $konyvkiadasho = '';
 
     public function isSzerzoRegistered($num)
     {
