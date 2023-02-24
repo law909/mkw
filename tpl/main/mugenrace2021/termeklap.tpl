@@ -49,7 +49,7 @@
                 <span>{$termek.rovidleiras}</span>
             </div>
             <div class="tl-termek-ar hide-on-desktop" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$termek.valutanemnev}</span>
+                <span itemprop="price">{number_format($termek.brutto,2,',',' ')} {$termek.valutanemnev}</span>
             </div>
             <section class="tl-termek-fokep hide-on-mobile">
                 <img
@@ -100,7 +100,7 @@
                     <span>{$termek.rovidleiras}</span>
                 </div>
                 <div class="tl-termek-ar hide-on-mobile" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$termek.valutanemnev}</span>
+                    <span itemprop="price">{number_format($termek.brutto,2,',',' ')} {$termek.valutanemnev}</span>
                 </div>
                 <div class="tl-color-select-container hide-on-mobile">
                     <div>{t('VÁLASSZ SZÍNT')}</div>

@@ -60,19 +60,19 @@ class Kosar
      */
     private $valutanem;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $nettoegysar;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $bruttoegysar;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $enettoegysar;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $ebruttoegysar;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $kedvezmeny;
 
     /** @ORM\Column(type="integer",nullable=true) */
@@ -90,7 +90,7 @@ class Kosar
         if ($kerekit) {
             return round($v);
         }
-        return $v;
+        return round($v, 2);
     }
 
     public function toLista($partner = null, $kerekit = false)

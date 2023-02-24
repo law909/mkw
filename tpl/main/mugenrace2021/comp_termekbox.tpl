@@ -38,13 +38,13 @@
                             <button>4</button>
                             <button>5</button>
                         </div>
-                        <span> (</span><span  itemprop="reviewCount">{$_termek.ertekelesdb}</span><span>)</span>
+                        <span> (</span><span itemprop="reviewCount">{$_termek.ertekelesdb}</span><span>)</span>
                     </div>
                 {else}
                     <div class="termek-ertekeles"></div>
                 {/if}
                 <div class="termek-ar" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <span itemprop="price">{number_format($_termek.brutto,0,',',' ')} {$_termek.valutanemnev}</span>
+                    <span itemprop="price">{number_format($_termek.brutto,2,',',' ')} {$_termek.valutanemnev}</span>
                 </div>
             </div>
         </section>

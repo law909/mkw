@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\TermekValtozat;
+use Entities\Valutanem;
 
 class kosarController extends \mkwhelpers\MattableController
 {
@@ -188,7 +189,9 @@ class kosarController extends \mkwhelpers\MattableController
             case \mkw\store::isMugenrace2021():
                 $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
                 $partner = \mkw\store::getLoggedInUser();
-                $valutanem = \mkw\store::getMainValutanemNev();
+                $valutanemnev = \mkw\store::getMainValutanemNev();
+                /** @var Valutanem $valutanem */
+                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainValutanemId());
                 $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
                 $s = [];
                 $szallido = 1;
@@ -198,14 +201,14 @@ class kosarController extends \mkwhelpers\MattableController
                     if ($szallido < $sorszallido) {
                         $szallido = $sorszallido;
                     }
-                    $s[] = $sor->toLista($partner, true);
+                    $s[] = $sor->toLista($partner, $valutanem?->getKerekit());
                 }
                 $szallido = $szallido + \mkw\store::calcSzallitasiidoAddition(date_create());
 
                 $ret = [
                     'szallitasiido' => $szallido,
                     'tetellista' => $s,
-                    'valutanem' => $valutanem
+                    'valutanem' => $valutanemnev
                 ];
                 echo json_encode($ret);
                 break;
