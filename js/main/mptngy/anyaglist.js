@@ -336,8 +336,10 @@ document.addEventListener("alpine:init", () => {
                 fetch(url)
                     .then((response) => response.json())
                     .then((data) => {
-                        this.validation[f].valid = true;
-                        this.validation[f].error = null;
+                        this.validation[f] = {
+                            'valid': true,
+                            'error': null,
+                        };
                         this[t] = data.unknown;
                     });
             } else {
