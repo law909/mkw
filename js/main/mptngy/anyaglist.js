@@ -167,23 +167,37 @@ document.addEventListener("alpine:init", () => {
 
             Iodine.rule('eloadasnotsame', () => {
                 if (this.anyag.szimpozium) {
-                    let eloadasok = [],
-                        ret;
+                    let eloadasok = {};
+                    ret = true;
+
                     if (this.anyag.eloadas1) {
-                        eloadasok[this.anyag.eloadas1]++;
+                        eloadasok[parseInt(this.anyag.eloadas1, 10)] = 0;
                     }
                     if (this.anyag.eloadas2) {
-                        eloadasok[this.anyag.eloadas2]++;
+                        eloadasok[parseInt(this.anyag.eloadas2, 10)] = 0;
                     }
                     if (this.anyag.eloadas3) {
-                        eloadasok[this.anyag.eloadas3]++;
+                        eloadasok[parseInt(this.anyag.eloadas3, 10)] = 0;
                     }
                     if (this.anyag.eloadas4) {
-                        eloadasok[this.anyag.eloadas4]++;
+                        eloadasok[parseInt(this.anyag.eloadas4, 10)] = 0;
                     }
-                    eloadasok.forEach((val) => {
-                        if (val > 1) {
-                            ret = true;
+
+                    if (this.anyag.eloadas1) {
+                        eloadasok[parseInt(this.anyag.eloadas1, 10)]++;
+                    }
+                    if (this.anyag.eloadas2) {
+                        eloadasok[parseInt(this.anyag.eloadas2, 10)]++;
+                    }
+                    if (this.anyag.eloadas3) {
+                        eloadasok[parseInt(this.anyag.eloadas3, 10)]++;
+                    }
+                    if (this.anyag.eloadas4) {
+                        eloadasok[parseInt(this.anyag.eloadas4, 10)]++;
+                    }
+                    Object.values(eloadasok).forEach(value => {
+                        if (value > 1) {
+                            ret = false;
                         }
                     });
                     return ret;
