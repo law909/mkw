@@ -11,8 +11,44 @@
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Szakmai anyagok')}"></div>
         <div id="mattable-filterwrapper">
-            <label for="cimfilter">{at('Szűrés')}</label>
-            <input id="cimfilter" name="cimfilter" type="text" size="30" maxlength="255">
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="cimfilter">{at('Szűrés')}</label>
+                <input id="cimfilter" name="cimfilter" type="text" size="30" maxlength="255">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="tulajfilter">{at('Tulajdonos')}: </label>
+                <select id="tulajfilter" name="tulajdonosfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $tulajdonoslist as $_gyarto}
+                        <option
+                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="bekuldvefilter">{at('Beküldve')}:</label>
+                <select id="bekuldvefilter" name="bekuldvefilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem')}</option>
+                    <option value="1">{at('Igen')}</option>
+                </select>
+                <label for="biralatkeszfilter">{at('Bírálat')}:</label>
+                <select id="biralatkeszfilter" name="biralatkeszfilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nincs kész')}</option>
+                    <option value="1">{at('Kész')}</option>
+                </select>
+                <label for="konferencianszerepelhetfilter">{at('Konferencián')}:</label>
+                <select id="konferencianszerepelhetfilter" name="konferencianszerepelhetfilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem szerepelhet')}</option>
+                    <option value="1">{at('Szerepelhet')}</option>
+                </select>
+            </div>
+
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">

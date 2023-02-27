@@ -275,6 +275,25 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('cim', 'LIKE', '%' . $fv . '%');
         }
 
+        if (!is_null($this->params->getRequestParam('tulajdonosfilter', null))) {
+            $filter->addFilter('tulajdonos', '=', $this->params->getIntRequestParam('tulajdonosfilter'));
+        }
+
+        $f = $this->params->getNumRequestParam('bekuldvefilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('vegleges', '=', $f);
+        }
+
+        $f = $this->params->getNumRequestParam('biralatkeszfilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('biralatkesz', '=', $f);
+        }
+
+        $f = $this->params->getNumRequestParam('konferencianszerepelhetfilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('konferencianszerepelhet', '=', $f);
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -294,6 +313,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Szakmai anyagok'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+
+        $pc = new partnerController($this->params);
+        $view->setVar('tulajdonoslist', $pc->getSelectList());
+
         $view->printTemplateResult();
     }
 

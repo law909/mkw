@@ -7,8 +7,7 @@ $(document).ready(function () {
             document.querySelectorAll('.onlyszimpozium').forEach((elem) => {
                 elem.classList.remove('hidden');
             });
-        }
-        else {
+        } else {
             document.querySelectorAll('.onlyszimpozium').forEach((elem) => {
                 elem.classList.add('hidden');
             });
@@ -40,7 +39,13 @@ $(document).ready(function () {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#cimfilter']
+                fields: [
+                    '#cimfilter',
+                    '#tulajfilter',
+                    '#bekuldvefilter',
+                    '#biralatkeszfilter',
+                    '#konferencianszerepelhetfilter',
+                ]
             },
             tablebody: {
                 url: '/admin/mptngyszakmaianyag/getlistbody'
