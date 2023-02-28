@@ -5,6 +5,7 @@ namespace mkw;
 use Controllers\mnrnavigationController;
 use Controllers\termekfaController;
 use Doctrine\ORM\EntityManager;
+use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
@@ -48,6 +49,7 @@ class store
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
+    private static $pubadminloggedinuser;
     private static $loggedinuk;
     private static $loggedinukpartner;
     private static $routename;
@@ -1099,6 +1101,20 @@ class store
     public static function clearLoggedInUser()
     {
         self::$loggedinuser = null;
+    }
+
+    public static function getPubadminLoggedInUser()
+    {
+        if (!self::$pubadminloggedinuser) {
+            $pr = self::getEm()->getRepository(Dolgozo::class);
+            self::$pubadminloggedinuser = $pr->getLoggedInUser();
+        }
+        return self::$pubadminloggedinuser;
+    }
+
+    public static function clearPubadminLoggedInUser()
+    {
+        self::$pubadminloggedinuser = null;
     }
 
     public static function getTheme()

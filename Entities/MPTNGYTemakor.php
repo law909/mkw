@@ -23,6 +23,14 @@ class MPTNGYTemakor
      */
     private $nev;
 
+    /** @ORM\ManyToMany(targetEntity="Dolgozo", mappedBy="mptngytemakorok", cascade={"persist"}) */
+    private $dolgozok;
+
+    public function __construct()
+    {
+        $this->dolgozok = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -45,6 +53,28 @@ class MPTNGYTemakor
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getDolgozok()
+    {
+        return $this->dolgozok;
+    }
+
+    public function addDolgozo(Dolgozo $dolgozo)
+    {
+//		if (!$this->dolgozok->contains($dolgozo)) {  // deleted for speed
+        $this->dolgozok->add($dolgozo);
+        $dolgozo->addMPTNGYTemakor($this);
+//		}
+    }
+
+    public function removeDolgozo(Dolgozo $dolgozo)
+    {
+        if ($this->dolgozok->removeElement($dolgozo)) {
+            $dolgozo->removeMPTNGYTemakor($this);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\MPTNGYTemakor;
 use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
@@ -21,7 +22,7 @@ class dolgozoController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\Dolgozo();
             $this->getEm()->detach($t);
@@ -47,12 +48,15 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['inaktiv'] = $t->isInaktiv();
         $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
         $x['fizmodnev'] = $t->getFizmodNev();
+        $x['mptngymaxdb'] = $t->getMptngymaxdb();
+        $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
         return $x;
     }
 
     /**
      * @param Dolgozo $obj
      * @param $oper
+     *
      * @return mixed
      */
     protected function setFields($obj, $oper)
@@ -73,6 +77,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
+        $obj->setMptngymaxdb($this->params->getIntRequestParam('mptngymaxdb'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
@@ -122,10 +127,10 @@ class dolgozoController extends \mkwhelpers\MattableController
             $filter = new FilterDescriptor();
             $filter->addFilter('inaktiv', '=', false);
         }
-        $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAllForSelectList($filter, ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid));
+            $res[] = ['id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid)];
         }
         return $res;
     }
@@ -195,13 +200,13 @@ class dolgozoController extends \mkwhelpers\MattableController
                 } else {
                     \mkw\store::getAdminSession()->pk = $d->getId();
                 }
-                \mkw\store::getAdminSession()->loggedinuser = array(
+                \mkw\store::getAdminSession()->loggedinuser = [
                     'name' => $d->getNev(),
                     'id' => $d->getId(),
                     'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
-                );
+                ];
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
             } else {
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
@@ -246,13 +251,13 @@ class dolgozoController extends \mkwhelpers\MattableController
                 } else {
                     \mkw\store::getPubAdminSession()->pk = $d->getId();
                 }
-                \mkw\store::getPubAdminSession()->loggedinuser = array(
+                \mkw\store::getPubAdminSession()->loggedinuser = [
                     'name' => $d->getNev(),
                     'id' => $d->getId(),
                     'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
-                );
+                ];
                 Header('Location: ' . \mkw\store::getRouter()->generate('pubadminview'));
             } else {
                 Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
@@ -268,4 +273,63 @@ class dolgozoController extends \mkwhelpers\MattableController
         Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
     }
 
+    public function mptngysetupView()
+    {
+        $v = $this->createPubAdminView('setup.tpl');
+        $v->printTemplateResult(false);
+    }
+
+    public function getmptngyme()
+    {
+        /** @var Dolgozo $me */
+        $me = \mkw\store::getPubadminLoggedInUser();
+
+        $rec = $this->getRepo(MPTNGYTemakor::class)->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $sel = false;
+            foreach ($me->getMPTNGYTemakorok() as $etk) {
+                if ($etk->getId() === $sor->getId()) {
+                    $sel = true;
+                    break;
+                }
+            }
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => $sel
+            ];
+        }
+        echo json_encode([
+                'temakorlist' => $res,
+                'maxdb' => $me->getMptngymaxdb()
+            ]
+        );
+    }
+
+    public function savemptngysetup()
+    {
+        /** @var Dolgozo $me */
+        $me = \mkw\store::getPubadminLoggedInUser();
+        $maxdb = $this->params->getIntRequestParam('maxdb');
+        $tklist = json_decode($this->params->getStringRequestParam('temakorlist'));
+
+        if ($me) {
+            $me->setMptngymaxdb($maxdb);
+            $me->removeAllMPTNGYTemakor();
+            foreach ($tklist as $tk) {
+                if ($tk->selected) {
+                    $tko = $this->getRepo(MPTNGYTemakor::class)->find($tk->id);
+                    if ($tko) {
+                        $me->addMPTNGYTemakor($tko);
+                    }
+                }
+            }
+            $this->getEm()->persist($me);
+            $this->getEm()->flush();
+        }
+        echo json_encode([
+            'success' => true
+        ]);
+    }
 }

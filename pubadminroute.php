@@ -23,3 +23,7 @@ $router->map('GET', '/pubadmin/partner', 'pubadminController#getPartner', 'pubad
 $router->map('POST', '/pubadmin/partner', 'pubadminController#postPartner', 'pubadminpostpartner');
 
 $router->map('POST', '/pubadmin/lemond', 'pubadminController#lemondOra', 'pubadminlemondora');
+
+$router->map('GET', '/pubadmin/mptngysetup', 'dolgozoController#mptngysetupView', 'pubadminmptngysetupview');
+$router->map('GET', '/pubadmin/mptngyme', 'dolgozoController#getmptngyme', 'pubadminmptngyme');
+$router->map('POST', '/pubadmin/mptngysetup/ment', 'dolgozoController#savemptngysetup', 'pubadminsavemptngysetup');

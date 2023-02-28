@@ -7,9 +7,11 @@ use Entities\Partner;
 use mkw\store;
 use mkwhelpers, Entities;
 
-class pubadminController extends mkwhelpers\Controller {
+class pubadminController extends mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createPubAdminView('main.tpl');
         $view->setVar('pagetitle', t('Főoldal'));
         $view->setVar('tanarnev', \mkw\store::getPubAdminSession()->loggedinuser['name']);
@@ -17,7 +19,8 @@ class pubadminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function getOralist() {
+    public function getOralist()
+    {
         $view = $this->createPubAdminView('oralist.tpl');
 
         $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find(\mkw\store::getPubAdminSession()->pk);
@@ -42,7 +45,7 @@ class pubadminController extends mkwhelpers\Controller {
             $filter->addFilter('datum', '=', $datum);
             $filter->addFilter('inaktiv', '=', false);
             $helyettek = $this->getRepo(Entities\Orarendhelyettesites::class)->getAll($filter);
-            /** @var Entities\Orarendhelyettesites $helyett*/
+            /** @var Entities\Orarendhelyettesites $helyett */
             foreach ($helyettek as $helyett) {
                 $oralista[] = [
                     'id' => $helyett->getOrarendId(),
@@ -54,7 +57,8 @@ class pubadminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function getResztvevolist() {
+    public function getResztvevolist()
+    {
         $resztvevolista = [];
         $oraid = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
@@ -63,7 +67,6 @@ class pubadminController extends mkwhelpers\Controller {
         $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
 
         if ($oraid) {
-
             /** @var \Entities\Termek $orajegytermek */
             $orajegytermek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             /** @var \Entities\Termek $berlet4termek */
@@ -89,7 +92,7 @@ class pubadminController extends mkwhelpers\Controller {
                     $filter->clear();
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
-                    $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, array('id' => 'ASC'));
+                    $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
                         $berlet = $berletek[0];
@@ -97,8 +100,7 @@ class pubadminController extends mkwhelpers\Controller {
                         $rvtomb['alkalom'] = $berlet->getAlkalom();
                         $rvtomb['elfogyottalkalom'] = $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom();
                     }
-                }
-                else {
+                } else {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
                     $rvtomb['email'] = $resztvevo->getPartneremail();
                     $rvtomb['new'] = true;
@@ -141,7 +143,8 @@ class pubadminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function setResztvevoMegjelent() {
+    public function setResztvevoMegjelent()
+    {
         /** @var \Entities\JogaBejelentkezes $rv */
         $online = $this->params->getIntRequestParam('online');
         $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
@@ -150,22 +153,21 @@ class pubadminController extends mkwhelpers\Controller {
             $rv->setMegjelent(!$rv->isMegjelent());
             if (!$rv->isMegjelent()) {
                 $rv->setOnline(0);
-            }
-            else {
+            } else {
                 $rv->setOnline($online);
             }
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
             if ($megje) {
                 $rv->delJogaReszvetel();
-            }
-            else {
+            } else {
                 $rv->createJogaReszvetel();
             }
         }
     }
 
-    public function setResztvevoOrajegy() {
+    public function setResztvevoOrajegy()
+    {
         $type = $this->params->getIntRequestParam('type');
         $price = $this->params->getNumRequestParam('price');
         $later = $this->params->getBoolRequestParam('later');
@@ -212,13 +214,13 @@ class pubadminController extends mkwhelpers\Controller {
             if ($rv->isKesobbfizet()) {
                 if ($berlet) {
                     $berlet->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
-                }
-                elseif ( \mkw\store::isSendableEmail($rv->getPartneremail())) {
+                } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
                     $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
                     if ($emailtpl) {
-
                         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                        $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                        $body = \mkw\store::getTemplateFactory()->createMainView(
+                            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                        );
                         $body->setVar('partnernev', $rv->getPartnernev());
                         $body->setVar('datum', date(\mkw\store::$DateFormat));
                         $body->setVar('berlet', $tipusnev);
@@ -237,12 +239,13 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function getPartnerData() {
+    public function getPartnerData()
+    {
         $result = [];
         $q = $this->params->getStringRequestParam('q');
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter(array('nev', 'keresztnev', 'vezeteknev'), 'like', '%' . $q . '%');
-        $partnerek = $this->getRepo(Entities\Partner::class)->getAll($filter, array('nev' => 'ASC'));
+        $filter->addFilter(['nev', 'keresztnev', 'vezeteknev'], 'like', '%' . $q . '%');
+        $partnerek = $this->getRepo(Entities\Partner::class)->getAll($filter, ['nev' => 'ASC']);
         /** @var \Entities\Partner $partner */
         foreach ($partnerek as $partner) {
             $result[] = [
@@ -254,7 +257,8 @@ class pubadminController extends mkwhelpers\Controller {
         echo json_encode(['results' => $result]);
     }
 
-    public function newBejelentkezes() {
+    public function newBejelentkezes()
+    {
         $oraid = $this->params->getIntRequestParam('oraid');
         $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
@@ -272,7 +276,8 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function newBejelentkezesWNewPartner() {
+    public function newBejelentkezesWNewPartner()
+    {
         $oraid = $this->params->getIntRequestParam('oraid');
         $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
@@ -289,7 +294,8 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function getMegjegyzes() {
+    public function getMegjegyzes()
+    {
         $id = $this->params->getIntRequestParam('id');
         /** @var \Entities\JogaBejelentkezes $rv */
         $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($id);
@@ -298,7 +304,8 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function postMegjegyzes() {
+    public function postMegjegyzes()
+    {
         $id = $this->params->getIntRequestParam('id');
         $m = $this->params->getStringRequestParam('megjegyzes');
         /** @var \Entities\JogaBejelentkezes $rv */
@@ -310,7 +317,8 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function getPartner() {
+    public function getPartner()
+    {
         $id = $this->params->getIntRequestParam('id');
         $r = [
             'nev' => '',
@@ -326,7 +334,8 @@ class pubadminController extends mkwhelpers\Controller {
         echo json_encode($r);
     }
 
-    public function postPartner() {
+    public function postPartner()
+    {
         $id = $this->params->getIntRequestParam('id');
         $nev = $this->params->getStringRequestParam('nev');
         $email = $this->params->getStringRequestParam('email');
@@ -340,7 +349,8 @@ class pubadminController extends mkwhelpers\Controller {
         }
     }
 
-    public function lemondOra() {
+    public function lemondOra()
+    {
         $id = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
         $ora = $this->getRepo(Entities\Orarend::class)->find($id);
@@ -362,9 +372,10 @@ class pubadminController extends mkwhelpers\Controller {
                 $email = $resztvevo->getPartneremail();
                 $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasErtesitoSablon));
                 if ($email && $emailtpl) {
-
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                    $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
                     $body->setVar('oranev', $ora->getJogaoratipusNev());
                     $body->setVar('tanarnev', $ora->getDolgozoNev());
                     $body->setVar('idopont', $ora->getKezdetStr());

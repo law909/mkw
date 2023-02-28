@@ -67,10 +67,10 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb'];
     }
 
     /**
@@ -806,6 +806,83 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNapilevonas', [$napilevonas]);
 
         parent::setNapilevonas($napilevonas);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMPTNGYTemakorok()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMPTNGYTemakorok', []);
+
+        return parent::getMPTNGYTemakorok();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAllMPTNGYTemakorokId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAllMPTNGYTemakorokId', []);
+
+        return parent::getAllMPTNGYTemakorokId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addMPTNGYTemakor(\Entities\MPTNGYTemakor $data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addMPTNGYTemakor', [$data]);
+
+        return parent::addMPTNGYTemakor($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeMPTNGYTemakor(\Entities\MPTNGYTemakor $data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMPTNGYTemakor', [$data]);
+
+        return parent::removeMPTNGYTemakor($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeAllMPTNGYTemakor()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllMPTNGYTemakor', []);
+
+        return parent::removeAllMPTNGYTemakor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMptngymaxdb()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMptngymaxdb', []);
+
+        return parent::getMptngymaxdb();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMptngymaxdb($mptngymaxdb): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngymaxdb', [$mptngymaxdb]);
+
+        parent::setMptngymaxdb($mptngymaxdb);
     }
 
 }

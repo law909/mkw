@@ -67,10 +67,10 @@ class MPTNGYTemakor extends \Entities\MPTNGYTemakor implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'nev'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'nev', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'dolgozok'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'nev'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'nev', '' . "\0" . 'Entities\\MPTNGYTemakor' . "\0" . 'dolgozok'];
     }
 
     /**
@@ -212,6 +212,39 @@ class MPTNGYTemakor extends \Entities\MPTNGYTemakor implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDolgozok()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozok', []);
+
+        return parent::getDolgozok();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addDolgozo(\Entities\Dolgozo $dolgozo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDolgozo', [$dolgozo]);
+
+        return parent::addDolgozo($dolgozo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeDolgozo(\Entities\Dolgozo $dolgozo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', [$dolgozo]);
+
+        return parent::removeDolgozo($dolgozo);
     }
 
 }

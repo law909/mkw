@@ -89,9 +89,24 @@ class Dolgozo
      */
     private $fizmod;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="MPTNGYTemakor",inversedBy="dolgozok")
+     * @ORM\OrderBy({"nev" = "DESC"})
+     * @ORM\JoinTable(name="dolgozo_mptngytemakorok",
+     *  joinColumns={@ORM\JoinColumn(name="mptngytemakor_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",onDelete="cascade")}
+     *  )
+     */
+    private $mptngytemakorok;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mptngymaxdb = 0;
+
+
     public function __construct()
     {
         $this->jelenletek = new ArrayCollection();
+        $this->mptngytemakorok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId()
@@ -483,6 +498,61 @@ class Dolgozo
     public function setNapilevonas($napilevonas): void
     {
         $this->napilevonas = $napilevonas;
+    }
+
+    public function getMPTNGYTemakorok()
+    {
+        return $this->mptngytemakorok;
+    }
+
+    public function getAllMPTNGYTemakorokId()
+    {
+        $res = [];
+        foreach ($this->mptngytemakorok as $bp) {
+            $res[] = $bp->getId();
+        }
+        return $res;
+    }
+
+    public function addMPTNGYTemakor(MPTNGYTemakor $data)
+    {
+        if (!$this->mptngytemakorok->contains($data)) {
+            $this->mptngytemakorok->add($data);
+            $data->addDolgozo($this);
+        }
+    }
+
+    public function removeMPTNGYTemakor(MPTNGYTemakor $data)
+    {
+        if ($this->mptngytemakorok->removeElement($data)) {
+            $data->removeDolgozo($this);  // deleted for speed
+            return true;
+        }
+        return false;
+    }
+
+    public function removeAllMPTNGYTemakor()
+    {
+//		$this->blogposztok->clear();
+        foreach ($this->mptngytemakorok as $bp) {
+            $this->removeMPTNGYTemakor($bp);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getMptngymaxdb()
+    {
+        return $this->mptngymaxdb;
+    }
+
+    /**
+     * @param int $mptngymaxdb
+     */
+    public function setMptngymaxdb($mptngymaxdb): void
+    {
+        $this->mptngymaxdb = $mptngymaxdb;
     }
 
 }
