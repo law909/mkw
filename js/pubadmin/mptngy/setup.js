@@ -35,6 +35,9 @@ document.addEventListener("alpine:init", () => {
                     this.biralo.maxdb = data.maxdb;
                 });
         },
+        cancel() {
+            location.href = '/pubadmin';
+        },
         save() {
             const valid = Iodine.assert(this.biralo, this.rules);
 

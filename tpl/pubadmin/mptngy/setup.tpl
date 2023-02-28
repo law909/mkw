@@ -1,7 +1,7 @@
 {extends "main.tpl"}
 
 {block "prescript"}
-    <script src="/js/pubadmin/mptngy/setup.js?v=1"></script>
+    <script src="/js/pubadmin/mptngy/setup.js?v=2"></script>
 {/block}
 
 {block "main"}
@@ -42,7 +42,7 @@
                     </div>
                     <div class="co-control-row">
                         <button class="btn btn-primary" @click="save()">{t('Mentés')}</button>
-                        <button class="btn btn-secondary">{t('Mégsem')}</button>
+                        <button class="btn btn-secondary" @click="cancel()">{t('Mégsem')}</button>
                     </div>
                 </div>
             </div>
