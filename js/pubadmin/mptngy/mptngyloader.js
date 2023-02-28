@@ -4,7 +4,7 @@
     new billyloader(
         'mainframe' + me.searchParams.get('i'),
         me.origin,
-        '/pubadmin/login',
+        '/pubadmin',
         me.searchParams
     );
 })();
