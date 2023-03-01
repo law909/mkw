@@ -580,6 +580,54 @@ $(document).ready(function () {
                             }
                         });
                         break;
+                    case 'sendemailsablon':
+                        cbs = $('.js-egyedcheckbox:checked');
+                        if (cbs.length) {
+                            let $dia = $('#emailsablondialog'),
+                                tomb = [];
+                            cbs.closest('tr').each(function (index, elem) {
+                                tomb.push($(elem).data('egyedid'));
+                            });
+                            $dia.dialog({
+                                title: 'Email sablon',
+                                resizable: true,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        var dial = $(this),
+                                            sablon = $('select[name="emailsablon"]').val();
+                                        $('select[name="emailsablon"]').val('');
+                                        $.ajax({
+                                            url: '/admin/partner/sendemailsablonok',
+                                            type: 'POST',
+                                            data: {
+                                                ids: tomb,
+                                                sablon: sablon
+                                            },
+                                            success: function () {
+                                                dial.dialog('close');
+                                            }
+                                        });
+                                    },
+                                    'Mégsem': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        } else {
+                            dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        break;
                 }
             } else {
                 dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({

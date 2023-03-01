@@ -191,6 +191,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function calcVatstatus()
     {
 
@@ -4216,6 +4227,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngybefizetes', [$mptngybefizetes]);
 
         parent::setMptngybefizetes($mptngybefizetes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendEmailSablon($emailtpl, $p = NULL, $topartner = true)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendEmailSablon', [$emailtpl, $p, $topartner]);
+
+        return parent::sendEmailSablon($emailtpl, $p, $topartner);
     }
 
 }

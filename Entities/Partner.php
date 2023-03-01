@@ -585,6 +585,16 @@ class Partner
         return $this->getId() . ': ' . $this->getNev() . '_' . $this->getEmail();
     }
 
+    public function toLista()
+    {
+        $ret = [];
+        $ret['keresztnev'] = $this->getKeresztnev();
+        $ret['vezeteknev'] = $this->getVezeteknev();
+        $ret['nev'] = $this->getNev();
+        $ret['szamlanev'] = $this->getSzlanev();
+        return $ret;
+    }
+
     public function calcVatstatus()
     {
     }
@@ -3256,6 +3266,38 @@ class Partner
     public function setMptngybefizetes($mptngybefizetes): void
     {
         $this->mptngybefizetes = $mptngybefizetes;
+    }
+
+    /**
+     * @param \Entities\Emailtemplate $emailtpl
+     * @param \Entities\Partner|null $p
+     * @param bool|true $topartner
+     */
+    public function sendEmailSablon($emailtpl, $p = null, $topartner = true)
+    {
+        if (!$p) {
+            $p = $this;
+        }
+        if ($emailtpl) {
+            $tpldata = $p->toLista();
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('partner', $tpldata);
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body->setVar('partner', $tpldata);
+            $body->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
+            if (\mkw\store::getConfigValue('developer')) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'partneremail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'partneremail.html');
+            } else {
+                $mailer = \mkw\store::getMailer();
+                if ($topartner) {
+                    $mailer->addTo($p->getEmail());
+                }
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+                $mailer->send();
+            }
+        }
     }
 
 }

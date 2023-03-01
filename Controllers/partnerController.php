@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
 use Entities\MPTNGYSzerepkor;
 use Entities\MPTSzekcio;
 use Entities\MPTTagozat;
@@ -759,6 +760,8 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('arsavlist', $arsav->getSelectList());
         $tcs = new termekcsoportController($this->params);
         $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
+        $emailtpl = new emailtemplateController($this->params);
+        $view->setVar('emailsablonlist', $emailtpl->getSelectList());
         $view->printTemplateResult();
     }
 
@@ -1866,6 +1869,21 @@ class partnerController extends \mkwhelpers\MattableController
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
+        }
+    }
+
+    public function sendEmailSablonok()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
+        if ($sablon) {
+            foreach ($ids as $id) {
+                /** @var \Entities\Partner $partner */
+                $partner = $this->getRepo()->find($id);
+                if ($partner) {
+                    $partner->sendEmailSablon($sablon);
+                }
+            }
         }
     }
 
