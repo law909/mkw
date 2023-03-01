@@ -332,4 +332,11 @@ class dolgozoController extends \mkwhelpers\MattableController
             'success' => true
         ]);
     }
+
+    public function mptngybiralasView()
+    {
+        $v = $this->createPubAdminView('biralas.tpl');
+        $v->printTemplateResult(false);
+    }
+
 }

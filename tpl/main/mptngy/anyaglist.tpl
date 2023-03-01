@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=18"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=19"></script>
 {/block}
 
 {block "body"}
@@ -11,6 +11,9 @@
                 <div x-text="me.nev"></div>
                 <div x-text="me.mpttag"></div>
                 <div x-text="me.mptnyugdijasdiak"></div>
+            </div>
+            <div class="padding">
+                <button class="btn btn-secondary" @click="adataim()">{t('Adataim')}</button>
             </div>
             <div class="padding">
                 <button class="btn btn-secondary" @click="logout()">{t('Kijelentkezés')}</button>

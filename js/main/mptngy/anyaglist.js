@@ -363,6 +363,9 @@ document.addEventListener("alpine:init", () => {
         logout() {
             location.href = '/logout';
         },
+        adataim() {
+            location.href = '/adataim';
+        },
         save(send = false) {
             let rules = this.rules;
             if (send) {

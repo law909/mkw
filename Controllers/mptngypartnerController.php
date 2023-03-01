@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\MPTNGYSzakmaianyag;
+use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 use mkwhelpers\ParameterHandler;
 
@@ -20,7 +21,6 @@ class mptngypartnerController extends partnerController
         $r = $this->checkPartnerData('jelszo');
         $hibas = $hibas || $r['hibas'];
         $hibak = array_merge($hibak, $r['hibak']);
-
         if (!$hibas) {
             $ps = $this->getRepo()->findByEmail($email);
             if (count($ps) > 0) {
@@ -33,6 +33,32 @@ class mptngypartnerController extends partnerController
             $this->getEm()->flush();
             $this->login($email, $jelszo1);
             \Zend_Session::writeClose();
+            echo json_encode([
+                'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true)
+            ]);
+        } else {
+            echo json_encode($hibak);
+        }
+    }
+
+    public function saveAdataim()
+    {
+        $hibak = [];
+        /** @var Partner $p */
+        $p = $this->getRepo()->getLoggedInUser();
+        if ($p) {
+            $p->setSzlanev($this->params->getStringRequestParam('szlanev'));
+            $p->setIrszam($this->params->getStringRequestParam('irszam'));
+            $p->setVaros($this->params->getStringRequestParam('varos'));
+            $p->setUtca($this->params->getStringRequestParam('utca'));
+            $p->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
+            $p->setMptngycsoportosfizetes($this->params->getStringRequestParam('mptngycsoportosfizetes'));
+            $p->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
+            $p->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
+            $p->setVatstatus($this->params->getIntRequestParam('vatstatus'));
+            $p->setAdoszam($this->params->getIntRequestParam('adoszam'));
+            $this->getEm()->persist($p);
+            $this->getEm()->flush();
             echo json_encode([
                 'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true)
             ]);
@@ -186,5 +212,13 @@ class mptngypartnerController extends partnerController
                 $res['opponensszerzo'];
         }
         return $res;
+    }
+
+    public function adataim()
+    {
+        if ($this->checkloggedin()) {
+            $v = $this->createMainView('adataim.tpl');
+            $v->printTemplateResult();
+        }
     }
 }

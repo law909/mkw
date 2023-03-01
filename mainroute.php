@@ -18,16 +18,25 @@ if (\mkw\store::isB2B()) {
     $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
     $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
-}
-else {
+} else {
     if (\mkw\store::isMIJSZ()) {
-        $router->map('POST', '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo|pune|oralatogatasok|tanitas:subject]', 'partnerController#saveAccount', 'saveaccount');
+        $router->map(
+            'POST',
+            '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo|pune|oralatogatasok|tanitas:subject]',
+            'partnerController#saveAccount',
+            'saveaccount'
+        );
         $router->map('POST', '/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'partnermijszoklevelsave');
         $router->map('GET', '/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getmainemptyrow', 'partnermijszoklevelgetmainemptyrow');
         $router->map('POST', '/partnermijszpune/save', 'partnermijszpuneController#save', 'partnermijszpunesave');
         $router->map('GET', '/partnermijszpune/getemptyrow', 'partnermijszpuneController#getmainemptyrow', 'partnermijszpunegetmainemptyrow');
         $router->map('POST', '/partnermijszoralatogatas/save', 'partnermijszoralatogatasController#save', 'partnermijszoralatogatassave');
-        $router->map('GET', '/partnermijszoralatogatas/getemptyrow', 'partnermijszoralatogatasController#getmainemptyrow', 'partnermijszoralatogatasgetmainemptyrow');
+        $router->map(
+            'GET',
+            '/partnermijszoralatogatas/getemptyrow',
+            'partnermijszoralatogatasController#getmainemptyrow',
+            'partnermijszoralatogatasgetmainemptyrow'
+        );
         $router->map('POST', '/partnermijsztanitas/save', 'partnermijsztanitasController#save', 'partnermijsztanitassave');
         $router->map('GET', '/partnermijsztanitas/getemptyrow', 'partnermijsztanitasController#getmainemptyrow', 'partnermijsztanitasgetmainemptyrow');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
@@ -35,8 +44,7 @@ else {
         $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
         $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
         $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
-    }
-    else {
+    } else {
         $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
         $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
@@ -78,6 +86,8 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/datumlist', 'mptngyszakmaianyagController#getDatumList', 'mptngygetdatumlist');
     $router->map('POST', '/regisztracio/ment', 'mptngypartnerController#saveRegistration', 'mptngysaveregistration');
     $router->map('POST', '/szakmaianyag/ment', 'mptngyszakmaianyagController#pubSave', 'mptngypubsave');
+    $router->map('GET', '/adataim', 'mptngypartnerController#adataim', 'mptngyadataim');
+    $router->map('POST', '/adataim/ment', 'mptngypartnerController#saveAdataim', 'mptngysaveadataim');
 }
 
 $router->map('GET', '', 'mainController#view', 'home');

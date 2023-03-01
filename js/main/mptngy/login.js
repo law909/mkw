@@ -22,7 +22,7 @@ document.addEventListener("alpine:init", () => {
             varos: null,
             utca: null,
             adoszam: null,
-            mptngybankszamla: null,
+            mptngybankszamlaszam: null,
             lirszam: null,
             lvaros: null,
             lutca: null,
@@ -36,6 +36,7 @@ document.addEventListener("alpine:init", () => {
             mptngydiak: false,
             mptngynyugdijas: false,
             mptngympttag: false,
+            mpt_munkahelynev: false,
         },
         rules: {
             nev: ['required'],

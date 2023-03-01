@@ -27,3 +27,5 @@ $router->map('POST', '/pubadmin/lemond', 'pubadminController#lemondOra', 'pubadm
 $router->map('GET', '/pubadmin/mptngysetup', 'dolgozoController#mptngysetupView', 'pubadminmptngysetupview');
 $router->map('GET', '/pubadmin/mptngyme', 'dolgozoController#getmptngyme', 'pubadminmptngyme');
 $router->map('POST', '/pubadmin/mptngysetup/ment', 'dolgozoController#savemptngysetup', 'pubadminsavemptngysetup');
+
+$router->map('GET', '/pubadmin/mptngybiralas', 'dolgozoController#mptngybiralasView', 'pubadminmptngybiralas');
