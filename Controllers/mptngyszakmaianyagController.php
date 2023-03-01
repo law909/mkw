@@ -110,7 +110,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
      *
      * @return \Entities\MPTNGYSzakmaianyag
      */
-    public function setFields($obj, $pub = false)
+    public function setFields($obj, $oper, $pub = false)
     {
         $obj->setCim($this->params->getStringRequestParam('cim'));
         $obj->setTartalom($this->params->getStringRequestParam('tartalom'));
@@ -490,11 +490,14 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 if ($ell['success']) {
                     $ret['success'] = true;
                     $anyag = null;
+                    $oper = '';
                     if ($anyagid) {
                         $anyag = $this->getRepo()->find($anyagid);
+                        $oper = 'edit';
                     }
                     if (!$anyag) {
                         $anyag = new MPTNGYSzakmaianyag();
+                        $oper = 'add';
                     }
                     $anyag = $this->setSzerzoByEmail($anyag, 1);
                     $anyag = $this->setSzerzoByEmail($anyag, 2);
@@ -502,7 +505,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                     $anyag = $this->setSzerzoByEmail($anyag, 4);
                     $anyag = $this->setSzerzoByEmail($anyag, 5);
                     $anyag = $this->setSzerzoByEmail($anyag, 6);
-                    $anyag = $this->setFields($anyag, true);
+                    $anyag = $this->setFields($anyag, $oper, true);
                     $anyag->setTulajdonos($partner);
                     $this->getEm()->persist($anyag);
                     $this->getEm()->flush();
