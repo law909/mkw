@@ -102,11 +102,22 @@ class Dolgozo
     /** @ORM\Column(type="integer",nullable=true) */
     private $mptngymaxdb = 0;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $jelszotext;
 
     public function __construct()
     {
         $this->jelenletek = new ArrayCollection();
         $this->mptngytemakorok = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function toLista()
+    {
+        return [
+            'nev' => $this->getNev(),
+            'jelszotext' => $this->getJelszotext(),
+            'email' => $this->getEmail()
+        ];
     }
 
     public function getId()
@@ -553,6 +564,51 @@ class Dolgozo
     public function setMptngymaxdb($mptngymaxdb): void
     {
         $this->mptngymaxdb = $mptngymaxdb;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJelszotext()
+    {
+        return $this->jelszotext;
+    }
+
+    /**
+     * @param mixed $jelszotext
+     */
+    public function setJelszotext($jelszotext): void
+    {
+        $this->jelszotext = $jelszotext;
+    }
+
+    /**
+     * @param \Entities\Emailtemplate $emailtpl
+     * @param \Entities\Dolgozo|null $p
+     * @param bool|true $topartner
+     */
+    public function sendEmailSablon($emailtpl, $p = null)
+    {
+        if (!$p) {
+            $p = $this;
+        }
+        if ($emailtpl) {
+            $tpldata = $p->toLista();
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('dolgozo', $tpldata);
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body->setVar('dolgozo', $tpldata);
+            $body->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
+            if (\mkw\store::getConfigValue('developer')) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'dolgozoemail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'dolgozoemail.html');
+            } else {
+                $mailer = \mkw\store::getMailer();
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+                $mailer->send();
+            }
+        }
     }
 
 }

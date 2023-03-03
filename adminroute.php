@@ -689,6 +689,7 @@ $router->map('GET', '/admin/dolgozo/getkarb', 'dolgozoController#getkarb', 'admi
 $router->map('GET', '/admin/dolgozo/viewkarb', 'dolgozoController#viewkarb', 'admindolgozoviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/dolgozo/save', 'dolgozoController#save', 'admindolgozosave');
+    $router->map('POST', '/admin/dolgozo/sendemailsablonok', 'dolgozoController#sendEmailSablonok', 'admindolgozosendemailsablonok');
 }
 
 $router->map('GET', '/admin/esemeny/viewlist', 'esemenyController#viewlist', 'adminesemenyviewlist');

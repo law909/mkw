@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\Emailtemplate;
 use Entities\MPTNGYTemakor;
 use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
@@ -50,6 +51,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['fizmodnev'] = $t->getFizmodNev();
         $x['mptngymaxdb'] = $t->getMptngymaxdb();
         $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
+        $x['jelszotext'] = $t->getJelszotext();
         return $x;
     }
 
@@ -78,6 +80,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
         $obj->setMptngymaxdb($this->params->getIntRequestParam('mptngymaxdb'));
+        $obj->setJelszotext($this->params->getStringRequestParam('jelszotext'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
@@ -163,6 +166,8 @@ class dolgozoController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Dolgozók'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $emailtpl = new emailtemplateController($this->params);
+        $view->setVar('emailsablonlist', $emailtpl->getSelectList());
         $view->printTemplateResult(false);
     }
 
@@ -350,6 +355,21 @@ class dolgozoController extends \mkwhelpers\MattableController
     {
         $v = $this->createPubAdminView('biralas.tpl');
         $v->printTemplateResult(false);
+    }
+
+    public function sendEmailSablonok()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $sablon = $this->getRepo(Emailtemplate::class)->find($this->params->getIntRequestParam('sablon'));
+        if ($sablon) {
+            foreach ($ids as $id) {
+                /** @var \Entities\Dolgozo $d */
+                $d = $this->getRepo()->find($id);
+                if ($d) {
+                    $d->sendEmailSablon($sablon);
+                }
+            }
+        }
     }
 
 }

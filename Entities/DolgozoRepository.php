@@ -12,6 +12,9 @@ class DolgozoRepository extends \mkwhelpers\Repository
         $this->setOrders([
             '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']]
         ]);
+        $btch = [];
+        $btch['sendemailsablon'] = 'Email sablon küldés';
+        $this->setBatches($btch);
     }
 
     public function getAllForSelectList($filter, $order, $offset = 0, $elemcount = 0)
