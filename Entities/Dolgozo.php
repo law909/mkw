@@ -585,7 +585,6 @@ class Dolgozo
     /**
      * @param \Entities\Emailtemplate $emailtpl
      * @param \Entities\Dolgozo|null $p
-     * @param bool|true $topartner
      */
     public function sendEmailSablon($emailtpl, $p = null)
     {
@@ -604,6 +603,7 @@ class Dolgozo
                 \mkw\store::writelog($body->getTemplateResult(), 'dolgozoemail.html');
             } else {
                 $mailer = \mkw\store::getMailer();
+                $mailer->addTo($p->getEmail());
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();

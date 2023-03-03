@@ -3273,9 +3273,8 @@ class Partner
     /**
      * @param \Entities\Emailtemplate $emailtpl
      * @param \Entities\Partner|null $p
-     * @param bool|true $topartner
      */
-    public function sendEmailSablon($emailtpl, $p = null, $topartner = true)
+    public function sendEmailSablon($emailtpl, $p = null)
     {
         if (!$p) {
             $p = $this;
@@ -3292,9 +3291,7 @@ class Partner
                 \mkw\store::writelog($body->getTemplateResult(), 'partneremail.html');
             } else {
                 $mailer = \mkw\store::getMailer();
-                if ($topartner) {
-                    $mailer->addTo($p->getEmail());
-                }
+                $mailer->addTo($p->getEmail());
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
