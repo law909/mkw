@@ -17,13 +17,10 @@ class PartnerRepository extends \mkwhelpers\Repository
         ]);
 
         $btch = [];
-        if (\mkw\store::isMIJSZ()) {
-            $btch['mijszexportin'] = 'Oktató export IN';
-            $btch['mijszexportus'] = 'Oktató export US';
+        if (\mkw\store::isMPTNGY()) {
         }
         $btch['megjegyzesexport'] = 'Megjegyzés export';
         $btch['hirlevelexport'] = 'Hírlevél export';
-        $btch['roadrecordexport'] = 'Roadrecord export';
         $btch['arsavcsere'] = 'Ársáv csere';
         $btch['termekcsoportkedvezmenyedit'] = 'Termékcsoport kedvezmény módosítás';
         $btch['sendemailsablon'] = 'Email sablon küldés';

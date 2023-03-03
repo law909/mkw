@@ -185,6 +185,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngybefizetes'] = $t->getMptngybefizetes();
         $x['mptngybefizetesdatum'] = $t->getMptngybefizetesdatumStr();
         $x['mptngybefizetesmodnev'] = $t->getMptngybefizetesmod()?->getNev();
+        $x['mptngynemveszreszt'] = $t->isMptngynemveszreszt();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -338,6 +339,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
             $obj->setMptngybefizetes($this->params->getNumRequestParam('mptngybefizetes'));
             $obj->setMptngybefizetesdatum($this->params->getStringRequestParam('mptngybefizetesdatum'));
+            $obj->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('mptngybefizetesmod', 0));
             if ($fizmod) {
                 $obj->setMptngybefizetesmod($fizmod);
@@ -730,6 +732,34 @@ class partnerController extends \mkwhelpers\MattableController
                 $filter->addJoin('INNER JOIN _xx.cimkek c WITH (c.id IN (' . $cimkekodok . '))');
             }
         }
+        switch ($this->params->getNumRequestParam('mptngyreszvetelfilter', 9)) {
+            case 1:
+                $filter->addFilter('mptngynapreszvetel1', '=', true);
+                break;
+            case 2:
+                $filter->addFilter('mptngyvipvacsora', '=', true);
+                break;
+            case 3:
+                $filter->addFilter('mptngynapreszvetel2', '=', true);
+                break;
+            case 4:
+                $filter->addFilter('mptngybankett', '=', true);
+                break;
+            case 5:
+                $filter->addFilter('mptngynapreszvetel3', '=', true);
+                break;
+            case 6:
+                $filter->addFilter('mptngynemveszreszt', '=', true);
+                break;
+            case 7:
+                $filter->addFilter('mptngynapreszvetel1', '=', false);
+                $filter->addFilter('mptngyvipvacsora', '=', false);
+                $filter->addFilter('mptngynapreszvetel2', '=', false);
+                $filter->addFilter('mptngybankett', '=', false);
+                $filter->addFilter('mptngynapreszvetel3', '=', false);
+                $filter->addFilter('mptngynemveszreszt', '=', false);
+                break;
+        }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -926,6 +956,12 @@ class partnerController extends \mkwhelpers\MattableController
                 'mptngycsoportosfizetes' => $partner->getMptngycsoportosfizetes(),
                 'mptngykapcsolatnev' => $partner->getMptngykapcsolatnev(),
                 'mpt_munkahelynev' => $partner->getMptMunkahelynev(),
+                'mptngynemveszreszt' => $partner->isMptngynemveszreszt(),
+                'mptngynapreszvetel1' => $partner->isMptngynapreszvetel1(),
+                'mptngynapreszvetel2' => $partner->isMptngynapreszvetel2(),
+                'mptngynapreszvetel3' => $partner->isMptngynapreszvetel3(),
+                'mptngyvipvacsora' => $partner->isMptngyvipvacsora(),
+                'mptngybankett' => $partner->isMptngybankett(),
                 'mptnyugdijasdiak' => $partner->isMptngynyugdijas() ? t('Nyugdíjas') : ($partner->isMptngydiak() ? t('Diák') : ''),
                 'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),
             ];

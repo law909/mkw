@@ -13,6 +13,12 @@ document.addEventListener("alpine:init", () => {
             mptngybankszamlaszam: null,
             mptngycsoportosfizetes: null,
             mptngykapcsolatnev: null,
+            mptngynapreszvetel1: false,
+            mptngynapreszvetel2: false,
+            mptngynapreszvetel3: false,
+            mptngyvipvacsora: false,
+            mptngybankett: false,
+            mptngynemveszreszt: false,
         },
         rules: {
             szlanev: ['required'],
@@ -22,6 +28,7 @@ document.addEventListener("alpine:init", () => {
             utca: ['required'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
+            mptngynemveszreszt: ['reszvetel'],
         },
 
         clearErrors() {
@@ -30,6 +37,16 @@ document.addEventListener("alpine:init", () => {
         getLists() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
+
+            Iodine.rule('reszvetel', (value) => {
+                return this.reg.mptngynemveszreszt ||
+                    this.reg.mptngynapreszvetel1 ||
+                    this.reg.mptngynapreszvetel2 ||
+                    this.reg.mptngynapreszvetel3 ||
+                    this.reg.mptngybankett ||
+                    this.reg.mptngyvipvacsora;
+            });
+            Iodine.setErrorMessage('reszvetel', 'Jelölje meg, hogyan vesz részt');
 
             Iodine.rule('requiredIfCsoportos', (value) => {
                 if (this.reg.invcsoportos === '2') {
@@ -73,6 +90,12 @@ document.addEventListener("alpine:init", () => {
                     this.reg.mptngykapcsolatnev = data.mptngykapcsolatnev;
                     this.reg.mptngycsoportosfizetes = data.mptngycsoportosfizetes;
                     this.reg.mpt_munkahelynev = data.mpt_munkahelynev;
+                    this.reg.mptngynemveszreszt = data.mptngynemveszreszt;
+                    this.reg.mptngyvipvacsora = data.mptngyvipvacsora;
+                    this.reg.mptngybankett = data.mptngybankett;
+                    this.reg.mptngynapreszvetel1 = data.mptngynapreszvetel1;
+                    this.reg.mptngynapreszvetel2 = data.mptngynapreszvetel2;
+                    this.reg.mptngynapreszvetel3 = data.mptngynapreszvetel3;
                 });
 
             this.$watch('reg.nev', (value) => {
@@ -88,6 +111,40 @@ document.addEventListener("alpine:init", () => {
                         break;
                     default:
                         this.reg.vatstatus = null;
+                }
+            });
+            this.$watch('reg.mptngynemveszreszt', (value) => {
+                if (value) {
+                    this.reg.mptngynapreszvetel1 = false;
+                    this.reg.mptngyvipvacsora = false;
+                    this.reg.mptngynapreszvetel2 = false;
+                    this.reg.mptngybankett = false;
+                    this.reg.mptngynapreszvetel3 = false;
+                }
+            });
+            this.$watch('reg.mptngynapreszvetel1', (value) => {
+                if (value) {
+                    this.reg.mptngynemveszreszt = false;
+                }
+            });
+            this.$watch('reg.mptngyvipvacsora', (value) => {
+                if (value) {
+                    this.reg.mptngynemveszreszt = false;
+                }
+            });
+            this.$watch('reg.mptngynapreszvetel2', (value) => {
+                if (value) {
+                    this.reg.mptngynemveszreszt = false;
+                }
+            });
+            this.$watch('reg.mptngybankett', (value) => {
+                if (value) {
+                    this.reg.mptngynemveszreszt = false;
+                }
+            });
+            this.$watch('reg.mptngynapreszvetel3', (value) => {
+                if (value) {
+                    this.reg.mptngynemveszreszt = false;
                 }
             });
         },

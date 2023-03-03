@@ -57,6 +57,12 @@ class mptngypartnerController extends partnerController
             $p->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
             $p->setVatstatus($this->params->getIntRequestParam('vatstatus'));
             $p->setAdoszam($this->params->getIntRequestParam('adoszam'));
+            $p->setMptngyvipvacsora($this->params->getBoolRequestParam('mptngyvipvacsora'));
+            $p->setMptngybankett($this->params->getBoolRequestParam('mptngybankett'));
+            $p->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));
+            $p->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
+            $p->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
+            $p->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
             $this->getEm()->persist($p);
             $this->getEm()->flush();
             echo json_encode([

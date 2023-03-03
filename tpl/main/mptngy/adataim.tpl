@@ -108,11 +108,54 @@
                     <label for="regMunkahelyEdit" class="co-label">{t('Munkahely')}</label>
                     <input id="regMunkahelyEdit" class="co-input" type="text" x-model="reg.mpt_munkahelynev">
                 </div>
+            </div>
+            <div class="co-row co-flex-dir-column">
+                <h4>{t('Egyéb adatok')}</h4>
+                <div class="co-control-row">
+                    <label for="nap1Edit" class="co-label">
+                        <input id="nap1Edit" type="checkbox" x-model="reg.mptngynapreszvetel1">
+                        {t('1. nap részt veszek')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="vipvacsEdit" class="co-label">
+                        <input id="vipvacsEdit" type="checkbox" x-model="reg.mptngyvipvacsora">
+                        {t('1. nap állófogadáson részt veszek')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="nap2Edit" class="co-label">
+                        <input id="nap2Edit" type="checkbox" x-model="reg.mptngynapreszvetel2">
+                        {t('2. nap részt veszek')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="bankettEdit" class="co-label">
+                        <input id="bankettEdit" type="checkbox" x-model="reg.mptngybankett">
+                        {t('2. nap banketten részt veszek')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="nap3Edit" class="co-label">
+                        <input id="nap3Edit" type="checkbox" x-model="reg.mptngynapreszvetel3">
+                        {t('3. nap részt veszek')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="nemveszresztEdit" class="co-label">
+                        <input id="nemveszresztEdit" type="checkbox" x-model="reg.mptngynemveszreszt">
+                        {t('Nem veszek részt, csak szerző vagyok')}
+                    </label>
+                    <div class="co-error" x-text="validation.mptngynemveszreszt && validation.mptngynemveszreszt.error"></div>
+                </div>
+            </div>
+            <div class="co-row co-flex-dir-column">
                 <div class="co-control-row">
                     <button class="btn btn-primary" @click="save()">{t('Mentés')}</button>
                     <button class="btn btn-secondary" @click="cancel()">{t('Mégsem')}</button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {/block}

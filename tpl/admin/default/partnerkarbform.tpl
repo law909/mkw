@@ -407,6 +407,10 @@
                         <td><input id="mptngybankettEdit" type="checkbox" name="mptngybankett"{if ($partner.mptngybankett)} checked{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="mptngynemveszresztEdit">Nem vesz részt, csak szerző:</label></td>
+                        <td><input id="mptngynemveszresztEdit" type="checkbox" name="mptngynemveszreszt"{if ($partner.mptngynemveszreszt)} checked{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="mptngydiakEdit">Diák:</label></td>
                         <td><input id="mptngydiakEdit" type="checkbox" name="mptngydiak"{if ($partner.mptngydiak)} checked{/if}></td>
                     </tr>

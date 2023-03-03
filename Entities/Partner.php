@@ -558,6 +558,8 @@ class Partner
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $mptngybefizetes;
 
+    /** @ORM\Column(type="boolean") */
+    private $mptngynemveszreszt = false;
 
     public function __construct()
     {
@@ -3298,6 +3300,22 @@ class Partner
                 $mailer->send();
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMptngynemveszreszt()
+    {
+        return $this->mptngynemveszreszt;
+    }
+
+    /**
+     * @param bool $mptngynemveszreszt
+     */
+    public function setMptngynemveszreszt($mptngynemveszreszt): void
+    {
+        $this->mptngynemveszreszt = $mptngynemveszreszt;
     }
 
 }

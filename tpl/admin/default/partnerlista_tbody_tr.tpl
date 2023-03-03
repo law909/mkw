@@ -14,65 +14,51 @@
             <tr>
                 <td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td>
             </tr>
-            {if ($setup.mijsz)}
+            <tr>
+                <td>{at('Azonosító')}:</td>
+                <td>{$_partner.id}</td>
+            </tr>
+            <tr>
+                <td>{at('Üzletkötő')}:</td>
+                <td>{$_partner.uzletkotonev}</td>
+            </tr>
+            <tr>
+                <td>{at('Adószám')}:</td>
+                <td>{$_partner.adoszam}</td>
+            </tr>
+            <tr>
+                <td>{at('Fizetési mód')}:</td>
+                <td>{$_partner.fizmodnev}</td>
+            </tr>
+            <tr>
+                <td>{at('Szállítási mód')}:</td>
+                <td>{$_partner.szallitasimodnev}</td>
+            </tr>
+            <tr>
+                <td>{at('Partner típus')}:</td>
+                <td>{$_partner.partnertipusnev}</td>
+            </tr>
+            {if ($setup.multilang)}
                 <tr>
-                    <td>{$_partner.partnertipusnev}</td>
+                    <td>{at('Bizonylatok nyelve')}:</td>
+                    <td>{$_partner.bizonylatnyelv}</td>
+                </tr>
+            {/if}
+            {if ($setup.arsavok)}
+                <tr>
+                    <td>{at('Valutanem')}:</td>
+                    <td>{$_partner.valutanemnev}</td>
                 </tr>
                 <tr>
-                    <td>{at('Mióta jógázik')}:</td>
-                    <td>{$_partner.mijszmiotajogazik}</td>
+                    <td>{at('Ársáv')}:</td>
+                    <td>{$_partner.termekarazonosito}</td>
                 </tr>
+            {/if}
+            {if ($_partner.apinev)}
                 <tr>
-                    <td>{at('Mióta tanít')}:</td>
-                    <td>{$_partner.mijszmiotatanit}</td>
+                    <td>{at('API')}:</td>
+                    <td>{$_partner.apinev}</td>
                 </tr>
-            {else}
-                <tr>
-                    <td>{at('Azonosító')}:</td>
-                    <td>{$_partner.id}</td>
-                </tr>
-                <tr>
-                    <td>{at('Üzletkötő')}:</td>
-                    <td>{$_partner.uzletkotonev}</td>
-                </tr>
-                <tr>
-                    <td>{at('Adószám')}:</td>
-                    <td>{$_partner.adoszam}</td>
-                </tr>
-                <tr>
-                    <td>{at('Fizetési mód')}:</td>
-                    <td>{$_partner.fizmodnev}</td>
-                </tr>
-                <tr>
-                    <td>{at('Szállítási mód')}:</td>
-                    <td>{$_partner.szallitasimodnev}</td>
-                </tr>
-                <tr>
-                    <td>{at('Partner típus')}:</td>
-                    <td>{$_partner.partnertipusnev}</td>
-                </tr>
-                {if ($setup.multilang)}
-                    <tr>
-                        <td>{at('Bizonylatok nyelve')}:</td>
-                        <td>{$_partner.bizonylatnyelv}</td>
-                    </tr>
-                {/if}
-                {if ($setup.arsavok)}
-                    <tr>
-                        <td>{at('Valutanem')}:</td>
-                        <td>{$_partner.valutanemnev}</td>
-                    </tr>
-                    <tr>
-                        <td>{at('Ársáv')}:</td>
-                        <td>{$_partner.termekarazonosito}</td>
-                    </tr>
-                {/if}
-                {if ($_partner.apinev)}
-                    <tr>
-                        <td>{at('API')}:</td>
-                        <td>{$_partner.apinev}</td>
-                    </tr>
-                {/if}
             {/if}
             </tbody>
         </table>
@@ -112,6 +98,9 @@
         </table>
     </td>
     {if ($setup.mptngy)}
+        <td class="cell">
+            
+        </td>
         <td class="cell">
             {if ($_partner.mptngybefizetes > 0)}
                 <div>Befizetett összeg: <b>{number_format($_partner.mptngybefizetes, 0, '.', ' ')}</b></div>

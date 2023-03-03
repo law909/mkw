@@ -254,6 +254,13 @@
                             </label>
                         </div>
                         <div class="co-control-row">
+                            <label for="nemveszresztEdit" class="co-label">
+                                <input id="nemveszresztEdit" type="checkbox" x-model="reg.mptngynemveszreszt">
+                                {t('Nem veszek részt, csak szerző vagyok')}
+                            </label>
+                            <div class="co-error" x-text="validation.mptngynemveszreszt && validation.mptngynemveszreszt.error"></div>
+                        </div>
+                        <div class="co-control-row">
                             <label for="diakEdit" class="co-label">
                                 <input id="diakEdit" type="checkbox" x-model="reg.mptngydiak">
                                 {t('Diák vagyok')}

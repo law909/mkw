@@ -70,6 +70,22 @@
                     <option value="9">{at('Mindegy')}</option>
                 </select>
             </div>
+            {if ($setup.mptngy)}
+                <div class="matt-hseparator"></div>
+                <div>
+                    <label for="mptngyreszvetelfilter">{at('Részvétel')}: </label>
+                    <select id="mptngyreszvetelfilter" name="mptngyreszvetelfilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('1. nap részt vesz')}</option>
+                        <option value="2">{at('1. nap állófogadáson részt vesz')}</option>
+                        <option value="3">{at('2. nap részt vesz')}</option>
+                        <option value="4">{at('2. nap banketten részt vesz')}</option>
+                        <option value="5">{at('3. nap részt vesz')}</option>
+                        <option value="6">{at('nem vesz részt, csak szerző')}</option>
+                        <option value="7">{at('nem jelölt meg semmit')}</option>
+                    </select>
+                </div>
+            {/if}
             <div class="matt-hseparator"></div>
             <div id="cimkefiltercontainer">
                 {foreach $cimkekat as $_cimkekat}
@@ -116,6 +132,7 @@
                 <th>{at('Cím')}</th>
                 <th>{at('Elérhetőségek')}</th>
                 {if ($setup.mptngy)}
+                    <th>{at('MPTNGY')}</th>
                     <th>{at('Befizetés')}</th>
                 {/if}
                 <th>{at('Megjegyzés')}</th>
