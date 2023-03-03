@@ -99,6 +99,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['temakor3'] = $t->getTemakor3()?->getId();
         $x['temakor3nev'] = $t->getTemakor3()?->getNev();
         $x['konyvkiadasho'] = $t->getKonyvkiadasho();
+        $x['egyebszerzok'] = $t->getEgyebszerzok();
         if ($forKarb) {
         }
 
@@ -128,6 +129,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
         $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         $obj->setKonyvkiadasho($this->params->getStringRequestParam('konyvkiadasho'));
+        $obj->setEgyebszerzok($this->params->getStringRequestParam('egyebszerzok'));
         if (!$pub) {
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));

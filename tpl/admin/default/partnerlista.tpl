@@ -132,7 +132,6 @@
                 <th>{at('Cím')}</th>
                 <th>{at('Elérhetőségek')}</th>
                 {if ($setup.mptngy)}
-                    <th>{at('MPTNGY')}</th>
                     <th>{at('Befizetés')}</th>
                 {/if}
                 <th>{at('Megjegyzés')}</th>

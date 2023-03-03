@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=19"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=20"></script>
 {/block}
 
 {block "body"}
@@ -191,6 +191,16 @@
                                         <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
                                         <div class="co-error" x-text="validation.szerzo4email && validation.szerzo4email.error"></div>
                                     </div>
+                                </div>
+                                <div class="co-control-row">
+                                    <label for="egyebszerzoEdit" class="co-label">{t('Egyéb szerzők')}</label>
+                                    <textarea
+                                        id="egyebszerzoEdit"
+                                        class="co-input"
+                                        type=""
+                                        x-model="anyag.egyebszerzok"
+                                        rows="8"
+                                    ></textarea>
                                 </div>
                                 <div
                                     class="co-control-row"

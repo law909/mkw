@@ -253,6 +253,12 @@ class MPTNGYSzakmaianyag
      */
     private $konyvkiadasho = '';
 
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $egyebszerzok;
+
+
     public function isSzerzoRegistered($num)
     {
         $f1 = "getSzerzo{$num}email";
@@ -1376,6 +1382,22 @@ class MPTNGYSzakmaianyag
     public function setKonyvkiadasho($konyvkiadasho): void
     {
         $this->konyvkiadasho = $konyvkiadasho;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEgyebszerzok()
+    {
+        return $this->egyebszerzok;
+    }
+
+    /**
+     * @param mixed $egyebszerzok
+     */
+    public function setEgyebszerzok($egyebszerzok): void
+    {
+        $this->egyebszerzok = $egyebszerzok;
     }
 
 }

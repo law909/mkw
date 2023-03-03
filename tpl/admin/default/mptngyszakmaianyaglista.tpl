@@ -73,6 +73,8 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Cím')}</th>
+                <th>{at('Szerzők')}</th>
+                <th>{at('Bírálók')}</th>
                 <th>{at('Témakörök')}</th>
                 <th></th>
             </tr>

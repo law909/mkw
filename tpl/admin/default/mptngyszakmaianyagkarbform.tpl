@@ -115,6 +115,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="egyebszerzokEdit">{at('Egyéb szerzők')}:</label></td>
+                    <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80" required>{$egyed.egyebszerzok}</textarea></td>
+                </tr>
+                <tr>
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
                         <input name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
@@ -228,7 +232,7 @@
                 </tr>
                 <tr>
                     <td><label for="tartalomEdit">{at('Tartalom')}:</label></td>
-                    <td><textarea id="tartalomEdit" name="tartalom" rows="20" cols="80" required>{$egyed.tartalom}</textarea></td>
+                    <td><textarea id="tartalomEdit" name="tartalom" rows="20" cols="80">{$egyed.tartalom}</textarea></td>
                 </tr>
                 </tbody>
             </table>

@@ -99,9 +99,6 @@
     </td>
     {if ($setup.mptngy)}
         <td class="cell">
-            
-        </td>
-        <td class="cell">
             {if ($_partner.mptngybefizetes > 0)}
                 <div>Befizetett összeg: <b>{number_format($_partner.mptngybefizetes, 0, '.', ' ')}</b></div>
                 <div>Befizetés dátuma: <b>{$_partner.mptngybefizetesdatum}</b></div>
