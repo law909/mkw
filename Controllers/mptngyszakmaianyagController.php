@@ -354,9 +354,51 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('eloadas5list', $ac->getSelectList($anyag?->getEloadas5Id()));
 
         $bc = new dolgozoController($this->params);
-        $view->setVar('biralo1list', $bc->getSelectList($anyag?->getBiralo1Id()));
-        $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id()));
-        $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id()));
+        // biralo temakore kozt szerepel temakor1,2,3
+        $biraloids = [];
+        $tkor = $this->getRepo(MPTNGYTemakor::class)->find($anyag?->getTemakor1()?->getId());
+        if ($tkor) {
+            foreach ($tkor->getDolgozok() as $dolg) {
+                $biraloids[$dolg->getId()] = $dolg->getId();
+            }
+        }
+        $tkor = $this->getRepo(MPTNGYTemakor::class)->find($anyag?->getTemakor2()?->getId());
+        if ($tkor) {
+            foreach ($tkor->getDolgozok() as $dolg) {
+                $biraloids[$dolg->getId()] = $dolg->getId();
+            }
+        }
+        $tkor = $this->getRepo(MPTNGYTemakor::class)->find($anyag?->getTemakor3()?->getId());
+        if ($tkor) {
+            foreach ($tkor->getDolgozok() as $dolg) {
+                $biraloids[$dolg->getId()] = $dolg->getId();
+            }
+        }
+        // biralo nem erte el a max vallaltat
+        $vbiraloids = [];
+        $birafilter = new FilterDescriptor();
+        foreach ($biraloids as $bid) {
+            /** @var Dolgozo $bira */
+            $bira = $this->getRepo(Dolgozo::class)->find($bid);
+            $birafilter->clear();
+            $birafilter->addSql("((_xx.biralo1 = $bid) OR (_xx.biralo2 = $bid) OR (_xx.biralo3 = $bid))");
+            $cnt = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($birafilter);
+            if ($anyag?->getBiralo1Id() == $bid || $anyag?->getBiralo2Id() == $bid || $anyag?->getBiralo3Id() == $bid) {
+                $cnt--;
+            }
+            if ($bira->getMptngymaxdb() > $cnt) {
+                $vbiraloids[$bid] = $bid;
+            }
+        }
+        $birafilter->clear();
+        if ($vbiraloids) {
+            $birafilter->addFilter('_xx.id', 'IN', $vbiraloids);
+        } else {
+            $birafilter->addSql('(1=0)');
+        }
+        $view->setVar('biralo1list', $bc->getSelectList($anyag?->getBiralo1Id(), true, $birafilter));
+        $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id(), true, $birafilter));
+        $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id(), true, $birafilter));
 
         $tk = new mptngytemakorController($this->params);
         $view->setVar('temakor1list', $tk->getSelectList($anyag?->getTemakor1()?->getId()));

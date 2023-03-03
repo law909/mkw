@@ -25,6 +25,7 @@
                     <td><label for="CimEdit">{at('Cím')}:</label></td>
                     <td><input id="CimEdit" name="cim" type="text" size="80" maxlength="255" value="{$egyed.cim}" required></td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="kezdodatumEdit">{at('Kezdés')}:</label></td>
                     <td>
@@ -40,6 +41,7 @@
                         <input name="kezdoido" value="{$egyed.kezdoido}">
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="tipusEdit">{at('Típus')}:</label></td>
                     <td>
@@ -55,6 +57,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="tulajdonosEdit">{at('Tulajdonos')}:</label></td>
                     <td>
@@ -66,6 +69,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="szerzo1Edit">{at('Szerzők')}:</label></td>
                     <td>
@@ -116,9 +120,9 @@
                 </tr>
                 <tr>
                     <td><label for="egyebszerzokEdit">{at('Egyéb szerzők')}:</label></td>
-                    <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80" required>{$egyed.egyebszerzok}</textarea></td>
+                    <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80">{$egyed.egyebszerzok}</textarea></td>
                 </tr>
-                <tr>
+                <tr class="onlyszimpozium hidden">
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
                         <input name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
@@ -130,6 +134,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="biralo1Edit">{at('Bírálók')}:</label></td>
                     <td>
@@ -153,6 +158,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr class="onlyszimpozium hidden">
                     <td><label for="eloadas1Edit">{at('Előadás 1')}:</label></td>
                     <td>
@@ -197,6 +203,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="temakor1Edit">{at('Témakörök')}:</label></td>
                     <td>
@@ -220,6 +227,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr style="height: 1em;"></tr>
                 <tr>
                     <td><label for="kulcsszo1Edit">{at('Kulcsszavak')}:</label></td>
                     <td>

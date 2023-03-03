@@ -121,11 +121,24 @@ class dolgozoController extends \mkwhelpers\MattableController
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null, $csakaktiv = true)
+    /**
+     * @param $selid
+     * @param $csakaktiv
+     * @param $pluszfilter FilterDescriptor
+     *
+     * @return array
+     */
+    public function getSelectList($selid = null, $csakaktiv = true, $pluszfilter = null)
     {
         if ($csakaktiv) {
             $filter = new FilterDescriptor();
             $filter->addFilter('inaktiv', '=', false);
+        }
+        if ($pluszfilter) {
+            if (!$filter) {
+                $filter = new FilterDescriptor();
+            }
+            $filter->addArray($pluszfilter->getArray());
         }
         $rec = $this->getRepo()->getAllForSelectList($filter, ['nev' => 'ASC']);
         $res = [];
