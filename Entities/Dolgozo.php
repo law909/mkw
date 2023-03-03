@@ -93,8 +93,8 @@ class Dolgozo
      * @ORM\ManyToMany(targetEntity="MPTNGYTemakor",inversedBy="dolgozok")
      * @ORM\OrderBy({"nev" = "DESC"})
      * @ORM\JoinTable(name="dolgozo_mptngytemakorok",
-     *  joinColumns={@ORM\JoinColumn(name="mptngytemakor_id",referencedColumnName="id",onDelete="cascade")},
-     *  inverseJoinColumns={@ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",onDelete="cascade")}
+     *  joinColumns={@ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="mptngytemakor_id",referencedColumnName="id",onDelete="cascade")}
      *  )
      */
     private $mptngytemakorok;
