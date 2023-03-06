@@ -4232,12 +4232,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function sendEmailSablon($emailtpl, $p = NULL, $topartner = true)
+    public function sendEmailSablon($emailtpl, $p = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendEmailSablon', [$emailtpl, $p, $topartner]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendEmailSablon', [$emailtpl, $p]);
 
-        return parent::sendEmailSablon($emailtpl, $p, $topartner);
+        return parent::sendEmailSablon($emailtpl, $p);
     }
 
     /**

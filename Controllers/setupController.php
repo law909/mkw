@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Emailtemplate;
 use Entities\MPTNGYSzakmaianyagtipus;
+use Entities\Parameterek;
 use Entities\Partner;
 use Entities\Statlap;
 use Entities\Szallitasimod;
@@ -15,7 +16,7 @@ class setupController extends \mkwhelpers\Controller
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Parameterek');
+        $this->setEntityName(Parameterek::class);
         parent::__construct($params);
     }
 
@@ -142,6 +143,17 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::MPTNGYDatum2, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MPTNGYDatum3);
         $view->setVar(\mkw\consts::MPTNGYDatum3, ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::MPTNGYSzempont1);
+        $view->setVar(\mkw\consts::MPTNGYSzempont1, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYSzempont2);
+        $view->setVar(\mkw\consts::MPTNGYSzempont2, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYSzempont3);
+        $view->setVar(\mkw\consts::MPTNGYSzempont3, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYSzempont4);
+        $view->setVar(\mkw\consts::MPTNGYSzempont4, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MPTNGYSzempont5);
+        $view->setVar(\mkw\consts::MPTNGYSzempont5, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
         $szallstatlap = new statlapController($this->params);
@@ -1051,6 +1063,12 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::MPTNGYDatum2, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum2));
         $this->setObj(\mkw\consts::MPTNGYDatum3, $this->params->getStringRequestParam(\mkw\consts::MPTNGYDatum3));
 
+        $this->setObj(\mkw\consts::MPTNGYSzempont1, $this->params->getStringRequestParam(\mkw\consts::MPTNGYSzempont1));
+        $this->setObj(\mkw\consts::MPTNGYSzempont2, $this->params->getStringRequestParam(\mkw\consts::MPTNGYSzempont2));
+        $this->setObj(\mkw\consts::MPTNGYSzempont3, $this->params->getStringRequestParam(\mkw\consts::MPTNGYSzempont3));
+        $this->setObj(\mkw\consts::MPTNGYSzempont4, $this->params->getStringRequestParam(\mkw\consts::MPTNGYSzempont4));
+        $this->setObj(\mkw\consts::MPTNGYSzempont5, $this->params->getStringRequestParam(\mkw\consts::MPTNGYSzempont5));
+
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
         $this->setObj(\mkw\consts::Smallimagesize, $this->params->getIntRequestParam('smallimagesize'));
         $this->setObj(\mkw\consts::Mediumimagesize, $this->params->getIntRequestParam('mediumimagesize'));
@@ -1838,4 +1856,15 @@ class setupController extends \mkwhelpers\Controller
         \mkw\store::getEm()->flush();
     }
 
+    public function getMPTNGYSzempontList()
+    {
+        $repo = \mkw\store::getEm()->getRepository($this->getEntityName());
+        echo json_encode([
+            1 => $repo->find(\mkw\consts::MPTNGYSzempont1)->getErtek(),
+            2 => $repo->find(\mkw\consts::MPTNGYSzempont2)->getErtek(),
+            3 => $repo->find(\mkw\consts::MPTNGYSzempont3)->getErtek(),
+            4 => $repo->find(\mkw\consts::MPTNGYSzempont4)->getErtek(),
+            5 => $repo->find(\mkw\consts::MPTNGYSzempont5)->getErtek(),
+        ]);
+    }
 }

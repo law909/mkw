@@ -392,6 +392,12 @@ class consts
     const MPTNGYDatum2 = 'mptngydatum2';
     const MPTNGYDatum3 = 'mptngydatum3';
 
+    const MPTNGYSzempont1 = 'mptngyszempont1';
+    const MPTNGYSzempont2 = 'mptngyszempont2';
+    const MPTNGYSzempont3 = 'mptngyszempont3';
+    const MPTNGYSzempont4 = 'mptngyszempont4';
+    const MPTNGYSzempont5 = 'mptngyszempont5';
+    
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
 

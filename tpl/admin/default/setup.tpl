@@ -1079,6 +1079,28 @@
                                 <input id="mptngydatum3edit" name="mptngydatum3" data-datum="{$mptngydatum3}">
                             </div>
                         </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <label for="mptngyszempont1edit" class="setuplabel">{at('Szempont 1')}:</label>
+                                <input id="mptngyszempont1edit" name="mptngyszempont1" value="{$mptngyszempont1}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngyszempont2edit" class="setuplabel">{at('Szempont 2')}:</label>
+                                <input id="mptngyszempont2edit" name="mptngyszempont2" value="{$mptngyszempont2}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngyszempont3edit" class="setuplabel">{at('Szempont 3')}:</label>
+                                <input id="mptngyszempont3edit" name="mptngyszempont3" value="{$mptngyszempont3}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngyszempont4edit" class="setuplabel">{at('Szempont 4')}:</label>
+                                <input id="mptngyszempont4edit" name="mptngyszempont4" value="{$mptngyszempont4}">
+                            </div>
+                            <div class="setuprow">
+                                <label for="mptngyszempont5edit" class="setuplabel">{at('Szempont 5')}:</label>
+                                <input id="mptngyszempont5edit" name="mptngyszempont5" value="{$mptngyszempont5}">
+                            </div>
+                        </div>
                     </div>
                 {/if}
                 <div id="SzallitasiKtgTab" class="mattkarb-page" data-visible="visible">

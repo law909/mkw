@@ -258,6 +258,52 @@ class MPTNGYSzakmaianyag
      */
     private $egyebszerzok;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b1szempont1;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b1szempont2;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b1szempont3;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b1szempont4;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b1szempont5;
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $b1szovegesertekeles;
+
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b2szempont1;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b2szempont2;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b2szempont3;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b2szempont4;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b2szempont5;
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $b2szovegesertekeles;
+
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b3szempont1;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b3szempont2;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b3szempont3;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b3szempont4;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $b3szempont5;
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $b3szovegesertekeles;
 
     public function isSzerzoRegistered($num)
     {
@@ -1400,4 +1446,292 @@ class MPTNGYSzakmaianyag
         $this->egyebszerzok = $egyebszerzok;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getB1szempont1()
+    {
+        return $this->b1szempont1;
+    }
+
+    /**
+     * @param mixed $b1szempont1
+     */
+    public function setB1szempont1($b1szempont1): void
+    {
+        $this->b1szempont1 = $b1szempont1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB1szempont2()
+    {
+        return $this->b1szempont2;
+    }
+
+    /**
+     * @param mixed $b1szempont2
+     */
+    public function setB1szempont2($b1szempont2): void
+    {
+        $this->b1szempont2 = $b1szempont2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB1szempont3()
+    {
+        return $this->b1szempont3;
+    }
+
+    /**
+     * @param mixed $b1szempont3
+     */
+    public function setB1szempont3($b1szempont3): void
+    {
+        $this->b1szempont3 = $b1szempont3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB1szempont4()
+    {
+        return $this->b1szempont4;
+    }
+
+    /**
+     * @param mixed $b1szempont4
+     */
+    public function setB1szempont4($b1szempont4): void
+    {
+        $this->b1szempont4 = $b1szempont4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB1szempont5()
+    {
+        return $this->b1szempont5;
+    }
+
+    /**
+     * @param mixed $b1szempont5
+     */
+    public function setB1szempont5($b1szempont5): void
+    {
+        $this->b1szempont5 = $b1szempont5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB1szovegesertekeles()
+    {
+        return $this->b1szovegesertekeles;
+    }
+
+    /**
+     * @param mixed $b1szovegesertekeles
+     */
+    public function setB1szovegesertekeles($b1szovegesertekeles): void
+    {
+        $this->b1szovegesertekeles = $b1szovegesertekeles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szempont1()
+    {
+        return $this->b2szempont1;
+    }
+
+    /**
+     * @param mixed $b2szempont1
+     */
+    public function setB2szempont1($b2szempont1): void
+    {
+        $this->b2szempont1 = $b2szempont1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szempont2()
+    {
+        return $this->b2szempont2;
+    }
+
+    /**
+     * @param mixed $b2szempont2
+     */
+    public function setB2szempont2($b2szempont2): void
+    {
+        $this->b2szempont2 = $b2szempont2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szempont3()
+    {
+        return $this->b2szempont3;
+    }
+
+    /**
+     * @param mixed $b2szempont3
+     */
+    public function setB2szempont3($b2szempont3): void
+    {
+        $this->b2szempont3 = $b2szempont3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szempont4()
+    {
+        return $this->b2szempont4;
+    }
+
+    /**
+     * @param mixed $b2szempont4
+     */
+    public function setB2szempont4($b2szempont4): void
+    {
+        $this->b2szempont4 = $b2szempont4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szempont5()
+    {
+        return $this->b2szempont5;
+    }
+
+    /**
+     * @param mixed $b2szempont5
+     */
+    public function setB2szempont5($b2szempont5): void
+    {
+        $this->b2szempont5 = $b2szempont5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB2szovegesertekeles()
+    {
+        return $this->b2szovegesertekeles;
+    }
+
+    /**
+     * @param mixed $b2szovegesertekeles
+     */
+    public function setB2szovegesertekeles($b2szovegesertekeles): void
+    {
+        $this->b2szovegesertekeles = $b2szovegesertekeles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szempont1()
+    {
+        return $this->b3szempont1;
+    }
+
+    /**
+     * @param mixed $b3szempont1
+     */
+    public function setB3szempont1($b3szempont1): void
+    {
+        $this->b3szempont1 = $b3szempont1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szempont2()
+    {
+        return $this->b3szempont2;
+    }
+
+    /**
+     * @param mixed $b3szempont2
+     */
+    public function setB3szempont2($b3szempont2): void
+    {
+        $this->b3szempont2 = $b3szempont2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szempont3()
+    {
+        return $this->b3szempont3;
+    }
+
+    /**
+     * @param mixed $b3szempont3
+     */
+    public function setB3szempont3($b3szempont3): void
+    {
+        $this->b3szempont3 = $b3szempont3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szempont4()
+    {
+        return $this->b3szempont4;
+    }
+
+    /**
+     * @param mixed $b3szempont4
+     */
+    public function setB3szempont4($b3szempont4): void
+    {
+        $this->b3szempont4 = $b3szempont4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szempont5()
+    {
+        return $this->b3szempont5;
+    }
+
+    /**
+     * @param mixed $b3szempont5
+     */
+    public function setB3szempont5($b3szempont5): void
+    {
+        $this->b3szempont5 = $b3szempont5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getB3szovegesertekeles()
+    {
+        return $this->b3szovegesertekeles;
+    }
+
+    /**
+     * @param mixed $b3szovegesertekeles
+     */
+    public function setB3szovegesertekeles($b3szovegesertekeles): void
+    {
+        $this->b3szovegesertekeles = $b3szovegesertekeles;
+    }
+    
 }

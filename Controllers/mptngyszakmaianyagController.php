@@ -100,6 +100,24 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['temakor3nev'] = $t->getTemakor3()?->getNev();
         $x['konyvkiadasho'] = $t->getKonyvkiadasho();
         $x['egyebszerzok'] = $t->getEgyebszerzok();
+        $x['b1szempont1'] = $t->getB1szempont1();
+        $x['b1szempont2'] = $t->getB1szempont2();
+        $x['b1szempont3'] = $t->getB1szempont3();
+        $x['b1szempont4'] = $t->getB1szempont4();
+        $x['b1szempont5'] = $t->getB1szempont5();
+        $x['b1szovegesertekeles'] = $t->getB1szovegesertekeles();
+        $x['b2szempont1'] = $t->getB2szempont1();
+        $x['b2szempont2'] = $t->getB2szempont2();
+        $x['b2szempont3'] = $t->getB2szempont3();
+        $x['b2szempont4'] = $t->getB2szempont4();
+        $x['b2szempont5'] = $t->getB2szempont5();
+        $x['b2szovegesertekeles'] = $t->getB2szovegesertekeles();
+        $x['b3szempont1'] = $t->getB3szempont1();
+        $x['b3szempont2'] = $t->getB3szempont2();
+        $x['b3szempont3'] = $t->getB3szempont3();
+        $x['b3szempont4'] = $t->getB3szempont4();
+        $x['b3szempont5'] = $t->getB3szempont5();
+        $x['b3szovegesertekeles'] = $t->getB3szovegesertekeles();
         if ($forKarb) {
         }
 
@@ -130,6 +148,24 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         $obj->setKonyvkiadasho($this->params->getStringRequestParam('konyvkiadasho'));
         $obj->setEgyebszerzok($this->params->getStringRequestParam('egyebszerzok'));
+        $obj->setB1szempont1($this->params->getIntRequestParam('b1szempont1'));
+        $obj->setB1szempont2($this->params->getIntRequestParam('b1szempont2'));
+        $obj->setB1szempont3($this->params->getIntRequestParam('b1szempont3'));
+        $obj->setB1szempont4($this->params->getIntRequestParam('b1szempont4'));
+        $obj->setB1szempont5($this->params->getIntRequestParam('b1szempont5'));
+        $obj->setB1szovegesertekeles($this->params->getStringRequestParam('b1szovegesertekeles'));
+        $obj->setB2szempont1($this->params->getIntRequestParam('b2szempont1'));
+        $obj->setB2szempont2($this->params->getIntRequestParam('b2szempont2'));
+        $obj->setB2szempont3($this->params->getIntRequestParam('b2szempont3'));
+        $obj->setB2szempont4($this->params->getIntRequestParam('b2szempont4'));
+        $obj->setB2szempont5($this->params->getIntRequestParam('b2szempont5'));
+        $obj->setB2szovegesertekeles($this->params->getStringRequestParam('b2szovegesertekeles'));
+        $obj->setB3szempont1($this->params->getIntRequestParam('b3szempont1'));
+        $obj->setB3szempont2($this->params->getIntRequestParam('b3szempont2'));
+        $obj->setB3szempont3($this->params->getIntRequestParam('b3szempont3'));
+        $obj->setB3szempont4($this->params->getIntRequestParam('b3szempont4'));
+        $obj->setB3szempont5($this->params->getIntRequestParam('b3szempont5'));
+        $obj->setB3szovegesertekeles($this->params->getStringRequestParam('b3szovegesertekeles'));
         if (!$pub) {
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
@@ -490,6 +526,39 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         echo json_encode($res);
     }
 
+    public function getBiralandoAnyagList()
+    {
+        $res = [];
+        $dolg = $this->getRepo(Dolgozo::class)->getLoggedInUser();
+        if ($dolg) {
+            $did = $dolg->getId();
+            $filter = new FilterDescriptor();
+            $filter->addSql("((_xx.biralo1 = $did) OR (_xx.biralo2 = $did) OR (_xx.biralo3 = $did))");
+            $filter->addFilter('vegleges', '=', true);
+            $anyagok = $this->getRepo()->getAll($filter);
+            /** @var MPTNGYSzakmaianyag $anyag */
+            foreach ($anyagok as $anyag) {
+                $x = $this->loadVars($anyag);
+                switch (true) {
+                    case $anyag->getBiralo1Id() == $did:
+                        $x['biralosorszam'] = 1;
+                        break;
+                    case $anyag->getBiralo2Id() == $did:
+                        $x['biralosorszam'] = 2;
+                        break;
+                    case $anyag->getBiralo3Id() == $did:
+                        $x['biralosorszam'] = 3;
+                        break;
+                    default:
+                        $x['biralosorszam'] = 0;
+                        break;
+                }
+                $res[] = $x;
+            }
+        }
+        echo json_encode($res);
+    }
+
     public function getDatumList()
     {
         echo json_encode(\mkw\store::getMPTNGYDateList());
@@ -603,4 +672,50 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         echo json_encode($ret);
     }
 
+    public function biralatSave()
+    {
+        $ret = ['success' => false];
+        /** @var Dolgozo $biralo */
+        $biralo = $this->getRepo(Dolgozo::class)->getLoggedInUser();
+        if ($biralo) {
+            $id = $this->params->getIntRequestParam('id');
+            /** @var MPTNGYSzakmaianyag $anyag */
+            $anyag = $this->getRepo()->find($id);
+            if ($anyag) {
+                $szempont1 = $this->params->getIntRequestParam('szempont1');
+                $szempont2 = $this->params->getIntRequestParam('szempont2');
+                $szempont3 = $this->params->getIntRequestParam('szempont3');
+                $szempont4 = $this->params->getIntRequestParam('szempont4');
+                $szempont5 = $this->params->getIntRequestParam('szempont5');
+                $szoveges = $this->params->getStringRequestParam('szovegesertekeles');
+                switch (true) {
+                    case $anyag->getBiralo1Id() == $biralo->getId():
+                        $bn = 'B1';
+                        break;
+                    case $anyag->getBiralo2Id() == $biralo->getId():
+                        $bn = 'B2';
+                        break;
+                    case $anyag->getBiralo3Id() == $biralo->getId():
+                        $bn = 'B3';
+                        break;
+                }
+                $fn = "set{$bn}szempont1";
+                $anyag->{$fn}($szempont1);
+                $fn = "set{$bn}szempont2";
+                $anyag->{$fn}($szempont2);
+                $fn = "set{$bn}szempont3";
+                $anyag->{$fn}($szempont3);
+                $fn = "set{$bn}szempont4";
+                $anyag->{$fn}($szempont4);
+                $fn = "set{$bn}szempont5";
+                $anyag->{$fn}($szempont5);
+                $fn = "set{$bn}szovegesertekeles";
+                $anyag->{$fn}($szoveges);
+                $this->getEm()->persist($anyag);
+                $this->getEm()->flush();
+                $ret['success'] = true;
+            }
+        }
+        echo json_encode($ret);
+    }
 }

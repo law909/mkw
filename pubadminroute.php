@@ -29,3 +29,6 @@ $router->map('GET', '/pubadmin/mptngyme', 'dolgozoController#getmptngyme', 'puba
 $router->map('POST', '/pubadmin/mptngysetup/ment', 'dolgozoController#savemptngysetup', 'pubadminsavemptngysetup');
 
 $router->map('GET', '/pubadmin/mptngybiralas', 'dolgozoController#mptngybiralasView', 'pubadminmptngybiralas');
+$router->map('GET', '/pubadmin/biralandoanyaglist', 'mptngyszakmaianyagController#getBiralandoAnyagList', 'pubadminmptngygetbiralandoanyaglist');
+$router->map('GET', '/pubadmin/szempontlist', 'setupController#getMPTNGYSzempontList', 'pubadminmptngygetszempontlist');
+$router->map('POST', '/pubadmin/mptngybiralas/ment', 'mptngyszakmaianyagController#biralatSave', 'pubadminmptngybiralasment');

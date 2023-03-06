@@ -67,10 +67,10 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles'];
     }
 
     /**
@@ -1664,6 +1664,402 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEgyebszerzok', [$egyebszerzok]);
 
         parent::setEgyebszerzok($egyebszerzok);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szempont1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szempont1', []);
+
+        return parent::getB1szempont1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szempont1($b1szempont1): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szempont1', [$b1szempont1]);
+
+        parent::setB1szempont1($b1szempont1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szempont2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szempont2', []);
+
+        return parent::getB1szempont2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szempont2($b1szempont2): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szempont2', [$b1szempont2]);
+
+        parent::setB1szempont2($b1szempont2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szempont3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szempont3', []);
+
+        return parent::getB1szempont3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szempont3($b1szempont3): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szempont3', [$b1szempont3]);
+
+        parent::setB1szempont3($b1szempont3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szempont4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szempont4', []);
+
+        return parent::getB1szempont4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szempont4($b1szempont4): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szempont4', [$b1szempont4]);
+
+        parent::setB1szempont4($b1szempont4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szempont5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szempont5', []);
+
+        return parent::getB1szempont5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szempont5($b1szempont5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szempont5', [$b1szempont5]);
+
+        parent::setB1szempont5($b1szempont5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB1szovegesertekeles()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB1szovegesertekeles', []);
+
+        return parent::getB1szovegesertekeles();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1szovegesertekeles($b1szovegesertekeles): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1szovegesertekeles', [$b1szovegesertekeles]);
+
+        parent::setB1szovegesertekeles($b1szovegesertekeles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szempont1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szempont1', []);
+
+        return parent::getB2szempont1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szempont1($b2szempont1): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szempont1', [$b2szempont1]);
+
+        parent::setB2szempont1($b2szempont1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szempont2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szempont2', []);
+
+        return parent::getB2szempont2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szempont2($b2szempont2): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szempont2', [$b2szempont2]);
+
+        parent::setB2szempont2($b2szempont2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szempont3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szempont3', []);
+
+        return parent::getB2szempont3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szempont3($b2szempont3): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szempont3', [$b2szempont3]);
+
+        parent::setB2szempont3($b2szempont3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szempont4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szempont4', []);
+
+        return parent::getB2szempont4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szempont4($b2szempont4): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szempont4', [$b2szempont4]);
+
+        parent::setB2szempont4($b2szempont4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szempont5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szempont5', []);
+
+        return parent::getB2szempont5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szempont5($b2szempont5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szempont5', [$b2szempont5]);
+
+        parent::setB2szempont5($b2szempont5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB2szovegesertekeles()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB2szovegesertekeles', []);
+
+        return parent::getB2szovegesertekeles();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2szovegesertekeles($b2szovegesertekeles): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2szovegesertekeles', [$b2szovegesertekeles]);
+
+        parent::setB2szovegesertekeles($b2szovegesertekeles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szempont1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szempont1', []);
+
+        return parent::getB3szempont1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szempont1($b3szempont1): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szempont1', [$b3szempont1]);
+
+        parent::setB3szempont1($b3szempont1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szempont2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szempont2', []);
+
+        return parent::getB3szempont2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szempont2($b3szempont2): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szempont2', [$b3szempont2]);
+
+        parent::setB3szempont2($b3szempont2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szempont3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szempont3', []);
+
+        return parent::getB3szempont3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szempont3($b3szempont3): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szempont3', [$b3szempont3]);
+
+        parent::setB3szempont3($b3szempont3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szempont4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szempont4', []);
+
+        return parent::getB3szempont4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szempont4($b3szempont4): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szempont4', [$b3szempont4]);
+
+        parent::setB3szempont4($b3szempont4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szempont5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szempont5', []);
+
+        return parent::getB3szempont5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szempont5($b3szempont5): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szempont5', [$b3szempont5]);
+
+        parent::setB3szempont5($b3szempont5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getB3szovegesertekeles()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getB3szovegesertekeles', []);
+
+        return parent::getB3szovegesertekeles();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3szovegesertekeles($b3szovegesertekeles): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szovegesertekeles', [$b3szovegesertekeles]);
+
+        parent::setB3szovegesertekeles($b3szovegesertekeles);
     }
 
 }
