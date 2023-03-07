@@ -317,6 +317,18 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('tulajdonos', '=', $this->params->getIntRequestParam('tulajdonosfilter'));
         }
 
+        if (!is_null($this->params->getRequestParam('elsoszerzofilter', null))) {
+            $filter->addFilter('szerzo1', '=', $this->params->getIntRequestParam('elsoszerzofilter'));
+        }
+
+        if (!is_null($this->params->getRequestParam('szerzofilter', null))) {
+            $filter->addFilter(['szerzo2', 'szerzo3', 'szerzo4'], '=', $this->params->getIntRequestParam('szerzofilter'));
+        }
+
+        if (!is_null($this->params->getRequestParam('opponensfilter', null))) {
+            $filter->addFilter('szerzo5', '=', $this->params->getIntRequestParam('opponensfilter'));
+        }
+
         $f = $this->params->getNumRequestParam('bekuldvefilter', 9);
         if ($f != 9) {
             $filter->addFilter('vegleges', '=', $f);
@@ -354,6 +366,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
         $pc = new partnerController($this->params);
         $view->setVar('tulajdonoslist', $pc->getSelectList());
+        $view->setVar('elsoszerzolist', $pc->getSelectList());
+        $view->setVar('szerzolist', $pc->getSelectList());
+        $view->setVar('opponenslist', $pc->getSelectList());
 
         $view->printTemplateResult();
     }

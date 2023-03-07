@@ -45,6 +45,9 @@ $(document).ready(function () {
                     '#bekuldvefilter',
                     '#biralatkeszfilter',
                     '#konferencianszerepelhetfilter',
+                    '#elsoszerzofilter',
+                    '#szerzofilter',
+                    '#opponensfilter',
                 ]
             },
             tablebody: {

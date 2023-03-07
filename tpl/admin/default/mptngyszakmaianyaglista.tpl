@@ -29,6 +29,39 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
+                <label for="elsoszerzofilter">{at('Első szerző')}: </label>
+                <select id="elsoszerzofilter" name="elsoszerzofilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $elsoszerzolist as $_gyarto}
+                        <option
+                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="szerzofilter">{at('Szerző')}: </label>
+                <select id="szerzofilter" name="szerzofilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $szerzolist as $_gyarto}
+                        <option
+                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="opponensfilter">{at('Opponens')}: </label>
+                <select id="opponensfilter" name="opponensfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $opponenslist as $_gyarto}
+                        <option
+                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
                 <label for="bekuldvefilter">{at('Beküldve')}:</label>
                 <select id="bekuldvefilter" name="bekuldvefilter">
                     <option value="9">{at('Mindegy')}</option>
