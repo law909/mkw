@@ -17,7 +17,7 @@
         <div>Szerző 3: {$_egyed.szerzo3nev} ({$_egyed.szerzo3email})</div>
         <div>Szerző 4: {$_egyed.szerzo4nev} ({$_egyed.szerzo4email})</div>
         {if ($_egyed.szimpozium)}
-            <div>Opponens: {$_egyed.szerzo1nev} ({$_egyed.szerzo5email})</div>
+            <div>Opponens: {$_egyed.szerzo5nev} ({$_egyed.szerzo5email})</div>
         {/if}
         <div>Egyéb szerzők:</div>
         <div>
