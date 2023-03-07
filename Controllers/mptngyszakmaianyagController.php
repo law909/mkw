@@ -418,6 +418,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $bira = $this->getRepo(Dolgozo::class)->find($bid);
             $birafilter->clear();
             $birafilter->addSql("((_xx.biralo1 = $bid) OR (_xx.biralo2 = $bid) OR (_xx.biralo3 = $bid))");
+            $birafilter->addFilter('id', '<>', $anyag->getId());
             $cnt = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($birafilter);
             if ($anyag?->getBiralo1Id() == $bid || $anyag?->getBiralo2Id() == $bid || $anyag?->getBiralo3Id() == $bid) {
                 $cnt--;
