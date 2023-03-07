@@ -6,6 +6,7 @@
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.cim}</a>
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <div>Azonosító: {$_egyed.id}</div>
         <div>Kezdés: {$_egyed.kezdodatumstr} - {$_egyed.kezdoido}</div>
         <div>Típus: {$_egyed.tipusnev}</div>
         <div>Tulajdonos: {$_egyed.tulajdonosnev}</div>

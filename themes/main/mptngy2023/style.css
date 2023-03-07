@@ -285,6 +285,10 @@ table td:last-child {
     border-bottom: 0;
 }
 
+.th-w-10 {
+    width: 10%;
+}
+
 @media screen and (min-width: 761px) {
 
     table {

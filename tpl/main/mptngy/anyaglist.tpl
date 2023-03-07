@@ -28,6 +28,7 @@
                             <table>
                                 <thead>
                                 <tr>
+                                    <th class="th-w-10"></th>
                                     <th>{t('Cím')}</th>
                                     <th>{t('Tulajdonos')}</th>
                                     <th>{t('Típus')}</th>
@@ -38,6 +39,7 @@
                                 <tbody>
                                 <template x-for="any in anyaglist" :key="any.id">
                                     <tr :class="!any.allszerzoregistered ? 'red' : ''">
+                                        <td x-text="any.id" data-label="{t('Azonosító')}"></td>
                                         <td x-text="any.cim" data-label="{t('Cím')}"></td>
                                         <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
                                         <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>

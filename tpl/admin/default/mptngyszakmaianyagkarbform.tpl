@@ -11,6 +11,10 @@
             <table>
                 <tbody>
                 <tr>
+                    <td>{at('Azonosító')}:</td>
+                    <td>{$egyed.id}</td>
+                </tr>
+                <tr>
                     <td></td>
                     <td>
                         <label for="biralatkeszEdit">{at('Beküldve')}:</label>
