@@ -146,7 +146,12 @@ class dolgozoController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAllForSelectList($filter, ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
-            $res[] = ['id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid)];
+            $res[] = [
+                'id' => $sor['id'],
+                'caption' => $sor['nev'],
+                'selected' => ($sor['id'] == $selid),
+                'email' => $sor['email'],
+            ];
         }
         return $res;
     }

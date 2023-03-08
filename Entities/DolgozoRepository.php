@@ -20,7 +20,7 @@ class DolgozoRepository extends \mkwhelpers\Repository
     public function getAllForSelectList($filter, $order, $offset = 0, $elemcount = 0)
     {
         $q = $this->_em->createQuery(
-            'SELECT _xx.id,_xx.nev '
+            'SELECT _xx.id,_xx.nev,_xx.email '
             . ' FROM Entities\Dolgozo _xx'
             . $this->getFilterString($filter)
             . $this->getOrderString($order)

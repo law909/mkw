@@ -89,7 +89,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input name="szerzo2email" type="email" value="{$egyed.szerzo2email}">
+                        <input id="szerzo2emailEdit" name="szerzo2email" type="email" value="{$egyed.szerzo2email}">
                         <select id="szerzo2Edit" name="szerzo2">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo2list as $_mk}
@@ -101,7 +101,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input name="szerzo3email" type="email" value="{$egyed.szerzo3email}">
+                        <input id="szerzo3emailEdit" name="szerzo3email" type="email" value="{$egyed.szerzo3email}">
                         <select id="szerzo3Edit" name="szerzo3">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo3list as $_mk}
@@ -113,7 +113,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input name="szerzo4email" type="email" value="{$egyed.szerzo4email}">
+                        <input id="szerzo4emailEdit" name="szerzo4email" type="email" value="{$egyed.szerzo4email}">
                         <select id="szerzo4Edit" name="szerzo4">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo4list as $_mk}
@@ -129,7 +129,7 @@
                 <tr class="onlyszimpozium hidden">
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
-                        <input name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
+                        <input id="szerzo5emailEdit" name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
                         <select id="szerzo5Edit" name="szerzo5" class="onlyszimpozium hidden">
                             <option value="">{at('válasszon')}</option>
                             {foreach $szerzo5list as $_mk}
@@ -145,19 +145,19 @@
                         <select id="biralo1Edit" name="biralo1">
                             <option value="">{at('válasszon')}</option>
                             {foreach $biralo1list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
                             {/foreach}
                         </select>
                         <select id="biralo2Edit" name="biralo2">
                             <option value="">{at('válasszon')}</option>
                             {foreach $biralo2list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
                             {/foreach}
                         </select>
                         <select id="biralo3Edit" name="biralo3">
                             <option value="">{at('válasszon')}</option>
                             {foreach $biralo3list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
