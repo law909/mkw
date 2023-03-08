@@ -305,6 +305,71 @@ class MPTNGYSzakmaianyag
      */
     private $b3szovegesertekeles;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $b1biralatkesz = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $b2biralatkesz = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $b3biralatkesz = false;
+
+    public function calcB1pont()
+    {
+        if ($this->getBiralo1()) {
+            return $this->getB1szempont1()
+                + $this->getB1szempont2()
+                + $this->getB1szempont3()
+                + $this->getB1szempont4()
+                + $this->getB1szempont5();
+        }
+        return 0;
+    }
+
+    public function calcB2pont()
+    {
+        if ($this->getBiralo2()) {
+            return $this->getB2szempont1()
+                + $this->getB2szempont2()
+                + $this->getB2szempont3()
+                + $this->getB2szempont4()
+                + $this->getB2szempont5();
+        }
+        return 0;
+    }
+
+    public function calcB3pont()
+    {
+        if ($this->getBiralo3()) {
+            return $this->getB3szempont1()
+                + $this->getB3szempont2()
+                + $this->getB3szempont3()
+                + $this->getB3szempont4()
+                + $this->getB3szempont5();
+        }
+        return 0;
+    }
+
+    public function calcPont()
+    {
+        return $this->calcB1pont() + $this->calcB2pont() + $this->calcB3pont();
+    }
+
+    public function pluszBiraloKell()
+    {
+        if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
+            return ((abs($this->calcB1pont() - $this->calcB2pont()) >= 10)
+                || ($this->calcB1pont() + $this->calcB2pont() < 25));
+        }
+        return false;
+    }
+
     public function isSzerzoRegistered($num)
     {
         $f1 = "getSzerzo{$num}email";
@@ -1733,5 +1798,53 @@ class MPTNGYSzakmaianyag
     {
         $this->b3szovegesertekeles = $b3szovegesertekeles;
     }
-    
+
+    /**
+     * @return bool
+     */
+    public function isB1biralatkesz()
+    {
+        return $this->b1biralatkesz;
+    }
+
+    /**
+     * @param bool $b1biralatkesz
+     */
+    public function setB1biralatkesz($b1biralatkesz): void
+    {
+        $this->b1biralatkesz = $b1biralatkesz;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isB2biralatkesz()
+    {
+        return $this->b2biralatkesz;
+    }
+
+    /**
+     * @param bool $b2biralatkesz
+     */
+    public function setB2biralatkesz($b2biralatkesz): void
+    {
+        $this->b2biralatkesz = $b2biralatkesz;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isB3biralatkesz()
+    {
+        return $this->b3biralatkesz;
+    }
+
+    /**
+     * @param bool $b3biralatkesz
+     */
+    public function setB3biralatkesz($b3biralatkesz): void
+    {
+        $this->b3biralatkesz = $b3biralatkesz;
+    }
+
 }

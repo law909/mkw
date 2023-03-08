@@ -3,7 +3,16 @@ document.addEventListener("alpine:init", () => {
         validation: [],
         anyaglist: [],
         anyag: null,
-        rules: {},
+        rules: {
+            szempont1: ['min:0', 'max:5'],
+            szempont2: ['min:0', 'max:5'],
+            szempont3: ['min:0', 'max:5'],
+            szempont4: ['min:0', 'max:5'],
+            szempont5: ['min:0', 'max:5'],
+        },
+        bekuldRules: {
+            szovegesertekeles: ['required'],
+        },
         showEditor: false,
         loadCount: 2,
         loaded: 0,
@@ -17,6 +26,7 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('min', 'Legalább [PARAM]-t adjon meg');
+            Iodine.setErrorMessage('max', 'Legfeljebb [PARAM]-t adjon meg');
 
             fetch(new URL('/pubadmin/biralandoanyaglist', location.origin))
                 .then((response) => response.json())
@@ -29,6 +39,7 @@ document.addEventListener("alpine:init", () => {
                         v.szempont4 = v[`b${v.biralosorszam}szempont4`];
                         v.szempont5 = v[`b${v.biralosorszam}szempont5`];
                         v.szovegesertekeles = v[`b${v.biralosorszam}szovegesertekeles`];
+                        v.bbiralatkesz = v[`b${v.biralosorszam}biralatkesz`];
                     })
                     this.loaded++;
                 });
@@ -78,6 +89,7 @@ document.addEventListener("alpine:init", () => {
                 szempont4: 0,
                 szempont5: 0,
                 szovegesertekeles: null,
+                bbiralatkesz: null,
             };
         },
         edit(id) {
@@ -91,13 +103,19 @@ document.addEventListener("alpine:init", () => {
             this.showEditor = false;
             this.init();
         },
-        save() {
-            const valid = Iodine.assert(this.anyag, this.rules);
+        save(send = false) {
+            let rules = this.rules;
+            if (send) {
+                rules = {...this.rules, ...this.bekuldRules}
+            }
+            const valid = Iodine.assert(this.anyag, rules);
 
             this.clearErrors();
 
             if (valid.valid) {
-
+                if (send) {
+                    this.anyag.bbiralatkesz = true;
+                }
                 fetch(new URL('/pubadmin/mptngybiralas/ment', location.origin), {
                     method: 'POST',
                     body: new URLSearchParams(this.anyag)

@@ -1,7 +1,7 @@
 {extends "main.tpl"}
 
 {block "prescript"}
-    <script src="/js/pubadmin/mptngy/biralas.js?v=1"></script>
+    <script src="/js/pubadmin/mptngy/biralas.js?v=2"></script>
 {/block}
 
 {block "main"}
@@ -32,8 +32,9 @@
                                     <button
                                         class="btn btn-secondary"
                                         @click="edit(any.id)"
-                                        x-show="loaded >= loadCount"
+                                        x-show="loaded >= loadCount && !any.bbiralatkesz"
                                     >{t('Bírálat')}</button>
+                                    <span x-show="loaded >= loadCount && any.bbiralatkesz">Beküldve</span>
                                 </td>
                             </tr>
                         </template>
@@ -119,11 +120,14 @@
                             id="szovegesertekelesEdit"
                             rows="10"
                             class="co-input"
+                            :class="validation.szovegesertekeles && !validation.szovegesertekeles.valid ? 'error' : ''"
                             x-model="anyag.szovegesertekeles"
                         ></textarea>
+                        <div class="co-error" x-text="validation.szovegesertekeles&& validation.szovegesertekeles.error"></div>
                     </div>
                     <div class="co-control-row">
-                        <button class="btn btn-primary" @click="save()">{t('Mentés')}</button>
+                        <button class="btn btn-primary" @click="save(false)">{t('Mentés')}</button>
+                        <button class="btn btn-secondary" @click="save(true)">{t('Beküldés')}</button>
                         <button class="btn btn-secondary" @click="cancel()">{t('Mégsem')}</button>
                     </div>
                 </div>

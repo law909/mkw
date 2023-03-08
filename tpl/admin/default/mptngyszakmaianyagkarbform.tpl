@@ -5,7 +5,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
-            <li><a href="#WebTab">{at('Webes adatok')}</a></li>
+            <li><a href="#BiralatTab">{at('Bírálók és bírálatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -17,7 +17,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <label for="biralatkeszEdit">{at('Beküldve')}:</label>
+                        <label for="veglegesEdit">{at('Beküldve')}:</label>
                         <input id="veglegesEdit" type="checkbox" name="vegleges"{if ($egyed.vegleges)} checked{/if}>
                         <label for="biralatkeszEdit">{at('Bírálat kész')}:</label>
                         <input id="biralatkeszEdit" type="checkbox" name="biralatkesz"{if ($egyed.biralatkesz)} checked{/if}>
@@ -126,6 +126,7 @@
                     <td><label for="egyebszerzokEdit">{at('Egyéb szerzők')}:</label></td>
                     <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80">{$egyed.egyebszerzok}</textarea></td>
                 </tr>
+                <tr style="height: 1em;" class="onlyszimpozium"></tr>
                 <tr class="onlyszimpozium hidden">
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
@@ -138,31 +139,7 @@
                         </select>
                     </td>
                 </tr>
-                <tr style="height: 1em;"></tr>
-                <tr>
-                    <td><label for="biralo1Edit">{at('Bírálók')}:</label></td>
-                    <td>
-                        <select id="biralo1Edit" name="biralo1">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $biralo1list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                        <select id="biralo2Edit" name="biralo2">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $biralo2list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                        <select id="biralo3Edit" name="biralo3">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $biralo3list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr style="height: 1em;"></tr>
+                <tr style="height: 1em;" class="onlyszimpozium"></tr>
                 <tr class="onlyszimpozium hidden">
                     <td><label for="eloadas1Edit">{at('Előadás 1')}:</label></td>
                     <td>
@@ -249,8 +226,130 @@
                 </tbody>
             </table>
         </div>
-        <div id="WebTab" class="mattkarb-page">
-
+        <div id="BiralatTab" class="mattkarb-page">
+            <table>
+                <tbody>
+                <tr>
+                    <td><label for="biralo1Edit">{at('Bíráló')}:</label></td>
+                    <td>
+                        <select id="biralo1Edit" name="biralo1">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $biralo1list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="b1biralatkeszEdit">{at('Bírálat kész')}:</label></td>
+                    <td><input id="b1biralatkeszEdit" type="checkbox" name="b1biralatkesz"{if ($egyed.b1biralatkesz)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szempont1Edit">{$szempont1nev}</label></td>
+                    <td><input id="b1szempont1Edit" type="number" name="b1szempont1" value="{$egyed.b1szempont1}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szempont2Edit">{$szempont2nev}</label></td>
+                    <td><input id="b1szempont2Edit" type="number" name="b1szempont2" value="{$egyed.b1szempont2}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szempont3Edit">{$szempont3nev}</label></td>
+                    <td><input id="b1szempont3Edit" type="number" name="b1szempont3" value="{$egyed.b1szempont3}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szempont4Edit">{$szempont4nev}</label></td>
+                    <td><input id="b1szempont4Edit" type="number" name="b1szempont4" value="{$egyed.b1szempont4}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szempont5Edit">{$szempont5nev}</label></td>
+                    <td><input id="b1szempont5Edit" type="number" name="b1szempont5" value="{$egyed.b1szempont5}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b1szovegesEdit">{at('Szöveges értékelés')}</label></td>
+                    <td><textarea id="b1szovegesEdit" name="b1szovegesertekeles" rows="10" cols="80">{$egyed.b1szovegesertekeles}</textarea></td>
+                </tr>
+                <tr style="height: 1em;"></tr>
+                <tr>
+                    <td><label for="biralo2Edit">{at('Bíráló')}:</label></td>
+                    <td>
+                        <select id="biralo2Edit" name="biralo2">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $biralo2list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="b2biralatkeszEdit">{at('Bírálat kész')}:</label></td>
+                    <td><input id="b2biralatkeszEdit" type="checkbox" name="b2biralatkesz"{if ($egyed.b2biralatkesz)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szempont1Edit">{$szempont1nev}</label></td>
+                    <td><input id="b2szempont1Edit" type="number" name="b2szempont1" value="{$egyed.b2szempont1}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szempont2Edit">{$szempont2nev}</label></td>
+                    <td><input id="b2szempont2Edit" type="number" name="b2szempont2" value="{$egyed.b2szempont2}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szempont3Edit">{$szempont3nev}</label></td>
+                    <td><input id="b2szempont3Edit" type="number" name="b2szempont3" value="{$egyed.b2szempont3}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szempont4Edit">{$szempont4nev}</label></td>
+                    <td><input id="b2szempont4Edit" type="number" name="b2szempont4" value="{$egyed.b2szempont4}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szempont5Edit">{$szempont5nev}</label></td>
+                    <td><input id="b2szempont5Edit" type="number" name="b2szempont5" value="{$egyed.b2szempont5}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b2szovegesEdit">{at('Szöveges értékelés')}</label></td>
+                    <td><textarea id="b2szovegesEdit" name="b2szovegesertekeles" rows="10" cols="80">{$egyed.b2szovegesertekeles}</textarea></td>
+                </tr>
+                <tr style="height: 1em;"></tr>
+                <tr>
+                    <td><label for="biralo3Edit">{at('Bíráló')}:</label></td>
+                    <td>
+                        <select id="biralo3Edit" name="biralo3">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $biralo3list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="b3biralatkeszEdit">{at('Bírálat kész')}:</label></td>
+                    <td><input id="b3biralatkeszEdit" type="checkbox" name="b3biralatkesz"{if ($egyed.b3biralatkesz)} checked{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szempont1Edit">{$szempont1nev}</label></td>
+                    <td><input id="b3szempont1Edit" type="number" name="b3szempont1" value="{$egyed.b3szempont1}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szempont2Edit">{$szempont2nev}</label></td>
+                    <td><input id="b3szempont2Edit" type="number" name="b3szempont2" value="{$egyed.b3szempont2}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szempont3Edit">{$szempont3nev}</label></td>
+                    <td><input id="b3szempont3Edit" type="number" name="b3szempont3" value="{$egyed.b3szempont3}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szempont4Edit">{$szempont4nev}</label></td>
+                    <td><input id="b3szempont4Edit" type="number" name="b3szempont4" value="{$egyed.b3szempont4}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szempont5Edit">{$szempont5nev}</label></td>
+                    <td><input id="b3szempont5Edit" type="number" name="b3szempont5" value="{$egyed.b3szempont5}"></td>
+                </tr>
+                <tr>
+                    <td><label for="b3szovegesEdit">{at('Szöveges értékelés')}</label></td>
+                    <td><textarea id="b3szovegesEdit" name="b3szovegesertekeles" rows="10" cols="80">{$egyed.b3szovegesertekeles}</textarea></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

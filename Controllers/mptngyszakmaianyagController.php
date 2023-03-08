@@ -118,8 +118,15 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['b3szempont4'] = $t->getB3szempont4();
         $x['b3szempont5'] = $t->getB3szempont5();
         $x['b3szovegesertekeles'] = $t->getB3szovegesertekeles();
-        if ($forKarb) {
-        }
+        $x['b1biralatkesz'] = $t->isB1biralatkesz();
+        $x['b2biralatkesz'] = $t->isB2biralatkesz();
+        $x['b3biralatkesz'] = $t->isB3biralatkesz();
+
+        $x['biralo1pont'] = $t->calcB1pont();
+        $x['biralo2pont'] = $t->calcB2pont();
+        $x['biralo3pont'] = $t->calcB3pont();
+        $x['osszespont'] = $t->calcPont();
+        $x['pluszbiralokell'] = $t->pluszBiraloKell();
 
         return $x;
     }
@@ -170,6 +177,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
             $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
+            $obj->setB1biralatkesz($this->params->getBoolRequestParam('b1biralatkesz'));
+            $obj->setB2biralatkesz($this->params->getBoolRequestParam('b2biralatkesz'));
+            $obj->setB3biralatkesz($this->params->getBoolRequestParam('b3biralatkesz'));
         } else {
             if ($this->params->getBoolRequestParam('vegleges')) {
                 $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
@@ -311,7 +321,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('idfilter', null))) {
             $filter->addFilter('id', '=', $this->params->getIntRequestParam('idfilter'));
         }
-        
+
         if (!is_null($this->params->getRequestParam('cimfilter', null))) {
             $fv = $this->params->getStringRequestParam('cimfilter');
             $filter->addFilter('cim', 'LIKE', '%' . $fv . '%');
@@ -462,6 +472,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('temakor3list', $tk->getSelectList($anyag?->getTemakor3()?->getId()));
 
         $view->setVar('datumlist', \mkw\store::getMPTNGYDateList($anyag?->getKezdodatum()));
+
+        $view->setVar('szempont1nev', \mkw\store::getParameter(\mkw\consts::MPTNGYSzempont1));
+        $view->setVar('szempont2nev', \mkw\store::getParameter(\mkw\consts::MPTNGYSzempont2));
+        $view->setVar('szempont3nev', \mkw\store::getParameter(\mkw\consts::MPTNGYSzempont3));
+        $view->setVar('szempont4nev', \mkw\store::getParameter(\mkw\consts::MPTNGYSzempont4));
+        $view->setVar('szempont5nev', \mkw\store::getParameter(\mkw\consts::MPTNGYSzempont5));
 
         $view->setVar('egyed', $this->loadVars($anyag, true));
         $view->printTemplateResult();
@@ -731,6 +747,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 $anyag->{$fn}($szempont5);
                 $fn = "set{$bn}szovegesertekeles";
                 $anyag->{$fn}($szoveges);
+                $fn = "set{$bn}biralatkesz";
+                $anyag->{$fn}($this->params->getBoolRequestParam('bbiralatkesz'));
                 $this->getEm()->persist($anyag);
                 $this->getEm()->flush();
                 $ret['success'] = true;

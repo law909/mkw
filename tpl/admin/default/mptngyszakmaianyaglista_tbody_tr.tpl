@@ -25,9 +25,13 @@
         </div>
     </td>
     <td class="cell">
-        <div>Bíráló 1: {$_egyed.biralo1nev}</div>
-        <div>Bíráló 2: {$_egyed.biralo2nev}</div>
-        <div>Bíráló 3: {$_egyed.biralo3nev}</div>
+        <div>Összes pont: {$_egyed.osszespont}</div>
+        {if ($_egyed.pluszbiralokell && !$_egyed.biralo3)}
+            <div class="redtext">HARMADIK BÍRÁLÓ KELL</div>
+        {/if}
+        <div>Bíráló 1: {$_egyed.biralo1nev} - {$_egyed.biralo1pont} pont{if ($_egyed.b1biralatkesz)} - KÉSZ{/if}</div>
+        <div>Bíráló 2: {$_egyed.biralo2nev} - {$_egyed.biralo2pont} pont{if ($_egyed.b2biralatkesz)} - KÉSZ{/if}</div>
+        <div>Bíráló 3: {$_egyed.biralo3nev} - {$_egyed.biralo3pont} pont{if ($_egyed.b3biralatkesz)} - KÉSZ{/if}</div>
     </td>
     <td class="cell">
         <div>{$_egyed.temakor1nev}</div>

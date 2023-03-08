@@ -67,10 +67,10 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz'];
     }
 
     /**
@@ -177,6 +177,61 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function calcB1pont()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcB1pont', []);
+
+        return parent::calcB1pont();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcB2pont()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcB2pont', []);
+
+        return parent::calcB2pont();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcB3pont()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcB3pont', []);
+
+        return parent::calcB3pont();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcPont()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcPont', []);
+
+        return parent::calcPont();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function pluszBiraloKell()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'pluszBiraloKell', []);
+
+        return parent::pluszBiraloKell();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -2060,6 +2115,72 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3szovegesertekeles', [$b3szovegesertekeles]);
 
         parent::setB3szovegesertekeles($b3szovegesertekeles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isB1biralatkesz()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isB1biralatkesz', []);
+
+        return parent::isB1biralatkesz();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB1biralatkesz($b1biralatkesz): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB1biralatkesz', [$b1biralatkesz]);
+
+        parent::setB1biralatkesz($b1biralatkesz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isB2biralatkesz()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isB2biralatkesz', []);
+
+        return parent::isB2biralatkesz();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB2biralatkesz($b2biralatkesz): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB2biralatkesz', [$b2biralatkesz]);
+
+        parent::setB2biralatkesz($b2biralatkesz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isB3biralatkesz()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isB3biralatkesz', []);
+
+        return parent::isB3biralatkesz();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setB3biralatkesz($b3biralatkesz): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setB3biralatkesz', [$b3biralatkesz]);
+
+        parent::setB3biralatkesz($b3biralatkesz);
     }
 
 }
