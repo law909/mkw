@@ -308,6 +308,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view = $this->createView('mptngyszakmaianyaglista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
+        if (!is_null($this->params->getRequestParam('idfilter', null))) {
+            $filter->addFilter('id', '=', $this->params->getIntRequestParam('idfilter'));
+        }
+        
         if (!is_null($this->params->getRequestParam('cimfilter', null))) {
             $fv = $this->params->getStringRequestParam('cimfilter');
             $filter->addFilter('cim', 'LIKE', '%' . $fv . '%');

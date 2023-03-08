@@ -48,6 +48,7 @@ $(document).ready(function () {
                     '#elsoszerzofilter',
                     '#szerzofilter',
                     '#opponensfilter',
+                    '#idfilter',
                 ]
             },
             tablebody: {

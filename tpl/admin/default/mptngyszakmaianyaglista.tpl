@@ -13,7 +13,12 @@
         <div id="mattable-filterwrapper">
             <div class="matt-hseparator"></div>
             <div>
-                <label for="cimfilter">{at('Szűrés')}</label>
+                <label for="idfilter">{at('Azonosító')}</label>
+                <input id="idfilter" name="idfilter" type="number">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="cimfilter">{at('Cím')}</label>
                 <input id="cimfilter" name="cimfilter" type="text" size="30" maxlength="255">
             </div>
             <div class="matt-hseparator"></div>
