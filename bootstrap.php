@@ -25,6 +25,7 @@ use Listeners\KuponListener;
 use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\RendezvenyListener;
+use Listeners\MPTNGYSzakmaianyagListener;
 use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
@@ -129,6 +130,7 @@ $evm->addEventListener(['prePersist'], new KuponListener());
 $evm->addEventListener(['prePersist'], new RendezvenyListener());
 $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
+$evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

@@ -126,7 +126,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['biralo2pont'] = $t->calcB2pont();
         $x['biralo3pont'] = $t->calcB3pont();
         $x['osszespont'] = $t->calcPont();
-        $x['pluszbiralokell'] = $t->pluszBiraloKell();
+        $x['pluszbiralokell'] = $t->isPluszbiralokell();
 
         return $x;
     }

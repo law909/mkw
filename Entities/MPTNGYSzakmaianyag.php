@@ -320,6 +320,11 @@ class MPTNGYSzakmaianyag
      */
     private $b3biralatkesz = false;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $pluszbiralokell = false;
+
     public function calcB1pont()
     {
         if ($this->getBiralo1()) {
@@ -361,13 +366,25 @@ class MPTNGYSzakmaianyag
         return $this->calcB1pont() + $this->calcB2pont() + $this->calcB3pont();
     }
 
-    public function pluszBiraloKell()
+    public function calcPluszBiraloKell()
     {
         if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
             return ((abs($this->calcB1pont() - $this->calcB2pont()) >= 10)
                 || ($this->calcB1pont() + $this->calcB2pont() < 25));
         }
         return false;
+    }
+
+    public function calcKonferencianszerepelhet()
+    {
+        return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
+    }
+
+    public function calcBiralatkesz()
+    {
+        return (($this->getBiralo1() && $this->isB1biralatkesz()) || !$this->getBiralo1()) &&
+            (($this->getBiralo2() && $this->isB2biralatkesz()) || !$this->getBiralo2()) &&
+            (($this->getBiralo3() && $this->isB3biralatkesz()) || !$this->getBiralo3());
     }
 
     public function isSzerzoRegistered($num)
@@ -1845,6 +1862,22 @@ class MPTNGYSzakmaianyag
     public function setB3biralatkesz($b3biralatkesz): void
     {
         $this->b3biralatkesz = $b3biralatkesz;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPluszbiralokell()
+    {
+        return $this->pluszbiralokell;
+    }
+
+    /**
+     * @param bool $pluszbiralokell
+     */
+    public function setPluszbiralokell($pluszbiralokell): void
+    {
+        $this->pluszbiralokell = $pluszbiralokell;
     }
 
 }
