@@ -39,6 +39,10 @@
                 <th><input class="js-maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
                 <th>{at('Elérhetőség')}</th>
+                {if ($setup.mptngy)}
+                    <th>{at('Témakörök')}</th>
+                    <th>{at('Szakmai anyagok')}</th>
+                {/if}
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

@@ -91,7 +91,7 @@ class Dolgozo
 
     /**
      * @ORM\ManyToMany(targetEntity="MPTNGYTemakor",inversedBy="dolgozok")
-     * @ORM\OrderBy({"nev" = "DESC"})
+     * @ORM\OrderBy({"nev" = "ASC"})
      * @ORM\JoinTable(name="dolgozo_mptngytemakorok",
      *  joinColumns={@ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",onDelete="cascade")},
      *  inverseJoinColumns={@ORM\JoinColumn(name="mptngytemakor_id",referencedColumnName="id",onDelete="cascade")}
@@ -105,10 +105,22 @@ class Dolgozo
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $jelszotext;
 
+    /** @ORM\OneToMany(targetEntity="MPTNGYSzakmaianyag", mappedBy="biralo1") */
+    private $mptngyszakmaianyagok1;
+
+    /** @ORM\OneToMany(targetEntity="MPTNGYSzakmaianyag", mappedBy="biralo2") */
+    private $mptngyszakmaianyagok2;
+
+    /** @ORM\OneToMany(targetEntity="MPTNGYSzakmaianyag", mappedBy="biralo3") */
+    private $mptngyszakmaianyagok3;
+
     public function __construct()
     {
         $this->jelenletek = new ArrayCollection();
         $this->mptngytemakorok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mptngyszakmaianyagok1 = new ArrayCollection();
+        $this->mptngyszakmaianyagok2 = new ArrayCollection();
+        $this->mptngyszakmaianyagok3 = new ArrayCollection();
     }
 
     public function toLista()
@@ -611,4 +623,28 @@ class Dolgozo
         }
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getMptngyszakmaianyagok1()
+    {
+        return $this->mptngyszakmaianyagok1;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMptngyszakmaianyagok2()
+    {
+        return $this->mptngyszakmaianyagok2;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMptngyszakmaianyagok3()
+    {
+        return $this->mptngyszakmaianyagok3;
+    }
+    
 }

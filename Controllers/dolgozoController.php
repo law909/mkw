@@ -52,6 +52,9 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['mptngymaxdb'] = $t->getMptngymaxdb();
         $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
         $x['jelszotext'] = $t->getJelszotext();
+        $x['mptngykiosztottdb'] = $t->getMptngyszakmaianyagok1()->count()
+            + $t->getMptngyszakmaianyagok2()->count()
+            + $t->getMptngyszakmaianyagok3()->count();
         return $x;
     }
 

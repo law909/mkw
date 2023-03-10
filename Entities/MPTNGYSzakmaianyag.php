@@ -161,21 +161,21 @@ class MPTNGYSzakmaianyag
     private $biralatkesz = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\ManyToOne(targetEntity="Dolgozo",inversedBy="mptngyszakmaianyagok1")
      * @ORM\JoinColumn(name="biralo1_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Dolgozo
      */
     private $biralo1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\ManyToOne(targetEntity="Dolgozo",inversedBy="mptngyszakmaianyagok2")
      * @ORM\JoinColumn(name="biralo2_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Dolgozo
      */
     private $biralo2;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\ManyToOne(targetEntity="Dolgozo",inversedBy="mptngyszakmaianyagok3")
      * @ORM\JoinColumn(name="biralo3_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Dolgozo
      */
