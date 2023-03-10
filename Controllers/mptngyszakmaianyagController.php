@@ -358,6 +358,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('konferencianszerepelhet', '=', $f);
         }
 
+        $f = $this->params->getNumRequestParam('pluszbiralokellfilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('pluszbiralokell', '=', $f);
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(

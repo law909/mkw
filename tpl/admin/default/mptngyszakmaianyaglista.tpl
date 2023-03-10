@@ -85,6 +85,12 @@
                     <option value="0">{at('Nem szerepelhet')}</option>
                     <option value="1">{at('Szerepelhet')}</option>
                 </select>
+                <label for="pluszbiralokellfilter">{at('Harmadik bíráló')}:</label>
+                <select id="pluszbiralokellfilter" name="pluszbiralokellfilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem kell')}</option>
+                    <option value="1">{at('Kell')}</option>
+                </select>
             </div>
 
         </div>

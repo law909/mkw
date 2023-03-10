@@ -102,6 +102,7 @@ $(document).ready(function () {
                     '#szerzofilter',
                     '#opponensfilter',
                     '#idfilter',
+                    '#pluszbiralokellfilter',
                 ]
             },
             tablebody: {
