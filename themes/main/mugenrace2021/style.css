@@ -1194,6 +1194,7 @@ a {
     }
 
     .tl-termek-infobox {
+        position: relative;
         flex: 0 1 50%;
         padding: 0.5em;
         margin: 0 2em;

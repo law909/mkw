@@ -1076,6 +1076,7 @@ class Termek
         $altomb = [];
         foreach ($this->getTermekKepek(true) as $kep) {
             $egyed = [];
+            $egyed['eredetikepurl'] = $kep->getUrl();
             $egyed['kepurl'] = $kep->getUrlLarge();
             $egyed['kozepeskepurl'] = $kep->getUrlMedium();
             $egyed['kiskepurl'] = $kep->getUrlSmall();

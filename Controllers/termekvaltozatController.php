@@ -319,13 +319,17 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                             $vtt[$valt->getErtek1()] = [
                                 'value' => $valt->getErtek1(),
                                 'type' => $valt->getAdatTipus1Id(),
-                                'kepurl' => $valt->getKepurl()
+                                'kepurl' => $valt->getKepurlMedium(),
+                                'eredetikepurl' => $valt->getKepurl(),
+                                'largekepurl' => $valt->getKepurlLarge(),
                             ];
                         } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
                             $vtt[$valt->getErtek2()] = [
                                 'value' => $valt->getErtek2(),
                                 'type' => $valt->getAdatTipus2Id(),
-                                'kepurl' => $valt->getKepurl()
+                                'kepurl' => $valt->getKepurlMedium(),
+                                'eredetikepurl' => $valt->getKepurl(),
+                                'largekepurl' => $valt->getKepurlLarge(),
                             ];
                         }
                     }

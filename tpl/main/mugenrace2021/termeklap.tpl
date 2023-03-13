@@ -6,6 +6,7 @@
 
 {block "prescript"}
     <script src="/themes/main/mugenrace2021/splide/splide.min.js?v=1"></script>
+    <script src="/js/drift/Drift.js"></script>
 {/block}
 {block "script"}
     <script src="/js/main/mugenrace2021/termeklap.js?v=9"></script>
@@ -24,6 +25,7 @@
                                 src="{$imagepath}{$termek.kepurl}"
                                 alt="{$termek.caption}"
                                 data-url="{$imagepath}{$termek.kepurl}"
+                                data-zoom="{$imagepath}{$termek.eredetikepurl}"
                                 class="tl-termek-imageslide"
                             >
                         </li>
@@ -33,6 +35,7 @@
                                     src="{$imagepath}{$_k.kepurl}"
                                     alt="{$_k.leiras}"
                                     data-url="{$imagepath}{$_k.kepurl}"
+                                    data-zoom="{$imagepath}{$_k.eredetikepurl}"
                                     class="tl-termek-imageslide"
                                 >
                             </li>
@@ -53,8 +56,10 @@
             </div>
             <section class="tl-termek-fokep hide-on-mobile">
                 <img
+                    id="termek-image"
                     itemprop="image"
                     src="{$imagepath}{$termek.kepurl}"
+                    data-zoom="{$imagepath}{$termek.eredetikepurl}"
                     title="{$termek.caption}"
                     alt="{$termek.caption}"
                     class="tl-termek-img"
@@ -75,7 +80,7 @@
                     </ul>
                 </div>
             </section>
-            <section class="tl-termek-infobox">
+            <section id="termek-infobox" class="tl-termek-infobox">
                 <div class="tl-termek-nev hide-on-mobile">
                     <span itemprop="name">{$termek.caption}</span>
                 </div>
