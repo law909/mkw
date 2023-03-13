@@ -9,7 +9,7 @@
     <script src="/js/drift/Drift.js"></script>
 {/block}
 {block "script"}
-    <script src="/js/main/mugenrace2021/termeklap.js?v=9"></script>
+    <script src="/js/main/mugenrace2021/termeklap.js?v=10"></script>
 {/block}
 
 {block "body"}
