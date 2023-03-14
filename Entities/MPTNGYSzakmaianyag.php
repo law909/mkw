@@ -382,9 +382,21 @@ class MPTNGYSzakmaianyag
 
     public function calcBiralatkesz()
     {
-        return (($this->getBiralo1() && $this->isB1biralatkesz()) || !$this->getBiralo1()) &&
-            (($this->getBiralo2() && $this->isB2biralatkesz()) || !$this->getBiralo2()) &&
-            (($this->getBiralo3() && $this->isB3biralatkesz()) || !$this->getBiralo3());
+        if (!$this->getBiralo1() && !$this->getBiralo2() && !$this->getBiralo3()) {
+            return false;
+        }
+        
+        $ret = true;
+        if ($this->getBiralo1()) {
+            $ret = $ret && $this->isB1biralatkesz();
+        }
+        if ($this->getBiralo2()) {
+            $ret = $ret && $this->isB2biralatkesz();
+        }
+        if ($this->getBiralo3()) {
+            $ret = $ret && $this->isB3biralatkesz();
+        }
+        return $ret;
     }
 
     public function isSzerzoRegistered($num)
