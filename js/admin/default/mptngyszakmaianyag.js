@@ -28,9 +28,9 @@ $(document).ready(function () {
             })
         },
         beforeSerialize: function (form, opt) {
-            let b1 = $('#biralo1Edit option:selected').data('email').toLowerCase(),
-                b2 = $('#biralo2Edit option:selected').data('email').toLowerCase(),
-                b3 = $('#biralo3Edit option:selected').data('email').toLowerCase(),
+            let b1 = $('#biralo1Edit option:selected').data('email'),
+                b2 = $('#biralo2Edit option:selected').data('email'),
+                b3 = $('#biralo3Edit option:selected').data('email'),
                 szerzo1 = $('#szerzo1emailEdit').val(),
                 szerzok = [
                     $('#szerzo2emailEdit').val(),
@@ -40,6 +40,15 @@ $(document).ready(function () {
                 szerzo5 = $('#szerzo5emailEdit').val(),
                 egyebszerzok = $('#egyebszerzokEdit').val();
 
+            if (b1) {
+                b1 = b1.toLowerCase();
+            }
+            if (b2) {
+                b2 = b2.toLowerCase();
+            }
+            if (b3) {
+                b3 = b3.toLowerCase();
+            }
             if ((b1 && szerzo1 === b1) || (b2 && szerzo1 === b2) || (b3 && szerzo1 === b3)) {
                 dialogcenter.html('A bíráló nem lehet első szerző').dialog({
                     resizable: false,
