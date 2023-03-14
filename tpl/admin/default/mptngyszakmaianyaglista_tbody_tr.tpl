@@ -21,7 +21,7 @@
         {/if}
         <div>Egyéb szerzők:</div>
         <div>
-            <pre>{$_egyed.egyebszerzok}</pre>
+            <pre class="ui-widget">{$_egyed.egyebszerzok}</pre>
         </div>
     </td>
     <td class="cell">
