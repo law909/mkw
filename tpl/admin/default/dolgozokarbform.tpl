@@ -95,6 +95,12 @@
                             {/foreach}
                         </select></td>
                 </tr>
+                {if ($setup.mptngy)}
+                    <tr>
+                        <td><label for="MPTNGYMaxvallaltdbEdit">{at('Maximum vállalt absztrakt')}:</label></td>
+                        <td><input id="MPTNGYMaxvallaltdbEdit" name="mptngymaxdb" type="number" step="any" value="{$egyed.mptngymaxdb}"></td>
+                    </tr>
+                {/if}
                 </tbody>
             </table>
         </div>
