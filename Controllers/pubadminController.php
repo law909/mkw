@@ -92,6 +92,7 @@ class pubadminController extends mkwhelpers\Controller
                     $filter->clear();
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
+                    $filter->addSql('(_xx.ervenyessegnap<>0 AND _xx.lejaratdatum>NOW()) OR (_xx.ervenyessegnap=0 OR _xx.ervenyessegnap IS NULL)');
                     $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
@@ -120,14 +121,17 @@ class pubadminController extends mkwhelpers\Controller
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 if ($termek) {
                     $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type1name'] = $termek->getNev();
                 }
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
                 if ($termek) {
                     $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type2name'] = $termek->getNev();
                 }
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
                 if ($termek) {
                     $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type3name'] = $termek->getNev();
                 }
                 $resztvevolista[] = $rvtomb;
             }
@@ -203,7 +207,7 @@ class pubadminController extends mkwhelpers\Controller
                         $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
                         break;
                 }
-                $tipusnev = $termek->getJogaalkalom() . ' alkalmas bérlet';
+                $tipusnev = $termek->getNev();
                 $berlet->setTermek($termek);
                 $berlet->setBruttoegysar($price);
                 $berlet->setVasarlasnapja();

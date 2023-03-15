@@ -14,9 +14,11 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class jogaberletController extends \mkwhelpers\MattableController {
+class jogaberletController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName(JogaBerlet::class);
         $this->setKarbFormTplName('jogaberletkarbform.tpl');
         $this->setKarbTplName('jogaberletkarb.tpl');
@@ -25,9 +27,10 @@ class jogaberletController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t)
+    {
         $uj = false;
-        $x = array();
+        $x = [];
         if (!$t) {
             $uj = true;
             $t = new \Entities\JogaBerlet();
@@ -69,19 +72,18 @@ class jogaberletController extends \mkwhelpers\MattableController {
     }
 
     /** @param \Entities\JogaBerlet $obj */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $ck = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
         if ($ck) {
             $obj->setTermek($ck);
-        }
-        else {
+        } else {
             $obj->removeTermek();
         }
         $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
-        }
-        else {
+        } else {
             $obj->removePartner();
         }
         $obj->setVasarlasnapja($this->params->getStringRequestParam('vasarlasnapja'));
@@ -98,15 +100,16 @@ class jogaberletController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('jogaberletlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('vevonevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('vevonevfilter', null))) {
             $filter->addFilter('p.nev', 'LIKE', '%' . $this->params->getStringRequestParam('vevonevfilter') . '%');
         }
-        if (!is_null($this->params->getIntRequestParam('termekfilter', NULL))) {
-            $filter->addFilter('_xx.termek', '=', $this->params->getIntRequestParam('termekfilter', NULL));
+        if (!is_null($this->params->getIntRequestParam('termekfilter', null))) {
+            $filter->addFilter('_xx.termek', '=', $this->params->getIntRequestParam('termekfilter', null));
         }
         $tol = $this->params->getStringRequestParam('datumtolfilter');
         $ig = $this->params->getStringRequestParam('datumigfilter');
@@ -148,15 +151,23 @@ class jogaberletController extends \mkwhelpers\MattableController {
             $filter->addSql('(SELECT COUNT(jr) FROM Entities\JogaReszvetel jr WHERE (p.id=jr.partner) AND (jr.datum>=\'' . $uhdatum . '\')) = 0');
         }
         $this->initPager(
-            $this->getRepo()->getCountWithJoins($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
+            $this->getRepo()->getCountWithJoins($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('jogaberletlista.tpl');
 
         $view->setVar('pagetitle', t('Jóga bérlet'));
@@ -164,7 +175,8 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('jogaberletlista.tpl');
 
         $view->setVar('pagetitle', t('Jóga bérlet'));
@@ -176,7 +188,8 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -199,33 +212,37 @@ class jogaberletController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $partnerid = null) {
+    public function getSelectList($selid = null, $partnerid = null)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('lejart', '=', false);
         if ($partnerid) {
             $filter->addFilter('partner', '=', $partnerid);
         }
-        $rec = $this->getRepo()->getAll($filter, array('vasarlasnapja' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAll($filter, ['vasarlasnapja' => 'ASC']);
+        $res = [];
         /** @var \Entities\JogaBerlet $sor */
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getFullNev(),
                 'termekid' => $sor->getTermekId(),
-                'selected' => ($sor->getId() == $selid));
+                'selected' => ($sor->getId() == $selid)
+            ];
         }
         return $res;
     }
 
-    public function getSelectHtml() {
+    public function getSelectHtml()
+    {
         $data = $this->getSelectList(null, $this->params->getIntRequestParam('partnerid'));
         $view = $this->createView('jogareszvetelberletselect.tpl');
         $view->setVar('berletlist', $data);
         echo $view->getTemplateResult();
     }
 
-    public function getar() {
+    public function getar()
+    {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
             /** @var \Entities\JogaBerlet $berlet */
@@ -239,44 +256,38 @@ class jogaberletController extends \mkwhelpers\MattableController {
                     if ($this->params->getIntRequestParam('valtozat')) {
                         $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
                     }
-                    $o = $termek->getJogaalkalom();
-                    if (!$o) {
-                        $o = 1;
-                    }
-                    if ($berlet->getBruttoegysar()) {
-                        $r = array(
-                            'netto' => $berlet->getNettoegysar() / $o,
-                            'brutto' => $berlet->getBruttoegysar() / $o,
+                    if ($berlet->getElszamoloAr()) {
+                        $r = [
+                            'netto' => 0,
+                            'brutto' => $berlet->getElszamoloAr(),
                             'nettofull' => $berlet->getNettoegysar(),
-                            'bruttofull' => $berlet->getBruttoegysar(),
-                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
-                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
-                        );
+                            'bruttofull' => $berlet->getTeljesAr($valtozat),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner),
+                            'enetto' => 0,
+                            'ebrutto' => 0,
+                        ];
                         echo json_encode($r);
-                    }
-                    else {
+                    } else {
                         if ($termek) {
                             $o = $termek->getJogaalkalom();
                             if (!$o) {
                                 $o = 1;
                             }
-                            $r = array(
+                            $r = [
                                 'netto' => $termek->getNettoAr($valtozat) / $o,
                                 'brutto' => $termek->getBruttoAr($valtozat) / $o,
                                 'nettofull' => $termek->getNettoAr($valtozat),
                                 'bruttofull' => $termek->getBruttoAr($valtozat),
                                 'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                                'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
-                                'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
-                            );
+                                'enetto' => 0,
+                                'ebrutto' => 0,
+                            ];
                             echo json_encode($r);
                         }
                     }
                 }
             }
-        }
-        // Vannak ársávok
+        } // Vannak ársávok
         else {
             $arsavnev = 'folyamatos';
             /** @var \Entities\JogaBerlet $berlet */
@@ -291,39 +302,38 @@ class jogaberletController extends \mkwhelpers\MattableController {
                     if ($this->params->getIntRequestParam('valtozat')) {
                         $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
                     }
-                    $o = $termek->getJogaalkalom();
-                    if (!$o) {
-                        $o = 1;
-                    }
-                    if ($berlet->getBruttoegysar()) {
-                        $r = array(
-                            'netto' => $berlet->getNettoegysar() / $o,
-                            'brutto' => $berlet->getBruttoegysar() / $o,
-                            'nettofull' => $berlet->getNettoegysar(),
-                            'bruttofull' => $berlet->getBruttoegysar(),
-                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
-                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
-                        );
+                    if ($berlet->getElszamoloAr()) {
+                        $r = [
+                            'netto' => 0,
+                            'brutto' => $berlet->getElszamoloAr(),
+                            'nettofull' => 0,
+                            'bruttofull' => $berlet->getTeljesAr($valtozat),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner),
+                            'enetto' => 0,
+                            'ebrutto' => 0,
+                        ];
                         echo json_encode($r);
-                    }
-                    else {
-                        $r = array(
+                    } else {
+                        $o = $termek->getJogaalkalom();
+                        if (!$o) {
+                            $o = 1;
+                        }
+                        $r = [
                             'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
                             'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
                             'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev),
                             'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev),
                             'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o
-                        );
+                            'enetto' => 0,
+                            'ebrutto' => 0,
+                        ];
                         echo json_encode($r);
                     }
                 }
             }
         }
         if (!$r) {
-            echo json_encode(array(
+            echo json_encode([
                 'netto' => 0,
                 'brutto' => 0,
                 'nettofull' => 0,
@@ -331,11 +341,12 @@ class jogaberletController extends \mkwhelpers\MattableController {
                 'kedvezmeny' => 0,
                 'enetto' => 0,
                 'ebrutto' => 0
-            ));
+            ]);
         }
     }
 
-    public function getBerletAlkalmak() {
+    public function getBerletAlkalmak()
+    {
         $tanar = $this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('t'));
         if ($tanar) {
             $filter = new FilterDescriptor();
@@ -343,7 +354,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
             $res = [];
             foreach ($partnerek as $partner) {
                 $filter->addFilter('partner', '=', $partner);
-                $reszvetelek = $this->getRepo(JogaReszvetel::class)->getAll($filter, array('datum' => 'DESC'));
+                $reszvetelek = $this->getRepo(JogaReszvetel::class)->getAll($filter, ['datum' => 'DESC']);
                 /** @var \Entities\JogaReszvetel $reszvetel */
                 $reszvetel = $reszvetelek[0];
                 $berlet = $reszvetel->getJogaberlet();
@@ -357,8 +368,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
                         'berlet' => $berlet->getNev(),
                         'elhasznalt' => $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()
                     ];
-                }
-                else {
+                } else {
                     $res[] = [
                         'partnerid' => $reszvetel->getPartnerId(),
                         'partner' => $reszvetel->getPartnernev(),
@@ -399,11 +409,11 @@ class jogaberletController extends \mkwhelpers\MattableController {
             readfile($filepath);
 
             \unlink($filepath);
-
         }
     }
 
-    public function setflag() {
+    public function setflag()
+    {
         $id = $this->params->getIntRequestParam('id');
         $kibe = $this->params->getBoolRequestParam('kibe');
         $flag = $this->params->getStringRequestParam('flag');
@@ -446,7 +456,9 @@ class jogaberletController extends \mkwhelpers\MattableController {
                 . ' (' . $berlet->getPartneremail() . ') | '
                 . $berlet->getVasarlasnapjaStr() . ' | '
                 . $berlet->getElfogyottalkalom() . ' elfogyott alkalom'
-                , 'berletlejarat.txt');
+                ,
+                'berletlejarat.txt'
+            );
             $berlet->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
         }
         echo 'ok';

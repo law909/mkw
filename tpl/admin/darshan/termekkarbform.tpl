@@ -93,7 +93,12 @@
                 {/if}
                 <tr>
                     <td><label for="MEEdit">{at('ME')}:</label></td>
-                    <td><input id="MEEdit" name="me" type="text" size="20" maxlength="20" value="{$egyed.me}"></td>
+                    <td><select id="MEEdit" name="me">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $melist as $_me}
+                                <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
+                            {/foreach}
+                        </select></td>
                 </tr>
                 <tr>
                     <td><label for="VtszEdit">{at('VTSZ')}:</label></td>
@@ -116,8 +121,8 @@
                 </tbody>
             </table>
             {if (!$setup.arsavok)}
-            <table>
-                <tbody>
+                <table>
+                    <tbody>
                     <tr>
                         <td></td>
                         <td>HUF</td>
@@ -148,8 +153,8 @@
                         <td><input id="AkciosBruttoEdit" name="akciosbrutto" type="number" step="any"
                                    value="{$egyed.akciosbrutto}"></td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             {/if}
         </div>
         <div id="JogaTab" class="mattkarb-page" data-visible="visible">
@@ -160,8 +165,16 @@
                     <td><input id="JogaalkalomEdit" name="jogaalkalom" value="{$egyed.jogaalkalom}"></td>
                 </tr>
                 <tr>
+                    <td><label for="JogaelszamolasalapEdit">{at('Elszámolás alapja (Ft/alkalom)')}:</label></td>
+                    <td><input id="JogaelszamolasalapEdit" name="jogaelszamolasalap" value="{$egyed.jogaelszamolasalap}"></td>
+                </tr>
+                <tr>
                     <td><label for="JogaervenyessegEdit">{at('Bérlet érvényesség (hét)')}:</label></td>
                     <td><input id="JogaervenyessegEdit" name="jogaervenyesseg" value="{$egyed.jogaervenyesseg}"></td>
+                </tr>
+                <tr>
+                    <td><label for="JogaervenyessegnapEdit">{at('Bérlet érvényesség (nap)')}:</label></td>
+                    <td><input id="JogaervenyessegnapEdit" name="jogaervenyessegnap" value="{$egyed.jogaervenyessegnap}"></td>
                 </tr>
                 </tbody>
             </table>

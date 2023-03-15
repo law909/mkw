@@ -202,8 +202,16 @@
                         <td><input id="JogaalkalomEdit" name="jogaalkalom" value="{$egyed.jogaalkalom}"></td>
                     </tr>
                     <tr>
+                        <td><label for="JogaelszamolasalapEdit">{at('Elszámolás alapja (Ft/alkalom)')}:</label></td>
+                        <td><input id="JogaelszamolasalapEdit" name="jogaelszamolasalap" value="{$egyed.jogaelszamolasalap}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="JogaervenyessegEdit">{at('Bérlet érvényesség (hét)')}:</label></td>
                         <td><input id="JogaervenyessegEdit" name="jogaervenyesseg" value="{$egyed.jogaervenyesseg}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="JogaervenyessegnapEdit">{at('Bérlet érvényesség (nap)')}:</label></td>
+                        <td><input id="JogaervenyessegnapEdit" name="jogaervenyessegnap" value="{$egyed.jogaervenyessegnap}"></td>
                     </tr>
                     </tbody>
                 </table>

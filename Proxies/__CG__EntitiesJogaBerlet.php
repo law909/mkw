@@ -67,10 +67,10 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyessegnap', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'jogaelszamolasalap'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyessegnap', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'jogaelszamolasalap'];
     }
 
     /**
@@ -762,6 +762,72 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', [$bruttoegysar]);
 
         return parent::setBruttoegysar($bruttoegysar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getErvenyessegnap()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErvenyessegnap', []);
+
+        return parent::getErvenyessegnap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setErvenyessegnap($ervenyessegnap): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErvenyessegnap', [$ervenyessegnap]);
+
+        parent::setErvenyessegnap($ervenyessegnap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElszamoloAr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElszamoloAr', []);
+
+        return parent::getElszamoloAr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTeljesAr($valtozat = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesAr', [$valtozat]);
+
+        return parent::getTeljesAr($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogaelszamolasalap()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaelszamolasalap', []);
+
+        return parent::getJogaelszamolasalap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setJogaelszamolasalap($jogaelszamolasalap): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogaelszamolasalap', [$jogaelszamolasalap]);
+
+        parent::setJogaelszamolasalap($jogaelszamolasalap);
     }
 
 }

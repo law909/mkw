@@ -123,13 +123,13 @@ class JogaBejelentkezes
                 $filter = new \mkwhelpers\FilterDescriptor();
                 $filter->addFilter('partner', '=', $rvpartner);
                 $filter->addFilter('lejart', '=', false);
-                $berletek = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->getAll($filter, array('id' => 'ASC'));
+                $berletek = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->getAll($filter, ['id' => 'ASC']);
                 if (count($berletek)) {
                     /** @var \Entities\JogaBerlet $berlet */
                     $berlet = $berletek[0];
                     $jr->setJogaberlet($berlet);
                     $jr->setTermek($berlet->getTermek());
-                    $jr->setBruttoegysar($berlet->getBruttoegysar() / $berlet->getTermek()->getJogaalkalom());
+                    $jr->setBruttoegysar($berlet->getElszamoloAr());
                 }
                 break;
         }

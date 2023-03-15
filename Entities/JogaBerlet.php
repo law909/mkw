@@ -2,14 +2,17 @@
 
 namespace Entities;
 
+use Carbon\Carbon;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkwhelpers\Now;
 
 
 /** @ORM\Entity(repositoryClass="Entities\JogaBerletRepository")
  * @ORM\Table(name="jogaberlet",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class JogaBerlet {
+class JogaBerlet
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -70,6 +73,9 @@ class JogaBerlet {
     private $ervenyesseg;
 
     /** @ORM\Column(type="integer",nullable=true) */
+    private $ervenyessegnap;
+
+    /** @ORM\Column(type="integer",nullable=true) */
     private $elfogyottalkalom;
 
     /** @ORM\Column(type="boolean") */
@@ -87,10 +93,13 @@ class JogaBerlet {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $bruttoegysar;
 
-    public function sendEmail($sablonid) {
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $jogaelszamolasalap;
+
+    public function sendEmail($sablonid)
+    {
         $emailtpl = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($sablonid);
         if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
-
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
             $body->setVar('partnernev', $this->getPartnernev());
@@ -111,65 +120,78 @@ class JogaBerlet {
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getNev() {
+    public function getNev()
+    {
         return $this->getTermeknev();
     }
 
-    public function getFullNev() {
+    public function getFullNev()
+    {
         return $this->getNev() . '('
             . $this->getVasarlasnapjaStr() . ', '
             . ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()) . ' alkalom, '
             . $this->getLejaratdatumStr() . ')';
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
+
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -179,29 +201,34 @@ class JogaBerlet {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
         return null;
     }
 
-    public function getTermek() {
+    public function getTermek()
+    {
         return $this->termek;
     }
 
-    public function getTermekId() {
+    public function getTermekId()
+    {
         if ($this->termek) {
             return $this->termek->getId();
         }
@@ -211,29 +238,35 @@ class JogaBerlet {
     /**
      * @param \Entities\Termek $val
      */
-    public function setTermek($val) {
+    public function setTermek($val)
+    {
         if ($this->termek !== $val) {
             if (!$val) {
                 $this->removeTermek();
                 $this->alkalom = 0;
                 $this->ervenyesseg = 0;
-            }
-            else {
+                $this->ervenyessegnap = 0;
+                $this->jogaelszamolasalap = 0;
+            } else {
                 $this->termek = $val;
                 $this->alkalom = $val->getJogaalkalom();
                 $this->ervenyesseg = $val->getJogaervenyesseg();
+                $this->ervenyessegnap = $val->getJogaervenyessegnap();
+                $this->jogaelszamolasalap = $val->getJogaelszamolasalap();
                 $this->calcLejaratDatum();
             }
         }
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
             $this->termek = null;
         }
     }
 
-    public function getTermeknev() {
+    public function getTermeknev()
+    {
         if ($this->termek) {
             return $this->termek->getNev();
         }
@@ -243,11 +276,13 @@ class JogaBerlet {
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
@@ -257,53 +292,58 @@ class JogaBerlet {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if ($this->partner !== $val) {
             if (!$val) {
                 $this->removePartner();
-            }
-            else {
+            } else {
                 $this->partner = $val;
             }
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         if ($this->partner) {
             return $this->partner->getNev();
         }
         return '';
     }
 
-    public function getPartneremail() {
+    public function getPartneremail()
+    {
         if ($this->partner) {
             return $this->partner->getEmail();
         }
         return '';
     }
 
-    public function getVasarlasnapja() {
+    public function getVasarlasnapja()
+    {
         return $this->vasarlasnapja;
     }
 
-    public function getVasarlasnapjaStr() {
+    public function getVasarlasnapjaStr()
+    {
         if ($this->getVasarlasnapja()) {
             return $this->getVasarlasnapja()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setVasarlasnapja($adat = '') {
+    public function setVasarlasnapja($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->vasarlasnapja = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -315,71 +355,84 @@ class JogaBerlet {
     /**
      * @return mixed
      */
-    public function getAlkalom() {
+    public function getAlkalom()
+    {
         return $this->alkalom;
     }
 
     /**
      * @param mixed $alkalom
      */
-    public function setAlkalom($alkalom) {
+    public function setAlkalom($alkalom)
+    {
         $this->alkalom = $alkalom;
     }
 
     /**
      * @return mixed
      */
-    public function getErvenyesseg() {
+    public function getErvenyesseg()
+    {
         return $this->ervenyesseg;
     }
 
     /**
      * @param mixed $ervenyesseg
      */
-    public function setErvenyesseg($ervenyesseg) {
+    public function setErvenyesseg($ervenyesseg)
+    {
         $this->ervenyesseg = $ervenyesseg;
     }
 
     /**
      * @return mixed
      */
-    public function getElfogyottalkalom() {
+    public function getElfogyottalkalom()
+    {
         return $this->elfogyottalkalom;
     }
 
     /**
      * @param mixed $elfogyottalkalom
      */
-    public function setElfogyottalkalom($elfogyottalkalom) {
+    public function setElfogyottalkalom($elfogyottalkalom)
+    {
         $this->elfogyottalkalom = $elfogyottalkalom;
     }
 
-    public function getLejaratdatum() {
+    public function getLejaratdatum()
+    {
         return $this->lejaratdatum;
     }
 
-    public function getLejaratdatumStr() {
+    public function getLejaratdatumStr()
+    {
         if ($this->getLejaratdatum()) {
             return $this->getLejaratdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setLejaratdatum($adat = '') {
+    public function setLejaratdatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->lejaratdatum = $adat;
-        }
-        else {
+        } else {
             if ($adat != '') {
                 $this->lejaratdatum = new \DateTime(\mkw\store::convDate($adat));
             }
         }
     }
 
-    public function calcLejaratDatum() {
+    public function calcLejaratDatum()
+    {
         if ($this->getVasarlasnapja()) {
             $x = clone $this->getVasarlasnapja();
-            $x->add(new \DateInterval('P' . $this->getErvenyesseg() . 'W'));
+            if ($this->getErvenyesseg()) {
+                $x->add(new \DateInterval('P' . $this->getErvenyesseg() . 'W'));
+            } else {
+                $x->add(new \DateInterval('P' . $this->getErvenyessegnap() . 'D'));
+            }
             $this->setLejaratdatum($x);
         }
     }
@@ -387,107 +440,177 @@ class JogaBerlet {
     /**
      * @return bool
      */
-    public function isLejart() {
+    public function isLejart()
+    {
         return $this->lejart;
     }
 
     /**
      * @param bool $lejart
      */
-    public function setLejart($lejart) {
+    public function setLejart($lejart)
+    {
         $this->lejart = $lejart;
     }
 
     /**
      * @return mixed
      */
-    public function getOfflineelfogyottalkalom() {
+    public function getOfflineelfogyottalkalom()
+    {
         return $this->offlineelfogyottalkalom;
     }
 
     /**
      * @param mixed $offlineelfogyottalkalom
      */
-    public function setOfflineelfogyottalkalom($offlineelfogyottalkalom) {
+    public function setOfflineelfogyottalkalom($offlineelfogyottalkalom)
+    {
         $this->offlineelfogyottalkalom = $offlineelfogyottalkalom;
     }
 
     /**
      * @return bool
      */
-    public function isNincsfizetve() {
+    public function isNincsfizetve()
+    {
         return $this->nincsfizetve;
     }
 
     /**
      * @param bool $nincsfizetve
      */
-    public function setNincsfizetve($nincsfizetve) {
+    public function setNincsfizetve($nincsfizetve)
+    {
         $this->nincsfizetve = $nincsfizetve;
     }
 
-    public function calcLejart($num = 0) {
+    public function calcLejart($num = 0)
+    {
         if (!$this->isLejart()) {
             $jrrepo = \mkw\store::getEm()->getRepository(JogaReszvetel::class);
             $y = $jrrepo->getCountByBerlet($this->getId());
             $this->setElfogyottalkalom($y + $num);
-            $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
+            if ($this->getErvenyesseg()) {
+                $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
 
-            if ($num > 0) {
-                if ($this->isNincsfizetve() && ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom() > 1)) {
-                    $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
-                }
+                if ($num > 0) {
+                    if ($this->isNincsfizetve() && ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom() > 1)) {
+                        $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
+                    }
 
-                if ($this->isUtolsoAlkalom() || $this->isUtolsoElottiAlkalom()) {
-                    $filter = new \mkwhelpers\FilterDescriptor();
-                    $filter->addFilter('partner', '=', $this->getPartner());
-                    $filter->addFilter('lejart', '=', false);
-                    $db = \mkw\store::getEm()->getRepository(JogaBerlet::class)->getCount($filter);
-                    if ($db <= 1) {
-                        if ($this->isUtolsoElottiAlkalom()) {
-                            $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLefogjarniSablon));
-                        } elseif ($this->isUtolsoAlkalom()) {
-                            $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLejartSablon));
+                    if ($this->isUtolsoAlkalom() || $this->isUtolsoElottiAlkalom()) {
+                        $filter = new \mkwhelpers\FilterDescriptor();
+                        $filter->addFilter('partner', '=', $this->getPartner());
+                        $filter->addFilter('lejart', '=', false);
+                        $db = \mkw\store::getEm()->getRepository(JogaBerlet::class)->getCount($filter);
+                        if ($db <= 1) {
+                            if ($this->isUtolsoElottiAlkalom()) {
+                                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLefogjarniSablon));
+                            } elseif ($this->isUtolsoAlkalom()) {
+                                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLejartSablon));
+                            }
                         }
                     }
                 }
+            } else {
+                $ma = new Carbon();
+                $datumdate = Carbon::createFromFormat(\mkw\store::$DateFormat, $this->getLejaratdatumStr());
+                $this->setLejart($datumdate->lessThan($ma));
             }
         }
     }
 
-    public function isUtolsoElottiAlkalom() {
+    public function isUtolsoElottiAlkalom()
+    {
         return $this->getAlkalom() - $this->getElfogyottalkalom() - $this->getOfflineelfogyottalkalom() == 1;
     }
 
-    public function isUtolsoAlkalom() {
+    public function isUtolsoAlkalom()
+    {
         return $this->getAlkalom() == ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
     }
 
     /**
      * @return mixed
      */
-    public function getNettoegysar() {
+    public function getNettoegysar()
+    {
         return $this->nettoegysar;
     }
 
     /**
      * @param mixed $nettoegysar
      */
-    public function setNettoegysar($nettoegysar) {
+    public function setNettoegysar($nettoegysar)
+    {
         $this->nettoegysar = $nettoegysar;
     }
 
     /**
      * @return mixed
      */
-    public function getBruttoegysar() {
+    public function getBruttoegysar()
+    {
         return $this->bruttoegysar;
     }
 
     /**
      * @param mixed $bruttoegysar
      */
-    public function setBruttoegysar($bruttoegysar) {
+    public function setBruttoegysar($bruttoegysar)
+    {
         $this->bruttoegysar = $bruttoegysar;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getErvenyessegnap()
+    {
+        return $this->ervenyessegnap;
+    }
+
+    /**
+     * @param mixed $ervenyessegnap
+     */
+    public function setErvenyessegnap($ervenyessegnap): void
+    {
+        $this->ervenyessegnap = $ervenyessegnap;
+    }
+
+    public function getElszamoloAr()
+    {
+        if ($this->ervenyesseg) {
+            return $this->getBruttoegysar() / $this->getAlkalom();
+        } else {
+            return $this->getJogaelszamolasalap();
+        }
+    }
+
+    public function getTeljesAr($valtozat = null)
+    {
+        if ($this->ervenyesseg) {
+            return $this->getBruttoegysar();
+        } else {
+            return $this->getTermek()?->getBruttoAr($valtozat);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJogaelszamolasalap()
+    {
+        return $this->jogaelszamolasalap;
+    }
+
+    /**
+     * @param mixed $jogaelszamolasalap
+     */
+    public function setJogaelszamolasalap($jogaelszamolasalap): void
+    {
+        $this->jogaelszamolasalap = $jogaelszamolasalap;
+    }
+
 }

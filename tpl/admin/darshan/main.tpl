@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="component-container">
+    <!--div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Óra látogatások</div>
@@ -93,7 +93,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div-->
     <div class="component-container">
 
         <div class="ui-widget ui-widget-content ui-corner-all">

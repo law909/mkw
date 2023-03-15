@@ -400,6 +400,12 @@ class Termek
     /** @ORM\Column(type="integer",nullable=true) */
     private $jogaervenyesseg;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $jogaelszamolasalap;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $jogaervenyessegnap;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $eladhato = 1;
 
@@ -3444,4 +3450,36 @@ class Termek
             str_starts_with($this->termekfa3karkod, $kat);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getJogaelszamolasalap()
+    {
+        return $this->jogaelszamolasalap;
+    }
+
+    /**
+     * @param mixed $jogaelszamolasalap
+     */
+    public function setJogaelszamolasalap($jogaelszamolasalap): void
+    {
+        $this->jogaelszamolasalap = $jogaelszamolasalap;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJogaervenyessegnap()
+    {
+        return $this->jogaervenyessegnap;
+    }
+
+    /**
+     * @param mixed $jogaervenyessegnap
+     */
+    public function setJogaervenyessegnap($jogaervenyessegnap): void
+    {
+        $this->jogaervenyessegnap = $jogaervenyessegnap;
+    }
+    
 }
