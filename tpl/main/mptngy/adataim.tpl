@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=1"></script>
+    <script src="/js/main/mptngy/adataim.js?v=2"></script>
 {/block}
 
 {block "body"}
@@ -147,6 +147,35 @@
                         {t('Nem veszek részt, csak szerző vagyok')}
                     </label>
                     <div class="co-error" x-text="validation.mptngynemveszreszt && validation.mptngynemveszreszt.error"></div>
+                </div>
+                <div class="co-control-row">
+                    <label for="diakEdit" class="co-label">
+                        <input id="diakEdit" type="checkbox" x-model="reg.mptngydiak">
+                        {t('Diák vagyok')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="nyugdijasEdit" class="co-label">
+                        <input id="nyugdijasEdit" type="checkbox" x-model="reg.mptngynyugdijas">
+                        {t('Nyugdíjas vagyok')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <label for="mptEdit" class="co-label">
+                        <input id="mptEdit" type="checkbox" x-model="reg.mptngympttag">
+                        {t('MPT tag vagyok')}
+                    </label>
+                </div>
+                <div class="co-control-row">
+                    <div :class="validation.mptngyszerepkor && !validation.mptngyszerepkor.valid ? 'error-border' : ''">
+                        <template x-for="(szkor, i) in szerepkorlist">
+                            <label class="co-label">
+                                <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
+                                <span x-text="szkor.nevtr"></span>
+                            </label>
+                        </template>
+                    </div>
+                    <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
                 </div>
             </div>
             <div class="co-row co-flex-dir-column">

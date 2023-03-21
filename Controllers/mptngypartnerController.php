@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\MPTNGYSzakmaianyag;
+use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 use mkwhelpers\ParameterHandler;
@@ -63,6 +64,15 @@ class mptngypartnerController extends partnerController
             $p->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
             $p->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
             $p->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
+            $p->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
+            $p->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
+            $p->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
+            $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
+            if ($mptngyszerepkor) {
+                $p->setMptngyszerepkor($mptngyszerepkor);
+            } else {
+                $p->setMptngyszerepkor(null);
+            }
             $this->getEm()->persist($p);
             $this->getEm()->flush();
             echo json_encode([

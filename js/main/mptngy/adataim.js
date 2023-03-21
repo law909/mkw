@@ -19,6 +19,10 @@ document.addEventListener("alpine:init", () => {
             mptngyvipvacsora: false,
             mptngybankett: false,
             mptngynemveszreszt: false,
+            mptngydiak: false,
+            mptngynyugdijas: false,
+            mptngympttag: false,
+            mptngyszerepkor: null,
         },
         rules: {
             szlanev: ['required'],
@@ -30,6 +34,9 @@ document.addEventListener("alpine:init", () => {
             invmaganszemely: ['requiredIfCsoportos'],
             mptngynemveszreszt: ['reszvetel'],
         },
+        szerepkorlist: [],
+        selectedSzerepkorIndex: null,
+        selectedSzerepkor: null,
 
         clearErrors() {
             this.validation = {};
@@ -64,6 +71,12 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('adoszam', 'Céges fizetés esetén kötelező megadni')
 
+            fetch(new URL('/szerepkorlist', location.origin))
+                .then((response) => response.json())
+                .then((data) => {
+                    this.szerepkorlist = data;
+                });
+
             fetch(new URL('/partner/getdata', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -96,6 +109,10 @@ document.addEventListener("alpine:init", () => {
                     this.reg.mptngynapreszvetel1 = data.mptngynapreszvetel1;
                     this.reg.mptngynapreszvetel2 = data.mptngynapreszvetel2;
                     this.reg.mptngynapreszvetel3 = data.mptngynapreszvetel3;
+                    this.reg.mptngynyugdijas = data.mptngynyugdijas;
+                    this.reg.mptngydiak = data.mptngydiak;
+                    this.reg.mptngympttag = data.mptngympttag;
+                    this.reg.mptngyszerepkor = data.mptngyszerepkor;
                 });
 
             this.$watch('reg.nev', (value) => {
@@ -145,6 +162,16 @@ document.addEventListener("alpine:init", () => {
             this.$watch('reg.mptngynapreszvetel3', (value) => {
                 if (value) {
                     this.reg.mptngynemveszreszt = false;
+                }
+            });
+            this.$watch('reg.mptngynyugdijas', (value) => {
+                if (value) {
+                    this.reg.mptngydiak = false;
+                }
+            });
+            this.$watch('reg.mptngydiak', (value) => {
+                if (value) {
+                    this.reg.mptngynyugdijas = false;
                 }
             });
         },

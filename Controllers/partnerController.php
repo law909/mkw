@@ -963,6 +963,10 @@ class partnerController extends \mkwhelpers\MattableController
                 'mptngyvipvacsora' => $partner->isMptngyvipvacsora(),
                 'mptngybankett' => $partner->isMptngybankett(),
                 'mptnyugdijasdiak' => $partner->isMptngynyugdijas() ? t('Nyugdíjas') : ($partner->isMptngydiak() ? t('Diák') : ''),
+                'mptngydiak' => $partner->isMptngydiak(),
+                'mptngynyugdijas' => $partner->isMptngynyugdijas(),
+                'mptngympttag' => $partner->isMptngympttag(),
+                'mptngyszerepkor' => $partner->getMptngyszerepkorId(),
                 'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),
             ];
             if ($partner->getSzamlatipus() > 0) {
