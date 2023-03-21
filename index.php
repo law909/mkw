@@ -136,7 +136,10 @@ if ($webshopnum == '1') {
     $webshopnum = '';
 }
 $match = $router->match();
-if (store::getParameter(\mkw\consts::Off . $webshopnum) && substr($match['name'], 0, 5) !== 'admin') {
+if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
+    substr($match['name'], 0, 5) !== 'admin' &&
+    substr($match['name'], 0, 8) !== 'pubadmin'
+) {
     callTheController('mainController#showOff', []);
 } else {
     if ($match) {
