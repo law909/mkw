@@ -12,13 +12,13 @@
             function toggleModal() {
                 modal.classList.toggle("show-modal");
                 let rect = modal.getBoundingClientRect();
-                modal.window.moveTo(rect.x, rect.y);
+                window.moveTo(rect.x, rect.y);
             }
 
             function toggleLemondmodal() {
                 lemondmodal.classList.toggle("show-modal");
                 let rect = lemondmodal.getBoundingClientRect();
-                lemondmodal.window.moveTo(rect.x, rect.y);
+                window.moveTo(rect.x, rect.y);
             }
 
             function windowOnClick(event) {
