@@ -225,16 +225,7 @@
         }
 
         .dttprev {
-            float: left;
             color: #80008c;
-        }
-
-        .dttnext {
-            float: right;
-        }
-
-        .dttakt {
-            margin-left: 40px;
         }
 
         .dttprev, .dttnext, .dttakt {
@@ -244,12 +235,14 @@
             font-size: 20px;
             border-radius: 3px;
             padding: 10px;
-            margin-bottom: 2px;
+            margin: 5px;
             color: white;
+            flex-basis: 33.333%;
         }
 
         .dttlapozo {
             text-align: center;
+            display: flex;
         }
 
         .dttonlinelink {
@@ -361,6 +354,10 @@
 
         /* Responsive Styles Smartphone Portrait */
         @media all and (max-width: 479px) {
+            .dttlapozo {
+                flex-direction: column;
+            }
+
             .dttidopont {
                 margin: 0 1%;
                 padding: 2px;
