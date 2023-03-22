@@ -9,23 +9,29 @@
             var modal = document.querySelector('.modal'),
                 lemondmodal = document.querySelector('.lemondmodal');
 
-            function toggleModal() {
+            function toggleModal(y) {
                 modal.classList.toggle("show-modal");
-                let rect = modal.getBoundingClientRect();
-                window.moveTo(rect.x, rect.y);
+                let content = document.querySelector('.modal > .modal-content');
+                if (y + content.getBoundingClientRect().height >= window.innerHeight) {
+                    y = window.innerHeight - content.getBoundingClientRect().height;
+                }
+                content.style.top = y + 'px';
             }
 
-            function toggleLemondmodal() {
+            function toggleLemondmodal(y) {
                 lemondmodal.classList.toggle("show-modal");
-                let rect = lemondmodal.getBoundingClientRect();
-                window.moveTo(rect.x, rect.y);
+                let content = document.querySelector('.lemondmodal > .modal-content');
+                if (y + content.getBoundingClientRect().height >= window.innerHeight) {
+                    y = window.innerHeight - content.getBoundingClientRect().height;
+                }
+                content.style.top = y + 'px';
             }
 
             function windowOnClick(event) {
                 if (event.target === modal) {
-                    toggleModal();
+                    toggleModal(0);
                 } else if (event.target === lemondmodal) {
-                    toggleLemondmodal();
+                    toggleLemondmodal(0);
                 }
             }
 
@@ -34,14 +40,14 @@
                 e.preventDefault();
                 $('input[name="id"]').val($this.data('id'));
                 $('input[name="datum"]').val($this.data('datum'));
-                toggleModal();
+                toggleModal(this.getBoundingClientRect().y);
             });
             $('body').on('click', '.js-lemondas', function (e) {
                 var $this = $(this);
                 e.preventDefault();
                 $('input[name="lemondid"]').val($this.data('id'));
                 $('input[name="lemonddatum"]').val($this.data('datum'));
-                toggleLemondmodal();
+                toggleLemondmodal(this.getBoundingClientRect().y);
             });
             $('input[name="email"]').change(function (e) {
                 var ee = $(this);
@@ -61,11 +67,11 @@
             });
             $('.close-button').click(function (e) {
                 e.preventDefault();
-                toggleModal();
+                toggleModal(0);
             });
             $('.lemondclose-button').click(function (e) {
                 e.preventDefault();
-                toggleLemondmodal();
+                toggleLemondmodal(0);
             });
             $('.js-ok').click(function (e) {
                 e.preventDefault();
@@ -91,7 +97,7 @@
                                 email: $('input[name="email"]').val()
                             },
                             success: function () {
-                                toggleModal();
+                                toggleModal(0);
                                 location.reload();
                             }
                         });
@@ -118,7 +124,7 @@
                             email: $('input[name="lemondemail"]').val()
                         },
                         success: function () {
-                            toggleLemondmodal();
+                            toggleLemondmodal(0);
                             location.reload();
                         }
                     });
@@ -275,7 +281,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, 0%);
             background-color: white;
             padding: 1rem 1.5rem;
             width: 80%;
