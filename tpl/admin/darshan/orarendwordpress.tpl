@@ -185,6 +185,7 @@
         .dttidopont {
             text-align: center;
             margin: 0 1%;
+            padding: 0 2px;
             flex-basis: 16%;
             border-radius: 3px;
             color: white;
@@ -350,23 +351,6 @@
                 flex-direction: column;
             }
 
-            .dttidopont {
-                margin: 0 1%;
-                flex-basis: 14%;
-                flex-shrink: 0;
-            }
-
-            .dttoranev {
-                flex-basis: 60%;
-                font-size: 12px;
-                font-weight: bold;
-            }
-
-            .dtttanar {
-                flex-basis: 26%;
-                font-size: 12px;
-            }
-
             .dttrow {
                 width: 94%;
             }
@@ -374,21 +358,8 @@
 
         /* Responsive Styles Smartphone Landscape */
         @media all and (max-width: 980px) {
-            .dttidopont {
-                margin: 0 1%;
-                flex-basis: 14%;
-                flex-shrink: 0;
-            }
-
-            .dttoranev {
-                flex-basis: 60%;
-                font-size: 12px;
-                font-weight: bold;
-            }
-
-            .dtttanar {
-                flex-basis: 26%;
-                font-size: 12px;
+            .dttlapozo {
+                flex-direction: column;
             }
 
             .dttrow {
