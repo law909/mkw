@@ -165,10 +165,6 @@
             color: white;
         }
 
-        .dttnap {
-            clear: both;
-        }
-
         .dttnapnev {
             text-align: center;
             width: 100%;
@@ -183,7 +179,7 @@
         }
 
         .dttora {
-            float: left;
+            display: flex;
             margin-bottom: 2px;
             width: 100%;
         }

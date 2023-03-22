@@ -162,10 +162,6 @@
             color: white;
         }
 
-        .dttnap {
-            clear: both;
-        }
-
         .dttnapnev {
             text-align: center;
             width: 100%;
@@ -180,7 +176,7 @@
         }
 
         .dttora {
-            float: left;
+            display: flex;
             margin-bottom: 2px;
             background-color: #fff9f7;
             width: 100%;
@@ -188,10 +184,8 @@
 
         .dttidopont {
             text-align: center;
-            float: left;
-            padding: 10px 0;
             margin: 0 1%;
-            width: 10%;
+            flex-basis: 16%;
             border-radius: 3px;
             color: white;
             font-weight: bold;
@@ -209,18 +203,16 @@
         }
 
         .dttoranev {
-            float: left;
             padding: 10px 0;
             margin-right: 1%;
-            width: 55%;
+            flex-basis: 60%;
             text-align: center;
         }
 
         .dtttanar {
-            float: left;
             padding: 10px 0;
             margin-right: 1%;
-            width: 30%;
+            flex-basis: 26%;
             text-align: center;
         }
 
@@ -360,18 +352,18 @@
 
             .dttidopont {
                 margin: 0 1%;
-                padding: 2px;
-                width: 14%;
+                flex-basis: 14%;
+                flex-shrink: 0;
             }
 
             .dttoranev {
-                width: 46%;
+                flex-basis: 60%;
                 font-size: 12px;
                 font-weight: bold;
             }
 
             .dtttanar {
-                width: 30%;
+                flex-basis: 26%;
                 font-size: 12px;
             }
 
@@ -384,18 +376,18 @@
         @media all and (max-width: 980px) {
             .dttidopont {
                 margin: 0 1%;
-                padding: 2px;
-                width: 14%;
+                flex-basis: 14%;
+                flex-shrink: 0;
             }
 
             .dttoranev {
-                width: 46%;
+                flex-basis: 60%;
                 font-size: 12px;
                 font-weight: bold;
             }
 
             .dtttanar {
-                width: 30%;
+                flex-basis: 26%;
                 font-size: 12px;
             }
 
