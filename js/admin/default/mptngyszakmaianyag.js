@@ -126,6 +126,7 @@ $(document).ready(function () {
                     '#opponensfilter',
                     '#idfilter',
                     '#pluszbiralokellfilter',
+                    '#temakor1filter',
                 ]
             },
             tablebody: {

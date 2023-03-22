@@ -363,6 +363,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('pluszbiralokell', '=', $f);
         }
 
+        if (!is_null($this->params->getRequestParam('temakor1filter', null))) {
+            $filter->addFilter('temakor1', '=', $this->params->getIntRequestParam('temakor1filter'));
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -388,6 +392,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('elsoszerzolist', $pc->getSelectList());
         $view->setVar('szerzolist', $pc->getSelectList());
         $view->setVar('opponenslist', $pc->getSelectList());
+        $tk = new mptngytemakorController($this->params);
+        $view->setVar('temakor1list', $tk->getSelectList());
 
         $view->printTemplateResult();
     }
