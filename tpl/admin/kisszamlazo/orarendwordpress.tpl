@@ -9,7 +9,7 @@
             var modal = document.querySelector('.modal'),
                 lemondmodal = document.querySelector('.lemondmodal');
 
-            function toggleModal() {
+            function toggleModal(y) {
                 modal.classList.toggle("show-modal");
                 let content = document.querySelector('.modal > .modal-content');
                 if (y + content.getBoundingClientRect().height >= window.innerHeight) {
@@ -18,7 +18,7 @@
                 content.style.top = y + 'px';
             }
 
-            function toggleLemondmodal() {
+            function toggleLemondmodal(y) {
                 lemondmodal.classList.toggle("show-modal");
                 let content = document.querySelector('.lemondmodal > .modal-content');
                 if (y + content.getBoundingClientRect().height >= window.innerHeight) {
