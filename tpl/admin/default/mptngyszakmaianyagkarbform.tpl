@@ -20,14 +20,14 @@
                         <label for="veglegesEdit">{at('Beküldve')}:</label>
                         <input id="veglegesEdit" type="checkbox" name="vegleges"{if ($egyed.vegleges)} checked{/if}>
                         <label for="biralatkeszEdit">{at('Bírálat kész')}:</label>
-                        <input id="biralatkeszEdit" type="checkbox" name="biralatkesz"{if ($egyed.biralatkesz)} checked{/if}>
+                        <input id="biralatkeszEdit" type="checkbox" name="biralatkesz"{if ($egyed.biralatkesz)} checked{/if} disabled>
                         <label for="kszEdit">{at('Konferencián szerepelhet')}:</label>
-                        <input id="kszEdit" type="checkbox" name="konferencianszerepelhet"{if ($egyed.konferencianszerepelhet)} checked{/if}>
+                        <input id="kszEdit" type="checkbox" name="konferencianszerepelhet"{if ($egyed.konferencianszerepelhet)} checked{/if} disabled>
                     </td>
                 </tr>
                 <tr>
                     <td><label for="CimEdit">{at('Cím')}:</label></td>
-                    <td><input id="CimEdit" name="cim" type="text" size="80" maxlength="255" value="{$egyed.cim}" required></td>
+                    <td><input id="CimEdit" name="cim" type="text" size="80" maxlength="255" value="{$egyed.cim|htmlentities}" required></td>
                 </tr>
                 <tr style="height: 1em;"></tr>
                 <tr>
