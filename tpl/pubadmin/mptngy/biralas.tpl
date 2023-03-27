@@ -56,35 +56,41 @@
                     </div>
                     <div class="co-control-row co-col-container">
                         <div class="co-col co-col-33">
-                            <label for="szempont1Edit" class="co-label" x-text="szempontlist[1]">{t('Szempont 1')}</label>
+                            <label for="szempont1Edit" class="co-label" x-text="szempontlist[1]">{t('Szempont 1')} (0-5 pont)</label>
                             <input
                                 id="szempont1Edit"
                                 class="co-input"
                                 :class="validation.szempont1 && !validation.szempont1.valid ? 'error' : ''"
                                 type="number"
                                 x-model="anyag.szempont1"
+                                min="0"
+                                max="5"
                             >
                             <div class="co-error" x-text="validation.szempont1 && validation.szempont1.error"></div>
                         </div>
                         <div class="co-col co-col-33">
-                            <label for="szempont2Edit" class="co-label" x-text="szempontlist[2]">{t('Szempont 2')}</label>
+                            <label for="szempont2Edit" class="co-label" x-text="szempontlist[2]">{t('Szempont 2')} (0-5 pont)</label>
                             <input
                                 id="szempont2Edit"
                                 class="co-input"
                                 :class="validation.szempont2 && !validation.szempont2.valid ? 'error' : ''"
                                 type="number"
                                 x-model="anyag.szempont2"
+                                min="0"
+                                max="5"
                             >
                             <div class="co-error" x-text="validation.szempont2 && validation.szempont2.error"></div>
                         </div>
                         <div class="co-col co-col-33">
-                            <label for="szempont3Edit" class="co-label" x-text="szempontlist[3]">{t('Szempont 3')}</label>
+                            <label for="szempont3Edit" class="co-label" x-text="szempontlist[3]">{t('Szempont 3')} (0-5 pont)</label>
                             <input
                                 id="szempont3Edit"
                                 class="co-input"
                                 :class="validation.szempont3 && !validation.szempont3.valid ? 'error' : ''"
                                 type="number"
                                 x-model="anyag.szempont3"
+                                min="0"
+                                max="5"
                             >
                             <div class="co-error" x-text="validation.szempont3 && validation.szempont3.error"></div>
                         </div>
@@ -92,24 +98,28 @@
                     </div>
                     <div class="co-control-row co-col-container">
                         <div class="co-col co-col-50">
-                            <label for="szempont4Edit" class="co-label" x-text="szempontlist[4]">{t('Szempont 4')}</label>
+                            <label for="szempont4Edit" class="co-label" x-text="szempontlist[4]">{t('Szempont 4')} (0-5 pont)</label>
                             <input
                                 id="szempont4Edit"
                                 class="co-input"
                                 :class="validation.szempont4 && !validation.szempont4.valid ? 'error' : ''"
                                 type="number"
                                 x-model="anyag.szempont4"
+                                min="0"
+                                max="5"
                             >
                             <div class="co-error" x-text="validation.szempont4 && validation.szempont4.error"></div>
                         </div>
                         <div class="co-col co-col-50">
-                            <label for="szempont5Edit" class="co-label" x-text="szempontlist[5]">{t('Szempont 5')}</label>
+                            <label for="szempont5Edit" class="co-label" x-text="szempontlist[5]">{t('Szempont 5')} (0-5 pont)</label>
                             <input
                                 id="szempont5Edit"
                                 class="co-input"
                                 :class="validation.szempont5 && !validation.szempont5.valid ? 'error' : ''"
                                 type="number"
                                 x-model="anyag.szempont5"
+                                min="0"
+                                max="5"
                             >
                             <div class="co-error" x-text="validation.szempont5 && validation.szempont5.error"></div>
                         </div>
