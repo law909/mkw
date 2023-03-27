@@ -1,7 +1,7 @@
 {extends "main.tpl"}
 
 {block "prescript"}
-    <script src="/js/pubadmin/mptngy/biralas.js?v=2"></script>
+    <script src="/js/pubadmin/mptngy/biralas.js?v=3"></script>
 {/block}
 
 {block "main"}
@@ -26,7 +26,19 @@
                         <template x-for="any in anyaglist" :key="any.id">
                             <tr :class="!any.allszerzoregistered ? 'red' : ''">
                                 <td x-text="any.id" data-label="{t('Azonosító')}"></td>
-                                <td x-text="any.cim" data-label="{t('Cím')}"></td>
+                                <td data-label="{t('Cím')}">
+                                    <div x-text="any.cim"></div>
+                                    <template x-if="any.szimpozium">
+                                        <div class="margin-top">
+                                            <div>{t('Előadások')}:</div>
+                                            <div x-text="any.eloadas1cim"></div>
+                                            <div x-text="any.eloadas2cim"></div>
+                                            <div x-text="any.eloadas3cim"></div>
+                                            <div x-text="any.eloadas4cim"></div>
+                                            <div x-text="any.eloadas5cim"></div>
+                                        </div>
+                                    </template>
+                                </td>
                                 <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
                                 <td>
                                     <button
@@ -46,6 +58,16 @@
             <div class="co-row co-flex-dir-row" x-show="showEditor">
                 <div class="co-col-100">
                     <div class="co-control-row" x-text="anyag.cim"></div>
+                    <template x-if="anyag.szimpozium">
+                        <div class="co-control-row">
+                            <div>{t('Előadások')}:</div>
+                            <div x-text="anyag.eloadas1cim"></div>
+                            <div x-text="anyag.eloadas2cim"></div>
+                            <div x-text="anyag.eloadas3cim"></div>
+                            <div x-text="anyag.eloadas4cim"></div>
+                            <div x-text="anyag.eloadas5cim"></div>
+                        </div>
+                    </template>
                     <div class="co-control-row">
                         <textarea
                             rows="20"
@@ -56,7 +78,7 @@
                     </div>
                     <div class="co-control-row co-col-container">
                         <div class="co-col co-col-33">
-                            <label for="szempont1Edit" class="co-label" x-text="szempontlist[1]">{t('Szempont 1')} (0-5 pont)</label>
+                            <label for="szempont1Edit" class="co-label" x-text="szempontlist[1] + ' (0-5 pont)'">{t('Szempont 1')} (0-5 pont)</label>
                             <input
                                 id="szempont1Edit"
                                 class="co-input"
@@ -69,7 +91,7 @@
                             <div class="co-error" x-text="validation.szempont1 && validation.szempont1.error"></div>
                         </div>
                         <div class="co-col co-col-33">
-                            <label for="szempont2Edit" class="co-label" x-text="szempontlist[2]">{t('Szempont 2')} (0-5 pont)</label>
+                            <label for="szempont2Edit" class="co-label" x-text="szempontlist[2] + ' (0-5 pont)'">{t('Szempont 2')} (0-5 pont)</label>
                             <input
                                 id="szempont2Edit"
                                 class="co-input"
@@ -82,7 +104,7 @@
                             <div class="co-error" x-text="validation.szempont2 && validation.szempont2.error"></div>
                         </div>
                         <div class="co-col co-col-33">
-                            <label for="szempont3Edit" class="co-label" x-text="szempontlist[3]">{t('Szempont 3')} (0-5 pont)</label>
+                            <label for="szempont3Edit" class="co-label" x-text="szempontlist[3] + ' (0-5 pont)'">{t('Szempont 3')} (0-5 pont)</label>
                             <input
                                 id="szempont3Edit"
                                 class="co-input"
@@ -98,7 +120,7 @@
                     </div>
                     <div class="co-control-row co-col-container">
                         <div class="co-col co-col-50">
-                            <label for="szempont4Edit" class="co-label" x-text="szempontlist[4]">{t('Szempont 4')} (0-5 pont)</label>
+                            <label for="szempont4Edit" class="co-label" x-text="szempontlist[4] + ' (0-5 pont)'">{t('Szempont 4')} (0-5 pont)</label>
                             <input
                                 id="szempont4Edit"
                                 class="co-input"
@@ -111,7 +133,7 @@
                             <div class="co-error" x-text="validation.szempont4 && validation.szempont4.error"></div>
                         </div>
                         <div class="co-col co-col-50">
-                            <label for="szempont5Edit" class="co-label" x-text="szempontlist[5]">{t('Szempont 5')} (0-5 pont)</label>
+                            <label for="szempont5Edit" class="co-label" x-text="szempontlist[5] + ' (0-5 pont)'">{t('Szempont 5')} (0-5 pont)</label>
                             <input
                                 id="szempont5Edit"
                                 class="co-input"

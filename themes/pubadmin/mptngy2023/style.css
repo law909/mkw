@@ -45,6 +45,10 @@
     color: red;
 }
 
+.margin-top {
+    margin-top: 1em;
+}
+
 .padding-top {
     padding-top: 1em;
 }

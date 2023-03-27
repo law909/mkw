@@ -8,7 +8,7 @@
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/pubadmin/mptngy2023/style.css?v=2">
+    <link type="text/css" rel="stylesheet" href="/themes/pubadmin/mptngy2023/style.css?v=3">
     {block "css"}{/block}
     <script src="/js/iframeresizer/iframeResizer.contentWindow.min.js"></script>
     <script defer src="/js/iodine/iodine.min.umd.js"></script>
