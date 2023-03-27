@@ -377,7 +377,10 @@ class MPTNGYSzakmaianyag
 
     public function calcKonferencianszerepelhet()
     {
-        return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
+        if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
+            return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
+        }
+        return false;
     }
 
     public function calcBiralatkesz()
@@ -385,7 +388,7 @@ class MPTNGYSzakmaianyag
         if (!$this->getBiralo1() && !$this->getBiralo2() && !$this->getBiralo3()) {
             return false;
         }
-        
+
         $ret = true;
         if ($this->getBiralo1()) {
             $ret = $ret && $this->isB1biralatkesz();
