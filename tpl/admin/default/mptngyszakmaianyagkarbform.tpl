@@ -146,7 +146,7 @@
                         <select id="eloadas1Edit" name="eloadas1">
                             <option value="">{at('válasszon')}</option>
                             {foreach $eloadas1list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.id} - {$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -157,7 +157,7 @@
                         <select id="eloadas2Edit" name="eloadas2">
                             <option value="">{at('válasszon')}</option>
                             {foreach $eloadas2list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.id} - {$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -168,7 +168,7 @@
                         <select id="eloadas3Edit" name="eloadas3">
                             <option value="">{at('válasszon')}</option>
                             {foreach $eloadas3list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.id} - {$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -179,7 +179,7 @@
                         <select id="eloadas4Edit" name="eloadas4">
                             <option value="">{at('válasszon')}</option>
                             {foreach $eloadas4list as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.id} - {$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
