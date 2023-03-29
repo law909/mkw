@@ -75,7 +75,7 @@
                 <div>
                     <label for="mptngyreszvetelfilter">{at('Részvétel')}: </label>
                     <select id="mptngyreszvetelfilter" name="mptngyreszvetelfilter">
-                        <option value="9">{at('Mindegy')}</option>
+                        <option value="9">{at('mindegy')}</option>
                         <option value="1">{at('1. nap részt vesz')}</option>
                         <option value="2">{at('1. nap állófogadáson részt vesz')}</option>
                         <option value="3">{at('2. nap részt vesz')}</option>
@@ -83,6 +83,17 @@
                         <option value="5">{at('3. nap részt vesz')}</option>
                         <option value="6">{at('nem vesz részt, csak szerző')}</option>
                         <option value="7">{at('nem jelölt meg semmit')}</option>
+                    </select>
+                </div>
+                <div class="matt-hseparator"></div>
+                <div>
+                    <label for="mptngydiakfilter">{at('Diák/nyugdíjas')}: </label>
+                    <select id="mptngydiakfilter" name="mptngydiakfilter">
+                        <option value="9">{at('mindegy')}</option>
+                        <option value="1">{at('diák')}</option>
+                        <option value="2">{at('nyugdíjas')}</option>
+                        <option value="3">{at('diák vagy nyugdíjas')}</option>
+                        <option value="4">{at('nem diák és nem nyugdíjas')}</option>
                     </select>
                 </div>
             {/if}

@@ -760,7 +760,21 @@ class partnerController extends \mkwhelpers\MattableController
                 $filter->addFilter('mptngynemveszreszt', '=', false);
                 break;
         }
-
+        switch ($this->params->getNumRequestParam('mptngydiakfilter', 9)) {
+            case 1:
+                $filter->addFilter('mptngydiak', '=', true);
+                break;
+            case 2:
+                $filter->addFilter('mptngynyugdijas', '=', true);
+                break;
+            case 3:
+                $filter->addSql('_xx.mptngydiak=1 OR _xx.mptngynyugdíjas=1');
+                break;
+            case 4:
+                $filter->addFilter('mptngydiak', '=', false);
+                $filter->addFilter('mptngynyudijas', '=', false);
+                break;
+        }
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(

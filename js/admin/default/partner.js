@@ -397,6 +397,7 @@ $(document).ready(function () {
                     '#orszagfilter',
                     '#inaktivfilter',
                     '#mptngyreszvetelfilter',
+                    '#mptngydiakfilter',
                 ],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
