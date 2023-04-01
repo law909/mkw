@@ -386,6 +386,8 @@ class partnerController extends \mkwhelpers\MattableController
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {
                 $obj->setFizmod($fizmod);
+            } else {
+                $obj->setFizmod(null);
             }
             $uk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
             if ($uk) {
@@ -400,14 +402,20 @@ class partnerController extends \mkwhelpers\MattableController
             $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
             if ($szallmod) {
                 $obj->setSzallitasimod($szallmod);
+            } else {
+                $obj->setSzallitasimod(null);
             }
             $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
             if ($orszag) {
                 $obj->setOrszag($orszag);
+            } else {
+                $obj->setOrszag(null);
             }
             $partnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find($this->params->getIntRequestParam('partnertipus', 0));
             if ($partnertipus) {
                 $obj->setPartnertipus($partnertipus);
+            } else {
+                $obj->setPartnertipus(null);
             }
 
             if (\mkw\store::isMIJSZ()) {
@@ -1277,7 +1285,11 @@ class partnerController extends \mkwhelpers\MattableController
         }
         if ($this->checkloggedin()) {
 //			\Zend_Session::writeClose();
-            header('Location: ' . $route);
+            if (\mkw\store::isMugenrace2021()) {
+                echo json_encode(['url' => $route]);
+            } else {
+                header('Location: ' . $route);
+            }
         } else {
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
 //				\Zend_Session::writeClose();
@@ -1291,14 +1303,25 @@ class partnerController extends \mkwhelpers\MattableController
                     $mc = new mainController($this->params);
                     $mc->setOrszag($partnerobj->getOrszagId());
                 }
-                header('Location: ' . $route);
+                if (\mkw\store::isMugenrace2021()) {
+                    echo json_encode(['url' => $route]);
+                } else {
+                    header('Location: ' . $route);
+                }
             } else {
                 \mkw\store::clearLoggedInUser();
                 $mc = new mainController($this->params);
                 $mc->clearOrszag();
                 if ($checkout) {
                     \mkw\store::getMainSession()->loginerror = true;
-                    header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
+                    if (\mkw\store::isMugenrace2021()) {
+                        echo json_encode([
+                            'loginerror' => true,
+                            'errormsg' => t('A bejelentkezés nem sikerült'),
+                        ]);
+                    } else {
+                        header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
+                    }
                 } else {
                     \mkw\store::getMainSession()->loginerror = true;
                     header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));

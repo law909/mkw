@@ -72,6 +72,7 @@ if (\mkw\store::isMugenrace()) {
 if (\mkw\store::isMugenrace2021()) {
     $router->map('GET', '/mnrstatic/[:lap]', 'mnrstaticController#show', 'mnrshowstatic');
     $router->map('POST', '/setlocale', 'mainController#setLocale', 'setmainlocale');
+    $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
 }
 
 if (\mkw\store::isMPTNGY()) {

@@ -1,37 +1,41 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("checkout", () => ({
         regNeeded: "1",
-        inveqdel: false,
+        aszfready: null,
         login: {
             email: null,
-            password: null,
+            jelszo: null,
         },
         loginRules: {
             email: ['required', 'email'],
-            password: ['required'],
+            jelszo: ['required'],
         },
         loginValidation: {},
         validation: {},
-        contact: {
-            lastName: null,
-            firstName: null,
-            phone: null,
-        },
-        email: null,
-        password1: null,
-        password2: null,
-        delivery: {
-            name: null,
-            postalcode: null,
-            city: null,
-            street: null,
-        },
-        invoice: {
-            name: null,
-            postalcode: null,
-            city: null,
-            street: null,
+        data: {
+            inveqdel: false,
+            vezeteknev: null,
+            keresztnev: null,
+            telefon: null,
+            email: null,
+            password1: null,
+            password2: null,
+            szallnev: null,
+            szallirszam: null,
+            szallvaros: null,
+            szallutca: null,
+            szallhazszam: null,
             adoszam: null,
+            szlanev: null,
+            irszam: null,
+            varos: null,
+            utca: null,
+            hazszam: null,
+            webshopmessage: null,
+            couriermessage: null,
+            akciohirlevel: null,
+            ujdonsaghirlevel: null,
+            cegesvasarlo: false,
         },
         selectedSzallitasimod: null,
         selectedFizetesimod: null,
@@ -40,12 +44,30 @@ document.addEventListener("alpine:init", () => {
         areacodes: [],
         tetellist: [],
         szallmodlist: [],
-        webshopmessage: null,
-        couriermessage: null,
-        akciohirlevel: null,
-        ujdonsaghirlevel: null,
-        aszfready: null,
-        cegesvasarlo: false,
+        init() {
+            this.getLists();
+            this.$watch('selectedSzallitasimodIndex', (value) => {
+                this.selectSzallitasimod(value);
+                this.selectedFizetesimodIndex = this.selectedSzallitasimod.selectedFizetesimodIndex;
+            });
+            this.$watch('selectedFizetesimodIndex', (value) => {
+                this.selectFizetesimod(value);
+            });
+            this.$watch('data.inveqdel', (value) => {
+                if (value) {
+                    this.data.szlanev = this.data.szallnev;
+                    this.data.irszam = this.data.szallirszam;
+                    this.data.varos = this.data.szallvaros;
+                    this.data.utca = this.data.szallutca;
+                    this.data.hazszam = this.data.szallhazszam;
+                }
+            });
+            this.$watch('data.keresztnev', (value) => {
+                if (!this.data.szallnev) {
+                    this.data.szallnev = this.data.vezeteknev + ' ' + this.data.keresztnev;
+                }
+            });
+        },
         getLists() {
             fetch(new URL('/checkout/gettetellistdata', location.origin))
                 .then((response) => response.json())
@@ -58,26 +80,14 @@ document.addEventListener("alpine:init", () => {
                     this.szallmodlist = data;
                     this.selectedSzallitasimodIndex = 0;
                 });
-            this.$watch('selectedSzallitasimodIndex', (value) => {
-                this.selectSzallitasimod(value);
-                this.selectedFizetesimodIndex = this.selectedSzallitasimod.selectedFizetesimodIndex;
-            });
-            this.$watch('selectedFizetesimodIndex', (value) => {
-                this.selectFizetesimod(value);
-            });
-            this.$watch('inveqdel', (value) => {
-                if (value) {
-                    this.invoice.name = this.delivery.name;
-                    this.invoice.postalcode = this.delivery.postalcode;
-                    this.invoice.city = this.delivery.city;
-                    this.invoice.street = this.delivery.street;
-                }
-            });
-            this.$watch('contact.firstName', (value) => {
-                if (!this.delivery.name) {
-                    this.delivery.name = this.contact.lastName + ' ' + this.contact.firstName;
-                }
-            });
+            this.loadPartnerData();
+        },
+        loadPartnerData() {
+            fetch(new URL('/partner/getdata', location.origin))
+                .then((response) => response.json())
+                .then((data) => {
+                    Object.assign(this.data, data);
+                });
         },
         selectSzallitasimod(szallmodindex) {
             this.selectedSzallitasimod = this.szallmodlist[szallmodindex];
@@ -102,7 +112,18 @@ document.addEventListener("alpine:init", () => {
                 fetch(new URL('/login/ment', location.origin), {
                     method: 'POST',
                     body: new URLSearchParams(this.login)
-                });
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.loginerror) {
+                            this.loginValidation.email = {
+                                valid: false,
+                                error: data.errormsg
+                            };
+                        } else {
+                            this.loadPartnerData();
+                        }
+                    });
             } else {
                 this.loginValidation = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');

@@ -993,6 +993,17 @@ a {
     background: var(--brand-color);
 }
 
+.co-error-container {
+    margin-bottom: 1em;
+}
+
+.co-error {
+    color: red;
+    margin-top: 4px;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
 @media screen and (min-width: 761px) {
     .c-viewer__iframe {
         width: 50vw;
@@ -1369,6 +1380,11 @@ a {
         font-size: var(--co-font-size-small-d);
         margin-left: 2em;
     }
+
+    .co-hint, .co-error {
+        margin-top: 4px;
+        font-size: 0.75rem;
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -1396,4 +1412,15 @@ a {
 
 .text-align-right {
     text-align: right;
+}
+
+.error {
+    border-color: red;
+}
+
+.error-border {
+    border-color: red;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: var(--default-radius);
 }
