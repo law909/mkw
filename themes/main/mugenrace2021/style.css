@@ -1351,7 +1351,7 @@ a {
         align-self: flex-start;
         top: calc(var(--nav-spacer-height-d) * 3);
         gap: 1em;
-        background-color: var(--secondary-color);
+        background-color: var(--background-color);
     }
 
     .co-termek-box {
