@@ -105,7 +105,7 @@
                     <input id="regKapcsolatEdit" class="co-input" type="text" x-model="reg.mptngykapcsolatnev">
                 </div>
                 <div class="co-control-row">
-                    <label for="regMunkahelyEdit" class="co-label">{t('Munkahely')}</label>
+                    <label for="regMunkahelyEdit" class="co-label redtext">{t('Munkahely')}</label>
                     <input id="regMunkahelyEdit" class="co-input" type="text" x-model="reg.mpt_munkahelynev">
                 </div>
             </div>
