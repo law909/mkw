@@ -379,6 +379,9 @@ class MPTNGYSzakmaianyag
     {
         if ($this->getBiralo3()) {
             if ($this->isB1biralatkesz() && $this->isB2biralatkesz() && $this->isB3biralatkesz()) {
+                if (!$this->calcB3pont()) {
+                    return false;
+                }
                 return $this->calcPont() >= 25;
             }
         } else {
