@@ -127,6 +127,7 @@ $(document).ready(function () {
                     '#idfilter',
                     '#pluszbiralokellfilter',
                     '#temakor1filter',
+                    '#tipusfilter',
                 ]
             },
             tablebody: {

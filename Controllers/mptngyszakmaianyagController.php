@@ -367,6 +367,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('temakor1', '=', $this->params->getIntRequestParam('temakor1filter'));
         }
 
+        if (!is_null($this->params->getRequestParam('tipusfilter', null))) {
+            $filter->addFilter('tipus', '=', $this->params->getIntRequestParam('tipusfilter'));
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -394,6 +398,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('opponenslist', $pc->getSelectList());
         $tk = new mptngytemakorController($this->params);
         $view->setVar('temakor1list', $tk->getSelectList());
+        $tc = new mptngyszakmaianyagtipusController($this->params);
+        $view->setVar('tipuslist', $tc->getSelectList());
 
         $view->printTemplateResult();
     }
