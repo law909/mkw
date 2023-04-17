@@ -487,18 +487,18 @@ class KosarRepository extends \mkwhelpers\Repository
     {
         $szamol = true;
         if ($szallmod) {
-            $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
+            $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
         $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        $termek = $this->getRepo('Entities\Termek')->find($termekid);
+        $termek = $this->getRepo(Termek::class)->find($termekid);
 
         if ($termekid && $termek) {
             $e = $this->calcSumBySessionId(\Zend_Session::getId());
             $ertek = $e['sum'];
             $cnt = $e['count'];
             /** @var Kupon $kupon */
-            $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+            $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
             if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
                 $szamol = false;
             }
@@ -506,7 +506,7 @@ class KosarRepository extends \mkwhelpers\Repository
             if ($szamol) {
                 if ($cnt != 0) {
                     $partner = \mkw\store::getLoggedInUser();
-                    $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
+                    $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                         $szallmod,
                         $fizmod,
                         \mkw\store::getPartnerOrszag($partner),

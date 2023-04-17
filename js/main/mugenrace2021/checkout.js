@@ -1,7 +1,6 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("checkout", () => ({
         regNeeded: "1",
-        aszfready: null,
         login: {
             email: null,
             jelszo: null,
@@ -36,11 +35,28 @@ document.addEventListener("alpine:init", () => {
             akciohirlevel: null,
             ujdonsaghirlevel: null,
             cegesvasarlo: false,
+            aszfready: null,
         },
         selectedSzallitasimod: null,
         selectedFizetesimod: null,
         selectedSzallitasimodIndex: null,
         selectedFizetesimodIndex: null,
+        dataRules: {
+            vezeteknev: ['required'],
+            keresztnev: ['required'],
+            telefon: ['required'],
+            email: ['required', 'email'],
+            szallnev: ['required'],
+            szallirszam: ['required'],
+            szallvaros: ['required'],
+            szallutca: ['required'],
+            adoszam: ['adoszam'],
+            szlanev: ['required'],
+            irszam: ['required'],
+            varos: ['required'],
+            utca: ['required'],
+            aszfready: ['required'],
+        },
         areacodes: [],
         tetellist: [],
         szallmodlist: [],
@@ -69,11 +85,7 @@ document.addEventListener("alpine:init", () => {
             });
         },
         getLists() {
-            fetch(new URL('/checkout/gettetellistdata', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.tetellist = data;
-                });
+            this.loadTetelList();
             fetch(new URL('/checkout/getszallmodfizmodlist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -87,6 +99,16 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => response.json())
                 .then((data) => {
                     Object.assign(this.data, data);
+                });
+        },
+        loadTetelList() {
+            let geturl = new URL('/checkout/gettetellistdata', location.origin);
+            geturl.searchParams.append('szallitasimod', this.selectedSzallitasimod.id);
+            geturl.searchParams.append('fizmod', this.selectedFizetesimod.id);
+            fetch(geturl)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.tetellist = data;
                 });
         },
         selectSzallitasimod(szallmodindex) {
@@ -126,8 +148,25 @@ document.addEventListener("alpine:init", () => {
                     });
             } else {
                 this.loginValidation = valid.fields;
-                alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         },
+        save() {
+            const valid = Iodine.assert(this.data, this.dataRules);
+
+            this.clearErrors();
+
+            if (valid.valid) {
+                fetch(new URL('/checkout/ment', location.origin), {
+                    method: 'POST',
+                    body: new URLSearchParams(this.data)
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+
+                    });
+            } else {
+                this.validation = valid.fields;
+            }
+        }
     }));
 });

@@ -212,7 +212,7 @@
                         {t('Igen, értesítsenek az újdonságokról')}
                     </label>
                     <label class="co-label">
-                        <input x-model="aszfready" name="aszfready" type="checkbox">
+                        <input x-model="data.aszfready" name="aszfready" type="checkbox">
                         Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta <a href="{$showaszflink}" target="empty"
                                                                                                                           class="js-chkaszf">ÁSZF</a>-ünket és
                         adatvédelmi nyilatkozatunkat.
