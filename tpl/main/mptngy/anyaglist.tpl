@@ -52,8 +52,8 @@
                                             >{t('Módosítás')}</button-->
                                             <div x-show="any.vegleges">{t('Beküldve')}</div>
                                             <div x-show="any.biralatkesz">
-                                                <span x-show="any.konferencianszerepelhet">Elfogadva, a konferencián szerepelhet.</span>
-                                                <span x-show="!any.konferencianszerepelhet">Elutasítva, nem szerepelhet a konferencián.</span>
+                                                <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
+                                                <span x-show="!any.konferencianszerepelhet" class="redtext">Elutasítva, nem szerepelhet a konferencián.</span>
                                             </div>
                                         </td>
                                     </tr>

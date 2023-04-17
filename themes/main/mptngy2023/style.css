@@ -45,6 +45,16 @@
     color: red;
 }
 
+.redtext {
+    color: red;
+    font-weight: bold;
+}
+
+.greentext {
+    color: green;
+    font-weight: bold;
+}
+
 .padding-top {
     padding-top: 1em;
 }
