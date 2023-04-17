@@ -377,8 +377,14 @@ class MPTNGYSzakmaianyag
 
     public function calcKonferencianszerepelhet()
     {
-        if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
-            return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
+        if ($this->getBiralo3()) {
+            if ($this->isB1biralatkesz() && $this->isB2biralatkesz() && $this->isB3biralatkesz()) {
+                return $this->calcPont() >= 25;
+            }
+        } else {
+            if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
+                return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
+            }
         }
         return false;
     }

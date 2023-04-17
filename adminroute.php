@@ -137,6 +137,8 @@ if (\mkw\store::isMPTNGY()) {
         $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
     }
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
+
+    $router->map('GET', '/admin/recalcksz', 'adminController#recalcKonferencianszerepelhet', 'adminmptngyrecalckonferencianszerepelhet');
 }
 
 if (\mkw\store::isBankpenztar()) {

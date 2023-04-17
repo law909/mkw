@@ -8,9 +8,11 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 use mkwhelpers, Entities;
 
-class adminController extends mkwhelpers\Controller {
+class adminController extends mkwhelpers\Controller
+{
 
-    private function checkForIE() {
+    private function checkForIE()
+    {
         $u_agent = $_SERVER['HTTP_USER_AGENT'];
         $ub = false;
         if (preg_match('/MSIE/i', $u_agent)) {
@@ -22,7 +24,8 @@ class adminController extends mkwhelpers\Controller {
         return $ub;
     }
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('main.tpl');
         $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Főoldal'));
@@ -32,7 +35,9 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('noerrors', $no->getErrors());
         $view->setVar('noresult', $no->getResult());
         $no->version();
-        $view->setVar('noversion', \mkw\store::getNAVOnlineEnv()
+        $view->setVar(
+            'noversion',
+            \mkw\store::getNAVOnlineEnv()
             . ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
             . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
             . '; srv v' . $no->getResult()
@@ -77,7 +82,7 @@ class adminController extends mkwhelpers\Controller {
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
 
-                $lejart = array();
+                $lejart = [];
                 $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
                 foreach ($r as $_r) {
                     $lejart[$_r['nev']] = $_r;
@@ -88,15 +93,14 @@ class adminController extends mkwhelpers\Controller {
                     foreach ($fake as $_r) {
                         if (array_key_exists($_r['nev'], $lejart)) {
                             $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        }
-                        else {
+                        } else {
                             $lejart[$_r['nev']] = $_r;
                         }
                     }
                 }
                 $view->setVar('lejartkintlevoseg', $lejart);
 
-                $nemlejart = array();
+                $nemlejart = [];
                 $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem();
                 foreach ($r as $_r) {
                     $nemlejart[$_r['nev']] = $_r;
@@ -105,34 +109,33 @@ class adminController extends mkwhelpers\Controller {
                     foreach ($fake as $_r) {
                         if (array_key_exists($_r['nev'], $nemlejart)) {
                             $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        }
-                        else {
+                        } else {
                             $nemlejart[$_r['nev']] = $_r;
                         }
                     }
                 }
                 $view->setVar('kintlevoseg', $nemlejart);
 
-                $lejart = array();
-                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
+                $lejart = [];
+                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
                 foreach ($r as $_r) {
                     $lejart[$_r['nev']] = $_r;
                 }
                 if (\mkw\store::isFakeKintlevoseg()) {
-                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
+                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
                     foreach ($fake as $_r) {
                         if (array_key_exists($_r['nev'], $lejart)) {
                             $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        }
-                        else {
+                        } else {
                             $lejart[$_r['nev']] = $_r;
                         }
                     }
                 }
                 $view->setVar('spanyollejartkintlevoseg', $lejart);
 
-                $nemlejart = array();
-                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
+                $nemlejart = [];
+                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]
+                );
                 foreach ($r as $_r) {
                     $nemlejart[$_r['nev']] = $_r;
                 }
@@ -140,8 +143,7 @@ class adminController extends mkwhelpers\Controller {
                     foreach ($fake as $_r) {
                         if (array_key_exists($_r['nev'], $nemlejart)) {
                             $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        }
-                        else {
+                        } else {
                             $nemlejart[$_r['nev']] = $_r;
                         }
                     }
@@ -203,7 +205,8 @@ class adminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function darshanStatisztika() {
+    public function darshanStatisztika()
+    {
         $view = $this->createView('statisztika.tpl');
         $tolstr = $this->params->getStringRequestParam('tol');
         $tol = \mkw\store::convDate($tolstr);
@@ -216,16 +219,16 @@ class adminController extends mkwhelpers\Controller {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('created', '>=', $tol);
         $filter->addFilter('created', '<=', $ig);
-        $ujpk = $partnerrepo->getAll($filter, array('created' => 'ASC'));
-        $ujpartnerlista = array();
+        $ujpk = $partnerrepo->getAll($filter, ['created' => 'ASC']);
+        $ujpartnerlista = [];
         /** @var \Entities\Partner $ujp */
         foreach ($ujpk as $ujp) {
-            $ujpartnerlista[] = array(
+            $ujpartnerlista[] = [
                 'datum' => $ujp->getCreatedStr(),
                 'nev' => $ujp->getNev(),
                 'createdby' => $ujp->getCreatedbyNev(),
                 'email' => $ujp->getEmail()
-            );
+            ];
         }
         $view->setVar('ujpartnerlista', $ujpartnerlista);
         $view->setVar('ujpartnercount', count($ujpartnerlista));
@@ -261,13 +264,13 @@ class adminController extends mkwhelpers\Controller {
         $filter->addFilter('uresterem', '=', false);
         $filter->addFilter('tisztaznikell', '=', false);
         $rvk = $reszvetrepo->getTermekOsszesito($filter);
-        $resztvevolista = array();
+        $resztvevolista = [];
         /** @var \Entities\JogaReszvetel $rv */
         foreach ($rvk as $rv) {
-            $resztvevolista[] = array(
+            $resztvevolista[] = [
                 'db' => $rv['db'],
                 'termek' => $rv['nev']
-            );
+            ];
         }
         $view->setVar('resztvevolista', $resztvevolista);
 
@@ -311,7 +314,8 @@ class adminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function printNapijelentes() {
+    public function printNapijelentes()
+    {
         $lista = new listaController($this->params);
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = \mkw\store::convDate($datumstr);
@@ -323,7 +327,8 @@ class adminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function printTeljesitmenyJelentes() {
+    public function printTeljesitmenyJelentes()
+    {
         $lista = new listaController($this->params);
 
         $datumstr = $this->params->getStringRequestParam('tol');
@@ -336,24 +341,28 @@ class adminController extends mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function regeneratekarkod() {
+    public function regeneratekarkod()
+    {
         $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
         $farepo->regenerateKarKod();
         echo 'ok';
     }
 
-    public function sanitize() {
+    public function sanitize()
+    {
         echo \mkwhelpers\Filter::toPermalink($this->params->getStringRequestParam('text', ''));
     }
 
-    protected function cropimage() {
+    protected function cropimage()
+    {
         $view = $this->createView('cropimage.tpl');
         $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Főoldal'));
         $view->printTemplateResult();
     }
 
-    public function setUITheme() {
+    public function setUITheme()
+    {
         $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\store::getAdminSession()->loggedinuser['id']);
         if ($dolgozo) {
             $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
@@ -364,14 +373,16 @@ class adminController extends mkwhelpers\Controller {
         }
     }
 
-    public function getSmallUrl() {
+    public function getSmallUrl()
+    {
         echo \mkw\store::createSmallImageUrl($this->params->getStringRequestParam('url'));
     }
 
-    public function setVonalkodFromValtozat() {
+    public function setVonalkodFromValtozat()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('vonalkod', '=', '');
-        $termekek = \mkw\store::getEm()->getRepository('Entities\Termek')->getAll($filter, array());
+        $termekek = \mkw\store::getEm()->getRepository('Entities\Termek')->getAll($filter, []);
         foreach ($termekek as $termek) {
             $valtozatok = $termek->getValtozatok();
             $termek->setVonalkod($valtozatok[0]->getVonalkod());
@@ -381,7 +392,8 @@ class adminController extends mkwhelpers\Controller {
         echo 'ok';
     }
 
-    public function fillBiztetelValtozat() {
+    public function fillBiztetelValtozat()
+    {
         $repo = $this->getRepo('Entities\Bizonylattetel');
         $mind = $repo->getAll();
         foreach ($mind as $bt) {
@@ -394,7 +406,8 @@ class adminController extends mkwhelpers\Controller {
         echo 'kesz';
     }
 
-    public function generateFolyoszamla() {
+    public function generateFolyoszamla()
+    {
         /*
         $repo = $this->getRepo('Entities\Bizonylatfej');
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -413,46 +426,46 @@ class adminController extends mkwhelpers\Controller {
         echo 'kesz';
     }
 
-    public function minicrm() {
+    public function minicrm()
+    {
         require 'busvendor/MiniCRM/minicrm-api.phar';
         $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
 
-        $res = \MiniCRM_Project::FieldSearch($minicrm,
-            array(
+        $res = \MiniCRM_Project::FieldSearch(
+            $minicrm,
+            [
                 'UpdatedSince' => '2015-01-01+12:00:00',
                 'CategoryId' => 19,
                 'Page' => 0
-            )
+            ]
         );
 
         echo '<pre>';
         print_r($res);
         echo '</pre>';
-
-
-
         /**        $adatlap = new \MiniCRM_Project($minicrm, 800);
-        $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
-        $addrlist = \MiniCRM_Address::AddressList($minicrm, $adatlap->ContactId);
-        $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
-
-        echo '<pre>';
-        print_r($adatlap);
-        print_r($kontakt);
-        print_r($addr);
-        echo '</pre>';
- */
-
+         * $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
+         * $addrlist = \MiniCRM_Address::AddressList($minicrm, $adatlap->ContactId);
+         * $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
+         *
+         * echo '<pre>';
+         * print_r($adatlap);
+         * print_r($kontakt);
+         * print_r($addr);
+         * echo '</pre>';
+         */
     }
 
-    public function replier() {
+    public function replier()
+    {
         \mkw\store::writelog(print_r($this->params, true), 'replier.txt');
         header('HTTP/1.1 200 OK');
     }
 
-    public function genean13() {
+    public function genean13()
+    {
         $conn = \mkw\store::getEm()->getConnection();
-        $termekidk = \mkw\store::getEm()->getRepository('\Entities\Termek')->getIdsWithJoins(array(), array());
+        $termekidk = \mkw\store::getEm()->getRepository('\Entities\Termek')->getIdsWithJoins([], []);
         foreach ($termekidk as $ttt) {
             $termekid = $ttt['id'];
 
@@ -476,17 +489,19 @@ class adminController extends mkwhelpers\Controller {
         echo 'kész';
     }
 
-    public function cimletez() {
+    public function cimletez()
+    {
         $view = $this->createView('cimletezoeredmeny.tpl');
         $view->setVar('cimletek', \mkw\store::cimletez($this->params->getStringRequestParam('osszegek')));
         $view->printTemplateResult();
     }
 
-    public function repairFoglalas() {
+    public function repairFoglalas()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('foglal', '=', 1);
         $r = $this->getRepo('Entities\Bizonylatstatusz')->getAll($filter);
-        $statuszok = array();
+        $statuszok = [];
         foreach ($r as $bs) {
             $statuszok[] = $bs->getId();
         }
@@ -502,7 +517,8 @@ class adminController extends mkwhelpers\Controller {
         echo 'kész';
     }
 
-    public function calcBerletervenyesseg() {
+    public function calcBerletervenyesseg()
+    {
         $vasarlas = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('vasarlasdatum')));
         $het = $this->params->getIntRequestParam('berlettipus');
         $iw = new \DateInterval('P' . $het . 'W');
@@ -510,13 +526,15 @@ class adminController extends mkwhelpers\Controller {
         echo $vasarlas->format('Y.m.d');
     }
 
-    public function checkEmail() {
+    public function checkEmail()
+    {
         echo 'balint.lovey@gmail.com - X' . print_r(\mkw\store::isValidEmail('balint.lovey@gmail.com'), true) . 'X<br>';
         echo '^balint.lovey@gmail.com - X' . \mkw\store::isValidEmail('balint.lovey@gmail.com,vikarerzsebet@gmail.com') . 'X<br>';
         echo 'balint.lovey@gmail com - X' . \mkw\store::isValidEmail('balint.lovey@gmail com') . 'X';
     }
 
-    public function TermekcsoportPiszkalas() {
+    public function TermekcsoportPiszkalas()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('partner_id', 'partner_id');
         $rsm2 = new ResultSetMapping();
@@ -525,7 +543,10 @@ class adminController extends mkwhelpers\Controller {
         $res = $q->getArrayResult();
         foreach ($res as $sor) {
             $partnerid = $sor['partner_id'];
-            $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)', $rsm2);
+            $q2 = \mkw\store::getEm()->createNativeQuery(
+                'SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)',
+                $rsm2
+            );
             $res2 = $q2->getScalarResult();
             $kedv = $res2[0]['kedvezmeny'] * 1;
 
@@ -533,30 +554,54 @@ class adminController extends mkwhelpers\Controller {
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))', $conn);
+                $st = new Statement(
+                    'DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))', $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 8, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 8, ' . $kedv . ')', $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 9, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 9, ' . $kedv . ')', $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 12, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 12, ' . $kedv . ')',
+                    $conn
+                );
                 $st->executeStatement();
                 $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=1)', $conn);
                 $st->executeStatement();
             }
-            $q2 = \mkw\store::getEm()->createNativeQuery('SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $rsm2);
+            $q2 = \mkw\store::getEm()->createNativeQuery(
+                'SELECT kedvezmeny FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)',
+                $rsm2
+            );
             $res2 = $q2->getScalarResult();
             $kedv = $res2[0]['kedvezmeny'] * 1;
             if ($kedv > 0) {
                 \mkw\store::writelog(print_r($partnerid, true));
                 \mkw\store::writelog(print_r($kedv, true));
-                $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))', $conn);
+                $st = new Statement(
+                    'DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))',
+                    $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 13, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 13, ' . $kedv . ')',
+                    $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 14, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 14, ' . $kedv . ')',
+                    $conn
+                );
                 $st->executeStatement();
-                $st = new Statement('INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 16, ' . $kedv . ')', $conn);
+                $st = new Statement(
+                    'INSERT INTO partnertermekcsoportkedvezmeny (partner_id, termekcsoport_id, kedvezmeny) VALUES (' . $partnerid . ', 16, ' . $kedv . ')',
+                    $conn
+                );
                 $st->executeStatement();
                 $st = new Statement('DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id=5)', $conn);
                 $st->executeStatement();
@@ -564,7 +609,8 @@ class adminController extends mkwhelpers\Controller {
         }
     }
 
-    public function ujdivatszamlare() {
+    public function ujdivatszamlare()
+    {
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', 'szamla');
@@ -600,7 +646,6 @@ class adminController extends mkwhelpers\Controller {
                             case 'PRIVATE_PERSON':
                                 $taxnum = '';
                                 break;
-
                         }
                         $address = $customer->customerAddress->children('base', true)->simpleAddress;
                         $orszagkod = (string)$address->countryCode;
@@ -626,21 +671,20 @@ class adminController extends mkwhelpers\Controller {
                     $bf->setSimpleedit(true);
                     $this->getEm()->persist($bf);
                     $this->getEm()->flush();
-                }
-                else {
+                } else {
                     $bf->setPartnervatstatus(2);
                     $this->getEm()->persist($bf);
                     $this->getEm()->flush();
                 }
-            }
-            else {
+            } else {
                 echo $bf->getId() . ':' . $no->getErrorsAsHtml() . '<br>';
             }
         }
         echo 'kész';
     }
 
-    private function n($mit) {
+    private function n($mit)
+    {
         if (strlen($mit) === 1) {
             return ord($mit) - 97;
         }
@@ -649,7 +693,8 @@ class adminController extends mkwhelpers\Controller {
         }
     }
 
-    private function createMptSzekcio($nev) {
+    private function createMptSzekcio($nev)
+    {
         $szekcio = \mkw\store::getEm()->getRepository(Entities\MPTSzekcio::class)->findOneBy(['nev' => $nev]);
         if (!$szekcio) {
             $szekcio = new Entities\MPTSzekcio();
@@ -660,7 +705,8 @@ class adminController extends mkwhelpers\Controller {
         return $szekcio;
     }
 
-    private function createMptTagozat($nev) {
+    private function createMptTagozat($nev)
+    {
         $tagozat = \mkw\store::getEm()->getRepository(Entities\MPTTagozat::class)->findOneBy(['nev' => $nev]);
         if (!$tagozat) {
             $tagozat = new Entities\MPTTagozat();
@@ -671,7 +717,8 @@ class adminController extends mkwhelpers\Controller {
         return $tagozat;
     }
 
-    private function createMptTagsagforma($nev) {
+    private function createMptTagsagforma($nev)
+    {
         $tagsagforma = \mkw\store::getEm()->getRepository(Entities\MPTTagsagforma::class)->findOneBy(['nev' => $nev]);
         if (!$tagsagforma) {
             $tagsagforma = new Entities\MPTTagsagforma();
@@ -682,7 +729,8 @@ class adminController extends mkwhelpers\Controller {
         return $tagsagforma;
     }
 
-    private function MPTCreateFSZ($osszeg, $biz, $datum, $ev, $p) {
+    private function MPTCreateFSZ($osszeg, $biz, $datum, $ev, $p)
+    {
         if ($osszeg && $biz) {
             $f = new Entities\MPTFolyoszamla();
             $f->setTipus('E');
@@ -707,15 +755,18 @@ class adminController extends mkwhelpers\Controller {
         }
     }
 
-    public function MPTPartnerImport() {
-
-        function getosszeg($mibol) {
+    public function MPTPartnerImport()
+    {
+        function getosszeg($mibol)
+        {
             if (trim($mibol) !== '-') {
                 return (int)trim($mibol);
             }
             return false;
         }
-        function getbiz($mibol) {
+
+        function getbiz($mibol)
+        {
             if (trim($mibol) !== '-') {
                 return trim($mibol);
             }
@@ -786,8 +837,7 @@ class adminController extends mkwhelpers\Controller {
                     if ($tagsagdate) {
                         if (\mkw\store::isValidDate($tagsagdate)) {
                             $p->setMptTagsagdate($tagsagdate);
-                        }
-                        else {
+                        } else {
                             $tagsagdate = substr($tagsagdate, 0, 4);
                             if (\mkw\store::isValidDate($tagsagdate . '-01-01')) {
                                 $p->setMptTagsagdate($tagsagdate . '-01-01');
@@ -962,9 +1012,20 @@ class adminController extends mkwhelpers\Controller {
 
                     \mkw\store::getEm()->persist($p);
                     \mkw\store::getEm()->flush();
-
                 }
             }
+        }
+        echo 'Ready.';
+    }
+
+    public function recalcKonferencianszerepelhet()
+    {
+        $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();
+        /** @var Entities\MPTNGYSzakmaianyag $anyag */
+        foreach ($anyagok as $anyag) {
+            $anyag->calcKonferencianszerepelhet();
+            \mkw\store::getEm()->persist($anyag);
+            \mkw\store::getEm()->flush();
         }
         echo 'Ready.';
     }
