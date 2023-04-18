@@ -1023,7 +1023,7 @@ class adminController extends mkwhelpers\Controller
         $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();
         /** @var Entities\MPTNGYSzakmaianyag $anyag */
         foreach ($anyagok as $anyag) {
-            $anyag->calcKonferencianszerepelhet();
+            $anyag->setKonferencianszerepelhet($anyag->calcKonferencianszerepelhet());
             \mkw\store::getEm()->persist($anyag);
             \mkw\store::getEm()->flush();
         }
