@@ -877,7 +877,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setUzletkoto(\Entities\Uzletkoto $uzletkoto)
+    public function setUzletkoto($uzletkoto)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', [$uzletkoto]);
@@ -1053,7 +1053,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setFizmod(\Entities\Fizmod $fizmod)
+    public function setFizmod($fizmod)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$fizmod]);
@@ -2967,12 +2967,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setVatstatus(int $vatstatus): void
+    public function setVatstatus($vatstatus)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVatstatus', [$vatstatus]);
 
-        parent::setVatstatus($vatstatus);
+        return parent::setVatstatus($vatstatus);
     }
 
     /**
@@ -2989,12 +2989,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setThirdadoszam(string $thirdadoszam): void
+    public function setThirdadoszam($thirdadoszam)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setThirdadoszam', [$thirdadoszam]);
 
-        parent::setThirdadoszam($thirdadoszam);
+        return parent::setThirdadoszam($thirdadoszam);
     }
 
     /**
@@ -3011,12 +3011,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setSzamlaegyeb($szamlaegyeb): void
+    public function setSzamlaegyeb($szamlaegyeb)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlaegyeb', [$szamlaegyeb]);
 
-        parent::setSzamlaegyeb($szamlaegyeb);
+        return parent::setSzamlaegyeb($szamlaegyeb);
     }
 
     /**
@@ -3033,12 +3033,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptUsername($mpt_username): void
+    public function setMptUsername($mpt_username)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptUsername', [$mpt_username]);
 
-        parent::setMptUsername($mpt_username);
+        return parent::setMptUsername($mpt_username);
     }
 
     /**
@@ -3055,12 +3055,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptPassword($mpt_password): void
+    public function setMptPassword($mpt_password)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptPassword', [$mpt_password]);
 
-        parent::setMptPassword($mpt_password);
+        return parent::setMptPassword($mpt_password);
     }
 
     /**
@@ -3121,12 +3121,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptLastvisit($mpt_lastvisit): void
+    public function setMptLastvisit($mpt_lastvisit)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptLastvisit', [$mpt_lastvisit]);
 
-        parent::setMptLastvisit($mpt_lastvisit);
+        return parent::setMptLastvisit($mpt_lastvisit);
     }
 
     /**
@@ -3154,12 +3154,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptLastupdate($mpt_lastupdate): void
+    public function setMptLastupdate($mpt_lastupdate)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptLastupdate', [$mpt_lastupdate]);
 
-        parent::setMptLastupdate($mpt_lastupdate);
+        return parent::setMptLastupdate($mpt_lastupdate);
     }
 
     /**
@@ -3176,12 +3176,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptUserid($mpt_userid): void
+    public function setMptUserid($mpt_userid)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptUserid', [$mpt_userid]);
 
-        parent::setMptUserid($mpt_userid);
+        return parent::setMptUserid($mpt_userid);
     }
 
     /**
@@ -3198,12 +3198,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptMunkahelynev($mpt_munkahelynev): void
+    public function setMptMunkahelynev($mpt_munkahelynev)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptMunkahelynev', [$mpt_munkahelynev]);
 
-        parent::setMptMunkahelynev($mpt_munkahelynev);
+        return parent::setMptMunkahelynev($mpt_munkahelynev);
     }
 
     /**
@@ -3220,12 +3220,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptMunkahelyirszam($mpt_munkahelyirszam): void
+    public function setMptMunkahelyirszam($mpt_munkahelyirszam)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptMunkahelyirszam', [$mpt_munkahelyirszam]);
 
-        parent::setMptMunkahelyirszam($mpt_munkahelyirszam);
+        return parent::setMptMunkahelyirszam($mpt_munkahelyirszam);
     }
 
     /**
@@ -4199,7 +4199,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMptngybefizetesmod(\Entities\Fizmod $fizmod = NULL)
+    public function setMptngybefizetesmod($fizmod = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngybefizetesmod', [$fizmod]);
