@@ -1006,7 +1006,7 @@ class Partner
         return '';
     }
 
-    public function setUzletkoto(Uzletkoto $uzletkoto)
+    public function setUzletkoto($uzletkoto)
     {
         if ($this->uzletkoto !== $uzletkoto) {
             $this->uzletkoto = $uzletkoto;
@@ -1132,7 +1132,7 @@ class Partner
         return '';
     }
 
-    public function setFizmod(Fizmod $fizmod)
+    public function setFizmod($fizmod)
     {
         $this->fizmod = $fizmod;
     }
@@ -2352,7 +2352,7 @@ class Partner
     /**
      * @param int $vatstatus
      */
-    public function setVatstatus(int $vatstatus): void
+    public function setVatstatus($vatstatus)
     {
         $this->vatstatus = $vatstatus;
     }
@@ -2368,7 +2368,7 @@ class Partner
     /**
      * @param string $thirdadoszam
      */
-    public function setThirdadoszam(string $thirdadoszam): void
+    public function setThirdadoszam($thirdadoszam)
     {
         $this->thirdadoszam = $thirdadoszam;
     }
@@ -2384,7 +2384,7 @@ class Partner
     /**
      * @param mixed $szamlaegyeb
      */
-    public function setSzamlaegyeb($szamlaegyeb): void
+    public function setSzamlaegyeb($szamlaegyeb)
     {
         $this->szamlaegyeb = $szamlaegyeb;
     }
@@ -2400,7 +2400,7 @@ class Partner
     /**
      * @param mixed $mpt_username
      */
-    public function setMptUsername($mpt_username): void
+    public function setMptUsername($mpt_username)
     {
         $this->mpt_username = $mpt_username;
     }
@@ -2416,7 +2416,7 @@ class Partner
     /**
      * @param mixed $mpt_password
      */
-    public function setMptPassword($mpt_password): void
+    public function setMptPassword($mpt_password)
     {
         $this->mpt_password = $mpt_password;
     }
@@ -2466,7 +2466,7 @@ class Partner
     /**
      * @param mixed $mpt_lastvisit
      */
-    public function setMptLastvisit($mpt_lastvisit): void
+    public function setMptLastvisit($mpt_lastvisit)
     {
         if ($mpt_lastvisit != '') {
             $this->mpt_lastvisit = new \DateTime(\mkw\store::convDate($mpt_lastvisit));
@@ -2492,7 +2492,7 @@ class Partner
     /**
      * @param mixed $mpt_lastupdate
      */
-    public function setMptLastupdate($mpt_lastupdate): void
+    public function setMptLastupdate($mpt_lastupdate)
     {
         if ($mpt_lastupdate != '') {
             $this->mpt_lastupdate = new \DateTime(\mkw\store::convDate($mpt_lastupdate));
@@ -2510,7 +2510,7 @@ class Partner
     /**
      * @param int $mpt_userid
      */
-    public function setMptUserid($mpt_userid): void
+    public function setMptUserid($mpt_userid)
     {
         $this->mpt_userid = $mpt_userid;
     }
@@ -2526,7 +2526,7 @@ class Partner
     /**
      * @param mixed $mpt_munkahelynev
      */
-    public function setMptMunkahelynev($mpt_munkahelynev): void
+    public function setMptMunkahelynev($mpt_munkahelynev)
     {
         $this->mpt_munkahelynev = $mpt_munkahelynev;
     }
@@ -2542,7 +2542,7 @@ class Partner
     /**
      * @param string $mpt_munkahelyirszam
      */
-    public function setMptMunkahelyirszam($mpt_munkahelyirszam): void
+    public function setMptMunkahelyirszam($mpt_munkahelyirszam)
     {
         $this->mpt_munkahelyirszam = $mpt_munkahelyirszam;
     }
@@ -3249,7 +3249,7 @@ class Partner
         return $this->mptngybefizetesmod;
     }
 
-    public function setMptngybefizetesmod(Fizmod $fizmod = null)
+    public function setMptngybefizetesmod($fizmod = null)
     {
         $this->mptngybefizetesmod = $fizmod;
     }
