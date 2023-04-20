@@ -12,8 +12,9 @@ class MPTNGYSzakmaianyagRepository extends \mkwhelpers\Repository
         parent::__construct($em, $class);
         $this->setEntityname(MPTNGYSzakmaianyag::class);
         $this->setOrders([
-            '1' => ['caption' => 'kezdés szerint növekvő', 'order' => ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']],
-            '2' => ['caption' => 'cím szerint növekvő', 'order' => ['cim' => 'ASC']]
+            '1' => ['caption' => 'azonosító szerint növekvő', 'order' => ['id' => 'ASC']],
+            '2' => ['caption' => 'kezdés szerint növekvő', 'order' => ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']],
+            '3' => ['caption' => 'cím szerint növekvő', 'order' => ['cim' => 'ASC']]
         ]);
 
         $btch = [];

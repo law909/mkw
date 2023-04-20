@@ -267,6 +267,10 @@ class MPTNGYSzakmaianyag
      * @ORM\Column(type="text",nullable=true)
      */
     private $egyebszerzok;
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $egyebszerzokorg;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $b1szempont1;
@@ -1998,5 +2002,22 @@ class MPTNGYSzakmaianyag
             $this->tema = null;
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEgyebszerzokorg()
+    {
+        return $this->egyebszerzokorg;
+    }
+
+    /**
+     * @param mixed $egyebszerzokorg
+     */
+    public function setEgyebszerzokorg($egyebszerzokorg): void
+    {
+        $this->egyebszerzokorg = $egyebszerzokorg;
+    }
+
 
 }

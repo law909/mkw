@@ -25,6 +25,12 @@
         <div>
             <pre class="ui-widget">{$_egyed.egyebszerzok}</pre>
         </div>
+        <div class="ui-widget-content">
+            <div>Eredeti egyéb szerzők:</div>
+            <div>
+                <pre class="ui-widget">{$_egyed.egyebszerzok}</pre>
+            </div>
+        </div>
     </td>
     <td class="cell">
         <div>Összes pont: {$_egyed.osszespont}</div>

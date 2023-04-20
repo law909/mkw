@@ -66,7 +66,7 @@
                 <tr>
                     <td><label for="tipusEdit">{at('Típus')}:</label></td>
                     <td>
-                        <select id="tipusEdit" name="tipus" required>
+                        <select id="tipusEdit" name="tipus">
                             <option value="">{at('válasszon')}</option>
                             {foreach $tipuslist as $_mk}
                                 <option
@@ -142,6 +142,10 @@
                 <tr>
                     <td><label for="egyebszerzokEdit">{at('Egyéb szerzők')}:</label></td>
                     <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80">{$egyed.egyebszerzok}</textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="egyebszerzokorgEdit">{at('Eredeti egyéb szerzők')}:</label></td>
+                    <td><textarea id="egyebszerzokorgEdit" rows="10" cols="80" disabled>{$egyed.egyebszerzokorg}</textarea></td>
                 </tr>
                 <tr style="height: 1em;" class="onlyszimpozium"></tr>
                 <tr class="onlyszimpozium hidden">

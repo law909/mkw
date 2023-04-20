@@ -5,14 +5,17 @@ use Doctrine\ORM\Query\ResultSetMapping;
 $DBVersion = \mkw\store::getParameter(\mkw\consts::DBVersion, '');
 
 if ($DBVersion < '0028') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(7, "Helyszínek","/admin/helyszin/viewlist","/admin/helyszin",20,0,50, "")');
+        . '(7, "Helyszínek","/admin/helyszin/viewlist","/admin/helyszin",20,0,50, "")'
+    );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0028');
 }
 
 if ($DBVersion < '0029') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
         . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
         . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
         . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
@@ -22,46 +25,59 @@ if ($DBVersion < '0029') {
         . ' "0", "0", "1", "1", "1", "0", "biz_sablon.tpl", "0",'
         . ' "1", "0", "0", "0", "0", "0", "0",'
         . ' "0", "0", "0", "0", "0", "0", "0", "0",'
-        . ' "0", "0", "0", "0", "0", "0")');
+        . ' "0", "0", "0", "0", "0", "0")'
+    );
 
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(1, "Biz. sablonok","/admin/bizsablonfej/viewlist","/admin/bizsablonfej",15,1,50, "")');
+        . '(1, "Biz. sablonok","/admin/bizsablonfej/viewlist","/admin/bizsablonfej",15,1,50, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0029');
 }
 
 if ($DBVersion < '0030') {
     if (\mkw\store::isDarshan()) {
-        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        \mkw\store::getEm()->getConnection()->executeUpdate(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
             . ' VALUES '
-            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,1,200, "")');
+            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,1,200, "")'
+        );
     } else {
-        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        \mkw\store::getEm()->getConnection()->executeUpdate(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
             . ' VALUES '
-            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,0,200, "")');
+            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,0,200, "")'
+        );
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0030');
 }
 
 if ($DBVersion < '0031') {
     if (\mkw\store::isDarshan()) {
-        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        \mkw\store::getEm()->getConnection()->executeUpdate(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
             . ' VALUES '
-            . '(8, "Bérletek","/admin/jogaberlet/viewlist","/admin/jogaberlet",15,1,210, "")');
+            . '(8, "Bérletek","/admin/jogaberlet/viewlist","/admin/jogaberlet",15,1,210, "")'
+        );
     } else {
-        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        \mkw\store::getEm()->getConnection()->executeUpdate(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
             . ' VALUES '
-            . '(8, "Bérletek","/admin/jogaberlet/viewlist","/admin/jogaberlet",15,0,210, "")');
+            . '(8, "Bérletek","/admin/jogaberlet/viewlist","/admin/jogaberlet",15,0,210, "")'
+        );
     }
     \mkw\store::getEm()->getConnection()->executeUpdate("UPDATE menu SET sorrend=220 WHERE routename='/admin/naptar'");
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0031');
 }
 
 if ($DBVersion < '0032') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(7, "Partner összefűzés","/admin/partnermerge/view","/admin/partnermerge",90,1,1000, "")');
+        . '(7, "Partner összefűzés","/admin/partnermerge/view","/admin/partnermerge",90,1,1000, "")'
+    );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0032');
 }
 
@@ -78,7 +94,8 @@ if ($DBVersion < '0033') {
 }
 
 if ($DBVersion < '0034') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
         . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
         . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
         . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
@@ -88,17 +105,21 @@ if ($DBVersion < '0034') {
         . ' "1", "0", "1", "1", "1", "0", "biz_garancia.tpl", "0",'
         . ' "1", "0", "0", "0", "0", "0", "0",'
         . ' "0", "0", "0", "0", "0", "0", "0", "0",'
-        . ' "0", "0", "0", "0", "0", "1", "0")');
+        . ' "0", "0", "0", "0", "0", "1", "0")'
+    );
 
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(1, "Garancialevelek","/admin/garancialevelfej/viewlist","/admin/garancialevelfej",15,0,850, "")');
+        . '(1, "Garancialevelek","/admin/garancialevelfej/viewlist","/admin/garancialevelfej",15,0,850, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0034');
 }
 
 if ($DBVersion < '0035') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
         . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
         . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
         . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
@@ -108,19 +129,24 @@ if ($DBVersion < '0035') {
         . ' "0", "0", "1", "1", "0", "0", "biz_kolcsonzes.tpl", "0",'
         . ' "1", "0", "0", "0", "0", "0", "0",'
         . ' "0", "0", "0", "0", "0", "0", "0", "0",'
-        . ' "0", "0", "0", "0", "0", "1", "0")');
+        . ' "0", "0", "0", "0", "0", "1", "0")'
+    );
 
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(1, "Kölcsönzés","/admin/kolcsonzesfej/viewlist","/admin/kolcsonzesfej",15,0,250, "")');
+        . '(1, "Kölcsönzés","/admin/kolcsonzesfej/viewlist","/admin/kolcsonzesfej",15,0,250, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0035');
 }
 
 if ($DBVersion < '0036') {
-    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(4, "Számla XML export","/admin/xmlszamlaexport/view","/admin/xmlszamlaexport",20,1,890, "")');
+        . '(4, "Számla XML export","/admin/xmlszamlaexport/view","/admin/xmlszamlaexport",20,1,890, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0036');
 }
@@ -131,9 +157,11 @@ if ($DBVersion < '0037') {
 }
 
 if ($DBVersion < '0038') {
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(3, "MNR Statikus lapok","/admin/mnrstatic/viewlist","/admin/mnrstatic",20,0,450, "")');
+        . '(3, "MNR Statikus lapok","/admin/mnrstatic/viewlist","/admin/mnrstatic",20,0,450, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0038');
 }
@@ -143,33 +171,41 @@ if ($DBVersion < '0039') {
     if (\mkw\store::isSuperzoneB2B() || \mkw\store::isMugenrace() || \mkw\store::isMugenrace()) {
         $lathato = '1';
     }
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(4, "Árlista","/admin/arlista/view","/admin/arlista",20,' . $lathato . ',1000, "")');
+        . '(4, "Árlista","/admin/arlista/view","/admin/arlista",20,' . $lathato . ',1000, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0039');
 }
 
 if ($DBVersion < '0040') {
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-                                                           . ' VALUES '
-                                                           . '(3, "MNR Navigáció","/admin/mnrnavigation/viewlist","/admin/mnrnavigation",20,0,440, "")');
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "MNR Navigáció","/admin/mnrnavigation/viewlist","/admin/mnrnavigation",20,0,440, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0040');
 }
 
 if ($DBVersion < '0041') {
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-                                                           . ' VALUES '
-                                                           . '(3, "MNR Landing page","/admin/mnrlanding/viewlist","/admin/mnrlanding",20,0,430, "")');
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "MNR Landing page","/admin/mnrlanding/viewlist","/admin/mnrlanding",20,0,430, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0041');
 }
 
 if ($DBVersion < '0042') {
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-                                                           . ' VALUES '
-                                                           . '(3, "Termék értékelések","/admin/termekertekeles/viewlist","/admin/termekertekeles",20,0,1100, "")');
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Termék értékelések","/admin/termekertekeles/viewlist","/admin/termekertekeles",20,0,1100, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0042');
 }
@@ -181,11 +217,19 @@ if ($DBVersion < '0043') {
 }
 
 if ($DBVersion < '0044') {
-    \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(1, "Szakmai anyagok","/admin/mptngyszakmaianyag/viewlist","/admin/mptngyszakmaianyag",20,0,1700, "")');
+        . '(1, "Szakmai anyagok","/admin/mptngyszakmaianyag/viewlist","/admin/mptngyszakmaianyag",20,0,1700, "")'
+    );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0044');
+}
+
+if ($DBVersion < '0045') {
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE mptngyszakmaianyag SET egyebszerzokorg = egyebszerzok');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0045');
 }
 
 /*********************************************************
@@ -194,17 +238,23 @@ if ($DBVersion < '0044') {
  *
  */
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
-    $mes2 = array();
+    $mes2 = [];
     $rsm = new ResultSetMapping();
     $rsm->addScalarResult('me', 'me');
-    $q = \mkw\store::getEm()->createNativeQuery('SELECT DISTINCT me'
-        . ' FROM bizonylattetel ', $rsm);
+    $q = \mkw\store::getEm()->createNativeQuery(
+        'SELECT DISTINCT me'
+        . ' FROM bizonylattetel ',
+        $rsm
+    );
     $mes = $q->getScalarResult();
     foreach ($mes as $m) {
         $mes2[$m['me']] = $m['me'];
     }
-    $q = \mkw\store::getEm()->createNativeQuery('SELECT DISTINCT me'
-        . ' FROM termek ', $rsm);
+    $q = \mkw\store::getEm()->createNativeQuery(
+        'SELECT DISTINCT me'
+        . ' FROM termek ',
+        $rsm
+    );
     $mes = $q->getScalarResult();
     foreach ($mes as $m) {
         $mes2[$m['me']] = $m['me'];
@@ -227,7 +277,8 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
  */
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
 // magánszemélyek
-    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=2'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'UPDATE partner SET vatstatus=2'
         . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
     );
 
@@ -235,8 +286,11 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
     $rsm = new ResultSetMapping();
     $rsm->addScalarResult('id', 'id');
     $rsm->addScalarResult('adoszam', 'adoszam');
-    $q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam'
-        . ' FROM partner WHERE (adoszam IS NOT NULL) AND (adoszam <> \'\')', $rsm);
+    $q = \mkw\store::getEm()->createNativeQuery(
+        'SELECT id,adoszam'
+        . ' FROM partner WHERE (adoszam IS NOT NULL) AND (adoszam <> \'\')',
+        $rsm
+    );
     $ps = $q->getScalarResult();
     foreach ($ps as $p) {
         if (\mkw\store::isMagyarAdoszam($p['adoszam'])) {
@@ -244,12 +298,14 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
         }
     }
 
-    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=1'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'UPDATE partner SET vatstatus=1'
         . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
     );
 
 // egyeb
-    \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET vatstatus=3'
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'UPDATE partner SET vatstatus=3'
         . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0))'
     );
 
@@ -259,8 +315,11 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
     $rsm->addScalarResult('euadoszam', 'euadoszam');
     $rsm->addScalarResult('thirdadoszam', 'thirdadoszam');
     $rsm->addScalarResult('szamlatipus', 'szamlatipus');
-    $q = \mkw\store::getEm()->createNativeQuery('SELECT id,adoszam,euadoszam,thirdadoszam,szamlatipus'
-        . ' FROM partner WHERE vatstatus=3', $rsm);
+    $q = \mkw\store::getEm()->createNativeQuery(
+        'SELECT id,adoszam,euadoszam,thirdadoszam,szamlatipus'
+        . ' FROM partner WHERE vatstatus=3',
+        $rsm
+    );
     $ps = $q->getScalarResult();
     foreach ($ps as $p) {
         if ($p['szamlatipus'] == 1) {

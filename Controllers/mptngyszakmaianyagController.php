@@ -103,6 +103,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['temakor3nev'] = $t->getTemakor3()?->getNev();
         $x['konyvkiadasho'] = $t->getKonyvkiadasho();
         $x['egyebszerzok'] = $t->getEgyebszerzok();
+        $x['egyebszerzokorg'] = $t->getEgyebszerzokorg();
         $x['b1szempont1'] = $t->getB1szempont1();
         $x['b1szempont2'] = $t->getB1szempont2();
         $x['b1szempont3'] = $t->getB1szempont3();
