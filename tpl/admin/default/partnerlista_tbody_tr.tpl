@@ -75,7 +75,17 @@
             </tbody>
         </table>
     </td>
-    <td class="cell">{$_partner.orszagnev}<br/>{$_partner.cim}<br/>{if ($_partner.lcim!=='')}({at('Levélcím')}: {$_partner.lcim}){/if}</td>
+    <td class="cell">
+        <div>{$_partner.orszagnev}</div>
+        {if ($setup.mptngy)}
+            <div>Munkahely: {$_partner.mpt_munkahelynev}</div>
+            <div>Számlázási név: {$_partner.szlanev}</div>
+        {/if}
+        <div>Számlázási cím: {$_partner.cim}</div>
+        {if ($_partner.lcim!=='')}
+            <div>{at('Levelezési cím')}: {$_partner.lcim}</div>
+        {/if}
+    </td>
     <td class="cell">
         <table>
             <tbody>
