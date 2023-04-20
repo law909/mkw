@@ -115,18 +115,18 @@
             </div>
         {/if}
         {if ($setup.mijsz)}
-        <div class="egyebadat-grid">
-            <table id="mijszoklevelkibocsajtogrid"></table>
-            <div id="mijszoklevelkibocsajtogridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="mijszoklevelszintgrid"></table>
-            <div id="mijszoklevelszintgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="mijszgyakorlasszintgrid"></table>
-            <div id="mijszgyakorlasszintgridpager"></div>
-        </div>
+            <div class="egyebadat-grid">
+                <table id="mijszoklevelkibocsajtogrid"></table>
+                <div id="mijszoklevelkibocsajtogridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mijszoklevelszintgrid"></table>
+                <div id="mijszoklevelszintgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mijszgyakorlasszintgrid"></table>
+                <div id="mijszgyakorlasszintgridpager"></div>
+            </div>
         {/if}
         {if ($setup.mpt)}
             <div class="egyebadat-grid">
@@ -172,12 +172,20 @@
                 <div id="mptngytemakorgridpager"></div>
             </div>
             <div class="egyebadat-grid">
+                <table id="mptngytemagrid"></table>
+                <div id="mptngytemagridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
                 <table id="mptngyszerepkorgrid"></table>
                 <div id="mptngyszerepkorgridpager"></div>
             </div>
             <div class="egyebadat-grid">
                 <table id="mptngyszakmaianyagtipusgrid"></table>
                 <div id="mptngyszakmaianyagtipusgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="teremgrid"></table>
+                <div id="teremgridpager"></div>
             </div>
         {/if}
 
@@ -188,10 +196,10 @@
             <div id="bankszamlagridpager"></div>
         </div>
         {if ($setup.rewrite301)}
-        <div class="egyebadat-grid">
-            <table id="rw301grid"></table>
-            <div id="rw301gridpager"></div>
-        </div>
+            <div class="egyebadat-grid">
+                <table id="rw301grid"></table>
+                <div id="rw301gridpager"></div>
+            </div>
         {/if}
     </div>
 {/block}

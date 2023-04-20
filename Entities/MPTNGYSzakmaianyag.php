@@ -187,6 +187,9 @@ class MPTNGYSzakmaianyag
     /** @ORM\Column(type="string",length=10,nullable=true) */
     private $kezdoido;
 
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $vegido;
+
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
@@ -247,6 +250,13 @@ class MPTNGYSzakmaianyag
      * @var \Entities\MPTNGYTemakor
      */
     private $temakor3;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYTema")
+     * @ORM\JoinColumn(name="tema_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\MPTNGYTema
+     */
+    private $tema;
 
     /**
      * @ORM\Column(type="string", length=7,nullable=true)
@@ -324,6 +334,12 @@ class MPTNGYSzakmaianyag
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $pluszbiralokell = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Jogaterem")
+     * @ORM\JoinColumn(name="terem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $terem;
 
     public function calcB1pont()
     {
@@ -1902,6 +1918,85 @@ class MPTNGYSzakmaianyag
     public function setPluszbiralokell($pluszbiralokell): void
     {
         $this->pluszbiralokell = $pluszbiralokell;
+    }
+
+    public function getTerem()
+    {
+        return $this->terem;
+    }
+
+    public function getTeremNev()
+    {
+        if ($this->terem) {
+            return $this->terem->getNev();
+        }
+        return '';
+    }
+
+    public function getTeremId()
+    {
+        if ($this->terem) {
+            return $this->terem->getId();
+        }
+        return '';
+    }
+
+    public function setTerem($terem)
+    {
+        $this->terem = $terem;
+    }
+
+    public function removeTerem()
+    {
+        $this->terem = null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVegido()
+    {
+        return $this->vegido;
+    }
+
+    /**
+     * @param mixed $vegido
+     */
+    public function setVegido($vegido): void
+    {
+        $this->vegido = $vegido;
+    }
+
+    /**
+     * @return MPTNGYTema
+     */
+    public function getTema()
+    {
+        return $this->tema;
+    }
+
+    public function getTemaNev()
+    {
+        return $this->tema?->getNev();
+    }
+
+    /**
+     * @param \Entities\MPTNGYTema $val
+     */
+    public function setTema($val)
+    {
+        if (!$val) {
+            $this->removeTema();
+        } else {
+            $this->tema = $val;
+        }
+    }
+
+    public function removeTema()
+    {
+        if ($this->tema !== null) {
+            $this->tema = null;
+        }
     }
 
 }

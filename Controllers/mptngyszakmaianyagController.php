@@ -3,8 +3,10 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\Jogaterem;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzakmaianyagtipus;
+use Entities\MPTNGYTema;
 use Entities\MPTNGYTemakor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
@@ -57,6 +59,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['kezdodatum'] = $t->getKezdodatum();
         $x['kezdoido'] = $t->getKezdoido();
         $x['kezdodatumstr'] = $t->getKezdodatumStr();
+        $x['vegido'] = $t->getVegido();
         $x['tipus'] = $t->getTipusId();
         $x['tipusnev'] = $t->getTipus()?->getNev();
         $x['eloadas1'] = $t->getEloadas1Id();
@@ -128,6 +131,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['osszespont'] = $t->calcPont();
         $x['pluszbiralokell'] = $t->isPluszbiralokell();
 
+        $x['terem'] = $t->getTeremId();
+        $x['teremnev'] = $t->getTeremNev();
+
+        $x['tema'] = $t->getTema();
+        $x['temanev'] = $t->getTemaNev();
         return $x;
     }
 
@@ -142,6 +150,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setTartalom($this->params->getStringRequestParam('tartalom'));
         $obj->setKezdodatum($this->params->getIntRequestParam('kezdodatum'));
         $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
+        $obj->setVegido($this->params->getStringRequestParam('vegido'));
         $obj->setKulcsszo1($this->params->getStringRequestParam('kulcsszo1'));
         $obj->setKulcsszo2($this->params->getStringRequestParam('kulcsszo2'));
         $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
@@ -194,6 +203,20 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
 
         if (!$pub) {
+            $terem = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('terem'));
+            if ($terem) {
+                $obj->setTerem($terem);
+            } else {
+                $obj->removeTerem();
+            }
+
+            $tema = \mkw\store::getEm()->getRepository(MPTNGYTema::class)->find($this->params->getIntRequestParam('tema'));
+            if ($tema) {
+                $obj->setTema($tema);
+            } else {
+                $obj->removeTema();
+            }
+
             $tulaj = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tulajdonos'));
             if ($tulaj) {
                 $obj->setTulajdonos($tulaj);
@@ -371,6 +394,14 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('tipus', '=', $this->params->getIntRequestParam('tipusfilter'));
         }
 
+        if (!is_null($this->params->getRequestParam('teremfilter', null))) {
+            $filter->addFilter('terem', '=', $this->params->getIntRequestParam('teremfilter'));
+        }
+
+        if (!is_null($this->params->getRequestParam('temafilter', null))) {
+            $filter->addFilter('tema', '=', $this->params->getIntRequestParam('temafilter'));
+        }
+
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -400,6 +431,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('temakor1list', $tk->getSelectList());
         $tc = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('tipuslist', $tc->getSelectList());
+        $jt = new jogateremController($this->params);
+        $view->setVar('teremlist', $jt->getSelectList());
+        $tx = new mptngytemaController($this->params);
+        $view->setVar('temalist', $tx->getSelectList());
 
         $view->printTemplateResult();
     }
@@ -418,6 +453,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         // loadVars utan nem abc sorrendben adja vissza
         $tc = new mptngyszakmaianyagtipusController($this->params);
         $view->setVar('tipuslist', $tc->getSelectList($anyag?->getTipusId()));
+
+        $jt = new jogateremController($this->params);
+        $view->setVar('teremlist', $jt->getSelectList($anyag?->getTeremId()));
+
+        $xt = new mptngytemaController($this->params);
+        $view->setVar('temalist', $xt->getSelectList($anyag?->getTema()?->getId()));
 
         $pc = new partnerController($this->params);
         $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonosId()));

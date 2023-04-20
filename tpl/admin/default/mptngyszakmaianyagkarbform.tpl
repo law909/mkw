@@ -42,7 +42,24 @@
                                 >{$_mk.caption}</option>
                             {/foreach}
                         </select>
-                        <input name="kezdoido" value="{$egyed.kezdoido}">
+                        <input name="kezdoido" value="{$egyed.kezdoido}"> -
+                        <input name="vegido" value="{$egyed.vegido}">
+                    </td>
+                </tr>
+                <tr style="height: 1em;"></tr>
+                <tr>
+                    <td><label for="teremEdit">{at('Terem')}:</label></td>
+                    <td>
+                        <select id="teremEdit" name="terem" required>
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $teremlist as $_mk}
+                                <option
+                                    value="{$_mk.id}"
+                                        {if ($_mk.selected)} selected="selected"{/if}
+                                        {if ($_mk.szimpozium)}data-szimpozium="{$_mk.szimpozium}"{/if}
+                                >{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
                     </td>
                 </tr>
                 <tr style="height: 1em;"></tr>
@@ -204,6 +221,22 @@
                             <option value="">{at('válasszon')}</option>
                             {foreach $temakor3list as $_mk}
                                 <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr style="height: 1em;"></tr>
+                <tr>
+                    <td><label for="temaEdit">{at('Téma')}:</label></td>
+                    <td>
+                        <select id="temaEdit" name="tema">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $temalist as $_mk}
+                                <option
+                                    value="{$_mk.id}"
+                                        {if ($_mk.selected)} selected="selected"{/if}
+                                        {if ($_mk.szimpozium)}data-szimpozium="{$_mk.szimpozium}"{/if}
+                                >{$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>

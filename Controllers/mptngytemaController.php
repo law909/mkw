@@ -1,0 +1,81 @@
+<?php
+
+namespace Controllers;
+
+use mkw\store;
+
+class mptngytemaController extends \mkwhelpers\JQGridController
+{
+
+    public function __construct($params)
+    {
+        $this->setEntityName(\Entities\MPTNGYTema::class);
+        parent::__construct($params);
+    }
+
+    protected function loadCells($obj)
+    {
+        return [
+            $obj->getNev(),
+            $obj->getElnok(),
+        ];
+    }
+
+    protected function setFields($obj)
+    {
+        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $obj->setElnok($this->params->getStringRequestParam('elnok', $obj->getElnok()));
+        return $obj;
+    }
+
+    public function jsonlist()
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($this->params->getBoolRequestParam('_search', false)) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
+                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
+            }
+            if (!is_null($this->params->getRequestParam('elnok', null))) {
+                $filter->addFilter('elnok', 'LIKE', '%' . $this->params->getStringRequestParam('elnok') . '%');
+            }
+        }
+        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
+        echo json_encode($this->loadDataToView($rec));
+    }
+
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'elnok' => $sor->getElnok(), 'selected' => ($sor->getId() == $selid)];
+        }
+        return $res;
+    }
+
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
+        $ret = '<select>';
+        foreach ($rec as $sor) {
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+        }
+        $ret .= '</select>';
+        echo $ret;
+    }
+
+    public function getApiList()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'elnok' => $sor->getElnok(),
+            ];
+        }
+        echo json_encode($res);
+    }
+
+}

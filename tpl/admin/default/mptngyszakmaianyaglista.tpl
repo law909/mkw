@@ -67,6 +67,17 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
+                <label for="temafilter">{at('Téma')}: </label>
+                <select id="temafilter" name="temafilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $temalist as $_gyarto}
+                        <option
+                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
                 <label for="temakor1filter">{at('Témakör 1')}: </label>
                 <select id="temakor1filter" name="temakor1filter">
                     <option value="">{at('válasszon')}</option>

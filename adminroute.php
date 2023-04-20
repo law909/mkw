@@ -119,6 +119,10 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/mptngytemakor/htmllist', 'mptngytemakorController#htmllist', 'adminmptngytemakorhtmllist');
     $router->map('POST', '/admin/mptngytemakor/save', 'mptngytemakorController#save', 'adminmptngytemakorsave');
 
+    $router->map('GET', '/admin/mptngytema/jsonlist', 'mptngytemaController#jsonlist', 'adminmptngytemajsonlist');
+    $router->map('GET', '/admin/mptngytema/htmllist', 'mptngytemaController#htmllist', 'adminmptngytemahtmllist');
+    $router->map('POST', '/admin/mptngytema/save', 'mptngytemaController#save', 'adminmptngytemasave');
+
     $router->map('GET', '/admin/mptngyszerepkor/jsonlist', 'mptngyszerepkorController#jsonlist', 'adminmptngyszerepkorjsonlist');
     $router->map('GET', '/admin/mptngyszerepkor/htmllist', 'mptngyszerepkorController#htmllist', 'adminmptngyszerepkorhtmllist');
     $router->map('POST', '/admin/mptngyszerepkor/save', 'mptngyszerepkorController#save', 'adminmptngyszerepkorsave');

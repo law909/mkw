@@ -268,25 +268,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Árfolyamok'
         });
-        $(_arf.grid).jqGrid('navGrid', _arf.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_arf.grid).jqGrid('navButtonAdd', _arf.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                arfolyamgrid[0].toggleToolbar();
-            }
-        });
-        $(_arf.grid).jqGrid('navButtonAdd', _arf.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                arfolyamgrid[0].clearToolbar();
-            }
-        });
-        $(_arf.grid).jqGrid('filterToolbar');
-        $(_arf.pager + '_center').hide();
-        $(_arf.pager + '_right').hide();
+        createNav(_arf, arfolyamgrid);
 
         // VTSZ grid
         var _vtsz = {
@@ -347,25 +329,7 @@ $().ready(
             hiddengrid: true,
             caption: 'VTSZ'
         });
-        $(_vtsz.grid).jqGrid('navGrid', _vtsz.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_vtsz.grid).jqGrid('navButtonAdd', _vtsz.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                vtszgrid[0].toggleToolbar();
-            }
-        });
-        $(_vtsz.grid).jqGrid('navButtonAdd', _vtsz.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                vtszgrid[0].clearToolbar();
-            }
-        });
-        $(_vtsz.grid).jqGrid('filterToolbar');
-        $(_vtsz.pager + '_center').hide();
-        $(_vtsz.pager + '_right').hide();
+        createNav(_vtsz, vtszgrid);
 
         // TermekCimkeKat grid
         var _tck = {
@@ -447,25 +411,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Termékcímke csoportok'
         });
-        $(_tck.grid).jqGrid('navGrid', _tck.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_tck.grid).jqGrid('navButtonAdd', _tck.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                termekcimkekatgrid[0].toggleToolbar();
-            }
-        });
-        $(_tck.grid).jqGrid('navButtonAdd', _tck.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                termekcimkekatgrid[0].clearToolbar();
-            }
-        });
-        $(_tck.grid).jqGrid('filterToolbar');
-        $(_tck.pager + '_center').hide();
-        $(_tck.pager + '_right').hide();
+        createNav(_tck, termekcimkekatgrid);
 
         // PartnerCimkeKat grid
         var _pck = {
@@ -506,25 +452,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Partnercímke csoportok'
         });
-        $(_pck.grid).jqGrid('navGrid', _pck.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_pck.grid).jqGrid('navButtonAdd', _pck.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                partnercimkekatgrid[0].toggleToolbar();
-            }
-        });
-        $(_pck.grid).jqGrid('navButtonAdd', _pck.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                partnercimkekatgrid[0].clearToolbar();
-            }
-        });
-        $(_pck.grid).jqGrid('filterToolbar');
-        $(_pck.pager + '_center').hide();
-        $(_pck.pager + '_right').hide();
+        createNav(_pck, partnercimkekatgrid);
 
         // Felhasználó grid
         var _felhasznalo = {
@@ -578,25 +506,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Felhasználók'
         });
-        $(_felhasznalo.grid).jqGrid('navGrid', _felhasznalo.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_felhasznalo.grid).jqGrid('navButtonAdd', _felhasznalo.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                felhasznalogrid[0].toggleToolbar();
-            }
-        });
-        $(_felhasznalo.grid).jqGrid('navButtonAdd', _felhasznalo.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                felhasznalogrid[0].clearToolbar();
-            }
-        });
-        $(_felhasznalo.grid).jqGrid('filterToolbar');
-        $(_felhasznalo.pager + '_center').hide();
-        $(_felhasznalo.pager + '_right').hide();
+        createNav(_felhasznalo, felhasznalogrid);
 
         // TermekValtozatAdatTipus grid
         var _tvat = {
@@ -628,25 +538,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Termékváltozat adattípusok'
         });
-        $(_tvat.grid).jqGrid('navGrid', _tvat.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_tvat.grid).jqGrid('navButtonAdd', _tvat.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                termekvaltozatadattipusgrid[0].toggleToolbar();
-            }
-        });
-        $(_tvat.grid).jqGrid('navButtonAdd', _tvat.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                termekvaltozatadattipusgrid[0].clearToolbar();
-            }
-        });
-        $(_tvat.grid).jqGrid('filterToolbar');
-        $(_tvat.pager + '_center').hide();
-        $(_tvat.pager + '_right').hide();
+        createNav(_tvat, termekvaltozatadattipusgrid);
 
         // Munkakor grid
         var _mkor = {
@@ -685,25 +577,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Munkakörök'
         });
-        $(_mkor.grid).jqGrid('navGrid', _mkor.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mkor.grid).jqGrid('navButtonAdd', _mkor.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mkorgrid[0].toggleToolbar();
-            }
-        });
-        $(_mkor.grid).jqGrid('navButtonAdd', _mkor.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mkorgrid[0].clearToolbar();
-            }
-        });
-        $(_mkor.grid).jqGrid('filterToolbar');
-        $(_mkor.pager + '_center').hide();
-        $(_mkor.pager + '_right').hide();
+        createNav(_mkor, mkorgrid);
 
         // Jelenlettipus grid
         var _jlt = {
@@ -735,25 +609,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Jelenlét típusok'
         });
-        $(_jlt.grid).jqGrid('navGrid', _jlt.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_jlt.grid).jqGrid('navButtonAdd', _jlt.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                jltgrid[0].toggleToolbar();
-            }
-        });
-        $(_jlt.grid).jqGrid('navButtonAdd', _jlt.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                jltgrid[0].clearToolbar();
-            }
-        });
-        $(_jlt.grid).jqGrid('filterToolbar');
-        $(_jlt.pager + '_center').hide();
-        $(_jlt.pager + '_right').hide();
+        createNav(_jlt, jltgrid);
 
         // Raktar grid
         var _rkt = {
@@ -810,25 +666,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Raktárak'
         });
-        $(_rkt.grid).jqGrid('navGrid', _rkt.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_rkt.grid).jqGrid('navButtonAdd', _rkt.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                rktgrid[0].toggleToolbar();
-            }
-        });
-        $(_rkt.grid).jqGrid('navButtonAdd', _rkt.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                rktgrid[0].clearToolbar();
-            }
-        });
-        $(_rkt.grid).jqGrid('filterToolbar');
-        $(_rkt.pager + '_center').hide();
-        $(_rkt.pager + '_right').hide();
+        createNav(_rkt, rktgrid);
 
         // Kapcsolatfelveteltema grid
         var _kft = {
@@ -860,25 +698,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Kapcsolatfelvétel témák'
         });
-        $(_kft.grid).jqGrid('navGrid', _kft.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_kft.grid).jqGrid('navButtonAdd', _kft.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                kftgrid[0].toggleToolbar();
-            }
-        });
-        $(_kft.grid).jqGrid('navButtonAdd', _kft.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                kftgrid[0].clearToolbar();
-            }
-        });
-        $(_kft.grid).jqGrid('filterToolbar');
-        $(_kft.pager + '_center').hide();
-        $(_kft.pager + '_right').hide();
+        createNav(_kft, kftgrid);
 
         // Irszam grid
         var _irszam = {
@@ -917,25 +737,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Irányítószámok'
         });
-        $(_irszam.grid).jqGrid('navGrid', _irszam.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_irszam.grid).jqGrid('navButtonAdd', _irszam.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                irszamgrid[0].toggleToolbar();
-            }
-        });
-        $(_irszam.grid).jqGrid('navButtonAdd', _irszam.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                irszamgrid[0].clearToolbar();
-            }
-        });
-        $(_irszam.grid).jqGrid('filterToolbar');
-        $(_irszam.pager + '_center').hide();
-        $(_irszam.pager + '_right').hide();
+        createNav(_irszam, irszamgrid);
 
         // Rewrite301 grid
         var _rw301 = {
@@ -974,25 +776,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Rewrite 301'
         });
-        $(_rw301.grid).jqGrid('navGrid', _rw301.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_rw301.grid).jqGrid('navButtonAdd', _rw301.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                rw301grid[0].toggleToolbar();
-            }
-        });
-        $(_rw301.grid).jqGrid('navButtonAdd', _rw301.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                rw301grid[0].clearToolbar();
-            }
-        });
-        $(_rw301.grid).jqGrid('filterToolbar');
-        $(_rw301.pager + '_center').hide();
-        $(_rw301.pager + '_right').hide();
+        createNav(_rw301, rw301grid);
 
         // Termekcsoport grid
         var _termekcsoport = {
@@ -1024,25 +808,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Termékcsoportok'
         });
-        $(_termekcsoport.grid).jqGrid('navGrid', _termekcsoport.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_termekcsoport.grid).jqGrid('navButtonAdd', _termekcsoport.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                termekcsoportgrid[0].toggleToolbar();
-            }
-        });
-        $(_termekcsoport.grid).jqGrid('navButtonAdd', _termekcsoport.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                termekcsoportgrid[0].clearToolbar();
-            }
-        });
-        $(_termekcsoport.grid).jqGrid('filterToolbar');
-        $(_termekcsoport.pager + '_center').hide();
-        $(_termekcsoport.pager + '_right').hide();
+        createNav(_termekcsoport, termekcsoportgrid);
 
         // Jogcim grid
         var _jogcim = {
@@ -1075,25 +841,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Jogcímek'
         });
-        $(_jogcim.grid).jqGrid('navGrid', _jogcim.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_jogcim.grid).jqGrid('navButtonAdd', _jogcim.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                jogcimgrid[0].toggleToolbar();
-            }
-        });
-        $(_jogcim.grid).jqGrid('navButtonAdd', _jogcim.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                jogcimgrid[0].clearToolbar();
-            }
-        });
-        $(_jogcim.grid).jqGrid('filterToolbar');
-        $(_jogcim.pager + '_center').hide();
-        $(_jogcim.pager + '_right').hide();
+        createNav(_jogcim, jogcimgrid);
 
         // mptszekcio grid
         var _mptszekcio = {
@@ -1126,25 +874,7 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT szekciók'
         });
-        $(_mptszekcio.grid).jqGrid('navGrid', _mptszekcio.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mptszekcio.grid).jqGrid('navButtonAdd', _mptszekcio.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mptszekciogrid[0].toggleToolbar();
-            }
-        });
-        $(_mptszekcio.grid).jqGrid('navButtonAdd', _mptszekcio.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mptszekciogrid[0].clearToolbar();
-            }
-        });
-        $(_mptszekcio.grid).jqGrid('filterToolbar');
-        $(_mptszekcio.pager + '_center').hide();
-        $(_mptszekcio.pager + '_right').hide();
+        createNav(_mptszekcio, mptszekciogrid);
 
         // mptngytemakor grid
         var _mptngytemakor = {
@@ -1177,25 +907,101 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT NGY témakörök'
         });
-        $(_mptngytemakor.grid).jqGrid('navGrid', _mptngytemakor.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mptngytemakor.grid).jqGrid('navButtonAdd', _mptngytemakor.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mptngytemakorgrid[0].toggleToolbar();
-            }
+        createNav(_mptngytemakor, mptngytemakorgrid);
+
+        // mptngytema grid
+        var _mptngytema = {
+            grid: '#mptngytemagrid',
+            pager: '#mptngytemagridpager'
+        };
+        var mptngytemagrid = $(_mptngytema.grid).jqGrid({
+            url: '/admin/mptngytema/jsonlist',
+            editurl: '/admin/mptngytema/save',
+            datatype: 'json',
+            colModel: [
+                {
+                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
+                },
+                {
+                    name: 'elnok', index: 'elnok', label: 'Elnök', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 2, label: 'Elnök:', elmsuffix: '*'}
+                }
+            ],
+            rowNum: 100000,
+            rowList: [10, 20, 30],
+            pager: _mptngytema.pager,
+            sortname: 'nev',
+            sortorder: 'asc',
+            viewrecords: true,
+            loadonce: false,
+            gridview: true,
+            height: 100,
+            width: 320,
+            hiddengrid: true,
+            caption: 'MPT NGY témák'
         });
-        $(_mptngytemakor.grid).jqGrid('navButtonAdd', _mptngytemakor.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mptngytemakorgrid[0].clearToolbar();
-            }
+        createNav(_mptngytema, mptngytemagrid);
+
+        // Terem grid
+        var _terem = {
+            grid: '#teremgrid',
+            pager: '#teremgridpager'
+        };
+        var teremgrid = $(_terem.grid).jqGrid({
+            url: '/admin/jogaterem/jsonlist',
+            editurl: '/admin/jogaterem/save',
+            datatype: 'json',
+            colModel: [
+                {
+                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
+                },
+                {
+                    name: 'maxferohely', index: 'maxferohely', label: 'Max. férőhely', width: 25, align: 'right',
+                    editable: true,
+                    editoptions: {size: 2},
+                    editrules: {integer: true, required: false},
+                    formoptions: {rowpos: 2, label: 'Max. férőhely:'}
+                },
+                {
+                    name: 'inaktiv', index: 'inaktiv', label: 'Inaktív', width: 25, align: 'right',
+                    formatter: 'checkbox',
+                    editable: true,
+                    edittype: 'checkbox',
+                    editoptions: {value: '1:0'},
+                    formoptions: {rowpos: 3, label: 'Inaktív:'}
+                },
+                {
+                    name: 'orarendclass', index: 'orarendclass', label: 'Class', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 4, label: 'Class:', elmsuffix: '*'}
+                }],
+            rowNum: 100000,
+            rowList: [10, 20, 30],
+            pager: _terem.pager,
+            sortname: 'nev',
+            sortorder: 'asc',
+            viewrecords: true,
+            loadonce: false,
+            gridview: true,
+            height: 100,
+            width: 320,
+            hiddengrid: true,
+            caption: 'Termek'
         });
-        $(_mptngytemakor.grid).jqGrid('filterToolbar');
-        $(_mptngytemakor.pager + '_center').hide();
-        $(_mptngytemakor.pager + '_right').hide();
+        createNav(_terem, teremgrid);
 
         // mptngyszerepkor grid
         var _mptngyszerepkor = {
@@ -1228,25 +1034,7 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT NGY szerepkörök'
         });
-        $(_mptngyszerepkor.grid).jqGrid('navGrid', _mptngyszerepkor.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mptngyszerepkor.grid).jqGrid('navButtonAdd', _mptngyszerepkor.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mptngyszerepkorgrid[0].toggleToolbar();
-            }
-        });
-        $(_mptngyszerepkor.grid).jqGrid('navButtonAdd', _mptngyszerepkor.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mptngyszerepkorgrid[0].clearToolbar();
-            }
-        });
-        $(_mptngyszerepkor.grid).jqGrid('filterToolbar');
-        $(_mptngyszerepkor.pager + '_center').hide();
-        $(_mptngyszerepkor.pager + '_right').hide();
+        createNav(_mptngyszerepkor, mptngyszerepkorgrid);
 
         // mptngyszakmaianyagtipus grid
         var _mptngyszakmaianyagtipus = {
@@ -1279,25 +1067,7 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT NGY szakmai anyag típus'
         });
-        $(_mptngyszakmaianyagtipus.grid).jqGrid('navGrid', _mptngyszakmaianyagtipus.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mptngyszakmaianyagtipus.grid).jqGrid('navButtonAdd', _mptngyszakmaianyagtipus.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mptngyszakmaianyagtipusgrid[0].toggleToolbar();
-            }
-        });
-        $(_mptngyszakmaianyagtipus.grid).jqGrid('navButtonAdd', _mptngyszakmaianyagtipus.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mptngyszakmaianyagtipusgrid[0].clearToolbar();
-            }
-        });
-        $(_mptngyszakmaianyagtipus.grid).jqGrid('filterToolbar');
-        $(_mptngyszakmaianyagtipus.pager + '_center').hide();
-        $(_mptngyszakmaianyagtipus.pager + '_right').hide();
+        createNav(_mptngyszakmaianyagtipus, mptngyszakmaianyagtipusgrid);
 
         // mpttagozat grid
         var _mpttagozat = {
@@ -1330,25 +1100,7 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT tagozatok'
         });
-        $(_mpttagozat.grid).jqGrid('navGrid', _mpttagozat.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mpttagozat.grid).jqGrid('navButtonAdd', _mpttagozat.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mpttagozatgrid[0].toggleToolbar();
-            }
-        });
-        $(_mpttagozat.grid).jqGrid('navButtonAdd', _mpttagozat.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mpttagozatgrid[0].clearToolbar();
-            }
-        });
-        $(_mpttagozat.grid).jqGrid('filterToolbar');
-        $(_mpttagozat.pager + '_center').hide();
-        $(_mpttagozat.pager + '_right').hide();
+        createNav(_mpttagozat, mpttagozatgrid);
 
         // mpttagsagforma grid
         var _mpttagsagforma = {
@@ -1381,26 +1133,7 @@ $().ready(
             hiddengrid: true,
             caption: 'MPT tagság formák'
         });
-        $(_mpttagsagforma.grid).jqGrid('navGrid', _mpttagsagforma.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mpttagsagforma.grid).jqGrid('navButtonAdd', _mpttagsagforma.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mpttagsagformagrid[0].toggleToolbar();
-            }
-        });
-        $(_mpttagsagforma.grid).jqGrid('navButtonAdd', _mpttagsagforma.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mpttagsagformagrid[0].clearToolbar();
-            }
-        });
-        $(_mpttagsagforma.grid).jqGrid('filterToolbar');
-        $(_mpttagsagforma.pager + '_center').hide();
-        $(_mpttagsagforma.pager + '_right').hide();
-
+        createNav(_mpttagsagforma, mpttagsagformagrid);
 
         // Partnertipus grid
         var _partnertipus = {
@@ -1553,25 +1286,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Partner típusok'
         });
-        $(_partnertipus.grid).jqGrid('navGrid', _partnertipus.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_partnertipus.grid).jqGrid('navButtonAdd', _partnertipus.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                partnertipusgrid[0].toggleToolbar();
-            }
-        });
-        $(_partnertipus.grid).jqGrid('navButtonAdd', _partnertipus.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                partnertipusgrid[0].clearToolbar();
-            }
-        });
-        $(_partnertipus.grid).jqGrid('filterToolbar');
-        $(_partnertipus.pager + '_center').hide();
-        $(_partnertipus.pager + '_right').hide();
+        createNav(_partnertipus, partnertipusgrid);
 
         // Orszag grid
         var _orszag = {
@@ -1753,25 +1468,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Országok'
         });
-        $(_orszag.grid).jqGrid('navGrid', _orszag.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_orszag.grid).jqGrid('navButtonAdd', _orszag.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                orszaggrid[0].toggleToolbar();
-            }
-        });
-        $(_orszag.grid).jqGrid('navButtonAdd', _orszag.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                orszaggrid[0].clearToolbar();
-            }
-        });
-        $(_orszag.grid).jqGrid('filterToolbar');
-        $(_orszag.pager + '_center').hide();
-        $(_orszag.pager + '_right').hide();
+        createNav(_orszag, orszaggrid);
 
         // mijszoklevelkibocsajto grid
         var _mijszoklevelkibocsajto = {
@@ -1803,25 +1500,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Oklevél kibocsájtók'
         });
-        $(_mijszoklevelkibocsajto.grid).jqGrid('navGrid', _mijszoklevelkibocsajto.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mijszoklevelkibocsajto.grid).jqGrid('navButtonAdd', _mijszoklevelkibocsajto.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mijszoklevelkibocsajtogrid[0].toggleToolbar();
-            }
-        });
-        $(_mijszoklevelkibocsajto.grid).jqGrid('navButtonAdd', _mijszoklevelkibocsajto.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mijszoklevelkibocsajtogrid[0].clearToolbar();
-            }
-        });
-        $(_mijszoklevelkibocsajto.grid).jqGrid('filterToolbar');
-        $(_mijszoklevelkibocsajto.pager + '_center').hide();
-        $(_mijszoklevelkibocsajto.pager + '_right').hide();
+        createNav(_mijszoklevelkibocsajto, mijszoklevelkibocsajtogrid);
 
         // mijszoklevelszint grid
         var _mijszoklevelszint = {
@@ -1853,25 +1532,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Oklevél szintek'
         });
-        $(_mijszoklevelszint.grid).jqGrid('navGrid', _mijszoklevelszint.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mijszoklevelszint.grid).jqGrid('navButtonAdd', _mijszoklevelszint.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mijszoklevelszintgrid[0].toggleToolbar();
-            }
-        });
-        $(_mijszoklevelszint.grid).jqGrid('navButtonAdd', _mijszoklevelszint.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mijszoklevelszintgrid[0].clearToolbar();
-            }
-        });
-        $(_mijszoklevelszint.grid).jqGrid('filterToolbar');
-        $(_mijszoklevelszint.pager + '_center').hide();
-        $(_mijszoklevelszint.pager + '_right').hide();
+        createNav(_mijszoklevelszint, mijszoklevelszintgrid);
 
         // Szotar grid
         var _szotar = {
@@ -1909,25 +1570,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Szótár'
         });
-        $(_szotar.grid).jqGrid('navGrid', _szotar.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_szotar.grid).jqGrid('navButtonAdd', _szotar.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                szotargrid[0].toggleToolbar();
-            }
-        });
-        $(_szotar.grid).jqGrid('navButtonAdd', _szotar.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                szotargrid[0].clearToolbar();
-            }
-        });
-        $(_szotar.grid).jqGrid('filterToolbar');
-        $(_szotar.pager + '_center').hide();
-        $(_szotar.pager + '_right').hide();
+        createNav(_szotar, szotargrid);
 
         // CSK grid
         var _csk = {
@@ -1968,25 +1611,7 @@ $().ready(
             hiddengrid: true,
             caption: 'CSK kódok'
         });
-        $(_csk.grid).jqGrid('navGrid', _csk.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_csk.grid).jqGrid('navButtonAdd', _csk.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                cskgrid[0].toggleToolbar();
-            }
-        });
-        $(_csk.grid).jqGrid('navButtonAdd', _csk.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                cskgrid[0].clearToolbar();
-            }
-        });
-        $(_csk.grid).jqGrid('filterToolbar');
-        $(_csk.pager + '_center').hide();
-        $(_csk.pager + '_right').hide();
+        createNav(_csk, cskgrid);
 
         // TermekReceptTipus grid
         var _trt = {
@@ -2338,25 +1963,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Gyakorlás szintek'
         });
-        $(_mijszgyakorlasszint.grid).jqGrid('navGrid', _mijszgyakorlasszint.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_mijszgyakorlasszint.grid).jqGrid('navButtonAdd', _mijszgyakorlasszint.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                mijszgyakorlasszintgrid[0].toggleToolbar();
-            }
-        });
-        $(_mijszgyakorlasszint.grid).jqGrid('navButtonAdd', _mijszgyakorlasszint.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                mijszgyakorlasszintgrid[0].clearToolbar();
-            }
-        });
-        $(_mijszgyakorlasszint.grid).jqGrid('filterToolbar');
-        $(_mijszgyakorlasszint.pager + '_center').hide();
-        $(_mijszgyakorlasszint.pager + '_right').hide();
+        createNav(_mijszgyakorlasszint, mijszgyakorlasszintgrid);
 
         // Unnepnap grid
         var _unn = {
@@ -2391,25 +1998,7 @@ $().ready(
             hiddengrid: true,
             caption: 'Ünnepnapok'
         });
-        $(_unn.grid).jqGrid('navGrid', _unn.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-        $(_unn.grid).jqGrid('navButtonAdd', _unn.pager, {
-            caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-            onClickButton: function () {
-                unnepnapgrid[0].toggleToolbar();
-            }
-        });
-        $(_unn.grid).jqGrid('navButtonAdd', _unn.pager, {
-            caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-            onClickButton: function () {
-                unnepnapgrid[0].clearToolbar();
-            }
-        });
-        $(_unn.grid).jqGrid('filterToolbar');
-        $(_unn.pager + '_center').hide();
-        $(_unn.pager + '_right').hide();
+        createNav(_unn, unnepnapgrid);
 
         // Altalanos
         $('.ui-search-toolbar').hide();
