@@ -783,6 +783,14 @@ class partnerController extends \mkwhelpers\MattableController
                 $filter->addFilter('mptngynyudijas', '=', false);
                 break;
         }
+        $f = $this->params->getStringRequestParam('munkahelynevfilter');
+        if ($f) {
+            $filter->addFilter('mpt_munkahelynev', 'LIKE', '%' . $f . '%');
+        }
+        $f = $this->params->getStringRequestParam('szlanevfilter');
+        if ($f) {
+            $filter->addFilter('szlanev', 'LIKE', '%' . $f . '%');
+        }
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -1966,6 +1974,78 @@ class partnerController extends \mkwhelpers\MattableController
                 }
             }
         }
+    }
+
+    public function mptngyszamlazasExport()
+    {
+        function x($o, $sor)
+        {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $ids = $this->params->getStringRequestParam('ids');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+
+        $partnerek = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
+
+        $o = 0;
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'Név')
+            ->setCellValue(x($o++, 1), 'Telefon')
+            ->setCellValue(x($o++, 1), 'Email')
+            ->setCellValue(x($o++, 1), 'Számlázási név')
+            ->setCellValue(x($o++, 1), 'Számlázási cím')
+            ->setCellValue(x($o++, 1), 'Munkahely')
+            ->setCellValue(x($o++, 1), 'Csoportos fizetés')
+            ->setCellValue(x($o++, 1), 'Kapcsolat név')
+            ->setCellValue(x($o++, 1), 'Nem vesz részt, csak szerző')
+            ->setCellValue(x($o++, 1), 'MPT tag')
+            ->setCellValue(x($o++, 1), 'Diák')
+            ->setCellValue(x($o++, 1), 'Nyugdíjas');
+
+        if ($partnerek) {
+            $sor = 2;
+            /** @var \Entities\Partner $partner */
+            foreach ($partnerek as $partner) {
+                $o = 0;
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $partner->getNev())
+                    ->setCellValue(x($o++, $sor), $partner->getTelefon())
+                    ->setCellValue(x($o++, $sor), $partner->getEmail())
+                    ->setCellValue(x($o++, $sor), $partner->getSzlanev())
+                    ->setCellValue(x($o++, $sor), $partner->getCim())
+                    ->setCellValue(x($o++, $sor), $partner->getMptMunkahelynev())
+                    ->setCellValue(x($o++, $sor), $partner->getMptngycsoportosfizetes())
+                    ->setCellValue(x($o++, $sor), $partner->getMptngykapcsolatnev())
+                    ->setCellValue(x($o++, $sor), $partner->isMptngynemveszreszt())
+                    ->setCellValue(x($o++, $sor), $partner->isMptngympttag())
+                    ->setCellValue(x($o++, $sor), $partner->isMptngydiak())
+                    ->setCellValue(x($o++, $sor), $partner->isMptngynyugdijas());
+
+                $sor++;
+            }
+        }
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filepath = \mkw\store::storagePath(uniqid('mptngypartnerszamlazas') . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 
 }

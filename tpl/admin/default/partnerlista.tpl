@@ -73,6 +73,16 @@
             {if ($setup.mptngy)}
                 <div class="matt-hseparator"></div>
                 <div>
+                    <label for="munkahelynevfilter">{at('Munkahely')}:</label>
+                    <input id="munkahelynevfilter" name="munkahelynevfilter" type="text" maxlength="255">
+                </div>
+                <div class="matt-hseparator"></div>
+                <div>
+                    <label for="szlanevfilter">{at('Számlázási név')}:</label>
+                    <input id="szlanevfilter" name="szlanevfilter" type="text" maxlength="255">
+                </div>
+                <div class="matt-hseparator"></div>
+                <div>
                     <label for="mptngyreszvetelfilter">{at('Részvétel')}: </label>
                     <select id="mptngyreszvetelfilter" name="mptngyreszvetelfilter">
                         <option value="9">{at('mindegy')}</option>

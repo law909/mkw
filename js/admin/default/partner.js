@@ -398,6 +398,8 @@ $(document).ready(function () {
                     '#inaktivfilter',
                     '#mptngyreszvetelfilter',
                     '#mptngydiakfilter',
+                    '#munkahelynevfilter',
+                    '#szlanevfilter',
                 ],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
@@ -503,6 +505,12 @@ $(document).ready(function () {
                     case 'megjegyzesexport':
                         $exportform = $('#exportform');
                         $exportform.attr('action', '/admin/partner/megjegyzesexport');
+                        $('input[name="ids"]', $exportform).val(tomb);
+                        $exportform.submit();
+                        break;
+                    case 'mptngyszamlazasexport':
+                        $exportform = $('#exportform');
+                        $exportform.attr('action', '/admin/partner/mptngyszamlazasexport');
                         $('input[name="ids"]', $exportform).val(tomb);
                         $exportform.submit();
                         break;

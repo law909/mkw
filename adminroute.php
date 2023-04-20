@@ -834,6 +834,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/getkiegyenlitetlenbiz', 'partnerController#getKiegyenlitetlenBiz', 'admingetkiegyenlitetlenbiz');
     $router->map('POST', '/admin/partner/mijszexport', 'partnerController#mijszExport', 'adminmijszexport');
     $router->map('POST', '/admin/partner/megjegyzesexport', 'partnerController#megjegyzesExport', 'adminmegjegyzesexport');
+    $router->map('POST', '/admin/partner/mptngyszamlazasexport', 'partnerController#mptngyszamlazasExport', 'adminmptngyszamlazasexport');
     $router->map('POST', '/admin/partner/hirlevelexport', 'partnerController#hirlevelExport', 'adminhirlevelexport');
     $router->map('POST', '/admin/partner/roadrecordexport', 'partnerController#roadrecordExport', 'adminroadrecordexport');
     $router->map('POST', '/admin/partnerdok/del', 'partnerdokController#del', 'adminpartnerdokdel');

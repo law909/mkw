@@ -24,6 +24,9 @@ class PartnerRepository extends \mkwhelpers\Repository
         $btch['arsavcsere'] = 'Ársáv csere';
         $btch['termekcsoportkedvezmenyedit'] = 'Termékcsoport kedvezmény módosítás';
         $btch['sendemailsablon'] = 'Email sablon küldés';
+        if (\mkw\store::isMPTNGY()) {
+            $btch['mptngyszamlazasexport'] = 'MPT nagygyűlés export';
+        }
         $this->setBatches($btch);
     }
 
