@@ -128,6 +128,8 @@ $(document).ready(function () {
                     '#pluszbiralokellfilter',
                     '#temakor1filter',
                     '#tipusfilter',
+                    '#teremfilter',
+                    '#temafilter',
                 ]
             },
             tablebody: {
