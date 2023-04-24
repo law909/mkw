@@ -143,6 +143,7 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
 
     $router->map('GET', '/admin/recalcksz', 'adminController#recalcKonferencianszerepelhet', 'adminmptngyrecalckonferencianszerepelhet');
+    $router->map('GET', '/admin/setszerzobyemail', 'adminController#setSzerzoByEmail', 'adminmptngysetszerzobyemail');
 }
 
 if (\mkw\store::isBankpenztar()) {

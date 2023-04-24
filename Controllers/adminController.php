@@ -1029,4 +1029,65 @@ class adminController extends mkwhelpers\Controller
         }
         echo 'Ready.';
     }
+
+    public function setSzerzoByEmail()
+    {
+        $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();
+        /** @var Entities\MPTNGYSzakmaianyag $anyag */
+        foreach ($anyagok as $anyag) {
+            if ($anyag->getSzerzo1email() && strtolower($anyag->getSzerzo1email()) !== strtolower($anyag->getSzerzo1()?->getEmail())) {
+                \mkw\store::writelog(
+                    $anyag->getId() . '/1: ' . $anyag->getSzerzo1email() . ' <> ' . $anyag->getSzerzo1()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo1Id()
+                );
+                $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo1email()]);
+                if ($partner) {
+                    \mkw\store::writelog($anyag->getId() . '/1: ' . $partner->getNev() . ' : ' . $partner->getId());
+                    $anyag->setSzerzo1($partner);
+                }
+            }
+            if ($anyag->getSzerzo2email() && strtolower($anyag->getSzerzo2email()) !== strtolower($anyag->getSzerzo2()?->getEmail())) {
+                \mkw\store::writelog(
+                    $anyag->getId() . '/2: ' . $anyag->getSzerzo2email() . ' <> ' . $anyag->getSzerzo2()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo2Id()
+                );
+                $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo2email()]);
+                if ($partner) {
+                    \mkw\store::writelog($anyag->getId() . '/2: ' . $partner->getNev() . ' : ' . $partner->getId());
+                    $anyag->setSzerzo2($partner);
+                }
+            }
+            if ($anyag->getSzerzo3email() && strtolower($anyag->getSzerzo3email()) !== strtolower($anyag->getSzerzo3()?->getEmail())) {
+                \mkw\store::writelog(
+                    $anyag->getId() . '/3: ' . $anyag->getSzerzo3email() . ' <> ' . $anyag->getSzerzo3()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo3Id()
+                );
+                $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo3email()]);
+                if ($partner) {
+                    \mkw\store::writelog($anyag->getId() . '/3: ' . $partner->getNev() . ' : ' . $partner->getId());
+                    $anyag->setSzerzo3($partner);
+                }
+            }
+            if ($anyag->getSzerzo4email() && strtolower($anyag->getSzerzo4email()) !== strtolower($anyag->getSzerzo4()?->getEmail())) {
+                \mkw\store::writelog(
+                    $anyag->getId() . '/4: ' . $anyag->getSzerzo4email() . ' <> ' . $anyag->getSzerzo4()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo4Id()
+                );
+                $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo4email()]);
+                if ($partner) {
+                    \mkw\store::writelog($anyag->getId() . '/4: ' . $partner->getNev() . ' : ' . $partner->getId());
+                    $anyag->setSzerzo4($partner);
+                }
+            }
+            if ($anyag->getSzerzo5email() && strtolower($anyag->getSzerzo5email()) !== strtolower($anyag->getSzerzo5()?->getEmail())) {
+                \mkw\store::writelog(
+                    $anyag->getId() . '/5: ' . $anyag->getSzerzo5email() . ' <> ' . $anyag->getSzerzo5()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo5Id()
+                );
+                $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo5email()]);
+                if ($partner) {
+                    \mkw\store::writelog($anyag->getId() . '/5: ' . $partner->getNev() . ' : ' . $partner->getId());
+                    $anyag->setSzerzo5($partner);
+                }
+            }
+            \mkw\store::getEm()->persist($anyag);
+            \mkw\store::getEm()->flush();
+        }
+        echo 'Ready.';
+    }
 }
