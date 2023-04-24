@@ -157,12 +157,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
         $obj->setKulcsszo4($this->params->getStringRequestParam('kulcsszo4'));
         $obj->setKulcsszo5($this->params->getStringRequestParam('kulcsszo5'));
-        $obj->setSzerzo1email($this->params->getStringRequestParam('szerzo1email'));
-        $obj->setSzerzo2email($this->params->getStringRequestParam('szerzo2email'));
-        $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
-        $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
-        $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
-        $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         $obj->setKonyvkiadasho($this->params->getStringRequestParam('konyvkiadasho'));
         $obj->setEgyebszerzok($this->params->getStringRequestParam('egyebszerzok'));
         $obj->setB1szempont1($this->params->getIntRequestParam('b1szempont1'));
@@ -190,6 +184,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setB1biralatkesz($this->params->getBoolRequestParam('b1biralatkesz'));
             $obj->setB2biralatkesz($this->params->getBoolRequestParam('b2biralatkesz'));
             $obj->setB3biralatkesz($this->params->getBoolRequestParam('b3biralatkesz'));
+            $obj->setSzerzo1email($this->params->getStringRequestParam('szerzo1email'));
+            $obj->setSzerzo2email($this->params->getStringRequestParam('szerzo2email'));
+            $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
+            $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
+            $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
+            $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         } else {
             if ($this->params->getBoolRequestParam('vegleges')) {
                 $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
@@ -675,10 +675,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $se = 'setBeszelgetopartneremail';
         }
 
-        if (!$obj->$go()) {
-            $obj->$se($email);
-            $obj->$s($this->getRepo(Partner::class)->findOneBy(['email' => $email]));
-        }
+        $obj->$se($email);
+        $obj->$s($this->getRepo(Partner::class)->findOneBy(['email' => $email]));
         return $obj;
     }
 
@@ -707,13 +705,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                         $anyag = new MPTNGYSzakmaianyag();
                         $oper = 'add';
                     }
+                    $anyag = $this->setFields($anyag, $oper, true);
                     $anyag = $this->setSzerzoByEmail($anyag, 1);
                     $anyag = $this->setSzerzoByEmail($anyag, 2);
                     $anyag = $this->setSzerzoByEmail($anyag, 3);
                     $anyag = $this->setSzerzoByEmail($anyag, 4);
                     $anyag = $this->setSzerzoByEmail($anyag, 5);
                     $anyag = $this->setSzerzoByEmail($anyag, 6);
-                    $anyag = $this->setFields($anyag, $oper, true);
                     $anyag->setTulajdonos($partner);
                     $this->getEm()->persist($anyag);
                     $this->getEm()->flush();
