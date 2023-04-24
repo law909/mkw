@@ -50,7 +50,7 @@
                 <tr>
                     <td><label for="teremEdit">{at('Terem')}:</label></td>
                     <td>
-                        <select id="teremEdit" name="terem" required>
+                        <select id="teremEdit" name="terem">
                             <option value="">{at('válasszon')}</option>
                             {foreach $teremlist as $_mk}
                                 <option
@@ -82,7 +82,7 @@
                 <tr>
                     <td><label for="tulajdonosEdit">{at('Tulajdonos')}:</label></td>
                     <td>
-                        <select id="tulajdonosEdit" name="tulajdonos" required>
+                        <select id="tulajdonosEdit" name="tulajdonos">
                             <option value="">{at('válasszon')}</option>
                             {foreach $tulajdonoslist as $_mk}
                                 <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
