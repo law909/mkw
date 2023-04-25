@@ -28,7 +28,7 @@
         <div class="ui-widget-content">
             <div>Eredeti egyéb szerzők:</div>
             <div>
-                <pre class="ui-widget">{$_egyed.egyebszerzok}</pre>
+                <pre class="ui-widget">{$_egyed.egyebszerzokorg}</pre>
             </div>
         </div>
     </td>
