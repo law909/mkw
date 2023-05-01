@@ -844,6 +844,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/tcskedit', 'partnerController#tcskedit', 'adminpartnertcskedit');
     $router->map('POST', '/admin/partner/setflag', 'partnerController#setflag', 'adminpartnersetflag');
     $router->map('POST', '/admin/partner/sendemailsablonok', 'partnerController#sendEmailSablonok', 'adminpartnersendemailsablonok');
+    $router->map('GET', '/admin/partner/querytaxpayer', 'partnerController#querytaxpayer', 'adminquerytaxpayer');
 }
 
 $router->map('GET', '/admin/termekfa/getkarb', 'termekfaController#getkarb', 'admintermekfagetkarb');

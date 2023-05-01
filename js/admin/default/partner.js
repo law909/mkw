@@ -131,6 +131,43 @@ $(document).ready(function () {
                     });
                 }
             });
+            $('.js-querytaxpayer').on('click', function (e) {
+                e.preventDefault();
+                var adoszam = $('#AdoszamEdit').val();
+                if (adoszam.length > 0) {
+                    $.ajax({
+                        url: '/admin/partner/querytaxpayer',
+                        type: 'GET',
+                        data: {
+                            adoszam: adoszam
+                        },
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            $('#NevEdit').val(data.taxpayerName);
+                            let adoszam = data.taxNumberDetail,
+                                cim;
+                            $('#AdoszamEdit').val(adoszam.taxpayerId + '-' + adoszam.vatCode + '-' + adoszam.countyCode);
+                            $('#VatstatusEdit').val('1');
+                            if (Array.isArray(data.taxpayerAddressList.taxpayerAddressItem)) {
+                                data.taxpayerAddressList.taxpayerAddressItem.forEach(elem => {
+                                    if (elem.taxpayerAddressType === 'HQ') {
+                                        cim = elem.taxpayerAddress;
+                                    }
+                                });
+                            } else {
+                                cim = data.taxpayerAddressList.taxpayerAddressItem.taxpayerAddress;
+                            }
+                            if (cim) {
+                                $('#VarosEdit').val(cim.city);
+                                $('#IrszamEdit').val(cim.postalCode);
+                                $('#UtcaEdit').val(cim.streetName + ' ' + cim.publicPlaceCategory);
+                                $('#HazszamEdit').val(cim.number);
+                            }
+                        }
+                    })
+                }
+            }).button();
+
             doktab
                 .on('click', '.js-doknewbutton', function (e) {
                     var $this = $(this);

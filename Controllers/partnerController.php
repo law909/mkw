@@ -2048,4 +2048,18 @@ class partnerController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    public function queryTaxpayer()
+    {
+        $payernum = $this->params->getStringRequestParam('adoszam');
+        $payernum = substr($payernum, 0, 8);
+
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        if ($no->querytaxpayer($payernum)) {
+            echo $no->getResult();
+        } else {
+            $noerrors = $no->getErrors();
+            \mkw\store::writelog($payernum . ' querytaxpayer', 'navonline.log');
+            \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+        }
+    }
 }

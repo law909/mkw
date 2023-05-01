@@ -2,7 +2,8 @@
 
 namespace mkwhelpers;
 
-class NAVOnline {
+class NAVOnline
+{
 
     const NAVOnlineProduction = 'prod';
     const NAVOnlineDeveloper = 'dev';
@@ -16,22 +17,25 @@ class NAVOnline {
     private $errors = [];
     private $result;
 
-/*
-no.ServiceURL:=DM._Param.ReadString(pNOURL,'http://no.billy.hu');
-no.API:='api';
-no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
-*/
+    /*
+    no.ServiceURL:=DM._Param.ReadString(pNOURL,'http://no.billy.hu');
+    no.API:='api';
+    no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
+    */
 
-    public function __construct($adoszam, $env = 'dev') {
+    public function __construct($adoszam, $env = 'dev')
+    {
         $this->cegAdoszam = $adoszam;
         $this->setEnvironment($env);
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
-    public function getErrorsAsHtml() {
+    public function getErrorsAsHtml()
+    {
         $str = '';
         foreach ($this->getErrors() as $error) {
             $str .= $error['code'] . ' - ' . $error['message'];
@@ -39,21 +43,25 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $str;
     }
 
-    public function getResult() {
+    public function getResult()
+    {
         return $this->result;
     }
 
-    public function setEnvironment($value) {
+    public function setEnvironment($value)
+    {
         if ($value === self::NAVOnlineDeveloper || $value === self::NAVOnlineProduction) {
             $this->environment = $value;
         }
     }
 
-    private function getServiceURL() {
+    private function getServiceURL()
+    {
         return $this->serviceURL[$this->environment];
     }
 
-    private function callAPI($httpcommand, $command, $data = null) {
+    private function callAPI($httpcommand, $command, $data = null)
+    {
         $sikeres = false;
         $this->result = null;
         $this->errors = [];
@@ -70,8 +78,7 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
                 'code' => '1',
                 'message' => 'A NAV Online számla beküldő szolgáltatás nem érhető el.'
             ];
-        }
-        else {
+        } else {
             switch ($http_code) {
                 case 200:
                     $errmsg = false;
@@ -102,6 +109,9 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
                 case 465:
                     $errmsg = 'A számla még nincs beküldve a NAV-hoz.';
                     break;
+                case 466:
+                    $errmsg = 'Az adószám nem valid.';
+                    break;
                 default:
                     $errmsg = 'Egyéb hiba';
             }
@@ -116,15 +126,23 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $sikeres;
     }
 
-    public function hello() {
+    public function hello()
+    {
         return $this->callAPI('GET', '/hello/' . $this->cegAdoszam);
     }
 
-    public function version() {
+    public function version()
+    {
         return $this->callAPI('GET', '/version/' . $this->cegAdoszam);
     }
 
-    public function sendSzamla($bizszam, $data) {
+    public function querytaxpayer($payernum)
+    {
+        return $this->callAPI('GET', '/querytaxpayer/' . $this->cegAdoszam . '/' . $payernum);
+    }
+
+    public function sendSzamla($bizszam, $data)
+    {
         $operation = substr($data, 0, 6);
         $szladata = substr($data, 6);
         $postdata = [
@@ -134,7 +152,8 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->callAPI('POST', '/invoice/save/' . $this->cegAdoszam . '/' . base64_encode($bizszam), $postdata);
     }
 
-    public function validate($data) {
+    public function validate($data)
+    {
         $szladata = substr($data, 6);
         $postdata = [
             'data' => $szladata
@@ -142,19 +161,23 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->callAPI('POST', '/invoice/validate/' . $this->cegAdoszam, $postdata);
     }
 
-    public function getSzamlaInfo($bizszam) {
+    public function getSzamlaInfo($bizszam)
+    {
         return $this->callAPI('GET', '/invoice/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
 
-    public function getSzamlaContent($bizszam) {
+    public function getSzamlaContent($bizszam)
+    {
         return $this->callAPI('GET', '/invoice/getcontent/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
 
-    public function getAllSzamlaInfo() {
+    public function getAllSzamlaInfo()
+    {
         return $this->callAPI('GET', '/invoices/' . $this->cegAdoszam);
     }
 
-    public function getSomeSzamlaInfo($bizszamlist) {
+    public function getSomeSzamlaInfo($bizszamlist)
+    {
         $bl = implode('##', $bizszamlist);
         $postdata = [
             'bizszamlist' => $bl
@@ -162,7 +185,8 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->callAPI('POST', '/someinvoices/' . $this->cegAdoszam, $postdata);
     }
 
-    public function requeryFromNAV($bizszam) {
+    public function requeryFromNAV($bizszam)
+    {
         return $this->callAPI('GET', '/invoice/requery/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
 }

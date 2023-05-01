@@ -108,7 +108,11 @@
                 </tr>
                 <tr>
                     <td><label for="AdoszamEdit">{at('Adószám')}:</label></td>
-                    <td><input id="AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}"></td>
+                    <td><input id="AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}">
+                        {if ($oper === 'add')}
+                            <button class="js-querytaxpayer">NAV</button>
+                        {/if}
+                    </td>
                     <td><label for="EUAdoszamEdit">{at('Közösségi adószám')}:</label></td>
                     <td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
                 </tr>
