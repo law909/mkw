@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Emailtemplate;
+use Entities\Jogaoratipus;
 use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Parameterek;
 use Entities\Partner;
@@ -419,6 +420,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('jogaberlet4termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaBerlet10Termek);
         $view->setVar('jogaberlet10termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $jtc = new jogaoratipusController($this->params);
+        $p = $repo->find(\mkw\consts::JogaAllapotfelmeresTipus);
+        $view->setVar('jogaallapotfelmerestipuslist', $jtc->getSelectList(($p ? $p->getErtek() : 0)));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
@@ -1356,6 +1361,13 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
         } else {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, null);
+        }
+
+        $vut = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaallapotfelmerestipus', 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::JogaAllapotfelmeresTipus, $vut->getId());
+        } else {
+            $this->setObj(\mkw\consts::JogaAllapotfelmeresTipus, null);
         }
 
         // alapertelmezes

@@ -259,6 +259,7 @@ class orarendController extends \mkwhelpers\MattableController
     {
         $offset = $this->params->getIntRequestParam('o', 0);
         $tanarkod = $this->params->getIntRequestParam('t', 0);
+        $csakfelmeres = $this->params->getIntRequestParam('f', 0);
         $startdatum = \mkw\store::startOfWeek();
         if ($offset < 0) {
             $startdatum->sub(new \DateInterval('P' . abs($offset) . 'W'));
@@ -270,6 +271,11 @@ class orarendController extends \mkwhelpers\MattableController
         $filter->addFilter('orarendbennincs', '=', false);
         if ($tanarkod) {
             $filter->addFilter('dolgozo', '=', $tanarkod);
+        }
+        if ($csakfelmeres) {
+            $filter->addFilter('jogaoratipus', '=', \mkw\store::getParameter(\mkw\consts::JogaAllapotfelmeresTipus));
+        } else {
+            $filter->addFilter('jogaoratipus', '<>', \mkw\store::getParameter(\mkw\consts::JogaAllapotfelmeresTipus));
         }
         $rec = $this->getRepo()->getWithJoins($filter, ['nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC']);
         $orarend = [];

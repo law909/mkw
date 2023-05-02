@@ -354,6 +354,7 @@ class consts
     const JogaBerletLefogjarniSablon = 'jogaberletlefogjarnisablon';
     const JogaBerletLejartSablon = 'jogaberletlejartsablon';
     const JogaBerletDatumLejartSablon = 'jogaberletdatumlejartsablon';
+    const JogaAllapotfelmeresTipus = 'jogaallapotfelmerestipus';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';
@@ -397,7 +398,7 @@ class consts
     const MPTNGYSzempont3 = 'mptngyszempont3';
     const MPTNGYSzempont4 = 'mptngyszempont4';
     const MPTNGYSzempont5 = 'mptngyszempont5';
-    
+
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
 

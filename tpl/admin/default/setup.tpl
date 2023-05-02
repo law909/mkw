@@ -525,6 +525,16 @@
                                     {/foreach}
                                 </select>
                             </div>
+
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="JogaAllapotfelmeresTipusEdit">{at('Állapotfelmérés')}:</label></span>
+                                <select id="JogaAllapotfelmeresTipusEdit" name="jogaallapotfelmerestipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaallapotfelmerestipuslist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
