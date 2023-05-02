@@ -104,6 +104,9 @@ class Orarend
     /** @ORM\Column(type="boolean", nullable=false) */
     private $orarendbennincs = false;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $bejelentkezesertesitokell = false;
+
     public function __construct()
     {
         $this->bejelentkezesek = new ArrayCollection();
@@ -507,6 +510,22 @@ class Orarend
     public function setOrarendbennincs($orarendbennincs): void
     {
         $this->orarendbennincs = $orarendbennincs;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBejelentkezesertesitokell()
+    {
+        return $this->bejelentkezesertesitokell;
+    }
+
+    /**
+     * @param bool $bejelentkezesertesitokell
+     */
+    public function setBejelentkezesertesitokell($bejelentkezesertesitokell): void
+    {
+        $this->bejelentkezesertesitokell = $bejelentkezesertesitokell;
     }
 
 }

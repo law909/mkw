@@ -157,6 +157,9 @@ $(document).ready(function () {
             if ($this.attr('data-flag') === 'bejelentkezeskell') {
                 doit();
             }
+            if ($this.attr('data-flag') === 'bejelentkezesertesitokell') {
+                doit();
+            }
             if ($this.attr('data-flag') === 'lemondhato') {
                 doit();
             }

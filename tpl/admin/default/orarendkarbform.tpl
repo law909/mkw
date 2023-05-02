@@ -14,6 +14,8 @@
                    {if ($egyed.multilang)}checked="checked"{/if}>{at('Több nyelvű')}
             <input id="BejelentkezeskellCheck" name="bejelentkezeskell" type="checkbox"
                    {if ($egyed.bejelentkezeskell)}checked="checked"{/if}>{at('Bejelentkezés kell')}
+            <input id="BejelentkezesertesitokellCheck" name="bejelentkezesertesitokell" type="checkbox"
+                   {if ($egyed.bejelentkezesertesitokell)}checked="checked"{/if}>{at('Bejel. értesítő kell')}
             <input id="LemondhatoCheck" name="lemondhato" type="checkbox"
                    {if ($egyed.lemondhato)}checked="checked"{/if}>{at('Lemondható')}
             <input id="OrarendbennincsCheck" name="orarendbennincs" type="checkbox"

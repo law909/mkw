@@ -54,6 +54,10 @@
                        class="js-flagcheckbox{if ($_orarend.bejelentkezeskell)} ui-state-hover{/if}">{at('Bejelentkezés kell')}</a></td>
             </tr>
             <tr>
+                <td><a href="#" data-id="{$_orarend.id}" data-flag="bejelentkezesertesitokell"
+                       class="js-flagcheckbox{if ($_orarend.bejelentkezesertesitokell)} ui-state-hover{/if}">{at('Bejel. értesítő kell')}</a></td>
+            </tr>
+            <tr>
                 <td><a href="#" data-id="{$_orarend.id}" data-flag="lemondhato"
                        class="js-flagcheckbox{if ($_orarend.lemondhato)} ui-state-hover{/if}">{at('Lemondható')}</a></td>
             </tr>

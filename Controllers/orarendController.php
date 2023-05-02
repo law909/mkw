@@ -49,6 +49,7 @@ class orarendController extends \mkwhelpers\MattableController
         $x['lemondhato'] = $t->getLemondhato();
         $x['jutalekszazalek'] = $t->getJutalekszazalek();
         $x['orarendbennincs'] = $t->isOrarendbennincs();
+        $x['bejelentkezesertesitokell'] = $t->isBejelentkezesertesitokell();
         return $x;
     }
 
@@ -91,6 +92,7 @@ class orarendController extends \mkwhelpers\MattableController
         $obj->setLemondhato($this->params->getBoolRequestParam('lemondhato'));
         $obj->setJutalekszazalek($this->params->getIntRequestParam('jutalekszazalek'));
         $obj->setOrarendbennincs($this->params->getBoolRequestParam('orarendbennincs'));
+        $obj->setBejelentkezesertesitokell($this->params->getBoolRequestParam('bejelentkezesertesitokell'));
 //		$obj->doStuffOnPrePersist();
         return $obj;
     }
@@ -248,6 +250,9 @@ class orarendController extends \mkwhelpers\MattableController
                     break;
                 case 'orarendbennincs':
                     $obj->setOrarendbennincs($kibe);
+                    break;
+                case 'bejelentkezesertesitokell':
+                    $obj->setBejelentkezesertesitokell($kibe);
                     break;
             }
             $this->getEm()->persist($obj);

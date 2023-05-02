@@ -67,10 +67,10 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang', '' . "\0" . 'Entities\\Orarend' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezeskell', '' . "\0" . 'Entities\\Orarend' . "\0" . 'minbejelentkezes', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lemondhato', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jutalekszazalek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'orarendbennincs'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang', '' . "\0" . 'Entities\\Orarend' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezeskell', '' . "\0" . 'Entities\\Orarend' . "\0" . 'minbejelentkezes', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lemondhato', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jutalekszazalek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'orarendbennincs', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesertesitokell'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang', '' . "\0" . 'Entities\\Orarend' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezeskell', '' . "\0" . 'Entities\\Orarend' . "\0" . 'minbejelentkezes', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lemondhato', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jutalekszazalek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'orarendbennincs'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang', '' . "\0" . 'Entities\\Orarend' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezeskell', '' . "\0" . 'Entities\\Orarend' . "\0" . 'minbejelentkezes', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lemondhato', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jutalekszazalek', '' . "\0" . 'Entities\\Orarend' . "\0" . 'orarendbennincs', '' . "\0" . 'Entities\\Orarend' . "\0" . 'bejelentkezesertesitokell'];
     }
 
     /**
@@ -740,6 +740,28 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrarendbennincs', [$orarendbennincs]);
 
         parent::setOrarendbennincs($orarendbennincs);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isBejelentkezesertesitokell()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isBejelentkezesertesitokell', []);
+
+        return parent::isBejelentkezesertesitokell();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBejelentkezesertesitokell($bejelentkezesertesitokell): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBejelentkezesertesitokell', [$bejelentkezesertesitokell]);
+
+        parent::setBejelentkezesertesitokell($bejelentkezesertesitokell);
     }
 
 }
