@@ -21,7 +21,7 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\JogaBejelentkezes();
             $this->getEm()->detach($t);
@@ -43,6 +43,7 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
     /**
      * @param \Entities\JogaBejelentkezes $obj
      * @param $oper
+     *
      * @return mixed
      */
     protected function setFields($obj, $oper)
@@ -89,10 +90,10 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
 
     public function getSelectList($selid = null)
     {
-        $rec = $this->getRepo()->getAll(array(), array('partnernev' => 'ASC'));
-        $res = array();
+        $rec = $this->getRepo()->getAll([], ['partnernev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor['id'], 'caption' => $sor['partnernev'], 'selected' => ($sor['id'] == $selid));
+            $res[] = ['id' => $sor['id'], 'caption' => $sor['partnernev'], 'selected' => ($sor['id'] == $selid)];
         }
         return $res;
     }
@@ -170,13 +171,61 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                     }
                     $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
 
-                    $mailer = \mkw\store::getMailer();
+                    if (\mkw\store::isDeveloper()) {
+                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+                    } else {
+                        $mailer = \mkw\store::getMailer();
 
-                    $mailer->addTo($email);
-                    $mailer->setSubject($subject->getTemplateResult());
-                    $mailer->setMessage($body->getTemplateResult());
+                        $mailer->addTo($email);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
 
-                    $mailer->send();
+                        $mailer->send();
+                    }
+                }
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesErtesitoSablon));
+                $tanaremail = $ora->getDolgozoEmail();
+                if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $subject->setVar('oranev', $ora->getNev());
+                    $subject->setVar('tanarnev', $ora->getDolgozoNev());
+                    $subject->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $subject->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $subject->setVar('partnervezeteknev', $partner->getVezeteknev());
+                    } else {
+                        $subject->setVar('partnerkeresztnev', $partnernev);
+                    }
+                    $subject->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+                    $subject->setVar('napnev', $ora->getNapNev());
+
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
+                    $body->setVar('oranev', $ora->getNev());
+                    $body->setVar('tanarnev', $ora->getDolgozoNev());
+                    $body->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
+                    } else {
+                        $body->setVar('partnerkeresztnev', $partnernev);
+                    }
+                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+                    if (\mkw\store::isDeveloper()) {
+                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+                    } else {
+                        $mailer = \mkw\store::getMailer();
+
+                        $mailer->addTo($tanaremail);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
+
+                        $mailer->send();
+                    }
                 }
             }
         }
@@ -215,13 +264,56 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                     }
                     $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
 
-                    $mailer = \mkw\store::getMailer();
+                    if (\mkw\store::isDeveloper()) {
+                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+                    } else {
+                        $mailer = \mkw\store::getMailer();
+                        $mailer->addTo($email);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
 
-                    $mailer->addTo($email);
-                    $mailer->setSubject($subject->getTemplateResult());
-                    $mailer->setMessage($body->getTemplateResult());
+                        $mailer->send();
+                    }
+                }
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaLemondasErtesitoSablon));
+                $tanaremail = $ora->getDolgozoEmail();
+                if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $subject->setVar('oranev', $ora->getNev());
+                    $subject->setVar('tanarnev', $ora->getDolgozoNev());
+                    $subject->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $subject->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $subject->setVar('partnervezeteknev', $partner->getVezeteknev());
+                    }
+                    $subject->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+                    $subject->setVar('napnev', $ora->getNapNev());
 
-                    $mailer->send();
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
+                    $body->setVar('oranev', $ora->getNev());
+                    $body->setVar('tanarnev', $ora->getDolgozoNev());
+                    $body->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
+                    }
+                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+                    if (\mkw\store::isDeveloper()) {
+                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+                    } else {
+                        $mailer = \mkw\store::getMailer();
+
+                        $mailer->addTo($tanaremail);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
+
+                        $mailer->send();
+                    }
                 }
             }
         }

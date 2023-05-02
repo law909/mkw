@@ -452,6 +452,26 @@
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label
+                                        for="jogabejelentkezesertesitoSablonEdit">{at('Bejelentkezés értesítő (tanárnak)')}:</label></span>
+                                <select id="jogabejelentkezesertesitoSablonEdit" name="jogabejelentkezesertesitosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogabejelentkezesertesitosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="jogalemondasertesitoSablonEdit">{at('Lemondás értesítő (tanárnak)')}:</label></span>
+                                <select id="jogalemondasertesitoSablonEdit" name="jogalemondasertesitosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogalemondasertesitosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
                                         for="jogaelmaradaskonyvelonekSablonEdit">{at('Óra elmaradás könyvelőnek sablon')}:</label></span>
                                 <select id="jogaelmaradaskonyvelonekSablonEdit" name="jogaelmaradaskonyveloneksablon">
                                     <option value="">{at('válasszon')}</option>

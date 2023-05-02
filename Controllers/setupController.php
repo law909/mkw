@@ -227,6 +227,14 @@ class setupController extends \mkwhelpers\Controller
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogaelmaradasertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::JogaBejelentkezesErtesitoSablon);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('jogabejelentkezesertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::JogaLemondasErtesitoSablon);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('jogalemondasertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
@@ -1330,6 +1338,24 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaElmaradasErtesitoSablon, $levelsablon->getId());
         } else {
             $this->setObj(\mkw\consts::JogaElmaradasErtesitoSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBejelentkezesErtesitoSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::JogaBejelentkezesErtesitoSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::JogaBejelentkezesErtesitoSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaLemondasErtesitoSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::JogaLemondasErtesitoSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::JogaLemondasErtesitoSablon, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));
