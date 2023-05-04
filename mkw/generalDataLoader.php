@@ -35,6 +35,7 @@ class generalDataLoader
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('loggedinuser', \mkw\store::getAdminSession()->loggedinuser);
+        $view->setVar('tulajnev', \mkw\store::getParameter(\mkw\consts::Tulajnev));
         $view->setVar('dev', \mkw\store::getConfigValue('developer', false));
         $view->setVar('jsversion', \mkw\store::getJSVersion());
         $view->setVar('bootstrapjsversion', \mkw\store::getBootstrapJSVersion());
