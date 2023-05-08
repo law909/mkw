@@ -27,6 +27,10 @@
                 <td>{$_partner.adoszam}</td>
             </tr>
             <tr>
+                <td>{at('Csoportos adószám')}:</td>
+                <td>{$_partner.csoportosadoszam}</td>
+            </tr>
+            <tr>
                 <td>{at('Fizetési mód')}:</td>
                 <td>{$_partner.fizmodnev}</td>
             </tr>

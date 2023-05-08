@@ -113,12 +113,16 @@
                             <button class="js-querytaxpayer">NAV</button>
                         {/if}
                     </td>
-                    <td><label for="EUAdoszamEdit">{at('Közösségi adószám')}:</label></td>
-                    <td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
+                    <td><label for="CsoportosAdoszamEdit">{at('Csoportos adószám')}:</label></td>
+                    <td><input id="CsoportosAdoszamEdit" name="csoportosadoszam" type="text" size="13" maxlength="50" value="{$partner.csoportosadoszam}"></td>
                 </tr>
                 <tr>
+                    <td><label for="EUAdoszamEdit">{at('Közösségi adószám')}:</label></td>
+                    <td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
                     <td><label for="ThirdAdoszamEdit">{at('Harmadik ország adószám')}:</label></td>
-                    <td><input id="ThirdAdoszamEdit" name="thirdadoszam" type="text" size="13" maxlength="30" value="{$partner.thirdadoszam}"></td>
+                    <td><input id="ThirdAdoszamEdit" name="thirdadoszam" type="text" size="13" maxlength="50" value="{$partner.thirdadoszam}"></td>
+                </tr>
+                <tr>
                     <td><label for="SzamlaegyebEdit">{at('Egyéb adat számlán')}:</label></td>
                     <td><input id="SzamlaegyebEdit" name="szamlaegyeb" type="text" maxlength="255" value="{$partner.szamlaegyeb}"></td>
                 </tr>

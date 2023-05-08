@@ -57,6 +57,9 @@ class Partner
     /** @ORM\Column(type="string",length=13,nullable=true) */
     private $adoszam = '';
 
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $csoportosadoszam = '';
+
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $euadoszam = '';
 
@@ -3313,6 +3316,22 @@ class Partner
     public function setMptngynemveszreszt($mptngynemveszreszt): void
     {
         $this->mptngynemveszreszt = $mptngynemveszreszt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsoportosadoszam()
+    {
+        return $this->csoportosadoszam;
+    }
+
+    /**
+     * @param string $csoportosadoszam
+     */
+    public function setCsoportosadoszam($csoportosadoszam): void
+    {
+        $this->csoportosadoszam = $csoportosadoszam;
     }
 
 }

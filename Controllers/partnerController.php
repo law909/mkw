@@ -48,6 +48,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         $x['adoszam'] = $t->getAdoszam();
+        $x['csoportosadoszam'] = $t->getCsoportosadoszam();
         $x['euadoszam'] = $t->getEuadoszam();
         $x['thirdadoszam'] = $t->getThirdadoszam();
         $x['mukengszam'] = $t->getMukengszam();
@@ -498,7 +499,8 @@ class partnerController extends \mkwhelpers\MattableController
 
         if ($subject === 'szamlaadatok' || $subject === 'pubreg' || $subject === 'minden') {
             $obj->setNev($this->params->getStringRequestParam('nev'));
-            $obj->setAdoszam($this->params->getStringRequestParam('adoszam'));
+            $obj->setAdoszam(substr($this->params->getStringRequestParam('adoszam'), 0, 13));
+            $obj->setCsoportosadoszam($this->params->getStringRequestParam('csoportosadoszam'));
             $obj->setIrszam($this->params->getStringRequestParam('irszam'));
             $obj->setVaros($this->params->getStringRequestParam('varos'));
             $obj->setUtca($this->params->getStringRequestParam('utca'));

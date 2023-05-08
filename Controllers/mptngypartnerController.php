@@ -57,7 +57,8 @@ class mptngypartnerController extends partnerController
             $p->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
             $p->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
             $p->setVatstatus($this->params->getIntRequestParam('vatstatus'));
-            $p->setAdoszam($this->params->getIntRequestParam('adoszam'));
+            $p->setAdoszam(substr($this->params->getStringRequestParam('adoszam'), 0, 13));
+            $p->setCsoportosadoszam($this->params->getStringRequestParam('csoportosadoszam'));
             $p->setMptngyvipvacsora($this->params->getBoolRequestParam('mptngyvipvacsora'));
             $p->setMptngybankett($this->params->getBoolRequestParam('mptngybankett'));
             $p->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));

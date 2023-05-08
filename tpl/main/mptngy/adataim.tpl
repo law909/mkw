@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=2"></script>
+    <script src="/js/main/mptngy/adataim.js?v=3"></script>
 {/block}
 
 {block "body"}
@@ -89,8 +89,13 @@
                         :class="validation.adoszam && !validation.adoszam.valid ? 'error' : ''"
                         type="text"
                         x-model="reg.adoszam"
+                        maxlength="13"
                     >
                     <div class="co-error" x-text="validation.adoszam && validation.adoszam.error"></div>
+                </div>
+                <div class="co-control-row">
+                    <label for="regInvCsoportosadoszamEdit" class="co-label">{t('Csoportos adószám')}</label>
+                    <input id="regInvCsoportosadoszamEdit" class="co-input" type="text" x-model="reg.csoportosadoszam">
                 </div>
                 <div class="co-control-row">
                     <label for="regInvBankEdit" class="co-label">{t('Bankszámlaszám')}</label>
