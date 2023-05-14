@@ -1447,6 +1447,9 @@ class Bizonylatfej
 
         $result = $result . '<invoiceLines>';
         $result = $result . '<mergedItemIndicator>false</mergedItemIndicator>';
+        if ($this->getStorno()) {
+            $stornotetelsorszam = $this->getBizonylattetelek()->count() + 1;
+        }
         $tetelsorszam = 1;
         /** @var \Entities\Bizonylattetel $bt */
         foreach ($this->getBizonylattetelek() as $bt) {
@@ -1454,8 +1457,8 @@ class Bizonylatfej
             $result = $result . '<lineNumber>' . $tetelsorszam . '</lineNumber>';
             if ($this->getStorno()) {
                 $result = $result . '<lineModificationReference>';
-                $result = $result . '<lineNumberReference>' . $tetelsorszam . '</lineNumberReference>';
-                $result = $result . '<lineOperation>MODIFY</lineOperation>';
+                $result = $result . '<lineNumberReference>' . $stornotetelsorszam . '</lineNumberReference>';
+                $result = $result . '<lineOperation>CREATE</lineOperation>';
                 $result = $result . '</lineModificationReference>';
             }
             if (str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam())) {
@@ -1536,6 +1539,9 @@ class Bizonylatfej
                 */
             }
             $result = $result . '</line>';
+            if ($this->getStorno()) {
+                $stornotetelsorszam++;
+            }
             $tetelsorszam++;
         }
         $result = $result . '</invoiceLines>';
