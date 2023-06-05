@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Entities\Partner;
@@ -7,15 +8,18 @@ use Entities\TermekKep;
 use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
 
-class exportController extends \mkwhelpers\Controller {
+class exportController extends \mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('exports.tpl');
         $view->setVar('pagetitle', t('Exportok'));
         $view->printTemplateResult(false);
     }
 
-    private function kellKeszletetNezni($pid) {
+    private function kellKeszletetNezni($pid)
+    {
         $pr = \mkw\store::getEm()->getRepository('Entities\Partner');
         if ($pid) {
             /** @var \Entities\Partner $gyarto */
@@ -25,18 +29,19 @@ class exportController extends \mkwhelpers\Controller {
         return false;
     }
 
-    public function VateraHeadExport() {
+    public function VateraHeadExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
         header("Content-Disposition: attachment; filename=vateramkw.csv");
     }
 
-    public function VateraExport() {
-
+    public function VateraExport()
+    {
         $this->VateraHeadExport();
 
-        $sor = array(
+        $sor = [
             '"title"',
             '"seller_product_id"',
             '"status"',
@@ -55,7 +60,7 @@ class exportController extends \mkwhelpers\Controller {
             '"page_link"',
             '"availability_371"',
             '"description"'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -85,7 +90,6 @@ class exportController extends \mkwhelpers\Controller {
                     /** @var \Entities\TermekValtozat $v */
                     foreach ($valtozatok as $v) {
                         if ($v->getElerheto() && (($keszletetnezni && $v->getKeszlet() > 0) || (!$keszletetnezni))) {
-
                             $szallszoveg = false;
                             $szallitasiido = $t->calcSzallitasiido($v);
 
@@ -102,8 +106,7 @@ class exportController extends \mkwhelpers\Controller {
                     if ($vszoveg) {
                         $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
                     }
-                }
-                else {
+                } else {
                     $szallitasiido = $t->calcSzallitasiido();
                     if ($szallitasiido) {
                         $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido . ' munkanap.</b></p>';
@@ -121,7 +124,7 @@ class exportController extends \mkwhelpers\Controller {
 
                 $leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
 
-                $keptomb = array();
+                $keptomb = [];
                 $kepek = $t->getTermekKepek(true);
                 /** @var \Entities\TermekKep $k */
                 foreach ($kepek as $k) {
@@ -134,7 +137,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace('"', '""', $leiras);
 
 //        $cimke = false;
-                $sor = array(
+                $sor = [
                     '"' . $t->getNev() . '"',
                     '"' . $t->getCikkszam() . '"',
                     '"1"',
@@ -153,18 +156,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"-1"',
                     '"' . $leiras . '"'
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function GrandoExport() {
+    public function GrandoExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             '"title"',
             '"seller_product_id"',
             '"status"',
@@ -183,7 +187,7 @@ class exportController extends \mkwhelpers\Controller {
             '"page_link"',
             '"availability_371"',
             '"description"'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -213,7 +217,6 @@ class exportController extends \mkwhelpers\Controller {
                     /** @var \Entities\TermekValtozat $v */
                     foreach ($valtozatok as $v) {
                         if ($v->getElerheto() && (($keszletetnezni && $v->getKeszlet() > 0) || (!$keszletetnezni))) {
-
                             $szallszoveg = false;
                             $szallitasiido = $t->calcSzallitasiido($v);
 
@@ -230,8 +233,7 @@ class exportController extends \mkwhelpers\Controller {
                     if ($vszoveg) {
                         $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
                     }
-                }
-                else {
+                } else {
                     $szallitasiido = $t->calcSzallitasiido();
                     if ($szallitasiido) {
                         $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido . ' munkanap.</b></p>';
@@ -250,7 +252,7 @@ class exportController extends \mkwhelpers\Controller {
 
                 $leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
 
-                $keptomb = array();
+                $keptomb = [];
                 $kepek = $t->getTermekKepek(true);
                 /** @var \Entities\TermekKep $k */
                 foreach ($kepek as $k) {
@@ -263,7 +265,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace('"', '""', $leiras);
 
                 //        $cimke = false;
-                $sor = array(
+                $sor = [
                     '"' . $t->getNev() . '"',
                     '"' . $t->getCikkszam() . '"',
                     '"1"',
@@ -282,18 +284,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"-1"',
                     '"' . $leiras . '"'
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function OlcsoExport() {
+    public function OlcsoExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             '"title"',
             '"seller_product_id"',
             '"status"',
@@ -305,7 +308,7 @@ class exportController extends \mkwhelpers\Controller {
             '"page_link"',
             '"availability_371"',
             '"description"'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -335,7 +338,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace('"', '""', $leiras);
 
                 //        $cimke = false;
-                $sor = array(
+                $sor = [
                     '"' . $t->getNev() . '"',
                     '"' . $t->getCikkszam() . '"',
                     '"1"',
@@ -347,18 +350,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"-1"',
                     '"' . $leiras . '"'
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function ShopHunterExport() {
+    public function ShopHunterExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'id',
             'name',
             'description',
@@ -366,7 +370,7 @@ class exportController extends \mkwhelpers\Controller {
             'category',
             'image_url',
             'product_url'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -394,7 +398,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\r", '', $leiras);
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '""', $leiras);
-                $sor = array(
+                $sor = [
                     '"' . $t->getId() . '"',
                     '"' . $t->getNev() . '"',
                     '"' . $leiras . '"',
@@ -402,18 +406,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . $t->getTermekfa1Nev() . '"',
                     '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"'
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function ArfurkeszExport() {
+    public function ArfurkeszExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             '"manufacturer"',
             '"name"',
             '"category"',
@@ -421,12 +426,12 @@ class exportController extends \mkwhelpers\Controller {
             '"product_url"',
             '"image_url"',
             '"description"'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
-        $sani = new \mkwhelpers\HtmlPurifierSanitizer(array(
+        $sani = new \mkwhelpers\HtmlPurifierSanitizer([
             'HTML.Allowed' => 'strong,ul,li,u,i,b,br,em'
-        ));
+        ]);
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
@@ -454,7 +459,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '\"', $leiras);
                 $leiras = $sani->sanitize($leiras);
-                $sor = array(
+                $sor = [
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
                     '"' . $t->getTermekfa1Nev() . '"',
@@ -462,18 +467,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . $leiras . '"'
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function ArmutatoExport() {
+    public function ArmutatoExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'id',
             'url',
             'price',
@@ -483,7 +489,7 @@ class exportController extends \mkwhelpers\Controller {
             'manufacturer',
             'description',
             'long_description'
-        );
+        ];
         echo implode(';', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -511,7 +517,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\r", '', $leiras);
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '\"', $leiras);
-                $sor = array(
+                $sor = [
                     $t->getId(),
                     \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')),
                     number_format($t->getBruttoAr(), 0, ',', ''),
@@ -521,18 +527,19 @@ class exportController extends \mkwhelpers\Controller {
                     ($cimke ? $cimke->getNev() : ''),
                     $t->getRovidLeiras(),
                     $leiras
-                );
+                ];
                 echo implode(';', $sor) . "\n";
             }
         }
     }
 
-    public function ArgepExport() {
+    public function ArgepExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'Cikkszám',
             'Terméknév',
             'Termékleírás',
@@ -541,14 +548,13 @@ class exportController extends \mkwhelpers\Controller {
             'Terméklink',
             'SzállításiIdő',
             'SzállításiKöltség'
-        );
+        ];
         echo implode('|', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $termekmehet = true;
             $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
             $valtozatok = $t->getValtozatok();
@@ -573,7 +579,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '""', $leiras);
 
-                $sor = array(
+                $sor = [
                     '"' . $t->getCikkszam() . '"',
                     '"' . $t->getNev() . '"',
                     '"' . $leiras . '"',
@@ -582,18 +588,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . ($szallitasiido ? 'max. ' . $szallitasiido . ' munkanap' : '') . '"',
                     '"0"'
-                );
+                ];
                 echo implode('|', $sor) . "\n";
             }
         }
     }
 
-    public function YuspExport() {
+    public function YuspExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'Id',
             'Terméknév',
             'Termékleírás',
@@ -602,14 +609,13 @@ class exportController extends \mkwhelpers\Controller {
             'Terméklink',
             'SzállításiIdő',
             'SzállításiKöltség'
-        );
+        ];
         echo implode('|', $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $termekmehet = true;
             $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
             $valtozatok = $t->getValtozatok();
@@ -634,7 +640,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '""', $leiras);
 
-                $sor = array(
+                $sor = [
                     '"' . $t->getId() . '"',
                     '"' . $t->getNev() . '"',
                     '"' . $leiras . '"',
@@ -643,18 +649,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . ($szallitasiido ? 'max. ' . $szallitasiido . ' munkanap' : '') . '"',
                     '"0"'
-                );
+                ];
                 echo implode('|', $sor) . "\n";
             }
         }
     }
 
-    public function ArukeresoExport() {
+    public function ArukeresoExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'manufacturer',
             'name',
             'category',
@@ -665,8 +672,8 @@ class exportController extends \mkwhelpers\Controller {
             'delivery_time',
             'identifier',
             'net_price',
-            'ean'
-        );
+            'ean',
+        ];
         echo implode("\t", $sor) . "\n";
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
@@ -702,8 +709,7 @@ class exportController extends \mkwhelpers\Controller {
                 if ($t->getTermekfa1()) {
                     if ($t->getArukeresofanev()) {
                         $levelnev = $t->getArukeresofanev();
-                    }
-                    else {
+                    } else {
                         $levelnev = $t->getTermekfa1()->getArukeresoid();
                     }
                     $termekfanev = $t->getTermekfa1()->getTeljesNev(' > ', $levelnev);
@@ -720,7 +726,7 @@ class exportController extends \mkwhelpers\Controller {
                     }
                 }
 
-                $sor = array(
+                $sor = [
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
                     '"' . $termekfanev . '"',
@@ -732,18 +738,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . $t->getId() . '"',
                     '"' . number_format($t->getNettoAr(), 0, ',', '') . '"',
                     '"' . $vonalkod . '"'
-                );
+                ];
                 echo implode("\t", $sor) . "\n";
             }
         }
     }
 
-    public function OlcsobbatExport() {
+    public function OlcsobbatExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $sor = array(
+        $sor = [
             'manufacturer',
             'name',
             'category',
@@ -751,7 +758,7 @@ class exportController extends \mkwhelpers\Controller {
             'price',
             'image_url',
             'description'
-        );
+        ];
         echo implode(";", $sor) . "\n";
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
@@ -781,7 +788,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = str_replace("\n\r", '', $leiras);
                 $leiras = str_replace('"', '""', $leiras);
 
-                $sor = array(
+                $sor = [
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
                     '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ') : '') . '"',
@@ -789,17 +796,19 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                     '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
                     '"' . $leiras . '"'
-                );
+                ];
                 echo implode(";", $sor) . "\n";
             }
         }
     }
 
-    private function encstr($str) {
+    private function encstr($str)
+    {
         return mb_convert_encoding($str, 'ISO-8859-2', 'UTF8');
     }
 
-    public function RLBExport() {
+    public function RLBExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
@@ -815,12 +824,12 @@ class exportController extends \mkwhelpers\Controller {
             $filter->addFilter('id', '>', $mar);
         }
 
-        $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
+        $r = $bizrepo->getAll($filter, ['id' => 'ASC']);
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
             $fm = $bizonylat->getFizmod();
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
-            $sor = array(
+            $sor = [
                 $bizonylat->getKeltStr(),
                 $bizonylat->getTeljesitesStr(),
                 $bizonylat->getEsedekessegStr(),
@@ -832,7 +841,7 @@ class exportController extends \mkwhelpers\Controller {
                 $this->encstr($bizonylat->getPartnerutca()),
                 $this->encstr('Értékesítés árbevétele'),
                 ($fm->getTipus() == 'P' ? 1 : 2)
-            );
+            ];
 
             $i = 1;
             foreach ($aossz as $ao) {
@@ -856,18 +865,19 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
-    public function FCMotoExport() {
-
+    public function FCMotoExport()
+    {
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
         $ertek1 = array_merge(
             \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
+        );
 
         foreach ($ertek1 as $eee1) {
             $e1 = $eee1['ertek'];
 
-            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            $kodsz = $kodszotarrepo->findOneBy(['ertek' => $e1]);
             if (!$kodsz) {
                 $kodsz = new \Entities\TermekValtozatErtekKodszotar();
                 $kodsz->setErtek($e1);
@@ -884,7 +894,7 @@ class exportController extends \mkwhelpers\Controller {
         header("Expires: 0");
         header("Content-Disposition: attachment; filename=fcmoto.csv");
 
-        $sor = array(
+        $sor = [
             'Article Number',
             'Color Number',
             'Article Name',
@@ -894,7 +904,7 @@ class exportController extends \mkwhelpers\Controller {
             'EAN Code',
             'Description',
             'Image URL'
-        );
+        ];
         echo implode(";", $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -902,7 +912,7 @@ class exportController extends \mkwhelpers\Controller {
         $filter = new FilterDescriptor();
         $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
         if ($karkod) {
-            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
         }
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
@@ -911,7 +921,6 @@ class exportController extends \mkwhelpers\Controller {
 
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $valtozatok = $t->getValtozatok();
             if ($valtozatok) {
                 /** @var \Entities\TermekValtozat $valt */
@@ -920,7 +929,7 @@ class exportController extends \mkwhelpers\Controller {
                     if ($keszlet < 0) {
                         $keszlet = 0;
                     }
-                    $sor = array(
+                    $sor = [
                         '"' . $t->getCikkszam() . '"',
                         '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
                         '"' . $t->getNev() . '"',
@@ -931,16 +940,15 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
                         '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
                         //'"' . $t->getBruttoAr($valt, null, $eur, 'eurar') . '"'
-                    );
+                    ];
                     echo implode(";", $sor) . "\n";
                 }
-            }
-            else {
+            } else {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
                 }
-                $sor = array(
+                $sor = [
                     '"' . $t->getCikkszam() . '"',
                     '""',
                     '"' . $t->getNev() . '"',
@@ -951,26 +959,27 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
                     '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
                     //'"' . $t->getBruttoAr(null, null, $eur, 'eurar') . '"'
-                );
+                ];
                 echo implode(";", $sor) . "\n";
             }
         }
     }
 
-    public function MugenraceExport() {
-
+    public function MugenraceExport()
+    {
         $maxstock = $this->params->getNumRequestParam('max', 0);
 
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
         $ertek1 = array_merge(
             \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
+        );
 
         foreach ($ertek1 as $eee1) {
             $e1 = $eee1['ertek'];
 
-            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            $kodsz = $kodszotarrepo->findOneBy(['ertek' => $e1]);
             if (!$kodsz) {
                 $kodsz = new \Entities\TermekValtozatErtekKodszotar();
                 $kodsz->setErtek($e1);
@@ -987,7 +996,7 @@ class exportController extends \mkwhelpers\Controller {
         header("Expires: 0");
         header("Content-Disposition: attachment; filename=mugenrace.csv");
 
-        $sor = array(
+        $sor = [
             'Article Number',
             'Color Number',
             'Article Name',
@@ -998,7 +1007,7 @@ class exportController extends \mkwhelpers\Controller {
             'Description',
             'Image URL'
 //            'Price'
-        );
+        ];
         echo implode(";", $sor) . "\n";
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -1006,16 +1015,15 @@ class exportController extends \mkwhelpers\Controller {
         $filter = new FilterDescriptor();
         $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
         if ($karkod) {
-            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
         }
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
 
-        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(['nev' => 'EUR']);
 
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $valtozatok = $t->getValtozatok();
             if ($valtozatok) {
                 /** @var \Entities\TermekValtozat $valt */
@@ -1027,7 +1035,7 @@ class exportController extends \mkwhelpers\Controller {
                     if ($maxstock > 0) {
                         $keszlet = min($keszlet, $maxstock);
                     }
-                    $sor = array(
+                    $sor = [
                         '"' . $t->getCikkszam() . '"',
                         '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
                         '"' . $t->getNev() . '"',
@@ -1038,11 +1046,10 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
                         '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
 //                        '"' . $t->getNettoAr($valt, null, $eur, 'eurar') . '"'
-                    );
+                    ];
                     echo implode(";", $sor) . "\n";
                 }
-            }
-            else {
+            } else {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
@@ -1050,7 +1057,7 @@ class exportController extends \mkwhelpers\Controller {
                 if ($maxstock > 0) {
                     $keszlet = min($keszlet, $maxstock);
                 }
-                $sor = array(
+                $sor = [
                     '"' . $t->getCikkszam() . '"',
                     '""',
                     '"' . $t->getNev() . '"',
@@ -1061,26 +1068,27 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
                     '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
 //                    '"' . $t->getNettoAr(null, null, $eur, 'eurar') . '"'
-                );
+                ];
                 echo implode(";", $sor) . "\n";
             }
         }
     }
 
-    public function SuperzonehuExport() {
-
+    public function SuperzonehuExport()
+    {
         $maxstock = $this->params->getNumRequestParam('max', 0);
 
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
         $ertek1 = array_merge(
             \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
+        );
 
         foreach ($ertek1 as $eee1) {
             $e1 = $eee1['ertek'];
 
-            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            $kodsz = $kodszotarrepo->findOneBy(['ertek' => $e1]);
             if (!$kodsz) {
                 $kodsz = new \Entities\TermekValtozatErtekKodszotar();
                 $kodsz->setErtek($e1);
@@ -1092,7 +1100,7 @@ class exportController extends \mkwhelpers\Controller {
             }
         }
 
-        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(['nev' => 'HUF']);
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
@@ -1103,11 +1111,10 @@ class exportController extends \mkwhelpers\Controller {
         $sor = [];
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $ford = $t->getTranslationsArray();
 
             $termekkepek = $t->getTermekKepek();
-            $kepek = array();
+            $kepek = [];
             /** @var TermekKep $kep */
             foreach ($termekkepek as $kep) {
                 if ($kep->getUrl()) {
@@ -1151,8 +1158,7 @@ class exportController extends \mkwhelpers\Controller {
                         'variantId' => $valt->getId()
                     ];
                 }
-            }
-            else {
+            } else {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
@@ -1177,7 +1183,7 @@ class exportController extends \mkwhelpers\Controller {
                     'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
                     'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
                     'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
-                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ),
+                    'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
                     'discountPrice' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)),
@@ -1193,7 +1199,8 @@ class exportController extends \mkwhelpers\Controller {
         echo json_encode($sor);
     }
 
-    public function DepoExport() {
+    public function DepoExport()
+    {
         header("Content-type: text/xml");
         header("Pragma: no-cache");
         header("Expires: 0");
@@ -1245,20 +1252,21 @@ class exportController extends \mkwhelpers\Controller {
         echo '</products>';
     }
 
-    public function KaposimotoExport() {
-
+    public function KaposimotoExport()
+    {
         $maxstock = $this->params->getNumRequestParam('max', 0);
 
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
         $ertek1 = array_merge(
             \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
+        );
 
         foreach ($ertek1 as $eee1) {
             $e1 = $eee1['ertek'];
 
-            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            $kodsz = $kodszotarrepo->findOneBy(['ertek' => $e1]);
             if (!$kodsz) {
                 $kodsz = new \Entities\TermekValtozatErtekKodszotar();
                 $kodsz->setErtek($e1);
@@ -1270,14 +1278,14 @@ class exportController extends \mkwhelpers\Controller {
             }
         }
 
-        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(['nev' => 'HUF']);
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
         $filter = new FilterDescriptor();
         $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
         if ($karkod) {
-            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
         }
         $res = $tr->getKaposimotoExport($filter);
 
@@ -1288,11 +1296,10 @@ class exportController extends \mkwhelpers\Controller {
         $sor = [];
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-
             $ford = $t->getTranslationsArray();
 
             $termekkepek = $t->getTermekKepek();
-            $kepek = array();
+            $kepek = [];
             /** @var TermekKep $kep */
             foreach ($termekkepek as $kep) {
                 if ($kep->getUrl()) {
@@ -1306,8 +1313,7 @@ class exportController extends \mkwhelpers\Controller {
             if ($partner && $partner->getSzamlatipus()) {
                 $price = $t->getNettoAr(null, $partner);
                 $discountprice = $t->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-            }
-            else {
+            } else {
                 $price = $t->getBruttoAr(null, $partner);
                 $discountprice = $t->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
             }
@@ -1320,8 +1326,7 @@ class exportController extends \mkwhelpers\Controller {
                     $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                     if ($keszlet < 0) {
                         $keszlet = 0;
-                    }
-                    else {
+                    } else {
                         $keszlet = 1;
                     }
                     $valtozattomb[] = [
@@ -1352,13 +1357,11 @@ class exportController extends \mkwhelpers\Controller {
                     'Id' => $t->getId(),
                     'variants' => $valtozattomb
                 ];
-            }
-            else {
+            } else {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
-                }
-                else {
+                } else {
                     $keszlet = 1;
                 }
                 $sor[] = [
