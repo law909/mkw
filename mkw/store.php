@@ -1137,6 +1137,11 @@ class store
         return self::getConfigValue('reintexteszt');
     }
 
+    public static function isMakszutovTeszt()
+    {
+        return self::getConfigValue('makszutovteszt') || self::getConfigValue('maxutovteszt');
+    }
+
     public static function isMultilang()
     {
         return self::getSetupValue('multilang');

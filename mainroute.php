@@ -198,6 +198,7 @@ $router->map('GET', '/t/emag/printtermek', 'emagController#printTermek', 'printt
 $router->map('GET', '/t/emag/uploadtermek', 'emagController#uploadTermek', 'uploadtermek');
 
 $router->map('GET', '/t/reintexdownload', 'toolController#reintexDownload', 'reintexdownload');
+$router->map('GET', '/t/makszutovdownload', 'toolController#makszutovDownload', 'makszutovdownload');
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 
