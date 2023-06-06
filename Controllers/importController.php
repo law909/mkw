@@ -811,7 +811,7 @@ class importController extends \mkwhelpers\Controller
                         if ($data[1]) {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('DT' . $data[1]);
                             if (!$termek) {
-                                if ($createuj) {
+                                if ($createuj && (substr($data[11], -6) !== 'rkezik') && (substr($data[11], 0, 6) !== 'rendel')) {
                                     if ($data[6] && $data[6] !== '"') {
                                         $katnev = trim($data[6]);
                                     } elseif ($data[5] && $data[5] !== '"') {
@@ -877,6 +877,13 @@ class importController extends \mkwhelpers\Controller
                                     }
                                     $termek->setKepurl($urleleje . $this->urlkatnev($urlkatnev) . $kepnev . '.' . $extension);
                                     $termek->setKepleiras($termeknev);
+                                    \mkw\store::writelog(
+                                        'ÚJ TERMÉK'
+                                        . ' termék név: ' . $termek->getNev()
+                                        . ' termék cikkszám: ' . $termek->getCikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
                                 }
                             } else {
                                 /** @var \Entities\Termek $termek */
@@ -3089,13 +3096,24 @@ class importController extends \mkwhelpers\Controller
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
-            $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
-            \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            \curl_setopt($ch, CURLOPT_FILE, $fh);
-            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            \curl_exec($ch);
-            fclose($fh);
+            if (\mkw\store::isMakszutovTeszt()) {
+                $ch = \curl_init('https://www.mindentkapni.hu/t/makszutovdownload');
+                $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
+                \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                \curl_exec($ch);
+                fclose($fh);
+                \curl_close($ch);
+            } else {
+                $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
+                $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
+                \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                \curl_exec($ch);
+                fclose($fh);
+            }
 
             $linecount = 0;
             $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'r');
@@ -3259,6 +3277,13 @@ class importController extends \mkwhelpers\Controller
                                     }
                                 }
                                 \mkw\store::getEm()->persist($termek);
+                                \mkw\store::writelog(
+                                    'ÚJ TERMÉK'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         } else {
                             if (is_array($termek)) {
