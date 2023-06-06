@@ -6063,6 +6063,7 @@ class importController extends \mkwhelpers\Controller
                 if ($cikkszam) {
                     $termekdb++;
 
+                    /** @var Termek $termek */
                     $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(['idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid]);
 
                     if (is_array($termek)) {
@@ -6072,8 +6073,20 @@ class importController extends \mkwhelpers\Controller
                         $ar = (float)$sheet->getCell('M' . $row)->getValue();
                         if ($ar && !$termek->getAkcios()) {
                             $termek->setBrutto(round($ar, -1));
-                            \mkw\store::getEm()->persist($termek);
                         }
+
+                        $kaphato = (int)$sheet->getCell('R' . $row)->getValue() > 0;
+                        if (!$kaphato) {
+                            if ($termek->getKeszlet() <= 0) {
+                                $termek->setNemkaphato(true);
+                            } else {
+                                $termek->setNemkaphato(false);
+                            }
+                        } else {
+                            $termek->setNemkaphato(false);
+                        }
+
+                        \mkw\store::getEm()->persist($termek);
                     }
 
                     if (($termekdb % $batchsize) === 0) {
