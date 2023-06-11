@@ -165,6 +165,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="ArukeresoExportSzallmodEdit">{at('Árukereső export száll.mód')}:</label></span>
+                            <select id="ArukeresoExportSzallmodEdit" name="arukeresoexportszallmod">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $arukeresoexportszallmodlist as $_foxpost}
+                                    <option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                         {if ($setup.otpay)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="OTPayFizmodEdit">{at('OTPay fizetési mód')}:</label></span>

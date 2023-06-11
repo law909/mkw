@@ -203,6 +203,8 @@ class consts
     const GLSSzallitasiMod = 'glsszallitasimod';
     const GLSFutarSzallitasmod = 'glsfutarszallitasimod';
 
+    const ArukeresoExportSzallmod = 'arukeresoexportszallmod';
+    
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
 

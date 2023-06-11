@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Partner;
+use Entities\SzallitasimodHatar;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
@@ -673,9 +674,11 @@ class exportController extends \mkwhelpers\Controller
             'identifier',
             'net_price',
             'ean',
+            'delivery_cost',
         ];
         echo implode("\t", $sor) . "\n";
-        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $tr = \mkw\store::getEm()->getRepository(Termek::class);
+        $szr = \mkw\store::getEm()->getRepository(SzallitasimodHatar::class);
         $res = $tr->getAllForExport();
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
@@ -726,6 +729,12 @@ class exportController extends \mkwhelpers\Controller
                     }
                 }
 
+                /** @var SzallitasimodHatar $szallktg */
+                $szallktg = $szr->getBySzallitasimodValutanemHatar(
+                    \mkw\store::getParameter(\mkw\consts::ArukeresoExportSzallmod),
+                    \mkw\store::getParameter(\mkw\consts::Valutanem),
+                    $t->getBruttoAr()
+                );
                 $sor = [
                     '"' . ($cimke ? $cimke->getNev() : '') . '"',
                     '"' . $t->getNev() . '"',
@@ -737,7 +746,8 @@ class exportController extends \mkwhelpers\Controller
                     '"' . ($szallitasiido ? $szallitasiido . ' munkanap' : '') . '"',
                     '"' . $t->getId() . '"',
                     '"' . number_format($t->getNettoAr(), 0, ',', '') . '"',
-                    '"' . $vonalkod . '"'
+                    '"' . $vonalkod . '"',
+                    '"' . number_format($szallktg->getOsszeg(), 0, ',', '') . '"',
                 ];
                 echo implode("\t", $sor) . "\n";
             }

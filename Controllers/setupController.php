@@ -267,6 +267,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('glsszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::GLSFutarSzallitasmod);
         $view->setVar('glsfutarszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::ArukeresoExportSzallmod);
+        $view->setVar('arukeresoexportszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::NullasAfa);
         $fizmod = new afaController($this->params);
@@ -1031,6 +1033,13 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, $szm->getId());
         } else {
             $this->setObj(\mkw\consts::GLSFutarSzallitasmod, '');
+        }
+
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('arukeresoexportszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::ArukeresoExportSzallmod, $szm->getId());
+        } else {
+            $this->setObj(\mkw\consts::ArukeresoExportSzallmod, '');
         }
 
         $belsouk = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouk', 0));
