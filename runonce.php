@@ -2,6 +2,19 @@
 
 use Doctrine\ORM\Query\ResultSetMapping;
 
+
+if (!\mkw\store::getNAVOnlineEnv()) {
+    \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
+}
+if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '') < '3_0') {
+    $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+    if ($no->version()) {
+        $nover = $no->getResult();
+        \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, $nover);
+    }
+}
+
+
 $DBVersion = \mkw\store::getParameter(\mkw\consts::DBVersion, '');
 
 if ($DBVersion < '0028') {
@@ -232,121 +245,19 @@ if ($DBVersion < '0045') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0045');
 }
 
-/*********************************************************
- *
- * NAV ONLINE 1.1 (2019.06.01)
- *
- */
-if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
-    $mes2 = [];
-    $rsm = new ResultSetMapping();
-    $rsm->addScalarResult('me', 'me');
-    $q = \mkw\store::getEm()->createNativeQuery(
-        'SELECT DISTINCT me'
-        . ' FROM bizonylattetel ',
-        $rsm
+if ($DBVersion < '0046') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(2, "Bank tranzakciók","/admin/banktranzakcio/viewlist","/admin/banktranzakcio",20,0,250, "")'
     );
-    $mes = $q->getScalarResult();
-    foreach ($mes as $m) {
-        $mes2[$m['me']] = $m['me'];
-    }
-    $q = \mkw\store::getEm()->createNativeQuery(
-        'SELECT DISTINCT me'
-        . ' FROM termek ',
-        $rsm
-    );
-    $mes = $q->getScalarResult();
-    foreach ($mes as $m) {
-        $mes2[$m['me']] = $m['me'];
-    }
-    foreach ($mes2 as $me) {
-        $x = new \Entities\ME();
-        $x->setNev($me);
-        \mkw\store::getEm()->persist($x);
-        \mkw\store::getEm()->flush();
-        \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE termek SET me_id=' . $x->getId() . ' WHERE me=\'' . $me . '\'');
-        \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE bizonylattetel SET me_id=' . $x->getId() . ' WHERE me=\'' . $me . '\'');
-    }
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineME1_1Kesz, 1);
-}
-
-/*********************************************************
- *
- * NAV ONLINE 3.0 (2021.03.31)
- *
- */
-if (!\mkw\store::getParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 0)) {
-// magánszemélyek
-    \mkw\store::getEm()->getConnection()->executeUpdate(
-        'UPDATE partner SET vatstatus=2'
-        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND ((adoszam IS NULL) OR (adoszam=\'\')) AND ((euadoszam IS NULL) OR (euadoszam=\'\')) AND ((thirdadoszam IS NULL) OR (thirdadoszam=\'\'))'
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(2, "Bank tranzakciók feltöltése","/admin/banktranzakcio/viewupload","/admin/banktranzakcio",20,0,260, "")'
     );
 
-// belföldi
-    $rsm = new ResultSetMapping();
-    $rsm->addScalarResult('id', 'id');
-    $rsm->addScalarResult('adoszam', 'adoszam');
-    $q = \mkw\store::getEm()->createNativeQuery(
-        'SELECT id,adoszam'
-        . ' FROM partner WHERE (adoszam IS NOT NULL) AND (adoszam <> \'\')',
-        $rsm
-    );
-    $ps = $q->getScalarResult();
-    foreach ($ps as $p) {
-        if (\mkw\store::isMagyarAdoszam($p['adoszam'])) {
-            \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET szamlatipus=0 WHERE id=' . $p['id']);
-        }
-    }
-
-    \mkw\store::getEm()->getConnection()->executeUpdate(
-        'UPDATE partner SET vatstatus=1'
-        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0)) AND (adoszam IS NOT NULL) AND (adoszam <> \'\') AND (szamlatipus=0)'
-    );
-
-// egyeb
-    \mkw\store::getEm()->getConnection()->executeUpdate(
-        'UPDATE partner SET vatstatus=3'
-        . ' WHERE ((vatstatus IS NULL) OR (vatstatus=0))'
-    );
-
-    $rsm = new ResultSetMapping();
-    $rsm->addScalarResult('id', 'id');
-    $rsm->addScalarResult('adoszam', 'adoszam');
-    $rsm->addScalarResult('euadoszam', 'euadoszam');
-    $rsm->addScalarResult('thirdadoszam', 'thirdadoszam');
-    $rsm->addScalarResult('szamlatipus', 'szamlatipus');
-    $q = \mkw\store::getEm()->createNativeQuery(
-        'SELECT id,adoszam,euadoszam,thirdadoszam,szamlatipus'
-        . ' FROM partner WHERE vatstatus=3',
-        $rsm
-    );
-    $ps = $q->getScalarResult();
-    foreach ($ps as $p) {
-        if ($p['szamlatipus'] == 1) {
-            if (!$p['euadoszam']) {
-                \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET euadoszam=adoszam WHERE id=' . $p['id']);
-            }
-        }
-        if ($p['szamlatipus'] == 2) {
-            if (!$p['thirdadoszam']) {
-                \mkw\store::getEm()->getConnection()->executeUpdate('UPDATE partner SET thirdadoszam=adoszam WHERE id=' . $p['id']);
-            }
-        }
-    }
-    \mkw\store::setParameter(\mkw\consts::NAVOnlinePartner3_0Kesz, 1);
-}
-
-$now = \Carbon\Carbon::now()->format(\mkw\store::$SQLDateFormat);
-
-if (!\mkw\store::getNAVOnlineEnv()) {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
-}
-if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '') < '3_0') {
-    $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
-    if ($no->version()) {
-        $nover = $no->getResult();
-        \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, $nover);
-    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0046');
 }
 
 /**

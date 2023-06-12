@@ -169,6 +169,22 @@ class Bizonylattipus
         return $this->azonosito;
     }
 
+    public function getAzonositoForRegexp()
+    {
+        $result = '';
+
+        for ($i = 0; $i < strlen($this->getAzonosito()); $i++) {
+            $char = $this->getAzonosito()[$i];
+
+            $lowercase = strtolower($char);
+            $uppercase = strtoupper($char);
+
+            $result .= '[' . $uppercase . $lowercase . ']?';
+        }
+
+        return $result;
+    }
+
     public function setAzonosito($val)
     {
         $this->azonosito = $val;

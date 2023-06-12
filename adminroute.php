@@ -682,6 +682,16 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/fizmodhatar/save', 'fizmodhatarController#save', 'adminfizmodhatarsave');
 }
 
+$router->map('GET', '/admin/banktranzakcio/viewlist', 'banktranzakcioController#viewlist', 'adminbanktranzakcioviewlist');
+$router->map('GET', '/admin/banktranzakcio/getlistbody', 'banktranzakcioController#getlistbody', 'adminbanktranzakciogetlistbody');
+$router->map('GET', '/admin/banktranzakcio/getkarb', 'banktranzakcioController#getkarb', 'adminbanktranzakciogetkarb');
+$router->map('GET', '/admin/banktranzakcio/viewkarb', 'banktranzakcioController#viewkarb', 'adminbanktranzakcioviewkarb');
+$router->map('GET', '/admin/banktranzakcio/viewupload', 'banktranzakcioController#viewUpload', 'adminbanktranzakcioviewupload');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/banktranzakcio/save', 'banktranzakcioController#save', 'adminbanktranzakciosave');
+    $router->map('POST', '/admin/banktranzakcio/upload', 'banktranzakcioController#upload', 'adminbanktranzakcioupload');
+}
+
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');
 $router->map('GET', '/admin/emailtemplate/getlistbody', 'emailtemplateController#getlistbody', 'adminemailtemplategetlistbody');
 $router->map('GET', '/admin/emailtemplate/getkarb', 'emailtemplateController#getkarb', 'adminemailtemplategetkarb');

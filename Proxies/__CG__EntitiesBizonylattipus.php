@@ -283,6 +283,17 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getAzonositoRegexp()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonositoRegexp', []);
+
+        return parent::getAzonositoRegexp();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setAzonosito($val)
     {
 
