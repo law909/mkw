@@ -103,8 +103,12 @@ document.addEventListener("alpine:init", () => {
         },
         loadTetelList() {
             let geturl = new URL('/checkout/gettetellistdata', location.origin);
-            geturl.searchParams.append('szallitasimod', this.selectedSzallitasimod.id);
-            geturl.searchParams.append('fizmod', this.selectedFizetesimod.id);
+            if (this.selectedSzallitasimod) {
+                geturl.searchParams.append('szallitasimod', this.selectedSzallitasimod.id);
+            }
+            if (this.selectedFizetesimod) {
+                geturl.searchParams.append('fizmod', this.selectedFizetesimod.id);
+            }
             fetch(geturl)
                 .then((response) => response.json())
                 .then((data) => {
