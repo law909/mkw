@@ -1350,7 +1350,7 @@ a {
         flex-direction: column;
         position: sticky;
         align-self: flex-start;
-        top: calc(var(--nav-spacer-height-d) * 3);
+        top: calc(var(--nav-spacer-height-d) * 2);
         gap: 1em;
         background-color: var(--background-color);
     }
