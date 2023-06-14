@@ -2,6 +2,10 @@
 
 namespace Controllers;
 
+use Entities\Fizmod;
+use Entities\Kosar;
+use mkw\store;
+
 class superzoneb2bCheckoutController extends checkoutController
 {
 
