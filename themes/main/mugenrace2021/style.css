@@ -29,7 +29,7 @@
     --menu-nav-num-font-size-d: 3em;
     --menu-nav-num-font-size-m: 4vh;
     --nav-spacer-height-m: 12vh;
-    --nav-spacer-height-d: 5vh;
+    --nav-spacer-height-d: 9vh;
     --termekfa-kep-height: calc(100vh - var(--nav-spacer-height-d));
     --tl-nav-spacer-height-m: 12vh;
     --tl-nav-spacer-height-d: 14vh;
@@ -1005,13 +1005,13 @@ a {
     font-style: italic;
 }
 
-@media screen and (min-width: 761px) {
-    .c-viewer__iframe {
-        width: 50vw;
-        height: 100vh;
-        align-self: center;
-    }
+.c-viewer__iframe {
+    width: 100%;
+    height: 100%;
+    align-self: center;
+}
 
+@media screen and (min-width: 761px) {
     .hide-on-mobile {
         display: block;
     }

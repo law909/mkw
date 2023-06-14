@@ -2,8 +2,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
     if (isMobile) {
-        document.getElementById('termekfa-kep').remove();
 
+        const termekfakep = document.getElementById('termekfa-kep');
+        if (termekfakep) {
+            termekfakep.remove();
+        }
+        
         document.querySelector('.filter-opener').addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
