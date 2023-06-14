@@ -12,6 +12,9 @@ document.addEventListener("alpine:init", () => {
         loginValidation: {},
         validation: {},
         data: {
+            id: null,
+            szallitasimod: null,
+            fizetesimod: null,
             inveqdel: false,
             vezeteknev: null,
             keresztnev: null,
@@ -46,6 +49,8 @@ document.addEventListener("alpine:init", () => {
             keresztnev: ['required'],
             telefon: ['required'],
             email: ['required', 'email'],
+            szallitasimod: ['required'],
+            fizetesimod: ['required'],
             szallnev: ['required'],
             szallirszam: ['required'],
             szallvaros: ['required'],
@@ -61,6 +66,16 @@ document.addEventListener("alpine:init", () => {
         tetellist: [],
         szallmodlist: [],
         init() {
+            Iodine.rule('adoszam', (value) => {
+                if (this.data.cegesvasarlo) {
+                    return Iodine.assertRequired(value);
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('adoszam', 'Please fill out this field.');
+
+            Iodine.setErrorMessage('required', 'Please fill out this field.');
+
             this.getLists();
             this.$watch('selectedSzallitasimodIndex', (value) => {
                 this.selectSzallitasimod(value);
@@ -85,7 +100,6 @@ document.addEventListener("alpine:init", () => {
             });
         },
         getLists() {
-            this.loadTetelList();
             fetch(new URL('/checkout/getszallmodfizmodlist', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -117,10 +131,22 @@ document.addEventListener("alpine:init", () => {
         },
         selectSzallitasimod(szallmodindex) {
             this.selectedSzallitasimod = this.szallmodlist[szallmodindex];
+            if (this.selectedSzallitasimod) {
+                this.data.szallitasimod = this.selectedSzallitasimod.id;
+            } else {
+                this.data.szallitasimod = null;
+            }
+            this.loadTetelList();
         },
         selectFizetesimod(fizmodindex) {
             this.selectedFizetesimod = this.selectedSzallitasimod.fizmodlist[fizmodindex];
+            if (this.selectedFizetesimod) {
+                this.data.fizetesimod = this.selectedFizetesimod.id;
+            } else {
+                this.data.fizetesimod = null;
+            }
             this.szallmodlist[this.selectedSzallitasimodIndex].selectedFizetesimodIndex = fizmodindex;
+            this.loadTetelList();
         },
         clearLoginErrors() {
             this.loginValidation = {};
@@ -148,6 +174,7 @@ document.addEventListener("alpine:init", () => {
                             };
                         } else {
                             this.loadPartnerData();
+                            this.loadTetelList();
                         }
                     });
             } else {
@@ -166,10 +193,16 @@ document.addEventListener("alpine:init", () => {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-
-                    });
+                        if (data.url) {
+                            location.href = data.url;
+                        }
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    })
             } else {
                 this.validation = valid.fields;
+                alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
         }
     }));
