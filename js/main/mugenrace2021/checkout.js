@@ -1,6 +1,5 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("checkout", () => ({
-        regNeeded: "1",
         login: {
             email: null,
             jelszo: null,
@@ -15,7 +14,8 @@ document.addEventListener("alpine:init", () => {
             id: null,
             szallitasimod: null,
             fizetesimod: null,
-            inveqdel: false,
+            szamlaeqszall: false,
+            regkell: "1",
             vezeteknev: null,
             keresztnev: null,
             telefon: null,
@@ -84,7 +84,7 @@ document.addEventListener("alpine:init", () => {
             this.$watch('selectedFizetesimodIndex', (value) => {
                 this.selectFizetesimod(value);
             });
-            this.$watch('data.inveqdel', (value) => {
+            this.$watch('data.szamlaeqszall', (value) => {
                 if (value) {
                     this.data.szlanev = this.data.szallnev;
                     this.data.irszam = this.data.szallirszam;
@@ -193,8 +193,13 @@ document.addEventListener("alpine:init", () => {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        if (data.url) {
-                            location.href = data.url;
+                        if (data.success) {
+                            if (data.url) {
+                                location.href = data.url;
+                            }
+                        } else {
+                            this.validation = data.fields;
+                            alert('Kérjük javítsa a pirossal jelölt mezőket.');
                         }
                     })
                     .catch((error) => {

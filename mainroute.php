@@ -152,7 +152,22 @@ $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList
 $router->map('GET', '/checkout/getszallmodfizmodlist', 'checkoutController#getSzallmodFizmodList', 'checkoutgetszallmodfizmod');
 $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
 $router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
-$router->map('POST', '/checkout/ment', 'checkoutController#save', 'checkoutment');
+
+switch (true) {
+    case (\mkw\store::isMugenrace2021()):
+        $router->map('POST', '/checkout/ment', 'mugenrace2021CheckoutController#save', 'checkoutment');
+        break;
+    case \mkw\store::isMindentkapni():
+        $router->map('POST', '/checkout/ment', 'mindentkapniCheckoutController#save', 'checkoutment');
+        break;
+    case \mkw\store::isSuperzoneB2B():
+        $router->map('POST', '/checkout/ment', 'superzoneb2bCheckoutController#save', 'checkoutment');
+        break;
+    case \mkw\store::isMugenrace():
+        $router->map('POST', '/checkout/ment', 'mugenraceCheckoutController#save', 'checkoutment');
+        break;
+}
+
 $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
 $router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
 $router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');

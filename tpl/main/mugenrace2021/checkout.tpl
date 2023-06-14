@@ -18,8 +18,7 @@
                                     <input
                                         id="regGuestEdit"
                                         type="radio"
-                                        x-model="regNeeded"
-                                        name="regneeded"
+                                        x-model="data.regkell"
                                         value="1"
                                     >
                                     <span class="co-radio-text">{t('Vásárlás vendégként (regisztráció nélkül)')}</span>
@@ -29,8 +28,7 @@
                                     <input
                                         id="regRegEdit"
                                         type="radio"
-                                        x-model="regNeeded"
-                                        name="regneeded"
+                                        x-model="data.regkell"
                                         value="2"
                                     >
                                     <span class="co-radio-text">{t('Vásárlás regisztrációval')}</span>
@@ -123,7 +121,7 @@
                         <div class="co-error" x-text="validation.email && validation.email.error"></div>
                     </div>
 
-                    <div class="co-control-row" x-show="regNeeded === '2'">
+                    <div class="co-control-row" x-show="data.regkell === '2'">
                         <label for="pw1Edit" class="co-label">{t('Jelszó 1')} *</label>
                         <input
                             id="pw1Edit"
@@ -134,7 +132,7 @@
                         >
                         <div class="co-error" x-text="validation.password1 && validation.password1.error"></div>
                     </div>
-                    <div class="co-control-row" x-show="regNeeded === '2'">
+                    <div class="co-control-row" x-show="data.regkell === '2'">
                         <label for="pw2Edit" class="co-label">{t('Jelszó 2')} *</label>
                         <input
                             id="pw2Edit"
@@ -217,12 +215,12 @@
                             <input
                                 id="inveqdeliveryEdit"
                                 type="checkbox"
-                                x-model="data.inveqdel"
+                                x-model="data.szamlaeqszall"
                             >
                             {t('Megegyezik a szállítási adatokkal')}
                         </label>
                     </div>
-                    <div class="co-control-row" x-show="!data.inveqdel">
+                    <div class="co-control-row" x-show="!data.szamlaeqszall">
                         <label for="cegesEdit" class="co-label">
                             <input
                                 id="cegesEdit"
@@ -232,7 +230,7 @@
                             {t('Cégként vásárolok')}
                         </label>
                     </div>
-                    <div class="co-control-row co-col-container" x-show="!data.inveqdel && data.cegesvasarlo">
+                    <div class="co-control-row co-col-container" x-show="!data.szamlaeqszall && data.cegesvasarlo">
                         <div class="=co-col co-col-20">
                             <label for="invoiceadoszamEdit" class="co-label">{t('Adószám')} *</label>
                             <input
@@ -245,7 +243,7 @@
                             <div class="co-error" x-text="validation.adoszam && validation.adoszam.error"></div>
                         </div>
                     </div>
-                    <div class="co-control-row" x-show="!data.inveqdel">
+                    <div class="co-control-row" x-show="!data.szamlaeqszall">
                         <label for="invoicenameEdit" class="co-label">{t('Számlázási név')} *</label>
                         <input
                             id="invoicenameEdit"
@@ -256,7 +254,7 @@
                         >
                         <div class="co-error" x-text="validation.szlanev && validation.szlanev.error"></div>
                     </div>
-                    <div class="co-control-row co-col-container" x-show="!data.inveqdel">
+                    <div class="co-control-row co-col-container" x-show="!data.szamlaeqszall">
                         <div class="co-col co-col-20">
                             <label for="invoicepostalcodeEdit" class="co-label">{t('Ir.szám')} *</label>
                             <input
@@ -280,7 +278,7 @@
                             <div class="co-error" x-text="validation.varos && validation.varos.error"></div>
                         </div>
                     </div>
-                    <div class="co-control-row" x-show="!data.inveqdel">
+                    <div class="co-control-row" x-show="!data.szamlaeqszall">
                         <label for="invoicestreetEdit" class="co-label">{t('Utca')} *</label>
                         <input
                             id="invoicestreetEdit"
@@ -291,7 +289,7 @@
                         >
                         <div class="co-error" x-text="validation.utca && validation.utca.error"></div>
                     </div>
-                    <div class="co-control-row" x-show="!data.inveqdel">
+                    <div class="co-control-row" x-show="!data.szamlaeqszall">
                         <label for="invoicenumEdit" class="co-label">{t('Házszám')}</label>
                         <input
                             id="invoicenumEdit"
