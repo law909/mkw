@@ -63,6 +63,26 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="4">
+                        <input
+                            id="VNemrendelhetEdit"
+                            name="nemrendelhet"
+                            {if ($partner.nemrendelhet)}checked{/if}
+                            type="checkbox"
+                        >{at('Nem rendelhet')} {$webshop1name}
+                        {if ($setup.multishop)}
+                            {for $cikl = 2 to $enabledwebshops}
+                                <input
+                                id="VNemrendelhet{$cikl}Edit"
+                                name="nemrendelhet{$cikl}"
+                                {if ($partner["nemrendelhet$cikl"])}checked{/if}
+                                type="checkbox"
+                                >{at('Nem rendelhet')} {$webshop{$cikl}name}
+                            {/for}
+                        {/if}
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="IrszamEdit">{at('Cím')}:</label></td>
                     <td colspan="3">
                         <input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{at('ir.szám')}"

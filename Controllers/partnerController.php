@@ -187,6 +187,12 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngybefizetesdatum'] = $t->getMptngybefizetesdatumStr();
         $x['mptngybefizetesmodnev'] = $t->getMptngybefizetesmod()?->getNev();
         $x['mptngynemveszreszt'] = $t->isMptngynemveszreszt();
+        $x['xnemrendelhet'] = $t->isXNemrendelhet();
+        $x['nemrendelhet'] = $t->isNemrendelhet();
+        $x['nemrendelhet2'] = $t->isNemrendelhet2();
+        $x['nemrendelhet3'] = $t->isNemrendelhet3();
+        $x['nemrendelhet4'] = $t->isNemrendelhet4();
+        $x['nemrendelhet5'] = $t->isNemrendelhet5();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -341,6 +347,11 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngybefizetes($this->params->getNumRequestParam('mptngybefizetes'));
             $obj->setMptngybefizetesdatum($this->params->getStringRequestParam('mptngybefizetesdatum'));
             $obj->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
+            $obj->setNemrendelhet($this->params->getBoolRequestParam('nemrendelhet'));
+            $obj->setNemrendelhet2($this->params->getBoolRequestParam('nemrendelhet2'));
+            $obj->setNemrendelhet3($this->params->getBoolRequestParam('nemrendelhet3'));
+            $obj->setNemrendelhet4($this->params->getBoolRequestParam('nemrendelhet4'));
+            $obj->setNemrendelhet5($this->params->getBoolRequestParam('nemrendelhet5'));
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('mptngybefizetesmod', 0));
             if ($fizmod) {
                 $obj->setMptngybefizetesmod($fizmod);

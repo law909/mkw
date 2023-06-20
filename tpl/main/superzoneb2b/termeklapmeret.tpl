@@ -67,9 +67,11 @@
                             {/if}
                             <td class="valtozatmenny">
                                 <div class="desktopright">
-                                    <input name="mennyiseg_{$_valt.id}" type="number" data-id="{$_valt.id}" class="js-mennyiseginput">
-                                    <button type="button" class="btn x btn-mini js-mennyincrement" data-name="mennyiseg_{$_valt.id}">+</button>
-                                    <button type="button" class="btn x btn-mini js-mennydecrement" data-name="mennyiseg_{$_valt.id}">-</button>
+                                    {if (!$nemrendelhet)}
+                                        <input name="mennyiseg_{$_valt.id}" type="number" data-id="{$_valt.id}" class="js-mennyiseginput">
+                                        <button type="button" class="btn x btn-mini js-mennyincrement" data-name="mennyiseg_{$_valt.id}">+</button>
+                                        <button type="button" class="btn x btn-mini js-mennydecrement" data-name="mennyiseg_{$_valt.id}">-</button>
+                                    {/if}
                                 </div>
                             </td>
                         </tr>
@@ -78,7 +80,7 @@
                 </table>
             </form>
             <div>
-                {if ($termek.ar > 0)}
+                {if ($termek.ar > 0 && !$nemrendelhet)}
                     <a href="/kosar/multiadd" class="btn btn-large btn-primary desktopright js-kosarbabtn" data-termekid="{$termek.id}">Add to cart</a>
                 {/if}
             </div>

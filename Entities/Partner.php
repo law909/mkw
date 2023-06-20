@@ -564,6 +564,21 @@ class Partner
     /** @ORM\Column(type="boolean") */
     private $mptngynemveszreszt = false;
 
+    /** @ORM\Column(type="boolean") */
+    private $nemrendelhet = false;
+
+    /** @ORM\Column(type="boolean") */
+    private $nemrendelhet2 = false;
+
+    /** @ORM\Column(type="boolean") */
+    private $nemrendelhet3 = false;
+
+    /** @ORM\Column(type="boolean") */
+    private $nemrendelhet4 = false;
+
+    /** @ORM\Column(type="boolean") */
+    private $nemrendelhet5 = false;
+
     public function __construct()
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -3332,6 +3347,105 @@ class Partner
     public function setCsoportosadoszam($csoportosadoszam): void
     {
         $this->csoportosadoszam = $csoportosadoszam;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isXNemrendelhet()
+    {
+        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+            case 1:
+                return $this->isNemrendelhet();
+            case 2:
+                return $this->isNemrendelhet2();
+            case 3:
+                return $this->isNemrendelhet3();
+            case 4:
+                return $this->isNemrendelhet4();
+            case 5:
+                return $this->isNemrendelhet5();
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNemrendelhet()
+    {
+        return $this->nemrendelhet;
+    }
+
+    /**
+     * @param bool $nemrendelhet
+     */
+    public function setNemrendelhet($nemrendelhet): void
+    {
+        $this->nemrendelhet = $nemrendelhet;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNemrendelhet2()
+    {
+        return $this->nemrendelhet2;
+    }
+
+    /**
+     * @param bool $nemrendelhet2
+     */
+    public function setNemrendelhet2($nemrendelhet2): void
+    {
+        $this->nemrendelhet2 = $nemrendelhet2;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNemrendelhet3()
+    {
+        return $this->nemrendelhet3;
+    }
+
+    /**
+     * @param bool $nemrendelhet3
+     */
+    public function setNemrendelhet3($nemrendelhet3): void
+    {
+        $this->nemrendelhet3 = $nemrendelhet3;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNemrendelhet4()
+    {
+        return $this->nemrendelhet4;
+    }
+
+    /**
+     * @param bool $nemrendelhet4
+     */
+    public function setNemrendelhet4($nemrendelhet4): void
+    {
+        $this->nemrendelhet4 = $nemrendelhet4;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNemrendelhet5()
+    {
+        return $this->nemrendelhet5;
+    }
+
+    /**
+     * @param bool $nemrendelhet5
+     */
+    public function setNemrendelhet5($nemrendelhet5): void
+    {
+        $this->nemrendelhet5 = $nemrendelhet5;
     }
 
 }

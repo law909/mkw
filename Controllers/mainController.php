@@ -381,8 +381,10 @@ class mainController extends \mkwhelpers\Controller
             $partner = \mkw\store::getLoggedInUser();
             if ($partner) {
                 $this->view->setVar('showkeszlet', $partner->isMennyisegetlathat());
+                $this->view->setVar('nemrendelhet', $partner->isXNemrendelhet());
             } else {
                 $this->view->setVar('showkeszlet', false);
+                $this->view->setVar('nemrendelhet', false);
             }
             $valutanem = $termek->getArValutanem(null, $partner);
             if ($valutanem) {
