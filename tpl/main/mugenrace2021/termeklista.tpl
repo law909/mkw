@@ -1,16 +1,11 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mugenrace2021/termeklista.js?v=3"></script>
+    <script src="/js/main/mugenrace2021/termeklista.js?v=4"></script>
 {/block}
 
 {block "body"}
     <div class="nav-spacer"></div>
-    {if (!$sketchfabmodelid && $kepurl)}
-        <div class="termekfa-kep" id="termekfa-kep">
-            <img src="{$imagepath}{$kepurl}"/>
-        </div>
-    {/if}
     <div class="termek-screen">
         <div class="termek-filter">
             <div class="termek-filter-inner">

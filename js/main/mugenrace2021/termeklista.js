@@ -5,11 +5,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     if (isMobile) {
 
-        const termekfakep = document.getElementById('termekfa-kep');
-        if (termekfakep) {
-            termekfakep.remove();
-        }
-
         document.querySelector('.filter-opener').addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
