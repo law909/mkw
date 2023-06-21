@@ -38,7 +38,7 @@
                     {if ($maintheme == 'mkwcansas')}
                         <li><a href="#ImportTab">{at('Import')}</a></li>
                     {/if}
-                    {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
+                    {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace' || $maintheme === 'mugenrace2021')}
                         <li><a href="#MugenraceTab">{at('Mugenrace')}</a></li>
                     {/if}
                     {if ($setup.barion)}
@@ -629,7 +629,7 @@
                                 </select>
                             </div>
                         {/if}
-                        {if ($maintheme === 'superzoneb2b')}
+                        {if ($maintheme === 'superzoneb2b' || $maintheme === 'mugenrace2021')}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SpanyolCimkeEdit">{at('Spanyol címke')}:</label></span>
                                 <select id="SpanyolCimkeEdit" name="spanyolcimke">
@@ -651,7 +651,7 @@
                                 </select>
                             </div>
                         {/if}
-                        {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
+                        {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace" || $maintheme === 'mugenrace2021')}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SzinEdit">{at('Szín')}:</label></span>
                                 <select id="SzinEdit" name="valtozattipusszin">
@@ -1676,7 +1676,7 @@
 
                     </div>
                 {/if}
-                {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
+                {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace' || $maintheme == 'mugenrace2021')}
                     <div id="MugenraceTab" class="mattkarb-page" data-visible="visible">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
