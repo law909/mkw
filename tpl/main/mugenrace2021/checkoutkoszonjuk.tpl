@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "body"}
-    <div class="co-nav-spacer"></div>
+    <div class="nav-spacer"></div>
     <div class="co-container">
         <div class="co-data-container">
             <h3>Thank You for your order!</h3>

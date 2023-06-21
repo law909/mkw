@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta property="og:site_name" content="mugenrace.com"/>
+    <meta name="theme-color" content="black"/>
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=13">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=14">
     {block "css"}{/block}
     <script defer src="/js/iodine/iodine.min.umd.js?v=1"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>

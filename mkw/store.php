@@ -44,8 +44,8 @@ class store
     private static $gdl;
     private static $sanitizer;
     private static $translationListener;
-    private static $locales = ['hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de', 'it' => 'it_it'];
-    private static $valutanemperlocale = ['hu_hu' => 'HUF', 'en_us' => 'EUR', 'de_de' => 'EUR', 'it_it' => 'EUR'];
+    private static $locales = ['hu' => 'hu_hu', 'en' => 'en_us'];
+    private static $valutanemperlocale = ['hu_hu' => 'HUF', 'en_us' => 'EUR'];
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
@@ -522,6 +522,7 @@ class store
     public static function fillTemplate($v, $needmenu = true)
     {
         $tf = new \Controllers\termekfaController(null);
+        $v->setVar('developer', self::isDeveloper());
         $v->setVar('GAFollow', self::getParameter('GAFollow'));
         $v->setVar('seodescription', self::getParameter('seodescription'));
         $v->setVar('feedtermektitle', self::getParameter('feedtermektitle', t('Termékeink')));

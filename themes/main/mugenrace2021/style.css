@@ -29,15 +29,9 @@
     --menu-nav-num-font-size-d: 3em;
     --menu-nav-num-font-size-m: 4vh;
     --nav-spacer-height-m: 12vh;
-    --nav-spacer-height-d: 9vh;
+    --nav-spacer-height-d: 14vh;
     --termekfa-kep-height: calc(100vh - var(--nav-spacer-height-d));
-    --tl-nav-spacer-height-m: 12vh;
-    --tl-nav-spacer-height-d: 14vh;
     --tl-color-selector-img-width: 5vw;
-    --cart-nav-spacer-height-m: 12vh;
-    --cart-nav-spacer-height-d: 14vh;
-    --co-nav-spacer-height-m: 12vh;
-    --co-nav-spacer-height-d: 14vh;
     --co-font-size-small-d: 0.875em;
 
     accent-color: var(--brand-color);
@@ -403,6 +397,7 @@ a {
     top: calc(var(--nav-spacer-height-m) - 100vh);
     transition: 600ms;
     overflow: hidden;
+    z-index: 9999;
 }
 
 .termek-filter-down {
@@ -527,19 +522,6 @@ a {
     font-size: var(--termek-ar-font-size-m);
     flex-basis: 50%;
     text-align: end;
-}
-
-.tl-nav-spacer {
-    height: var(--tl-nav-spacer-height-m);
-}
-
-.tl-nav-decor {
-    position: fixed;
-    width: 100vw;
-    height: var(--tl-nav-spacer-height-m);
-    top: 0;
-    background-color: var(--brand-color);
-    z-index: 99990;
 }
 
 .tl-container {
@@ -821,10 +803,6 @@ a {
     right: 0;
 }
 
-.cart-nav-spacer {
-    height: var(--cart-nav-spacer-height-m);
-}
-
 .cart-container {
     display: flex;
     gap: 1em;
@@ -894,10 +872,6 @@ a {
 .cart-save-button {
     width: 100%;
     margin-bottom: 1em;
-}
-
-.co-nav-spacer {
-    height: var(--co-nav-spacer-height-m);
 }
 
 .co-container {
@@ -1040,6 +1014,7 @@ a {
 
     .nav-spacer {
         height: var(--nav-spacer-height-d);
+        background-color: unset;
     }
 
     .menu-bottom-triangle {
@@ -1118,13 +1093,18 @@ a {
         width: unset;
         height: unset;
         bottom: unset;
-        flex-basis: 20%;
+        flex-basis: 15%;
     }
 
     .termek-filter-inner {
         padding: 20px;
         display: block;
         flex-direction: unset;
+    }
+
+    .filter-closer,
+    .filter-cleaner {
+        flex-basis: 40%;
     }
 
     .filter-opener,
@@ -1146,7 +1126,7 @@ a {
     }
 
     .termek-grid {
-        flex-basis: 80%;
+        flex-basis: 85%;
     }
 
     .termek-box {
@@ -1170,13 +1150,9 @@ a {
         font-size: var(--termek-ar-font-size-d);
     }
 
-    .tl-nav-spacer {
-        height: var(--tl-nav-spacer-height-d);
-        background-color: unset;
-    }
-
     .tl-container {
         flex-direction: row;
+        flex-basis: 80%;
     }
 
     .tl-termek-innerbox {
@@ -1257,10 +1233,6 @@ a {
         flex-direction: row;
     }
 
-    .cart-nav-spacer {
-        height: var(--cart-nav-spacer-height-d);
-    }
-
     .cart-table-row {
         grid-template-columns: minmax(150px, 1fr) 5fr;
     }
@@ -1284,10 +1256,6 @@ a {
 
     .cart-summary-termek-ar {
         text-align: center;
-    }
-
-    .co-nav-spacer {
-        height: var(--co-nav-spacer-height-d);
     }
 
     .co-container {

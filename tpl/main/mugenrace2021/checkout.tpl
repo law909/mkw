@@ -5,7 +5,7 @@
 {/block}
 
 {block "body"}
-    <div class="co-nav-spacer"></div>
+    <div class="nav-spacer"></div>
     <div x-data="{ imagepath: '{$imagepath}' }">
         <div class="co-container js-checkout" x-data="checkout">
             <div class="co-data-container">

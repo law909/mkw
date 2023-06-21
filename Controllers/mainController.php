@@ -342,6 +342,11 @@ class mainController extends \mkwhelpers\Controller
                     \mkw\store::fillTemplate($this->view);
                     $this->view->setVar('pagetitle', $termek->getShowOldalcim());
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
+
+                    $tfs = $this->getRepo(TermekFa::class)->getForFilter(\mkw\store::getWebshopNum());
+                    if ($tfs) {
+                        $this->view->setVar('categoryfilter', $tfs);
+                    }
                     $t = $tc->getTermekLap($termek);
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);

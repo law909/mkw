@@ -5,7 +5,7 @@
 {/block}
 
 {block "body"}
-    <div class="cart-nav-spacer"></div>
+    <div class="nav-spacer"></div>
     <div x-data="{ imagepath: '{$imagepath}'}">
         <div class="cart-container " x-data="kosar" x-init="getLists">
             <div class="cart-table" x-cloak>
