@@ -3,17 +3,20 @@
     let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
     function resizeSpacer() {
-        if (isMobile) {
-            let ref = document.querySelector('.termek-filter');
-            if (ref) {
-                document.querySelector('.nav-spacer').style.height = (ref.offsetTop - ref.offsetHeight) + 'px';
+        let navspacer = document.querySelector('.nav-spacer');
+        if (navspacer) {
+            if (isMobile) {
+                let ref = document.querySelector('.termek-filter');
+                if (ref) {
+                    navspacer.style.height = (ref.offsetTop - ref.offsetHeight) + 'px';
+                } else {
+                    ref = document.querySelector('.header');
+                    navspacer.style.height = ref.offsetHeight + 'px';
+                }
             } else {
-                ref = document.querySelector('.header');
-                document.querySelector('.nav-spacer').style.height = ref.offsetHeight + 'px';
+                let referenceHeight = document.querySelector('.header').offsetHeight;
+                navspacer.style.height = referenceHeight + 'px';
             }
-        } else {
-            let referenceHeight = document.querySelector('.header').offsetHeight;
-            document.querySelector('.nav-spacer').style.height = referenceHeight + 'px';
         }
     }
 
