@@ -10,16 +10,17 @@ use Doctrine\ORM\Mapping as ORM,
  * @ORM\Table(name="mnrstaticpage",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @Gedmo\TranslationEntity(class="Entities\MNRStaticPageTranslation")
  */
-class MNRStaticPage {
+class MNRStaticPage
+{
 
-    private static $translatedFields = array(
-        'szlogen1' => array('caption' => 'Szlogen 1', 'type' => 1),
-        'szlogen2' => array('caption' => 'Szlogen 2', 'type' => 1),
-        'tartalom' => array('caption' => 'Tartalom', 'type' => 2),
-        'szoveg1' => array('caption' => 'Szöveg 1', 'type' => 1),
-        'szoveg2' => array('caption' => 'Szöveg 2', 'type' => 1),
-        'szoveg3' => array('caption' => 'Szöveg 3', 'type' => 1)
-    );
+    private static $translatedFields = [
+        'szlogen1' => ['caption' => 'Szlogen 1', 'type' => 1],
+        'szlogen2' => ['caption' => 'Szlogen 2', 'type' => 1],
+        'tartalom' => ['caption' => 'Tartalom', 'type' => 2],
+        'szoveg1' => ['caption' => 'Szöveg 1', 'type' => 1],
+        'szoveg2' => ['caption' => 'Szöveg 2', 'type' => 1],
+        'szoveg3' => ['caption' => 'Szöveg 3', 'type' => 1]
+    ];
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -85,28 +86,33 @@ class MNRStaticPage {
     /** @ORM\OneToMany(targetEntity="MNRStaticPageTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public static function getTranslatedFields() {
+    public static function getTranslatedFields()
+    {
         return self::$translatedFields;
     }
 
-    public static function getTranslatedFieldsSelectList($sel = null) {
-        $ret = array();
-        foreach(self::$translatedFields as $k => $v) {
-            $ret[] = array(
+    public static function getTranslatedFieldsSelectList($sel = null)
+    {
+        $ret = [];
+        foreach (self::$translatedFields as $k => $v) {
+            $ret[] = [
                 'id' => $k,
                 'caption' => $v['caption'],
                 'selected' => ($k === $sel)
-            );
+            ];
         }
         return $ret;
     }
 
-    public function toLista() {
-        $ret = array();
+    public function toLista()
+    {
+        $ret = [];
+        $ret['id'] = $this->getId();
         $ret['hidden'] = $this->isHidden();
         $ret['szlogen1'] = $this->getSzlogen1();
         $ret['szlogen2'] = $this->getSzlogen2();
@@ -115,11 +121,13 @@ class MNRStaticPage {
         $ret['szoveg2'] = $this->getSzoveg2();
         $ret['szoveg3'] = $this->getSzoveg3();
         $ret['kepurl'] = $this->getKepurl();
-       return $ret;
+        return $ret;
     }
 
-    public function toPublic() {
-        $ret = array();
+    public function toPublic()
+    {
+        $ret = [];
+        $ret['id'] = $this->getId();
         $ret['hidden'] = $this->isHidden();
         $ret['szlogen1'] = $this->getSzlogen1();
         $ret['szlogen2'] = $this->getSzlogen2();
@@ -132,23 +140,25 @@ class MNRStaticPage {
         return $ret;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getKepurl($pre = '/') {
+    public function getKepurl($pre = '/')
+    {
         if ($this->kepurl) {
             if ($this->kepurl[0] !== $pre) {
                 return $pre . $this->kepurl;
-            }
-            else {
+            } else {
                 return $this->kepurl;
             }
         }
         return '';
     }
 
-    public function getKepurlMini($pre = '/') {
+    public function getKepurlMini($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -158,7 +168,8 @@ class MNRStaticPage {
         return '';
     }
 
-    public function getKepurlSmall($pre = '/') {
+    public function getKepurlSmall($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -168,7 +179,8 @@ class MNRStaticPage {
         return '';
     }
 
-    public function getKepurlMedium($pre = '/') {
+    public function getKepurlMedium($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -178,7 +190,8 @@ class MNRStaticPage {
         return '';
     }
 
-    public function getKepurlLarge($pre = '/') {
+    public function getKepurlLarge($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -188,18 +201,21 @@ class MNRStaticPage {
         return '';
     }
 
-    public function setKepurl($kepurl) {
+    public function setKepurl($kepurl)
+    {
         $this->kepurl = $kepurl;
     }
 
     /**
      * @return MNRStatic
      */
-    public function getMNRStatic() {
+    public function getMNRStatic()
+    {
         return $this->mnrstatic;
     }
 
-    public function getMNRStaticId() {
+    public function getMNRStaticId()
+    {
         if ($this->mnrstatic) {
             return $this->mnrstatic->getId();
         }
@@ -209,14 +225,16 @@ class MNRStaticPage {
     /**
      * @param \Entities\MNRStatic $val
      */
-    public function setMNRStatic($val) {
+    public function setMNRStatic($val)
+    {
         if ($this->mnrstatic !== $val) {
             $this->mnrstatic = $val;
             $val->addMNRStaticPage($this);
         }
     }
 
-    public function removeMNRStatic() {
+    public function removeMNRStatic()
+    {
         if ($this->mnrstatic !== null) {
             $val = $this->mnrstatic;
             $this->mnrstatic = null;
@@ -227,107 +245,123 @@ class MNRStaticPage {
     /**
      * @return bool
      */
-    public function isHidden() {
+    public function isHidden()
+    {
         return $this->hidden;
     }
 
     /**
      * @param bool $hidden
      */
-    public function setHidden($hidden): void {
+    public function setHidden($hidden): void
+    {
         $this->hidden = $hidden;
     }
 
     /**
      * @return string
      */
-    public function getSzlogen1() {
+    public function getSzlogen1()
+    {
         return $this->szlogen1;
     }
 
     /**
      * @param string $szlogen1
      */
-    public function setSzlogen1($szlogen1): void {
+    public function setSzlogen1($szlogen1): void
+    {
         $this->szlogen1 = $szlogen1;
     }
 
     /**
      * @return string
      */
-    public function getSzlogen2() {
+    public function getSzlogen2()
+    {
         return $this->szlogen2;
     }
 
     /**
      * @param string $szlogen2
      */
-    public function setSzlogen2($szlogen2): void {
+    public function setSzlogen2($szlogen2): void
+    {
         $this->szlogen2 = $szlogen2;
     }
 
     /**
      * @return mixed
      */
-    public function getTartalom() {
+    public function getTartalom()
+    {
         return $this->tartalom;
     }
 
     /**
      * @param mixed $tartalom
      */
-    public function setTartalom($tartalom): void {
+    public function setTartalom($tartalom): void
+    {
         $this->tartalom = $tartalom;
     }
 
     /**
      * @return string
      */
-    public function getSzoveg1() {
+    public function getSzoveg1()
+    {
         return $this->szoveg1;
     }
 
     /**
      * @param string $szoveg1
      */
-    public function setSzoveg1($szoveg1): void {
+    public function setSzoveg1($szoveg1): void
+    {
         $this->szoveg1 = $szoveg1;
     }
 
     /**
      * @return string
      */
-    public function getSzoveg2() {
+    public function getSzoveg2()
+    {
         return $this->szoveg2;
     }
 
     /**
      * @param string $szoveg2
      */
-    public function setSzoveg2($szoveg2): void {
+    public function setSzoveg2($szoveg2): void
+    {
         $this->szoveg2 = $szoveg2;
     }
 
     /**
      * @return string
      */
-    public function getSzoveg3() {
+    public function getSzoveg3()
+    {
         return $this->szoveg3;
     }
 
     /**
      * @param string $szoveg3
      */
-    public function setSzoveg3($szoveg3): void {
+    public function setSzoveg3($szoveg3): void
+    {
         $this->szoveg3 = $szoveg3;
     }
 
-    public function getTranslations() {
+    public function getTranslations()
+    {
         return $this->translations;
     }
 
-    public function getTranslationsArray() {
-        $r = array();
+    public function getTranslationsArray()
+    {
+        $r = [];
         /** @var \Entities\MNRStaticPageTranslation $tr */
         foreach ($this->translations as $tr) {
             $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
@@ -335,36 +369,42 @@ class MNRStaticPage {
         return $r;
     }
 
-    public function addTranslation(MNRStaticPageTranslation $t) {
+    public function addTranslation(MNRStaticPageTranslation $t)
+    {
         if (!$this->translations->contains($t)) {
             $this->translations[] = $t;
             $t->setObject($this);
         }
     }
 
-    public function removeTranslation(MNRStaticPageTranslation $t) {
+    public function removeTranslation(MNRStaticPageTranslation $t)
+    {
         $this->translations->removeElement($t);
     }
 
-    public function getLocale() {
+    public function getLocale()
+    {
         return $this->locale;
     }
 
-    public function setLocale($locale) {
+    public function setLocale($locale)
+    {
         $this->locale = $locale;
     }
 
     /**
      * @return string
      */
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
     /**
      * @param string $nev
      */
-    public function setNev($nev): void {
+    public function setNev($nev): void
+    {
         $this->nev = $nev;
     }
 

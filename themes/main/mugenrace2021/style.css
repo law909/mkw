@@ -33,7 +33,12 @@
     --termekfa-kep-height: calc(100vh - var(--nav-spacer-height-d));
     --tl-color-selector-img-width: 5vw;
     --co-font-size-small-d: 0.875em;
-
+    --page-img-triangle-height-d: calc(67vw / 100);
+    --page-img-triangle-height-m: calc(100vw / 30);
+    --header-triangle-height-d: calc(100vw / 100);
+    --header-triangle-height-m: calc(100vw / 30);
+    --menu-bottom-triangle-height-d: calc(100vw / 30);
+    --menu-bottom-triangle-height-m: calc(100vw / 15);
     accent-color: var(--brand-color);
 }
 
@@ -200,7 +205,7 @@ a {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 5vh;
+    height: var(--menu-bottom-triangle-height-m);
 }
 
 .menu-bottom-text {
@@ -262,7 +267,8 @@ a {
 
 .header-triangle-size {
     width: 100vw;
-    height: 2vh;
+    height: var(--header-triangle-height-m);
+    position: absolute;
 }
 
 .mainpage {
@@ -343,7 +349,7 @@ a {
     position: absolute;
     top: -1px;
     width: 100%;
-    height: 2vh;
+    height: var(--page-img-triangle-height-m);
 }
 
 .page-img-bottom-triangle {
@@ -351,7 +357,7 @@ a {
     bottom: 6px;
     left: 0;
     width: 100%;
-    height: 2vh;
+    height: var(--page-img-triangle-height-m);
 }
 
 .page-szlogen1 {
@@ -1007,11 +1013,6 @@ a {
         max-width: 180px;
     }
 
-    .header-triangle-size {
-        width: 100vw;
-        height: 3vh;
-    }
-
     .nav-spacer {
         height: var(--nav-spacer-height-d);
         background-color: unset;
@@ -1019,17 +1020,17 @@ a {
 
     .menu-bottom-triangle {
         width: 100%;
-        height: 15vh;
+        height: var(--menu-bottom-triangle-height-d);
     }
 
     .page-img-top-triangle {
         top: 0;
-        height: 4vh;
+        height: var(--page-img-triangle-height-d);
     }
 
     .page-img-bottom-triangle {
         bottom: 7px;
-        height: 4vh;
+        height: var(--page-img-triangle-height-d);
     }
 
     .menu-nav-text {
@@ -1045,6 +1046,11 @@ a {
         margin-top: -1em;
         margin-bottom: 2em;
         margin-left: 15em;
+    }
+
+    .header-triangle-size {
+        width: 100vw;
+        height: var(--header-triangle-height-d);
     }
 
     .page {

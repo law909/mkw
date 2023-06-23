@@ -1,4 +1,4 @@
-{
+(() => {
 
     function doScroll(up) {
         window.scrollBy({
@@ -29,8 +29,7 @@
         e.deltaY = 0;
         if (e.deltaY > 0) {
             doScroll(1);
-        }
-        else {
+        } else {
             doScroll(-1);
         }
     }, {passive: false});
@@ -49,4 +48,4 @@
         });
     });
 
-}
+})();
