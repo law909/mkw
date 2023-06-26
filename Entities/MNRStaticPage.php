@@ -125,14 +125,9 @@ class MNRStaticPage
         $ret['szoveg2'] = $this->getSzoveg2();
         $ret['szoveg3'] = $this->getSzoveg3();
         $ret['kepurl'] = $this->getKepurl();
-        foreach ($this->getMNRStaticPageKepek(true) as $kep) {
-            $egyed = [];
-            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
-            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
-            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
-            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
-            $egyed['leiras'] = $kep->getLeiras();
-            $altomb[] = $egyed;
+        $altomb = [];
+        foreach ($this->getMNRStaticPageKepek(false) as $kep) {
+            $altomb[] = $kep->toLista();
         }
         $ret['kepek'] = $altomb;
         return $ret;
@@ -151,14 +146,9 @@ class MNRStaticPage
         $ret['szoveg3'] = $this->getSzoveg3();
         $ret['kepurl'] = $this->getKepurl();
         $ret['translations'] = $this->getTranslationsArray();
+        $altomb = [];
         foreach ($this->getMNRStaticPageKepek(true) as $kep) {
-            $egyed = [];
-            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
-            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
-            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
-            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
-            $egyed['leiras'] = $kep->getLeiras();
-            $altomb[] = $egyed;
+            $altomb[] = $kep->toPublic();
         }
         $ret['kepek'] = $altomb;
         return $ret;

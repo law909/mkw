@@ -180,6 +180,28 @@ class MNRStaticPageKep extends \Entities\MNRStaticPageKep implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toPublic()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toPublic', []);
+
+        return parent::toPublic();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

@@ -37,6 +37,28 @@ class MNRStaticPageKep
     /** @ORM\Column(type="boolean",nullable=false) */
     private $rejtett = false;
 
+    public function toLista()
+    {
+        $egyed = [];
+        $egyed['id'] = $this->getId();
+        $egyed['kepurl'] = \mkw\store::getFullUrl($this->getUrlLarge());
+        $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($this->getUrlMedium());
+        $egyed['kiskepurl'] = \mkw\store::getFullUrl($this->getUrlSmall());
+        $egyed['minikepurl'] = \mkw\store::getFullUrl($this->getUrlMini());
+        return $egyed;
+    }
+
+    public function toPublic()
+    {
+        $egyed = [];
+        $egyed['id'] = $this->getId();
+        $egyed['kepurl'] = \mkw\store::getFullUrl($this->getUrlLarge());
+        $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($this->getUrlMedium());
+        $egyed['kiskepurl'] = \mkw\store::getFullUrl($this->getUrlSmall());
+        $egyed['minikepurl'] = \mkw\store::getFullUrl($this->getUrlMini());
+        return $egyed;
+    }
+
     public function getId()
     {
         return $this->id;
