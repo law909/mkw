@@ -41,10 +41,10 @@ class MNRStaticPageKep
     {
         $egyed = [];
         $egyed['id'] = $this->getId();
-        $egyed['kepurl'] = \mkw\store::getFullUrl($this->getUrlLarge());
-        $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($this->getUrlMedium());
-        $egyed['kiskepurl'] = \mkw\store::getFullUrl($this->getUrlSmall());
-        $egyed['minikepurl'] = \mkw\store::getFullUrl($this->getUrlMini());
+        $egyed['kepurl'] = $this->getUrlLarge();
+        $egyed['kozepeskepurl'] = $this->getUrlMedium();
+        $egyed['kiskepurl'] = $this->getUrlSmall();
+        $egyed['minikepurl'] = $this->getUrlMini();
         return $egyed;
     }
 
@@ -52,10 +52,10 @@ class MNRStaticPageKep
     {
         $egyed = [];
         $egyed['id'] = $this->getId();
-        $egyed['kepurl'] = \mkw\store::getFullUrl($this->getUrlLarge());
-        $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($this->getUrlMedium());
-        $egyed['kiskepurl'] = \mkw\store::getFullUrl($this->getUrlSmall());
-        $egyed['minikepurl'] = \mkw\store::getFullUrl($this->getUrlMini());
+        $egyed['kepurl'] = $this->getUrlLarge();
+        $egyed['kozepeskepurl'] = $this->getUrlMedium();
+        $egyed['kiskepurl'] = $this->getUrlSmall();
+        $egyed['minikepurl'] = $this->getUrlMini();
         return $egyed;
     }
 
