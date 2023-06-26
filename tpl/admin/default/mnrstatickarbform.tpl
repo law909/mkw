@@ -23,6 +23,14 @@
                                            value="{$egyed.nev}" required autofocus></td>
                 </tr>
                 <tr>
+                    <td><label for="TipusEdit">{at('Típus')}:</label></td>
+                    <td colspan="3"><select id="TipusEdit" name="tipus">
+                            <option value="">válasszon</option>
+                            <option value="1"{if ($egyed.tipus === 1)} selected{/if}>rólunk</option>
+                            <option value="2"{if ($egyed.tipus === 2)} selected{/if}>versenyzés</option>
+                        </select></td>
+                </tr>
+                <tr>
                     <td><label for="Szlogen1Edit">{at('Szlogen 1')}:</label></td>
                     <td colspan="3"><input id="Szlogen1Edit" name="szlogen1" type="text" size="83" maxlength="255"
                                            value="{$egyed.szlogen1}"></td>

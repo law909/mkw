@@ -67,10 +67,10 @@ class MNRStatic extends \Entities\MNRStatic implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'slug', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen2', 'locale', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'mnrstaticpages', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'translations'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'tipus', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'slug', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen2', 'locale', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'mnrstaticpages', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'translations'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'slug', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen2', 'locale', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'mnrstaticpages', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'translations'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'tipus', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'slug', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'szlogen2', 'locale', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'mnrstaticpages', '' . "\0" . 'Entities\\MNRStatic' . "\0" . 'translations'];
     }
 
     /**
@@ -465,6 +465,28 @@ class MNRStatic extends \Entities\MNRStatic implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$adat]);
 
         return parent::setSlug($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
+
+        return parent::getTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipus($tipus): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
+
+        parent::setTipus($tipus);
     }
 
 }

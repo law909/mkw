@@ -40,6 +40,7 @@ class mnrstaticController extends \mkwhelpers\MattableController
         $x['szlogen1'] = $t->getSzlogen1();
         $x['szlogen2'] = $t->getSzlogen2();
         $x['slug'] = $t->getSlug();
+        $x['tipus'] = $t->getTipus();
         if ($forKarb) {
             $valtozat = [];
             foreach ($t->getMNRStaticPages() as $tvaltozat) {
@@ -70,6 +71,7 @@ class mnrstaticController extends \mkwhelpers\MattableController
         $obj->setSzlogen1($this->params->getStringRequestParam('szlogen1'));
         $obj->setSzlogen2($this->params->getStringRequestParam('szlogen2'));
         $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
+        $obj->setTipus($this->params->getIntRequestParam('tipus', 1));
         $pageids = $this->params->getArrayRequestParam('mnrstaticpageid');
         foreach ($pageids as $pageid) {
             $oper = $this->params->getStringRequestParam('mnrstaticpageoper_' . $pageid);
