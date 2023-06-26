@@ -67,10 +67,10 @@ class MNRStaticPage extends \Entities\MNRStaticPage implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstatic', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'hidden', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg3', 'locale', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'translations'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstatic', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'hidden', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg3', 'locale', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'translations', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstaticpagekepek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstatic', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'hidden', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg3', 'locale', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'translations'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'id', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'nev', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstatic', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'hidden', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'kepurl', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szlogen2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg1', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg2', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'szoveg3', 'locale', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'translations', '' . "\0" . 'Entities\\MNRStaticPage' . "\0" . 'mnrstaticpagekepek'];
     }
 
     /**
@@ -212,6 +212,39 @@ class MNRStaticPage extends \Entities\MNRStaticPage implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMNRStaticPageKepek($csaklathato = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMNRStaticPageKepek', [$csaklathato]);
+
+        return parent::getMNRStaticPageKepek($csaklathato);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addMNRStaticPageKep(\Entities\MNRStaticPageKep $kep)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addMNRStaticPageKep', [$kep]);
+
+        return parent::addMNRStaticPageKep($kep);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeMNRStaticPageKep(\Entities\MNRStaticPageKep $kep)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMNRStaticPageKep', [$kep]);
+
+        return parent::removeMNRStaticPageKep($kep);
     }
 
     /**

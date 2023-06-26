@@ -483,6 +483,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrstatic/save', 'mnrstaticController#save', 'adminmnrstaticsave');
 }
 
+$router->map('GET', '/admin/mnrstaticpagekep/getemptyrow', 'mnrstaticpagekepController#getemptyrow', 'adminmnrstatickepgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/mnrstaticpagekep/del', 'mnrstaticpagekepController#del', 'adminmnrstaticpagekepdel');
+}
+
 $router->map('GET', '/admin/mnrstatictranslation/getemptyrow', 'mnrstatictranslationController#getemptyrow', 'adminmnrstatictranslationgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrstatictranslation/save', 'mnrstatictranslationController#save', 'adminmnrstatictranslationsave');

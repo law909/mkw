@@ -11,23 +11,23 @@ $(document).ready(function () {
             var mnrstaticpagetab = $('#MNRStaticPageTab');
             var altalanostab = $('#AltalanosTab');
             altalanostab.on('click', '#FoKepDelButton', function (e) {
-                    e.preventDefault();
-                    dialogcenter.html('Biztos, hogy törli a képet?').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'Igen': function () {
-                                $('#KepUrlEdit').val('');
-                                $('#KepLeirasEdit').val('');
-                                $(this).dialog('close');
-                            },
-                            'Nem': function () {
-                                $(this).dialog('close');
-                            }
+                e.preventDefault();
+                dialogcenter.html('Biztos, hogy törli a képet?').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'Igen': function () {
+                            $('#KepUrlEdit').val('');
+                            $('#KepLeirasEdit').val('');
+                            $(this).dialog('close');
+                        },
+                        'Nem': function () {
+                            $(this).dialog('close');
                         }
-                    });
-                })
+                    }
+                });
+            })
                 .on('click', '#FoKepBrowseButton', function (e) {
                     e.preventDefault();
                     var finder = new CKFinder(),
@@ -43,19 +43,19 @@ $(document).ready(function () {
                 });
             $('#FoKepDelButton,#FoKepBrowseButton').button();
             translationtab.on('click', '.js-translationnewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/mnrstatictranslation/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            var tbody = $('#TranslationTab');
-                            tbody.append(data);
-                            $('.js-translationnewbutton,.js-translationdelbutton').button();
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/mnrstatictranslation/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        var tbody = $('#TranslationTab');
+                        tbody.append(data);
+                        $('.js-translationnewbutton,.js-translationdelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-translationdelbutton', function (e) {
                     e.preventDefault();
                     var translationgomb = $(this),
@@ -63,8 +63,7 @@ $(document).ready(function () {
                         egyedid = translationgomb.attr('data-egyedid');
                     if (translationgomb.attr('data-source') === 'client') {
                         $('#translationtable_' + translationid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
                             resizable: false,
                             height: 140,
@@ -92,7 +91,7 @@ $(document).ready(function () {
                         });
                     }
                 })
-                .on('change', '.js-fieldselect', function(e) {
+                .on('change', '.js-fieldselect', function (e) {
                     var $this = $(this),
                         x = $('option:selected', $this).val(),
                         editor;
@@ -101,8 +100,7 @@ $(document).ready(function () {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             editor.addClass('js-ckeditor');
                             editor.ckeditor();
-                        }
-                        else {
+                        } else {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             if (editor && editor.hasClass('js-ckeditor')) {
                                 editor.removeClass('js-ckeditor');
@@ -114,31 +112,30 @@ $(document).ready(function () {
                 });
             $('.js-translationnewbutton,.js-translationdelbutton').button();
             mnrstaticpagetab.on('click', '.js-mnrstaticpagenewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/mnrstaticpage/getemptyrow',
-                        type: 'GET',
-                        data: {
-                            mnrstaticid: $this.attr('data-mnrstaticid')
-                        },
-                        success: function (data) {
-                            var tbody = $('#MNRStaticPageTab');
-                            tbody.append(data);
-                            $('.js-mnrstaticpagenewbutton,.js-mnrstaticpagedelbutton,.js-kepbrowsebutton,' +
-                                '.js-pagetranslationnewbutton,.js-pagetranslationdelbutton').button();
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/mnrstaticpage/getemptyrow',
+                    type: 'GET',
+                    data: {
+                        mnrstaticid: $this.attr('data-mnrstaticid')
+                    },
+                    success: function (data) {
+                        var tbody = $('#MNRStaticPageTab');
+                        tbody.append(data);
+                        $('.js-mnrstaticpagenewbutton,.js-mnrstaticpagedelbutton,.js-kepbrowsebutton,' +
+                            '.js-pagetranslationnewbutton,.js-pagetranslationdelbutton,.js-kepnewbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-mnrstaticpagedelbutton', function (e) {
                     e.preventDefault();
                     var gomb = $(this),
                         vid = gomb.attr('data-id');
                     if (gomb.attr('data-source') === 'client') {
-                        $('#mnrstatictable_' + vid).remove();
-                    }
-                    else {
+                        $('#mnrstaticpagetable_' + vid).remove();
+                    } else {
                         dialogcenter.html('Biztos, hogy törli az oldalt?').dialog({
                             resizable: false,
                             height: 140,
@@ -165,7 +162,7 @@ $(document).ready(function () {
                         });
                     }
                 })
-                .on('click',  '.js-pagetranslationnewbutton', function (e) {
+                .on('click', '.js-pagetranslationnewbutton', function (e) {
                     var $this = $(this);
                     e.preventDefault();
                     $.ajax({
@@ -189,8 +186,7 @@ $(document).ready(function () {
                         egyedid = translationgomb.attr('data-egyedid');
                     if (translationgomb.attr('data-source') === 'client') {
                         $('#pagetranslationtable_' + translationid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
                             resizable: false,
                             height: 140,
@@ -218,7 +214,7 @@ $(document).ready(function () {
                         });
                     }
                 })
-                .on('change', '.js-fieldselect', function(e) {
+                .on('change', '.js-fieldselect', function (e) {
                     var $this = $(this),
                         x = $('option:selected', $this).val(),
                         editor;
@@ -227,8 +223,7 @@ $(document).ready(function () {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             editor.addClass('js-ckeditor');
                             editor.ckeditor();
-                        }
-                        else {
+                        } else {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             if (editor && editor.hasClass('js-ckeditor')) {
                                 editor.removeClass('js-ckeditor');
@@ -267,8 +262,65 @@ $(document).ready(function () {
                         $kepurl.val(fileUrl);
                     };
                     finder.popup();
+                })
+                .on('click', '.js-kepnewbutton', function (e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/mnrstaticpagekep/getemptyrow',
+                        type: 'GET',
+                        data: {
+                            pageid: $this.data('pageid')
+                        },
+                        success: function (data) {
+                            $this.parent().append(data);
+                            $('.js-kepnewbutton,.js-kepdelbutton,.js-kepbrowsebutton').button();
+                            $this.remove();
+                        }
+                    });
+                })
+                .on('click', '.js-kepdelbutton', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    dialogcenter.html('Biztos, hogy törli a képet?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $.ajax({
+                                    url: '/admin/mnrstaticpagekep/del',
+                                    type: 'POST',
+                                    data: {
+                                        id: $this.attr('data-id')
+                                    },
+                                    success: function (data) {
+                                        $('#keptable_' + data).remove();
+                                    }
+                                });
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('click', '.js-kepbrowsebutton', function (e) {
+                    e.preventDefault();
+                    var finder = new CKFinder(),
+                        $kepurledit = $('#KepUrlEdit_' + $(this).attr('data-id')),
+                        path = $kepurledit.val();
+                    if (path) {
+                        finder.startupPath = 'Images:' + path.substring(path.indexOf('/', 1));
+                    }
+                    finder.selectActionFunction = function (fileUrl, data) {
+                        $kepurledit.val(fileUrl);
+                    };
+                    finder.popup();
                 });
-            $('.js-kepbrowsebutton').button();
+
+            $('.js-kepbrowsebutton,.js-kepnewbutton,.js-kepdelbutton').button();
             $('.js-pagetranslationnewbutton,.js-pagetranslationdelbutton').button();
             $('.js-mnrstaticpagedelallbutton').button().on('click', function (e) {
                 var $this = $(this);
@@ -304,7 +356,7 @@ $(document).ready(function () {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').addClass('js-ckeditor');
                 $('#LeirasEdit').ckeditor();
-                $('.js-ckeditor').each(function() {
+                $('.js-ckeditor').each(function () {
                     $(this).ckeditor();
                 });
             }
@@ -320,7 +372,7 @@ $(document).ready(function () {
                     editor = $('#LeirasEdit').ckeditorGet();
                     editor.destroy();
                 }
-                $('.js-ckeditor').each(function() {
+                $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
                     if (editor) {
                         editor.destroy();
@@ -349,9 +401,9 @@ $(document).ready(function () {
             },
             tablebody: {
                 url: '/admin/mnrstatic/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                 },
-                onDoEditLink: function() {
+                onDoEditLink: function () {
                 }
             },
             karb: mnrstatic
@@ -360,8 +412,7 @@ $(document).ready(function () {
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb($.extend({}, mnrstatic, {independent: true}));
         }

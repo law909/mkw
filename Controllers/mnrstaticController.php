@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\MNRStatic;
 use Entities\MNRStaticPage;
+use Entities\MNRStaticPageKep;
 use Entities\MNRStaticPageTranslation;
 use Entities\MNRStaticTranslation;
 use mkw\store;
@@ -133,6 +134,24 @@ class mnrstaticController extends \mkwhelpers\MattableController
                             $translation->setContent($mezoertek);
                             $this->getEm()->persist($translation);
                         }
+                    }
+                }
+            }
+            $kepids = $this->params->getArrayRequestParam('kepid_' . $pageid);
+            foreach ($kepids as $kepid) {
+                $oper = $this->params->getStringRequestParam('kepoper_' . $kepid . '_' . $pageid);
+                if ($oper === 'add') {
+                    $kep = new \Entities\MNRStaticPageKep();
+                    $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid . '_' . $pageid));
+                    $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid . '_' . $pageid));
+                    $page->addMNRStaticPageKep($kep);
+                    $this->getEm()->persist($kep);
+                } elseif ($oper === 'edit') {
+                    $kep = $this->getEm()->getRepository(MNRStaticPageKep::class)->find($kepid);
+                    if ($kep) {
+                        $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid . '_' . $pageid));
+                        $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid . '_' . $pageid));
+                        $this->getEm()->persist($kep);
                     }
                 }
             }

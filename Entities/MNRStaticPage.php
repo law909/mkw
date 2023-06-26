@@ -86,9 +86,13 @@ class MNRStaticPage
     /** @ORM\OneToMany(targetEntity="MNRStaticPageTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /** @ORM\OneToMany(targetEntity="MNRStaticPageKep", mappedBy="mnrstaticpage", cascade={"persist"}) */
+    private $mnrstaticpagekepek;
+
     public function __construct()
     {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mnrstaticpagekepek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public static function getTranslatedFields()
@@ -121,6 +125,16 @@ class MNRStaticPage
         $ret['szoveg2'] = $this->getSzoveg2();
         $ret['szoveg3'] = $this->getSzoveg3();
         $ret['kepurl'] = $this->getKepurl();
+        foreach ($this->getMNRStaticPageKepek(true) as $kep) {
+            $egyed = [];
+            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
+            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
+            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
+            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
+            $egyed['leiras'] = $kep->getLeiras();
+            $altomb[] = $egyed;
+        }
+        $ret['kepek'] = $altomb;
         return $ret;
     }
 
@@ -137,12 +151,53 @@ class MNRStaticPage
         $ret['szoveg3'] = $this->getSzoveg3();
         $ret['kepurl'] = $this->getKepurl();
         $ret['translations'] = $this->getTranslationsArray();
+        foreach ($this->getMNRStaticPageKepek(true) as $kep) {
+            $egyed = [];
+            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
+            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
+            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
+            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
+            $egyed['leiras'] = $kep->getLeiras();
+            $altomb[] = $egyed;
+        }
+        $ret['kepek'] = $altomb;
         return $ret;
     }
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getMNRStaticPageKepek($csaklathato = false)
+    {
+        if ($csaklathato) {
+            $r = [];
+            foreach ($this->mnrstaticpagekepek as $kep) {
+                if (!$kep->getRejtett()) {
+                    $r[] = $kep;
+                }
+            }
+            return $r;
+        }
+        return $this->mnrstaticpagekepek;
+    }
+
+    public function addMNRStaticPageKep(MNRStaticPageKep $kep)
+    {
+//		if (!$this->termekkepek->contains($kep)) {
+        $this->mnrstaticpagekepek->add($kep);
+        $kep->setMnrstaticpage($this);
+//		}
+    }
+
+    public function removeMNRStaticPageKep(MNRStaticPageKep $kep)
+    {
+        if ($this->mnrstaticpagekepek->removeElement($kep)) {
+            $kep->removeMnrstaticpage($this);
+            return true;
+        }
+        return false;
     }
 
     public function getKepurl($pre = '/')
