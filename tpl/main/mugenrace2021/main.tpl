@@ -11,5 +11,5 @@
 {/block}
 
 {block "endscript"}
-    <script src="/js/main/mugenrace2021/mnrstatic.js?v=1"></script>
+    <script src="/js/main/mugenrace2021/mnrstaticabout.js?v=1"></script>
 {/block}

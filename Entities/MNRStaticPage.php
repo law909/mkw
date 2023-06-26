@@ -147,6 +147,7 @@ class MNRStaticPage
         $ret['kepurl'] = $this->getKepurl();
         $ret['translations'] = $this->getTranslationsArray();
         $altomb = [];
+        /** @var MNRStaticPageKep $kep */
         foreach ($this->getMNRStaticPageKepek(true) as $kep) {
             $altomb[] = $kep->toPublic();
         }

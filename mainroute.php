@@ -19,36 +19,9 @@ if (\mkw\store::isB2B()) {
     $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
 } else {
-    if (\mkw\store::isMIJSZ()) {
-        $router->map(
-            'POST',
-            '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo|pune|oralatogatasok|tanitas:subject]',
-            'partnerController#saveAccount',
-            'saveaccount'
-        );
-        $router->map('POST', '/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'partnermijszoklevelsave');
-        $router->map('GET', '/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getmainemptyrow', 'partnermijszoklevelgetmainemptyrow');
-        $router->map('POST', '/partnermijszpune/save', 'partnermijszpuneController#save', 'partnermijszpunesave');
-        $router->map('GET', '/partnermijszpune/getemptyrow', 'partnermijszpuneController#getmainemptyrow', 'partnermijszpunegetmainemptyrow');
-        $router->map('POST', '/partnermijszoralatogatas/save', 'partnermijszoralatogatasController#save', 'partnermijszoralatogatassave');
-        $router->map(
-            'GET',
-            '/partnermijszoralatogatas/getemptyrow',
-            'partnermijszoralatogatasController#getmainemptyrow',
-            'partnermijszoralatogatasgetmainemptyrow'
-        );
-        $router->map('POST', '/partnermijsztanitas/save', 'partnermijsztanitasController#save', 'partnermijsztanitassave');
-        $router->map('GET', '/partnermijsztanitas/getemptyrow', 'partnermijsztanitasController#getmainemptyrow', 'partnermijsztanitasgetmainemptyrow');
-        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'saveregistration');
-        $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
-        $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
-        $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
-    } else {
-        $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-        $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
-    }
+    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+    $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+    $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
 }
 
 if (\mkw\store::isDarshan()) {

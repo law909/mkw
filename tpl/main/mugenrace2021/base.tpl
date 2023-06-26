@@ -12,7 +12,7 @@
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
     {block "precss"}{/block}
-    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=15">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace2021/style.css?v=16">
     {block "css"}{/block}
     <script defer src="/js/iodine/iodine.min.umd.js?v=1"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>

@@ -268,7 +268,14 @@ class mnrstaticController extends \mkwhelpers\MattableController
         /** @var MNRStatic $statlap */
         $statlap = $this->getRepo()->findOneBySlug($com);
         if ($statlap) {
-            $view = $this->getTemplateFactory()->createMainView('mnrstatic.tpl');
+            switch ($statlap->getTipus()) {
+                case 1:
+                    $view = $this->getTemplateFactory()->createMainView('mnrstaticabout.tpl');
+                    break;
+                case 2:
+                    $view = $this->getTemplateFactory()->createMainView('mnrstaticracing.tpl');
+                    break;
+            }
             \mkw\store::fillTemplate($view);
             $view->setVar('mnrstatic', $statlap->toPublic());
             $view->printTemplateResult(true);

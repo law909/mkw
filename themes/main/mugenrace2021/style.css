@@ -39,6 +39,10 @@
     --header-triangle-height-m: calc(100vw / 30);
     --menu-bottom-triangle-height-d: calc(100vw / 30);
     --menu-bottom-triangle-height-m: calc(100vw / 15);
+    --rc-text-container-height-d: 10vh;
+    --rc-text-container-height-m: 10vh;
+    --rc-img-pagination-bottom-d: 12vh;
+    --rc-img-pagination-bottom-m: 12vh;
     accent-color: var(--brand-color);
 }
 
@@ -991,6 +995,54 @@ a {
     align-self: center;
 }
 
+.rc-img-container.splide {
+    padding: 0;
+}
+
+.rc-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rc-text-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: var(--rc-text-container-height-m);
+    width: 100%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.rc-text1, .rc-text2, .rc-text3 {
+    align-self: center;
+}
+
+.rc-text2, .rc-text3 {
+    height: 50%;
+}
+
+.rc-text-23 {
+    justify-self: end;
+    display: grid;
+}
+
+.rc-img-bottom-triangle {
+    position: absolute;
+    bottom: var(--rc-text-container-height-m);
+    left: 0;
+    width: 100%;
+    height: var(--header-triangle-height-m);
+}
+
+.rc-img-container > .splide__pagination {
+    bottom: var(--rc-img-pagination-bottom-m);
+}
+
 @media screen and (min-width: 761px) {
     .hide-on-mobile {
         display: block;
@@ -1359,6 +1411,19 @@ a {
     .co-hint, .co-error {
         margin-top: 4px;
         font-size: 0.75rem;
+    }
+
+    .rc-text-container {
+        height: var(--rc-text-container-height-d);
+    }
+
+    .rc-img-bottom-triangle {
+        bottom: var(--rc-text-container-height-d);
+        height: var(--header-triangle-height-d);
+    }
+
+    .rc-img-container > .splide__pagination {
+        bottom: var(--rc-img-pagination-bottom-d);
     }
 }
 
