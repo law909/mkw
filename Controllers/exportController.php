@@ -1086,6 +1086,9 @@ class exportController extends \mkwhelpers\Controller
 
     public function SuperzonehuExport()
     {
+        $oldtranslocale = \mkw\store::getTranslationListener()->getListenerLocale();
+        \mkw\store::getTranslationListener()->setTranslatableLocale('hu_hu');
+
         $maxstock = $this->params->getNumRequestParam('max', 0);
 
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
@@ -1202,6 +1205,9 @@ class exportController extends \mkwhelpers\Controller
                 ];
             }
         }
+
+        \mkw\store::getTranslationListener()->setTranslatableLocale($oldtranslocale);
+
         header("Content-type: application/json");
         header("Pragma: no-cache");
         header("Expires: 0");
