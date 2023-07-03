@@ -17,7 +17,7 @@
     <script defer src="/js/iodine/iodine.min.umd.js?v=1"></script>
     <script defer src="/js/alpine/cdn.min.js?v=3.10.5"></script>
     {block "prescript"}{/block}
-    <script src="/js/main/mugenrace2021/base.js?v=5"></script>
+    <script src="/js/main/mugenrace2021/base.js?v=6"></script>
     {block "script"}{/block}
 </head>
 <body>

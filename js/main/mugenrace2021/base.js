@@ -6,16 +6,18 @@
         let navspacer = document.querySelector('.nav-spacer');
         if (navspacer) {
             if (isMobile) {
-                let ref = document.querySelector('.termek-filter');
+                let ref = document.querySelector('.termek-filter'),
+                    svgHeight = document.querySelector('.header-triangle-size').getBoundingClientRect().height;
                 if (ref) {
                     navspacer.style.height = (ref.offsetTop - ref.offsetHeight) + 'px';
                 } else {
                     ref = document.querySelector('.header');
-                    navspacer.style.height = ref.offsetHeight + 'px';
+                    navspacer.style.height = ref.offsetHeight + svgHeight + 'px';
                 }
             } else {
-                let referenceHeight = document.querySelector('.header').offsetHeight;
-                navspacer.style.height = referenceHeight + 'px';
+                let headerHeight = document.querySelector('.header').offsetHeight,
+                    svgHeight = document.querySelector('.header-triangle-size').getBoundingClientRect().height;
+                navspacer.style.height = headerHeight + svgHeight + 'px';
             }
         }
     }
