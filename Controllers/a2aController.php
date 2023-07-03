@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Entities\Afa;
@@ -16,18 +17,21 @@ use Entities\Valutanem;
 use Entities\Vtsz;
 use mkwhelpers\FilterDescriptor;
 
-class a2aController extends \mkwhelpers\Controller {
+class a2aController extends \mkwhelpers\Controller
+{
 
     private $tr;
     private $tkr;
     private $pr;
 
-    protected function Auth($nev, $kulcs) {
-        $r = $this->getRepo(Apiconsumer::class)->findOneBy(array('nev' => $nev, 'kulcs' => $kulcs));
+    protected function Auth($nev, $kulcs)
+    {
+        $r = $this->getRepo(Apiconsumer::class)->findOneBy(['nev' => $nev, 'kulcs' => $kulcs]);
         return $r;
     }
 
-    protected function writelog($consumer, $q, $r) {
+    protected function writelog($consumer, $q, $r)
+    {
         $log = new \Entities\Apiconsumelog();
         $log->setApiconsumer($consumer);
         $log->setIp($_SERVER['REMOTE_ADDR']);
@@ -37,7 +41,8 @@ class a2aController extends \mkwhelpers\Controller {
         $this->getEm()->flush($log);
     }
 
-    protected function gettermek_id($id) {
+    protected function gettermek_id($id)
+    {
         /** @var Termek $termek */
         $termek = $this->tr->find($id);
         $termekadat = null;
@@ -47,8 +52,9 @@ class a2aController extends \mkwhelpers\Controller {
         return $termekadat;
     }
 
-    protected function gettermek_ids($ids) {
-        $ret = array();
+    protected function gettermek_ids($ids)
+    {
+        $ret = [];
         $filter = new FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
         $termekek = $this->tr->getWithJoins($filter);
@@ -60,8 +66,9 @@ class a2aController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    protected function gettermek_all() {
-        $ret = array();
+    protected function gettermek_all()
+    {
+        $ret = [];
         $termekek = $this->tr->getWithJoins(null);
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
@@ -71,8 +78,9 @@ class a2aController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    protected function getkeszlet_id($id) {
-        $x = array();
+    protected function getkeszlet_id($id)
+    {
+        $x = [];
         $x['id'] = $id;
         $termek = $this->tr->find($id);
         if ($termek) {
@@ -80,7 +88,7 @@ class a2aController extends \mkwhelpers\Controller {
             if ($valtozatok) {
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
-                        $valtadat = array();
+                        $valtadat = [];
                         $valtadat['id'] = $valt->getId();
                         $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                         if ($keszlet < 0) {
@@ -95,19 +103,20 @@ class a2aController extends \mkwhelpers\Controller {
         return $x;
     }
 
-    protected function getkeszlet_ids($ids) {
-        $ret = array();
+    protected function getkeszlet_ids($ids)
+    {
+        $ret = [];
         $filter = new FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
         $termekek = $this->tr->getWithJoins($filter);
         foreach ($termekek as $termek) {
-            $x = array();
+            $x = [];
             $x['id'] = $termek->getId();
             $valtozatok = $termek->getValtozatok();
             if ($valtozatok) {
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
-                        $valtadat = array();
+                        $valtadat = [];
                         $valtadat['id'] = $valt->getId();
                         $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                         if ($keszlet < 0) {
@@ -123,7 +132,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    protected function getkategoria_id($id) {
+    protected function getkategoria_id($id)
+    {
         $kat = $this->tkr->find($id);
         $katadat = null;
         if ($kat) {
@@ -132,10 +142,11 @@ class a2aController extends \mkwhelpers\Controller {
         return $katadat;
     }
 
-    protected function getkategoria_idwithchildren($id = null) {
-
-        function getChildren($parent) {
-            $osszesgyerekadat = array();
+    protected function getkategoria_idwithchildren($id = null)
+    {
+        function getChildren($parent)
+        {
+            $osszesgyerekadat = [];
             $gyerekadat = null;
             $gyerekek = $parent->getChildren();
             foreach ($gyerekek as $gyerek) {
@@ -146,7 +157,7 @@ class a2aController extends \mkwhelpers\Controller {
             return $osszesgyerekadat;
         }
 
-        $result = array();
+        $result = [];
 
         if (is_null($id)) {
             $id = 1;
@@ -160,7 +171,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $result;
     }
 
-    protected function partner_get($id) {
+    protected function partner_get($id)
+    {
         $partner = $this->pr->find($id);
         $partneradat = null;
         if ($partner) {
@@ -169,7 +181,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $partneradat;
     }
 
-    protected function createRaktar($nev) {
+    protected function createRaktar($nev)
+    {
         $raktar = $this->getRepo(Raktar::class)->findOneBy(['idegenkod' => $nev]);
         if (!$raktar) {
             $raktar = new Raktar();
@@ -182,7 +195,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $raktar;
     }
 
-    protected function createFizmod($nev, $tipus, $navtipus) {
+    protected function createFizmod($nev, $tipus, $navtipus)
+    {
         if (!$nev) {
             $nev = 'Készpénz';
             $tipus = 'P';
@@ -200,7 +214,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $fizmod;
     }
 
-    protected function createVtsz($nev, $afa = null) {
+    protected function createVtsz($nev, $afa = null)
+    {
         if (!$nev) {
             $nev = '.';
         }
@@ -217,9 +232,13 @@ class a2aController extends \mkwhelpers\Controller {
         return $vtsz;
     }
 
-    protected function createAFA($nev) {
-        if (!$nev) {
+    protected function createAFA($nev)
+    {
+        if (!$nev || $nev == 25) {
             $nev = 27;
+        }
+        if ($nev == 20) {
+            $nev = 18;
         }
         $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $nev]);
         if (!$afa) {
@@ -232,7 +251,8 @@ class a2aController extends \mkwhelpers\Controller {
         return $afa;
     }
 
-    protected function createME($nev, $navtipus) {
+    protected function createME($nev, $navtipus)
+    {
         if (!$nev) {
             $nev = 'db';
             $navtipus = 'PIECE';
@@ -248,35 +268,36 @@ class a2aController extends \mkwhelpers\Controller {
         return $me;
     }
 
-    public function processCmd() {
-        $pelda = array(
-            'auth' => array(
+    public function processCmd()
+    {
+        $pelda = [
+            'auth' => [
                 'name' => 'superzone.hu',
                 'key' => 'xxxx'
-            ),
-            'cmds' => array(
+            ],
+            'cmds' => [
                 'hello',
-                'gettermek' => array(
-                    'ids' => array(1,2,3,4,5), // vagy
+                'gettermek' => [
+                    'ids' => [1, 2, 3, 4, 5], // vagy
                     'id' => 1062, // vagy
                     'all' => 1
-                ),
-                'getkeszlet' => array(
-                    'ids' => array(1,2,3,4,5), // vagy
+                ],
+                'getkeszlet' => [
+                    'ids' => [1, 2, 3, 4, 5], // vagy
                     'id' => 1062
-                ),
-                'getkategoria' => array(
+                ],
+                'getkategoria' => [
                     'all' => 1, // vagy
                     'id' => 1, // vagy
                     'idwithchildren' => 1
-                ),
-                'partner' => array(
+                ],
+                'partner' => [
                     'get' => 1,
-                    'login' => array(
+                    'login' => [
                         'email' => 'balint.lovey@gmail.com',
                         'password' => 'a'
-                    ),
-                    'reg' => array(
+                    ],
+                    'reg' => [
                         'email' => '',
                         'password' => '',
                         'nev' => '',
@@ -295,10 +316,10 @@ class a2aController extends \mkwhelpers\Controller {
                         'szallutca' => '',
                         'szallhazszam' => '',
                         'vendeg' => 0
-                    )
-                ),
-                'szamla' => array(
-                    'createraw' => array(
+                    ]
+                ],
+                'szamla' => [
+                    'createraw' => [
                         'telephelykod' => 0,
                         'idegenbizszam' => '',
                         'nev' => '',
@@ -311,7 +332,7 @@ class a2aController extends \mkwhelpers\Controller {
                         'fizmodtipus' => '',
                         'fizmodnavkod' => '',
                         'megjegyzes' => '',
-                        'tetelek' => array(
+                        'tetelek' => [
                             'termeknev' => '',
                             'cikkszam' => '',
                             'szallitoicikkszam' => '',
@@ -325,19 +346,19 @@ class a2aController extends \mkwhelpers\Controller {
                             'netto' => 0,
                             'afa' => 0,
                             'brutto' => 0
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'getnaveredmenyriasztas'
-            )
-        );
+            ]
+        ];
 
         $this->tr = \mkw\store::getEm()->getRepository(Termek::class);
         $this->tkr = \mkw\store::getEm()->getRepository(TermekFa::class);
         $this->pr = \mkw\store::getEm()->getRepository(Partner::class);
 
-        $result = array();
-        $results = array();
+        $result = [];
+        $results = [];
 
         $rawdata = $this->params->getOriginalStringRequestParam('data');
         $jsondata = json_decode($rawdata, true);
@@ -345,12 +366,10 @@ class a2aController extends \mkwhelpers\Controller {
         $auth = $jsondata['auth'];
         $consumer = $this->Auth($auth['name'], $auth['key']);
         if ($consumer) {
-
             $result['auth'] = 1;
 
             $cmds = $jsondata['cmds'];
             foreach ($cmds as $cmdkey => $cmd) {
-
                 switch ($cmdkey) {
                     case 'hello':
                         $results['hello'] = 'hello';
@@ -358,11 +377,9 @@ class a2aController extends \mkwhelpers\Controller {
                     case 'gettermek':
                         if (array_key_exists('id', $cmd)) {
                             $results['termek'] = $this->gettermek_id($cmd['id']);
-                        }
-                        elseif (array_key_exists('ids', $cmd)) {
+                        } elseif (array_key_exists('ids', $cmd)) {
                             $results['termekek'] = $this->gettermek_ids($cmd['ids']);
-                        }
-                        elseif (array_key_exists('all', $cmd)) {
+                        } elseif (array_key_exists('all', $cmd)) {
                             $results['termekek'] = $this->gettermek_all();
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
@@ -370,8 +387,7 @@ class a2aController extends \mkwhelpers\Controller {
                     case 'getkeszlet':
                         if (array_key_exists('id', $cmd)) {
                             $results['keszlet'] = $this->getkeszlet_id($cmd['id']);
-                        }
-                        elseif (array_key_exists('ids', $cmd)) {
+                        } elseif (array_key_exists('ids', $cmd)) {
                             $results['keszletek'] = $this->getkeszlet_ids($cmd['ids']);
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
@@ -379,11 +395,9 @@ class a2aController extends \mkwhelpers\Controller {
                     case 'getkategoria':
                         if (array_key_exists('id', $cmd)) {
                             $results['kategoria'] = $this->getkategoria_id($cmd['id']);
-                        }
-                        elseif (array_key_exists('idwithchildren', $cmd)) {
+                        } elseif (array_key_exists('idwithchildren', $cmd)) {
                             $results['kategoriak'] = $this->getkategoria_idwithchildren($cmd['idwithchildren']);
-                        }
-                        elseif (array_key_exists('all', $cmd)) {
+                        } elseif (array_key_exists('all', $cmd)) {
                             $results['kategoriak'] = $this->getkategoria_idwithchildren();
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
@@ -393,7 +407,7 @@ class a2aController extends \mkwhelpers\Controller {
                             $results['partner'] = $this->partner_get($cmd['get']);
                         }
                         if (array_key_exists('login', $cmd)) {
-                            $padat = array();
+                            $padat = [];
                             $padat['success'] = 0;
                             $pc = new \Controllers\partnerController(null);
                             $partner = $pc->apiLogin($cmd['login']['email'], $cmd['login']['password']);
@@ -404,7 +418,7 @@ class a2aController extends \mkwhelpers\Controller {
                             $results['login'] = $padat;
                         }
                         if (array_key_exists('reg', $cmd)) {
-                            $padat = array();
+                            $padat = [];
                             $padat['success'] = 0;
                             $pc = new \Controllers\partnerController(null);
                             $msgs = $pc->checkApiRegData($cmd['reg']);
@@ -414,8 +428,7 @@ class a2aController extends \mkwhelpers\Controller {
                                     $padat = $partner->toA2a();
                                     $padat['success'] = 1;
                                 }
-                            }
-                            else {
+                            } else {
                                 $padat['msg'] = $msgs;
                             }
                             $results['reg'] = $padat;
@@ -424,7 +437,6 @@ class a2aController extends \mkwhelpers\Controller {
                         break;
                     case 'szamla':
                         if (array_key_exists('createraw', $cmd)) {
-
                             $results['success'] = 0;
                             $results['msg'] = '';
 
@@ -481,11 +493,9 @@ class a2aController extends \mkwhelpers\Controller {
                                     if (!$szamlafej->getPartneradoszam()) {
                                         $szamlafej->setPartnervatstatus(2);
                                     }
-                                }
-                                elseif ($szamlafej->getPartneradoszam()) {
+                                } elseif ($szamlafej->getPartneradoszam()) {
                                     $szamlafej->setPartnervatstatus(1);
-                                }
-                                else {
+                                } else {
                                     $szamlafej->setPartnervatstatus(2);
                                 }
 
@@ -534,8 +544,7 @@ class a2aController extends \mkwhelpers\Controller {
                         break;
                 }
             }
-        }
-        else {
+        } else {
             $result['auth'] = 0;
             $result['authmsg'] = 'API authentication failed: ' . $auth['name'] . '/' . $auth['key'] . '|';
             $this->writelog($consumer, $rawdata, json_encode($result));
@@ -545,10 +554,11 @@ class a2aController extends \mkwhelpers\Controller {
         echo json_encode($result);
     }
 
-    public function teszt() {
+    public function teszt()
+    {
         $this->tkr = \mkw\store::getEm()->getRepository(TermekFa::class);
 
-        $result = array();
+        $result = [];
 
         $result['results']['kategoriak'] = $this->getkategoria_idwithchildren();
         echo json_encode($result);
