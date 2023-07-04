@@ -621,5 +621,7 @@ class mainController extends \mkwhelpers\Controller
     {
         $locale = $this->params->getStringRequestParam('locale');
         \mkw\store::setMainLocale($locale);
+        $kc = new kosarController($this->params);
+        $kc->recalcPrices();
     }
 }

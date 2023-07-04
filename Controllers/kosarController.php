@@ -537,17 +537,31 @@ class kosarController extends \mkwhelpers\MattableController
         $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
-            if (\mkw\store::isMugenrace()) {
-                $sor->setBruttoegysar(
-                    $sor->getTermek()->getBruttoAr(
-                        $sor->getTermekvaltozat(),
-                        \mkw\store::getLoggedInUser(),
-                        \mkw\store::getMainSession()->valutanem,
-                        \mkw\store::getParameter(\mkw\consts::Webshop2Price)
-                    )
-                );
-                $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
-                $this->getEm()->persist($sor);
+            switch (true) {
+                case \mkw\store::isMugenrace():
+                    $sor->setBruttoegysar(
+                        $sor->getTermek()->getBruttoAr(
+                            $sor->getTermekvaltozat(),
+                            \mkw\store::getLoggedInUser(),
+                            \mkw\store::getMainSession()->valutanem,
+                            \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                        )
+                    );
+                    $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
+                    $this->getEm()->persist($sor);
+                    break;
+                case \mkw\store::isMugenrace2021():
+                    $sor->setBruttoegysar(
+                        $sor->getTermek()->getBruttoAr(
+                            $sor->getTermekvaltozat(),
+                            \mkw\store::getLoggedInUser(),
+                            \mkw\store::getMainSession()->valutanem,
+                            \mkw\store::getParameter(\mkw\consts::Webshop4Price)
+                        )
+                    );
+                    $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
+                    $this->getEm()->persist($sor);
+                    break;
             }
         }
         $this->getEm()->flush();
