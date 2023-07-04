@@ -58,11 +58,13 @@
                   x-show="$store.header.termekdb > 0"
             ></span>
         </a>
-        <select class="nav-lang">
-            {foreach $localelist as $locale}
-                <option value="{$locale.id}"{if ($locale.selected)} selected="selected"{/if}>{$locale.caption}</option>
-            {/foreach}
-        </select>
+        {if (!$checkout)}
+            <select class="nav-lang">
+                {foreach $localelist as $locale}
+                    <option value="{$locale.id}"{if ($locale.selected)} selected="selected"{/if}>{$locale.caption}</option>
+                {/foreach}
+            </select>
+        {/if}
     </nav>
     <div class="header-triangle">
         <svg class="header-triangle-size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">

@@ -33,6 +33,7 @@ class checkoutController extends \mkwhelpers\MattableController
 
         $view = \mkw\store::getTemplateFactory()->createMainView('checkout.tpl');
         \mkw\store::fillTemplate($view, false);
+        $view->setVar('checkout', true);
 
         $partner = \mkw\store::getLoggedInUser();
         if ($partner) {
