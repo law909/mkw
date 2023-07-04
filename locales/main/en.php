@@ -274,5 +274,7 @@ return [
     'Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta ÁSZF-ünket és adatvédelmi nyilatkozatunkat.' => 'Please place a checkmark in the checkbox to confirm that you have read, understood, and accepted our Terms and Conditions and Privacy Policy.',
     'Felhívjuk szíves figyelmét, hogy a „megrendelés elküldése” gombra történő kattintással Ön kötelező érvényű ajánlatot tesz a kosárba helyezett termék megvásárlására, ami fizetési kötelezettséget von maga után.' => 'Please note that by clicking the "place order" button, you are making a binding offer to purchase the product placed in the shopping cart, which entails a payment obligation.',
     'ÁSZF' => 'Terms and Conditions',
-    
+    'Törlés' => 'Clear',
+    'Tovább a fizetéshez' => 'Checkout',
+    'db' => 'piece',
 ];
