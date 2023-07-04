@@ -16,7 +16,7 @@
                                 <img
                                     x-show="tetel.kiskepurl"
                                     :src="imagepath + tetel.kiskepurl"
-                                    :alt="tetel.caption"
+                                    :alt="tetel.cikkszam"
                                     :title="tetel.caption"
                                 >
                             </div>
@@ -76,7 +76,7 @@
                                 <img
                                     x-show="tetel.kiskepurl"
                                     :src="imagepath + tetel.kiskepurl"
-                                    :alt="tetel.caption"
+                                    :alt="tetel.cikkszam"
                                     :title="tetel.caption"
                                 >
                             </div>
