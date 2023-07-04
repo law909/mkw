@@ -1013,11 +1013,12 @@ class store
 
     public static function getLocale()
     {
-        $luser = self::getLoggedInUser();
-        if (self::isMIJSZ() && $luser) {
-            $l = $luser->getBizonylatnyelv();
-        } elseif (self::isMugenrace2021()) {
+        if (self::isMugenrace2021()) {
             $l = self::getMainLocale();
+            if (!$l) {
+                $l = self::getSetupValue('locale', false);
+            }
+            self::setMainLocale($l);
         } elseif (self::isMPTNGY()) {
             $l = self::getMainLocale();
         } else {
@@ -1034,6 +1035,14 @@ class store
     public static function getLocaleName($ny)
     {
         return self::$locales[$ny];
+    }
+
+    public static function translateLocale($ny)
+    {
+        if (array_key_exists(strtolower($ny), self::$locales)) {
+            return self::$locales[$ny];
+        }
+        return $ny;
     }
 
     /**
@@ -1913,6 +1922,7 @@ class store
 
     public static function setMainLocale($ny)
     {
+        $ny = self::translateLocale($ny);
         \mkw\store::getMainSession()->locale = $ny;
         $v = self::getValutanemForLocale($ny);
         if ($v) {
