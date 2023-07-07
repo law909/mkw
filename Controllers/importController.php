@@ -1980,7 +1980,8 @@ class importController extends \mkwhelpers\Controller
                         }
                     }
                     if ($termek) {
-                        if ($data['available'] == 2 && $data['storageCondition'] == 2) {
+                        // if ($data['available'] == 2 && $data['storageCondition'] == 2) {
+                        if ($data['stockFree'] <= 0) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato(true);
                                 \mkw\store::writelog(
