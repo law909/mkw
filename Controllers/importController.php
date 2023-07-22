@@ -5741,6 +5741,100 @@ class importController extends \mkwhelpers\Controller
                         }
                     }
                 }
+
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+                if ($gyarto) {
+                    $idegenkodok = [];
+                    foreach ($products as $data) {
+                        $idegenkodok[] = (string)$data->termekkod;
+                    }
+                    if ($idegenkodok) {
+                        $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
+                        $termekdb = 0;
+                        /** @var \Entities\Termek $termek */
+                        foreach ($termekek as $termek) {
+                            if ($termek->getIdegencikkszam() && !in_array($termek->getIdegencikkszam(), $idegenkodok)) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termekdb++;
+                                    \mkw\store::writelog(
+                                        'INAKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
+                                    $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
+                            }
+                            $valtozatok = $termek->getValtozatok();
+                            /** @var \Entities\TermekValtozat $valtozat */
+                            foreach ($valtozatok as $valtozat) {
+                                if ($valtozat->getIdegencikkszam() && !in_array($valtozat->getIdegencikkszam(), $idegenkodok)) {
+                                    if ($valtozat->getKeszlet() <= 0) {
+                                        $termekdb++;
+                                        \mkw\store::writelog(
+                                            'NEM ELÉRHETŐ'
+                                            . ' termék cikkszám: ' . $termek->getCikkszam()
+                                            . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                            . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                            $logfile
+                                        );
+                                        $lettlog = true;
+                                        $valtozat->setElerheto(false);
+                                        \mkw\store::getEm()->persist($valtozat);
+                                    }
+                                }
+                            }
+                            if ($termekdb >= $batchsize) {
+                                $termekdb = 0;
+                                \mkw\store::getEm()->flush();
+//                                    \mkw\store::getEm()->clear();
+                            }
+                        }
+                        \mkw\store::getEm()->flush();
+//                            \mkw\store::getEm()->clear();
+                    }
+                    $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
+                    $termekdb = 0;
+                    /** @var \Entities\Termek $termek */
+                    foreach ($termekek as $termek) {
+                        $vanelerheto = false;
+                        $vanvaltozat = false;
+                        $valtozatok = $termek->getValtozatok();
+                        /** @var \Entities\TermekValtozat $valtozat */
+                        foreach ($valtozatok as $valtozat) {
+                            $vanvaltozat = true;
+                            if ($valtozat->getElerheto()) {
+                                $vanelerheto = true;
+                            }
+                        }
+                        if ($vanvaltozat && !$vanelerheto) {
+                            $termekdb++;
+                            \mkw\store::writelog(
+                                'NEM KAPHATÓ'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
+                            $termek->setNemkaphato(true);
+                            \mkw\store::getEm()->persist($termek);
+                            if (($termekdb % $batchsize) === 0) {
+                                \mkw\store::getEm()->flush();
+//                                    \mkw\store::getEm()->clear();
+                            }
+                        }
+                    }
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
+                }
+
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
             }
