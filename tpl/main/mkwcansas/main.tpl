@@ -69,6 +69,33 @@
                 </div>
             {/foreach}
             {/if}
+            {if (count($newertekeleslista)>0)}
+                <div class="blockHeader">
+                    <h2 class="main">{t('Legutóbbi értékelések')}</h2>
+                </div>
+                {foreach $newertekeleslista as $_ertekeles}
+                    <div class="ertekelesListBlock">
+                        <div class="ertekeles-imgblock">
+                            <a href="{$_ertekeles.termeklink}">
+                                <img src="{$_ertekeles.termekminikepurl}" title="" alt="">
+                            </a>
+                        </div>
+                        <div class="ertekeles-textblock">
+                            <div><a href="{$_ertekeles.termeklink}">{$_ertekeles.termeknev}</a></div>
+                            <div>{$_ertekeles.partnernev}</div>
+                            <div>{$_ertekeles.szoveg}</div>
+                            <div class="c-rating" data-rating-value="{$_ertekeles.ertekeles}">
+                                <button>1</button>
+                                <button>2</button>
+                                <button>3</button>
+                                <button>4</button>
+                                <button>5</button>
+                                <span class="c-rating-value" itemprop="ratingValue">{$_ertekeles.ertekeles}</span>
+                            </div>
+                        </div>
+                    </div>
+                {/foreach}
+            {/if}
         <div class="fb-like-box" data-href="http://www.facebook.com/pages/Mindent-Kapni-Web%C3%A1ruh%C3%A1z/182178395162369" data-width="100%" data-height="400" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
         </div>
         <div class="span8">

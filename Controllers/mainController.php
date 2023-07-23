@@ -61,6 +61,7 @@ class mainController extends \mkwhelpers\Controller
         $khc = new korhintaController($this->params);
         $tfc = new termekfaController($this->params);
         $tcc = new termekcimkeController($this->params);
+        $tec = new termekertekelesController($this->params);
         $this->view->setVar('pagetitle', \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $this->view->setVar('seodescription', \mkw\store::getParameter(\mkw\consts::Seodescription));
         switch (true) {
@@ -72,6 +73,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar('korhintalista', $khc->getLista());
                 $this->view->setVar('topkategorialista', $tfc->getformenu(\mkw\store::getSetupValue('topkategoriamenunum'), 0));
                 $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
+                $this->view->setVar('newertekeleslista', $tec->getNewList());
                 $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
                 break;
 

@@ -237,4 +237,14 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
         $view->printTemplateResult(false);
     }
+
+    public function getNewList()
+    {
+        $res = [];
+        $ertekelesek = $this->getRepo()->getWithJoins([], ['created' => 'DESC'], 0, 5);
+        foreach ($ertekelesek as $ert) {
+            $res[] = $ert->toLista();
+        }
+        return $res;
+    }
 }

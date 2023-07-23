@@ -66,6 +66,9 @@ class TermekErtekeles
             'termeknev' => $this->getTermekNev(),
             'termekid' => $this->getTermekId(),
             'termekslug' => $this->getTermekSlug(),
+            'termekminikepurl' => $this->getTermek()?->getKepurlMini(),
+            'termekkiskepurl' => $this->getTermek()?->getKepurlSmall(),
+            'termeklink' => \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getTermekSlug()]),
             'partnernev' => $this->isAnonim() ? $this->getPartner()?->getMonogram() : $this->getPartnerNev(),
             'partnerid' => $this->getPartnerId(),
             'ertekeles' => $this->getErtekeles(),
@@ -150,6 +153,9 @@ class TermekErtekeles
         }
     }
 
+    /**
+     * @return Termek
+     */
     public function getTermek()
     {
         return $this->termek;
