@@ -81,7 +81,7 @@
                             </a>
                         </div>
                         <div class="ertekeles-textblock">
-                            <div><a href="{$_ertekeles.termeklink}">{$_ertekeles.termeknev}</a></div>
+                            <div><a href="{$_ertekeles.termeklink}" class="ertekeles-termeknev">{$_ertekeles.termeknev}</a></div>
                             <div>{$_ertekeles.partnernev}</div>
                             <div>{$_ertekeles.szoveg}</div>
                             <div class="c-rating" data-rating-value="{$_ertekeles.ertekeles}">
