@@ -8,6 +8,7 @@ use Entities\Emailtemplate;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekErtekeles;
+use mkwhelpers\FilterDescriptor;
 
 class termekertekelesController extends \mkwhelpers\MattableController
 {
@@ -240,8 +241,11 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
     public function getNewList()
     {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('elutasitva', '=', 0);
+        $filter->addSql('LENGTH(_xx.szoveg)>=5');
         $res = [];
-        $ertekelesek = $this->getRepo()->getWithJoins([], ['created' => 'DESC'], 0, 5);
+        $ertekelesek = $this->getRepo()->getWithJoins($filter, ['created' => 'DESC'], 0, 5);
         foreach ($ertekelesek as $ert) {
             $res[] = $ert->toLista();
         }
