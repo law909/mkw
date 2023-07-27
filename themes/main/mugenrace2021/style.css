@@ -158,6 +158,10 @@ a {
     width: 100%;
 }
 
+button.splide__arrow svg {
+    background-color: var(--background-color);
+}
+
 .menucontainer {
     z-index: 100000;
     position: absolute;
