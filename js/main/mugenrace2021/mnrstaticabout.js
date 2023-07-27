@@ -1,5 +1,18 @@
 (() => {
 
+    function debounce_leading(func, timeout = 400) {
+        let timer;
+        return (...args) => {
+            if (!timer) {
+                func.apply(this, args);
+            }
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                timer = undefined;
+            }, timeout);
+        };
+    }
+
     function doScroll(up) {
         window.scrollBy({
             top: (window.innerHeight + 4) * up,
@@ -7,31 +20,42 @@
         });
     }
 
-    document.addEventListener('keydown', function (e) {
+    function keydown(e) {
         switch (e.code) {
             case 'ArrowLeft':
             case 'ArrowUp':
             case 'PageUp':
-                e.preventDefault();
                 doScroll(-1);
                 break;
             case 'ArrowRight':
             case 'ArrowDown':
             case 'PageDown':
-                e.preventDefault();
                 doScroll(1);
                 break;
         }
-    });
+    }
 
-    document.addEventListener('wheel', function (e) {
-        e.preventDefault();
+    function wheel(e) {
         e.deltaY = 0;
         if (e.deltaY > 0) {
             doScroll(1);
         } else {
             doScroll(-1);
         }
+    }
+
+    const
+        onKeydown = debounce_leading((e) => keydown(e)),
+        onWheel = debounce_leading((e) => wheel(e));
+
+    document.addEventListener('keydown', function (e) {
+        e.preventDefault();
+        onKeydown(e);
+    });
+
+    document.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        onWheel(e);
     }, {passive: false});
 
     window.addEventListener('resize', function (e) {
