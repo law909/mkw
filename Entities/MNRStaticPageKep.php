@@ -41,7 +41,8 @@ class MNRStaticPageKep
     {
         $egyed = [];
         $egyed['id'] = $this->getId();
-        $egyed['kepurl'] = $this->getUrlLarge();
+        $egyed['kepurl'] = $this->getUrl();
+        $egyed['nagykepurl'] = $this->getUrlLarge();
         $egyed['kozepeskepurl'] = $this->getUrlMedium();
         $egyed['kiskepurl'] = $this->getUrlSmall();
         $egyed['minikepurl'] = $this->getUrlMini();
@@ -52,7 +53,8 @@ class MNRStaticPageKep
     {
         $egyed = [];
         $egyed['id'] = $this->getId();
-        $egyed['kepurl'] = $this->getUrlLarge();
+        $egyed['kepurl'] = $this->getUrl();
+        $egyed['nagykepurl'] = $this->getUrlLarge();
         $egyed['kozepeskepurl'] = $this->getUrlMedium();
         $egyed['kiskepurl'] = $this->getUrlSmall();
         $egyed['minikepurl'] = $this->getUrlMini();
