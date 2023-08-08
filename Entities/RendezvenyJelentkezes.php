@@ -243,7 +243,7 @@ class RendezvenyJelentkezes
         $x['rendezvenykezdodatum'] = $this->getRendezvenyDatumStr();
         $x['rendezvenykezdoido'] = $this->getRendezveny()?->getKezdoido();
         $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
-        if ($this->getRendezveny()->getEarlybirdvege() >= $this->getDatum()) {
+        if ($this->getRendezveny()->getEarlybirdvege() >= $this->getDatum() && $this->getRendezveny()->getEarlybirdar()) {
             $x['rendezvenyar'] = $this->getRendezveny()->getEarlybirdar();
         } else {
             $x['rendezvenyar'] = $this->getRendezveny()?->getAr();
