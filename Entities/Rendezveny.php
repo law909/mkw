@@ -148,12 +148,19 @@ class Rendezveny
     /** @ORM\Column(type="boolean",nullable=false) */
     private $csomag = false;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $earlybirdvege;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $earlybirdar;
+
     public function __construct()
     {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function calcSzabadhely() {
+    public function calcSzabadhely()
+    {
         $rjr = \mkw\store::getEm()->getRepository(RendezvenyJelentkezes::class);
         $filter = new FilterDescriptor();
         $filter->addFilter('rendezveny', '=', $this);
@@ -797,6 +804,44 @@ class Rendezveny
     public function setCsomag($csomag): void
     {
         $this->csomag = $csomag;
+    }
+
+    public function getEarlybirdvege()
+    {
+        return $this->earlybirdvege;
+    }
+
+    public function getEarlybirdvegeStr()
+    {
+        if ($this->getEarlybirdvege()) {
+            return $this->getEarlybirdvege()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEarlybirdvege($adat = '')
+    {
+        if ($adat != '') {
+            $this->earlybirdvege = new \DateTime(\mkw\store::convDate($adat));
+        } else {
+            $this->earlybirdvege = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEarlybirdar()
+    {
+        return $this->earlybirdar;
+    }
+
+    /**
+     * @param mixed $earlybirdar
+     */
+    public function setEarlybirdar($earlybirdar): void
+    {
+        $this->earlybirdar = $earlybirdar;
     }
 
 }

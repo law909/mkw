@@ -55,6 +55,8 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $x['maxferohely'] = $t->getMaxferohely();
         $x['varolistavan'] = $t->isVarolistavan();
         $x['csomag'] = $t->isCsomag();
+        $x['earlybirdvege'] = $t->getEarlybirdvegeStr();
+        $x['earlybirdar'] = $t->getEarlybirdar();
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue(
                 'main.theme'
             ) . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';
@@ -87,6 +89,8 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $obj->setMaxferohely($this->params->getIntRequestParam('maxferohely'));
         $obj->setVarolistavan($this->params->getBoolRequestParam('varolistavan'));
         $obj->setCsomag($this->params->getBoolRequestParam('csomag'));
+        $obj->setEarlybirdvege($this->params->getStringRequestParam('earlybirdvege'));
+        $obj->setEarlybirdar($this->params->getFloatRequestParam('earlybirdar'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);

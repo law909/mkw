@@ -79,11 +79,13 @@
                 </tr>
                 <tr>
                     <td><label for="KellszamlazasiadatEdit">{at('Számlázási adat bekérés')}:</label></td>
-                    <td><input id="KellszamlazasiadatEdit" name="kellszamlazasiadat" type="checkbox"{if ($egyed.kellszamlazasiadat)} checked="checked"{/if}></td>
+                    <td><input id="KellszamlazasiadatEdit" name="kellszamlazasiadat" type="checkbox"{if ($egyed.kellszamlazasiadat)} checked="checked"{/if}>
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="OrarendbenszerepelEdit">{at('Órarendben szerepel')}:</label></td>
-                    <td><input id="OrarendbenszerepelEdit" name="orarendbenszerepel" type="checkbox"{if ($egyed.orarendbenszerepel)} checked="checked"{/if}></td>
+                    <td><input id="OrarendbenszerepelEdit" name="orarendbenszerepel" type="checkbox"{if ($egyed.orarendbenszerepel)} checked="checked"{/if}>
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="TermekEdit">{at('Termék a számlán')}:</label></td>
@@ -99,6 +101,14 @@
                 <tr>
                     <td><label for="">{at('Ár')}:</label></td>
                     <td><input name="ar" type="number" step="any" value="{$egyed.ar}" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="">{at('Early bird ár')}:</label></td>
+                    <td><input name="earlybirdar" type="number" step="any" value="{$egyed.earlybirdar}" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="EarlybirdvegeEdit">{at('Early bird vége')}:</label></td>
+                    <td><input id="EarlybirdvegeEdit" name="earlybirdvege" data-datum="{$egyed.earlybirdvege}"></td>
                 </tr>
                 <tr>
                     <td><label for="OnlineUrlEdit">{at('Online link')}:</label></td>

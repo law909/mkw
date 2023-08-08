@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
     var rendezveny = {
@@ -6,7 +6,7 @@ $(document).ready(function() {
         viewUrl: '/admin/rendezveny/getkarb',
         newWindowUrl: '/admin/rendezveny/viewkarb',
         saveUrl: '/admin/rendezveny/save',
-        beforeShow: function() {
+        beforeShow: function () {
             var doktab = $('#DokTab');
             doktab
                 .on('click', '.js-doknewbutton', function (e) {
@@ -65,14 +65,15 @@ $(document).ready(function() {
                 });
             $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton').button();
             mkwcomp.datumEdit.init('#KezdodatumEdit');
+            mkwcomp.datumEdit.init('#EarlybirdvegeEdit');
         },
-        onSubmit: function() {
+        onSubmit: function () {
             $('#messagecenter')
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+                .html('A mentés sikerült.')
+                .hide()
+                .addClass('matt-messagecenter ui-widget ui-state-highlight')
+                .one('click', messagecenterclick)
+                .slideToggle('slow');
         }
     };
 
@@ -83,70 +84,69 @@ $(document).ready(function() {
             },
             tablebody: {
                 url: '/admin/rendezveny/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                     new ClipboardJS('.js-uidcopy');
                     $('.js-emailrendezvenykezdes').button();
                 }
             },
             karb: rendezveny
         });
-        $('.js-maincheckbox').change(function() {
+        $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
         $('#mattable-body')
-        .on('click', '.js-flagcheckbox', function (e) {
-            function doit(succ) {
-                var id = $this.attr('data-id'),
-                    flag = $this.attr('data-flag'),
-                    kibe = $this.is('.ui-state-hover');
-                if (succ) {
-                    succ();
-                }
-                $.ajax({
-                    url: '/admin/rendezveny/setflag',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        flag: flag,
-                        kibe: kibe
-                    },
-                    success: function () {
-                        $this.toggleClass('ui-state-hover');
+            .on('click', '.js-flagcheckbox', function (e) {
+                function doit(succ) {
+                    var id = $this.attr('data-id'),
+                        flag = $this.attr('data-flag'),
+                        kibe = $this.is('.ui-state-hover');
+                    if (succ) {
+                        succ();
                     }
-                });
-            }
-
-            e.preventDefault();
-            var $this = $(this);
-            doit();
-        })
-        .on('click', '.js-emailrendezvenykezdes', function(e) {
-            var $gomb = $(this);
-            e.preventDefault();
-            $.ajax({
-                url: '/admin/rendezveny/email/kezdes',
-                type: 'POST',
-                data: {
-                    id: $gomb.data('egyedid')
-                },
-                success: function (data) {
-                    var d = JSON.parse(data);
-                    dialogcenter.html(d.msg).dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'OK': function() {
-                                $(this).dialog('close');
-                            }
+                    $.ajax({
+                        url: '/admin/rendezveny/setflag',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            flag: flag,
+                            kibe: kibe
+                        },
+                        success: function () {
+                            $this.toggleClass('ui-state-hover');
                         }
                     });
                 }
-            });
 
-        });
-    }
-    else {
+                e.preventDefault();
+                var $this = $(this);
+                doit();
+            })
+            .on('click', '.js-emailrendezvenykezdes', function (e) {
+                var $gomb = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/rendezveny/email/kezdes',
+                    type: 'POST',
+                    data: {
+                        id: $gomb.data('egyedid')
+                    },
+                    success: function (data) {
+                        var d = JSON.parse(data);
+                        dialogcenter.html(d.msg).dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+
+            });
+    } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb($.extend({}, rendezveny, {independent: true}));
         }
