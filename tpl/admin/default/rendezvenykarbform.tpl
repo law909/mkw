@@ -104,7 +104,7 @@
                 </tr>
                 <tr>
                     <td><label for="">{at('Early bird ár')}:</label></td>
-                    <td><input name="earlybirdar" type="number" step="any" value="{$egyed.earlybirdar}" required="required"></td>
+                    <td><input name="earlybirdar" type="number" step="any" value="{$egyed.earlybirdar}"></td>
                 </tr>
                 <tr>
                     <td><label for="EarlybirdvegeEdit">{at('Early bird vége')}:</label></td>
