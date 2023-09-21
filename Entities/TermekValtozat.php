@@ -337,13 +337,18 @@ class TermekValtozat
         return $this->keszletinfo['mozgasdb'];
     }
 
-    public function getKeszlet($datum = null, $raktarid = null)
+    public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
     {
         if (!$this->keszletinfo) {
             $this->calcKeszletInfo($datum, $raktarid);
         }
         $r = $this->keszletinfo['keszlet'];
         unset($this->keszletinfo);
+        if ($nonegativ) {
+            if ($r < 0) {
+                $r = 0;
+            }
+        }
         return $r;
     }
 

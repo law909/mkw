@@ -510,7 +510,7 @@ class Termek
         return $this->megvasarlasdb >= $top10min;
     }
 
-    public function getKeszlet($datum = null, $raktarid = null)
+    public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
@@ -546,6 +546,11 @@ class Termek
         $k = $d[0]['mennyiseg'];
         if (is_null($k)) {
             $k = 0;
+        }
+        if ($nonegativ) {
+            if ($k < 0) {
+                $k = 0;
+            }
         }
         $db = $d[0]['mozgasdb'];
         if (is_null($db)) {
@@ -3481,5 +3486,5 @@ class Termek
     {
         $this->jogaervenyessegnap = $jogaervenyessegnap;
     }
-    
+
 }

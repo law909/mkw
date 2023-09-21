@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Termek;
+use Entities\TermekKep;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
 use mkw\store;
@@ -1594,6 +1595,165 @@ class termekController extends \mkwhelpers\MattableController
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('termekarak') . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function amazonexport()
+    {
+        function x($o)
+        {
+            return \mkw\store::getExcelCoordinate($o, '');
+        }
+
+        $ids = $this->params->getStringRequestParam('ids');
+        $ids = explode(',', $ids);
+
+        $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
+        $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID')
+            ->setCellValue('B1', 'Variation ID')
+            ->setCellValue('C1', 'SKU')
+            ->setCellValue('D1', 'title')
+            ->setCellValue('E1', 'description')
+            ->setCellValue('F1', 'main image')
+            ->setCellValue('G1', 'images')
+            ->setCellValue('H1', 'size')
+            ->setCellValue('I1', 'color')
+            ->setCellValue('J1', 'barcode')
+            ->setCellValue('K1', 'stock');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
+        $termekek = $this->getRepo()->getWithValtozatok($filter);
+        $sor = 2;
+        /** @var Termek $termek */
+        foreach ($termekek as $termek) {
+            $kepek = $termek->getTermekKepek();
+            $kepurlarr = [];
+            /** @var TermekKep $kep */
+            foreach ($kepek as $kep) {
+                $kepurlarr[] = \mkw\store::getFullUrl($kep->getUrl(), \mkw\store::getConfigValue('mainurl'));
+            }
+            if ($termek->getValtozatok()) {
+                /** @var TermekValtozat $valtozat */
+                foreach ($termek->getValtozatok() as $valtozat) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x(0) . $sor, $termek->getId())
+                        ->setCellValue(x(1) . $sor, $valtozat->getId())
+                        ->setCellValue(x(2) . $sor, $termek->getCikkszam())
+                        ->setCellValue(x(3) . $sor, $termek->getNev())
+                        ->setCellValue(x(4) . $sor, $termek->getLeiras())
+                        ->setCellValue(x(5) . $sor, $termek->getKepurl())
+                        ->setCellValue(x(6) . $sor, implode(';', $kepurlarr))
+                        ->setCellValue(x(7) . $sor, $valtozat->getMeret())
+                        ->setCellValue(x(8) . $sor, $valtozat->getSzin())
+                        ->setCellValue(x(9) . $sor, $valtozat->getVonalkod())
+                        ->setCellValue(x(10) . $sor, $valtozat->getKeszlet(null, null, true));
+                    $sor++;
+                }
+            } else {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x(0) . $sor, $termek->getId())
+                    ->setCellValue(x(2) . $sor, $termek->getCikkszam())
+                    ->setCellValue(x(3) . $sor, $termek->getNev())
+                    ->setCellValue(x(4) . $sor, $termek->getLeiras())
+                    ->setCellValue(x(5) . $sor, $termek->getKepurl())
+                    ->setCellValue(x(6) . $sor, implode(';', $kepurlarr))
+                    ->setCellValue(x(9) . $sor, $termek->getVonalkod())
+                    ->setCellValue(x(10) . $sor, $termek->getKeszlet(null, null, true));
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filepath = \mkw\store::storagePath(uniqid('amazonexport') . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function cikkszamosexport()
+    {
+        function x($o)
+        {
+            return \mkw\store::getExcelCoordinate($o, '');
+        }
+
+        $ids = $this->params->getStringRequestParam('ids');
+        $ids = explode(',', $ids);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID')
+            ->setCellValue('B1', 'Név')
+            ->setCellValue('C1', 'Cikkszám')
+            ->setCellValue('D1', 'Szállítói cikkszám')
+            ->setCellValue('E1', 'Változat ID')
+            ->setCellValue('F1', '')
+            ->setCellValue('G1', '')
+            ->setCellValue('H1', 'Cikkszám')
+            ->setCellValue('I1', 'Szállítói cikkszám');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
+        $termekek = $this->getRepo()->getWithValtozatok($filter);
+        $sor = 2;
+        /** @var Termek $termek */
+        foreach ($termekek as $termek) {
+            if ($termek->getValtozatok()) {
+                /** @var TermekValtozat $valtozat */
+                foreach ($termek->getValtozatok() as $valtozat) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x(0) . $sor, $termek->getId())
+                        ->setCellValue(x(1) . $sor, $termek->getNev())
+                        ->setCellValue(x(2) . $sor, $termek->getCikkszam())
+                        ->setCellValue(x(3) . $sor, $termek->getIdegencikkszam())
+                        ->setCellValue(x(4) . $sor, $valtozat->getId())
+                        ->setCellValue(x(5) . $sor, $valtozat->getAdatTipus1Nev())
+                        ->setCellValue(x(6) . $sor, $valtozat->getAdatTipus2Nev())
+                        ->setCellValue(x(7) . $sor, $valtozat->getCikkszam())
+                        ->setCellValue(x(8) . $sor, $valtozat->getIdegencikkszam());
+                    $sor++;
+                }
+            } else {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x(0) . $sor, $termek->getId())
+                    ->setCellValue(x(1) . $sor, $termek->getNev())
+                    ->setCellValue(x(2) . $sor, $termek->getCikkszam())
+                    ->setCellValue(x(3) . $sor, $termek->getIdegencikkszam());
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filepath = \mkw\store::storagePath(uniqid('cikkszamosexport') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

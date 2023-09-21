@@ -6,7 +6,7 @@ $(document).ready(function () {
             minLength: 4,
             autoFocus: true,
             source: '/admin/termek/getkapcsolodolist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var termek = ui.item;
                 if (termek) {
                     var $this = $(this);
@@ -19,7 +19,7 @@ $(document).ready(function () {
     function createImageSelectable(n, m) {
         $(n).selectable({
             unselected: function () {
-                $('.ui-state-highlight', this).each(function() {
+                $('.ui-state-highlight', this).each(function () {
                     var $this = $(this);
                     $this.removeClass('ui-state-highlight');
                     $(m + $this.attr('data-valtozatid')).val('');
@@ -189,23 +189,23 @@ $(document).ready(function () {
                 });
             $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton').button();
             keptab.on('click', '#FoKepDelButton', function (e) {
-                    e.preventDefault();
-                    dialogcenter.html('Biztos, hogy törli a képet?').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'Igen': function () {
-                                $('#KepUrlEdit').val('');
-                                $('#KepLeirasEdit').val('');
-                                $(this).dialog('close');
-                            },
-                            'Nem': function () {
-                                $(this).dialog('close');
-                            }
+                e.preventDefault();
+                dialogcenter.html('Biztos, hogy törli a képet?').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'Igen': function () {
+                            $('#KepUrlEdit').val('');
+                            $('#KepLeirasEdit').val('');
+                            $(this).dialog('close');
+                        },
+                        'Nem': function () {
+                            $(this).dialog('close');
                         }
-                    });
-                })
+                    }
+                });
+            })
                 .on('click', '#FoKepBrowseButton', function (e) {
                     e.preventDefault();
                     var finder = new CKFinder(),
@@ -277,11 +277,11 @@ $(document).ready(function () {
                 $('.js-toflyout').flyout();
             }
             $('#cimkekarbcontainer').mattaccord({
-                    header: '#cimkekarbcontainerhead',
-                    page: '.js-cimkekarbpage',
-                    closeUp: '.js-cimkekarbcloseupbutton',
-                    collapse: '#cimkekarbcollapse'
-                })
+                header: '#cimkekarbcontainerhead',
+                page: '.js-cimkekarbpage',
+                closeUp: '.js-cimkekarbcloseupbutton',
+                collapse: '#cimkekarbcollapse'
+            })
                 .on('click', '.js-cimkekarb', function (e) {
                     e.preventDefault();
                     $(this).toggleClass('js-selectedcimke ui-state-hover');
@@ -308,27 +308,26 @@ $(document).ready(function () {
                 }
             });
             recepttab.on('click', '.js-receptnewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/termekrecept/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            var tbody = $('#RecepturaTab');
-                            tbody.append(data);
-                            $('.js-receptnewbutton,.js-receptdelbutton').button();
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekrecept/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        var tbody = $('#RecepturaTab');
+                        tbody.append(data);
+                        $('.js-receptnewbutton,.js-receptdelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-receptdelbutton', function (e) {
                     e.preventDefault();
                     var receptgomb = $(this),
                         receptid = receptgomb.attr('data-id');
                     if (receptgomb.attr('data-source') === 'client') {
                         $('#recepttable_' + receptid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
                             resizable: false,
                             height: 140,
@@ -357,27 +356,26 @@ $(document).ready(function () {
                 });
             $('.js-receptnewbutton,.js-receptdelbutton').button();
             artab.on('click', '.js-arnewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/termekar/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            var tbody = $('#ArsavTab');
-                            tbody.append(data);
-                            $('.js-arnewbutton,.js-ardelbutton').button();
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekar/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        var tbody = $('#ArsavTab');
+                        tbody.append(data);
+                        $('.js-arnewbutton,.js-ardelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-ardelbutton', function (e) {
                     e.preventDefault();
                     var argomb = $(this),
                         arid = argomb.attr('data-id');
                     if (argomb.attr('data-source') === 'client') {
                         $('#artable_' + arid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli az ársávot?').dialog({
                             resizable: false,
                             height: 140,
@@ -406,19 +404,19 @@ $(document).ready(function () {
                 });
             $('.js-arnewbutton,.js-ardelbutton').button();
             translationtab.on('click', '.js-translationnewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/termektranslation/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            var tbody = $('#TranslationTab');
-                            tbody.append(data);
-                            $('.js-translationnewbutton,.js-translationdelbutton').button();
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termektranslation/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        var tbody = $('#TranslationTab');
+                        tbody.append(data);
+                        $('.js-translationnewbutton,.js-translationdelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-translationdelbutton', function (e) {
                     e.preventDefault();
                     var translationgomb = $(this),
@@ -426,8 +424,7 @@ $(document).ready(function () {
                         egyedid = translationgomb.attr('data-egyedid');
                     if (translationgomb.attr('data-source') === 'client') {
                         $('#translationtable_' + translationid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
                             resizable: false,
                             height: 140,
@@ -455,7 +452,7 @@ $(document).ready(function () {
                         });
                     }
                 })
-                .on('change', '.js-fieldselect', function(e) {
+                .on('change', '.js-fieldselect', function (e) {
                     var $this = $(this),
                         x = $('option:selected', $this).val(),
                         editor;
@@ -464,8 +461,7 @@ $(document).ready(function () {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             editor.addClass('js-ckeditor');
                             editor.ckeditor();
-                        }
-                        else {
+                        } else {
                             editor = $('.js-contenteditor_' + $this.data('id'));
                             if (editor && editor.hasClass('js-ckeditor')) {
                                 editor.removeClass('js-ckeditor');
@@ -477,28 +473,27 @@ $(document).ready(function () {
                 });
             $('.js-translationnewbutton,.js-translationdelbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/termekkapcsolodo/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            var tbody = $('#KapcsolodoTab');
-                            tbody.append(data);
-                            $('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
-                            $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekkapcsolodo/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        var tbody = $('#KapcsolodoTab');
+                        tbody.append(data);
+                        $('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
+                        $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-kapcsolododelbutton', function (e) {
                     e.preventDefault();
                     var kapcsgomb = $(this),
                         kapcsid = kapcsgomb.attr('data-id');
                     if (kapcsgomb.attr('data-source') === 'client') {
                         $('#kapcsolodotable_' + kapcsid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a kapcsolódó terméket?').dialog({
                             resizable: false,
                             height: 140,
@@ -527,31 +522,30 @@ $(document).ready(function () {
                 });
             $('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
             valtozattab.on('click', '.js-valtozatnewbutton', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/termekvaltozat/getemptyrow',
-                        type: 'GET',
-                        data: {
-                            termekid: $this.attr('data-termekid')
-                        },
-                        success: function (data) {
-                            var tbody = $('#ValtozatTab');
-                            tbody.append(data);
-                            $('.js-valtozatnewbutton,.js-valtozatdelbutton').button();
-                            createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
-                            $this.remove();
-                        }
-                    });
-                })
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekvaltozat/getemptyrow',
+                    type: 'GET',
+                    data: {
+                        termekid: $this.attr('data-termekid')
+                    },
+                    success: function (data) {
+                        var tbody = $('#ValtozatTab');
+                        tbody.append(data);
+                        $('.js-valtozatnewbutton,.js-valtozatdelbutton').button();
+                        createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
+                        $this.remove();
+                    }
+                });
+            })
                 .on('click', '.js-valtozatdelbutton', function (e) {
                     e.preventDefault();
                     var gomb = $(this),
                         vid = gomb.attr('data-id');
                     if (gomb.attr('data-source') === 'client') {
                         $('#valtozattable_' + vid).remove();
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a változatot?').dialog({
                             resizable: false,
                             height: 140,
@@ -675,8 +669,7 @@ $(document).ready(function () {
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     dialogcenter.html('Ne felejtse el beállítani az elérhető változatokat!').dialog({
                         resizable: false,
                         height: 200,
@@ -691,54 +684,54 @@ $(document).ready(function () {
             });
             mkwcomp.datumEdit.init('#AkcioStartEdit');
             mkwcomp.datumEdit.init('#AkcioStopEdit');
-            $('.js-valtozatbeerkezesdatumedit').each(function() {
+            $('.js-valtozatbeerkezesdatumedit').each(function () {
                 mkwcomp.datumEdit.init($(this));
             });
 
             $('.js-termekfabutton').on('click', function (e) {
-                    var edit = $(this);
-                    e.preventDefault();
-                    dialogcenter.jstree({
-                            core: {animation: 100},
-                            plugins: ['themeroller', 'json_data', 'ui'],
-                            themeroller: {item: ''},
-                            json_data: {
-                                ajax: {url: '/admin/termekfa/jsonlist'}
-                            },
-                            ui: {select_limit: 1}
-                        })
-                        .bind('loaded.jstree', function (event, data) {
-                            dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
-                        });
-                    dialogcenter.dialog({
-                        resizable: true,
-                        height: 340,
-                        modal: true,
-                        buttons: {
-                            'Töröl': function () {
-                                edit.attr('data-value', 0);
-                                $('span', edit).text(edit.attr('data-text'));
-                                $(this).dialog('close');
-                            },
-                            'OK': function () {
-                                dialogcenter.jstree('get_selected').each(function () {
-                                    var treenode = $(this).children('a');
-                                    edit.attr('data-value', treenode.attr('id').split('_')[1]);
-                                    $('span', edit).text(treenode.text());
-                                });
-                                $(this).dialog('close');
-                            },
-                            'Bezár': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
+                var edit = $(this);
+                e.preventDefault();
+                dialogcenter.jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
                 })
+                    .bind('loaded.jstree', function (event, data) {
+                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                    });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'Töröl': function () {
+                            edit.attr('data-value', 0);
+                            $('span', edit).text(edit.attr('data-text'));
+                            $(this).dialog('close');
+                        },
+                        'OK': function () {
+                            dialogcenter.jstree('get_selected').each(function () {
+                                var treenode = $(this).children('a');
+                                edit.attr('data-value', treenode.attr('id').split('_')[1]);
+                                $('span', edit).text(treenode.text());
+                            });
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            })
                 .button();
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();
-                $('.js-ckeditor').each(function() {
+                $('.js-ckeditor').each(function () {
                     $(this).ckeditor();
                 });
             }
@@ -772,7 +765,7 @@ $(document).ready(function () {
                 if (editor) {
                     editor.destroy();
                 }
-                $('.js-ckeditor').each(function() {
+                $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
                     if (editor) {
                         editor.destroy();
@@ -826,10 +819,10 @@ $(document).ready(function () {
             },
             tablebody: {
                 url: '/admin/termek/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                     $('.js-karton').button();
                 },
-                onDoEditLink: function() {
+                onDoEditLink: function () {
                     $('.js-karton').each(function () {
                         var $this = $(this);
                         $this.attr('href', '/admin/termekkarton/view?id=' + $this.data('termekid'));
@@ -851,6 +844,32 @@ $(document).ready(function () {
                 switch ($('.mattable-batchselect').val()) {
                     case 'arexport':
                         href = '/admin/termek/arexport?ids=' + tomb.join(',');
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    case 'amazonexport':
+                        href = '/admin/termek/amazonexport?ids=' + tomb.join(',');
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    case 'cikkszamosexport':
+                        href = '/admin/termek/cikkszamosexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
                             resizable: false,
                             height: 140,
@@ -894,8 +913,7 @@ $(document).ready(function () {
                         });
                         break;
                 }
-            }
-            else {
+            } else {
                 dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({
                     resizable: false,
                     height: 140,
@@ -913,70 +931,68 @@ $(document).ready(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
         $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
-                function doit(succ) {
-                    var id = $this.attr('data-id'),
-                        flag = $this.attr('data-flag'),
-                        kibe = !$this.is('.ui-state-hover');
-                    if (succ) {
-                        succ();
+            function doit(succ) {
+                var id = $this.attr('data-id'),
+                    flag = $this.attr('data-flag'),
+                    kibe = !$this.is('.ui-state-hover');
+                if (succ) {
+                    succ();
+                }
+                $.ajax({
+                    url: '/admin/termek/setflag',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        flag: flag,
+                        kibe: kibe
+                    },
+                    success: function () {
+                        $this.toggleClass('ui-state-hover');
+                        if (kibe && (flag == 'nemkaphato')) {
+                            $('a[data-id="' + id + '"][data-flag="kiemelt"]').removeClass('ui-state-hover');
+                            $('a[data-id="' + id + '"][data-flag="ajanlott"]').removeClass('ui-state-hover');
+                        }
                     }
-                    $.ajax({
-                        url: '/admin/termek/setflag',
-                        type: 'POST',
-                        data: {
-                            id: id,
-                            flag: flag,
-                            kibe: kibe
-                        },
-                        success: function () {
-                            $this.toggleClass('ui-state-hover');
-                            if (kibe && (flag == 'nemkaphato')) {
-                                $('a[data-id="' + id + '"][data-flag="kiemelt"]').removeClass('ui-state-hover');
-                                $('a[data-id="' + id + '"][data-flag="ajanlott"]').removeClass('ui-state-hover');
+                });
+            }
+
+            e.preventDefault();
+            var $this = $(this);
+            if ($this.attr('data-flag') === 'nemkaphato') {
+                if (!$this.is('.ui-state-hover')) {
+                    dialogcenter.html('Biztos, hogy nem kaphatóvá teszi a terméket? A változatok automatikusan nem elérhetők lesznek.').dialog({
+                        resizable: false,
+                        height: 200,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                doit(function () {
+                                    dialogcenter.dialog('close');
+                                });
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                } else {
+                    dialogcenter.html('Ne felejtse el beállítani az elérhető változatokat!').dialog({
+                        resizable: false,
+                        height: 200,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                doit(function () {
+                                    dialogcenter.dialog('close');
+                                });
                             }
                         }
                     });
                 }
-
-                e.preventDefault();
-                var $this = $(this);
-                if ($this.attr('data-flag') === 'nemkaphato') {
-                    if (!$this.is('.ui-state-hover')) {
-                        dialogcenter.html('Biztos, hogy nem kaphatóvá teszi a terméket? A változatok automatikusan nem elérhetők lesznek.').dialog({
-                            resizable: false,
-                            height: 200,
-                            modal: true,
-                            buttons: {
-                                'Igen': function () {
-                                    doit(function () {
-                                        dialogcenter.dialog('close');
-                                    });
-                                },
-                                'Nem': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        dialogcenter.html('Ne felejtse el beállítani az elérhető változatokat!').dialog({
-                            resizable: false,
-                            height: 200,
-                            modal: true,
-                            buttons: {
-                                'OK': function () {
-                                    doit(function () {
-                                        dialogcenter.dialog('close');
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
-                else {
-                    doit();
-                }
-            })
+            } else {
+                doit();
+            }
+        })
             .on('click', '.js-keszletreszletezobutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
@@ -1029,8 +1045,7 @@ $(document).ready(function () {
             $(this).toggleClass('ui-state-hover');
         });
         mkwcomp.termekfaFilter.init('#termekfa');
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb($.extend({}, termek, {independent: true}));
         }

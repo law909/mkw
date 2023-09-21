@@ -18,7 +18,9 @@ class TermekRepository extends \mkwhelpers\Repository
         ]);
         $this->setBatches([
             'arexport' => 'Export árazáshoz',
-            'tcsset' => 'Termékcsoport módosítás'
+            'amazonexport' => 'Export változatokkal (Amazon)',
+            'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
+            'tcsset' => 'Termékcsoport módosítás',
         ]);
     }
 
@@ -912,6 +914,22 @@ class TermekRepository extends \mkwhelpers\Repository
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('gyarto', '=', $gyarto);
+        $q = $this->_em->createQuery(
+            'SELECT _xx, v'
+            . ' FROM Entities\Termek _xx'
+            . ' LEFT JOIN _xx.valtozatok v '
+            . $this->getFilterString($filter)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
+    public function getWithValtozatok($addedfilter = null)
+    {
+        $filter = new FilterDescriptor();
+        if ($addedfilter) {
+            $filter = $filter->merge($addedfilter);
+        }
         $q = $this->_em->createQuery(
             'SELECT _xx, v'
             . ' FROM Entities\Termek _xx'
