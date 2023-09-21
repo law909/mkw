@@ -13,6 +13,7 @@ use Entities\Partner;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekFa;
+use Entities\TermekValtozat;
 use Entities\Valutanem;
 use Entities\Vtsz;
 use mkwhelpers\FilterDescriptor;
@@ -349,6 +350,23 @@ class a2aController extends \mkwhelpers\Controller
                         ]
                     ]
                 ],
+                'megrendeles' => [
+                    'create' => [
+                        'idegenbizszam' => '',
+                        'partner_id' => '',
+                        'fizmodnev' => '',
+                        'fizmodtipus' => '',
+                        'fizmodnavkod' => '',
+                        'szallmodnev' => '',
+                        'megjegyzes' => '',
+                        'tetelek' => [
+                            'termek_id' => '',
+                            'termekvaltozat_id' => '',
+                            'mennyiseg' => 0,
+                            'bruttoegysar' => 0,
+                        ]
+                    ]
+                ],
                 'getnaveredmenyriasztas'
             ]
         ];
@@ -533,6 +551,97 @@ class a2aController extends \mkwhelpers\Controller
                                 $results['success'] = 1;
                                 $results['szamlaszam'] = $szamlafej->getId();
                                 $results['pdfurl'] = \mkw\store::getRouter()->generate('szamlapdf', true, [], ['id' => $szamlafej->getId(), 'printed' => true]);
+                            }
+                        }
+                        $this->writelog($consumer, $rawdata, json_encode($results));
+                        break;
+                    case 'megrendeles':
+                        if (array_key_exists('create', $cmd)) {
+                            $results['success'] = 0;
+                            $results['msg'] = '';
+
+                            $data = $cmd['create'];
+
+                            /** @var Bizonylattipus $biztipus */
+                            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+                            if (!$biztipus) {
+                                $results['msg'] .= ' Nincs megrendelés biz.tipus.';
+                            }
+                            /** @var Valutanem $valutanem */
+                            $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                            if (!$valutanem) {
+                                $results['msg'] .= ' Nincs valutanem.';
+                            }
+                            /** @var Partner $partner */
+                            $partner = $this->getRepo(partner::class)->find($data['partner_id']);
+                            if (!$partner) {
+                                $results['msg'] .= ' Ismeretlen partner.';
+                            }
+                            foreach ($data['tetelek'] as $tetel) {
+                                /** @var Termek $termek */
+                                $termek = $this->getRepo(Termek::class)->find($tetel['termek_id']);
+                                if (!$termek) {
+                                    $result['msg'] .= ' ' . $tetel['termek_id'] . ' ismeretlen termék.';
+                                } else {
+                                    /** @var TermekValtozat $termekvaltozat */
+                                    $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($tetel['termekvaltozat_id']);
+                                    if (!$termekvaltozat || $termekvaltozat->getTermek()?->getId() !== $termek->getId()) {
+                                        $result['msg'] .= ' ' . $tetel['termekvaltozat_id'] . ' ismeretlen termékváltozat.';
+                                    }
+                                }
+                            }
+
+                            if ($results['msg'] === '') {
+                                $fizmod = $this->createFizmod($data['fizmodnev'], $data['fizmodtipus'], $data['fizmodnavkod']);
+
+                                // szallmod !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                                $bizfej = new Bizonylatfej();
+                                $bizfej->setPersistentData();
+
+                                $bizfej->setBizonylattipus($biztipus);
+                                $bizfej->setPartner($partner);
+
+                                $bizfej->setRaktar($raktar);
+                                $bizfej->setValutanem($valutanem);
+                                $bizfej->setBankszamla($valutanem->getBankszamla());
+                                $bizfej->setArfolyam(1);
+                                $bizfej->setFizmod($fizmod);
+
+                                $bizfej->setKelt();
+                                $bizfej->setTeljesites();
+                                $bizfej->setEsedekesseg();
+
+                                $bizfej->setMegjegyzes($data['megjegyzes']);
+                                $bizfej->setBelsomegjegyzes($data['idegenbizszam']);
+                                $this->getEm()->persist($bizfej);
+
+                                foreach ($data['tetelek'] as $tetel) {
+                                    $biztetel = new Bizonylattetel();
+                                    $bizfej->addBizonylattetel($biztetel);
+                                    $biztetel->setBizonylatfej($bizfej);
+
+                                    $biztetel->setPersistentData();
+                                    $termek = $this->getRepo(Termek::class)->find($tetel['termek_id']);
+                                    if ($termek) {
+                                        $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($tetel['termekvaltozat_id']);
+                                        if ($termekvaltozat) {
+                                            $biztetel->setTermek($termek);
+                                            $biztetel->setTermekvaltozat($termekvaltozat);
+                                            $biztetel->setMennyiseg($tetel['mennyiseg']);
+                                            $biztetel->setBruttoegysar($tetel['bruttoegysar']);
+                                            $biztetel->setBruttoegysarhuf($biztetel->getBruttoegysar() * $biztetel->getArfolyam());
+                                            $biztetel->calc();
+
+                                            $this->getEm()->persist($biztetel);
+                                        }
+                                    }
+                                }
+                                $bizfej->calcOsszesen();
+                                $this->getEm()->flush();
+
+                                $results['success'] = 1;
+                                $results['bizonylatszam'] = $bizfej->getId();
                             }
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
