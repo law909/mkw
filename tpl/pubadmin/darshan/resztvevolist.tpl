@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col">
                         {if ($resztvevo.tipus == 'berlet')}
-                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}{if ($resztvevo.lejaratdatum)} {$resztvevo.lejaratdatum}{/if}
+                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom} ({if ($resztvevo.lejaratdatum)}{$resztvevo.lejaratdatum}{/if})
                         {elseif ($resztvevo.tipus == 'orajegy')}
                             Órajegyet vett
                         {else}
