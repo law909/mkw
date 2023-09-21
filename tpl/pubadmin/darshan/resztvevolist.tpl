@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col">
                         {if ($resztvevo.tipus == 'berlet')}
-                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom} ({if ($resztvevo.lejaratdatum)}{$resztvevo.lejaratdatum}{/if})
+                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}{if ($resztvevo.lejaratdatum)} (lejár: {$resztvevo.lejaratdatum}){/if}
                         {elseif ($resztvevo.tipus == 'orajegy')}
                             Órajegyet vett
                         {else}
@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col">
                         {if ($resztvevo.tipus == 'berlet')}
-                            Bérlet: {if ($resztvevo.alkalom == 0)}99{else}{$resztvevo.alkalom}{/if}/{$resztvevo.elfogyottalkalom}
+                            Bérlet: {if ($resztvevo.alkalom == 0)}99{else}{$resztvevo.alkalom}{/if}/{$resztvevo.elfogyottalkalom}{if ($resztvevo.lejaratdatum)} (lejár: {$resztvevo.lejaratdatum}){/if}
                         {elseif ($resztvevo.tipus == 'orajegy')}
                             Órajegyet vett
                         {else}
