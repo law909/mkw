@@ -522,6 +522,7 @@ class a2aController extends \mkwhelpers\Controller
                                     $szamlatetel->setMekod($me);
                                     $szamlatetel->setMennyiseg($tetel['mennyiseg']);
                                     $szamlatetel->setNettoegysar($tetel['nettoegysar']);
+                                    $szamlatetel->setNettoegysarhuf($szamlatetel->getNettoegysar() * $szamlatetel->getArfolyam());
                                     $szamlatetel->calc();
 
                                     $this->getEm()->persist($szamlatetel);
