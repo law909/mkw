@@ -100,6 +100,7 @@ class pubadminController extends mkwhelpers\Controller
                         $rvtomb['tipus'] = 'berlet';
                         $rvtomb['alkalom'] = $berlet->getAlkalom();
                         $rvtomb['elfogyottalkalom'] = $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom();
+                        $rvtomb['lejaratdatum'] = $berlet->getLejaratdatumStr();
                     }
                 } else {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();

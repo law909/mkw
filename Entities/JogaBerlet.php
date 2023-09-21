@@ -106,6 +106,7 @@ class JogaBerlet
             $body->setVar('datum', $this->getVasarlasnapjaStr());
             $body->setVar('berlet', $this->getNev());
             $body->setVar('ar', $this->getBruttoegysar());
+            $body->setVar('lejaratdatum', $this->getLejaratdatumStr());
 
             $mailer = \mkw\store::getMailer();
 
