@@ -491,6 +491,15 @@
                             </div>
 
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="jogaberletkoszonosablonEdit">{at('Jóga bérlet vásárlás köszönő')}:</label></span>
+                                <select id="jogaberletkoszonosablonEdit" name="jogaberletkoszonosablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $jogaberletkoszonosablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="jogaberletfelszolitosablonEdit">{at('Jóga bérlet fizetés emlékeztető')}:</label></span>
                                 <select id="jogaberletfelszolitosablonEdit" name="jogaberletfelszolitosablon">
                                     <option value="">{at('válasszon')}</option>

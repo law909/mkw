@@ -204,7 +204,7 @@ class consts
     const GLSFutarSzallitasmod = 'glsfutarszallitasimod';
 
     const ArukeresoExportSzallmod = 'arukeresoexportszallmod';
-    
+
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
 
@@ -354,6 +354,7 @@ class consts
     const JogaOrajegyTermek = 'jogaorajegytermek';
     const JogaBerlet4Termek = 'jogaberlet4termek';
     const JogaBerlet10Termek = 'jogaberlet10termek';
+    const JogaBerletKoszonoSablon = 'jogaberletkoszonosablon';
     const JogaBerletFelszolitoSablon = 'jogaberletfelszolitosablon';
     const JogaBerletLefogjarniSablon = 'jogaberletlefogjarnisablon';
     const JogaBerletLejartSablon = 'jogaberletlejartsablon';

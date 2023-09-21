@@ -217,28 +217,31 @@ class pubadminController extends mkwhelpers\Controller
                 $this->getEm()->flush();
             }
             if ($rv->isKesobbfizet()) {
-                if ($berlet) {
-                    $berlet->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
-                } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
-                    $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
-                    if ($emailtpl) {
-                        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                        $body = \mkw\store::getTemplateFactory()->createMainView(
-                            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
-                        );
-                        $body->setVar('partnernev', $rv->getPartnernev());
-                        $body->setVar('datum', date(\mkw\store::$DateFormat));
-                        $body->setVar('berlet', $tipusnev);
-                        $body->setVar('ar', $price);
+                $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon);
+            } else {
+                $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletKoszonoSablon);
+            }
+            if ($berlet) {
+                $berlet->sendEmail($sablon);
+            } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
+                $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find($sablon);
+                if ($emailtpl) {
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
+                    $body->setVar('partnernev', $rv->getPartnernev());
+                    $body->setVar('datum', date(\mkw\store::$DateFormat));
+                    $body->setVar('berlet', $tipusnev);
+                    $body->setVar('ar', $price);
 
-                        $mailer = \mkw\store::getMailer();
+                    $mailer = \mkw\store::getMailer();
 
-                        $mailer->addTo($rv->getPartneremail());
-                        $mailer->setSubject($subject->getTemplateResult());
-                        $mailer->setMessage($body->getTemplateResult());
+                    $mailer->addTo($rv->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
 
-                        $mailer->send();
-                    }
+                    $mailer->send();
                 }
             }
         }

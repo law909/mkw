@@ -100,6 +100,13 @@ class jogaberletController extends \mkwhelpers\MattableController
         return $obj;
     }
 
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($parancs === $this->addOperation) {
+            $o->sendEmail(\mkw\consts::JogaBerletKoszonoSablon);
+        }
+    }
+
     public function getlistbody()
     {
         $view = $this->createView('jogaberletlista_tbody.tpl');

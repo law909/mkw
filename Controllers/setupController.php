@@ -207,6 +207,10 @@ class setupController extends \mkwhelpers\Controller
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogaberletfelszolitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::JogaBerletKoszonoSablon);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('jogaberletkoszonosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::JogaBerletLefogjarniSablon);
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogaberletlefogjarnisablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1302,6 +1306,15 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, $levelsablon->getId());
         } else {
             $this->setObj(\mkw\consts::JogaBerletFelszolitoSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletKoszonoSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::JogaBerletKoszonoSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::JogaBerletKoszonoSablon, '');
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
