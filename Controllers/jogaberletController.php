@@ -102,7 +102,6 @@ class jogaberletController extends \mkwhelpers\MattableController
 
     protected function afterSave($o, $parancs = null)
     {
-        \mkw\store::writelog('jogaberlet aftersave: ' . $parancs);
         if ($parancs === $this->addOperation) {
             $o->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletKoszonoSablon));
         }
