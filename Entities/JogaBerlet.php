@@ -98,7 +98,10 @@ class JogaBerlet
 
     public function sendEmail($sablonid)
     {
+        \mkw\store::writelog($sablonid);
         $emailtpl = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($sablonid);
+        \mkw\store::writelog($emailtpl->getId());
+        \mkw\store::writelog($this->getPartneremail());
         if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
