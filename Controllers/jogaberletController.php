@@ -95,7 +95,7 @@ class jogaberletController extends \mkwhelpers\MattableController
         $oldlejart = $obj->isLejart();
         $obj->setLejart($this->params->getBoolRequestParam('lejart'));
         if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
-            $obj->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+            $obj->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletDatumLejartSablon));
         }
         return $obj;
     }
@@ -104,7 +104,7 @@ class jogaberletController extends \mkwhelpers\MattableController
     {
         \mkw\store::writelog('jogaberlet aftersave: ' . $parancs);
         if ($parancs === $this->addOperation) {
-            $o->sendEmail(\mkw\consts::JogaBerletKoszonoSablon);
+            $o->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletKoszonoSablon));
         }
     }
 
@@ -433,7 +433,7 @@ class jogaberletController extends \mkwhelpers\MattableController
                     $oldlejart = $obj->isLejart();
                     $obj->setLejart($kibe);
                     if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
-                        $obj->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+                        $obj->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletDatumLejartSablon));
                     }
                     break;
                 case 'nincsfizetve':
@@ -467,7 +467,7 @@ class jogaberletController extends \mkwhelpers\MattableController
                 ,
                 'berletlejarat.txt'
             );
-            $berlet->sendEmail(\mkw\consts::JogaBerletDatumLejartSablon);
+            $berlet->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletDatumLejartSablon));
         }
         echo 'ok';
     }
