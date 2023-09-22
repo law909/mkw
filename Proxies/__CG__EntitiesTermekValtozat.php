@@ -213,12 +213,12 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getKeszlet($datum = NULL, $raktarid = NULL)
+    public function getKeszlet($datum = NULL, $raktarid = NULL, $nonegativ = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszlet', [$datum, $raktarid]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszlet', [$datum, $raktarid, $nonegativ]);
 
-        return parent::getKeszlet($datum, $raktarid);
+        return parent::getKeszlet($datum, $raktarid, $nonegativ);
     }
 
     /**
