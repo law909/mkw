@@ -5,7 +5,6 @@
         <h4 class="col">{$pagetitle} - {$tanarnev}</h4>
         <a class="btn btn-darshan" href="/pubadmin/logout">Kijelentkezés</a>
     </div>
-
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -16,7 +15,6 @@
     </div>
     <div id="oralist"></div>
     <div id="resztvevolist"></div>
-
     <div class="modal fade" id="buyModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -66,7 +64,7 @@
                     <h5 class="modal-title">Nincs bérlet!</h5>
                 </div>
                 <div class="modal-body">
-                    A gyakorlónak órajegyet vagy bérletet kell vásárolnia. Nyomd meg az "Órajegy" vagy a "4-es bérlet" gombot a vásárláshoz.
+                    A gyakorlónak órajegyet vagy bérletet kell vásárolnia. Nyomd meg az "1 alkalmas", "5 alkalmas" vagy a "korlátlan" gombot a vásárláshoz.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Bezár</button>
