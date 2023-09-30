@@ -100,7 +100,9 @@ class JogaBerlet
     {
         \mkw\store::writelog($sablonid);
         $emailtpl = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($sablonid);
-        \mkw\store::writelog($emailtpl->getId());
+        if ($emailtpl) {
+            \mkw\store::writelog($emailtpl->getId());
+        }
         \mkw\store::writelog($this->getPartneremail());
         if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());

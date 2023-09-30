@@ -92,7 +92,7 @@ class pubadminController extends mkwhelpers\Controller
                     $filter->clear();
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
-                    $filter->addSql('(_xx.ervenyessegnap<>0 AND _xx.lejaratdatum>NOW()) OR (_xx.ervenyessegnap=0 OR _xx.ervenyessegnap IS NULL)');
+                    $filter->addSql('(_xx.lejaratdatum>NOW())');
                     $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
