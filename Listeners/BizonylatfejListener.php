@@ -468,8 +468,8 @@ class BizonylatfejListener
                         //$this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
                     }
 
-                    $this->addFizmodTranslations($entity);
-                    $this->addSzallmodTranslations($entity);
+                    //$this->addFizmodTranslations($entity);
+                    //$this->addSzallmodTranslations($entity);
 
                     $this->createFolyoszamla($entity);
 

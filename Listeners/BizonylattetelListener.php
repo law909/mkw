@@ -55,11 +55,11 @@ class BizonylattetelListener
             $this->uow->getScheduledEntityUpdates()
         );
 
-        foreach ($entities as $entity) {
-            if ($entity instanceof \Entities\Bizonylattetel) {
-                $this->addTermekTranslations($entity);
-            }
-        }
+        //foreach ($entities as $entity) {
+        //    if ($entity instanceof \Entities\Bizonylattetel) {
+        //        $this->addTermekTranslations($entity);
+        //    }
+        //}
     }
 
 }
