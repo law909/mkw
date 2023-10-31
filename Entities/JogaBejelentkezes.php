@@ -123,6 +123,7 @@ class JogaBejelentkezes
                 $filter = new \mkwhelpers\FilterDescriptor();
                 $filter->addFilter('partner', '=', $rvpartner);
                 $filter->addFilter('lejart', '=', false);
+                $filter->addSql('(_xx.lejaratdatum>=NOW())');
                 $berletek = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->getAll($filter, ['id' => 'ASC']);
                 if (count($berletek)) {
                     /** @var \Entities\JogaBerlet $berlet */
