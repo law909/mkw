@@ -93,6 +93,7 @@ $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
 $config->addCustomStringFunction('NOW', 'mkwhelpers\now');
 $config->addCustomStringFunction('IF', 'mkwhelpers\ifelse');
 $config->addCustomStringFunction('RAND', 'mkwhelpers\rand');
+$config->addCustomStringFunction('CURDATE', 'mkwhelpers\curdate');
 
 $evm = new EventManager();
 // new MysqlSessionInit('UTF8','utf8_hungarian_ci')
