@@ -94,6 +94,7 @@ class pubadminController extends mkwhelpers\Controller
                     $filter->addFilter('lejart', '=', false);
                     $filter->addSql('(_xx.lejaratdatum>=NOW())');
                     $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
+                    \mkw\store::writelog(count($berletek));
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
                         $berlet = $berletek[0];
