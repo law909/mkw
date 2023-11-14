@@ -828,12 +828,12 @@ class termekController extends \mkwhelpers\MattableController
                 $filter->addSql(
                     '(((_xx.akciostart IS NOT NULL) AND (_xx.akciostart <> \'\')) OR ((_xx.akciostop IS NOT NULL) AND (_xx.akciostart <> \'\')))' .
                     ' AND ' .
-                    '((_xx.akciostart <= NOW()) AND (_xx.akciostop >= NOW()) OR ((_xx.akciostart <= NOW()) AND ((_xx.akciostop IS NULL) OR (_xx.akciostop = \'\'))) OR ((_xx.akciostart IS NULL) OR (_xx.akciostart = \'\')) AND (_xx.akciostop <= NOW()))'
+                    '((_xx.akciostart <= CURDATE()) AND (_xx.akciostop >= CURDATE()) OR ((_xx.akciostart <= CURDATE()) AND ((_xx.akciostop IS NULL) OR (_xx.akciostop = \'\'))) OR ((_xx.akciostart IS NULL) OR (_xx.akciostart = \'\')) AND (_xx.akciostop <= CURDATE()))'
                 );
                 break;
             case 0:
                 $filter->addSql(
-                    '(((_xx.akciostart IS NULL) OR (_xx.akciostart=\'\')) AND ((_xx.akciostop IS NULL) OR (_xx.akciostart=\'\'))) OR (_xx.akciostart>=NOW()) OR (_xx.akciostop<=NOW())'
+                    '(((_xx.akciostart IS NULL) OR (_xx.akciostart=\'\')) AND ((_xx.akciostop IS NULL) OR (_xx.akciostart=\'\'))) OR (_xx.akciostart>=CURDATE()) OR (_xx.akciostop<=CURDATE())'
                 );
                 break;
         }

@@ -337,7 +337,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 $order = array_merge_recursive(['.o1' => 'ASC'], $order);
                 $this->addAktivLathatoFilter($filter);
                 $sql = 'SELECT _xx.id,v.id AS valtozatid,'
-                    . ' IF(_xx.nemkaphato,9,0)+IF((akciostart<=now() AND akciostop>=now()) OR (akciostart<=now() AND akciostop is null) OR (akciostart is null AND akciostop>=now()),-1,0) AS o1'
+                    . ' IF(_xx.nemkaphato,9,0)+IF((akciostart<=CURDATE() AND akciostop>=CURDATE()) OR (akciostart<=CURDATE() AND akciostop is null) OR (akciostart is null AND akciostop>=CURDATE()),-1,0) AS o1'
                     . ' FROM termek _xx'
                     . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
                     . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
