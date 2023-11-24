@@ -588,6 +588,15 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/partnertermekkedvezmeny/getemptyrow', 'partnertermekkedvezmenyController#getemptyrow', 'adminpartnertermekkedvezmenygetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partnertermekkedvezmeny/save', 'partnertermekkedvezmenyController#save', 'adminpartnertermekkedvezmenysave');
+
+    $router->map('GET', '/admin/partnertermekkedvezmenyupload/view', 'partnertermekkedvezmenyuploadController#view', 'adminpartnertermekkedvezmenyuploadview');
+    $router->map('POST', '/admin/partnertermekkedvezmenyupload/del', 'partnertermekkedvezmenyuploadController#del', 'adminpartnertermekkedvezmenyuploaddel');
+    $router->map(
+        'POST',
+        '/admin/partnertermekkedvezmenyupload/upload',
+        'partnertermekkedvezmenyuploadController#upload',
+        'adminpartnertermekkedvezmenyuploadupload'
+    );
 }
 
 $router->map('GET', '/admin/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getemptyrow', 'adminpartnermijszoklevelgetemptyrow');

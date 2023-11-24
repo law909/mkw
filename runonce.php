@@ -260,6 +260,16 @@ if ($DBVersion < '0046') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0046');
 }
 
+if ($DBVersion < '0047') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Partner termék kedv. feltöltés","/admin/partnertermekkedvezmenyupload/view","/admin/partnertermekkedvezmenyupload",20,0,550, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0047');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
