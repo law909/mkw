@@ -1086,6 +1086,8 @@ class exportController extends \mkwhelpers\Controller
 
     public function SuperzonehuExport()
     {
+        //    $this->getEm()->getConfiguration()->setSQLLogger(new \mkwhelpers\FileSQLLogger('superzoneexportsql.log'));
+
         $oldtranslocale = \mkw\store::getTranslationListener()->getListenerLocale();
         \mkw\store::getTranslationListener()->setTranslatableLocale('hu_hu');
 
@@ -1206,7 +1208,9 @@ class exportController extends \mkwhelpers\Controller
             }
         }
 
-        \mkw\store::getTranslationListener()->setTranslatableLocale($oldtranslocale);
+        //  \mkw\store::getTranslationListener()->setTranslatableLocale($oldtranslocale);
+
+        $this->getEm()->getConfiguration()->setSQLLogger();
 
         header("Content-type: application/json");
         header("Pragma: no-cache");

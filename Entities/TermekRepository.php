@@ -171,9 +171,10 @@ class TermekRepository extends \mkwhelpers\Repository
             $filter = $filter->merge($addedfilter);
         }
         $q = $this->_em->createQuery(
-            'SELECT _xx, v'
+            'SELECT _xx, v, k'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.valtozatok v'
+            . ' LEFT JOIN _xx.termekkepek k'
             . $this->getFilterString($filter)
             . $this->getOrderString([])
         );
