@@ -501,7 +501,7 @@ class a2aController extends \mkwhelpers\Controller
                                 $szamlafej->setEsedekesseg($data['esedekesseg']);
 
                                 $szamlafej->setPartnernev(trim($data['nev']));
-                                $szamlafej->setPartnerirszam(trim($data['irszam'], ' \n\r\t\v\x00,.'));
+                                $szamlafej->setPartnerirszam(trim($data['irszam'], ',. \n\r\t\v'));
                                 $szamlafej->setPartnervaros(trim($data['varos']));
                                 $szamlafej->setPartnerutca(trim($data['utca']));
                                 $szamlafej->setPartnerhazszam(trim($data['hazszam']));
