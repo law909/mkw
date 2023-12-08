@@ -67,10 +67,10 @@ class BankTranzakcio extends \Entities\BankTranzakcio implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'id', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'created', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'lastmod', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'azonosito', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'konyvelesdatum', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'erteknap', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny1', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny2', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny3', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'osszeg', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'partner', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bankbizonylatkesz'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'id', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'created', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'lastmod', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'azonosito', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'konyvelesdatum', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'erteknap', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny1', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny2', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny3', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'osszeg', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'partner', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'inaktiv'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'id', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'created', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'lastmod', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'azonosito', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'konyvelesdatum', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'erteknap', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny1', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny2', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny3', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'osszeg', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'partner', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bankbizonylatkesz'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'id', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'created', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'lastmod', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'azonosito', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'konyvelesdatum', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'erteknap', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny1', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny2', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'kozlemeny3', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'osszeg', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'partner', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\BankTranzakcio' . "\0" . 'inaktiv'];
     }
 
     /**
@@ -465,6 +465,28 @@ class BankTranzakcio extends \Entities\BankTranzakcio implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatkesz', [$bankbizonylatkesz]);
 
         parent::setBankbizonylatkesz($bankbizonylatkesz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isInaktiv()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isInaktiv', []);
+
+        return parent::isInaktiv();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setInaktiv($inaktiv): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
+
+        parent::setInaktiv($inaktiv);
     }
 
 }

@@ -706,6 +706,12 @@ $router->map('GET', '/admin/banktranzakcio/viewupload', 'banktranzakcioControlle
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/banktranzakcio/save', 'banktranzakcioController#save', 'adminbanktranzakciosave');
     $router->map('POST', '/admin/banktranzakcio/upload', 'banktranzakcioController#upload', 'adminbanktranzakcioupload');
+    $router->map(
+        'POST',
+        '/admin/banktranzakcio/generatebankbizonylat',
+        'banktranzakcioController#generateBankbizonylat',
+        'adminbanktranzakciogeneratebankbizonylat'
+    );
 }
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');

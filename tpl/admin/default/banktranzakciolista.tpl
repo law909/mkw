@@ -31,6 +31,7 @@
                     <option value="{$_batch.id}">{$_batch.caption}</option>
                 {/foreach}
             </select>
+            <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
         </div>
         <table id="mattable-table">
             <thead>

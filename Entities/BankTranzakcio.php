@@ -63,6 +63,9 @@ class BankTranzakcio
     /** @ORM\Column(type="boolean") */
     private $bankbizonylatkesz = false;
 
+    /** @ORM\Column(type="boolean") */
+    private $inaktiv = false;
+
     /**
      * @return mixed
      */
@@ -283,5 +286,21 @@ class BankTranzakcio
     {
         $this->bankbizonylatkesz = $bankbizonylatkesz;
     }
-    
+
+    /**
+     * @return bool
+     */
+    public function isInaktiv()
+    {
+        return $this->inaktiv;
+    }
+
+    /**
+     * @param bool $inaktiv
+     */
+    public function setInaktiv($inaktiv): void
+    {
+        $this->inaktiv = $inaktiv;
+    }
+
 }

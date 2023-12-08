@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\Entity(repositoryClass="Entities\BankbizonylattetelRepository")
  * @ORM\Table(name="bankbizonylattetel",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class Bankbizonylattetel {
+class Bankbizonylattetel
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -120,25 +121,29 @@ class Bankbizonylattetel {
     /** @ORM\Column(type="string",length=40,nullable=true) */
     private $partnerhazszam;
 
-    /** @ORM\Column(type="string",length=30,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $erbizonylatszam;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \Entities\Bankbizonylatfej
      */
-    public function getBizonylatfej() {
+    public function getBizonylatfej()
+    {
         return $this->bizonylatfej;
     }
 
-    public function getBizonylatfejId() {
+    public function getBizonylatfejId()
+    {
         if ($this->bizonylatfej) {
             return $this->bizonylatfej->getId();
         }
@@ -146,16 +151,18 @@ class Bankbizonylattetel {
     }
 
     /**
-     * @param \Entities\Bizonylatfej $val
+     * @param \Entities\Bankbizonylatfej $val
      */
-    public function setBizonylatfej($val) {
+    public function setBizonylatfej($val)
+    {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;
             $val->addBizonylattetel($this);
         }
     }
 
-    public function removeBizonylatfej() {
+    public function removeBizonylatfej()
+    {
         if ($this->bizonylatfej !== null) {
             $val = $this->bizonylatfej;
             $this->bizonylatfej = null;
@@ -163,18 +170,21 @@ class Bankbizonylattetel {
         }
     }
 
-    public function getFolyoszamlak() {
+    public function getFolyoszamlak()
+    {
         return $this->folyoszamlak;
     }
 
-    public function addFolyoszamla(Folyoszamla $val) {
+    public function addFolyoszamla(Folyoszamla $val)
+    {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
             $val->setBizonylatfej($this);
         }
     }
 
-    public function removeFolyoszamla(Folyoszamla $val) {
+    public function removeFolyoszamla(Folyoszamla $val)
+    {
         if ($this->folyoszamlak->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -182,37 +192,42 @@ class Bankbizonylattetel {
         return false;
     }
 
-    public function clearFolyoszamlak() {
+    public function clearFolyoszamlak()
+    {
         $this->folyoszamlak->clear();
     }
 
-    public function getIrany() {
+    public function getIrany()
+    {
         return $this->irany;
     }
 
-    public function setIrany($val) {
+    public function setIrany($val)
+    {
         $this->irany = $val;
     }
 
-    public function getDatum() {
+    public function getDatum()
+    {
         if (!$this->id && !$this->datum) {
             $this->datum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->datum;
     }
 
-    public function getDatumStr() {
+    public function getDatumStr()
+    {
         if ($this->getDatum()) {
             return $this->getDatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setDatum($adat = '') {
+    public function setDatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->datum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -223,18 +238,21 @@ class Bankbizonylattetel {
     /**
      * @return \Entities\Valutanem
      */
-    public function getValutanem() {
+    public function getValutanem()
+    {
         if (!$this->id && !$this->valutanem) {
             $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
 
-    public function getValutanemnev() {
+    public function getValutanemnev()
+    {
         return $this->valutanemnev;
     }
 
-    public function getValutanemId() {
+    public function getValutanemId()
+    {
         $vn = $this->getValutanem();
         if ($vn) {
             return $vn->getId();
@@ -245,22 +263,23 @@ class Bankbizonylattetel {
     /**
      * @param \Entities\Valutanem $val
      */
-    public function setValutanem($val) {
+    public function setValutanem($val)
+    {
         if (!($val instanceof \Entities\Valutanem)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
                 $this->removeValutanem();
-            }
-            else {
+            } else {
                 $this->valutanem = $val;
                 $this->valutanemnev = $val->getNev();
             }
         }
     }
 
-    public function removeValutanem() {
+    public function removeValutanem()
+    {
         if ($this->valutanem !== null) {
             $this->valutanem = null;
             $this->valutanemnev = '';
@@ -270,11 +289,13 @@ class Bankbizonylattetel {
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
@@ -282,7 +303,8 @@ class Bankbizonylattetel {
     }
 
 
-    public function setPartnerLeiroadat($val) {
+    public function setPartnerLeiroadat($val)
+    {
         $this->setPartnernev($val->getNev());
         $this->setPartnervezeteknev($val->getVezeteknev());
         $this->setPartnerkeresztnev($val->getKeresztnev());
@@ -297,27 +319,27 @@ class Bankbizonylattetel {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if ($this->partner !== $val) {
             if (!$val) {
                 $this->removePartner();
-            }
-            else {
+            } else {
                 $this->partner = $val;
                 $this->setPartnerLeiroadat($val);
 
                 $v = $val->getValutanem();
                 if ($v) {
                     $this->setValutanem($v);
-                }
-                else {
+                } else {
                     $this->removeValutanem();
                 }
             }
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
             $this->partnernev = '';
@@ -333,179 +355,211 @@ class Bankbizonylattetel {
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         return $this->partnernev;
     }
 
-    public function setPartnernev($val) {
+    public function setPartnernev($val)
+    {
         $this->partnernev = $val;
     }
 
-    public function getPartnervezeteknev() {
+    public function getPartnervezeteknev()
+    {
         return $this->partnervezeteknev;
     }
 
-    public function setPartnervezeteknev($val) {
+    public function setPartnervezeteknev($val)
+    {
         $this->partnervezeteknev = $val;
     }
 
-    public function getPartnerkeresztnev() {
+    public function getPartnerkeresztnev()
+    {
         return $this->partnerkeresztnev;
     }
 
-    public function setPartnerkeresztnev($val) {
+    public function setPartnerkeresztnev($val)
+    {
         $this->partnerkeresztnev = $val;
     }
 
-    public function getPartneradoszam() {
+    public function getPartneradoszam()
+    {
         return $this->partneradoszam;
     }
 
-    public function setPartneradoszam($val) {
+    public function setPartneradoszam($val)
+    {
         $this->partneradoszam = $val;
     }
 
-    public function getPartnereuadoszam() {
+    public function getPartnereuadoszam()
+    {
         return $this->partnereuadoszam;
     }
 
-    public function setPartnereuadoszam($val) {
+    public function setPartnereuadoszam($val)
+    {
         $this->partnereuadoszam = $val;
     }
 
-    public function getPartnerirszam() {
+    public function getPartnerirszam()
+    {
         return $this->partnerirszam;
     }
 
-    public function setPartnerirszam($val) {
+    public function setPartnerirszam($val)
+    {
         $this->partnerirszam = $val;
     }
 
-    public function getPartnerutca() {
+    public function getPartnerutca()
+    {
         return $this->partnerutca;
     }
 
-    public function setPartnerutca($val) {
+    public function setPartnerutca($val)
+    {
         $this->partnerutca = $val;
     }
 
-    public function getPartnervaros() {
+    public function getPartnervaros()
+    {
         return $this->partnervaros;
     }
 
-    public function setPartnervaros($val) {
+    public function setPartnervaros($val)
+    {
         $this->partnervaros = $val;
     }
 
     /**
      * @return mixed
      */
-    public function getHivatkozottbizonylat() {
+    public function getHivatkozottbizonylat()
+    {
         return $this->hivatkozottbizonylat;
     }
 
     /**
      * @param mixed $hivatkozottbizonylat
      */
-    public function setHivatkozottbizonylat($hivatkozottbizonylat) {
+    public function setHivatkozottbizonylat($hivatkozottbizonylat)
+    {
         $this->hivatkozottbizonylat = $hivatkozottbizonylat;
     }
 
     /**
      * @return mixed
      */
-    public function getAfa() {
+    public function getAfa()
+    {
         return $this->afa;
     }
 
     /**
      * @param mixed $afa
      */
-    public function setAfa($afa) {
+    public function setAfa($afa)
+    {
         $this->afa = $afa;
     }
 
     /**
      * @return mixed
      */
-    public function getBrutto() {
+    public function getBrutto()
+    {
         return $this->brutto;
     }
 
     /**
      * @param mixed $brutto
      */
-    public function setBrutto($brutto) {
+    public function setBrutto($brutto)
+    {
         $this->brutto = $brutto;
     }
 
     /**
      * @return mixed
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
     /**
      * @param mixed $created
      */
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;;
     }
 
     /**
      * @return mixed
      */
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
     /**
      * @param mixed $lastmod
      */
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
     /**
      * @return mixed
      */
-    public function getNetto() {
+    public function getNetto()
+    {
         return $this->netto;
     }
 
     /**
      * @param mixed $netto
      */
-    public function setNetto($netto) {
+    public function setNetto($netto)
+    {
         $this->netto = $netto;
     }
 
     /**
      * @return mixed
      */
-    public function getRontott() {
+    public function getRontott()
+    {
         return $this->rontott;
     }
 
     /**
      * @param mixed $rontott
      */
-    public function setRontott($rontott) {
+    public function setRontott($rontott)
+    {
         $this->rontott = $rontott;
     }
 
     /**
      * @return mixed
      */
-    public function getJogcimnev() {
+    public function getJogcimnev()
+    {
         return $this->jogcimnev;
     }
 
     /**
      * @return mixed
      */
-    public function getJogcimId() {
+    public function getJogcimId()
+    {
         if ($this->jogcim) {
             return $this->jogcim->getId();
         }
@@ -515,49 +569,53 @@ class Bankbizonylattetel {
     /**
      * @param mixed $jogcimnev
      */
-    public function setJogcimnev($jogcimnev) {
+    public function setJogcimnev($jogcimnev)
+    {
         $this->jogcimnev = $jogcimnev;
     }
 
     /**
      * @return mixed
      */
-    public function getJogcim() {
+    public function getJogcim()
+    {
         return $this->jogcim;
     }
 
     /**
      * @param mixed $jogcim
      */
-    public function setJogcim($jogcim) {
+    public function setJogcim($jogcim)
+    {
         $this->jogcim = $jogcim;
         if (!$jogcim) {
             $this->setJogcimnev('');
-        }
-        else {
+        } else {
             $this->setJogcimnev($jogcim->getNev());
         }
     }
 
-    public function getHivatkozottdatum() {
+    public function getHivatkozottdatum()
+    {
         if (!$this->id && !$this->hivatkozottdatum) {
             $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->hivatkozottdatum;
     }
 
-    public function getHivatkozottdatumStr() {
+    public function getHivatkozottdatumStr()
+    {
         if ($this->getHivatkozottdatum()) {
             return $this->getHivatkozottdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setHivatkozottdatum($adat = '') {
+    public function setHivatkozottdatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->hivatkozottdatum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -568,28 +626,32 @@ class Bankbizonylattetel {
     /**
      * @return mixed
      */
-    public function getErbizonylatszam() {
+    public function getErbizonylatszam()
+    {
         return $this->erbizonylatszam;
     }
 
     /**
      * @param mixed $erbizonylatszam
      */
-    public function setErbizonylatszam($erbizonylatszam) {
+    public function setErbizonylatszam($erbizonylatszam)
+    {
         $this->erbizonylatszam = $erbizonylatszam;
     }
 
     /**
      * @return mixed
      */
-    public function getPartnerhazszam() {
+    public function getPartnerhazszam()
+    {
         return $this->partnerhazszam;
     }
 
     /**
      * @param mixed $partnerhazszam
      */
-    public function setPartnerhazszam($partnerhazszam) {
+    public function setPartnerhazszam($partnerhazszam)
+    {
         $this->partnerhazszam = $partnerhazszam;
     }
 

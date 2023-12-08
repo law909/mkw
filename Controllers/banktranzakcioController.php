@@ -2,10 +2,14 @@
 
 namespace Controllers;
 
+use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
 use Entities\BankTranzakcio;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
+use Entities\Jogcim;
 use Entities\Partner;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -42,6 +46,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $x['osszeg'] = $t->getOsszeg();
         $x['bizonylatszamok'] = $t->getBizonylatszamok();
         $x['bankbizonylatkesz'] = $t->isBankbizonylatkesz();
+        $x['inaktiv'] = $t->isInaktiv();
         return $x;
     }
 
@@ -52,7 +57,14 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
+        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setBizonylatszamok($this->params->getStringRequestParam('bizonylatszamok'));
+        $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner'));
+        if ($partner) {
+            $obj->setPartner($partner);
+        } else {
+            $obj->setPartner(null);
+        }
         return $obj;
     }
 
@@ -130,7 +142,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $szamlatipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
         // '/[Ss]?[Zz]?\d{4}\/\d{1,6}/'
         $regexp = '/' . $szamlatipus->getAzonositoForRegexp() . '\d{4}\/\d{1,6}/';
-        $rep = $this->getRepo();
+        $repo = $this->getRepo();
         $partnerrepo = $this->getRepo(Partner::class);
         $bizrepo = $this->getRepo(Bizonylatfej::class);
 
@@ -138,7 +150,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             $osszeg = (float)$sheet->getCell('E' . $row)->getValue();
             if ($osszeg && $osszeg > 0) {
                 $azon = (string)$sheet->getCell('D' . $row)->getValue();
-                if ($azon && !$rep->findOneBy(['azonosito' => $azon])) {
+                if ($azon && !$repo->findOneBy(['azonosito' => $azon])) {
                     $o = new BankTranzakcio();
                     $o->setAzonosito($azon);
                     $o->setOsszeg($osszeg);
@@ -161,6 +173,16 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                     $biz = $bizrepo->find($trimmedbizsz);
                     if ($biz) {
                         $bizszamarr[] = $biz->getId();
+                    } elseif (is_numeric($trimmedbizsz)) {
+                        $convertedB = $szamlatipus->getAzonosito() . $o->getErteknap()->format('Y') . '/' . str_pad($trimmedbizsz, 6, '0', STR_PAD_LEFT);
+
+                        /** @var Bizonylatfej $biz */
+                        $biz = $bizrepo->find($convertedB);
+                        if ($biz) {
+                            if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
+                                $bizszamarr[] = $biz->getId();
+                            }
+                        }
                     } else {
                         $matchcnt = preg_match_all($regexp, str_replace(' ', '', $trimmedbizsz), $bizsz);
                         if ($matchcnt) {
@@ -198,4 +220,69 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         \unlink($filenev);
     }
 
+    public function generateBankbizonylat()
+    {
+        $jogcim = $this->getRepo(Jogcim::class)->find(1);
+        $ids = $this->params->getArrayRequestParam('ids');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bankbizonylatkesz', '=', false);
+        $filter->addFilter('inaktiv', '=', false);
+        if ($ids) {
+            $filter->addFilter('id', 'IN', $ids);
+        }
+        $trs = $this->getRepo()->getAll($filter, ['erteknap' => 'ASC']);
+        /** @var BankTranzakcio $tr */
+        foreach ($trs as $tr) {
+            $mehet = true;
+            $szlaszamok = explode(';', $tr->getBizonylatszamok());
+            foreach ($szlaszamok as $szlaszam) {
+                /** @var Bizonylatfej $szamla */
+                $szamla = $this->getRepo(Bizonylatfej::class)->find($szlaszam);
+                if (!$szamla) {
+                    $mehet = false;
+                }
+            }
+            if ($mehet) {
+                $bb = new Bankbizonylatfej();
+                $bb->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
+                $bb->setKelt();
+                if ($tr->getPartner()) {
+                    $bb->setPartner($tr->getPartner());
+                }
+                $bb->setValutanem($this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem)));
+                $befosszeg = $tr->getOsszeg();
+                foreach ($szlaszamok as $szlaszam) {
+                    /** @var Bizonylatfej $szamla */
+                    $szamla = $this->getRepo(Bizonylatfej::class)->find($szlaszam);
+                    if ($szamla) {
+                        if (!$bb->getPartner()) {
+                            $bb->setPartner($szamla->getPartner());
+                        }
+                        $bb->setBankszamla($szamla->getBankszamla());
+                        $bt = new Bankbizonylattetel();
+                        $bt->setBizonylatfej($bb);
+                        $bt->setPartner($szamla->getPartner());
+                        $bt->setDatum($tr->getErteknapStr());
+                        $bt->setHivatkozottbizonylat($szlaszam);
+                        $bt->setHivatkozottdatum($szamla->getKelt());
+                        $bt->setJogcim($jogcim);
+                        $bt->setValutanem($szamla->getValutanem());
+                        $bt->setErbizonylatszam($tr->getAzonosito());
+                        $bt->setIrany(1);
+                        $needed = min($szamla->getBrutto(), $befosszeg);
+                        $bt->setBrutto($needed);
+                        $this->getEm()->persist($bt);
+                        $befosszeg = $befosszeg - $needed;
+                        if ($befosszeg <= 0) {
+                            break;
+                        }
+                    }
+                }
+                $tr->setBankbizonylatkesz(true);
+                $this->getEm()->persist($tr);
+                $this->getEm()->persist($bb);
+                $this->getEm()->flush();
+            }
+        }
+    }
 }

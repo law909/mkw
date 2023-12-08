@@ -12,6 +12,9 @@ class BankTranzakcioRepository extends \mkwhelpers\Repository
         $this->setOrders([
             '1' => ['caption' => 'értéknap szerint csökkenő', 'order' => ['_xx.erteknap' => 'DESC']],
         ]);
+        $btch = [];
+        $btch['generatebankbiz'] = 'Bank bizonylatok létrehozása';
+        $this->setBatches($btch);
     }
-    
+
 }

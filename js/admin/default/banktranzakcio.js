@@ -52,6 +52,31 @@ $(document).ready(function () {
             },
             karb: mattkarbconfig
         });
+        $('.mattable-batchbtn').on('click', function (e) {
+            var cbs;
+            e.preventDefault();
+            cbs = $('.js-egyedcheckbox:checked');
+            var tomb = [], $exportform, $sel;
+            cbs.closest('tr').each(function (index, elem) {
+                tomb.push($(elem).data('egyedid'));
+            });
+            switch ($('.mattable-batchselect').val()) {
+                case 'generatebankbiz':
+                    $.ajax({
+                        url: '/admin/banktranzakcio/generatebankbizonylat',
+                        type: 'POST',
+                        data: {
+                            ids: tomb,
+                        },
+                        success: function (data) {
+                            $('.mattable-tablerefresh').click();
+                        }
+                    });
+                    break;
+            }
+
+        });
+
         $('#maincheckbox').change(function () {
             $('.egyedcheckbox').attr('checked', $(this).attr('checked'));
         });

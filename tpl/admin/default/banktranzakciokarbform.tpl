@@ -7,6 +7,8 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+            <input id="InaktivCheck" name="inaktiv" type="checkbox"
+                   {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <table>
                 <tbody>
                 <tr>
