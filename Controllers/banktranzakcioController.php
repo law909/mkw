@@ -264,7 +264,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                         $bt->setPartner($szamla->getPartner());
                         $bt->setDatum($tr->getErteknapStr());
                         $bt->setHivatkozottbizonylat($szlaszam);
-                        $bt->setHivatkozottdatum($szamla->getKelt());
+                        $bt->setHivatkozottdatum($szamla->getEsedekesseg());
                         $bt->setJogcim($jogcim);
                         $bt->setValutanem($szamla->getValutanem());
                         $bt->setErbizonylatszam($tr->getAzonosito());

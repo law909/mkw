@@ -1090,4 +1090,21 @@ class adminController extends mkwhelpers\Controller
         }
         echo 'Ready.';
     }
+
+    public function fszlahivdatumJavit()
+    {
+        $fszlak = $this->getRepo(Entities\Folyoszamla::class)->getAll();
+        /** @var Entities\Folyoszamla $fszla */
+        foreach ($fszlak as $fszla) {
+            if (!$fszla->getBizonylatfej()) {
+                $szamla = $this->getRepo(Entities\Bizonylatfej::class)->find($fszla->getHivatkozottbizonylat());
+                if ($szamla && $fszla->getHivatkozottdatum() !== $szamla->getEsedekesseg()) {
+                    $fszla->setHivatkozottdatum($szamla->getEsedekesseg());
+                    $this->getEm()->persist($fszla);
+                    $this->getEm()->flush();
+                }
+            }
+        }
+        echo 'Ready.';
+    }
 }

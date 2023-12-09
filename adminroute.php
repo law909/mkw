@@ -1170,3 +1170,4 @@ $router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas',
 $router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');
 $router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
 $router->map('GET', '/admin/t/mpttagimport', 'adminController#MPTPartnerImport', 'adminmptpartnerimport');
+$router->map('GET', '/admin/t/fszlahivdatum', 'adminController#fszlahivdatumJavit', 'adminfszlahivdatumjavit');
