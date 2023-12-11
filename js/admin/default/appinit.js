@@ -1,72 +1,73 @@
 function pleaseWait(msg) {
-	if (typeof(msg)!=='string') {
-		msg='Kérem várjon...';
-	}
-	$.blockUI({
-		message:msg,
-		css:{
-			border:'none',
-			padding:'15px',
-			backgroundColor:'#000',
-			'-webkit-border-radius':'10px',
-			'-moz-border-radius':'10px',
-			opacity:.5,
-			color:'#fff'
-		}
-	});
+    if (typeof (msg) !== 'string') {
+        msg = 'Kérem várjon...';
+    }
+    $.blockUI({
+        message: msg,
+        css: {
+            border: 'none',
+            padding: '15px',
+            backgroundColor: '#000',
+            '-webkit-border-radius': '10px',
+            '-moz-border-radius': '10px',
+            opacity: .5,
+            color: '#fff'
+        }
+    });
 }
 
-function messagecenterclick(e){
-	e.preventDefault();
-	$(this)
-		.slideToggle('slow',function(){
-			$(this).removeClass('matt-messagecenter ui-widget ui-state-highlight');
-			$('#termekkarb').hide();
-		});
+function messagecenterclick(e) {
+    e.preventDefault();
+    $(this)
+        .slideToggle('slow', function () {
+            $(this).removeClass('matt-messagecenter ui-widget ui-state-highlight');
+            $('#termekkarb').hide();
+        });
 }
 
-function messagecenterclickonerror(e){
-	e.preventDefault();
-	$(this)
-		.slideToggle('slow',function(){
-			$(this).removeClass('matt-messagecenter ui-widget ui-state-error');
-		});
+function messagecenterclickonerror(e) {
+    e.preventDefault();
+    $(this)
+        .slideToggle('slow', function () {
+            $(this).removeClass('matt-messagecenter ui-widget ui-state-error');
+        });
 }
 
 $(document).ready(
-	function(){
+    function () {
 
-		var msgcenter = $('#messagecenter').hide(),
+        var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter');
 
-		$(document)
-				.ajaxStart(pleaseWait)
-				.ajaxStop($.unblockUI)
-				.ajaxError(function(e, xhr, settings, exception) {
-					alert('error in: ' + settings.url + ' \n'+'error:\n' + exception);
-				});
-		$('#ThemeSelect').change(function(e) {
-			$.ajax({url:'/admin/setuitheme',
-				data:{uitheme:this.options[this.selectedIndex].value},
-				success:function(data) {
-					window.location.reload();
-				}
-			});
-		});
-		$('.js-regeneratekarkod').on('click', function(e) {
+        $(document)
+            .ajaxStart(pleaseWait)
+            .ajaxStop($.unblockUI)
+            .ajaxError(function (e, xhr, settings, exception) {
+                alert('error in: ' + settings.url + ' \n' + 'error:\n' + exception);
+            });
+        $('#ThemeSelect').change(function (e) {
+            $.ajax({
+                url: '/admin/setuitheme',
+                data: {uitheme: this.options[this.selectedIndex].value},
+                success: function (data) {
+                    window.location.reload();
+                }
+            });
+        });
+        $('.js-regeneratekarkod').on('click', function (e) {
             e.preventDefault();
-			$.ajax({
-                url:'/admin/regeneratekarkod'
-			});
-		});
-        $('.js-orarendprint').each(function() {
+            $.ajax({
+                url: '/admin/regeneratekarkod'
+            });
+        });
+        $('.js-orarendprint').each(function () {
             $(this).attr('target', '_blank');
         });
 
         var $arfdatumedit = $('#ArfolyamDatumEdit');
         if ($arfdatumedit) {
             mkwcomp.datumEdit.init($arfdatumedit);
-            $('.js-arfolyamdownload').on('click', function(e) {
+            $('.js-arfolyamdownload').on('click', function (e) {
                 e.preventDefault();
                 var arfdatum = $arfdatumedit.datepicker('getDate');
                 arfdatum = arfdatum.getFullYear() + '.' + (arfdatum.getMonth() + 1) + '.' + arfdatum.getDate();
@@ -76,13 +77,13 @@ $(document).ready(
                     data: {
                         datum: arfdatum
                     },
-                    success: function() {
+                    success: function () {
                         dialogcenter.html('Az árfolyamok letöltése sikerült.').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
                                     $(this).dialog('close');
                                 }
                             }
@@ -97,7 +98,7 @@ $(document).ready(
         if ($napijelentesdatumedit && $napijelentesdatumigedit) {
             mkwcomp.datumEdit.init($napijelentesdatumedit);
             mkwcomp.datumEdit.init($napijelentesdatumigedit);
-            $('.js-napijelentes').on('click', function(e) {
+            $('.js-napijelentes').on('click', function (e) {
                 e.preventDefault();
                 var datum = $napijelentesdatumedit.datepicker('getDate'),
                     datumig = $napijelentesdatumigedit.datepicker('getDate');
@@ -110,25 +111,55 @@ $(document).ready(
                         datum: datum,
                         datumig: datumig
                     },
-                    success: function(data) {
+                    success: function (data) {
                         $('.js-napijelentesbody').replaceWith(data);
                     }
                 })
             });
         }
 
-        $('.js-nepszerusegclear').on('click', function(e) {
+        $('.js-refreshkintlevoseg').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/refreshkintlevoseg',
+                success: function (data) {
+                    $('.js-kintlevoseg').replaceWith(data);
+                }
+            });
+        });
+
+        $('.js-refreshspanyolkintlevoseg').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/refreshspanyolkintlevoseg',
+                success: function (data) {
+                    $('.js-spanyolkintlevoseg').replaceWith(data);
+                }
+            });
+        });
+
+        $('.js-refreshteljesithetobackorderek').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/refreshteljesithetobackorderek',
+                success: function (data) {
+                    $('.js-teljesithetobackorderek').replaceWith(data);
+                }
+            });
+        });
+
+        $('.js-nepszerusegclear').on('click', function (e) {
             e.preventDefault();
             $.ajax({
                 url: '/admin/nepszeruseg/clear',
                 type: 'POST',
-                success: function(data) {
+                success: function (data) {
                     dialogcenter.html('A népszerűség inicializálás sikerült.').dialog({
                         resizable: false,
                         height: 140,
                         modal: true,
                         buttons: {
-                            'OK': function() {
+                            'OK': function () {
                                 $(this).dialog('close');
                             }
                         }
@@ -137,7 +168,7 @@ $(document).ready(
             })
         });
 
-        $('.js-boltbannincstermekfabutton').on('click', function(e) {
+        $('.js-boltbannincstermekfabutton').on('click', function (e) {
             var edit = $(this),
                 input = $('.js-boltbannincstermekfainput');
             e.preventDefault();
@@ -150,22 +181,22 @@ $(document).ready(
                 },
                 ui: {select_limit: 1}
             })
-            .bind('loaded.jstree', function(event, data) {
-                dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
-            });
+                .bind('loaded.jstree', function (event, data) {
+                    dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                });
             dialogcenter.dialog({
                 resizable: true,
                 height: 340,
                 modal: true,
                 buttons: {
-                    'Töröl': function() {
+                    'Töröl': function () {
                         edit.attr('data-value', 0);
                         $('span', edit).text(edit.attr('data-text'));
                         input.val(0);
                         $(this).dialog('close');
                     },
-                    'OK': function() {
-                        dialogcenter.jstree('get_selected').each(function() {
+                    'OK': function () {
+                        dialogcenter.jstree('get_selected').each(function () {
                             var treenode = $(this).children('a'),
                                 id = treenode.attr('id').split('_')[1];
                             edit.attr('data-value', id);
@@ -174,15 +205,15 @@ $(document).ready(
                         });
                         $(this).dialog('close');
                     },
-                    'Bezár': function() {
+                    'Bezár': function () {
                         $(this).dialog('close');
                     }
                 }
             });
         })
-        .button();
+            .button();
 
-        $('.js-backorder').on('click', function(e) {
+        $('.js-backorder').on('click', function (e) {
             e.preventDefault();
             $.ajax({
                 url: '/admin/megrendelesfej/backorder',
@@ -190,7 +221,7 @@ $(document).ready(
                 data: {
                     id: $(this).data('egyedid')
                 },
-                success: function(data) {
+                success: function (data) {
                     var d = JSON.parse(data);
                     if (d.refresh) {
                         dialogcenter.html('A backorder rendelés elkészült.').dialog({
@@ -198,20 +229,19 @@ $(document).ready(
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
                                     $('.mattable-tablerefresh').click();
                                     $(this).dialog('close');
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('A rendelés teljesíthető.').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
                                     $('.mattable-tablerefresh').click();
                                     $(this).dialog('close');
                                 }
@@ -221,7 +251,7 @@ $(document).ready(
                 }
             });
         })
-        .button();
+            .button();
 
-	}
+    }
 );

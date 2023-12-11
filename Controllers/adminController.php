@@ -72,84 +72,12 @@ class adminController extends mkwhelpers\Controller
         $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
-        $megrend = new megrendelesfejController($this->params);
-        $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
-
         $lista = new listaController($this->params);
         switch (true) {
             case \mkw\store::isSuperzoneB2B():
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
-
-                $lejart = [];
-                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
-                foreach ($r as $_r) {
-                    $lejart[$_r['nev']] = $_r;
-                }
-
-                if (\mkw\store::isFakeKintlevoseg()) {
-                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem();
-                    foreach ($fake as $_r) {
-                        if (array_key_exists($_r['nev'], $lejart)) {
-                            $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        } else {
-                            $lejart[$_r['nev']] = $_r;
-                        }
-                    }
-                }
-                $view->setVar('lejartkintlevoseg', $lejart);
-
-                $nemlejart = [];
-                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem();
-                foreach ($r as $_r) {
-                    $nemlejart[$_r['nev']] = $_r;
-                }
-                if (\mkw\store::isFakeKintlevoseg()) {
-                    foreach ($fake as $_r) {
-                        if (array_key_exists($_r['nev'], $nemlejart)) {
-                            $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        } else {
-                            $nemlejart[$_r['nev']] = $_r;
-                        }
-                    }
-                }
-                $view->setVar('kintlevoseg', $nemlejart);
-
-                $lejart = [];
-                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
-                foreach ($r as $_r) {
-                    $lejart[$_r['nev']] = $_r;
-                }
-                if (\mkw\store::isFakeKintlevoseg()) {
-                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
-                    foreach ($fake as $_r) {
-                        if (array_key_exists($_r['nev'], $lejart)) {
-                            $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        } else {
-                            $lejart[$_r['nev']] = $_r;
-                        }
-                    }
-                }
-                $view->setVar('spanyollejartkintlevoseg', $lejart);
-
-                $nemlejart = [];
-                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]
-                );
-                foreach ($r as $_r) {
-                    $nemlejart[$_r['nev']] = $_r;
-                }
-                if (\mkw\store::isFakeKintlevoseg()) {
-                    foreach ($fake as $_r) {
-                        if (array_key_exists($_r['nev'], $nemlejart)) {
-                            $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
-                        } else {
-                            $nemlejart[$_r['nev']] = $_r;
-                        }
-                    }
-                }
-                $view->setVar('spanyolkintlevoseg', $nemlejart);
-
                 break;
             case \mkw\store::isMindentkapni():
                 break;
@@ -202,6 +130,93 @@ class adminController extends mkwhelpers\Controller
             default:
                 break;
         }
+        $view->printTemplateResult();
+    }
+
+    public function refreshTeljesithetoBackorderek()
+    {
+        $view = $this->createView('teljesithetobackorderekbody.tpl');
+        $megrend = new megrendelesfejController($this->params);
+        $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
+        $view->printTemplateResult();
+    }
+
+    public function refreshKintlevoseg()
+    {
+        $view = $this->createView('kintlevosegbody.tpl');
+
+        $lejart = [];
+        $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
+        foreach ($r as $_r) {
+            $lejart[$_r['nev']] = $_r;
+        }
+
+        if (\mkw\store::isFakeKintlevoseg()) {
+            $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem();
+            foreach ($fake as $_r) {
+                if (array_key_exists($_r['nev'], $lejart)) {
+                    $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                } else {
+                    $lejart[$_r['nev']] = $_r;
+                }
+            }
+        }
+        $view->setVar('lejartkintlevoseg', $lejart);
+
+        $nemlejart = [];
+        $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem();
+        foreach ($r as $_r) {
+            $nemlejart[$_r['nev']] = $_r;
+        }
+        if (\mkw\store::isFakeKintlevoseg()) {
+            foreach ($fake as $_r) {
+                if (array_key_exists($_r['nev'], $nemlejart)) {
+                    $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                } else {
+                    $nemlejart[$_r['nev']] = $_r;
+                }
+            }
+        }
+        $view->setVar('kintlevoseg', $nemlejart);
+        $view->printTemplateResult();
+    }
+
+    public function refreshSpanyolKintlevoseg()
+    {
+        $view = $this->createView('spanyolkintlevosegbody.tpl');
+        $lejart = [];
+        $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
+        foreach ($r as $_r) {
+            $lejart[$_r['nev']] = $_r;
+        }
+        if (\mkw\store::isFakeKintlevoseg()) {
+            $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
+            foreach ($fake as $_r) {
+                if (array_key_exists($_r['nev'], $lejart)) {
+                    $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                } else {
+                    $lejart[$_r['nev']] = $_r;
+                }
+            }
+        }
+        $view->setVar('spanyollejartkintlevoseg', $lejart);
+
+        $nemlejart = [];
+        $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]
+        );
+        foreach ($r as $_r) {
+            $nemlejart[$_r['nev']] = $_r;
+        }
+        if (\mkw\store::isFakeKintlevoseg()) {
+            foreach ($fake as $_r) {
+                if (array_key_exists($_r['nev'], $nemlejart)) {
+                    $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                } else {
+                    $nemlejart[$_r['nev']] = $_r;
+                }
+            }
+        }
+        $view->setVar('spanyolkintlevoseg', $nemlejart);
         $view->printTemplateResult();
     }
 

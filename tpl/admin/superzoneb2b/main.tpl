@@ -10,7 +10,7 @@
 
 {block "kozep"}
     <div class="component-container">
-    {include "../default/comp_noallapot.tpl"}
+        {include "../default/comp_noallapot.tpl"}
     </div>
     <div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
@@ -20,7 +20,8 @@
             <div class="mainboxinner">
                 <label for="ArfolyamDatumEdit">Dátum:</label>
                 <input id="ArfolyamDatumEdit" name="datum" type="text" data-datum="{$today}">
-                <button class="js-arfolyamdownload ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Letölt</span></button>
+                <button class="js-arfolyamdownload ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                        class="ui-button-text">Letölt</span></button>
             </div>
         </div>
     </div>
@@ -37,7 +38,7 @@
                             <select id="RaktarEdit" name="raktar">
                                 <option value="">{t('válasszon')}</option>
                                 {foreach $raktarlist as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -64,8 +65,10 @@
             <div class="mainboxinner">
                 <div class="mainboxinner">
                     <label for="NapijelentesDatumEdit">Dátum:</label>
-                    <input id="NapijelentesDatumEdit" name="datumtol" type="text" data-datum="{$today}"{if (!haveJog(20))} disabled="disabled"{/if}> - <input id="NapijelentesDatumigEdit" name="datumig" type="text" data-datum="{$today}"{if (!haveJog(20))} disabled="disabled"{/if}>
-                    <button class="js-napijelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Frissít</span></button>
+                    <input id="NapijelentesDatumEdit" name="datumtol" type="text" data-datum="{$today}"{if (!haveJog(20))} disabled="disabled"{/if}> - <input
+                        id="NapijelentesDatumigEdit" name="datumig" type="text" data-datum="{$today}"{if (!haveJog(20))} disabled="disabled"{/if}>
+                    <button class="js-napijelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Frissít</span></button>
                 </div>
                 {include "napijelentesbody.tpl"}
             </div>
@@ -79,119 +82,44 @@
                 </div>
                 <div class="mainboxinner">
                     <div class="mainboxinner">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Lejárt kintlevőség</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {foreach $lejartkintlevoseg as $lk}
-                                <tr>
-                                    <td>{$lk.nev}</td>
-                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
-                                </tr>
-                                {/foreach}
-                            </tbody>
-                        </table>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Össz. kintlevőség</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {foreach $kintlevoseg as $lk}
-                                <tr>
-                                    <td>{$lk.nev}</td>
-                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
-                                </tr>
-                            {/foreach}
-                            </tbody>
-                        </table>
+                        <button class="js-refreshkintlevoseg ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                                class="ui-button-text">Frissít</span></button>
+                        <div class="js-kintlevoseg"></div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="component-container">
+        <div class="ui-widget ui-widget-content ui-corner-all">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Spanyol kintlevőségek</div>
+            </div>
+            <div class="mainboxinner">
+                <div class="mainboxinner">
+                    <button class="js-refreshspanyolkintlevoseg ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Frissít</span></button>
+                    <div class="js-spanyolkintlevoseg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="component-container">
+    {/if}
+    {if (haveJog(20))}
         <div class="component-container">
             <div class="ui-widget ui-widget-content ui-corner-all">
                 <div class="ui-widget-header ui-corner-top">
-                    <div class="mainboxinner ui-corner-top">Spanyol kintlevőségek</div>
+                    <div class="mainboxinner ui-corner-top">Teljesíthető backorderek</div>
                 </div>
                 <div class="mainboxinner">
-                    <div class="mainboxinner">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Lejárt kintlevőség</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {foreach $spanyollejartkintlevoseg as $lk}
-                                <tr>
-                                    <td>{$lk.nev}</td>
-                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
-                                </tr>
-                            {/foreach}
-                            </tbody>
-                        </table>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Össz. kintlevőség</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {foreach $spanyolkintlevoseg as $lk}
-                                <tr>
-                                    <td>{$lk.nev}</td>
-                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
-                                </tr>
-                            {/foreach}
-                            </tbody>
-                        </table>
-                    </div>
+                    <button class="js-refreshteljesithetobackorderek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Frissít</span></button>
+                    <div class="js-teljesithetobackorderek"></div>
                 </div>
             </div>
-        <div class="component-container">
-        {/if}
-        {if (haveJog(20))}
-    <div class="component-container">
-        <div class="ui-widget ui-widget-content ui-corner-all">
-            <div class="ui-widget-header ui-corner-top">
-                <div class="mainboxinner ui-corner-top">Teljesíthető backorderek</div>
-            </div>
-            <div class="mainboxinner">
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Biz.szám</td>
-                            <td>Kelt</td>
-                            <td>Határidő</td>
-                            <td>Partner</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    {foreach $teljesithetobackorderek as $mr}
-                        <tr>
-                            <td><a href="{$mr.printurl}" target="_blank" title="Nyomtatási kép">{$mr.id}</a></td>
-                            <td><a href="{$mr.editurl}" target="_blank" title="Szerkesztés">{$mr.kelt}</a></td>
-                            <td>{$mr.hatarido}</td>
-                            <td>{$mr.partnernev}</td>
-                            <td><a class="js-backorder" href="#" data-egyedid="{$mr.id}" title="{t('Backorder')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a></td>
-                        </tr>
-                    {/foreach}
-                </table>
-            </div>
         </div>
-    </div>
-        {/if}
+    {/if}
     <div class="component-container">
-    <div id="mattkarb">
-    </div>
+        <div id="mattkarb">
+        </div>
         <div class="component-container">
 {/block}

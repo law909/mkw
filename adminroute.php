@@ -100,6 +100,10 @@ $router->map('GET', '/admin/arlista/view', 'arlistaController#view', 'adminarlis
 $router->map('GET', '/admin/arlista/get', 'arlistaController#createLista', 'adminarlistaget');
 $router->map('GET', '/admin/arlista/export', 'arlistaController#exportLista', 'adminarlistaexport');
 
+$router->map('GET', '/admin/refreshkintlevoseg', 'adminController#refreshKintlevoseg', 'adminrefreshkintlevoseg');
+$router->map('GET', '/admin/refreshspanyolkintlevoseg', 'adminController#refreshSpanyolKintlevoseg', 'adminrefreshspanyolkintlevoseg');
+$router->map('GET', '/admin/refreshteljesithetobackorderek', 'adminController#refreshTeljesithetoBackorderek', 'adminrefreshteljesithetobackorderek');
+
 if (\mkw\store::isMPT()) {
     $router->map('GET', '/admin/mpttagozat/jsonlist', 'mpttagozatController#jsonlist', 'adminmpttagozatjsonlist');
     $router->map('GET', '/admin/mpttagozat/htmllist', 'mpttagozatController#htmllist', 'adminmpttagozathtmllist');
