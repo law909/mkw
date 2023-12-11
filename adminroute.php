@@ -396,6 +396,30 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/keziszamlafej/print', 'keziszamlafejController#doPrint', 'adminkeziszamlafejprint');
 
+$router->map('GET', '/admin/garanciaugyfej/viewlist', 'garanciaugyfejController#viewlist', 'admingaranciaugyfejviewlist');
+$router->map('GET', '/admin/garanciaugyfej/getlistbody', 'garanciaugyfejController#getlistbody', 'admingaranciaugyfejgetlistbody');
+$router->map('GET', '/admin/garanciaugyfej/getkarb', 'garanciaugyfejController#getkarb', 'admingaranciaugyfejgetkarb');
+$router->map('GET', '/admin/garanciaugyfej/viewkarb', 'garanciaugyfejController#viewkarb', 'admingaranciaugyfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/garanciaugyfej/save', 'garanciaugyfejController#save', 'admingaranciaugyfejsave');
+    $router->map('POST', '/admin/garanciaugyfej/ront', 'garanciaugyfejController#ront', 'admingaranciaugyfejront');
+    $router->map('POST', '/admin/garanciaugyfej/fejexport', 'garanciaugyfejController#fejexport', 'admingaranciaugyfejfejexport');
+    $router->map('POST', '/admin/garanciaugyfej/tetelexport', 'garanciaugyfejController#tetelexport', 'admingaranciaugyfejtetelexport');
+}
+$router->map('GET', '/admin/garanciaugyfej/print', 'garanciaugyfejController#doPrint', 'admingaranciaugyfejprint');
+
+$router->map('GET', '/admin/szallmegrfej/viewlist', 'szallmegrfejController#viewlist', 'adminszallmegrfejviewlist');
+$router->map('GET', '/admin/szallmegrfej/getlistbody', 'szallmegrfejController#getlistbody', 'adminszallmegrfejgetlistbody');
+$router->map('GET', '/admin/szallmegrfej/getkarb', 'szallmegrfejController#getkarb', 'adminszallmegrfejgetkarb');
+$router->map('GET', '/admin/szallmegrfej/viewkarb', 'szallmegrfejController#viewkarb', 'adminszallmegrfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/szallmegrfej/save', 'szallmegrfejController#save', 'adminszallmegrfejsave');
+    $router->map('POST', '/admin/szallmegrfej/ront', 'szallmegrfejController#ront', 'adminszallmegrfejront');
+    $router->map('POST', '/admin/szallmegrfej/fejexport', 'szallmegrfejController#fejexport', 'adminszallmegrfejfejexport');
+    $router->map('POST', '/admin/szallmegrfej/tetelexport', 'szallmegrfejController#tetelexport', 'adminszallmegrfejtetelexport');
+}
+$router->map('GET', '/admin/szallmegrfej/print', 'szallmegrfejController#doPrint', 'adminszallmegrfejprint');
+
 $router->map('GET', '/admin/bevetfej/viewlist', 'bevetfejController#viewlist', 'adminbevetfejviewlist');
 $router->map('GET', '/admin/bevetfej/getlistbody', 'bevetfejController#getlistbody', 'adminbevetfejgetlistbody');
 $router->map('GET', '/admin/bevetfej/getkarb', 'bevetfejController#getkarb', 'adminbevetfejgetkarb');

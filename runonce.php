@@ -270,6 +270,55 @@ if ($DBVersion < '0047') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0047');
 }
 
+if ($DBVersion < '0048') {
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo,'
+        . ' showemailbutton, showeddigimegrendeleseiurl) '
+        . ' VALUES '
+        . '("szallmegr", "Szállítói megrendelés", "1", "0", "SZMR", "1", "1",'
+        . ' "0", "0", "1", "1", "0", "0", "biz_szallmegr.tpl", "0",'
+        . ' "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0",'
+        . ' "0", "0")'
+    );
+
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Szállítói megrendelés","/admin/szallmegrfej/viewlist","/admin/szallmegrfej",20,0,150, "")'
+    );
+
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo,'
+        . ' showemailbutton, showeddigimegrendeleseiurl) '
+        . ' VALUES '
+        . '("garanciaugy", "Garanciális ügy", "1", "0", "GUGY", "1", "1",'
+        . ' "0", "0", "1", "1", "0", "1", "biz_garanciaugy.tpl", "1",'
+        . ' "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0",'
+        . ' "0", "0")'
+    );
+
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Garanciális ügy","/admin/garanciaugyfej/viewlist","/admin/garanciaugyfej",20,0,270, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0048');
+}
+
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
