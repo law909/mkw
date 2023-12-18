@@ -144,6 +144,7 @@ $(document).ready(
                 url: '/admin/refreshteljesithetobackorderek',
                 success: function (data) {
                     $('.js-teljesithetobackorderek').replaceWith(data);
+                    $('.js-backorder').button();
                 }
             });
         });
@@ -213,7 +214,7 @@ $(document).ready(
         })
             .button();
 
-        $('.js-backorder').on('click', function (e) {
+        $(document).on('click', '.js-backorder', function (e) {
             e.preventDefault();
             $.ajax({
                 url: '/admin/megrendelesfej/backorder',
@@ -250,8 +251,7 @@ $(document).ready(
                     }
                 }
             });
-        })
-            .button();
-
+        });
+        $('.js-backorder').button();
     }
 );
