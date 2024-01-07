@@ -1526,6 +1526,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getRovidPartneradoszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidPartneradoszam', []);
+
+        return parent::getRovidPartneradoszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setPartneradoszam($val)
     {
 

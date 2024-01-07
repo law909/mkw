@@ -2823,6 +2823,11 @@ class Bizonylatfej
         return $this->partneradoszam;
     }
 
+    public function getRovidPartneradoszam()
+    {
+        return substr($this->partneradoszam, 0, 8);
+    }
+
     public function setPartneradoszam($val)
     {
         $this->partneradoszam = $val;

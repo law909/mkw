@@ -320,12 +320,12 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
+        $kiegyenlitettszamlak = [];
+
         $tol = $this->params->getStringRequestParam('tol');
         $tol = date(\mkw\store::$SQLDateFormat, strtotime(\mkw\store::convDate($tol)));
-        \mkw\store::writelog($tol);
         $ig = $this->params->getStringRequestParam('ig');
         $ig = date(\mkw\store::$SQLDateFormat, strtotime(\mkw\store::convDate($ig)));
-        \mkw\store::writelog($ig);
 
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
@@ -335,10 +335,11 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
             ->setCellValue('D1', t('kelt'))
             ->setCellValue('E1', t('telj'))
             ->setCellValue('F1', t('fizhat'))
-            ->setCellValue('G1', t('bruttod'))
-            ->setCellValue('H1', t('penznem'))
-            ->setCellValue('I1', t('fizmod'))
-            ->setCellValue('J1', t('Tényleges kiegyenlítés'));
+            ->setCellValue('G1', t('Számla összege'))
+            ->setCellValue('H1', t('bruttod'))
+            ->setCellValue('I1', t('penznem'))
+            ->setCellValue('J1', t('fizmod'))
+            ->setCellValue('K1', t('Tényleges kiegyenlítés'));
 
         $filter = new FilterDescriptor();
         $filter->addFilter('bt.datum', '>=', $tol);
@@ -353,17 +354,19 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
                 /** @var Bizonylatfej $szamla */
                 $szamla = $this->getRepo(Bizonylatfej::class)->find($tetel->getHivatkozottbizonylat());
                 if ($szamla) {
+                    $kiegyenlitettszamlak[] = $szamla->getId();
                     $excel->getActiveSheet()
                         ->setCellValue('A' . $cellIndex, $tetel->getHivatkozottbizonylat())
                         ->setCellValue('B' . $cellIndex, $szamla->getPartnernev())
-                        ->setCellValue('C' . $cellIndex, $szamla->getPartneradoszam())
+                        ->setCellValue('C' . $cellIndex, $szamla->getRovidPartneradoszam())
                         ->setCellValue('D' . $cellIndex, $szamla->getKeltStr())
                         ->setCellValue('E' . $cellIndex, $szamla->getTeljesitesStr())
                         ->setCellValue('F' . $cellIndex, $szamla->getEsedekessegStr())
-                        ->setCellValue('G' . $cellIndex, $tetel->getBrutto())
-                        ->setCellValue('H' . $cellIndex, $tetel->getValutanemnev())
-                        ->setCellValue('I' . $cellIndex, $szamla->getFizmodnev())
-                        ->setCellValue('J' . $cellIndex, $tetel->getDatumStr());
+                        ->setCellValue('G' . $cellIndex, $szamla->getBrutto())
+                        ->setCellValue('H' . $cellIndex, $tetel->getBrutto())
+                        ->setCellValue('I' . $cellIndex, $tetel->getValutanemnev())
+                        ->setCellValue('J' . $cellIndex, $szamla->getFizmodnev())
+                        ->setCellValue('K' . $cellIndex, $tetel->getDatumStr());
                     $cellIndex++;
                 }
             }
@@ -383,18 +386,45 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $kpszamlak = $this->getRepo(Bizonylatfej::class)->getAll($filter, ['_xx.kelt' => 'ASC']);
         /** @var Bizonylatfej $tetel */
         foreach ($kpszamlak as $tetel) {
+            $kiegyenlitettszamlak[] = $tetel->getId();
             $excel->getActiveSheet()
                 ->setCellValue('A' . $cellIndex, $tetel->getId())
                 ->setCellValue('B' . $cellIndex, $tetel->getPartnernev())
-                ->setCellValue('C' . $cellIndex, $tetel->getPartneradoszam())
+                ->setCellValue('C' . $cellIndex, $tetel->getRovidPartneradoszam())
                 ->setCellValue('D' . $cellIndex, $tetel->getKeltStr())
                 ->setCellValue('E' . $cellIndex, $tetel->getTeljesitesStr())
                 ->setCellValue('F' . $cellIndex, $tetel->getEsedekessegStr())
                 ->setCellValue('G' . $cellIndex, $tetel->getBrutto())
-                ->setCellValue('H' . $cellIndex, $tetel->getValutanemnev())
-                ->setCellValue('I' . $cellIndex, $tetel->getFizmodnev())
-                ->setCellValue('J' . $cellIndex, $tetel->getKeltStr());
+                ->setCellValue('H' . $cellIndex, $tetel->getBrutto())
+                ->setCellValue('I' . $cellIndex, $tetel->getValutanemnev())
+                ->setCellValue('J' . $cellIndex, $tetel->getFizmodnev())
+                ->setCellValue('K' . $cellIndex, $tetel->getKeltStr());
             $cellIndex++;
+        }
+
+        if ($kiegyenlitettszamlak) {
+            /* kiegyenlítetelen számlák */
+            $filter->clear();
+            $filter->addFilter('kelt', '>=', $tol);
+            $filter->addFilter('kelt', '<=', $ig);
+            $filter->addFilter('fizmod', 'NOT IN', $kpfilter);
+            $filter->addFilter('id', 'NOT IN', $kiegyenlitettszamlak);
+            $filter->addFilter('bizonylattipus', '=', 'szamla');
+            $kpszamlak = $this->getRepo(Bizonylatfej::class)->getAll($filter, ['_xx.kelt' => 'ASC']);
+            /** @var Bizonylatfej $tetel */
+            foreach ($kpszamlak as $tetel) {
+                $excel->getActiveSheet()
+                    ->setCellValue('A' . $cellIndex, $tetel->getId())
+                    ->setCellValue('B' . $cellIndex, $tetel->getPartnernev())
+                    ->setCellValue('C' . $cellIndex, $tetel->getRovidPartneradoszam())
+                    ->setCellValue('D' . $cellIndex, $tetel->getKeltStr())
+                    ->setCellValue('E' . $cellIndex, $tetel->getTeljesitesStr())
+                    ->setCellValue('F' . $cellIndex, $tetel->getEsedekessegStr())
+                    ->setCellValue('G' . $cellIndex, $tetel->getBrutto())
+                    ->setCellValue('I' . $cellIndex, $tetel->getValutanemnev())
+                    ->setCellValue('J' . $cellIndex, $tetel->getFizmodnev());
+                $cellIndex++;
+            }
         }
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
