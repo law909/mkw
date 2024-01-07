@@ -277,14 +277,14 @@ if ($DBVersion < '0048') {
         . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
         . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
         . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo,'
-        . ' showemailbutton, showeddigimegrendeleseiurl) '
+        . ' showemailbutton, showeddigimegrendeleseiurl, showgarancialisadatok) '
         . ' VALUES '
         . '("szallmegr", "Szállítói megrendelés", "1", "0", "SZMR", "1", "1",'
         . ' "0", "0", "1", "1", "0", "0", "biz_szallmegr.tpl", "0",'
         . ' "0", "0", "0", "0", "0", "0", "0",'
         . ' "0", "0", "0", "0", "0", "1", "0", "0",'
         . ' "0", "0", "0", "0", "0", "1", "0",'
-        . ' "0", "0")'
+        . ' "0", "0", "0")'
     );
 
     \mkw\store::getEm()->getConnection()->executeUpdate(
@@ -299,14 +299,14 @@ if ($DBVersion < '0048') {
         . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
         . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
         . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo,'
-        . ' showemailbutton, showeddigimegrendeleseiurl) '
+        . ' showemailbutton, showeddigimegrendeleseiurl, showgarancialisadatok) '
         . ' VALUES '
         . '("garanciaugy", "Garanciális ügy", "1", "0", "GUGY", "1", "1",'
         . ' "0", "0", "1", "1", "0", "1", "biz_garanciaugy.tpl", "1",'
         . ' "0", "0", "0", "0", "0", "0", "0",'
         . ' "0", "0", "0", "0", "0", "1", "0", "0",'
         . ' "0", "0", "0", "0", "0", "1", "0",'
-        . ' "0", "0")'
+        . ' "0", "0", "1")'
     );
 
     \mkw\store::getEm()->getConnection()->executeUpdate(

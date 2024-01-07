@@ -1394,6 +1394,10 @@ class partnerController extends \mkwhelpers\MattableController
             $szamlalist = $szamlac->getFiokList();
             $view->setVar('szamlalist', $szamlalist);
 
+            $garugyc = new garanciaugyfejController($this->params);
+            $garugylist = $garugyc->getFiokList();
+            $view->setVar('garanciaugylist', $garugylist);
+
             $orszagc = new orszagController($this->params);
             $view->setVar('orszaglist', $orszagc->getSelectList($user->getOrszagId()));
 

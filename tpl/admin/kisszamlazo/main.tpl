@@ -1,8 +1,13 @@
 {extends "../base.tpl"}
 
+{block "inhead"}
+    <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/admin/kisszamlazo/appinit.js?v={$smarty.now}"></script>
+{/block}
+
 {block "kozep"}
     <div class="component-container">
-    {include "../default/comp_noallapot.tpl"}
+        {include "../default/comp_noallapot.tpl"}
     </div>
     {if (haveJog(20))}
         {if ($setup.bankpenztar)}
@@ -50,5 +55,16 @@
                 </div>
             </div>
         {/if}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Könyvelő export</div>
+                </div>
+                <div class="mainboxinner">
+                    {include "../default/comp_idoszak.tpl" comptype="datum"}
+                    <a id="konyveloexportButton" href="#"><span>Export</span></a>
+                </div>
+            </div>
+        </div>
     {/if}
 {/block}

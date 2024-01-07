@@ -294,6 +294,15 @@ class Bizonylattetel
     /** @ORM\Column(type="integer",nullable=true) */
     private $emagid;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $megjegyzes;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $megjegyzes2;
+
+    /** @ORM\Column(type="date",nullable=false) */
+    private $vasarlasdatum;
+
     public function __construct()
     {
         $this->szulobizonylattetelek = new ArrayCollection();
@@ -1731,4 +1740,59 @@ class Bizonylattetel
         $ert = \mkw\store::getEm()->getRepository(TermekErtekeles::class)->getByPartnerTermek($this->getBizonylatfej()->getPartner(), $this->getTermek());
         return count($ert) > 0;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMegjegyzes()
+    {
+        return $this->megjegyzes;
+    }
+
+    /**
+     * @param mixed $megjegyzes
+     */
+    public function setMegjegyzes($megjegyzes): void
+    {
+        $this->megjegyzes = $megjegyzes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMegjegyzes2()
+    {
+        return $this->megjegyzes2;
+    }
+
+    /**
+     * @param mixed $megjegyzes2
+     */
+    public function setMegjegyzes2($megjegyzes2): void
+    {
+        $this->megjegyzes2 = $megjegyzes2;
+    }
+
+    public function getVasarlasdatum()
+    {
+        return $this->vasarlasdatum;
+    }
+
+    public function getVasarlasdatumStr()
+    {
+        if ($this->getVasarlasdatum()) {
+            return $this->getVasarlasdatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setVasarlasdatum($adat = '')
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->vasarlasdatum = $adat;
+        } else {
+            $this->vasarlasdatum = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
 }

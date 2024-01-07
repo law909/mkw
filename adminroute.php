@@ -1088,6 +1088,8 @@ $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalControll
 $router->map('GET', '/admin/minicrm/view', 'minicrmController#view', 'adminminicrmview');
 $router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerImport', 'adminminicrmpartnerimport');
 
+$router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
+
 $router->map('GET', '/admin/helyszin/viewlist', 'helyszinController#viewlist', 'adminhelyszinviewlist');
 $router->map('GET', '/admin/helyszin/getlistbody', 'helyszinController#getlistbody', 'adminhelyszingetlistbody');
 $router->map('GET', '/admin/helyszin/getkarb', 'helyszinController#getkarb', 'adminhelyszingetkarb');

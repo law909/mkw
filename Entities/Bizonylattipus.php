@@ -91,6 +91,8 @@ class Bizonylattipus
     private $showemailbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showeddigimegrendeleseiurl = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showgarancialisadatok = false;
 
     public function __construct()
     {
@@ -127,6 +129,7 @@ class Bizonylattipus
         $view->setVar('showforditottadozas', $this->getId() === 'szamla' || $this->getId() === 'esetiszamla');
         $view->setVar('showemailbutton', $this->getShowemailbutton());
         $view->setVar('showeddigimegrendeleseiurl', $this->getShoweddigimegrendeleseiurl());
+        $view->setVar('showgarancialisadatok', $this->getShowgarancialisadatok());
     }
 
     public function getId()
@@ -599,6 +602,22 @@ class Bizonylattipus
     public function setShoweddigimegrendeleseiurl($showeddigimegrendeleseiurl): void
     {
         $this->showeddigimegrendeleseiurl = $showeddigimegrendeleseiurl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShowgarancialisadatok()
+    {
+        return $this->showgarancialisadatok;
+    }
+
+    /**
+     * @param bool $showgarancialisadatok
+     */
+    public function setShowgarancialisadatok($showgarancialisadatok): void
+    {
+        $this->showgarancialisadatok = $showgarancialisadatok;
     }
 
 }

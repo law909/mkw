@@ -18,6 +18,7 @@
             {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
             <li><a href="#szamla" data-toggle="pill">My invoices</a></li>
+            <li><a href="#garanciaugy" data-toggle="pill">My warranty</a></li>
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
         </ul>
         <div class="fioknav tab-content col-md-9">
@@ -475,6 +476,89 @@
                     </table>
                 {else}
                     You don't have any invoices yet.
+                {/if}
+            </div>
+            <div class="tab-pane" id="garanciaugy">
+                <button class="btn btn-primary js-newgaranciaugy">New</button>
+                <form id="GaranciaUgyForm" class="form-horizontal" action="/fiok/ment/" method="post" style="display: none;">
+                    <div>
+                        <label class="control-label" for="ItemEdit">{t('Item')}:</label>
+                        <div class="controls">
+                            <input id="ItemEdit" name="termek" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="control-label" for="ProblemEdit">{t('Problem')}:</label>
+                        <div class="controls">
+                            <input id="ProblemEdit" name="problem" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="control-label" for="PurchaseDateEdit">{t('Purchase date')}:</label>
+                        <div class="controls">
+                            <input id="PurchaseDateEdit" name="purchasedate" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn okbtn">Save</button>
+                </form>
+
+                {if (count($garanciaugylist)>0)}
+                    <table class="acc-megrendeles">
+                        <thead class="acc-megrendeles">
+                        <td>Warranty no.</td>
+                        <td>Date</td>
+                        <td></td>
+                        </thead>
+                        <tbody class="acc-megrendeles">
+                        {foreach $garanciaugylist as $garanciaugy}
+                            <tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
+                                <td>{$garanciaugy.id}</td>
+                                <td>{$garanciaugy.kelt}</td>
+                                <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
+                            </tr>
+                            <tr class="notvisible acc-megrendelesborderbottom">
+                                <td colspan="6">
+                                    <table class="acc-megrendelestetellist">
+                                        <thead class="acc-megrendelestetellist">
+                                        <td></td>
+                                        <td>{t('Item')}</td>
+                                        <td>{t('Product')}</td>
+                                        <td>{t('Problem')}</td>
+                                        <td>{t('Purchase date')}</td>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $garanciaugy.tetellista as $tetel}
+                                            <tr class="clickable" data-href="{$tetel.link}">
+                                                <td>
+                                                    <div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}"
+                                                                                                              title="{$tetel.caption}"></a></div>
+                                                </td>
+                                                <td>
+                                                    <div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                    <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
+                                                    {$tetel.cikkszam}</td>
+                                                <td>
+                                                    <div>{$tetel.megjegyzes}</div>
+                                                </td>
+                                                <td>
+                                                    <div>{$tetel.megjegyzes2}</div>
+                                                </td>
+                                                <td>
+                                                    <div>{$tetel.vasarlasdatum}</div>
+                                                </td>
+                                            </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                {else}
+                    <div>
+                        You don't have any warranty yet.
+                    </div>
                 {/if}
             </div>
             <div class="tab-pane" id="jelszo">

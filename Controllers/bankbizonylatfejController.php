@@ -1,11 +1,21 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Bankbizonylatfej;
 use Entities\Bankbizonylattetel;
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
+use Entities\Fizmod;
+use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class bankbizonylatfejController extends \mkwhelpers\MattableController {
+class bankbizonylatfejController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Bankbizonylatfej');
         $this->setKarbFormTplName('bankbizonylatfejkarbform.tpl');
         $this->setKarbTplName('bankbizonylatfejkarb.tpl');
@@ -14,8 +24,9 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Bankbizonylatfej();
             $this->getEm()->detach($t);
@@ -56,16 +67,17 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                 $tetel[] = $tetelCtrl->loadVars($ttetel, true);
             }
             $x['tetelek'] = $tetel;
-
         }
         return $x;
     }
 
     /**
      * @param \Entities\Bankbizonylatfej $obj
+     *
      * @return \Entities\Bankbizonylatfej
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $type = $this->params->getStringRequestParam('type');
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
@@ -110,8 +122,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setJogcim($jogcim);
                                     if ($irany < 0) {
                                         $tetel->setIrany(-1);
-                                    }
-                                    else {
+                                    } else {
                                         $tetel->setIrany(1);
                                     }
 
@@ -133,8 +144,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                         $tetel->setJogcim($jogcim);
                                         if ($irany < 0) {
                                             $tetel->setIrany(-1);
-                                        }
-                                        else {
+                                        } else {
                                             $tetel->setIrany(1);
                                         }
                                         $tetel->setValutanem($valutanem);
@@ -150,8 +160,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                     }
                                     break;
                             }
-                        }
-                        else {
+                        } else {
                             \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
                         }
                     }
@@ -162,7 +171,8 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    protected function setVars($view) {
+    protected function setVars($view)
+    {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
         if ($bt) {
             $bt->setTemplateVars($view);
@@ -175,14 +185,15 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('bankszamlalist', $bc->getSelectList());
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('bankbizonylatfejlista_tbody.tpl');
 
         $this->setVars($view);
 
         $filter = new \mkwhelpers\FilterDescriptor();
 
-        if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('idfilter', null))) {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
@@ -223,18 +234,21 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $this->initPager(
             $this->getRepo()->getCount($filter),
             $this->params->getIntRequestParam('elemperpage', 30),
-            $this->params->getIntRequestParam('pageno', 1));
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getWithJoins(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('bankbizonylatfejlista.tpl');
 
         $this->setVars($view);
@@ -243,7 +257,8 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('bankbizonylatfejlista.tpl');
 
         $this->setVars($view);
@@ -254,7 +269,8 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -274,8 +290,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {
             $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
-        }
-        else {
+        } else {
             $valutaid = $record->getValutanemId();
         }
         $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
@@ -284,8 +299,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $bankszlaid = false;
         if ($record && $record->getBankszamlaId()) {
             $bankszlaid = $record->getBankszamlaId();
-        }
-        else {
+        } else {
             $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
             if ($valutanem && $valutanem->getBankszamlaId()) {
                 $bankszlaid = $valutanem->getBankszamlaId();
@@ -294,6 +308,101 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
 
         return $view->getTemplateResult();
+    }
+
+    public function exportKonyvelo()
+    {
+        function x($o)
+        {
+            if ($o <= 26) {
+                return chr(65 + $o);
+            }
+            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
+        }
+
+        $tol = $this->params->getStringRequestParam('tol');
+        $tol = date(\mkw\store::$SQLDateFormat, strtotime(\mkw\store::convDate($tol)));
+        \mkw\store::writelog($tol);
+        $ig = $this->params->getStringRequestParam('ig');
+        $ig = date(\mkw\store::$SQLDateFormat, strtotime(\mkw\store::convDate($ig)));
+        \mkw\store::writelog($ig);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', t('bizszam'))
+            ->setCellValue('B1', t('partnev'))
+            ->setCellValue('C1', t('partadosz'))
+            ->setCellValue('D1', t('kelt'))
+            ->setCellValue('E1', t('telj'))
+            ->setCellValue('F1', t('fizhat'))
+            ->setCellValue('G1', t('bruttod'))
+            ->setCellValue('H1', t('penznem'))
+            ->setCellValue('I1', t('fizmod'))
+            ->setCellValue('J1', t('Tényleges kiegyenlítés'));
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bt.datum', '>=', $tol);
+        $filter->addFilter('bt.datum', '<=', $ig);
+
+        $cellIndex = 2;
+        $adat = $this->getRepo()->getWithJoins($filter, ['bt.datum' => 'ASC']);
+        /** @var Bankbizonylatfej $fej */
+        foreach ($adat as $fej) {
+            /** @var Bankbizonylattetel $tetel */
+            foreach ($fej->getBizonylattetelek() as $tetel) {
+                /** @var Bizonylatfej $szamla */
+                $szamla = $this->getRepo(Bizonylatfej::class)->find($tetel->getHivatkozottbizonylat());
+                if ($szamla) {
+                    $excel->getActiveSheet()
+                        ->setCellValue('A' . $cellIndex, $tetel->getHivatkozottbizonylat())
+                        ->setCellValue('B' . $cellIndex, $szamla->getPartnernev())
+                        ->setCellValue('C' . $cellIndex, $szamla->getPartneradoszam())
+                        ->setCellValue('D' . $cellIndex, $szamla->getKeltStr())
+                        ->setCellValue('E' . $cellIndex, $szamla->getTeljesitesStr())
+                        ->setCellValue('F' . $cellIndex, $szamla->getEsedekessegStr())
+                        ->setCellValue('G' . $cellIndex, $tetel->getBrutto())
+                        ->setCellValue('H' . $cellIndex, $tetel->getValutanemnev())
+                        ->setCellValue('I' . $cellIndex, $szamla->getFizmodnev())
+                        ->setCellValue('J' . $cellIndex, $tetel->getDatumStr());
+                    $cellIndex++;
+                }
+            }
+        }
+
+        $kpfilter = [];
+        $kpfm = $this->getRepo(Fizmod::class)->getAllKeszpenzes();
+        /** @var Fizmod $fm */
+        foreach ($kpfm as $fm) {
+            $kpfilter[] = $fm->getId();
+        }
+        $filter->clear();
+        $filter->addFilter('kelt', '>=', $tol);
+        $filter->addFilter('kelt', '<=', $ig);
+        $filter->addFilter('fizmod', 'IN', $kpfilter);
+        $filter->addFilter('bizonylattipus', '=', 'szamla');
+        $kpszamlak = $this->getRepo(Bizonylatfej::class)->getAll($filter, ['_xx.kelt' => 'ASC']);
+        /** @var Bizonylatfej $tetel */
+        foreach ($kpszamlak as $tetel) {
+            $excel->getActiveSheet()
+                ->setCellValue('A' . $cellIndex, $tetel->getId())
+                ->setCellValue('B' . $cellIndex, $tetel->getPartnernev())
+                ->setCellValue('C' . $cellIndex, $tetel->getPartneradoszam())
+                ->setCellValue('D' . $cellIndex, $tetel->getKeltStr())
+                ->setCellValue('E' . $cellIndex, $tetel->getTeljesitesStr())
+                ->setCellValue('F' . $cellIndex, $tetel->getEsedekessegStr())
+                ->setCellValue('G' . $cellIndex, $tetel->getBrutto())
+                ->setCellValue('H' . $cellIndex, $tetel->getValutanemnev())
+                ->setCellValue('I' . $cellIndex, $tetel->getFizmodnev())
+                ->setCellValue('J' . $cellIndex, $tetel->getKeltStr());
+            $cellIndex++;
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+        $filename = uniqid('konyveloexport') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        echo json_encode(['url' => \mkw\store::storageUrl($filename)]);
     }
 
 }
