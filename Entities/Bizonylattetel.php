@@ -300,7 +300,7 @@ class Bizonylattetel
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes2;
 
-    /** @ORM\Column(type="date",nullable=false) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $vasarlasdatum;
 
     public function __construct()
