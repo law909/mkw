@@ -5557,19 +5557,14 @@ class importController extends \mkwhelpers\Controller
         function toArr($obj)
         {
             return [
-                'product_id' => (string)$obj->product_id,
                 'manufacturer' => (string)$obj->manufacturer,
-                'sku' => (string)$obj->sku,
-                'ean' => (string)$obj->ean,
                 'name' => (string)$obj->name,
-                'price' => (int)$obj->price,
-                'price_special' => (int)$obj->price_special,
+                'price' => (int)$obj->grossprice,
                 'category' => (string)$obj->category,
-                'product_url' => (string)$obj->product_url,
-                'description' => (string)$obj->description,
-                'delivery_time' => (int)$obj->delivery_time,
-                'termekkod' => (int)$obj->termekkod,
-                'stock' => (int)$obj->stock
+                'description' => (string)$obj->describe,
+                'delivery_time' => (int)$obj->deliverytime,
+                'termekkod' => (int)$obj->id,
+                'stock' => $obj->stock
             ];
         }
 
@@ -5639,7 +5634,7 @@ class importController extends \mkwhelpers\Controller
                     }
 
                     if ($valtozat) {
-                        if ($data['stock'] <= 0) {
+                        if (!$data['stock']) {
                             if ($valtozat->getKeszlet() <= 0) {
                                 $valtozat->setElerheto(false);
                                 \mkw\store::writelog(
@@ -5654,9 +5649,6 @@ class importController extends \mkwhelpers\Controller
                             }
                         } else {
                             $valtozat->setElerheto(true);
-                        }
-                        if (!$valtozat->getVonalkod()) {
-                            $valtozat->setVonalkod($data['ean']);
                         }
                         \mkw\store::getEm()->persist($valtozat);
                         if ($termek) {
@@ -5680,10 +5672,7 @@ class importController extends \mkwhelpers\Controller
                         }
                     } else {
                         if ($termek) {
-                            if (!$termek->getVonalkod()) {
-                                $termek->setVonalkod($data['ean']);
-                            }
-                            if ($data['stock'] <= 0) {
+                            if (!$data['stock']) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
                                     \mkw\store::writelog(
