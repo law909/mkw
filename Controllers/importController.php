@@ -3218,17 +3218,7 @@ class importController extends \mkwhelpers\Controller
                                 $kiskerar = (float)$data[$this->n('h')];
                                 $nagykerar = (float)$data[$this->n('g')];
 
-                                if (
-                                    ($kiskerar < 100000) &&
-                                    (
-                                        ($kiskerar / $nagykerar * 100 < $minarszaz) ||
-                                        ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)
-                                    )
-                                ) {
-                                    $termek->setBrutto($nagykerar * $minarszaz / 100);
-                                } else {
-                                    $termek->setBrutto($kiskerar * $arszaz / 100);
-                                }
+                                $termek->setBrutto($kiskerar * $arszaz / 100);
                                 $termek->setBrutto(round($termek->getBrutto(), -1));
 
                                 // kepek
@@ -3295,17 +3285,7 @@ class importController extends \mkwhelpers\Controller
                                     if (!$termek->getAkcios()) {
                                         $kiskerar = (float)$data[$this->n('h')];
                                         $nagykerar = (float)$data[$this->n('g')];
-                                        if (
-                                            ($kiskerar < 100000) &&
-                                            (
-                                                ($kiskerar / $nagykerar * 100 < $minarszaz) ||
-                                                ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)
-                                            )
-                                        ) {
-                                            $termek->setBrutto($nagykerar * $minarszaz / 100);
-                                        } else {
-                                            $termek->setBrutto($kiskerar * $arszaz / 100);
-                                        }
+                                        $termek->setBrutto($kiskerar * $arszaz / 100);
                                         $termek->setBrutto(round($termek->getBrutto(), -1));
                                     }
                                 }
@@ -3374,16 +3354,7 @@ class importController extends \mkwhelpers\Controller
                                     if (!$termek->getAkcios()) {
                                         $kiskerar = (float)$data[$this->n('h')];
                                         $nagykerar = (float)$data[$this->n('g')];
-                                        if (
-                                            ($kiskerar < 100000) &&
-                                            (
-                                                ($kiskerar / $nagykerar * 100 < $minarszaz) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < $minarszaz)
-                                            )
-                                        ) {
-                                            $termek->setBrutto($nagykerar * $minarszaz / 100);
-                                        } else {
-                                            $termek->setBrutto($kiskerar * $arszaz / 100);
-                                        }
+                                        $termek->setBrutto($kiskerar * $arszaz / 100);
                                         $termek->setBrutto(round($termek->getBrutto(), -1));
                                     }
                                     \mkw\store::getEm()->persist($termek);
@@ -5564,7 +5535,7 @@ class importController extends \mkwhelpers\Controller
                 'description' => (string)$obj->describe,
                 'delivery_time' => (int)$obj->deliverytime,
                 'termekkod' => (int)$obj->id,
-                'stock' => $obj->stock
+                'stock' => (string)$obj->stock
             ];
         }
 
@@ -5605,8 +5576,14 @@ class importController extends \mkwhelpers\Controller
 
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $termekdb++;
                     $data = toArr($products[$termekdb]);
+
+
+                    \mkw\store::writelog(
+                        '1.kör, data[termekkod]=' . $data['termekkod'] . ';data[stock]=' . $data['stock'] . ';data[name]=' . $data['name'],
+                        $logfile
+                    );
+                    $lettlog = true;
 
                     $termek = false;
                     $valtozat = false;
@@ -5634,11 +5611,11 @@ class importController extends \mkwhelpers\Controller
                     }
 
                     if ($valtozat) {
-                        if (!$data['stock']) {
+                        if ($data['stock'] === 'false') {
                             if ($valtozat->getKeszlet() <= 0) {
                                 $valtozat->setElerheto(false);
                                 \mkw\store::writelog(
-                                    'NEM ELÉRHETŐ'
+                                    'NEM ELÉRHETŐ - 1.kör, változat, nincs stock, nincs készlet -'
                                     . ' termék cikkszám: ' . $termek->getCikkszam()
                                     . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                     . ' változat cikkszám: ' . $valtozat->getCikkszam()
@@ -5649,6 +5626,15 @@ class importController extends \mkwhelpers\Controller
                             }
                         } else {
                             $valtozat->setElerheto(true);
+                            \mkw\store::writelog(
+                                'ELÉRHETŐ - 1.kör, változat, van stock -'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                         \mkw\store::getEm()->persist($valtozat);
                         if ($termek) {
@@ -5661,7 +5647,7 @@ class importController extends \mkwhelpers\Controller
                             $termek->setNemkaphato($egysemkaphato);
                             if ($egysemkaphato) {
                                 \mkw\store::writelog(
-                                    'NEM KAPHATÓ'
+                                    'NEM KAPHATÓ - 1.kör, változat, termék egyik változata sem elérhető - '
                                     . ' termék cikkszám: ' . $termek->getCikkszam()
                                     . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                                     $logfile
@@ -5672,11 +5658,11 @@ class importController extends \mkwhelpers\Controller
                         }
                     } else {
                         if ($termek) {
-                            if (!$data['stock']) {
+                            if ($data['stock'] === 'false') {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
                                     \mkw\store::writelog(
-                                        'NEM KAPHATÓ'
+                                        'NEM KAPHATÓ - 1.kör, termék, nincs stock, nincs készlet'
                                         . ' termék cikkszám: ' . $termek->getCikkszam()
                                         . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                                         $logfile
@@ -5685,6 +5671,13 @@ class importController extends \mkwhelpers\Controller
                                 }
                             } else {
                                 $termek->setNemkaphato(false);
+                                \mkw\store::writelog(
+                                    'KAPHATÓ - 1.kör, termék, van stock'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                             \mkw\store::getEm()->persist($termek);
                         }
@@ -5695,6 +5688,7 @@ class importController extends \mkwhelpers\Controller
                         \mkw\store::getEm()->clear();
                         $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
+                    $termekdb++;
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
@@ -5703,6 +5697,12 @@ class importController extends \mkwhelpers\Controller
                 $termekdb = 0;
                 /** @var \Entities\Termek $termek */
                 foreach ($termekek as $termek) {
+                    \mkw\store::writelog(
+                        '2.kör, $termek->idegencikkszam=' . $termek->getIdegencikkszam(),
+                        $logfile
+                    );
+                    $lettlog = true;
+
                     $vanelerheto = false;
                     $vanvaltozat = false;
                     $valtozatok = $termek->getValtozatok();
@@ -5716,7 +5716,7 @@ class importController extends \mkwhelpers\Controller
                     if ($vanvaltozat && !$vanelerheto) {
                         $termekdb++;
                         \mkw\store::writelog(
-                            'NEM KAPHATÓ'
+                            'NEM KAPHATÓ - 2.kör, terméknek van változata de egy sem elérhető -'
                             . ' termék cikkszám: ' . $termek->getCikkszam()
                             . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                             $logfile
@@ -5739,18 +5739,24 @@ class importController extends \mkwhelpers\Controller
                 if ($gyarto) {
                     $idegenkodok = [];
                     foreach ($products as $data) {
-                        $idegenkodok[] = (string)$data->termekkod;
+                        $idegenkodok[] = (string)$data->id;
                     }
                     if ($idegenkodok) {
                         $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
                         $termekdb = 0;
                         /** @var \Entities\Termek $termek */
                         foreach ($termekek as $termek) {
+                            \mkw\store::writelog(
+                                '3.kör, $termek->idegencikkszam=' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
+
                             if ($termek->getIdegencikkszam() && !in_array($termek->getIdegencikkszam(), $idegenkodok)) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termekdb++;
                                     \mkw\store::writelog(
-                                        'INAKTÍV'
+                                        'INAKTÍV - 3.kör, termék nincs az xmlben, nincs készleten -'
                                         . ' termék cikkszám: ' . $termek->getCikkszam()
                                         . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                                         $logfile
@@ -5767,7 +5773,7 @@ class importController extends \mkwhelpers\Controller
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $termekdb++;
                                         \mkw\store::writelog(
-                                            'NEM ELÉRHETŐ'
+                                            'NEM ELÉRHETŐ - 3.kör, változat nincs az xml-ben, nincs készleten -'
                                             . ' termék cikkszám: ' . $termek->getCikkszam()
                                             . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                             . ' változat cikkszám: ' . $valtozat->getCikkszam()
@@ -5793,6 +5799,12 @@ class importController extends \mkwhelpers\Controller
                     $termekdb = 0;
                     /** @var \Entities\Termek $termek */
                     foreach ($termekek as $termek) {
+                        \mkw\store::writelog(
+                            '4.kör, $termek->idegencikkszam=' . $termek->getIdegencikkszam(),
+                            $logfile
+                        );
+                        $lettlog = true;
+
                         $vanelerheto = false;
                         $vanvaltozat = false;
                         $valtozatok = $termek->getValtozatok();
@@ -5806,7 +5818,7 @@ class importController extends \mkwhelpers\Controller
                         if ($vanvaltozat && !$vanelerheto) {
                             $termekdb++;
                             \mkw\store::writelog(
-                                'NEM KAPHATÓ'
+                                'NEM KAPHATÓ - 4.kör, terméknek van változata de egy sem elérhető -'
                                 . ' termék cikkszám: ' . $termek->getCikkszam()
                                 . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
                                 $logfile
