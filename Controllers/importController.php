@@ -1648,6 +1648,18 @@ class importController extends \mkwhelpers\Controller
                                             \mkw\store::getEm()->persist($valtozat);
                                         }
                                     }
+                                } elseif (keres($valtozat->getIdegencikkszam(), $products)) {
+                                    \mkw\store::writelog(
+                                        'ÚJRA ELÉRHETŐ'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' változat cikkszám: ' . $valtozat->getCikkszam()
+                                        . ' változat szállítói cikkszám: ' . $valtozat->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
+                                    $valtozat->setElerheto(true);
+                                    \mkw\store::getEm()->persist($valtozat);
                                 }
                             }
                             if (!keres($t['idegencikkszam'], $products)) {
@@ -1671,6 +1683,26 @@ class importController extends \mkwhelpers\Controller
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                     }
+                                }
+                            } elseif ($termek->getInaktiv()) {
+                                $vanelerhetovaltozat = false;
+                                $vkvk = $termek->getValtozatok();
+                                /** @var \Entities\TermekValtozat $valtozat */
+                                foreach ($vkvk as $valtozat) {
+                                    if ($valtozat->getElerheto()) {
+                                        $vanelerhetovaltozat = true;
+                                    }
+                                }
+                                if ($vanelerhetovaltozat) {
+                                    \mkw\store::writelog(
+                                        'ÚJRA AKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
+                                    $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
                                 }
                             }
                             $termekdb++;
