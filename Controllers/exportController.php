@@ -123,7 +123,7 @@ class exportController extends \mkwhelpers\Controller
                     $leiras = $leiras . '<p>' . $cszoveg . '</p>';
                 }
 
-                $leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
+                //$leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
 
                 $keptomb = [];
                 $kepek = $t->getTermekKepek(true);
