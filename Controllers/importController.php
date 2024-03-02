@@ -2448,9 +2448,25 @@ class importController extends \mkwhelpers\Controller
                                     $logfile
                                 );
                                 $lettlog = true;
+                            } else {
+                                $termek->setNemkaphato(false);
+                                \mkw\store::writelog(
+                                    'KAPHATÓ'
+                                    . ' termék cikkszám: ' . $termek->getCikkszam()
+                                    . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                    $logfile
+                                );
+                                $lettlog = true;
                             }
                         } else {
                             $termek->setNemkaphato(false);
+                            \mkw\store::writelog(
+                                'KAPHATÓ'
+                                . ' termék cikkszám: ' . $termek->getCikkszam()
+                                . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                $logfile
+                            );
+                            $lettlog = true;
                         }
                         if (!$termek->getAkcios()) {
                             $termek->setNetto((float)$data['price']);
@@ -2494,6 +2510,16 @@ class importController extends \mkwhelpers\Controller
                                     );
                                     $lettlog = true;
                                     $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
+                                } else {
+                                    \mkw\store::writelog(
+                                        'AKTÍV'
+                                        . ' termék cikkszám: ' . $termek->getCikkszam()
+                                        . ' termék szállítói cikkszám: ' . $termek->getIdegencikkszam(),
+                                        $logfile
+                                    );
+                                    $lettlog = true;
+                                    $termek->setInaktiv(false);
                                     \mkw\store::getEm()->persist($termek);
                                 }
                             }
