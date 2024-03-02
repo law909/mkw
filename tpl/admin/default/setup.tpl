@@ -1439,49 +1439,6 @@
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
-                            <label for="SilkoEdit">Silko&Co:</label>
-                            <select id="SilkoEdit" name="gyartosilko">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $gyartosilkolist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
-                            <label for="PathSilkoEdit">Képek mappája:</label>
-                            <input id="PathSilkoEdit" name="pathsilko" value="{$pathsilko}">
-                            <a href="#" class="js-stopimport" data-href="{$stopsilkoimporturl}">Stop import</a>
-                            <a href="#" class="js-repairimport" data-href="{$repairsilkoimporturl}">Javít</a>
-                        </div>
-                        <div class="matt-hseparator"></div>
-                        <div>
-                            <label for="BtechEdit">BTech:</label>
-                            <select id="BtechEdit" name="gyartobtech">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $gyartobtechlist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
-                            <label for="PathBtechEdit">Képek mappája:</label>
-                            <input id="PathBtechEdit" name="pathbtech" value="{$pathbtech}">
-                            <a href="#" class="js-stopimport" data-href="{$stopbtechimporturl}">Stop import</a>
-                            <a href="#" class="js-repairimport" data-href="{$repairbtechimporturl}">Javít</a>
-                        </div>
-                        <div class="matt-hseparator"></div>
-                        <div>
-                            <label for="KressEdit">Kress:</label>
-                            <select id="KressEdit" name="gyartokress">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $gyartokresslist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
-                            <label for="PathKressEdit">Képek mappája:</label>
-                            <input id="PathKressEdit" name="pathkress" value="{$pathkress}">
-                            <a href="#" class="js-stopimport" data-href="{$stopkressgepimporturl}">Stop gép import</a>
-                            <a href="#" class="js-stopimport" data-href="{$stopkresstartozekimporturl}">Stop tart. import</a>
-                            <a href="#" class="js-repairimport" data-href="{$repairkressimporturl}">Javít</a>
-                        </div>
-                        <div class="matt-hseparator"></div>
-                        <div>
                             <label for="LegavenueEdit">Leg Avenue:</label>
                             <select id="LegavenueEdit" name="gyartolegavenue">
                                 <option value="">{at('válasszon')}</option>
@@ -1591,24 +1548,6 @@
                         <div class="matt-hseparator"></div>
                         <div>
                             <div>
-                                <label for="NetpressoEdit">Netpresso:</label>
-                                <select id="NetpressoEdit" name="gyartonetpresso">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $gyartonetpressolist as $_gyarto}
-                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                    {/foreach}
-                                </select>
-                                <label for="PathNetpressoEdit">Képek mappája:</label>
-                                <input id="PathNetpressoEdit" name="pathnetpresso" value="{$pathnetpresso}">
-                                <label for="UrlNetpressoEdit">URL:</label>
-                                <input id="UrlNetpressoEdit" name="urlnetpresso" value="{$urlnetpresso}">
-                                <a href="#" class="js-stopimport" data-href="{$stopnetpressoimporturl}">Stop import</a>
-                                <a href="#" class="js-repairimport" data-href="{$repairnetpressoimporturl}">Javít</a>
-                            </div>
-                        </div>
-                        <div class="matt-hseparator"></div>
-                        <div>
-                            <div>
                                 <label for="GulfEdit">Gulf:</label>
                                 <select id="GulfEdit" name="gyartogulf">
                                     <option value="">{at('válasszon')}</option>
@@ -1636,20 +1575,6 @@
                                 <input id="UrlSmileebikeEdit" name="urlsmileebike" value="{$urlsmileebike}">
                                 <a href="#" class="js-stopimport" data-href="{$stopsmileebikeimporturl}">Stop import</a>
                                 <a href="#" class="js-repairimport" data-href="{$repairsmileebikeimporturl}">Javít</a>
-                            </div>
-                        </div>
-                        <div class="matt-hseparator"></div>
-                        <div>
-                            <div>
-                                <label for="QManEdit">QMan:</label>
-                                <select id="QManEdit" name="gyartoqman">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $gyartoqmanlist as $_gyarto}
-                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                    {/foreach}
-                                </select>
-                                <a href="#" class="js-stopimport" data-href="{$stopqmanimporturl}">Stop import</a>
-                                <a href="#" class="js-repairimport" data-href="{$repairqmanimporturl}">Javít</a>
                             </div>
                         </div>
                         <div class="matt-hseparator"></div>

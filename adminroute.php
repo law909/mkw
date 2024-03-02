@@ -962,13 +962,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
     $router->map('POST', '/admin/import/evona', 'importController#evonaImport', 'adminevonaimport');
     $router->map('POST', '/admin/import/evonaxml', 'importController#evonaxmlImport', 'adminevonaxmlimport');
-    $router->map('POST', '/admin/import/silko', 'importController#silkoImport', 'adminsilkoimport');
-    $router->map('POST', '/admin/import/btech', 'importController#btechImport', 'adminbtechimport');
-    $router->map('POST', '/admin/import/kressgep', 'importController#kressgepImport', 'adminkressgepimport');
-    $router->map('POST', '/admin/import/kresstartozek', 'importController#kresstartozekImport', 'adminkresstartozekimport');
-    $router->map('POST', '/admin/import/netpresso', 'importController#netpressoImport', 'adminnetpressoimport');
     $router->map('POST', '/admin/import/gulf', 'importController#gulfImport', 'admingulfimport');
-    $router->map('POST', '/admin/import/qman', 'importController#qmanImport', 'adminqmanimport');
     $router->map('POST', '/admin/import/smileebike', 'importController#smileebikeImport', 'adminsmileebikeimport');
     $router->map('POST', '/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
