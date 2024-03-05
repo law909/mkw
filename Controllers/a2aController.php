@@ -379,6 +379,9 @@ class a2aController extends \mkwhelpers\Controller
         $results = [];
 
         $rawdata = $this->params->getOriginalStringRequestParam('data');
+
+        \mkw\store::writelog($rawdata);
+
         $jsondata = json_decode($rawdata, true);
 
         $auth = $jsondata['auth'];
