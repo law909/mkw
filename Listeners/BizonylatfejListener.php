@@ -235,15 +235,15 @@ class BizonylatfejListener
                     }
                 } else {
                     \mkw\store::writelog('ktg==0');
-                    $this->removeBiztetel($bizfej, $termekid);
+                    //$this->removeBiztetel($bizfej, $termekid);
                 }
             } else {
                 \mkw\store::writelog('cnt==0');
-                $this->removeBiztetel($bizfej, $termekid);
+                //$this->removeBiztetel($bizfej, $termekid);
             }
         } else {
             \mkw\store::writelog('szamol=false');
-            $this->removeBiztetel($bizfej, $termekid);
+            //$this->removeBiztetel($bizfej, $termekid);
         }
     }
 
