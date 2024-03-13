@@ -44,6 +44,7 @@ class BizonylattetelListener
 
     public function onFlush(OnFlushEventArgs $args)
     {
+        /*
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
@@ -54,7 +55,7 @@ class BizonylattetelListener
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()
         );
-
+        */
         //foreach ($entities as $entity) {
         //    if ($entity instanceof \Entities\Bizonylattetel) {
         //        $this->addTermekTranslations($entity);
