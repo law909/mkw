@@ -2013,8 +2013,10 @@ class Bizonylatfej
                 }
             }
             $this->id = self::createBizonylatszam($azon, $ev, $szam);
-            $sqids = new \Sqids\Sqids(alphabet: \mkw\store::getSetupValue('sqid'), minLength: 10);
-            $this->hashid = $sqids->encode([$ev, $szam]);
+            if (\mkw\store::getConfigValue('sqid')) {
+                $sqids = new \Sqids\Sqids(alphabet: \mkw\store::getConfigValue('sqid'), minLength: 10);
+                $this->hashid = $sqids->encode([$ev, $szam]);
+            }
         }
         return $szam;
     }
