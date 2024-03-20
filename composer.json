@@ -13,7 +13,8 @@
 		"mikehaertl/phpwkhtmltopdf": "^2.3",
 		"phpoffice/phpspreadsheet": "^1.12",
         "nesbot/carbon": "^2.35.0",
-		"symfony/cache": "^6.0"
+		"symfony/cache": "^6.0",
+		"sqids/sqids": "^0.4.1"
 	},
     "autoload": {
         "psr-4": {

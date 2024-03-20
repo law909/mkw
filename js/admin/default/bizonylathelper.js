@@ -1115,6 +1115,7 @@ var bizonylathelper = function ($) {
                 filter: {
                     fields: [
                         '#idfilter',
+                        '#hashidfilter',
                         '#vevonevfilter',
                         '#vevoemailfilter',
                         '#vevotelefonfilter',

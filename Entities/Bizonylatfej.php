@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
+use Sqids\Sqids;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
@@ -24,6 +25,11 @@ class Bizonylatfej
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=10,nullable=true)
+     */
+    private $hashid;
 
     /**
      * @ORM\Column(type="integer",nullable=true)
@@ -1061,6 +1067,7 @@ class Bizonylatfej
     {
         $ret = [];
         $ret['id'] = $this->getId();
+        $ret['hashid'] = $this->getHashid();
         $ret['lastmodstr'] = $this->getLastmodStr();
         $ret['createdstr'] = $this->getCreatedStr();
         $ret['updatedby'] = $this->getUpdatedbyNev();
@@ -1898,6 +1905,12 @@ class Bizonylatfej
     public function clearId()
     {
         $this->id = null;
+        $this->hashid = null;
+    }
+
+    public function getHashid()
+    {
+        return $this->hashid;
     }
 
     public function getSanitizedId()
@@ -2000,6 +2013,8 @@ class Bizonylatfej
                 }
             }
             $this->id = self::createBizonylatszam($azon, $ev, $szam);
+            $sqids = new Sqids(alphabet: \mkw\store::getSetupValue('sqid'), minLength: 10);
+            $this->hashid = $sqids->encode([$ev, $szam]);
         }
         return $szam;
     }
