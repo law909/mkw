@@ -310,9 +310,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
             }
             $res[] = $r;
         }
-
-        \mkw\store::writelog(print_r($res, true));
-
         return $res;
     }
 
