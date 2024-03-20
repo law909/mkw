@@ -39,6 +39,8 @@ class SzallitasimodHatarRepository extends \mkwhelpers\Repository
             ->addFilter('valutanem', '=', $valutanem)
             ->addFilter('hatarertek', '<=', $hatar);
 
+        \mkw\store::writelog(print_r($filter->getArray(), true));
+
         $t = $this->getAll($filter, ['hatarertek' => 'DESC']);
         if ($t) {
             return $t[0];
