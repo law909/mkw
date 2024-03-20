@@ -39,7 +39,10 @@ class checkoutController extends \mkwhelpers\MattableController
         if ($partner) {
             $valu = $partner->getValutanemId();
         } else {
-            $valu = \mkw\store::getMainSession()->valutanem;
+            $valu = \mkw\store::getMainValutanemId();
+        }
+        if (!$valu) {
+            $valu = \mkw\store::getSetupValue(\mkw\consts::Valutanem);
         }
 
         $kr = $this->getRepo(Kosar::class);
