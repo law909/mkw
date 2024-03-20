@@ -45,6 +45,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
                 $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
+                \mkw\store::writelog($ktg ? 'van ktg' : 'nincs ktg');
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
             case 'orszagonkent':
