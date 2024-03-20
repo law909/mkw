@@ -4,9 +4,11 @@ namespace Controllers;
 
 use Entities\Szallitasimod;
 
-class szallitasimodController extends \mkwhelpers\MattableController {
+class szallitasimodController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Szallitasimod');
         $this->setKarbFormTplName('szallitasimodkarbform.tpl');
         $this->setKarbTplName('szallitasimodkarb.tpl');
@@ -15,11 +17,12 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
+    protected function loadVars($t, $forKarb = false)
+    {
         $letezik = true;
         $translationsCtrl = new szallitasimodtranslationController($this->params);
-        $translations = array();
-        $x = array();
+        $translations = [];
+        $x = [];
         if (!$t) {
             $letezik = false;
             $t = new \Entities\Szallitasimod();
@@ -41,7 +44,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
             if ($letezik) {
                 $fhc = new szallitasimodhatarController($this->params);
                 $h = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimod($t);
-                $hatararr = array();
+                $hatararr = [];
                 foreach ($h as $hat) {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
                 }
@@ -49,7 +52,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
 
                 $fhc = new szallitasimodorszagController($this->params);
                 $h = $this->getRepo('Entities\SzallitasimodOrszag')->getBySzallitasimod($t);
-                $orszagarr = array();
+                $orszagarr = [];
                 foreach ($h as $hat) {
                     $orszagarr[] = $fhc->loadVars($hat, $forKarb);
                 }
@@ -57,14 +60,14 @@ class szallitasimodController extends \mkwhelpers\MattableController {
 
                 $fhc = new szallitasimodfizmodnoveloController($this->params);
                 $h = $this->getRepo('Entities\SzallitasimodFizmodNovelo')->getBySzallitasimod($t);
-                $orszagarr = array();
+                $orszagarr = [];
                 foreach ($h as $hat) {
                     $orszagarr[] = $fhc->loadVars($hat, $forKarb);
                 }
                 $x['fizmodnovelok'] = $orszagarr;
             }
             if (\mkw\store::isMultilang()) {
-                foreach($t->getTranslations() as $tr) {
+                foreach ($t->getTranslations() as $tr) {
                     $translations[] = $translationsCtrl->loadVars($tr, true);
                 }
                 $x['translations'] = $translations;
@@ -75,9 +78,11 @@ class szallitasimodController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Szallitasimod $obj
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
@@ -104,8 +109,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     $hatar->setValutanem($valutanem);
                 }
                 $this->getEm()->persist($hatar);
-            }
-            elseif ($oper === 'edit') {
+            } elseif ($oper === 'edit') {
                 $hatar = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($hatarid);
                 if ($hatar) {
                     $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
@@ -137,8 +141,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     $orszagrec->setOrszag($orszag);
                 }
                 $this->getEm()->persist($orszagrec);
-            }
-            elseif ($oper === 'edit') {
+            } elseif ($oper === 'edit') {
                 $orszagrec = $this->getEm()->getRepository('Entities\SzallitasimodOrszag')->find($orszagid);
                 if ($orszagrec) {
                     $orszagrec->setHatarertek($this->params->getNumRequestParam('orszagertek_' . $orszagid));
@@ -165,8 +168,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     $fizmodrec->setFizmod($fizmod);
                 }
                 $this->getEm()->persist($fizmodrec);
-            }
-            elseif ($oper === 'edit') {
+            } elseif ($oper === 'edit') {
                 $fizmodrec = $this->getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->find($fizmodid);
                 if ($fizmodrec) {
                     $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
@@ -204,8 +206,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     );
                     $obj->addTranslation($translation);
                     $this->getEm()->persist($translation);
-                }
-                elseif ($oper === 'edit') {
+                } elseif ($oper === 'edit') {
                     $translation = $this->getEm()->getRepository('Entities\SzallitasimodTranslation')->find($translationid);
                     if ($translation) {
                         $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
@@ -220,29 +221,33 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('szallitasimodlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),
             $this->params->getIntRequestParam('elemperpage', 30),
-            $this->params->getIntRequestParam('pageno', 1));
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getAll(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('szallitasimodlista.tpl');
 
         $view->setVar('pagetitle', t('Szállítási módok'));
@@ -251,7 +256,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -264,22 +270,22 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0) {
+    public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0)
+    {
         $foxpostid = \mkw\store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         $tofid = \mkw\store::getParameter(\mkw\consts::TOFSzallitasiMod);
         $glsid = \mkw\store::getParameter(\mkw\consts::GLSSzallitasiMod);
         if ($mind) {
-            $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
-        }
-        else {
+            $rec = $this->getRepo()->getAll([], ['sorrend' => 'ASC', 'nev' => 'ASC']);
+        } else {
             $rec = $this->getRepo()->getAllWebes();
         }
-        $res = array();
+        $res = [];
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = true; // \mkw\store::getTheme() !== 'mkwcansas';
         /** @var Szallitasimod $sor */
         foreach ($rec as $sor) {
-            $r = array(
+            $r = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'leiras' => $sor->getLeiras(),
@@ -289,33 +295,33 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 'terminaltipus' => $sor->getTerminaltipus(),
                 'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, null, $valutanem, $ertek),
                 'fizmodok' => $sor->getFizmodok()
-            );
+            ];
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
-            }
-            else {
+            } else {
                 if (!$mind) {
                     if (!$vanvalasztott) {
                         $r['selected'] = true;
                         $vanvalasztott = true;
-                    }
-                    else {
+                    } else {
                         $r['selected'] = false;
                     }
                 }
             }
             $res[] = $r;
         }
+        \mkw\store::writelog(print_r($res, true));
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret.='<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
         }
-        $ret.='</select>';
+        $ret .= '</select>';
         echo $ret;
     }
 

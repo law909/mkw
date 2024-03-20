@@ -44,8 +44,6 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
         $ktg = 0;
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
-                \mkw\store::writelog('szallmod: ' . $szallmod);
-                \mkw\store::writelog('ertek: ' . $ertek);
                 $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
