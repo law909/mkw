@@ -1,19 +1,23 @@
 <?php
+
 namespace Entities;
 
 use mkwhelpers\FilterDescriptor;
 
-class SzallitasimodRepository extends \mkwhelpers\Repository {
+class SzallitasimodRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Szallitasimod');
-        $this->setOrders(array(
-            '1' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC'))
-        ));
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']]
+        ]);
     }
 
-    public function getAllWebes() {
+    public function getAllWebes()
+    {
         $filter = new FilterDescriptor();
         switch (\mkw\store::getWebshopNum()) {
             case 1:
@@ -32,18 +36,26 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
                 $filter->addFilter('webes', '=', true);
                 break;
         }
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getSzallitasiKoltseg($szallmod, $fizmod, $orszag, $valutanem, $ertek) {
+    public function getSzallitasiKoltseg($szallmod, $fizmod, $orszag, $valutanem, $ertek)
+    {
         $ktg = 0;
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
+                \mkw\store::writelog('szallmod: ' . $szallmod);
+                \mkw\store::writelog('ertek: ' . $ertek);
                 $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
             case 'orszagonkent':
-                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodOrszag')->getBySzallitasimodOrszagValutanemHatar($szallmod, $orszag, $valutanem, $ertek);
+                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodOrszag')->getBySzallitasimodOrszagValutanemHatar(
+                    $szallmod,
+                    $orszag,
+                    $valutanem,
+                    $ertek
+                );
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
         }
