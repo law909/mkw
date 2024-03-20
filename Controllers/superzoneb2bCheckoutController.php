@@ -6,6 +6,12 @@ use Entities\Fizmod;
 use Entities\Kosar;
 use mkw\store;
 
+
+/**************************************************************
+ *
+ * shop., b2b...
+ *
+ */
 class superzoneb2bCheckoutController extends checkoutController
 {
 

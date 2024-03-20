@@ -6,6 +6,12 @@ use Entities\Fizmod;
 use Entities\Kosar;
 use mkw\store;
 
+
+/******************************************************
+ *
+ * mugenraceshop
+ *
+ */
 class mugenraceCheckoutController extends checkoutController
 {
 
