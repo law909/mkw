@@ -42,4 +42,40 @@ class toolController extends \mkwhelpers\Controller
         readfile(\mkw\store::storagePath('makszutov.txt'));
     }
 
+    public function copydepotermekDownload()
+    {
+        @\unlink(\mkw\store::storagePath('copydepotermek.xml'));
+        $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoTermek));
+        $fh = fopen(\mkw\store::storagePath('copydepotermek.xml'), 'w');
+        \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        \curl_exec($ch);
+        fclose($fh);
+        \curl_close($ch);
+
+        header("Content-type: application/xml");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile(\mkw\store::storagePath('copydepotermek.xml'));
+    }
+
+    public function copydepokeszletDownload()
+    {
+        @\unlink(\mkw\store::storagePath('copydepokeszlet.xml'));
+        $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoKeszlet));
+        $fh = fopen(\mkw\store::storagePath('copydepokeszlet.xml'), 'w');
+        \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        \curl_exec($ch);
+        fclose($fh);
+        \curl_close($ch);
+
+        header("Content-type: application/xml");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile(\mkw\store::storagePath('copydepokeszlet.xml'));
+    }
+
 }

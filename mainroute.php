@@ -187,6 +187,8 @@ $router->map('GET', '/t/emag/uploadtermek', 'emagController#uploadTermek', 'uplo
 
 $router->map('GET', '/t/reintexdownload', 'toolController#reintexDownload', 'reintexdownload');
 $router->map('GET', '/t/makszutovdownload', 'toolController#makszutovDownload', 'makszutovdownload');
+$router->map('GET', '/t/copydepotermekdownload', 'toolController#copydepotermekDownload', 'copydepotermekdownload');
+$router->map('GET', '/t/copydepokeszletdownload', 'toolController#copydepokeszletDownload', 'copydepokeszletdownload');
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 
