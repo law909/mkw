@@ -50,7 +50,16 @@ class toolController extends \mkwhelpers\Controller
         \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         \curl_setopt($ch, CURLOPT_FILE, $fh);
         \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        \curl_exec($ch);
+        $retval = \curl_exec($ch);
+        if ($retval !== false && (!\curl_errno($ch))) {
+            $http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($http_code !== 200) {
+                \mkw\store::writelog($http_code);
+            }
+        } else {
+            \mkw\store::writelog(\curl_errno($ch));
+            \mkw\store::writelog(\curl_error($ch));
+        }
         fclose($fh);
         \curl_close($ch);
 
