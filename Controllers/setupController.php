@@ -759,6 +759,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('gyartogulflist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoSmileebike);
         $view->setVar('gyartosmileebikelist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoCopydepo);
+        $view->setVar('gyartocopydepolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -790,6 +792,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::PathNetpresso, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathSmileebike);
         $view->setVar(\mkw\consts::PathSmileebike, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathSmileebike);
+        $view->setVar(\mkw\consts::PathSmileebike, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathCopydepo);
+        $view->setVar(\mkw\consts::PathCopydepo, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::UrlKreativ);
         $view->setVar(\mkw\consts::UrlKreativ, ($p ? $p->getErtek() : ''));
@@ -815,6 +821,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::UrlEvonaXML, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UrlSmileebike);
         $view->setVar(\mkw\consts::UrlSmileebike, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlCopydepoKeszlet);
+        $view->setVar(\mkw\consts::UrlCopydepoKeszlet, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlCopydepoTermek);
+        $view->setVar(\mkw\consts::UrlCopydepoTermek, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::KepUrlEvona);
         $view->setVar(\mkw\consts::KepUrlEvona, ($p ? $p->getErtek() : ''));
@@ -866,6 +876,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('stopevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'evonaxml']));
         $view->setVar('stopgulfimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'gulf']));
         $view->setVar('stopsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'smileebike']));
+        $view->setVar('stopcopydepotermekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'copydepotermek']));
+        $view->setVar('stopcopydepokeszletimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'copydepokeszlet']));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'kreativ']));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'delton']));
@@ -880,6 +892,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('repairevonaxmlimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'evonaxml']));
         $view->setVar('repairgulfimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'gulf']));
         $view->setVar('repairsmileebikeimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'smileebike']));
+        $view->setVar('repaircopydepotermekimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'copydepotermek']));
+        $view->setVar('repaircopydepokeszletimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'copydepokeszlet']));
 
         $view->printTemplateResult();
     }
@@ -1817,6 +1831,13 @@ class setupController extends \mkwhelpers\Controller
         } else {
             $this->setObj(\mkw\consts::GyartoSmileebike, '');
         }
+        $x = $this->params->getIntRequestParam('gyartocopydepo', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoCopydepo, $partner->getId());
+        } else {
+            $this->setObj(\mkw\consts::GyartoCopydepo, '');
+        }
 
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
         $this->setObj(\mkw\consts::PathKreativ, $this->params->getStringRequestParam('pathkreativ', ''));
@@ -1829,6 +1850,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::PathHaffner24, $this->params->getStringRequestParam('pathhaffner24', ''));
         $this->setObj(\mkw\consts::PathEvona, $this->params->getStringRequestParam('pathevona', ''));
         $this->setObj(\mkw\consts::PathSmileebike, $this->params->getStringRequestParam('pathsmileebike', ''));
+        $this->setObj(\mkw\consts::PathCopydepo, $this->params->getStringRequestParam('pathcopydepo', ''));
 
         $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''), true);
         $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''), true);
@@ -1841,6 +1863,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
         $this->setObj(\mkw\consts::UrlEvonaXML, $this->params->getStringRequestParam('urlevonaxml', ''), true);
         $this->setObj(\mkw\consts::UrlSmileebike, $this->params->getStringRequestParam('urlsmileebike', ''), true);
+        $this->setObj(\mkw\consts::UrlCopydepoTermek, $this->params->getStringRequestParam('urlcopydepotermek', ''), true);
+        $this->setObj(\mkw\consts::UrlCopydepoKeszlet, $this->params->getStringRequestParam('urlcopydepokeszlet', ''), true);
 
         $this->setObj(\mkw\consts::KepUrlEvona, $this->params->getStringRequestParam('kepurlevona', ''));
 

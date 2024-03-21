@@ -215,19 +215,15 @@ class consts
     const GyartoReintex = 'gyartoreintex';
     const GyartoTutisport = 'gyartotutisport';
     const GyartoMaxutov = 'gyartomaxutov';
-    const GyartoSilko = 'gyartosilko';
-    const GyartoBtech = 'gyartobtech';
-    const GyartoKress = 'gyartokress';
     const GyartoLegavenue = 'gyartolegavenue';
     const GyartoNomad = 'gyartonomad';
     const GyartoNika = 'gyartonika';
     const GyartoHaffner24 = 'gyartohaffner24';
     const GyartoEvona = 'gyartoevona';
     const GyartoEvonaXML = 'gyartoevonaxml';
-    const GyartoNetpresso = 'gyartonetpresso';
     const GyartoGulf = 'gyartogulf';
-    const GyartoQman = 'gyartoqman';
     const GyartoSmileebike = 'gyartosmileebike';
+    const GyartoCopydepo = 'gyartocopydepo';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -244,6 +240,7 @@ class consts
     const PathEvona = 'pathevona';
     const PathNetpresso = 'pathnetpresso';
     const PathSmileebike = 'pathsmileebike';
+    const PathCopydepo = 'pathcopydepo';
 
     const UrlKreativ = 'urlkreativ';
     const UrlKreativImages = 'urlkreativimages';
@@ -257,6 +254,8 @@ class consts
     const UrlNetpresso = 'urlnetpresso';
     const UrlEvonaXML = 'urlevonaxml';
     const UrlSmileebike = 'urlsmileebike';
+    const UrlCopydepoTermek = 'urlcopydepotermek';
+    const UrlCopydepoKeszlet = 'urlcopydepokeszlet';
 
     const KepUrlEvona = 'kepurlevona';
 
@@ -267,20 +266,16 @@ class consts
     const RunningReintexImport = 'runningreinteximport';
     const RunningTutisportImport = 'runningtutisportimport';
     const RunningMaxutovImport = 'runningmaxutovimport';
-    const RunningSilkoImport = 'runningsilkoimport';
-    const RunningBtechImport = 'runningbtechimport';
-    const RunningKressgepImport = 'runningkressgepimport';
-    const RunningKresstartozekImport = 'runningkresstartozekimport';
     const RunningLegavenueImport = 'runninglegavenueimport';
     const RunningNomadImport = 'runningnomadimport';
     const RunningNikaImport = 'runningnikaimport';
     const RunningHaffner24Import = 'runninghaffner24import';
     const RunningEvonaImport = 'runningevonaimport';
     const RunningEvonaXMLImport = 'runningevonaxmlimport';
-    const RunningNetpressoImport = 'runningnetpressoimport';
     const RunningGulfImport = 'runninggulfimport';
-    const RunningQmanImport = 'runningqmanimport';
     const RunningSmileebikeImport = 'runningsmileebikeimport';
+    const RunningCopydepoTermekImport = 'runningcopydepotermekimport';
+    const RunningCopydepoKeszletImport = 'runningcopydepokeszletimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';

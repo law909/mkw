@@ -1578,6 +1578,33 @@
                             </div>
                         </div>
                         <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="CopydepoTEdit">Copy Depo termék:</label>
+                                <select id="CopydepoTEdit" name="gyartocopydepo">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartocopydepolist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="PathCopydepotermekEdit">Képek mappája:</label>
+                                <input id="PathCopydepotermekEdit" name="pathcopydepo" value="{$pathcopydepo}">
+                                <label for="UrlCopydepotermekEdit">URL:</label>
+                                <input id="UrlCopydepotermekEdit" name="urlcopydepotermek" value="{$urlcopydepotermek}">
+                                <a href="#" class="js-stopimport" data-href="{$stopcopydepotermekimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repaircopydepotermekimporturl}">Javít</a>
+                            </div>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="UrlCopydepokeszletEdit">Copy Depo készlet URL:</label>
+                                <input id="UrlCopydepokeszletEdit" name="urlcopydepokeszlet" value="{$urlcopydepokeszlet}">
+                                <a href="#" class="js-stopimport" data-href="{$stopcopydepokeszletimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repaircopydepokeszletimporturl}">Javít</a>
+                            </div>
+                        </div>
+                        <div class="matt-hseparator"></div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="EpitoelemszamCsEdit">{at('Építőelemek száma csoport')}:</label></span>
                             <select id="EpitoelemszamCsEdit" name="epitoelemszamcs">
