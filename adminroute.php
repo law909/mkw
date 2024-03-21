@@ -964,6 +964,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/evonaxml', 'importController#evonaxmlImport', 'adminevonaxmlimport');
     $router->map('POST', '/admin/import/gulf', 'importController#gulfImport', 'admingulfimport');
     $router->map('POST', '/admin/import/smileebike', 'importController#smileebikeImport', 'adminsmileebikeimport');
+    $router->map('POST', '/admin/import/copydepotermek', 'importController#copydepotermekImport', 'admincopydepotermekimport');
+    $router->map('POST', '/admin/import/copydepokeszlet', 'importController#copydepokeszletImport', 'admincopydepokeszletimport');
     $router->map('POST', '/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');

@@ -85,6 +85,8 @@
                         <a href="/admin/import/nika" class="js-nikaimport">Nika</a>
                         <a href="/admin/import/haffner24" class="js-haffner24import">Haffner24</a>
                         <a href="/admin/import/smileebike" class="js-smileebikeimport">Smile ebike</a>
+                        <a href="/admin/import/copydepotermek" class="js-copydepotermekimport">Copy Depo termék</a>
+                        <a href="/admin/import/copydepokeszlet" class="js-copydepokeszletimport">Copy Depo készlet</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>

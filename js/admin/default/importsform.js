@@ -1,22 +1,21 @@
-$(document).ready(function() {
-	var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
+    var dialogcenter = $('#dialogcenter');
 
     $('#mattkarb').mattkarb({
-		independent:true,
-		viewUrl:'/admin/getkarb',
-		newWindowUrl:'/admin/viewkarb',
-		saveUrl:'/admin/save',
-		beforeShow:function() {
+        independent: true,
+        viewUrl: '/admin/getkarb',
+        newWindowUrl: '/admin/viewkarb',
+        saveUrl: '/admin/save',
+        beforeShow: function () {
 
             $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport,.js-silkoimport,.js-btechimport,'
                 + '.js-kressgepimport,.js-kresstartozekimport,.js-legavenueimport,.js-legavenueszotarimport,.js-nomadimport,.js-nikaimport,'
                 + '.js-haffner24import, .js-evonaimport, .js-evonaxmlimport, .js-netpressoimport, .js-gulfimport, .js-qmanimport,'
-                + '.js-smileebikeimport, .js-aszfdownload').on('click', function(e) {
+                + '.js-smileebikeimport, .js-copydepotermekimport, .js-copydepokeszletimport, .js-aszfdownload').on('click', function (e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');
-                }
-                else {
+                } else {
                     var data = new FormData($('#mattkarb-form')[0]);
                     data.append('katid', $('#TermekKategoria1').attr('data-value'));
                     $.ajax({
@@ -25,16 +24,14 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         data: data,
-                        success: function(d) {
+                        success: function (d) {
                             if (!d) {
                                 alert('Kész.');
-                            }
-                            else {
+                            } else {
                                 var adat = JSON.parse(d);
                                 if (adat.url) {
                                     document.location = adat.url;
-                                }
-                                else {
+                                } else {
                                     if (adat.msg) {
                                         alert(adat.msg);
                                     }
@@ -45,7 +42,7 @@ $(document).ready(function() {
                 }
             }).button();
 
-            $('.js-vateraimport').on('click', function(e) {
+            $('.js-vateraimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);
                 $.ajax({
@@ -54,24 +51,24 @@ $(document).ready(function() {
                     processData: false,
                     contentType: false,
                     data: data,
-                    success: function() {
+                    success: function () {
                         alert('Kész.');
                     }
                 });
             }).button();
 
-            $('.js-foxpostterminalimport, .js-glsterminalimport').on('click', function(e) {
+            $('.js-foxpostterminalimport, .js-glsterminalimport').on('click', function (e) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('href'),
-                    success: function() {
+                    success: function () {
                         alert('Kész.');
                     }
                 });
             }).button();
 
-            $('.js-termekfabutton').on('click', function(e) {
+            $('.js-termekfabutton').on('click', function (e) {
                 var edit = $(this);
                 e.preventDefault();
                 dialogcenter.jstree({
@@ -83,41 +80,41 @@ $(document).ready(function() {
                     },
                     ui: {select_limit: 1}
                 })
-                        .bind('loaded.jstree', function(event, data) {
-                            dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
-                        });
+                    .bind('loaded.jstree', function (event, data) {
+                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                    });
                 dialogcenter.dialog({
                     resizable: true,
                     height: 340,
                     modal: true,
                     buttons: {
-                        'OK': function() {
-                            dialogcenter.jstree('get_selected').each(function() {
+                        'OK': function () {
+                            dialogcenter.jstree('get_selected').each(function () {
                                 var treenode = $(this).children('a');
                                 edit.attr('data-value', treenode.attr('id').split('_')[1]);
                                 $('span', edit).text(treenode.text());
                             });
                             $(this).dialog('close');
                         },
-                        'Bezár': function() {
+                        'Bezár': function () {
                             $(this).dialog('close');
                         }
                     }
                 });
             }).button();
-            $('input[name="dbtol"]').on('change', function(e) {
+            $('input[name="dbtol"]').on('change', function (e) {
                 if ($(this).val() * 1 !== 0) {
                     $('input[name="deltondownload"]').prop('checked', false);
                 }
             });
-		},
-		onSubmit:function() {
-			$('#messagecenter')
-				.html('A mentés sikerült.')
-				.hide()
-				.addClass('matt-messagecenter ui-widget ui-state-highlight')
-				.one('click',messagecenterclick)
-				.slideToggle('slow');
-		}
-	});
+        },
+        onSubmit: function () {
+            $('#messagecenter')
+                .html('A mentés sikerült.')
+                .hide()
+                .addClass('matt-messagecenter ui-widget ui-state-highlight')
+                .one('click', messagecenterclick)
+                .slideToggle('slow');
+        }
+    });
 });

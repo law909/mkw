@@ -1152,6 +1152,11 @@ class store
         return self::getConfigValue('makszutovteszt') || self::getConfigValue('maxutovteszt');
     }
 
+    public static function isCopydepoTeszt()
+    {
+        return self::getConfigValue('copydepoteszt');
+    }
+
     public static function isMultilang()
     {
         return self::getSetupValue('multilang');
