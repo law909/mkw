@@ -5902,6 +5902,8 @@ class importController extends \mkwhelpers\Controller
                 } else {
                     $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoTermek));
                     $fh = fopen(\mkw\store::storagePath('copydepotermek.xml'), 'w');
+                    \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    \curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                     \curl_setopt($ch, CURLOPT_FILE, $fh);
                     \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                     $curlretval = \curl_exec($ch);
@@ -6114,6 +6116,8 @@ class importController extends \mkwhelpers\Controller
                 } else {
                     $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoKeszlet));
                     $fh = fopen(\mkw\store::storagePath('copydepokeszlet.xml'), 'w');
+                    \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    \curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                     \curl_setopt($ch, CURLOPT_FILE, $fh);
                     \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                     \curl_exec($ch);
