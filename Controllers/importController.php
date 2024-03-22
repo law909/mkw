@@ -5904,7 +5904,16 @@ class importController extends \mkwhelpers\Controller
                     $fh = fopen(\mkw\store::storagePath('copydepotermek.xml'), 'w');
                     \curl_setopt($ch, CURLOPT_FILE, $fh);
                     \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    \curl_exec($ch);
+                    $curlretval = \curl_exec($ch);
+                    if ($curlretval !== false && (!\curl_errno($ch))) {
+                        $http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        if ($http_code !== 200) {
+                            \mkw\store::writelog($http_code);
+                        }
+                    } else {
+                        \mkw\store::writelog(\curl_errno($ch));
+                        \mkw\store::writelog(\curl_error($ch));
+                    }
                     fclose($fh);
                     \curl_close($ch);
                 }
