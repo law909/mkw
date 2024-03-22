@@ -5900,7 +5900,7 @@ class importController extends \mkwhelpers\Controller
                 if (\mkw\store::isDeveloper()) {
                     move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath('copydepotermek.xml'));
                 } else {
-                    $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
+                    $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoTermek));
                     $fh = fopen(\mkw\store::storagePath('copydepotermek.xml'), 'w');
                     \curl_setopt($ch, CURLOPT_FILE, $fh);
                     \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -6103,7 +6103,7 @@ class importController extends \mkwhelpers\Controller
                 if (\mkw\store::isDeveloper()) {
                     move_uploaded_file($_FILES['toimport']['tmp_name'], \mkw\store::storagePath('copydepokeszlet.xml'));
                 } else {
-                    $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
+                    $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlCopydepoKeszlet));
                     $fh = fopen(\mkw\store::storagePath('copydepokeszlet.xml'), 'w');
                     \curl_setopt($ch, CURLOPT_FILE, $fh);
                     \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
