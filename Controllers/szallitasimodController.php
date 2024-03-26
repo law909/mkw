@@ -2,7 +2,11 @@
 
 namespace Controllers;
 
+use Entities\Orszag;
 use Entities\Szallitasimod;
+use Entities\SzallitasimodHatar;
+use Entities\Termek;
+use Entities\Valutanem;
 
 class szallitasimodController extends \mkwhelpers\MattableController
 {
@@ -39,6 +43,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
         $x['terminaltipus'] = $t->getTerminaltipus();
+        $x['termek'] = $t->getTermekId();
+        $x['termeknev'] = $t->getTermek()?->getNev();
 
         if ($forKarb) {
             if ($letezik) {
@@ -93,12 +99,18 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
         $obj->setTerminaltipus($this->params->getStringRequestParam('terminaltipus'));
+        $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+        if ($termek) {
+            $obj->setTermek($termek);
+        } else {
+            $obj->removeTermek();
+        }
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
             if (!$valutanem) {
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             }
             if ($oper === 'add') {
                 $hatar = new \Entities\SzallitasimodHatar();
@@ -110,7 +122,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $this->getEm()->persist($hatar);
             } elseif ($oper === 'edit') {
-                $hatar = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($hatarid);
+                $hatar = $this->getEm()->getRepository(SzallitasimodHatar::class)->find($hatarid);
                 if ($hatar) {
                     $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
                     $hatar->setOsszeg($this->params->getNumRequestParam('osszeg_' . $hatarid));
@@ -124,11 +136,11 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $orszagids = $this->params->getArrayRequestParam('orszagid');
         foreach ($orszagids as $orszagid) {
             $oper = $this->params->getStringRequestParam('orszagoper_' . $orszagid);
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('orszagvalutanem_' . $orszagid));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('orszagvalutanem_' . $orszagid));
             if (!$valutanem) {
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             }
-            $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszagorszag_' . $orszagid));
+            $orszag = $this->getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszagorszag_' . $orszagid));
             if ($oper === 'add') {
                 $orszagrec = new \Entities\SzallitasimodOrszag();
                 $orszagrec->setSzallitasimod($obj);
