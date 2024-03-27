@@ -244,6 +244,42 @@ class BizonylatfejListener
         }
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function createKezelesiKoltseg($bizfej)
+    {
+        $szallmod = $bizfej->getSzallitasimod();
+        $kezktg = $szallmod->getTermek();
+        if ($kezktg) {
+            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
+                $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            }
+            $k = new \Entities\Bizonylattetel();
+            $bizfej->addBizonylattetel($k);
+            $k->setPersistentData();
+            $k->setArvaltoztat(0);
+            if ($kezktg) {
+                $k->setTermek($kezktg);
+            }
+            $k->setMozgat();
+            $k->setFoglal();
+            $k->setMennyiseg(1);
+            if ($nullasafa) {
+                $k->setAfa($nullasafa);
+                $k->setNettoegysar($kezktg->getNettoAr());
+                $k->setNettoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
+            } else {
+                $k->setAfa($kezktg->getAfa());
+                $k->setBruttoegysar($kezktg->getNettoAr());
+                $k->setBruttoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
+            }
+            $k->calc();
+            $this->em->persist($k);
+            $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
+        }
+    }
+
     private function removeBiztetel($bizfej, $termekid)
     {
         foreach ($bizfej->getBizonylattetelek() as $tetel) {

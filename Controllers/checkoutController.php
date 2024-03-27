@@ -255,10 +255,13 @@ class checkoutController extends \mkwhelpers\MattableController
                 $kuponszoveg = 'ismeretlen kupon';
             }
         }
-        $this->getRepo('Entities\Kosar')->createSzallitasiKtg(
+        $this->getRepo(Kosar::class)->createSzallitasiKtg(
             $this->params->getIntRequestParam('szallitasimod'),
             $this->params->getIntRequestParam('fizmod'),
             $kuponkod
+        );
+        $this->getRepo(Kosar::class)->createKezelesiKtg(
+            $this->params->getIntRequestParam('szallitasimod')
         );
 
         $ret = [];

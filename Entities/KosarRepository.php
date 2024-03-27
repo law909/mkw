@@ -160,7 +160,7 @@ class KosarRepository extends \mkwhelpers\Repository
     }
 
     // MKW, egyesével lehet a kosárba rakni; a kosárban lehet mennyiséget módosítani
-    public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null)
+    public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $egymennyiseg = false)
     {
         $sessionid = \Zend_Session::getId();
 
@@ -184,7 +184,7 @@ class KosarRepository extends \mkwhelpers\Repository
         }
 
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
-        if ($termekid == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+        if ($termekid == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek) || $egymennyiseg) {
             if ($k) {
                 $k->setMennyiseg(1);
                 if ($nullasafa) {
@@ -519,6 +519,23 @@ class KosarRepository extends \mkwhelpers\Repository
                 }
             } else {
                 $this->remove($termek);
+            }
+        }
+    }
+
+    public function createKezelesiKtg($szallmod = null)
+    {
+        $szamol = true;
+        if ($szallmod) {
+            /** @var Szallitasimod $szm */
+            $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
+            $termek = $szm->getTermek();
+
+            if ($termek) {
+                $this->add($termek->getId(), null, $termek->getBruttoAr(), mennyiseg: 1, egymennyiseg: true);
+                \mkw\store::getMainSession()->lastkezelesiktgid = $termek->getId();
+            } elseif (\mkw\store::getMainSession()->lastkezelesiktgid) {
+                $this->remove(\mkw\store::getMainSession()->lastkezelesiktgid);
             }
         }
     }
