@@ -1952,7 +1952,7 @@ class partnerController extends \mkwhelpers\MattableController
             /** @var PartnerTermekcsoportKedvezmeny $tcsk */
             foreach ($partner->getTermekcsoportkedvezmenyek() as $tcsk) {
                 if ($tcsk->getTermekcsoportId() == $tcs) {
-                    $tcsk->setKedvezmeny($tcsk->getKedvezmeny() + $kedvvalt);
+                    $tcsk->setKedvezmeny($kedvvalt);
                     $this->getEm()->persist($tcsk);
                     $this->getEm()->flush();
                 }

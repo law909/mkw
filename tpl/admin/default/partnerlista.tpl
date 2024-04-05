@@ -193,7 +193,7 @@
             </select>
         </div>
         <div>
-            <label>Kedvezmény változás:</label>
+            <label>Új kedvezmény:</label>
             <input class="js-tcskkedvvaltozas" type="number" step="any"/>
         </div>
     </div>
