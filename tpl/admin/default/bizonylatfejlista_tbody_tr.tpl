@@ -207,7 +207,7 @@
                 <td></td>
                 <td>{$_egyed.szallitasimodnev}</td>
             </tr>
-            {if ($_egyed.uzletkotonev)}
+            {if (haveJog(90) && $_egyed.uzletkotonev)}
                 <tr>
                     <td></td>
                     <td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek, 2, '.', ' ')} %)</td>
