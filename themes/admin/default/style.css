@@ -1,5 +1,5 @@
 body {
-	font-size: 62.5%;
+    font-size: 62.5%;
 }
 
 .screen {
@@ -36,16 +36,16 @@ body {
 }
 
 .egyebadat-grid {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .egyebadat-wrapper {
-	margin-right: 5px;
-	float: left;
+    margin-right: 5px;
+    float: left;
 }
 
 .egyebadat-longwrapper {
-	clear: both;
+    clear: both;
 }
 
 .balra {
@@ -53,7 +53,7 @@ body {
 }
 
 .jobbra {
-	float: right;
+    float: right;
 }
 
 .clearboth {
@@ -65,33 +65,33 @@ body {
 }
 
 img {
-	border: none;
+    border: none;
 }
 
 .admin-termeknev {
-	font-weight: bold;
-	padding-right: 1em;
+    font-weight: bold;
+    padding-right: 1em;
 }
 
 .admin-termekadat {
-	margin-top: 1em;
+    margin-top: 1em;
 }
 
 .cimkelista {
-	line-height: 2em;
+    line-height: 2em;
 }
 
 #flyoutpreview {
-	position: absolute;
-	border: 1px solid #ccc;
-	background: #333;
-	padding: 5px;
-	display: none;
-	color: #fff;
+    position: absolute;
+    border: 1px solid #ccc;
+    background: #333;
+    padding: 5px;
+    display: none;
+    color: #fff;
 }
 
 .termekselect {
-	width: 40em;
+    width: 40em;
 }
 
 .bizonylattetelvaltozattable {
@@ -99,30 +99,30 @@ img {
 }
 
 .valtozatkepedit {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	max-width: 650px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-width: 650px;
 }
 
 .valtozatkepedit li {
-	margin: 3px;
-	padding: 1px;
-	float: left;
-	width: 100px;
-	height: 100px;
-	text-align: center;
+    margin: 3px;
+    padding: 1px;
+    float: left;
+    width: 100px;
+    height: 100px;
+    text-align: center;
 }
 
 .ui-autocomplete {
-	max-height: 200px;
-	overflow-y: auto;
-	/* prevent horizontal scrollbar */
-/*	overflow-x: hidden;*/
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    /*	overflow-x: hidden;*/
 }
 
 .guestpartner {
-	color: red;
+    color: red;
 }
 
 .barionstatus {
@@ -175,7 +175,7 @@ img {
 }
 
 .rontott, .rontott a {
-    color: #ddd !important;
+    color: #999 !important;
 }
 
 .keszletoszlop {
