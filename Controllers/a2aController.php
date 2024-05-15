@@ -235,7 +235,7 @@ class a2aController extends \mkwhelpers\Controller
 
     protected function createAFA($nev)
     {
-        if (!$nev || $nev == 25) {
+        if (is_null($nev) || $nev == '' || $nev == 25) {
             $nev = 27;
         }
         if ($nev == 20) {
@@ -269,7 +269,7 @@ class a2aController extends \mkwhelpers\Controller
         return $me;
     }
 
-    public function processCmd()
+    public function processCmd($data = null)
     {
         $pelda = [
             'auth' => [
@@ -378,8 +378,11 @@ class a2aController extends \mkwhelpers\Controller
         $result = [];
         $results = [];
 
-        $rawdata = $this->params->getOriginalStringRequestParam('data');
-
+        if ($data) {
+            $rawdata = $data;
+        } else {
+            $rawdata = $this->params->getOriginalStringRequestParam('data');
+        }
         $jsondata = json_decode($rawdata, true);
 
         $auth = $jsondata['auth'];
@@ -524,7 +527,7 @@ class a2aController extends \mkwhelpers\Controller
 
                                 foreach ($data['tetelek'] as $tetel) {
                                     $afa = $this->createAFA($tetel['afakulcs']);
-                                    $vtsz = $this->createVtsz(trim($tetel['vtsz']), $afa);
+                                    $vtsz = $this->createVtsz(trim($tetel['vtszszam']), $afa);
                                     $me = $this->createME(trim($tetel['me']), $tetel['menavkod']);
 
                                     $szamlatetel = new Bizonylattetel();
@@ -662,16 +665,6 @@ class a2aController extends \mkwhelpers\Controller
         }
 
         $result['results'] = $results;
-        echo json_encode($result);
-    }
-
-    public function teszt()
-    {
-        $this->tkr = \mkw\store::getEm()->getRepository(TermekFa::class);
-
-        $result = [];
-
-        $result['results']['kategoriak'] = $this->getkategoria_idwithchildren();
         echo json_encode($result);
     }
 }
