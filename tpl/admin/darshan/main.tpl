@@ -28,32 +28,36 @@
             </div>
         </div>
     </div>
-    <div class="component-container">
-        <div class="ui-widget ui-widget-content ui-corner-all">
-            <div class="ui-widget-header ui-corner-top">
-                <div class="mainboxinner ui-corner-top">Bérlet lejáratás</div>
-            </div>
-            <div class="mainboxinner">
-                <a href="#" class="js-berletlejaratas" data-url="/admin/jogaberlet/lejarat">Lejáratás</a>
-            </div>
-        </div>
-    </div>
-    <div class="component-container">
-        <div class="ui-widget ui-widget-content ui-corner-all">
-            <div class="ui-widget-header ui-corner-top">
-                <div class="mainboxinner ui-corner-top">Statisztikák</div>
-            </div>
-            <div class="mainboxinner">
-                {include "../default/comp_idoszak.tpl" comptype="datum"}
-                <div><label>Tanár elszámolás </label>
-                    <input id="telszelozo" name="telszidoszak" type="radio" value="1" checked><label for="telszelozo">előző hó</label>
-                    <input id="telszaktualis" name="telszidoszak" type="radio" value="2"><label for="telszaktualis">aktuális hó</label>
+    {if (haveJog(90))}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Bérlet lejáratás</div>
                 </div>
-                <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
-                <div id="stateredmeny"></div>
+                <div class="mainboxinner">
+                    <a href="#" class="js-berletlejaratas" data-url="/admin/jogaberlet/lejarat">Lejáratás</a>
+                </div>
             </div>
         </div>
-    </div>
+    {/if}
+    {if (haveJog(90))}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Statisztikák</div>
+                </div>
+                <div class="mainboxinner">
+                    {include "../default/comp_idoszak.tpl" comptype="datum"}
+                    <div><label>Tanár elszámolás </label>
+                        <input id="telszelozo" name="telszidoszak" type="radio" value="1" checked><label for="telszelozo">előző hó</label>
+                        <input id="telszaktualis" name="telszidoszak" type="radio" value="2"><label for="telszaktualis">aktuális hó</label>
+                    </div>
+                    <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
+                    <div id="stateredmeny"></div>
+                </div>
+            </div>
+        </div>
+    {/if}
     <!--div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
