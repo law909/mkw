@@ -2,21 +2,36 @@
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.partnernev}</a>
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                    class="ui-icon ui-icon-circle-minus"></span></a></span>
         <table>
             <tbody>
-                <tr><td>{$_egyed.partneremail}</td></tr>
-                <tr><td>{$_egyed.partnertelefon}</td></tr>
-                <tr><td>{$_egyed.datum}</td></tr>
+            <tr>
+                <td>{$_egyed.partneremail}</td>
+            </tr>
+            <tr>
+                <td>{$_egyed.partnertelefon}</td>
+            </tr>
+            <tr>
+                <td>{$_egyed.datum}</td>
+            </tr>
             </tbody>
         </table>
     </td>
     <td class="cell">
-        <table><tbody>
-            <tr><td>{$_egyed.rendezvenynev}</td></tr>
-            <tr><td>{$_egyed.rendezvenykezdodatum}</td></tr>
-            <tr><td>{$_egyed.rendezvenytanarnev}</td></tr>
-        </tbody></table>
+        <table>
+            <tbody>
+            <tr>
+                <td>{$_egyed.rendezvenynev}</td>
+            </tr>
+            <tr>
+                <td>{$_egyed.rendezvenykezdodatum}</td>
+            </tr>
+            <tr>
+                <td>{$_egyed.rendezvenytanarnev}</td>
+            </tr>
+            </tbody>
+        </table>
     </td>
     <td class="cell">
         <table>
@@ -35,11 +50,15 @@
                         {$_egyed.visszautalasfizmodnev}<br>
                         {$_egyed.visszautalasosszeghuf}<br>
                         {if ($_egyed.visszautalaspenztarnev)}
-                            {$_egyed.visszautalaspenztarnev}<br>
-                            {$_egyed.visszautalaspenztarbizonylatszam}<br>
+                            {$_egyed.visszautalaspenztarnev}
+                            <br>
+                            {$_egyed.visszautalaspenztarbizonylatszam}
+                            <br>
                         {else}
-                            {$_egyed.visszautalasbankszamlaszam}<br>
-                            {$_egyed.visszautalasbankbizonylatszam}<br>
+                            {$_egyed.visszautalasbankszamlaszam}
+                            <br>
+                            {$_egyed.visszautalasbankbizonylatszam}
+                            <br>
                         {/if}
                     </td>
                 </tr>
@@ -68,11 +87,15 @@
                         <span class="mattable-important">{at('Fizetve')}</span> ({$_egyed.fizetesdatum}): {bizformat($_egyed.fizetveosszeghuf)}<br>
                         {$_egyed.fizmodnev}<br>
                         {if ($_egyed.fizetvepenztarnev)}
-                            {$_egyed.fizetvepenztarnev}<br>
-                            {$_egyed.fizetvepenztarbizonylatszam}<br>
+                            {$_egyed.fizetvepenztarnev}
+                            <br>
+                            {$_egyed.fizetvepenztarbizonylatszam}
+                            <br>
                         {else}
-                            {$_egyed.fizetvebankszamlaszam}<br>
-                            {$_egyed.fizetvebankbizonylatszam}<br>
+                            {$_egyed.fizetvebankszamlaszam}
+                            <br>
+                            {$_egyed.fizetvebankbizonylatszam}
+                            <br>
                         {/if}
                     </td>
                 </tr>
@@ -81,7 +104,8 @@
         </table>
     </td>
     <td class="cell">
-        <table><tbody>
+        <table>
+            <tbody>
             {if ($_egyed.emailregkoszono)}
                 <tr>
                     <td>
@@ -91,11 +115,11 @@
             {/if}
             {if (!$_egyed.fizetve)}
                 {if ($_egyed.emaildijbekero)}
-                <tr>
-                    <td>
-                        Utolsó díjbekérő email: {$_egyed.emaildijbekerodatum}
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            Utolsó díjbekérő email: {$_egyed.emaildijbekerodatum}
+                        </td>
+                    </tr>
                 {/if}
                 <tr>
                     <td>
@@ -111,35 +135,36 @@
                 </tr>
             {/if}
             {if (!$_egyed.fizetve && !$_egyed.szamlazva && !$_egyed.lemondva && !$_egyed.visszautalva)}
-            <tr>
-                <td>
-                    <a class="js-fizetve" href="#" data-id="{$_egyed.id}">{at('Fizet')}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <a class="js-fizetve" href="#" data-id="{$_egyed.id}">{at('Fizet')}</a>
+                    </td>
+                </tr>
             {/if}
-            {if (!$_egyed.szamlazva && $_egyed.fizetve)}
-            <tr>
-                <td>
-                    <a class="js-szamlazva" href="#" data-id="{$_egyed.id}">{at('Számláz')}</a>
-                </td>
-            </tr>
+            {if (!$_egyed.szamlazva && $_egyed.fizetve && haveJog(20))}
+                <tr>
+                    <td>
+                        <a class="js-szamlazva" href="#" data-id="{$_egyed.id}">{at('Számláz')}</a>
+                    </td>
+                </tr>
             {/if}
             {if (!$_egyed.lemondva && !$_egyed.visszautalva)}
-            <tr>
-                <td>
-                    <a class="js-lemondva" href="#" data-id="{$_egyed.id}">{at('Lemond')}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <a class="js-lemondva" href="#" data-id="{$_egyed.id}">{at('Lemond')}</a>
+                    </td>
+                </tr>
             {/if}
-            {if ($_egyed.lemondva && $_egyed.fizetve)}
-            <tr>
-                <td>
-                    {if (!$_egyed.visszautalva)}
-                        <a class="js-visszautalva" href="#" data-id="{$_egyed.id}">{at('Visszautal')}</a>
-                    {/if}
-                </td>
-            </tr>
+            {if ($_egyed.lemondva && $_egyed.fizetve && haveJog(20))}
+                <tr>
+                    <td>
+                        {if (!$_egyed.visszautalva)}
+                            <a class="js-visszautalva" href="#" data-id="{$_egyed.id}">{at('Visszautal')}</a>
+                        {/if}
+                    </td>
+                </tr>
             {/if}
-        </tbody></table>
+            </tbody>
+        </table>
     </td>
 </tr>

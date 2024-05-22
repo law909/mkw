@@ -94,7 +94,7 @@
             </div>
         </div>
     </div-->
-    <div class="component-container">
+    <!--div class="component-container">
 
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
@@ -284,8 +284,8 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div class="component-container">
+    </div-->
+    <!--div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">VETTEM valamit a Darshannak</div>
@@ -468,8 +468,8 @@
 
             </div>
         </div>
-    </div>
-    <div class="component-container">
+    </div-->
+    <!--div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">{at('Pénzt VESZEK KI')}</div>
@@ -583,8 +583,8 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div class="component-container">
+    </div-->
+    <!--div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">{at('Pénzt TESZEK BE')}</div>
@@ -698,7 +698,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div-->
     <div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
