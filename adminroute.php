@@ -96,6 +96,10 @@ $router->map('GET', '/admin/rendezvenyallapot/jsonlist', 'rendezvenyallapotContr
 $router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
 $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
 
+$router->map('GET', '/admin/arsav/jsonlist', 'arsavController#jsonlist', 'adminarsavjsonlist');
+$router->map('GET', '/admin/arsav/htmllist', 'arsavController#htmllist', 'adminarsavhtmllist');
+$router->map('POST', '/admin/arsav/save', 'arsavController#save', 'adminarsavsave');
+
 $router->map('GET', '/admin/arlista/view', 'arlistaController#view', 'adminarlistaview');
 $router->map('GET', '/admin/arlista/get', 'arlistaController#createLista', 'adminarlistaget');
 $router->map('GET', '/admin/arlista/export', 'arlistaController#exportLista', 'adminarlistaexport');

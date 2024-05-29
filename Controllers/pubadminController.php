@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Carbon\Carbon;
+use Entities\Arsav;
 use Entities\Partner;
 use mkw\store;
 use mkwhelpers, Entities;
@@ -121,18 +122,19 @@ class pubadminController extends mkwhelpers\Controller
                 $rvtomb['lemondva'] = $resztvevo->isLemondva();
                 /** @var Entities\Termek $termek */
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                $arsav = $this->getEm()->getRepository(Arsav::class)->findOneBy(['nev' => 'normál']);
                 if ($termek) {
-                    $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type1name'] = $termek->getNev();
                 }
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
                 if ($termek) {
-                    $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type2name'] = $termek->getNev();
                 }
                 $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
                 if ($termek) {
-                    $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, 'normál');
+                    $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type3name'] = $termek->getNev();
                 }
                 $resztvevolista[] = $rvtomb;

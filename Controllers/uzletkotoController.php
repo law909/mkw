@@ -2,9 +2,13 @@
 
 namespace Controllers;
 
-class uzletkotoController extends \mkwhelpers\MattableController {
+use Entities\Arsav;
 
-    public function __construct($params) {
+class uzletkotoController extends \mkwhelpers\MattableController
+{
+
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Uzletkoto');
         $this->setKarbFormTplName('uzletkotokarbform.tpl');
         $this->setKarbTplName('uzletkotokarb.tpl');
@@ -13,8 +17,9 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Uzletkoto();
             $this->getEm()->detach($t);
@@ -35,7 +40,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $x['szamlatipus'] = $t->getPartnerszamlatipus();
         $x['valutanem'] = $t->getPartnervalutanem();
         $x['valutanemnev'] = $t->getPartnervalutanemnev();
-        $x['termekarazonosito'] = $t->getPartnertermekarazonosito();
+        $x['arsav'] = $t->getArsav();
         $x['szallitasimod'] = $t->getPartnerszallitasimod();
         $x['szallitasimodnev'] = $t->getPartnerszallitasimodNev();
         $x['bizonylatnyelv'] = $t->getPartnerbizonylatnyelv();
@@ -50,7 +55,8 @@ class uzletkotoController extends \mkwhelpers\MattableController {
      *  EntityController->save() hívja, ezért kell protected-nek lennie
      */
 
-    protected function setFields(\Entities\Uzletkoto $obj) {
+    protected function setFields(\Entities\Uzletkoto $obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setIrszam($this->params->getStringRequestParam('irszam'));
         $obj->setVaros($this->params->getStringRequestParam('varos'));
@@ -63,7 +69,12 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setJutalek($this->params->getNumRequestParam('jutalek'));
         $obj->setPartnerszamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
-        $obj->setPartnertermekarazonosito($this->params->getStringRequestParam('partnertermekarazonosito'));
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
+        if ($arsav) {
+            $obj->setArsav($arsav);
+        } else {
+            $obj->removeArsav();
+        }
         $obj->setPartnerbizonylatnyelv($this->params->getStringRequestParam('partnerbizonylatnyelv'));
         $obj->setBelso($this->params->getBoolRequestParam('belso'));
         $obj->setFo($this->params->getBoolRequestParam('fo'));
@@ -86,24 +97,30 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('uzletkotolista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
 
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $uk = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($uk, 'uzletkotolista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('uzletkotolista.tpl');
         $view->setVar('pagetitle', t('Üzletkötők'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
@@ -111,17 +128,19 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getSelectList($selid = null, $filter = array()) {
-        $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null, $filter = [])
+    {
+        $rec = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
@@ -130,7 +149,8 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         echo $ret;
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -146,8 +166,9 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($uk ? $uk->getPartnerfizmodId() : 0)));
         $valutanem = new valutanemController($this->params);
         $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($uk ? $uk->getPartnervalutanemId() : 0)));
-        $termekar = new termekarController($this->params);
-        $view->setVar('partnertermekarazonositolist', $termekar->getSelectList(($uk ? $uk->getPartnertermekarazonosito() : '')));
+        $arsav = new arsavController($this->params);
+        $view->setVar('arsavlist', $arsav->getSelectList(($uk ? $uk->getArsav()?->getId() : 0)));
+
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($uk ? $uk->getPartnerszallitasimodId() : 0)));
         $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($uk ? $uk->getPartnerszamlatipus() : 0)));
@@ -155,7 +176,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 
         $fofilter = new \mkwhelpers\FilterDescriptor();
         $fofilter->addFilter('fo', '=', true);
-        $view->setVar('fouzletkotolist', $this->getSelectList(($uk ? $uk->getFouzletkotoId(): 0), $fofilter));
+        $view->setVar('fouzletkotolist', $this->getSelectList(($uk ? $uk->getFouzletkotoId() : 0), $fofilter));
 
         $view->setVar('uzletkoto', $this->loadVars($uk));
         $view->printTemplateResult();

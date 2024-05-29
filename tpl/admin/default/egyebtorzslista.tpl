@@ -29,6 +29,10 @@
             <div id="arfolyamgridpager"></div>
         </div>
         <div class="egyebadat-grid">
+            <table id="arsavgrid"></table>
+            <div id="arsavgridpager"></div>
+        </div>
+        <div class="egyebadat-grid">
             <table id="raktargrid"></table>
             <div id="raktargridpager"></div>
         </div>

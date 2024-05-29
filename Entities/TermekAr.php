@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="termekar",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
- *	@ORM\index(name="termekarazonosito_idx",columns={"termek_id","valutanem_id","azonosito"})
+ *	@ORM\index(name="termekarazonosito_idx",columns={"termek_id","valutanem_id","arsav_id"})
  * })
  */
 class TermekAr
@@ -39,21 +39,23 @@ class TermekAr
      */
     private $termek;
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $azonosito;
-
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $netto;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $brutto;
 
-
     /**
-     * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
+     * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="termekarak")
      * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $valutanem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Arsav")
+     * @ORM\JoinColumn(name="arsav_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     */
+    private $arsav;
 
     public function getId()
     {
@@ -97,16 +99,6 @@ class TermekAr
         return $this->created;
     }
 
-    public function getAzonosito()
-    {
-        return $this->azonosito;
-    }
-
-    public function setAzonosito($val)
-    {
-        $this->azonosito = $val;
-    }
-
     public function getValutanem()
     {
         return $this->valutanem;
@@ -114,20 +106,12 @@ class TermekAr
 
     public function getValutanemnev()
     {
-        $vn = $this->getValutanem();
-        if ($vn) {
-            return $vn->getNev();
-        }
-        return '';
+        return $this->valutanem?->getNev();
     }
 
     public function getValutanemId()
     {
-        $vn = $this->getValutanem();
-        if ($vn) {
-            return $vn->getId();
-        }
-        return '';
+        return $this->valutanem->getId();
     }
 
     public function setValutanem($val)
@@ -168,4 +152,25 @@ class TermekAr
         $this->brutto = $val;
         $this->netto = $this->getTermek()->getAfa()->calcNetto($val);
     }
+
+    public function getArsav()
+    {
+        return $this->arsav;
+    }
+
+    public function setArsav($val)
+    {
+        if (!($val instanceof \Entities\Arsav)) {
+            $val = \mkw\store::getEm()->getRepository(Arsav::class)->find($val);
+        }
+        if ($this->arsav !== $val) {
+            $this->arsav = $val;
+        }
+    }
+
+    public function removeArsav()
+    {
+        $this->arsav = null;
+    }
+
 }

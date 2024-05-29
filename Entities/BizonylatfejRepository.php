@@ -5,25 +5,28 @@ namespace Entities;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
 
-class BizonylatfejRepository extends \mkwhelpers\Repository {
+class BizonylatfejRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Bizonylatfej');
-        $this->setOrders(array(
-            '1' => array('caption' => 'biz.szám szerint csökkenő', 'order' => array('_xx.id' => 'DESC')),
-            '2' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC')),
-            '3' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC', '_xx.id' => 'DESC')),
-            '4' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'ASC', '_xx.id' => 'DESC')),
-            '5' => array('caption' => 'er.biz.szám szerint csökkenő', 'order' => array('_xx.erbizonylatszam' => 'DESC')),
-            '6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC'))
-        ));
+        $this->setOrders([
+            '1' => ['caption' => 'biz.szám szerint csökkenő', 'order' => ['_xx.id' => 'DESC']],
+            '2' => ['caption' => 'biz.szám szerint növekvő', 'order' => ['_xx.id' => 'ASC']],
+            '3' => ['caption' => 'kelt szerint csökkenő', 'order' => ['_xx.kelt' => 'DESC', '_xx.id' => 'DESC']],
+            '4' => ['caption' => 'kelt szerint növekvő', 'order' => ['_xx.kelt' => 'ASC', '_xx.id' => 'DESC']],
+            '5' => ['caption' => 'er.biz.szám szerint csökkenő', 'order' => ['_xx.erbizonylatszam' => 'DESC']],
+            '6' => ['caption' => 'er.biz.szám szerint növekvő', 'order' => ['_xx.erbizonylatszam' => 'ASC']]
+        ]);
     }
 
-    public function getReportfileSelectList($sel, $biztip) {
+    public function getReportfileSelectList($sel, $biztip)
+    {
         $elo = 'biz_' . $biztip;
         $files = dir(\mkw\store::getAdminDefaultTemplatePath());
-        $list = array();
+        $list = [];
         while (false !== ($entry = $files->read())) {
             if (($entry != '.') && ($entry != '..')) {
                 $path_parts = pathinfo($entry);
@@ -49,26 +52,30 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 }
             }
         }
-        $ret = array();
+        $ret = [];
         foreach ($list as $l) {
-            $ret[] = array(
+            $ret[] = [
                 'id' => $l,
                 'caption' => $l,
                 'selected' => ($l === $sel)
-            );
+            ];
         }
         return $ret;
     }
 
-    public function findWithJoins($id) {
+    public function findWithJoins($id)
+    {
         return parent::findWithJoins((string)$id);
     }
 
-    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -79,12 +86,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithTetelek($filter, $order = array(), $offset = 0, $elemcount = 0, $locale = false) {
-        $q = $this->_em->createQuery('SELECT _xx, bt'
+    public function getWithTetelek($filter, $order = [], $offset = 0, $elemcount = 0, $locale = false)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx, bt'
             . ' FROM Entities\Bizonylatfej _xx'
             . ' LEFT JOIN _xx.bizonylattetelek bt'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -98,12 +108,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function calcSumWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT SUM(_xx.brutto) AS brutto, SUM(_xx.netto) AS netto, SUM(_xx.afa) AS afa,'
+    public function calcSumWithJoins($filter, $order = [], $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT SUM(_xx.brutto) AS brutto, SUM(_xx.netto) AS netto, SUM(_xx.afa) AS afa,'
             . ' SUM(_xx.bruttohuf) AS bruttohuf, SUM(_xx.nettohuf) AS nettohuf, SUM(_xx.afahuf) AS afahuf'
             . ' FROM Entities\Bizonylatfej _xx'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -115,7 +128,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $res[0];
     }
 
-    public function calcTeljesitmeny($filter) {
+    public function calcTeljesitmeny($filter)
+    {
         $filter->addFilter('rontott', '=', false);
         $filter->addFilter('storno', '=', false);
         $filter->addFilter('stornozott', '=', false);
@@ -123,20 +137,26 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('ev', 'ev');
         $rsm->addScalarResult('netto', 'netto');
         $rsm->addScalarResult('db', 'db');
-        $q = $this->_em->createNativeQuery('SELECT YEAR(kelt) AS ev, SUM(netto) AS netto, COUNT(*) AS db'
+        $q = $this->_em->createNativeQuery(
+            'SELECT YEAR(kelt) AS ev, SUM(netto) AS netto, COUNT(*) AS db'
             . ' FROM bizonylatfej _xx'
             . $this->getFilterString($filter)
             . ' GROUP BY ev'
-            . ' ORDER BY ev', $rsm);
+            . ' ORDER BY ev',
+            $rsm
+        );
         $q->setParameters($this->getQueryParameters($filter));
         $res = $q->getScalarResult();
         return $res;
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Bizonylatfej _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
@@ -145,9 +165,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      * @param $bizszam
      * @param $termekid
      * @param null $valtozatid
+     *
      * @return null
      */
-    public function getTetelsor($bizszam, $termekid, $valtozatid = null) {
+    public function getTetelsor($bizszam, $termekid, $valtozatid = null)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($bizszam) {
             $filter->addFilter('bizonylatfej', '=', $bizszam);
@@ -161,9 +183,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if (count($filter) == 0) {
             $filter->addFilter('id', '<', '0');
         }
-        $q = $this->_em->createQuery('SELECT _xx'
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Bizonylattetel _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         $r = $q->getResult();
         if (count($r) > 0) {
@@ -172,7 +196,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return null;
     }
 
-    public function remove($bizszam, $termekid, $valtozatid = null) {
+    public function remove($bizszam, $termekid, $valtozatid = null)
+    {
         $t = $this->getTetelsor($bizszam, $termekid, $valtozatid);
         if ($t) {
             $this->_em->remove($t);
@@ -182,15 +207,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     /**
      * @param \Entities\Bizonylatfej $o
+     *
      * @return array
      */
-    public function getAFAOsszesito($o) {
-        $ret = array();
+    public function getAFAOsszesito($o)
+    {
+        $ret = [];
         /** @var \Entities\Bizonylattetel $tetel */
         foreach ($o->getBizonylattetelek() as $tetel) {
             $a = $tetel->getAfa();
             if (!array_key_exists($tetel->getAfaId(), $ret)) {
-                $ret[$tetel->getAfaId()] = array(
+                $ret[$tetel->getAfaId()] = [
                     'netto' => 0,
                     'afa' => 0,
                     'brutto' => 0,
@@ -201,7 +228,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     'caption' => $tetel->getAfanev(),
                     'rlbkod' => ($a ? $a->getRLBkod() : 0),
                     'navcase' => ($a ? $a->getNavcase() : '')
-                );
+                ];
             }
             $ret[$tetel->getAfaId()]['netto'] += $tetel->getNetto();
             $ret[$tetel->getAfaId()]['afa'] += $tetel->getAfaertek();
@@ -213,7 +240,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function findForPrint($id) {
+    public function findForPrint($id)
+    {
         $locale = false;
         if ($id) {
             $b = $this->find($id);
@@ -225,10 +253,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', '=', $id);
 
-        $q = $this->_em->createQuery('SELECT _xx, bt'
+        $q = $this->_em->createQuery(
+            'SELECT _xx, bt'
             . ' FROM Entities\Bizonylatfej _xx'
             . ' LEFT JOIN _xx.bizonylattetelek bt'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
 
         $q->setParameters($this->getQueryParameters($filter));
 
@@ -241,7 +271,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function haveSzallitasiKtg($bf) {
+    public function haveSzallitasiKtg($bf)
+    {
         $bizfej = $bf;
         if (is_string($bf)) {
             $bizfej = $this->find($bf);
@@ -256,7 +287,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $cnt > 0;
     }
 
-    public function getSzallitasiKtgTetel($bf) {
+    public function getSzallitasiKtgTetel($bf)
+    {
         $bizfej = $bf;
         if (is_string($bf)) {
             $bizfej = $this->find($bf);
@@ -272,14 +304,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getSzamlaKelt($bizszam) {
+    public function getSzamlaKelt($bizszam)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', 'szamla');
         $filter->addFilter('id', '=', $bizszam);
 
-        $q = $this->_em->createQuery('SELECT YEAR(_xx.kelt) AS ev'
+        $q = $this->_em->createQuery(
+            'SELECT YEAR(_xx.kelt) AS ev'
             . ' FROM Entities\Bizonylatfej _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
 
         $q->setParameters($this->getQueryParameters($filter));
 
@@ -290,18 +325,34 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function getMaxSzamlaDatum($datumtipus, $filter) {
+    public function getMaxSzamlaDatum($datumtipus, $filter)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('datum', 'datum');
-        $q = $this->_em->createNativeQuery('SELECT MAX(' . $datumtipus . ') AS datum'
+        $q = $this->_em->createNativeQuery(
+            'SELECT MAX(' . $datumtipus . ') AS datum'
             . ' FROM bizonylatfej _xx'
-            . $this->getFilterString($filter), $rsm);
+            . $this->getFilterString($filter),
+            $rsm
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getScalarResult();
     }
 
-    public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
-        $gyartoid, $locale, $partnercimkefilter) {
+    public function getTermekForgalmiLista(
+        $raktarid,
+        $partnerid,
+        $datumtipus,
+        $datumtol,
+        $datumig,
+        $ertektipus,
+        $arsav,
+        $fafilter,
+        $nevfilter,
+        $gyartoid,
+        $locale,
+        $partnercimkefilter
+    ) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -312,7 +363,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $datumtipus = 'bf.kelt';
                 break;
         }
-        $plusparams = array();
+        $plusparams = [];
         switch ($ertektipus) {
             case 0:
                 $ertekmezo1 = ', 0 AS ertek';
@@ -342,14 +393,14 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             case 5:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*ta.netto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $plusparams['arsav'] = $arsav;
                 break;
             case 6:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*ta.brutto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $plusparams['arsav'] = $arsav;
                 break;
             case 7:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto) AS ertek';
@@ -373,23 +424,23 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
         $rsm->addScalarResult('ertek', 'ertek');
 
-        $ret = array();
+        $ret = [];
 
         $termekfilter = new FilterDescriptor();
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $termekfilter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+                $termekfilter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
         if (!is_null($nevfilter)) {
-            $termekfilter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $nevfilter . '%');
+            $termekfilter->addFilter(['t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'], 'LIKE', '%' . $nevfilter . '%');
         }
         if ($gyartoid) {
             $termekfilter->addFilter('t.gyarto_id', '=', $gyartoid);
@@ -406,24 +457,25 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($locale) {
             $termeknevmezo = 'COALESCE(tt.content, t.nev)';
             $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (tt.field="nev") AND (tt.locale="' . $locale . '")';
-        }
-        else {
+        } else {
             $termeknevmezo = 't.nev';
             $translationjoin = '';
         }
 
-        $q = $this->_em->createNativeQuery('SELECT t.id,t.cikkszam,' . $termeknevmezo . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
+        $q = $this->_em->createNativeQuery(
+            'SELECT t.id,t.cikkszam,' . $termeknevmezo . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
             . ' LEFT OUTER JOIN termekvaltozat tv ON (tv.termek_id=t.id)'
             . $translationjoin
             . $this->getFilterString($termekfilter)
-            . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2', $trsm
+            . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2',
+            $trsm
         );
         $q->setParameters($this->getQueryParameters($termekfilter));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['id'] . '-' . $rekord['tvid'];
-            $ret[$kulcs] = array(
+            $ret[$kulcs] = [
                 'cikkszam' => $rekord['cikkszam'],
                 'nev' => $rekord['nev'],
                 'ertek1' => $rekord['ertek1'],
@@ -436,7 +488,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 'kiertek' => 0,
                 'zaro' => 0,
                 'zaroertek' => 0
-            );
+            ];
         }
 
         $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
@@ -449,8 +501,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -460,14 +511,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
             . $ertekmezo1
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -487,8 +541,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -503,14 +556,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
             . $ertekmezo2
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -530,8 +586,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -546,14 +601,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
             . $ertekmezo2
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -572,8 +630,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -585,14 +642,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
             . $ertekmezo1
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -606,9 +666,27 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
-                                           $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter, $partnercimkefilter,
-                                           $csoportositas, $fizmodid, $csakfoglalas) {
+    public function getBizonylatTetelLista(
+        $raktarid,
+        $partnerid,
+        $uzletkotoid,
+        $datumtipus,
+        $datumtol,
+        $datumig,
+        $ertektipus,
+        $arsav,
+        $fafilter,
+        $nevfilter,
+        $gyartoid,
+        $locale,
+        $bizstatusz,
+        $bizstatuscsoport,
+        $bizonylattipusfilter,
+        $partnercimkefilter,
+        $csoportositas,
+        $fizmodid,
+        $csakfoglalas
+    ) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -620,7 +698,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $datumtipus = 'bf.kelt';
                 break;
         }
-        $plusparams = array();
+        $plusparams = [];
         switch ($csoportositas) {
             case 1:
             case 2:
@@ -647,13 +725,13 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                         break;
                     case 5:
                         $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto)*-1 AS ertek,';
-                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                        $plusparams['arsavnev'] = $arsav;
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                        $plusparams['arsav'] = $arsav;
                         break;
                     case 6:
                         $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto)*-1 AS ertek,';
-                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                        $plusparams['arsavnev'] = $arsav;
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                        $plusparams['arsav'] = $arsav;
                         break;
                     case 7:
                         $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto)*-1 AS ertek,';
@@ -699,17 +777,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $termekfilter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+                $termekfilter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
         if ($nevfilter) {
-            $termekfilter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $nevfilter . '%');
+            $termekfilter->addFilter(['t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'], 'LIKE', '%' . $nevfilter . '%');
         }
         if ($gyartoid) {
             $termekfilter->addFilter('t.gyarto_id', '=', $gyartoid);
@@ -718,8 +796,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($locale) {
             $termeknevmezo = 'COALESCE(tt.content, t.nev)';
             $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (tt.field="nev") AND (tt.locale="' . $locale . '")';
-        }
-        else {
+        } else {
             $termeknevmezo = 't.nev';
             $translationjoin = '';
         }
@@ -747,8 +824,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -783,7 +859,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
 
-                $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
+                $q = $this->_em->createNativeQuery(
+                    'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2 '
                     . ' FROM bizonylattetel bt '
@@ -795,7 +872,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . $this->getFilterString($filter)
                     . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
                     . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2'
-                    , $rsm);
+                    ,
+                    $rsm
+                );
                 break;
             case 2:
                 $rsm = new ResultSetMapping();
@@ -814,7 +893,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
 
-                $q = $this->_em->createNativeQuery('SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
+                $q = $this->_em->createNativeQuery(
+                    'SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2 '
@@ -827,7 +907,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.partner_id,bt.termek_id,bt.termekvaltozat_id'
                     . ' ORDER BY bf.partnernev,bf.partner_id,t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2'
-                    , $rsm);
+                    ,
+                    $rsm
+                );
                 break;
             case 3:
                 $rsm = new ResultSetMapping();
@@ -841,7 +923,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
                 $rsm->addScalarResult('ertek', 'ertek');
 
-                $q = $this->_em->createNativeQuery('SELECT bf.uzletkoto_id,bf.uzletkotonev,bf.partner_id,bf.partnernev,bf.partnerirszam,'
+                $q = $this->_em->createNativeQuery(
+                    'SELECT bf.uzletkoto_id,bf.uzletkotonev,bf.partner_id,bf.partnernev,bf.partnerirszam,'
                     . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' FROM bizonylattetel bt '
@@ -852,7 +935,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.uzletkoto_id,bf.partner_id'
                     . ' ORDER BY bf.uzletkoto_id,bf.uzletkotonev,bf.partnernev,bf.partner_id'
-                    , $rsm);
+                    ,
+                    $rsm
+                );
                 break;
             case 4:
                 $rsm = new ResultSetMapping();
@@ -872,7 +957,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('ertek2', 'ertek2');
                 $rsm->addScalarResult('statusznev', 'statusznev');
 
-                $q = $this->_em->createNativeQuery('SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
+                $q = $this->_em->createNativeQuery(
+                    'SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
                     . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,bt.mennyiseg, '
                     . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev '
                     . ' FROM bizonylattetel bt '
@@ -882,9 +968,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
                     . $this->getFilterString($filter)
                     . ' ORDER BY bf.id,t.cikkszam'
-                    , $rsm);
+                    ,
+                    $rsm
+                );
                 break;
-
         }
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
@@ -892,7 +979,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $partnercimkefilter) {
+    public function getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $partnercimkefilter)
+    {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -903,7 +991,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $datumtipus = 'bf.kelt';
                 break;
         }
-        $plusparams = array();
+        $plusparams = [];
         $arsavsql = '';
         switch ($ertektipus) {
             case 0:
@@ -929,14 +1017,14 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             case 5:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*ta.netto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $plusparams['arsav'] = $arsav;
                 break;
             case 6:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*ta.brutto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $plusparams['arsav'] = $arsav;
                 break;
             case 7:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto) AS ertek';
@@ -964,7 +1052,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('ertek1', 'ertek1');
         $rsm->addScalarResult('ertek2', 'ertek2');
 
-        $ret = array();
+        $ret = [];
 
         /**************
          * be
@@ -974,8 +1062,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.irany', '>', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -987,7 +1074,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter($datumtipus, '<=', $datumig);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
             . $ertekmezo2
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -996,7 +1084,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -1019,8 +1109,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.irany', '<', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        else {
+        } else {
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }
@@ -1032,7 +1121,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter($datumtipus, '<=', $datumig);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
             . $ertekmezo2
             . ' FROM bizonylattetel bt '
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -1041,7 +1131,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             . $arsavsql
             . $this->getFilterString($filter)
             . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
@@ -1062,7 +1154,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false) {
+    public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
+    {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('rontott', '=', false)
@@ -1078,29 +1171,31 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($ukid) {
             if ($belso) {
                 $filter->addFilter('belsouzletkoto', '=', $ukid);
-            }
-            else {
+            } else {
                 $filter->addFilter('uzletkoto', '=', $ukid);
             }
         }
 
-        $q = $this->_em->createQuery('SELECT _xx'
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }
 
-    public function getAllKeszpenzes($tol, $ig, $pkodok = null, $ukid = null, $belso = false) {
+    public function getAllKeszpenzes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
+    {
         $fizmodok = $this->getRepo('Entities\Fizmod')->getAllKeszpenzes();
-        $fmids = array();
+        $fmids = [];
         foreach ($fizmodok as $fm) {
             $fmids[] = $fm->getId();
         }
 
         $filter = new FilterDescriptor();
         $filter
-            ->addFilter('bizonylattipus', 'IN', array('szamla', 'keziszamla', 'egyeb', 'garancialevel'))
+            ->addFilter('bizonylattipus', 'IN', ['szamla', 'keziszamla', 'egyeb', 'garancialevel'])
             ->addFilter('rontott', '=', false)
             ->addFilter('storno', '=', false)
             ->addFilter('stornozott', '=', false)
@@ -1112,8 +1207,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($ukid) {
             if ($belso) {
                 $filter->addFilter('belsouzletkoto', '=', $ukid);
-            }
-            else {
+            } else {
                 $filter->addFilter('uzletkoto', '=', $ukid);
             }
         }
@@ -1121,23 +1215,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('fizmod', 'IN', $fmids);
         }
 
-        $q = $this->_em->createQuery('SELECT _xx'
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }
 
-    public function getNAVEredmenyFeldolgozando() {
+    public function getNAVEredmenyFeldolgozando()
+    {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('kelt', '>=', \mkw\store::getParameter(\mkw\consts::NAVOnline2_0StartDate))
             ->addFilter('navbekuldendo', '=', true)
             ->addFilter('naveredmeny', '<>', 'DONE');
 
-        $q = $this->_em->createQuery('SELECT _xx.id'
+        $q = $this->_em->createQuery(
+            'SELECT _xx.id'
             . ' FROM Entities\Bizonylatfej _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         $r = $q->getScalarResult();
         $res = [];
@@ -1147,8 +1246,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function calcNagykerForgalom($filter) {
-
+    public function calcNagykerForgalom($filter)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('partnernev', 'partnernev');
         $rsm->addScalarResult('partnerirszam', 'partnerirszam');
@@ -1162,21 +1261,24 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('pc.cimketorzs_id', '=', $nagykercimke);
         }
 
-        $q = $this->_em->createNativeQuery('SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
             . 'FROM bizonylatfej bf '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
             . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
             . $this->getFilterString($filter)
             . ' GROUP BY bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();
         return $res;
     }
 
-    public function calcUtanvetesForgalom($filter) {
-
+    public function calcUtanvetesForgalom($filter)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('partnernev', 'partnernev');
         $rsm->addScalarResult('partnerirszam', 'partnerirszam');
@@ -1189,21 +1291,24 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($utanvetfm) {
             $filter->addFilter('bf.fizmod_id', '=', $utanvetfm);
         }
-        $q = $this->_em->createNativeQuery('SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
             . 'FROM bizonylatfej bf '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
             . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
             . $this->getFilterString($filter)
             . ' GROUP BY bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();
         return $res;
     }
 
-    public function calcNemHUFForgalom($filter) {
-
+    public function calcNemHUFForgalom($filter)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
         $rsm->addScalarResult('partnernev', 'partnernev');
@@ -1217,14 +1322,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($huf) {
             $filter->addFilter('bf.valutanem_id', '<>', $huf);
         }
-        $q = $this->_em->createNativeQuery('SELECT bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.brutto) AS brutto '
+        $q = $this->_em->createNativeQuery(
+            'SELECT bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.brutto) AS brutto '
             . 'FROM bizonylatfej bf '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
 //            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
             . $this->getFilterString($filter)
             . ' GROUP BY bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
             . ' ORDER BY bf.valutanemnev,bf.partnernev'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();

@@ -2000,6 +2000,38 @@ $().ready(
         });
         createNav(_unn, unnepnapgrid);
 
+        // Arsav grid
+        var _arsav = {
+            grid: '#arsavgrid',
+            pager: '#arsavgridpager'
+        };
+        var arsavgrid = $(_arsav.grid).jqGrid({
+            url: '/admin/arsav/jsonlist',
+            editurl: '/admin/arsav/save',
+            datatype: 'json',
+            colModel: [
+                {
+                    name: 'nev', index: 'nev', label: 'Név', width: 160,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
+                }],
+            rowNum: 100000,
+            rowList: [10, 20, 30],
+            pager: _arsav.pager,
+            sortname: 'nev',
+            sortorder: 'asc',
+            viewrecords: true,
+            loadonce: false,
+            gridview: true,
+            height: 100,
+            width: 320,
+            hiddengrid: true,
+            caption: 'Ársávok'
+        });
+        createNav(_arsav, arsavgrid);
+
         // Altalanos
         $('.ui-search-toolbar').hide();
         $('.ui-jqgrid-titlebar').on('click', function (e) {

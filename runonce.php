@@ -318,6 +318,60 @@ if ($DBVersion < '0048') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0048');
 }
 
+if ($DBVersion < '0049') {
+    $result = \mkw\store::getEm()->getConnection()->executeQuery(
+        '(SELECT distinct(azonosito) AS azonosito FROM billy_mugenrace.termekar) union '
+        . '(SELECT distinct(termekarazonosito) AS azonosito from partner) union '
+        . '(SELECT distinct(partnertermekarazonosito) AS azonosito from uzletkoto) '
+        . 'ORDER BY azonosito'
+    );
+    $savok = $result->fetchAllAssociative();
+    foreach ($savok as $sav) {
+        if ($sav['azonosito']) {
+            \mkw\store::getEm()->getConnection()->executeStatement('INSERT INTO arsav (nev) VALUES (\'' . $sav['azonosito'] . '\')');
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0049');
+}
+
+if ($DBVersion < '0050') {
+    $query = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM arsav');
+    $arsavok = $query->fetchAllAssociative();
+    foreach ($arsavok as $arsav) {
+        \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termekar SET arsav_id=' . $arsav['id'] . ' WHERE azonosito=\'' . $arsav['nev'] . '\'');
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE partner SET arsav_id=' . $arsav['id'] . ' WHERE termekarazonosito=\'' . $arsav['nev'] . '\''
+        );
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE uzletkoto SET arsav_id=' . $arsav['id'] . ' WHERE partnertermekarazonosito=\'' . $arsav['nev'] . '\''
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0050');
+}
+
+if ($DBVersion < '0051') {
+    function _UpdateArsavParameter($par)
+    {
+        $oldval = \mkw\store::getParameter($par);
+        $arsav = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM arsav WHERE nev="' . $oldval . '"')->fetchAssociative();
+        if ($arsav['nev']) {
+            \mkw\store::setParameter($par, $arsav['id']);
+        }
+    }
+
+    _UpdateArsavParameter(\mkw\consts::Arsav);
+    _UpdateArsavParameter(\mkw\consts::ShowTermekArsav);
+    _UpdateArsavParameter(\mkw\consts::Webshop2Price);
+    _UpdateArsavParameter(\mkw\consts::Webshop2Discount);
+    _UpdateArsavParameter(\mkw\consts::Webshop3Price);
+    _UpdateArsavParameter(\mkw\consts::Webshop3Discount);
+    _UpdateArsavParameter(\mkw\consts::Webshop4Price);
+    _UpdateArsavParameter(\mkw\consts::Webshop4Discount);
+    _UpdateArsavParameter(\mkw\consts::Webshop5Price);
+    _UpdateArsavParameter(\mkw\consts::Webshop5Discount);
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0051');
+}
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

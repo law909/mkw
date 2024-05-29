@@ -54,8 +54,11 @@
                         <label for="ArsavEdit">{at('Ársáv')}:</label>
                         <select id="ArsavEdit" name="arsav" class="mattable-important">
                             <option value="">{at('mindegy')}</option>
+
+                            <!-- TODO: arsav -->
                             {foreach $arsavlist as $_mk}
-                                <option value="{$_mk.id}_{$_mk.valutanemid}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption} {$_mk.valutanem}</option>
+                                <option
+                                    value="{$_mk.id}_{$_mk.valutanemid}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption} {$_mk.valutanem}</option>
                             {/foreach}
                         </select>
                         <select id="NettoBruttoEdit" name="nettobrutto">

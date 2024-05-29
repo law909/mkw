@@ -2,10 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Arsav;
 use Entities\Termek;
+use Entities\TermekAr;
 use Entities\TermekKep;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
+use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -408,14 +411,15 @@ class termekController extends \mkwhelpers\MattableController
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
                 $oper = $this->params->getStringRequestParam('aroper_' . $arid);
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('arvalutanem_' . $arid));
+                $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('arvalutanem_' . $arid));
                 if (!$valutanem) {
-                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                    $valutanem = $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 }
+                $arsav = $this->getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav_' . $arid));
                 if ($oper == 'add') {
                     $ar = new \Entities\TermekAr();
                     $obj->addTermekAr($ar);
-                    $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
+                    $ar->setArsav($arsav);
                     $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
                     $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
                     if ($brutto != 0) {
@@ -428,7 +432,7 @@ class termekController extends \mkwhelpers\MattableController
                 } elseif ($oper == 'edit') {
                     $ar = $this->getEm()->getRepository('Entities\TermekAr')->find($arid);
                     if ($ar) {
-                        $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
+                        $ar->setArsav($arsav);
                         $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
                         $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
                         if ($brutto != 0) {
@@ -1548,7 +1552,7 @@ class termekController extends \mkwhelpers\MattableController
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
 
-        $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
+        $arsavok = $this->getRepo(TermekAr::class)->getExistingArsavok();
         $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $excel = new Spreadsheet();
@@ -1562,7 +1566,7 @@ class termekController extends \mkwhelpers\MattableController
                 $nettobrutto = 'netto';
             }
             $excel->setActiveSheetIndex(0)
-                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
+                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['id']);
             $oszlop++;
         }
 
@@ -1577,8 +1581,15 @@ class termekController extends \mkwhelpers\MattableController
                 ->setCellValue(x(2) . $sor, $termek->getNev());
             $arak = $termek->getTermekArak();
             foreach ($arak as $ar) {
-                $i = array_search(['valutanemid' => $ar->getValutanemId(), 'valutanem' => $ar->getValutanemnev(), 'azonosito' => $ar->getAzonosito()],
-                    $arsavok);
+                $i = array_search(
+                    [
+                        'id' => $ar->getArsav()?->getId(),
+                        'valutanemid' => $ar->getValutanemId(),
+                        'valutanem' => $ar->getValutanemnev(),
+                        'azonosito' => $ar->getArsav()?->getNev()
+                    ],
+                    $arsavok
+                );
                 if ($i !== false) {
                     if ($arsavok[$i]['valutanemid'] == $defavaluta) {
                         $nettobrutto = $ar->getBrutto();
@@ -1619,9 +1630,6 @@ class termekController extends \mkwhelpers\MattableController
 
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
-
-        $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
-        $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)

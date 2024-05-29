@@ -7,21 +7,24 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class leltarController extends \mkwhelpers\Controller {
+class leltarController extends \mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('leltar.tpl');
 
         $rc = new raktarController($this->params);
         $view->setVar('raktarlist', $rc->getSelectList());
 
-        $tac = new termekarController($this->params);
+        $tac = new arsavController($this->params);
         $view->setVar('arsavlist', $tac->getSelectList());
 
         $view->printTemplateResult();
     }
 
-    protected function createFilter() {
+    protected function createFilter()
+    {
         $raktar = $this->params->getIntRequestParam('raktar');
         if ($raktar) {
             $r = $this->getRepo('Entities\Raktar')->find($raktar);
@@ -35,8 +38,7 @@ class leltarController extends \mkwhelpers\Controller {
 
         if ($foglalas) {
             $filter->addSql('((bt.mozgat=1) OR (bt.foglal=1))');
-        }
-        else {
+        } else {
             $filter->addFilter('bt.mozgat', '=', true);
         }
         if ($raktar) {
@@ -45,26 +47,29 @@ class leltarController extends \mkwhelpers\Controller {
 
         return $filter;
     }
-    protected function createTermekFilter() {
+
+    protected function createTermekFilter()
+    {
         $filter = new FilterDescriptor();
         $fv = $this->params->getArrayRequestParam('fafilter');
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
 
         return $filter;
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('id', 'termekvaltozat_id');
@@ -98,7 +103,8 @@ class leltarController extends \mkwhelpers\Controller {
 
         $termekfilter = $this->createTermekFilter();
 
-        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+        $q = $this->getEm()->createNativeQuery(
+            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -108,7 +114,9 @@ class leltarController extends \mkwhelpers\Controller {
             . $translationjoin
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
-            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2', $rsm);
+            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2',
+            $rsm
+        );
 
         $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
         $d = $q->getScalarResult();
@@ -125,10 +133,11 @@ class leltarController extends \mkwhelpers\Controller {
                 break;
         }
 
+        // TODO: arsav
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $valutanem = $as[1];
-        $ret = array();
+        $ret = [];
         foreach ($d as $sor) {
             if ($as) {
                 /** @var \Entities\Termek $t */
@@ -152,9 +161,10 @@ class leltarController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    public function exportLista() {
-
-        function x($o) {
+    public function exportLista()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -204,6 +214,5 @@ class leltarController extends \mkwhelpers\Controller {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 }

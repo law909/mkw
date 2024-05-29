@@ -25,29 +25,22 @@ class leltarfejController extends \mkwhelpers\MattableController
     public function viewExport()
     {
         $id = $this->params->getRequestParam('leltar', 0);
-
         $leltarfej = $this->getRepo()->findWithJoins($id);
-
         $view = $this->createView('leltarexport.tpl');
 
-        $tac = new termekarController($this->params);
+        $tac = new arsavController($this->params);
         $view->setVar('arsavlist', $tac->getSelectList());
 
         $view->setVar('leltarfej', $this->loadVars($leltarfej, true));
-
         $view->printTemplateResult();
     }
 
     public function viewImport()
     {
         $id = $this->params->getRequestParam('leltar', 0);
-
         $leltarfej = $this->getRepo()->findWithJoins($id);
-
         $view = $this->createView('leltarimport.tpl');
-
         $view->setVar('leltarfej', $this->loadVars($leltarfej, true));
-
         $view->printTemplateResult();
     }
 
@@ -270,6 +263,7 @@ class leltarfejController extends \mkwhelpers\MattableController
                 break;
         }
 
+        // TODO: arsav
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $valutanem = $as[1];

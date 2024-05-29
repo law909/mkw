@@ -7,7 +7,8 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class keszletlistaController extends \mkwhelpers\MattableController {
+class keszletlistaController extends \mkwhelpers\MattableController
+{
 
     private $datumstr;
     private $raktarnev;
@@ -16,7 +17,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
     private $arsavstr;
     private $nettobruttostr;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('keszletlista.tpl');
 
         $view->setVar('datum', date(\mkw\store::$DateFormat));
@@ -26,21 +28,23 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
+        // TODO: arsav
         $tac = new termekarController($this->params);
         $tacok = $tac->getSelectList();
-        $tacok[] = array(
+        $tacok[] = [
             'id' => '---utolsobeszar',
             'caption' => 'Utolsó besz.ár',
             'selected' => false,
             'valutanemid' => 1,
             'valutanem' => 'HUF'
-        );
+        ];
         $view->setVar('arsavlist', $tacok);
 
         $view->printTemplateResult();
     }
 
-    protected function createFilter() {
+    protected function createFilter()
+    {
         $this->raktarnev = t('Minden raktár');
         $raktar = $this->params->getIntRequestParam('raktar');
         if ($raktar) {
@@ -65,8 +69,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         if ($foglalas) {
             $filter->addSql('((bt.mozgat=1) OR (bt.foglal=1))');
-        }
-        else {
+        } else {
             $filter->addFilter('bt.mozgat', '=', true);
         }
         if ($raktar) {
@@ -76,30 +79,32 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createTermekFilter() {
+    protected function createTermekFilter()
+    {
         $filter = new FilterDescriptor();
         $fv = $this->params->getArrayRequestParam('fafilter');
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
-        $this->nevfilter = $this->params->getRequestParam('nevfilter', NULL);
+        $this->nevfilter = $this->params->getRequestParam('nevfilter', null);
         if (!is_null($this->nevfilter)) {
-            $filter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $this->nevfilter . '%');
+            $filter->addFilter(['t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'], 'LIKE', '%' . $this->nevfilter . '%');
         }
 
         return $filter;
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('id', 'id');
@@ -115,8 +120,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         if ($locale) {
             $termeknevmezo = 'COALESCE(tt.content, t.nev)';
             $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="' . $locale . '")';
-        }
-        else {
+        } else {
             $termeknevmezo = 't.nev';
             $translationjoin = '';
         }
@@ -140,7 +144,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $termekfilter = $this->createTermekFilter();
 
-        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+        $q = $this->getEm()->createNativeQuery(
+            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -150,7 +155,9 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             . $translationjoin
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
-            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2', $rsm);
+            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2',
+            $rsm
+        );
 
         $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
         $d = $q->getScalarResult();
@@ -167,6 +174,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 break;
         }
 
+        // TODO: arsav
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $valutanem = $as[1];
@@ -175,7 +183,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         if ($valutaobj) {
             $this->arsavstr .= ' ' . $valutaobj->getNev();
         }
-        $ret = array();
+        $ret = [];
         foreach ($d as $sor) {
             if ($as) {
                 /** @var \Entities\Termek $t */
@@ -197,8 +205,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                                 $sor['ar'] = 0;
                                 break;
                         }
-                    }
-                    else {
+                    } else {
                         $sor['bizid'] = '';
                         switch ($nettobrutto) {
                             case 'netto':
@@ -219,22 +226,23 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    public function createLista() {
-
+    public function createLista()
+    {
         $report = $this->createView('rep_keszlet.tpl');
         $report->setVar('lista', $this->getData());
         $report->setVar('datumstr', $this->datumstr);
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('nevfilter', $this->nevfilter);
         $report->setVar('foglalasstr', $this->foglalasstr);
+        // TODO: arsav
         $report->setVar('arsav', $this->arsavstr . ' ' . $this->nettobruttostr);
         $report->printTemplateResult();
-
     }
 
-    public function exportLista() {
-
-        function x($o) {
+    public function exportLista()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -282,6 +290,5 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 }

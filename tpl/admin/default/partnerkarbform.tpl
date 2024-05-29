@@ -180,9 +180,9 @@
                                 {/foreach}
                             </select></td>
                         <td><label for="TermekarEdit">{at('Ársáv')}:</label></td>
-                        <td><select id="TermekarEdit" name="termekarazonosito">
+                        <td><select id="TermekarEdit" name="arsav">
                                 <option value="">{at('válasszon')}</option>
-                                {foreach $termekarazonositolist as $_ta}
+                                {foreach $arsavlist as $_ta}
                                     <option value="{$_ta.id}"{if ($_ta.selected)} selected="selected"{/if}>{$_ta.caption}</option>
                                 {/foreach}
                             </select></td>

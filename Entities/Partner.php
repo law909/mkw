@@ -270,9 +270,6 @@ class Partner
      */
     private $valutanem;
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $termekarazonosito;
-
     /**
      * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="partnerek")
      * @ORM\JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -578,6 +575,12 @@ class Partner
 
     /** @ORM\Column(type="boolean") */
     private $nemrendelhet5 = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Arsav")
+     * @ORM\JoinColumn(name="arsav_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $arsav;
 
     public function __construct()
     {
@@ -1518,16 +1521,6 @@ class Partner
             $this->valutanem = null;
 //			$val->removeBizonylatfej($this);
         }
-    }
-
-    public function getTermekarazonosito()
-    {
-        return $this->termekarazonosito;
-    }
-
-    public function setTermekarazonosito($v)
-    {
-        $this->termekarazonosito = $v;
     }
 
     public function getSzallitasimod()
@@ -3446,6 +3439,26 @@ class Partner
     public function setNemrendelhet5($nemrendelhet5): void
     {
         $this->nemrendelhet5 = $nemrendelhet5;
+    }
+
+    public function getArsav()
+    {
+        return $this->arsav;
+    }
+
+    public function setArsav($val)
+    {
+        if (!($val instanceof \Entities\Arsav)) {
+            $val = \mkw\store::getEm()->getRepository(Arsav::class)->find($val);
+        }
+        if ($this->arsav !== $val) {
+            $this->arsav = $val;
+        }
+    }
+
+    public function removeArsav()
+    {
+        $this->arsav = null;
     }
 
 }

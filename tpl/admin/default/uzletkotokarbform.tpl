@@ -87,9 +87,9 @@
             </table>
         </div>
         {if ($setup.b2b)}
-        <div id="PartnerdefaultTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
+            <div id="PartnerdefaultTab" class="mattkarb-page" data-visible="visible">
+                <table>
+                    <tbody>
                     <tr>
                         <td><label for="SzamlatipusEdit">{at('Számla típus')}:</label></td>
                         <td><select id="SzamlatipusEdit" name="partnerszamlatipus">
@@ -142,17 +142,17 @@
                         </tr>
                         <tr>
                             <td><label for="TermekarEdit">{at('Ársáv')}:</label></td>
-                            <td><select id="TermekarEdit" name="partnertermekarazonosito">
+                            <td><select id="TermekarEdit" name="arsav">
                                     <option value="">{at('válasszon')}</option>
-                                    {foreach $partnertermekarazonositolist as $_ta}
+                                    {foreach $arsavlist as $_ta}
                                         <option value="{$_ta.id}"{if ($_ta.selected)} selected="selected"{/if}>{$_ta.caption}</option>
                                     {/foreach}
                                 </select></td>
                         </tr>
                     {/if}
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
         {/if}
     </div>
     <input name="oper" type="hidden" value="{$oper}">

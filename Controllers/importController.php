@@ -5698,9 +5698,11 @@ class importController extends \mkwhelpers\Controller
                     $nev[\mkw\store::getLocaleName($nyelv)] = $cell->getValue();
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 3) == 'nev') {
                     $nev[\mkw\store::getLocaleName('HU')] = $cell->getValue();
+                    // TODO: arsav
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 6) == 'netto_') {
                     $n = explode('_', $fej[$col]);
                     $netto[strtoupper($n[1])][$n[2]] = $cell->getValue();
+                    // TODO: arsav
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 7) == 'brutto_') {
                     $n = explode('_', $fej[$col]);
                     $brutto[strtoupper($n[1])][$n[2]] = $cell->getValue();
@@ -5750,6 +5752,7 @@ class importController extends \mkwhelpers\Controller
                                     unset($netto[$evalu][$ename]);
                                 }
                                 if (!$ujtermek) {
+                                    // TODO: arsav
                                     $ar = $termekarrepo->findBy(['termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename]);
                                     if ($ar) {
                                         $ar = $ar[0];
@@ -5759,6 +5762,7 @@ class importController extends \mkwhelpers\Controller
                                     $ar = new \Entities\TermekAr();
                                     $ar->setTermek($termek);
                                     $ar->setValutanem($valutanem);
+                                    // TODO: arsav
                                     $ar->setAzonosito($ename);
                                 }
                                 $ar->setBrutto($ertek);
@@ -5773,6 +5777,7 @@ class importController extends \mkwhelpers\Controller
                         if ($valutanem) {
                             foreach ($nettox as $ename => $ertek) {
                                 if (!$ujtermek) {
+                                    // TODO: arsav
                                     $ar = $termekarrepo->findBy(['termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename]);
                                     if ($ar) {
                                         $ar = $ar[0];
@@ -5782,6 +5787,7 @@ class importController extends \mkwhelpers\Controller
                                     $ar = new \Entities\TermekAr();
                                     $ar->setTermek($termek);
                                     $ar->setValutanem($valutanem);
+                                    // TODO: arsav
                                     $ar->setAzonosito($ename);
                                 }
                                 $ar->setNetto($ertek);

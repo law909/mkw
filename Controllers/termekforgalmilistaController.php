@@ -6,9 +6,11 @@ namespace Controllers;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class termekforgalmilistaController extends \mkwhelpers\Controller {
+class termekforgalmilistaController extends \mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('termekforgalmilista.tpl');
 
         $view->setVar('pagetitle', t('Termékforgalmi lista'));
@@ -18,7 +20,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $partner = new partnerController($this->params);
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
-        $arsav = new termekarController($this->params);
+
+        $arsav = new arsavController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
@@ -27,10 +30,10 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);
-
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         $partnerid = $this->params->getIntRequestParam('partner');
         $raktarid = $this->params->getIntRequestParam('raktar');
         $datumtipus = $this->params->getStringRequestParam('datumtipus');
@@ -39,15 +42,27 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $forgalomfilter = $this->params->getIntRequestParam('forgalomfilter');
         $keszletfilter = $this->params->getIntRequestParam('keszletfilter');
         $ertektipus = $this->params->getIntRequestParam('ertektipus');
-        $arsav = $this->params->getStringRequestParam('arsav');
+        $arsav = $this->params->getIntRequestParam('arsav');
         $fafilter = $this->params->getArrayRequestParam('fafilter');
-        $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
+        $nevfilter = $this->params->getRequestParam('nevfilter', null);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
         $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
 
-        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $partnercimkefilter);
+        $tetelek = $this->getRepo(Bizonylatfej::class)->getTermekForgalmiLista(
+            $raktarid,
+            $partnerid,
+            $datumtipus,
+            $datumtolstr,
+            $datumigstr,
+            $ertektipus,
+            $arsav,
+            $fafilter,
+            $nevfilter,
+            $gyartoid,
+            $nyelv,
+            $partnercimkefilter
+        );
 
         switch ($keszletfilter) {
             case 1: // van keszleten
@@ -90,13 +105,14 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
                 break;
         }
 
-        return array(
+        return [
             'ertektipus' => $ertektipus,
             'tetelek' => $tetelek
-        );
+        ];
     }
 
-    public function refresh() {
+    public function refresh()
+    {
         $res = $this->getData();
         $view = $this->createView('termekforgalmilistatetel.tpl');
         $view->setVar('ertektipus', $res['ertektipus']);
@@ -104,8 +120,10 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function export() {
-        function x($o) {
+    public function export()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }

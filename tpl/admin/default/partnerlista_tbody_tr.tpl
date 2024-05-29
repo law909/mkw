@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>{at('Ársáv')}:</td>
-                    <td>{$_partner.termekarazonosito}</td>
+                    <td>{$_partner.arsavnev}</td>
                 </tr>
             {/if}
             {if ($_partner.apinev)}

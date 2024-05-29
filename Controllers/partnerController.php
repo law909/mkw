@@ -2,13 +2,25 @@
 
 namespace Controllers;
 
+use Entities\Arsav;
 use Entities\Emailtemplate;
+use Entities\Fizmod;
 use Entities\MPTNGYSzerepkor;
 use Entities\MPTSzekcio;
 use Entities\MPTTagozat;
 use Entities\MPTTagsagforma;
+use Entities\Orszag;
 use Entities\Partner;
+use Entities\Partnercimketorzs;
+use Entities\PartnerDok;
 use Entities\PartnerTermekcsoportKedvezmeny;
+use Entities\PartnerTermekKedvezmeny;
+use Entities\Partnertipus;
+use Entities\Szallitasimod;
+use Entities\Termek;
+use Entities\Termekcsoport;
+use Entities\Uzletkoto;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -106,7 +118,8 @@ class partnerController extends \mkwhelpers\MattableController
         $x['swift'] = $t->getSwift();
         $x['valutanem'] = $t->getValutanem();
         $x['valutanemnev'] = $t->getValutanemnev();
-        $x['termekarazonosito'] = $t->getTermekarazonosito();
+        $x['arsav'] = $t->getArsav();
+        $x['arsavnev'] = $t->getArsav()?->getNev();
         $x['szallitasimod'] = $t->getSzallitasimod();
         $x['szallitasimodnev'] = $t->getSzallitasimodNev();
         $x['partnertipus'] = $t->getPartnertipus();
@@ -291,7 +304,6 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setExportbacsakkeszlet($this->params->getBoolRequestParam('exportbacsakkeszlet'));
             $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
             $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
-            $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
             $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
             $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
             $obj->setKtdatalany($this->params->getBoolRequestParam('ktdatalany'));
@@ -352,7 +364,13 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setNemrendelhet3($this->params->getBoolRequestParam('nemrendelhet3'));
             $obj->setNemrendelhet4($this->params->getBoolRequestParam('nemrendelhet4'));
             $obj->setNemrendelhet5($this->params->getBoolRequestParam('nemrendelhet5'));
-            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('mptngybefizetesmod', 0));
+            $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
+            if ($arsav) {
+                $obj->setArsav($arsav);
+            } else {
+                $obj->removeArsav();
+            }
+            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('mptngybefizetesmod', 0));
             if ($fizmod) {
                 $obj->setMptngybefizetesmod($fizmod);
             } else {
@@ -395,35 +413,35 @@ class partnerController extends \mkwhelpers\MattableController
                 $obj->setMptTagsagforma(null);
             }
 
-            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {
                 $obj->setFizmod($fizmod);
             } else {
                 $obj->setFizmod(null);
             }
-            $uk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
+            $uk = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('uzletkoto', 0));
             if ($uk) {
                 $obj->setUzletkoto($uk);
             } else {
                 $obj->removeUzletkoto();
             }
-            $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+            $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
             if ($valutanem) {
                 $obj->setValutanem($valutanem);
             }
-            $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+            $szallmod = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod', 0));
             if ($szallmod) {
                 $obj->setSzallitasimod($szallmod);
             } else {
                 $obj->setSzallitasimod(null);
             }
-            $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+            $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszag', 0));
             if ($orszag) {
                 $obj->setOrszag($orszag);
             } else {
                 $obj->setOrszag(null);
             }
-            $partnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find($this->params->getIntRequestParam('partnertipus', 0));
+            $partnertipus = \mkw\store::getEm()->getRepository(Partnertipus::class)->find($this->params->getIntRequestParam('partnertipus', 0));
             if ($partnertipus) {
                 $obj->setPartnertipus($partnertipus);
             } else {
@@ -441,7 +459,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->removeAllCimke();
             $cimkekpar = $this->params->getArrayRequestParam('cimkek');
             foreach ($cimkekpar as $cimkekod) {
-                $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
+                $cimke = $this->getEm()->getRepository(Partnercimketorzs::class)->find($cimkekod);
                 if ($cimke) {
                     $obj->addCimke($cimke);
                 }
@@ -460,7 +478,7 @@ class partnerController extends \mkwhelpers\MattableController
                         $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
                         $this->getEm()->persist($dok);
                     } elseif ($dokoper === 'edit') {
-                        $dok = \mkw\store::getEm()->getRepository('Entities\PartnerDok')->find($dokid);
+                        $dok = \mkw\store::getEm()->getRepository(PartnerDok::class)->find($dokid);
                         if ($dok) {
                             $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
                             $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
@@ -516,7 +534,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setVaros($this->params->getStringRequestParam('varos'));
             $obj->setUtca($this->params->getStringRequestParam('utca'));
             $obj->setHazszam($this->params->getStringRequestParam('hazszam'));
-            $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+            $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszag', 0));
             if ($orszag) {
                 $obj->setOrszag($orszag);
             }
@@ -538,7 +556,7 @@ class partnerController extends \mkwhelpers\MattableController
             $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
             foreach ($kdids as $kdid) {
                 $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
-                $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find(
+                $termekcsoport = $this->getEm()->getRepository(Termekcsoport::class)->find(
                     $this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid)
                 );
                 if ($termekcsoport) {
@@ -549,7 +567,7 @@ class partnerController extends \mkwhelpers\MattableController
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
                     } elseif ($oper === 'edit') {
-                        $kedv = $this->getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->find($kdid);
+                        $kedv = $this->getEm()->getRepository(PartnerTermekcsoportKedvezmeny::class)->find($kdid);
                         if ($kedv) {
                             $kedv->setPartner($obj);
                             $kedv->setTermekcsoport($termekcsoport);
@@ -562,7 +580,7 @@ class partnerController extends \mkwhelpers\MattableController
             $kdids = $this->params->getArrayRequestParam('termekkedvezmenyid');
             foreach ($kdids as $kdid) {
                 $oper = $this->params->getStringRequestParam('termekkedvezmenyoper_' . $kdid);
-                $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekkedvezmenytermek_' . $kdid));
+                $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekkedvezmenytermek_' . $kdid));
                 if ($termek) {
                     if ($oper === 'add') {
                         $kedv = new \Entities\PartnerTermekKedvezmeny();
@@ -571,7 +589,7 @@ class partnerController extends \mkwhelpers\MattableController
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('termekkedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
                     } elseif ($oper === 'edit') {
-                        $kedv = $this->getEm()->getRepository('Entities\PartnerTermekKedvezmeny')->find($kdid);
+                        $kedv = $this->getEm()->getRepository(PartnerTermekKedvezmeny::class)->find($kdid);
                         if ($kedv) {
                             $kedv->setPartner($obj);
                             $kedv->setTermek($termek);
@@ -602,11 +620,11 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setReferrer(\mkw\store::getMainSession()->referrer);
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
-            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizetesimod', 0));
+            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizetesimod', 0));
             if ($fizmod) {
                 $obj->setFizmod($fizmod);
             }
-            $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+            $szallmod = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod', 0));
             if ($szallmod) {
                 $obj->setSzallitasimod($szallmod);
             }
@@ -829,7 +847,7 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('orszaglist', $orszag->getSelectList(0, true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
-        $arsav = new termekarController($this->params);
+        $arsav = new arsavController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
         $tcs = new termekcsoportController($this->params);
         $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
@@ -861,8 +879,9 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('uzletkotolist', $uk->getSelectList($partner?->getUzletkotoId()));
         $valutanem = new valutanemController($this->params);
         $view->setVar('valutanemlist', $valutanem->getSelectList($partner?->getValutanemId()));
-        $termekar = new termekarController($this->params);
-        $view->setVar('termekarazonositolist', $termekar->getSelectList($partner?->getTermekarazonosito()));
+        $arsav = new arsavController($this->params);
+        $view->setVar('arsavlist', $arsav->getSelectList($partner?->getArsav()?->getId()));
+
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList($partner?->getSzallitasimodId()));
         $orszag = new orszagController($this->params);
@@ -1920,7 +1939,7 @@ class partnerController extends \mkwhelpers\MattableController
     public function arsavcsere()
     {
         $ids = $this->params->getArrayRequestParam('ids');
-        $arsav = $this->params->getStringRequestParam('arsav');
+        $arsav = $this->params->getIntRequestParam('arsav');
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($ids) {
             $filter->addFilter('id', 'IN', $ids);
@@ -1930,7 +1949,7 @@ class partnerController extends \mkwhelpers\MattableController
 
         /** @var Partner $partner */
         foreach ($partnerek as $partner) {
-            $partner->setTermekarazonosito($arsav);
+            $partner->setArsav($arsav);
             $this->getEm()->persist($partner);
             $this->getEm()->flush();
         }

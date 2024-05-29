@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Arsav;
 use Entities\Emailtemplate;
 use Entities\Jogaoratipus;
 use Entities\MPTNGYSzakmaianyagtipus;
@@ -11,6 +12,7 @@ use Entities\Statlap;
 use Entities\Szallitasimod;
 use Entities\Termek;
 use Entities\Uzletkoto;
+use Entities\Valutanem;
 
 class setupController extends \mkwhelpers\Controller
 {
@@ -484,7 +486,7 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('showtermekarsavvalutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Arsav);
-        $arsav = new termekarController($this->params);
+        $arsav = new arsavController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::ShowTermekArsav);
         $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -1482,18 +1484,29 @@ class setupController extends \mkwhelpers\Controller
         if ($raktar) {
             $this->setObj(\mkw\consts::Raktar, $raktar->getId());
         }
-        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $this->setObj(\mkw\consts::Valutanem, $valutanem->getId());
         }
 
-        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
         if ($valutanem) {
             $this->setObj(\mkw\consts::ShowTermekArsavValutanem, $valutanem->getId());
         }
 
-        $this->setObj(\mkw\consts::Arsav, $this->params->getStringRequestParam('arsav'));
-        $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getStringRequestParam('showtermekarsav'));
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Arsav, $this->params->getIntRequestParam('arsav'));
+        } else {
+            $this->setObj(\mkw\consts::Arsav, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('showtermekarsav'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getIntRequestParam('showtermekarsav'));
+        } else {
+            $this->setObj(\mkw\consts::ShowTermekArsav, null);
+        }
+
         $this->setObj(\mkw\consts::Webshop1Name, $this->params->getStringRequestParam('webshop1name'));
         $this->setObj(\mkw\consts::Webshop2Name, $this->params->getStringRequestParam('webshop2name'));
         $this->setObj(\mkw\consts::Webshop3Name, $this->params->getStringRequestParam('webshop3name'));
@@ -1509,14 +1522,58 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Webshop13Name, $this->params->getStringRequestParam('webshop13name'));
         $this->setObj(\mkw\consts::Webshop14Name, $this->params->getStringRequestParam('webshop14name'));
         $this->setObj(\mkw\consts::Webshop15Name, $this->params->getStringRequestParam('webshop15name'));
-        $this->setObj(\mkw\consts::Webshop2Price, $this->params->getStringRequestParam('arsav2'));
-        $this->setObj(\mkw\consts::Webshop2Discount, $this->params->getStringRequestParam('akciosarsav2'));
-        $this->setObj(\mkw\consts::Webshop3Price, $this->params->getStringRequestParam('arsav3'));
-        $this->setObj(\mkw\consts::Webshop3Discount, $this->params->getStringRequestParam('akciosarsav3'));
-        $this->setObj(\mkw\consts::Webshop4Price, $this->params->getStringRequestParam('arsav4'));
-        $this->setObj(\mkw\consts::Webshop4Discount, $this->params->getStringRequestParam('akciosarsav4'));
-        $this->setObj(\mkw\consts::Webshop5Price, $this->params->getStringRequestParam('arsav5'));
-        $this->setObj(\mkw\consts::Webshop5Discount, $this->params->getStringRequestParam('akciosarsav5'));
+
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav2'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop2Price, $this->params->getIntRequestParam('arsav2'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop2Price, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('akciosarsav2'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop2Discount, $this->params->getIntRequestParam('akciosarsav2'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop2Discount, null);
+        }
+
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav3'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop3Price, $this->params->getIntRequestParam('arsav3'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop3Price, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('akciosarsav3'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop3Discount, $this->params->getIntRequestParam('akciosarsav3'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop3Discount, null);
+        }
+
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav4'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop4Price, $this->params->getIntRequestParam('arsav4'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop4Price, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('akciosarsav4'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop4Discount, $this->params->getIntRequestParam('akciosarsav4'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop4Discount, null);
+        }
+
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav5'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop5Price, $this->params->getIntRequestParam('arsav5'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop5Price, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('akciosarsav5'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::Webshop5Discount, $this->params->getIntRequestParam('akciosarsav5'));
+        } else {
+            $this->setObj(\mkw\consts::Webshop5Discount, null);
+        }
 
         $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {

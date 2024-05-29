@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Arsav;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\JogaBerlet;
@@ -14,9 +15,11 @@ use Entities\Termek;
 use Entities\TermekValtozat;
 use Entities\Valutanem;
 
-class jogareszvetelController extends \mkwhelpers\MattableController {
+class jogareszvetelController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName(JogaReszvetel::class);
         $this->setKarbFormTplName('jogareszvetelkarbform.tpl');
         $this->setKarbTplName('jogareszvetelkarb.tpl');
@@ -25,15 +28,15 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\JogaReszvetel();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -95,20 +98,21 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
     /**
      * @param \Entities\JogaReszvetel $obj
      * @param $oper
+     *
      * @return mixed
      */
-    protected function setFields($obj, $oper) {
+    protected function setFields($obj, $oper)
+    {
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
-                $partnerobj = $this->getRepo(Partner::class)->findOneBy(array('email' => $partneremail));
+                $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
                 if (!$partnerobj) {
                     $partnerobj = new \Entities\Partner();
                 }
-            }
-            else {
+            } else {
                 $partnerobj = new \Entities\Partner();
             }
             $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
@@ -128,8 +132,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             if ($ck) {
                 $obj->setPartner($ck);
             }
-        }
-        else {
+        } else {
             $obj->setPartner($partnerobj);
         }
 
@@ -165,8 +168,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('jogaberlet', 0));
         if ($ck) {
             $obj->setJogaberlet($ck);
-        }
-        else {
+        } else {
             $obj->removeJogaberlet();
         }
         $obj->setTisztaznikell($this->params->getBoolRequestParam('tisztaznikell'));
@@ -174,7 +176,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('jogareszvetellista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -237,21 +240,27 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid));
+            $res[] = ['id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid)];
         }
         return $res;
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('jogareszvetellista.tpl');
 
         $view->setVar('pagetitle', t('Óra látogatások'));
@@ -270,7 +279,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('jogareszvetellista.tpl');
 
         $view->setVar('pagetitle', t('Óra látogatások'));
@@ -289,17 +299,19 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('jogareszvetelquickkarb.tpl');
         $v = $this->loadVars(null, true);
         $view->setVar('egyed', $v);
-        echo json_encode(array(
+        echo json_encode([
             'id' => $v['id'],
             'html' => $view->getTemplateResult()
-        ));
+        ]);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -320,7 +332,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getar() {
+    public function getar()
+    {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
             $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
@@ -335,7 +348,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 if (!$o) {
                     $o = 1;
                 }
-                $r = array(
+                $r = [
                     'netto' => $termek->getNettoAr($valtozat) / $o,
                     'brutto' => $termek->getBruttoAr($valtozat) / $o,
                     'nettofull' => $termek->getNettoAr($valtozat),
@@ -343,11 +356,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                     'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
                     'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
                     'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
-                );
+                ];
                 echo json_encode($r);
-            }
-            else {
-                echo json_encode(array(
+            } else {
+                echo json_encode([
                     'netto' => 0,
                     'brutto' => 0,
                     'nettofull' => 0,
@@ -355,12 +367,11 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                     'kedvezmeny' => 0,
                     'enetto' => 0,
                     'ebrutto' => 0
-                ));
+                ]);
             }
-        }
-        // Vannak ársávok
+        } // Vannak ársávok
         else {
-            $arsavnev = 'folyamatos';
+            $arsav = $this->getEm()->getRepository(Arsav::class)->findOneBy(['nev' => 'folyamatos']);
             /** @var \Entities\Termek $termek */
             $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
             $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
@@ -374,19 +385,18 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 if (!$o) {
                     $o = 1;
                 }
-                $r = array(
-                    'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                    'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                    'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev),
-                    'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev),
+                $r = [
+                    'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsav) / $o,
+                    'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsav) / $o,
+                    'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsav),
+                    'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsav),
                     'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                    'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                    'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o
-                );
+                    'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsav) / $o,
+                    'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsav) / $o
+                ];
                 echo json_encode($r);
-            }
-            else {
-                echo json_encode(array(
+            } else {
+                echo json_encode([
                     'netto' => 0,
                     'brutto' => 0,
                     'nettofull' => 0,
@@ -394,12 +404,13 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                     'kedvezmeny' => 0,
                     'enetto' => 0,
                     'ebrutto' => 0
-                ));
+                ]);
             }
         }
     }
 
-    public function quickSave() {
+    public function quickSave()
+    {
         $terem = $this->getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
         $oratipus = $this->getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus', 0));
         $tanar = $this->getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('tanar', 0));
@@ -424,7 +435,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                             /** @var \Entities\Partner $partnerobj */
                             $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find($partnerkod);
                             if ($partnerobj) {
-
                                 $partnerobj->setEmail($this->params->getStringRequestParam('partneremail_' . $jrid));
                                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon_' . $jrid));
                                 $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev_' . $jrid));
@@ -440,13 +450,12 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
 
                                 $jr->setPartner($partnerobj);
                             }
-                        }
-                        elseif ($partnerkod === -1) {
+                        } elseif ($partnerkod === -1) {
                             $partnerobj = null;
                             $partneremail = $this->params->getStringRequestParam('partneremail_' . $jrid);
                             if ($partneremail) {
                                 /** @var \Entities\Partner $partnerobj */
-                                $partnerobj = $this->getRepo(Partner::class)->findOneBy(array('email' => $partneremail));
+                                $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
                             }
                             if (!$partnerobj) {
                                 $partnerobj = new \Entities\Partner();
@@ -464,7 +473,9 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                             $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam_' . $jrid));
 
                             if (!$partnerobj->getEmail()) {
-                                $partnerobj->setEmail(uniqid(\Behat\Transliterator\Transliterator::transliterate($partnerobj->getNev(), '_'), true) . '@mail.local');
+                                $partnerobj->setEmail(
+                                    uniqid(\Behat\Transliterator\Transliterator::transliterate($partnerobj->getNev(), '_'), true) . '@mail.local'
+                                );
                             }
                             if (!$partnerobj->getIrszam()) {
                                 $partnerobj->setIrszam('1011');
@@ -499,7 +510,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function fizet() {
+    public function fizet()
+    {
         /** @var \Entities\RendezvenyJelentkezes $r */
         $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         /** @var \Entities\Fizmod $fizmod */
@@ -512,7 +524,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         if ($r && $fizmod && $jogcim
             && (($this->params->getIntRequestParam('bankszamla') && $bankszamla) || ($this->params->getIntRequestParam('penztar') && $penztar))
             && $osszeg) {
-
             $tipus = $fizmod->getTipus();
             if ($tipus === 'B' && $bankszamla) {
                 $biz = new \Entities\Bankbizonylatfej();
@@ -542,8 +553,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 $r->setFizetvebankszamla($bankszamla);
                 $r->setFizetvebankbizonylatszam($biz->getId());
                 $r->setFizetvebanktetelid($bt->getId());
-            }
-            elseif ($tipus === 'P' && $penztar) {
+            } elseif ($tipus === 'P' && $penztar) {
                 $biz = new \Entities\Penztarbizonylatfej();
                 $bt = new \Entities\Penztarbizonylattetel();
                 $biz->addBizonylattetel($bt);
@@ -578,14 +588,14 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($r);
             $this->getEm()->flush();
 
-            echo json_encode(array('result' => 'ok'));
-        }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nem adott meg minden adatot!')));
+            echo json_encode(['result' => 'ok']);
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
         }
     }
 
-    protected function beforeRemove($o) {
+    protected function beforeRemove($o)
+    {
         /** @var \Entities\JogaBerlet $berlet */
         $berlet = $o->getJogaberlet();
         if ($berlet) {

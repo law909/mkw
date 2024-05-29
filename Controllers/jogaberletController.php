@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Arsav;
 use Entities\Dolgozo;
 use Entities\JogaBerlet;
 use Entities\JogaReszvetel;
@@ -296,7 +297,7 @@ class jogaberletController extends \mkwhelpers\MattableController
             }
         } // Vannak ársávok
         else {
-            $arsavnev = 'folyamatos';
+            $arsav = $this->getEm()->getRepository(Arsav::class)->findOneBy(['nev' => 'folyamatos']);
             /** @var \Entities\JogaBerlet $berlet */
             $berlet = $this->getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('berlet'));
             if ($berlet) {
@@ -326,10 +327,10 @@ class jogaberletController extends \mkwhelpers\MattableController
                             $o = 1;
                         }
                         $r = [
-                            'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                            'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
-                            'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev),
-                            'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev),
+                            'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsav) / $o,
+                            'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsav) / $o,
+                            'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsav),
+                            'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsav),
                             'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
                             'enetto' => 0,
                             'ebrutto' => 0,
