@@ -94,6 +94,9 @@ class Uzletkoto
      */
     private $arsav;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $partnertermekarazonosito;
+
     public function __construct()
     {
         $this->partnerek = new ArrayCollection();
@@ -529,6 +532,16 @@ class Uzletkoto
     public function removeArsav()
     {
         $this->arsav = null;
+    }
+
+    public function getPartnertermekarazonosito()
+    {
+        return $this->partnertermekarazonosito;
+    }
+
+    public function setPartnertermekarazonosito($v)
+    {
+        $this->partnertermekarazonosito = $v;
     }
 
 }

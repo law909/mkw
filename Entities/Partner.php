@@ -582,6 +582,9 @@ class Partner
      */
     private $arsav;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekarazonosito;
+
     public function __construct()
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -3459,6 +3462,16 @@ class Partner
     public function removeArsav()
     {
         $this->arsav = null;
+    }
+
+    public function getTermekarazonosito()
+    {
+        return $this->termekarazonosito;
+    }
+
+    public function setTermekarazonosito($v)
+    {
+        $this->termekarazonosito = $v;
     }
 
 }

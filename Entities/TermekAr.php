@@ -57,6 +57,9 @@ class TermekAr
      */
     private $arsav;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $azonosito;
+
     public function getId()
     {
         return $this->id;
@@ -171,6 +174,16 @@ class TermekAr
     public function removeArsav()
     {
         $this->arsav = null;
+    }
+
+    public function getAzonosito()
+    {
+        return $this->azonosito;
+    }
+
+    public function setAzonosito($val)
+    {
+        $this->azonosito = $val;
     }
 
 }

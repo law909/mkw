@@ -67,10 +67,10 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito'];
     }
 
     /**
@@ -388,6 +388,28 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeArsav', []);
 
         return parent::removeArsav();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAzonosito()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonosito', []);
+
+        return parent::getAzonosito();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAzonosito($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', [$val]);
+
+        return parent::setAzonosito($val);
     }
 
 }
