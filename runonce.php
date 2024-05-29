@@ -320,7 +320,7 @@ if ($DBVersion < '0048') {
 
 if ($DBVersion < '0049') {
     $result = \mkw\store::getEm()->getConnection()->executeQuery(
-        '(SELECT distinct(azonosito) AS azonosito FROM billy_mugenrace.termekar) union '
+        '(SELECT distinct(azonosito) AS azonosito FROM termekar) union '
         . '(SELECT distinct(termekarazonosito) AS azonosito from partner) union '
         . '(SELECT distinct(partnertermekarazonosito) AS azonosito from uzletkoto) '
         . 'ORDER BY azonosito'
