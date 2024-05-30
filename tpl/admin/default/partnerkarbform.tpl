@@ -17,12 +17,12 @@
                 <li><a href="#MPTNGYTab">{at('MPT nagygyűlés')}</a></li>
             {/if}
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
-            {if (!$setup.mptngy)}
+            {if (!$setup.mptngy && !$setup.mpt)}
                 <li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
                 <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
             {/if}
             <li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
-            {if (!$setup.mptngy)}
+            {if (!$setup.mptngy && !$setup.mpt)}
                 <li><a href="#BankTab">{at('Banki adatok')}</a></li>
                 <li><a href="#EgyebAzonositoTab">{at('Egyéb azonosító adatok')}</a></li>
                 <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
@@ -572,7 +572,7 @@
             <label for="MegjegyzesEdit"></label>
             <textarea id="MegjegyzesEdit" name="megjegyzes" cols=120 rows="10">{$partner.megjegyzes}</textarea>
         </div>
-        {if (!$setup.mptngy)}
+        {if (!$setup.mptngy && !$setup.mpt)}
             <div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
                 {foreach $partner.termekcsoportkedvezmenyek as $kd}
                     {include 'partnertermekcsoportkedvezmenykarb.tpl'}
@@ -606,7 +606,7 @@
                 </tbody>
             </table>
         </div>
-        {if (!$setup.mptngy)}
+        {if (!$setup.mptngy && !$setup.mpt)}
             <div id="BankTab" class="mattkarb-page" data-visible="visible">
                 <table>
                     <tbody>
