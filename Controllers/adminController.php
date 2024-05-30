@@ -792,11 +792,21 @@ class adminController extends mkwhelpers\Controller
         $sep = ';';
         $fh = fopen(\mkw\store::storagePath('mpttagok.csv'), 'r');
         if ($fh) {
+            \mkw\store::getEm()->getConnection()->executeStatement('set foreign_key_checks=0');
+            \mkw\store::getEm()->getConnection()->executeStatement('TRUNCATE partner');
+            \mkw\store::getEm()->getConnection()->executeStatement('TRUNCATE mpttagsagforma');
+            \mkw\store::getEm()->getConnection()->executeStatement('TRUNCATE mpttagozat');
+            \mkw\store::getEm()->getConnection()->executeStatement('TRUNCATE mptszekcio');
+            \mkw\store::getEm()->getConnection()->executeStatement('TRUNCATE mptfolyoszamla');
+            \mkw\store::getEm()->getConnection()->executeStatement('set foreign_key_checks=1');
+
             fgetcsv($fh, 0, $sep, '"');
             while ($data = fgetcsv($fh, 0, $sep, '"')) {
                 if ($data[$this->n('a')]) {
                     $p = new Entities\Partner();
-                    $p->setNev($data[$this->n('a')]);
+                    if ($data[$this->n('a')]) {
+                        $p->setNev(mb_substr($data[$this->n('a')], 0, 255));
+                    }
                     $nev = explode(' ', $data[$this->n('a')]);
                     $p->setVezeteknev($nev[0]);
                     unset($nev[0]);
@@ -804,224 +814,250 @@ class adminController extends mkwhelpers\Controller
                     $p->setMptUsername($data[$this->n('b')]);
                     $p->setEmail($data[$this->n('c')]);
                     $p->setUjdonsaghirlevelkell($data[$this->n('f')]);
-                    if (substr($data[$this->n('g')], 0, 10) !== '0000-00-00') {
+                    if ($data[$this->n('g')] && substr($data[$this->n('g')], 0, 10) !== '0000-00-00') {
                         $p->setMptRegisterdate($data[$this->n('g')]);
                     }
-                    if (substr($data[$this->n('h')], 0, 10) !== '0000-00-00') {
+                    if ($data[$this->n('h')] && substr($data[$this->n('h')], 0, 10) !== '0000-00-00') {
                         $p->setMptLastvisit($data[$this->n('h')]);
                     }
                     $p->setMptUserid($data[$this->n('p')]);
-                    if (substr($data[$this->n('aa')], 0, 10) !== '0000-00-00') {
+                    if ($data[$this->n('aa')] && substr($data[$this->n('aa')], 0, 10) !== '0000-00-00') {
                         $p->setMptLastupdate($data[$this->n('aa')]);
                     }
                     $p->setMptMunkahelynev($data[$this->n('ak')]);
                     $p->setTelefon($data[$this->n('am')]);
-                    $p->setUtca(mb_substr($data[$this->n('an')], 0, 60));
-                    $p->setVaros(mb_substr($data[$this->n('ao')], 0, 40));
-                    $p->setIrszam(mb_substr($data[$this->n('ap')], 0, 10));
-                    $cim = \mkw\store::explodeCim($data[$this->n('at')]);
+                    if ($data[$this->n('an')]) {
+                        $p->setUtca(mb_substr($data[$this->n('an')], 0, 60));
+                    }
+                    if ($data[$this->n('ao')]) {
+                        $p->setVaros(mb_substr($data[$this->n('ao')], 0, 40));
+                    }
+                    if ($data[$this->n('ap')]) {
+                        $p->setIrszam(mb_substr($data[$this->n('ap')], 0, 10));
+                    }
+                    $cim = \mkw\store::explodeCim($data[$this->n('as')]);
                     $p->setMptLakcimirszam(mb_substr($cim[0], 0, 10));
                     $p->setMptLakcimvaros(mb_substr($cim[1], 0, 40));
                     $p->setMptLakcimutca(mb_substr($cim[2], 0, 60));
-                    $cim = \mkw\store::explodeCim($data[$this->n('av')]);
+                    $cim = \mkw\store::explodeCim($data[$this->n('at')]);
                     $p->setMptMunkahelyirszam(mb_substr($cim[0], 0, 10));
                     $p->setMptMunkahelyvaros(mb_substr($cim[1], 0, 40));
                     $p->setMptMunkahelyutca(mb_substr($cim[2], 0, 60));
-                    $p->setMptTagkartya($data[$this->n('aw')]);
-                    if ($data[$this->n('az')]) {
-                        $sz = $this->createMptSzekcio($data[$this->n('az')]);
+                    $p->setMptTagkartya($data[$this->n('au')]);
+                    if ($data[$this->n('aw')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('aw')]);
                         $p->setMptSzekcio1($sz);
                     }
-                    if ($data[$this->n('ba')]) {
-                        $sz = $this->createMptTagozat($data[$this->n('ba')]);
+                    if ($data[$this->n('ax')]) {
+                        $sz = $this->createMptTagozat($data[$this->n('ax')]);
                         $p->setMptTagozat($sz);
                     }
-                    if (\mkw\store::isMagyarAdoszam($data[$this->n('bn')])) {
-                        $p->setAdoszam($data[$this->n('bn')]);
+                    if (\mkw\store::isMagyarAdoszam($data[$this->n('bk')])) {
+                        $p->setAdoszam($data[$this->n('bk')]);
                     }
-                    $p->setMptMegszolitas($data[$this->n('bp')]);
-                    $p->setMptFokozat($data[$this->n('bq')]);
-                    $p->setMptVegzettseg($data[$this->n('br')]);
-                    if ($data[$this->n('bs')]) {
-                        $sz = $this->createMptTagsagforma($data[$this->n('bs')]);
+                    $p->setMptMegszolitas($data[$this->n('bm')]);
+                    $p->setMptFokozat($data[$this->n('bn')]);
+                    $p->setMptVegzettseg($data[$this->n('bo')]);
+                    if ($data[$this->n('bp')]) {
+                        $sz = $this->createMptTagsagforma($data[$this->n('bp')]);
                         $p->setMptTagsagforma($sz);
                     }
-                    $p->setMptSzuleteseve($data[$this->n('by')]);
-                    $p->setMptDiplomahely($data[$this->n('bz')]);
-                    $tagsagdate = trim($data[$this->n('bw')]);
-                    if ($tagsagdate) {
-                        if (\mkw\store::isValidDate($tagsagdate)) {
-                            $p->setMptTagsagdate($tagsagdate);
-                        } else {
-                            $tagsagdate = substr($tagsagdate, 0, 4);
-                            if (\mkw\store::isValidDate($tagsagdate . '-01-01')) {
-                                $p->setMptTagsagdate($tagsagdate . '-01-01');
+                    $p->setMptSzuleteseve($data[$this->n('bu')]);
+                    $p->setMptDiplomahely($data[$this->n('bv')]);
+
+                    if ($data[$this->n('bs')]) {
+                        $tagsagdate = trim($data[$this->n('bs')]);
+                        if ($tagsagdate) {
+                            if (\mkw\store::isValidDate($tagsagdate)) {
+                                $p->setMptTagsagdate($tagsagdate);
+                            } else {
+                                $tagsagdate = substr($tagsagdate, 0, 4);
+                                if (\mkw\store::isValidDate($tagsagdate . '-01-01')) {
+                                    $p->setMptTagsagdate($tagsagdate . '-01-01');
+                                }
                             }
                         }
                     }
-                    $p->setMptDiplomaeve($data[$this->n('ca')]);
-                    $p->setMptEgyebdiploma($data[$this->n('cb')]);
-                    $p->setMptPrivatemail($data[$this->n('cc')]);
-                    $p->setMegjegyzes($data[$this->n('cm')]);
-                    if ($data[$this->n('cr')]) {
-                        $sz = $this->createMptSzekcio($data[$this->n('cr')]);
+
+                    $p->setMptDiplomaeve($data[$this->n('bw')]);
+                    $p->setMptEgyebdiploma($data[$this->n('bx')]);
+                    $p->setMptPrivatemail($data[$this->n('by')]);
+                    $p->setMegjegyzes($data[$this->n('ci')]);
+                    if ($data[$this->n('cn')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('cn')]);
                         $p->setMptSzekcio2($sz);
                     }
-                    if ($data[$this->n('cs')]) {
-                        $sz = $this->createMptSzekcio($data[$this->n('cs')]);
+                    if ($data[$this->n('co')]) {
+                        $sz = $this->createMptSzekcio($data[$this->n('co')]);
                         $p->setMptSzekcio3($sz);
                     }
-                    $p->setInaktiv(trim($data[$this->n('cy')]) === '');
+                    $p->setInaktiv(trim($data[$this->n('cu')]) === '');
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('co')]),
-                        getbiz($data[$this->n('cn')]),
+                        getosszeg($data[$this->n('ck')]),
+                        getbiz($data[$this->n('cj')]),
                         '2004-01-01',
                         2004,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('cl')]),
-                        getbiz($data[$this->n('cj')]),
+                        getosszeg($data[$this->n('ch')]),
+                        getbiz($data[$this->n('cf')]),
                         '2005-01-01',
                         2005,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('ci')]),
-                        getbiz($data[$this->n('ch')]),
+                        getosszeg($data[$this->n('ce')]),
+                        getbiz($data[$this->n('cd')]),
                         '2006-01-01',
                         2006,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('cg')]),
-                        getbiz($data[$this->n('cf')]),
+                        getosszeg($data[$this->n('cc')]),
+                        getbiz($data[$this->n('cb')]),
                         '2007-01-01',
                         2007,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('ce')]),
-                        getbiz($data[$this->n('cd')]),
+                        getosszeg($data[$this->n('ca')]),
+                        getbiz($data[$this->n('bz')]),
                         '2008-01-01',
                         2008,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('ck')]),
-                        getbiz($data[$this->n('bx')]),
+                        getosszeg($data[$this->n('cg')]),
+                        getbiz($data[$this->n('bt')]),
                         '2009-01-01',
                         2009,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('cq')]),
-                        getbiz($data[$this->n('cp')]),
+                        getosszeg($data[$this->n('cm')]),
+                        getbiz($data[$this->n('cl')]),
                         '2010-01-01',
                         2010,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('cv')]),
-                        getbiz($data[$this->n('cu')]),
+                        getosszeg($data[$this->n('cr')]),
+                        getbiz($data[$this->n('cq')]),
                         '2011-01-01',
                         2011,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('cx')]),
-                        getbiz($data[$this->n('cw')]),
+                        getosszeg($data[$this->n('ct')]),
+                        getbiz($data[$this->n('cs')]),
                         '2012-01-01',
                         2012,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('da')]),
-                        getbiz($data[$this->n('cz')]),
+                        getosszeg($data[$this->n('cw')]),
+                        getbiz($data[$this->n('cv')]),
                         '2013-01-01',
                         2013,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dc')]),
-                        getbiz($data[$this->n('db')]),
+                        getosszeg($data[$this->n('cy')]),
+                        getbiz($data[$this->n('cx')]),
                         '2014-01-01',
                         2014,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('de')]),
-                        getbiz($data[$this->n('dd')]),
+                        getosszeg($data[$this->n('da')]),
+                        getbiz($data[$this->n('cz')]),
                         '2015-01-01',
                         2015,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dg')]),
-                        getbiz($data[$this->n('df')]),
+                        getosszeg($data[$this->n('dc')]),
+                        getbiz($data[$this->n('db')]),
                         '2016-01-01',
                         2016,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('di')]),
-                        getbiz($data[$this->n('dh')]),
+                        getosszeg($data[$this->n('de')]),
+                        getbiz($data[$this->n('dd')]),
                         '2017-01-01',
                         2017,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dk')]),
-                        getbiz($data[$this->n('dj')]),
+                        getosszeg($data[$this->n('dg')]),
+                        getbiz($data[$this->n('df')]),
                         '2018-01-01',
                         2018,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dm')]),
-                        getbiz($data[$this->n('dl')]),
+                        getosszeg($data[$this->n('di')]),
+                        getbiz($data[$this->n('dh')]),
                         '2019-01-01',
                         2019,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('do')]),
-                        getbiz($data[$this->n('dn')]),
+                        getosszeg($data[$this->n('dk')]),
+                        getbiz($data[$this->n('dj')]),
                         '2020-01-01',
                         2020,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dr')]),
-                        getbiz($data[$this->n('dq')]),
+                        getosszeg($data[$this->n('dn')]),
+                        getbiz($data[$this->n('dm')]),
                         '2021-01-01',
                         2021,
                         $p
                     );
 
                     $this->MPTCreateFSZ(
-                        getosszeg($data[$this->n('dt')]),
-                        getbiz($data[$this->n('ds')]),
+                        getosszeg($data[$this->n('dp')]),
+                        getbiz($data[$this->n('do')]),
                         '2022-01-01',
                         2022,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dr')]),
+                        getbiz($data[$this->n('dq')]),
+                        '2023-01-01',
+                        2023,
+                        $p
+                    );
+
+                    $this->MPTCreateFSZ(
+                        getosszeg($data[$this->n('dt')]),
+                        getbiz($data[$this->n('ds')]),
+                        '2024-01-01',
+                        2024,
                         $p
                     );
 
