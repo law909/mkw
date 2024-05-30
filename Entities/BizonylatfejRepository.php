@@ -1274,6 +1274,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();
+        if (!$res) {
+            $res = [];
+        }
         return $res;
     }
 
@@ -1304,6 +1307,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();
+        if (!$res) {
+            $res = [];
+        }
         return $res;
     }
 
@@ -1336,6 +1342,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $q->setParameters($this->getQueryParameters($filter));
 
         $res = $q->getScalarResult();
+        if (!$res) {
+            $res = [];
+        }
         return $res;
     }
 }
