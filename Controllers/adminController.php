@@ -74,6 +74,7 @@ class adminController extends mkwhelpers\Controller
 
         $lista = new listaController($this->params);
         switch (true) {
+            case \mkw\store::isMugenrace2021():
             case \mkw\store::isSuperzoneB2B():
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
