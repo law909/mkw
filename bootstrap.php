@@ -12,6 +12,7 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Gedmo\Blameable\BlameableListener;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Timestampable\TimestampableListener;
+use Listeners\ArsavListener;
 use mkw\store;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
@@ -132,6 +133,7 @@ $evm->addEventListener(['prePersist'], new RendezvenyListener());
 $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
+$evm->addEventListener(['onFlush'], new ArsavListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

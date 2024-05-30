@@ -258,6 +258,13 @@ class store
         self::getEm()->flush();
     }
 
+    public static function clearParameterIf($par, $ertek)
+    {
+        if (self::getParameter($par, null) == $ertek) {
+            self::setParameter($par, null);
+        }
+    }
+
     /* TODO ezen lehet h. csiszolni kell meg */
 
     public static function convDate($DateString)
