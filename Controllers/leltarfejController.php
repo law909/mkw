@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Arsav;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -262,10 +263,10 @@ class leltarfejController extends \mkwhelpers\MattableController
             default:
                 break;
         }
-
-        // TODO: arsav
+        
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
+        $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
         $valutanem = $as[1];
         $ret = [];
         foreach ($d as $sor) {
@@ -275,10 +276,10 @@ class leltarfejController extends \mkwhelpers\MattableController
                 if ($t) {
                     switch ($nettobrutto) {
                         case 'netto':
-                            $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
+                            $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsavobj);
                             break;
                         case 'brutto':
-                            $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsav);
+                            $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsavobj);
                             break;
                         default:
                             $sor['ar'] = 0;

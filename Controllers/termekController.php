@@ -1566,7 +1566,7 @@ class termekController extends \mkwhelpers\MattableController
                 $nettobrutto = 'netto';
             }
             $excel->setActiveSheetIndex(0)
-                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['id']);
+                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
             $oszlop++;
         }
 
@@ -1586,7 +1586,7 @@ class termekController extends \mkwhelpers\MattableController
                         'id' => $ar->getArsav()?->getId(),
                         'valutanemid' => $ar->getValutanemId(),
                         'valutanem' => $ar->getValutanemnev(),
-                        'azonosito' => $ar->getArsav()?->getNev()
+                        'azonosito' => $ar->getArsav()?->getNev(),
                     ],
                     $arsavok
                 );

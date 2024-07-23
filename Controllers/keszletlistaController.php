@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Arsav;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -28,7 +29,6 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
-        // TODO: arsav
         $tac = new termekarController($this->params);
         $tacok = $tac->getSelectList();
         $tacok[] = [
@@ -173,10 +173,10 @@ class keszletlistaController extends \mkwhelpers\MattableController
             default:
                 break;
         }
-
-        // TODO: arsav
+        
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
+        $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
         $valutanem = $as[1];
         $valutaobj = $this->getRepo('Entities\Valutanem')->find($valutanem);
         $this->arsavstr = $arsav;
@@ -209,10 +209,10 @@ class keszletlistaController extends \mkwhelpers\MattableController
                         $sor['bizid'] = '';
                         switch ($nettobrutto) {
                             case 'netto':
-                                $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
+                                $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsavobj);
                                 break;
                             case 'brutto':
-                                $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsav);
+                                $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsavobj);
                                 break;
                             default:
                                 $sor['ar'] = 0;
@@ -234,7 +234,6 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('nevfilter', $this->nevfilter);
         $report->setVar('foglalasstr', $this->foglalasstr);
-        // TODO: arsav
         $report->setVar('arsav', $this->arsavstr . ' ' . $this->nettobruttostr);
         $report->printTemplateResult();
     }

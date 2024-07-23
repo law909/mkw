@@ -61,7 +61,7 @@ class termekarController extends \mkwhelpers\MattableController
         $res = [];
         foreach ($rec as $sor) {
             $res[] = [
-                'id' => $sor['azonosito'],
+                'id' => $sor['id'],
                 'caption' => $sor['azonosito'],
                 'selected' => ($sor['azonosito'] == $selid),
                 'valutanemid' => $sor['valutanemid'],
