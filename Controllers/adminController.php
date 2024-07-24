@@ -745,29 +745,93 @@ class adminController extends mkwhelpers\Controller
         return $tagsagforma;
     }
 
-    private function MPTCreateFSZ($osszeg, $biz, $datum, $ev, $p)
+    /**
+     * @param $osszeg
+     * @param $biz
+     * @param $datum
+     * @param $ev
+     * @param $p Entities\Partner
+     * @param $mod
+     *
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    private function MPTCreateFSZ($osszeg, $biz, $datum, $ev, $p, $mod)
     {
-        if ($osszeg && $biz) {
-            $f = new Entities\MPTFolyoszamla();
-            $f->setTipus('E');
-            $f->setIrany('-1');
-            $f->setPartner($p);
-            $f->setMegjegyzes('Importált adat');
-            $f->setDatum($datum);
-            $f->setOsszeg($osszeg);
-            $f->setBizonylatszam('ismeretlen');
-            $f->setVonatkozoev($ev);
-            \mkw\store::getEm()->persist($f);
-            $f = new Entities\MPTFolyoszamla();
-            $f->setTipus('B');
-            $f->setIrany('1');
-            $f->setPartner($p);
-            $f->setMegjegyzes('Importált adat');
-            $f->setDatum($datum);
-            $f->setOsszeg($osszeg);
-            $f->setBizonylatszam($biz);
-            $f->setVonatkozoev($ev);
-            \mkw\store::getEm()->persist($f);
+        switch ($mod) {
+            case 'eloiras':
+                switch ($ev) {
+                    case 2007:
+                    case 2008:
+                    case 2009:
+                    case 2011:
+                    case 2012:
+                    case 2013:
+                    case 2014:
+                    case 2015:
+                        if ($p->getMptTagsagformaNev() === 'rendes') {
+                            $osszeg = 6000;
+                        } else {
+                            $osszeg = 3000;
+                        }
+                        break;
+                    case 2010:
+                        if ($p->getMptTagsagformaNev() === 'rendes') {
+                            $osszeg = 5000;
+                        } else {
+                            $osszeg = 2500;
+                        }
+                        break;
+                    case 2016:
+                    case 2017:
+                    case 2018:
+                    case 2019:
+                    case 2020:
+                    case 2021:
+                    case 2022:
+                    case 2023:
+                    case 2024:
+                        if ($p->getMptTagsagformaNev() === 'rendes') {
+                            $osszeg = 7000;
+                        } else {
+                            $osszeg = 3500;
+                        }
+                        break;
+                }
+                $f = new Entities\MPTFolyoszamla();
+                $f->setTipus('E');
+                $f->setIrany('-1');
+                $f->setPartner($p);
+                $f->setMegjegyzes('Importált adat');
+                $f->setDatum($datum);
+                $f->setOsszeg($osszeg);
+                $f->setBizonylatszam('ismeretlen');
+                $f->setVonatkozoev($ev);
+                \mkw\store::getEm()->persist($f);
+                break;
+            case 'minden':
+                $f = new Entities\MPTFolyoszamla();
+                $f->setTipus('E');
+                $f->setIrany('-1');
+                $f->setPartner($p);
+                $f->setMegjegyzes('Importált adat');
+                $f->setDatum($datum);
+                $f->setOsszeg($osszeg);
+                $f->setBizonylatszam('ismeretlen');
+                $f->setVonatkozoev($ev);
+                \mkw\store::getEm()->persist($f);
+
+                $f = new Entities\MPTFolyoszamla();
+                $f->setTipus('B');
+                $f->setIrany('1');
+                $f->setPartner($p);
+                $f->setMegjegyzes('Importált adat');
+                $f->setDatum($datum);
+                $f->setOsszeg($osszeg);
+                $f->setBizonylatszam($biz);
+                $f->setVonatkozoev($ev);
+                \mkw\store::getEm()->persist($f);
+                break;
         }
     }
 
@@ -779,6 +843,16 @@ class adminController extends mkwhelpers\Controller
                 return (int)trim($mibol);
             }
             return false;
+        }
+
+        function getmod($mibol)
+        {
+            if (trim($mibol) === '-') {
+                return 'semmi';
+            } elseif ((int)trim($mibol) === 0) {
+                return 'eloiras';
+            }
+            return 'minden';
         }
 
         function getbiz($mibol)
@@ -827,15 +901,11 @@ class adminController extends mkwhelpers\Controller
                     }
                     $p->setMptMunkahelynev($data[$this->n('ak')]);
                     $p->setTelefon($data[$this->n('am')]);
-                    if ($data[$this->n('an')]) {
-                        $p->setUtca(mb_substr($data[$this->n('an')], 0, 60));
-                    }
-                    if ($data[$this->n('ao')]) {
-                        $p->setVaros(mb_substr($data[$this->n('ao')], 0, 40));
-                    }
-                    if ($data[$this->n('ap')]) {
-                        $p->setIrszam(mb_substr($data[$this->n('ap')], 0, 10));
-                    }
+
+                    $cim = \mkw\store::explodeCim($data[$this->n('cp')]);
+                    $p->setIrszam(mb_substr($cim[0], 0, 10));
+                    $p->setVaros(mb_substr($cim[1], 0, 40));
+                    $p->setUtca(mb_substr($cim[2], 0, 60));
                     $cim = \mkw\store::explodeCim($data[$this->n('as')]);
                     $p->setMptLakcimirszam(mb_substr($cim[0], 0, 10));
                     $p->setMptLakcimvaros(mb_substr($cim[1], 0, 40));
@@ -899,7 +969,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cj')]),
                         '2004-01-01',
                         2004,
-                        $p
+                        $p,
+                        getmod($data[$this->n('ck')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -907,7 +978,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cf')]),
                         '2005-01-01',
                         2005,
-                        $p
+                        $p,
+                        getmod($data[$this->n('ch')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -915,7 +987,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cd')]),
                         '2006-01-01',
                         2006,
-                        $p
+                        $p,
+                        getmod($data[$this->n('ce')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -923,7 +996,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cb')]),
                         '2007-01-01',
                         2007,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cc')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -931,7 +1005,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('bz')]),
                         '2008-01-01',
                         2008,
-                        $p
+                        $p,
+                        getmod($data[$this->n('ca')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -939,7 +1014,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('bt')]),
                         '2009-01-01',
                         2009,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cg')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -947,7 +1023,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cl')]),
                         '2010-01-01',
                         2010,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cm')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -955,7 +1032,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cq')]),
                         '2011-01-01',
                         2011,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cr')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -963,7 +1041,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cs')]),
                         '2012-01-01',
                         2012,
-                        $p
+                        $p,
+                        getmod($data[$this->n('ct')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -971,7 +1050,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cv')]),
                         '2013-01-01',
                         2013,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cw')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -979,7 +1059,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cx')]),
                         '2014-01-01',
                         2014,
-                        $p
+                        $p,
+                        getmod($data[$this->n('cy')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -987,7 +1068,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('cz')]),
                         '2015-01-01',
                         2015,
-                        $p
+                        $p,
+                        getmod($data[$this->n('da')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -995,7 +1077,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('db')]),
                         '2016-01-01',
                         2016,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dc')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1003,7 +1086,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('dd')]),
                         '2017-01-01',
                         2017,
-                        $p
+                        $p,
+                        getmod($data[$this->n('de')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1011,7 +1095,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('df')]),
                         '2018-01-01',
                         2018,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dg')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1019,7 +1104,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('dh')]),
                         '2019-01-01',
                         2019,
-                        $p
+                        $p,
+                        getmod($data[$this->n('di')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1027,7 +1113,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('dj')]),
                         '2020-01-01',
                         2020,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dk')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1035,7 +1122,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('dm')]),
                         '2021-01-01',
                         2021,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dn')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1043,7 +1131,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('do')]),
                         '2022-01-01',
                         2022,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dp')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1051,7 +1140,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('dq')]),
                         '2023-01-01',
                         2023,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dr')])
                     );
 
                     $this->MPTCreateFSZ(
@@ -1059,7 +1149,8 @@ class adminController extends mkwhelpers\Controller
                         getbiz($data[$this->n('ds')]),
                         '2024-01-01',
                         2024,
-                        $p
+                        $p,
+                        getmod($data[$this->n('dt')])
                     );
 
                     \mkw\store::getEm()->persist($p);
