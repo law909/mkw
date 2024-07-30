@@ -10,7 +10,7 @@
 
 {block "kozep"}
     <div id="mattkarb">
-        <div id="mattkarb-header">
+        <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
             <h3>{at('Beérkezett pénz')}</h3>
         </div>
         <div id="mattkarb-tabs">

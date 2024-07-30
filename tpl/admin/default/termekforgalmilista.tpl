@@ -10,7 +10,7 @@
 
 {block "kozep"}
     <div id="mattkarb">
-        <div id="mattkarb-header">
+        <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
             <h3>{at('Termékforgalmi lista')}</h3>
         </div>
         <form id="termekforgalmi" action="" target="_blank">
@@ -60,17 +60,17 @@
                         <option value="3">{at('bizonylaton szereplő nettó HUF')}</option>
                         <option value="4">{at('bizonylaton szereplő bruttó HUF')}</option>
                         {if ($setup.arsavok)}
-                        <option value="5">{at('választott ársáv nettó')}</option>
-                        <option value="6">{at('választott ársáv bruttó')}</option>
+                            <option value="5">{at('választott ársáv nettó')}</option>
+                            <option value="6">{at('választott ársáv bruttó')}</option>
                         {else}
-                        <option value="7">{at('eladási ár nettó')}</option>
-                        <option value="8">{at('eladási ár bruttó')}</option>
+                            <option value="7">{at('eladási ár nettó')}</option>
+                            <option value="8">{at('eladási ár bruttó')}</option>
                         {/if}
                     </select>
                 </div>
                 {if ($setup.arsavok)}
-                <div class="matt-hseparator"></div>
-                {include "comp_arsavselect.tpl"}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_arsavselect.tpl"}
                 {/if}
                 <div class="matt-hseparator"></div>
                 <div>

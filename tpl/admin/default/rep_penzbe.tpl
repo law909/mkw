@@ -3,7 +3,7 @@
 {block "body"}
     <h4>Beérkezett pénz / Income</h4>
     <h5>{$tolstr} - {$igstr}</h5>
-    <h5>{implode(', ', $cimkenevek)}</h5>
+    <h5>{$cimkenevek}</h5>
     <h5>{$bankszamlaszam}</h5>
     <table>
         <thead>
