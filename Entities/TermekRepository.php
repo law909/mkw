@@ -235,7 +235,7 @@ class TermekRepository extends \mkwhelpers\Repository
             . ' LEFT JOIN _xx.termekfa1 fa1'
             . ' LEFT JOIN _xx.termekfa2 fa2'
             . ' LEFT JOIN _xx.termekfa3 fa3'
-            . ' LEFT JOIN _xx.termekarak ar WITH (ar.azonosito = :X1A) AND (ar.valutanem = :X1V)'
+            . ' LEFT JOIN _xx.termekarak ar WITH (ar.arsav = :X1A) AND (ar.valutanem = :X1V)'
             . ' LEFT JOIN ar.valutanem valutanem'
             . $this->getFilterString($filter)
             . $this->getOrderString($order)
