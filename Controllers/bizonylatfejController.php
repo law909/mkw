@@ -7,7 +7,6 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Emailtemplate;
 use Entities\Partner;
-use mikehaertl\wkhtmlto\Pdf;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -1207,8 +1206,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if ($o) {
                 $this->biztipus = $o->getBizonylattipusId();
                 $html = $this->getBizonylatHTML($id);
-                $pdf = new Pdf($html);
-                $pdf->setOptions(['encoding' => 'UTF-8']);
+                $pdf = \mkw\store::getPDFEngine($html);
                 $pdf->send(\mkw\store::urlize($id) . '.pdf');
                 if ($printed !== false) {
                     $this->setNyomtatva($id, true);
@@ -1229,8 +1227,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 if ($email) {
                     $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
                     $html = $this->getBizonylatHTML($id);
-                    $pdf = new Pdf($html);
-                    $pdf->setOptions(['encoding' => 'UTF-8']);
+                    $pdf = \mkw\store::getPDFEngine($html);
                     if ($email && $emailtpl) {
                         $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
                         $pdf->saveAs($filepath);

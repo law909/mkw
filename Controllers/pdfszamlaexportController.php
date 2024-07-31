@@ -2,15 +2,15 @@
 
 namespace Controllers;
 
-use mikehaertl\wkhtmlto\Pdf;
+class pdfszamlaexportController extends \mkwhelpers\MattableController
+{
 
-class pdfszamlaexportController extends \mkwhelpers\MattableController {
-
-    private $files = array();
+    private $files = [];
     private $mar;
     private $esetimar;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('pdfszamlaexport.tpl');
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam));
@@ -19,7 +19,8 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    private function getPDFs($biztipus, $utolsoszamla) {
+    private function getPDFs($biztipus, $utolsoszamla)
+    {
         $bizrepo = $this->getEm()->getRepository('Entities\Bizonylatfej');
         $bizctrl = bizonylatfejController::factory($biztipus, $this->params);
         $bt = \mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find($biztipus);
@@ -30,27 +31,26 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         if ($mar) {
             $filter->addFilter('id', '>', $mar);
         }
-        $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
+        $r = $bizrepo->getAll($filter, ['id' => 'ASC']);
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
             $filenev = \mkw\store::urlize($mar) . '.pdf';
             $filepath = \mkw\store::storagePath($filenev);
             $html = $bizctrl->getBizonylatHTML($mar);
-            $pdf = new Pdf($html);
-            $pdf->setOptions(array('encoding' => 'UTF-8'));
+            $pdf = \mkw\store::getPDFEngine($html);
             $pdf->saveAs($filepath);
             $this->files[] = $filenev;
         }
         return $mar;
     }
 
-    protected function createZip() {
+    protected function createZip()
+    {
         $this->mar = $this->getPDFs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
         $this->esetimar = $this->getPDFs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
 
         if ($this->files) {
-
             $zipname = 'konyvelonek.zip';
             $zippath = \mkw\store::storagePath($zipname);
             $zip = new \ZipArchive();
@@ -69,20 +69,20 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         return false;
     }
 
-    public function sendEmail() {
-
-        $res = array('msg' => at('A feldolgozás során hiba lépett fel!'));
+    public function sendEmail()
+    {
+        $res = ['msg' => at('A feldolgozás során hiba lépett fel!')];
 
         $zipname = $this->createZip();
         if ($zipname) {
-
             $email = \mkw\store::getParameter(\mkw\consts::KonyveloEmail);
             if ($email) {
                 $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::KonyvelolevelSablon));
                 if ($emailtpl) {
-
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                    $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
 
                     $mailer = \mkw\store::getMailer();
 
@@ -97,12 +97,10 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
                     \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
                     \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
                     $res['msg'] = at('Az email sikeresen elküldve.');
-                }
-                else {
+                } else {
                     $res['msg'] = at('Nincs megadva könyvelő levél sablon!');
                 }
-            }
-            else {
+            } else {
                 $res['msg'] = at('Nincs megadva könyvelő email!');
             }
             @unlink(\mkw\store::storagePath($zipname));
@@ -110,8 +108,8 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         echo json_encode($res);
     }
 
-    public function download() {
-
+    public function download()
+    {
         $zipname = $this->createZip();
         if ($zipname) {
             header("Pragma: public");
@@ -120,9 +118,9 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
             header("Cache-Control: public");
             header("Content-Description: File Transfer");
             header("Content-type: application/octet-stream");
-            header("Content-Disposition: attachment; filename=\"".$zipname."\"");
+            header("Content-Disposition: attachment; filename=\"" . $zipname . "\"");
             header("Content-Transfer-Encoding: binary");
-            header("Content-Length: ".filesize(\mkw\store::storagePath($zipname)));
+            header("Content-Length: " . filesize(\mkw\store::storagePath($zipname)));
             ob_end_flush();
             @readfile(\mkw\store::storagePath($zipname));
             @unlink(\mkw\store::storagePath($zipname));

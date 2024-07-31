@@ -121,54 +121,7 @@
             <div class="page-break"></div>
         {/if}
     {/for}
-    <div class="fullwidth pull-left topmargin osszesen">
-        <div class="halfwidth bold pull-left">Összesen / Total</div>
-        <div class="halfwidth bold pull-left textalignright">{bizformat($egyed.brutto)} {$egyed.valutanemnev}</div>
-    </div>
-    <div class="halfwidth pull-left topmargin10">
-        <p>Összes mennyiség / Total quantity: {bizformat($summennyiseg)}</p>
-    </div>
-    <table class="halfwidth pull-right topmargin10">
-        <tbody>
-        <tr>
-            <td></td>
-            <td class="textalignright bold">Nettó</td>
-            <td class="textalignright bold">ÁFA</td>
-            <td class="textalignright bold">Bruttó</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="textalignright bold">Net</td>
-            <td class="textalignright bold">VAT</td>
-            <td class="textalignright bold">Gross</td>
-        </tr>
-        {foreach $afaosszesito as $a}
-            <tr>
-                <td>{$a.caption}</td>
-                <td class="textalignright">{bizformat($a.netto)}</td>
-                <td class="textalignright">{bizformat($a.afa)}</td>
-                <td class="textalignright">{bizformat($a.brutto)}</td>
-            </tr>
-        {/foreach}
-        <tr>
-            <td class="topline" colspan="5"></td>
-        </tr>
-        <tr class="bold">
-            <td>Összesen / Total</td>
-            <td class="textalignright">{bizformat($egyed.netto)}</td>
-            <td class="textalignright">{bizformat($egyed.afa)}</td>
-            <td class="textalignright">{bizformat($egyed.brutto)}</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="clear toppadding10">
-        <div class="textalignright osszesen bold">
-            azaz {$egyed.fizetendokiirva} {$egyed.valutanemnev}
-        </div>
-        <div class="textalignright osszesen bold">
-            Fizetendő végösszeg / Total value to pay: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
-        </div>
-    </div>
+    {include "biz_summary_eng.tpl" nemkellfizetesireszlet=true}
     <div class="topmargin">
         <p>Átutaláskor kérjük, a közleményben tüntesse fel a díjbekérő számát: {$egyed.id}</p>
         <p>At transfer of amount, please indicate the number of voucher in comment: {$egyed.id}</p>

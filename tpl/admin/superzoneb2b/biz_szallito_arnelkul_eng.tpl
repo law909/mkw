@@ -18,39 +18,39 @@
         <div class="topline topbottommargin clear"></div>
         <table class="fullwidth">
             <tbody>
-                <tr>
-                    <td class="textaligncenter bold">Kelt</td>
-                    <td class="textaligncenter bold">Teljesítés</td>
-                    <td class="textaligncenter bold">Szállítólevél száma</td>
-                </tr>
-                <tr>
-                    <td class="textaligncenter bold">Issue</td>
-                    <td class="textaligncenter bold">Fulfillment</td>
-                    <td class="textaligncenter bold">Delivery bill #</td>
-                </tr>
-                <tr>
-                    <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.teljesitesstr|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.id}</td>
-                </tr>
+            <tr>
+                <td class="textaligncenter bold">Kelt</td>
+                <td class="textaligncenter bold">Teljesítés</td>
+                <td class="textaligncenter bold">Szállítólevél száma</td>
+            </tr>
+            <tr>
+                <td class="textaligncenter bold">Issue</td>
+                <td class="textaligncenter bold">Fulfillment</td>
+                <td class="textaligncenter bold">Delivery bill #</td>
+            </tr>
+            <tr>
+                <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
+                <td class="textaligncenter">{$egyed.teljesitesstr|default:"&nbsp;"}</td>
+                <td class="textaligncenter">{$egyed.id}</td>
+            </tr>
             </tbody>
         </table>
         <div class="topline topbottommargin"></div>
         {if ($egyed.megjegyzes)}
-        <div class="fullwidth pull-left">
-            <div class="row-inner">
-                {if ($egyed.megjegyzes|default)}
-                    Közlemény: {$egyed.megjegyzes}
-                {/if}
+            <div class="fullwidth pull-left">
+                <div class="row-inner">
+                    {if ($egyed.megjegyzes|default)}
+                        Közlemény: {$egyed.megjegyzes}
+                    {/if}
+                </div>
             </div>
-        </div>
-        <div class="topline topbottommargin clear"></div>
+            <div class="topline topbottommargin clear"></div>
         {/if}
         {$kezdosorszam = ($oldal - 1) * $tetelperpage}
         {$vegsorszam = min($kezdosorszam + $tetelperpage - 1, count($egyed.tetellista) - 1)}
         {if ($kezdosorszam <= $vegsorszam)}
-        <table class="fullwidth pull-left">
-            <thead>
+            <table class="fullwidth pull-left">
+                <thead>
                 <tr>
                     <th>#</th>
                     <th class="bold">Termék</th>
@@ -63,8 +63,8 @@
                     <th class="textalignright bold">Quantity</th>
                     <th class="bold">Unit</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {for $teteldb = $kezdosorszam to $vegsorszam}
                     {$tetel = $egyed.tetellista[$teteldb]}
                     {$summennyiseg = $summennyiseg + $tetel.mennyiseg}
@@ -76,17 +76,20 @@
                     </tr>
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
-                        <td colspan="8" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                        <td colspan="8"
+                            class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}
+                            ({$tetel.vtszszam})
+                        </td>
                     </tr>
                 {/for}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         {/if}
         {if (($maxoldalszam > 1 && $oldal < $maxoldalszam)) }
             <div class="page-break"></div>
         {/if}
     {/for}
-    <div class="halfwidth pull-left topmargin10">
+    <div class="halfwidth clear topmargin10">
         <p>Összes mennyiség / Total quantity: {bizformat($summennyiseg)}</p>
     </div>
 {/block}

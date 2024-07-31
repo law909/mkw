@@ -508,6 +508,11 @@ class store
         return self::getConfigValue('aso');
     }
 
+    public static function getPDFMode()
+    {
+        return self::getSetupValue('pdfmode');
+    }
+
     /**
      *
      * @return \mkwhelpers\TemplateFactory
@@ -1990,5 +1995,16 @@ class store
     {
         $l = self::getMPTNGYDateList();
         return $l[$day]['caption'];
+    }
+
+    public static function getPDFEngine($html)
+    {
+        switch (self::getPDFMode()) {
+            case 'dompdf':
+                return new mkwdompdf($html);
+            case 'wkhtmltopdf':
+            default:
+                return new mkwwkhtmltopdf($html);
+        }
     }
 }
