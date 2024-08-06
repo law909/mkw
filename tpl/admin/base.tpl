@@ -19,6 +19,9 @@
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
 <body>
+{if (!$arfolyamriasztas)}
+    <h1 id="arfolyamriasztas">Túl régi az utolsó árfolyam. CSINÁLJ EGY ÁRFOLYAMLETÖLTÉST!</h1>
+{/if}
 {if ($bekuldetlenszamlacnt > 0)}
     <h1 id="naveredmenyriasztas">{$bekuldetlenszamlacnt} db számla nincs beküldve a NAV-nak!</h1>
 {/if}

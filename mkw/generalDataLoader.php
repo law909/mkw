@@ -53,6 +53,7 @@ class generalDataLoader
         $bizcnt = $bizc->calcNavEredmenyRiasztas();
         $view->setVar('abortedszamlacnt', $bizcnt['aborted']);
         $view->setVar('bekuldetlenszamlacnt', $bizcnt['null']);
+        $view->setVar('arfolyamriasztas', false);
         $view->setVar('nominkeszlet', \mkw\store::getParameter(\mkw\consts::NoMinKeszlet));
         for ($c = 1; $c <= 15; $c++) {
             $view->setVar('webshop' . $c . 'name', \mkw\store::getParameter('webshop' . $c . 'name', $c));
