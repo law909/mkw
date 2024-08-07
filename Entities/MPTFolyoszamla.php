@@ -1,13 +1,15 @@
 <?php
 
 namespace Entities;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="Entities\MPTFolyoszamlaRepository")
  * @Doctrine\ORM\Mapping\Table(name="mptfolyoszamla",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class MPTFolyoszamla {
+class MPTFolyoszamla
+{
 
     /**
      * @ORM\Id
@@ -32,7 +34,7 @@ class MPTFolyoszamla {
     private $irany;
 
     /**
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $bizonylatszam;
 
@@ -40,7 +42,7 @@ class MPTFolyoszamla {
     private $datum;
 
     /**
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $megjegyzes;
 
@@ -53,7 +55,8 @@ class MPTFolyoszamla {
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -65,7 +68,8 @@ class MPTFolyoszamla {
         return $this->tipus;
     }
 
-    public function getTipusnev() {
+    public function getTipusnev()
+    {
         switch ($this->tipus) {
             case 'E':
                 return 'Előírás';
@@ -151,11 +155,13 @@ class MPTFolyoszamla {
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
@@ -165,63 +171,69 @@ class MPTFolyoszamla {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if ($this->partner !== $val) {
             if (!$val) {
                 $this->removePartner();
-            }
-            else {
+            } else {
                 $this->partner = $val;
             }
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         if ($this->partner) {
             return $this->partner->getNev();
         }
         return '';
     }
 
-    public function getPartnervezeteknev() {
+    public function getPartnervezeteknev()
+    {
         if ($this->partner) {
             return $this->partner->getVezeteknev();
         }
         return '';
     }
 
-    public function getPartnerkeresztnev() {
+    public function getPartnerkeresztnev()
+    {
         if ($this->partner) {
             return $this->partner->getKeresztnev();
         }
         return '';
     }
 
-    public function getDatum() {
+    public function getDatum()
+    {
         if (!$this->id && !$this->datum) {
             $this->datum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->datum;
     }
 
-    public function getDatumStr() {
+    public function getDatumStr()
+    {
         if ($this->getDatum()) {
             return $this->getDatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setDatum($adat = '') {
+    public function setDatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->datum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }

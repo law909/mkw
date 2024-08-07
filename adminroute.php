@@ -120,6 +120,12 @@ if (\mkw\store::isMPT()) {
     $router->map('GET', '/admin/mpttagsagforma/jsonlist', 'mpttagsagformaController#jsonlist', 'adminmpttagsagformajsonlist');
     $router->map('GET', '/admin/mpttagsagforma/htmllist', 'mpttagsagformaController#htmllist', 'adminmpttagsagformahtmllist');
     $router->map('POST', '/admin/mpttagsagforma/save', 'mpttagsagformaController#save', 'adminmpttagsagformasave');
+
+    $router->map('GET', '/admin/mptfolyoszamla/getemptyeloirasrow', 'mptfolyoszamlaController#getemptyeloirasrow', 'admingetemptyeloirasrow');
+    $router->map('POST', '/admin/mptfolyoszamla/saveeloiras', 'mptfolyoszamlaController#saveeloiras', 'adminmptfolyoszamlasaveeloiras');
+    $router->map('GET', '/admin/mptfolyoszamla/getemptybefizetesrow', 'mptfolyoszamlaController#getemptybefizetesrow', 'admingetemptybefizetesrow');
+    $router->map('POST', '/admin/mptfolyoszamla/savebefizetes', 'mptfolyoszamlaController#savebefizetes', 'adminmptfolyoszamlasavebefizetes');
+    $router->map('POST', '/admin/mptfolyoszamla/del', 'mptfolyoszamlaController#del', 'adminmptfolyoszamladel');
 }
 
 if (\mkw\store::isMPTNGY()) {

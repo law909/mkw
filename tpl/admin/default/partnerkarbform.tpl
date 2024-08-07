@@ -392,43 +392,13 @@
                 </table>
             </div>
             <div id="MPTFolyoszamlaTab" class="mattkarb-page" data-visible="visible">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Vonatkozó év</th>
-                        <th>Típus</th>
-                        <th class="textalignright">Összeg</th>
-                        <th>Bizonylatszám</th>
-                        <th>Dátum</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {$_ev = 0}
-                    {$_egyenleg = 0}
-                    {foreach $partner.mptfolyoszamla as $fsz}
-                        {if ($_ev !== $fsz.vonatkozoev)}
-                            <tr>
-                                <td></td>
-                            </tr>
-                        {/if}
-                        <tr class="{if ($fsz.irany>0)}befizetes{else}eloiras{/if}">
-                            <td>{if ($_ev !== $fsz.vonatkozoev)}{$fsz.vonatkozoev}{/if}</td>
-                            <td>{$fsz.tipusnev}</td>
-                            <td class="textalignright">{$fsz.osszeg * $fsz.irany}</td>
-                            <td>{$fsz.bizonylatszam}</td>
-                            <td>{$fsz.datum}</td>
-                        </tr>
-                        {$_egyenleg = $_egyenleg + $fsz.osszeg * $fsz.irany}
-                        {$_ev = $fsz.vonatkozoev}
-                    {/foreach}
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="2">Egyenleg</td>
-                        <td class="textalignright">{$_egyenleg}</td>
-                    </tr>
-                    </tfoot>
-                </table>
+                <a class="js-eloirasbutton" href="#" title="{at('Új előírás')}">
+                    <span>Új előírás</span>
+                </a>
+                <a class="js-befizetesbutton" href="#" title="{at('Új befizetés')}">
+                    <span>Új befizetés</span>
+                </a>
+                {include "mptfolyoszamlatabla.tpl"}
             </div>
         {/if}
         {if ($setup.mptngy)}

@@ -38,7 +38,7 @@ class partnerController extends \mkwhelpers\MattableController
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false)
+    public function loadVars($t, $forKarb = false)
     {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
         $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);

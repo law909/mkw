@@ -93,7 +93,8 @@ $(document).ready(function () {
                 termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                 doktab = $('#DokTab'),
-                mijszokleveltab = $('#MIJSZOklevelTab');
+                mijszokleveltab = $('#MIJSZOklevelTab'),
+                mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
 
             mkwcomp.datumEdit.init(mpt_tagsagdateedit);
             mkwcomp.datumEdit.init(szuletesiidoedit);
@@ -373,6 +374,104 @@ $(document).ready(function () {
                     }
                 });
             $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
+
+            mptfolyoszamlatab.on('click', '.js-eloirasbutton', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/mptfolyoszamla/getemptyeloirasrow',
+                    type: 'GET',
+                    success: function (data) {
+                        mptfolyoszamlatab.prepend(data);
+                        $('.js-eloirasmegsembutton,.js-eloirasokbutton').button();
+                    }
+                });
+            })
+                .on('click', '.js-eloirasokbutton', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/mptfolyoszamla/saveeloiras',
+                        type: 'POST',
+                        data: {
+                            partnerid: $('input[name="id"]').val(),
+                            vonatkozoev: $('#vonatkozoevedit').val(),
+                            osszeg: $('#osszegedit').val(),
+                        },
+                        success: function (data) {
+                            $('.mptfolyoszamlaeloiraskarb').remove();
+                            $('#mptfolyoszamlatabla').remove();
+                            mptfolyoszamlatab.append(data);
+                        }
+                    });
+                })
+                .on('click', '.js-eloirasmegsembutton', function (e) {
+                    e.preventDefault();
+                    $('.mptfolyoszamlaeloiraskarb').remove();
+                })
+                .on('click', '.js-befizetesbutton', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/mptfolyoszamla/getemptybefizetesrow',
+                        type: 'GET',
+                        success: function (data) {
+                            mptfolyoszamlatab.prepend(data);
+                            $('.js-befizetesmegsembutton,.js-befizetesokbutton').button();
+                            mkwcomp.datumEdit.init('#mptfolyoszamladatumEdit');
+                        }
+                    });
+                })
+                .on('click', '.js-befizetesokbutton', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/mptfolyoszamla/savebefizetes',
+                        type: 'POST',
+                        data: {
+                            partnerid: $('input[name="id"]').val(),
+                            vonatkozoev: $('#vonatkozoevedit').val(),
+                            datum: mkwcomp.datumEdit.getDate('#mptfolyoszamladatumEdit'),
+                            bizonylatszam: $('#bizonylatszamedit').val(),
+                            osszeg: $('#osszegedit').val(),
+                        },
+                        success: function (data) {
+                            $('.mptfolyoszamlabefizeteskarb').remove();
+                            $('#mptfolyoszamlatabla').remove();
+                            mptfolyoszamlatab.append(data);
+                        }
+                    });
+                })
+                .on('click', '.js-befizetesmegsembutton', function (e) {
+                    e.preventDefault();
+                    $('.mptfolyoszamlabefizeteskarb').remove();
+                })
+                .on('click', '.js-mptfolyoszamladel', function (e) {
+                    let $this = $(this);
+                    e.preventDefault();
+                    dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $.ajax({
+                                    url: '/admin/mptfolyoszamla/del',
+                                    type: 'POST',
+                                    data: {
+                                        partnerid: $('input[name="id"]').val(),
+                                        id: $this.data('id')
+                                    },
+                                    success: function (data) {
+                                        $('#mptfolyoszamlatabla').remove();
+                                        mptfolyoszamlatab.append(data);
+                                    }
+                                });
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+            $('.js-eloirasbutton,.js-befizetesbutton').button();
 
             irszamAutocomplete('#IrszamEdit', '#VarosEdit');
             varosAutocomplete('#IrszamEdit', '#VarosEdit');

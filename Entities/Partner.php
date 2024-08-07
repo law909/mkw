@@ -169,7 +169,7 @@ class Partner
     private $bizonylatfejek;
 
     /** @ORM\OneToMany(targetEntity="MPTFolyoszamla", mappedBy="partner",cascade={"persist"})
-     * @ORM\OrderBy({"datum" = "DESC", "irany" = "ASC"})
+     * @ORM\OrderBy({"vonatkozoev" = "DESC", "irany" = "ASC"})
      * */
     private $mptfolyoszamlak;
 
