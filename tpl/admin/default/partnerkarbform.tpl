@@ -278,6 +278,10 @@
                         <td>{$partner.mpt_lastupdatestr}</td>
                     </tr>
                     <tr>
+                        <td><label for="MPTSzamlazasinevEdit">{at('Számlázási név')}:</label></td>
+                        <td><input id="MPTSzamlazasinevEdit" name="mpt_szamlazasinev" type="text" value="{$partner.mpt_szamlazasinev}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="MPTMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
                         <td><input id="MPTMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
                     </tr>
@@ -330,7 +334,11 @@
                     </tr>
                     <tr>
                         <td><label for="MPTSzuleteseveEdit">{at('Születés éve')}:</label></td>
-                        <td><input id="MPTSzuleteseveEdit" name="mpt_szuleteseve" type="text" value="{$partner.mpt_szuleteseve}"></td>
+                        <td><input id="MPTSzuleteseveEdit" name="szuletesiido" type="text" value="{$partner.szuletesiido}"></td>
+                        <td><label for="MPTSzuletesiidoEdit">{at('Születési dátum')}:</label></td>
+                        <td><input id="MPTSzuletesiidoEdit" name="szuletesiido" type="text" value="{$partner.szuletesiido}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="MPTPrivatemailEdit">{at('Privát email')}:</label></td>
                         <td><input id="MPTPrivatemailEdit" name="mpt_privatemail" type="text" value="{$partner.mpt_privatemail}"></td>
                     </tr>
@@ -395,19 +403,32 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {$_ev = 0}
+                    {$_egyenleg = 0}
                     {foreach $partner.mptfolyoszamla as $fsz}
-                        <tr>
-                            <td>{$fsz.vonatkozoev}</td>
+                        {if ($_ev !== $fsz.vonatkozoev)}
+                            <tr>
+                                <td></td>
+                            </tr>
+                        {/if}
+                        <tr class="{if ($fsz.irany>0)}befizetes{else}eloiras{/if}">
+                            <td>{if ($_ev !== $fsz.vonatkozoev)}{$fsz.vonatkozoev}{/if}</td>
                             <td>{$fsz.tipusnev}</td>
                             <td class="textalignright">{$fsz.osszeg * $fsz.irany}</td>
                             <td>{$fsz.bizonylatszam}</td>
                             <td>{$fsz.datum}</td>
                         </tr>
+                        {$_egyenleg = $_egyenleg + $fsz.osszeg * $fsz.irany}
+                        {$_ev = $fsz.vonatkozoev}
                     {/foreach}
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2">Egyenleg</td>
+                        <td class="textalignright">{$_egyenleg}</td>
+                    </tr>
+                    </tfoot>
                 </table>
-
-
             </div>
         {/if}
         {if ($setup.mptngy)}

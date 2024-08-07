@@ -881,6 +881,7 @@ class adminController extends mkwhelpers\Controller
                     $p = new Entities\Partner();
                     if ($data[$this->n('a')]) {
                         $p->setNev(mb_substr($data[$this->n('a')], 0, 255));
+                        $p->setMptSzamlazasinev(mb_substr($data[$this->n('a')], 0, 255));
                     }
                     $nev = explode(' ', $data[$this->n('a')]);
                     $p->setVezeteknev($nev[0]);
@@ -934,6 +935,7 @@ class adminController extends mkwhelpers\Controller
                         $p->setMptTagsagforma($sz);
                     }
                     $p->setMptSzuleteseve($data[$this->n('bu')]);
+                    $p->setSzuletesiido($data[$this->n('bu')] . '.01.01');
                     $p->setMptDiplomahely($data[$this->n('bv')]);
 
                     if ($data[$this->n('bs')]) {

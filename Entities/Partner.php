@@ -168,7 +168,9 @@ class Partner
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist"}) */
     private $bizonylatfejek;
 
-    /** @ORM\OneToMany(targetEntity="MPTFolyoszamla", mappedBy="partner",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="MPTFolyoszamla", mappedBy="partner",cascade={"persist"})
+     * @ORM\OrderBy({"datum" = "DESC", "irany" = "ASC"})
+     * */
     private $mptfolyoszamlak;
 
     /** @ORM\OneToMany(targetEntity="Bankbizonylatfej", mappedBy="partner",cascade={"persist"}) */
@@ -506,6 +508,9 @@ class Partner
 
     /** @ORM\Column(type="date",nullable=true) */
     private $mpt_tagsagdate;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mpt_szamlazasinev = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="MPTNGYSzerepkor")
@@ -3474,4 +3479,19 @@ class Partner
         $this->termekarazonosito = $v;
     }
 
+    /**
+     * @return string
+     */
+    public function getMptSzamlazasinev()
+    {
+        return $this->mpt_szamlazasinev;
+    }
+
+    /**
+     * @param string $mpt_szamlazasinev
+     */
+    public function setMptSzamlazasinev($mpt_szamlazasinev): void
+    {
+        $this->mpt_szamlazasinev = $mpt_szamlazasinev;
+    }
 }

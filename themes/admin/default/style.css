@@ -134,6 +134,14 @@ img {
     font-weight: bold;
 }
 
+.eloiras {
+    color: red;
+}
+
+.befizetes {
+    color: green;
+}
+
 .referrer {
     max-width: 500px;
     overflow-x: hidden;

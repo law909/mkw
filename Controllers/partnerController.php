@@ -184,6 +184,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mpt_egyebdiploma'] = $t->getMptEgyebdiploma();
         $x['mpt_privatemail'] = $t->getMptPrivatemail();
         $x['mpt_tagsagdatestr'] = $t->getMptTagsagdateStr();
+        $x['mpt_szamlazasinev'] = $t->getMptSzamlazasinev();
         $x['mptngynapreszvetel1'] = $t->isMptngynapreszvetel1();
         $x['mptngynapreszvetel2'] = $t->isMptngynapreszvetel2();
         $x['mptngynapreszvetel3'] = $t->isMptngynapreszvetel3();
@@ -345,6 +346,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
             $obj->setMptPrivatemail($this->params->getStringRequestParam('mpt_privatemail'));
             $obj->setMptTagsagdate($this->params->getStringRequestParam('mpt_tagsagdate'));
+            $obj->setMptSzamlazasinev($this->params->getStringRequestParam('mpt_szamlazasinev'));
             $obj->setMptngycsoportosfizetes($this->params->getStringRequestParam('mptngycsoportosfizetes'));
             $obj->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
             $obj->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
