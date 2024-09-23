@@ -37,6 +37,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         $x['nemertekelheto'] = $t->getNemertekelheto();
+        $x['wcid'] = $t->getWcid();
         return $x;
     }
 
@@ -48,6 +49,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $obj->setCsoport($this->params->getStringRequestParam('csoport'));
         $obj->setFoglal($this->params->getBoolRequestParam('foglal'));
         $obj->setNemertekelheto($this->params->getBoolRequestParam('nemertekelheto'));
+        $obj->setWcid($this->params->getStringRequestParam('wcid'));
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);

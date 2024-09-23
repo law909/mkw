@@ -2,36 +2,42 @@
 
 namespace Controllers;
 
-use mkw\store;
 
-class termekcsoportController extends \mkwhelpers\JQGridController {
+class termekcsoportController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Termekcsoport');
         parent::__construct($params);
     }
 
     /**
      * @param \Entities\Termekcsoport $obj
+     *
      * @return array
      */
-    protected function loadCells($obj) {
-        return array($obj->getNev());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev()];
     }
 
     /**
      * @param \Entities\Termekcsoport $obj
+     *
      * @return \Entities\Termekcsoport
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -39,15 +45,16 @@ class termekcsoportController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
-            );
+            ];
         }
         return $res;
     }

@@ -79,6 +79,8 @@ class adminController extends mkwhelpers\Controller
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
+                $apierrorlog = new apierrorlogController($this->params);
+                $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
             case \mkw\store::isMindentkapni():
                 break;

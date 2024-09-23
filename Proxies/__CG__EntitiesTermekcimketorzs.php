@@ -665,4 +665,59 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
         return parent::setSorrend($sorrend);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
+
+        return parent::getWcid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcid($wcid): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
+
+        parent::setWcid($wcid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
+
+        return parent::getWcdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcdateStr($wcdate)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdateStr', [$wcdate]);
+
+        return parent::getWcdateStr($wcdate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcdate($adat = NULL): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
+
+        parent::setWcdate($adat);
+    }
+
 }

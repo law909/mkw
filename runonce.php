@@ -373,6 +373,10 @@ if ($DBVersion < '0051') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0051');
 }
 
+if ($DBVersion < '0052') {
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termek set wctiltva=inaktiv');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -91,4 +91,17 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    public function getTipusErtek()
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('adattipus', 'adattipus');
+        $rsm->addScalarResult('ertek', 'ertek');
+        $q = $this->_em->createNativeQuery(
+            '(SELECT adattipus1_id AS adattipus,ertek1 AS ertek FROM termekvaltozat) '
+            . 'UNION (SELECT adattipus2_id AS adattipus,ertek2 AS ertek FROM termekvaltozat)',
+            $rsm
+        );
+        return $q->getScalarResult();
+    }
+
 }

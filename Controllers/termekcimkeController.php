@@ -5,9 +5,11 @@ namespace Controllers;
 use Entities\Termekcimketorzs;
 use mkw\store;
 
-class termekcimkeController extends \mkwhelpers\MattableController {
+class termekcimkeController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Termekcimketorzs');
         $this->setKarbFormTplName('cimkekarbform.tpl');
         $this->setKarbTplName('cimkekarb.tpl');
@@ -16,8 +18,9 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Termekcimketorzs();
             $this->getEm()->detach($t);
@@ -28,8 +31,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $x['oldalcim'] = $t->getOldalcim();
         if ($kat = $t->getKategoria()) {
             $x['cimkekatnev'] = $kat->getNev();
-        }
-        else {
+        } else {
             $x['cimkekatnev'] = '';
         }
         $x['menu1lathato'] = $t->getMenu1lathato();
@@ -49,7 +51,8 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $ck = store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('cimkecsoport'));
         if ($ck) {
             $obj->setKategoria($ck);
@@ -68,20 +71,20 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
         if ($ck) {
             $obj->setGyarto($ck);
-        }
-        else {
+        } else {
             $obj->setGyarto(null);
         }
         $obj->setSzinkod($this->params->getStringRequestParam('szinkod'));
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('cimkelista_tbody.tpl');
         $view->setVar('cimketipus', 'termek');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
         $fv = $this->params->getIntRequestParam('ckfilter');
@@ -89,18 +92,23 @@ class termekcimkeController extends \mkwhelpers\MattableController {
             $filter->addFilter('ck.id', '=', $fv);
         }
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
-            $filter->addFilter('gyarto' , '=', $this->params->getIntRequestParam('gyartofilter'));
+            $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'cimkelista', $view));
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Termékcímkék'));
@@ -115,7 +123,8 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -133,7 +142,8 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function setmenulathato() {
+    public function setmenulathato()
+    {
         $id = $this->params->getIntRequestParam('id');
         $kibe = $this->params->getBoolRequestParam('kibe');
         $num = $this->params->getIntRequestParam('num');
@@ -161,70 +171,76 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function add() {
+    public function add()
+    {
         $obj = new Termekcimketorzs();
         $this->setFields($obj);
         $this->getEm()->persist($obj);
         $this->getEm()->flush();
         $view = $this->createView('cimkeselector.tpl');
-        $view->setVar('_cimke', array('id' => $obj->getId(), 'caption' => $obj->getNev(), 'selected' => false));
+        $view->setVar('_cimke', ['id' => $obj->getId(), 'caption' => $obj->getNev(), 'selected' => false]);
         echo $view->getTemplateResult();
     }
 
-    private function cimkekToArray($cimkekat) {
-        $res = array();
+    private function cimkekToArray($cimkekat)
+    {
+        $res = [];
         foreach ($cimkekat as $kat) {
-            $adat = array();
+            $adat = [];
             $cimkek = $kat->getCimkek();
             foreach ($cimkek as $cimke) {
-                $adat[] = array(
+                $adat[] = [
                     'id' => $cimke->getId(),
                     'caption' => $cimke->getNev(),
                     'slug' => $cimke->getSlug()
-                );
+                ];
             }
-            $res[] = array(
+            $res[] = [
                 'id' => $kat->getId(),
                 'caption' => $kat->getNev(),
                 'sanitizedcaption' => $kat->getSlug(),
                 'cimkek' => $adat
-            );
+            ];
         }
         return $res;
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Termékcímkék'));
         $view->setVar('cimketipus', 'termek');
         $view->setVar('controllerscript', 'termekcimke.js');
-        $tc = store::getEm()->getRepository('Entities\Termekcimkekat')->getWithJoins(array(), array('_xx.nev' => 'asc', 'c.nev' => 'asc'));
+        $tc = store::getEm()->getRepository('Entities\Termekcimkekat')->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
         $view->setVar('cimkekat', $this->cimkekToArray($tc));
         $view->printTemplateResult();
     }
 
-    public function getformenu($menu) {
+    public function getformenu($menu)
+    {
         $tc = $this->getRepo('Entities\Termekcimkekat')->getAllHasTermek($menu);
         return $this->cimkekToArray($tc);
     }
 
-    public function getKiemeltList() {
+    public function getKiemeltList()
+    {
         $tc = $this->getRepo()->getKiemelt();
-        $ret = array();
-        foreach($tc as $cimke) {
+        $ret = [];
+        foreach ($tc as $cimke) {
             $ret[] = $cimke->toLista();
         }
         return $ret;
     }
 
-    public function showMarkak() {
+    public function showMarkak()
+    {
         $view = $this->getTemplateFactory()->createMainView('markak.tpl');
-		store::fillTemplate($view);
+        store::fillTemplate($view);
         $termekrepo = $this->getRepo('Entities\Termek');
         $tc = $this->getRepo()->getMarkak();
-        $m = array();
-        foreach($tc as $c) {
+        $m = [];
+        foreach ($tc as $c) {
             if ($termekrepo->getMarkaCount($c->getId())) {
                 $m[] = $c->toLista();
             }
@@ -233,4 +249,32 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
+    public function uploadToWc()
+    {
+        $wc = \mkw\store::getWcClient();
+        $cimkek = $this->getRepo()->getAll();
+        /** @var Termekcimketorzs $cimke */
+        foreach ($cimkek as $cimke) {
+            if (!$cimke->getWcid()) {
+                $data = [
+                    'name' => $cimke->getNev()
+                ];
+                $result = $wc->post('products/tags', $data);
+
+                $cimke->setWcid($result->id);
+                $cimke->setWcdate();
+                \mkw\store::getEm()->persist($cimke);
+                \mkw\store::getEm()->flush();
+            } else {
+                $data = [
+                    'name' => $cimke->getNev()
+                ];
+                $wc->put('products/tags/' . $cimke->getWcid(), $data);
+
+                $cimke->setWcdate();
+                \mkw\store::getEm()->persist($cimke);
+                \mkw\store::getEm()->flush();
+            }
+        }
+    }
 }

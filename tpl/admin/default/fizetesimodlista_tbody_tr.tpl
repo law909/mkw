@@ -11,6 +11,9 @@
         <div>{if ($_egyed.tipus == 'P')}{at('Pénztár')}{elseif ($_egyed.tipus == 'B')}{at('Bank')}{else}{at('Ismeretlen típus')}{/if}</div>
     </td>
     <td class="cell">
+        {$_egyed.wcid}
+    </td>
+    <td class="cell">
         {$_egyed.sorrend}
     </td>
 </tr>

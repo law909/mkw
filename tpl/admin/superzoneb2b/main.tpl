@@ -117,6 +117,60 @@
                 </div>
             </div>
         </div>
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Woocommerce webhook hiba napló</div>
+                </div>
+                <div class="mainboxinner">
+                    <table class="ui-widget-content">
+                        <thead>
+                        <tr>
+                            <th class="mattable-cell mattable-rborder">Dátum</th>
+                            <th class="mattable-cell mattable-rborder">Típus</th>
+                            <th class="mattable-cell mattable-rborder">Azonosító</th>
+                            <th class="mattable-cell mattable-rborder">Hibaüzenet</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $apierrorlog as $logitem}
+                            <tr>
+                                <td class="datacell mattable-rborder mattable-tborder redtext">{$logitem['created']}</td>
+                                <td class="datacell mattable-rborder mattable-tborder">{$logitem['type']}</td>
+                                <td class="datacell mattable-rborder mattable-tborder">{$logitem['objectid']}</td>
+                                <td class="datacell mattable-rborder mattable-tborder">{$logitem['message']}</td>
+                                <td class="datacell mattable-tborder">
+                                    <button class="js-apierrorlogclose ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"
+                                            data-id="{$logitem['id']}"><span
+                                            class="ui-button-text">Rendben</span></button>
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Woocommerce feltöltés</div>
+                </div>
+                <div class="mainboxinner">
+                    <button class="js-wctermekfa ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termék kategóriák</span></button>
+                    <button class="js-wctermekvaltozatadattipus ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termékváltozat adattípusok</span></button>
+                    <button class="js-wctermekvaltozatertek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termékváltozat értékek</span></button>
+                    <button class="js-wctermekcimkek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termék címkék</span></button>
+                    <button class="js-wctermek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termék</span></button>
+                </div>
+            </div>
+        </div>
     {/if}
     <div class="component-container">
         <div id="mattkarb">

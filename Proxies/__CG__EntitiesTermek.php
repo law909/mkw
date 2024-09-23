@@ -67,10 +67,10 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev2', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev3', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev4', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev5', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiirtnev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'mekod', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'blogposztok', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'suruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'nepszeruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Termek' . "\0" . 'migrid', '' . "\0" . 'Entities\\Termek' . "\0" . 'egyprodukcios', '' . "\0" . 'Entities\\Termek' . "\0" . 'valutameszorzo', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaalkalom', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaelszamolasalap', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyessegnap', '' . "\0" . 'Entities\\Termek' . "\0" . 'eladhato', '' . "\0" . 'Entities\\Termek' . "\0" . 'emagtiltva', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekdokok', '' . "\0" . 'Entities\\Termek' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\Termek' . "\0" . 'garancia', '' . "\0" . 'Entities\\Termek' . "\0" . 'arukeresofanev', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertekelesek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev2', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev3', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev4', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev5', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiirtnev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'mekod', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'blogposztok', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'suruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'nepszeruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Termek' . "\0" . 'migrid', '' . "\0" . 'Entities\\Termek' . "\0" . 'egyprodukcios', '' . "\0" . 'Entities\\Termek' . "\0" . 'valutameszorzo', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaalkalom', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaelszamolasalap', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyessegnap', '' . "\0" . 'Entities\\Termek' . "\0" . 'eladhato', '' . "\0" . 'Entities\\Termek' . "\0" . 'emagtiltva', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekdokok', '' . "\0" . 'Entities\\Termek' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\Termek' . "\0" . 'garancia', '' . "\0" . 'Entities\\Termek' . "\0" . 'arukeresofanev', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertekelesek', '' . "\0" . 'Entities\\Termek' . "\0" . 'wcid', '' . "\0" . 'Entities\\Termek' . "\0" . 'wcdate', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepwcid', '' . "\0" . 'Entities\\Termek' . "\0" . 'wctiltva'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev2', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev3', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev4', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev5', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiirtnev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'mekod', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'blogposztok', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'suruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'nepszeruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Termek' . "\0" . 'migrid', '' . "\0" . 'Entities\\Termek' . "\0" . 'egyprodukcios', '' . "\0" . 'Entities\\Termek' . "\0" . 'valutameszorzo', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaalkalom', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaelszamolasalap', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyessegnap', '' . "\0" . 'Entities\\Termek' . "\0" . 'eladhato', '' . "\0" . 'Entities\\Termek' . "\0" . 'emagtiltva', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekdokok', '' . "\0" . 'Entities\\Termek' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\Termek' . "\0" . 'garancia', '' . "\0" . 'Entities\\Termek' . "\0" . 'arukeresofanev', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertekelesek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev2', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev3', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev4', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev5', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiirtnev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'mekod', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'blogposztok', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'suruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'nepszeruseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Termek' . "\0" . 'migrid', '' . "\0" . 'Entities\\Termek' . "\0" . 'egyprodukcios', '' . "\0" . 'Entities\\Termek' . "\0" . 'valutameszorzo', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaalkalom', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaelszamolasalap', '' . "\0" . 'Entities\\Termek' . "\0" . 'jogaervenyessegnap', '' . "\0" . 'Entities\\Termek' . "\0" . 'eladhato', '' . "\0" . 'Entities\\Termek' . "\0" . 'emagtiltva', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekdokok', '' . "\0" . 'Entities\\Termek' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\Termek' . "\0" . 'garancia', '' . "\0" . 'Entities\\Termek' . "\0" . 'arukeresofanev', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertekelesek', '' . "\0" . 'Entities\\Termek' . "\0" . 'wcid', '' . "\0" . 'Entities\\Termek' . "\0" . 'wcdate', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepwcid', '' . "\0" . 'Entities\\Termek' . "\0" . 'wctiltva'];
     }
 
     /**
@@ -2659,6 +2659,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getNLathato($n)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNLathato', [$n]);
+
+        return parent::getNLathato($n);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getXLathato()
     {
 
@@ -3215,6 +3226,138 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogaervenyessegnap', [$jogaervenyessegnap]);
 
         parent::setJogaervenyessegnap($jogaervenyessegnap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
+
+        return parent::getWcid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcid($wcid): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
+
+        parent::setWcid($wcid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
+
+        return parent::getWcdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcdateStr($wcdate)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdateStr', [$wcdate]);
+
+        return parent::getWcdateStr($wcdate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcdate($adat = NULL): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
+
+        parent::setWcdate($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNevForditas($ford, $locale)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevForditas', [$ford, $locale]);
+
+        return parent::getNevForditas($ford, $locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLeirasForditas($ford, $locale)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasForditas', [$ford, $locale]);
+
+        return parent::getLeirasForditas($ford, $locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepwcid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepwcid', []);
+
+        return parent::getKepwcid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKepwcid($kepwcid): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepwcid', [$kepwcid]);
+
+        parent::setKepwcid($kepwcid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function findTermekKepByUrl($url)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'findTermekKepByUrl', [$url]);
+
+        return parent::findTermekKepByUrl($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWctiltva()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWctiltva', []);
+
+        return parent::getWctiltva();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWctiltva($wctiltva): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWctiltva', [$wctiltva]);
+
+        parent::setWctiltva($wctiltva);
     }
 
 }

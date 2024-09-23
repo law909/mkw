@@ -589,6 +589,11 @@ class Partner
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekarazonosito;
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $wcid;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private $wcdate;
+
 
     public function __construct()
     {
@@ -3494,4 +3499,49 @@ class Partner
     {
         $this->mpt_szamlazasinev = $mpt_szamlazasinev;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getWcid()
+    {
+        return $this->wcid;
+    }
+
+    /**
+     * @param mixed $wcid
+     */
+    public function setWcid($wcid): void
+    {
+        $this->wcid = $wcid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWcdate()
+    {
+        return $this->wcdate;
+    }
+
+    public function getWcdateStr($wcdate)
+    {
+        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
+    }
+
+    /**
+     * @param mixed $wcdate
+     */
+    public function setWcdate($adat = null): void
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->wcdate = $adat;
+        } else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$sqlDateTimeFormat);
+            }
+            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
 }

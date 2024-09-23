@@ -57,6 +57,9 @@ class Bizonylatstatusz
     /** @ORM\Column(type="boolean") */
     private $nemertekelheto;
 
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $wcid;
+
     public function __construct()
     {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -258,4 +261,20 @@ class Bizonylatstatusz
         $this->nemertekelheto = $nemertekelheto;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getWcid()
+    {
+        return $this->wcid;
+    }
+
+    /**
+     * @param mixed $wcid
+     */
+    public function setWcid($wcid): void
+    {
+        $this->wcid = $wcid;
+    }
+    
 }

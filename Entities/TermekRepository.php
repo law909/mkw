@@ -885,7 +885,8 @@ class TermekRepository extends \mkwhelpers\Repository
             . 'LEFT JOIN termek t ON (bt.termek_id=t.id) '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
             . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
-            . 'LEFT JOIN fizmod f ON (bf.fizmod_id=f.id)'
+            . 'LEFT JOIN fizmod f ON (bf.fizmod_id=f.id) '
+//            . 'LEFT JOIN bizonylatfej par ON (bf.parbizonylatfej_id=par.id)'
             . $this->getFilterString($filter),
             $rsm
         );

@@ -2,8 +2,11 @@
 
 namespace Controllers;
 
+use Automattic\WooCommerce\Client;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Partnercimketorzs;
+use Entities\TermekFa;
+use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class termekfaController extends \mkwhelpers\MattableController
@@ -1236,6 +1239,101 @@ class termekfaController extends \mkwhelpers\MattableController
         }
         header("HTTP/1.1 301 Moved Permanently");
         header('Location: ' . $newlink);
+    }
+
+    private static function walkCategoryTree($parentId = null, $wcparentid = null, $wc = null)
+    {
+        $filter = new FilterDescriptor();
+        if (!$parentId) {
+            $filter->addSql('(_xx.parent IS NULL)');
+        } else {
+            $filter->addFilter('parent', '=', $parentId);
+        }
+        $filter->addSql('((_xx.wcdate<_xx.lastmod) OR (_xx.wcdate IS NULL))');
+        $categories = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($filter);
+
+        /** @var TermekFa $category */
+        foreach ($categories as $category) {
+            if (!$category->getWcid()) {
+                if ($category->getNLathato(\mkw\store::getWcWebshopNum())) {
+                    $ford = $category->getTranslationsArray();
+                    $nev = $category->getNevForditas($ford, 'en_us');
+                    $leiras = $category->getLeirasForditas($ford, 'en_us');
+                    if ($nev) {
+                        $data = [
+                            'name' => $nev,
+                            'parent' => $wcparentid,
+                            'descrition' => $leiras,
+                        ];
+                        if ($category->getKepurl()) {
+                            if ($category->getKepwcid()) {
+                                $data['image'] = [
+                                    'id' => $category->getKepwcid()
+                                ];
+                            } else {
+                                $data['image'] = [
+                                    'src' => \mkw\store::getWcImageUrlPrefix() . $category->getKepurl(),
+                                    'name' => $category->getKepurl(),
+                                    'alt' => $nev
+                                ];
+                            }
+                        }
+
+                        $result = $wc->post('products/categories', $data);
+
+                        $category->setWcid($result->id);
+                        $category->setKepwcid($result->image->id);
+                        $category->setWcdate();
+                        \mkw\store::getEm()->persist($category);
+                        \mkw\store::getEm()->flush();
+
+                        self::walkCategoryTree($category->getId(), $result->id, $wc);
+                    } else {
+                        self::walkCategoryTree($category->getId(), null, $wc);
+                    }
+                } else {
+                    self::walkCategoryTree($category->getId(), null, $wc);
+                }
+            } elseif ($category->getWcdate() < $category->getLastmod()) {
+                $ford = $category->getTranslationsArray();
+                $nev = $category->getNevForditas($ford, 'en_us');
+                $leiras = $category->getLeirasForditas($ford, 'en_us');
+                $data = [
+                    'name' => $nev,
+                    'parent' => $wcparentid,
+                    'descrition' => $leiras
+                ];
+                if ($category->getKepurl()) {
+                    if ($category->getKepwcid()) {
+                        $data['image'] = [
+                            'id' => $category->getKepwcid()
+                        ];
+                    } else {
+                        $data['image'] = [
+                            'src' => \mkw\store::getWcImageUrlPrefix() . $category->getKepurl(),
+                            'name' => $category->getKepurl(),
+                            'alt' => $nev
+                        ];
+                    }
+                }
+                $wc->put('products/categories', $data);
+
+                $category->setKepwcid($result->image->id);
+                $category->setWcdate();
+                \mkw\store::getEm()->persist($category);
+                \mkw\store::getEm()->flush();
+
+                self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
+            }
+        }
+    }
+
+    public function uploadToWc()
+    {
+        /** @var Client $wc */
+        $wc = store::getWcClient();
+        self::walkCategoryTree(null, null, $wc);
+        echo 'Ready.';
     }
 
 }

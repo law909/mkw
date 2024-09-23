@@ -253,5 +253,134 @@ $(document).ready(
             });
         });
         $('.js-backorder').button();
+
+        $(document).on('click', '.js-wctermekfa', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termekfa',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermekfa').button();
+
+        $(document).on('click', '.js-wctermekvaltozatadattipus', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termekvaltozatadattipus',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermekvaltozatadattipus').button();
+
+        $(document).on('click', '.js-wctermekvaltozatertek', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termekvaltozatertek',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermekvaltozatertek').button();
+
+        $(document).on('click', '.js-wctermekcimkek', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termekcimke',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermekcimkek').button();
+
+        $(document).on('click', '.js-wctermek', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termek',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermek').button();
+
+        $(document).on('click', '.js-apierrorlogclose', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/apierrorlog/close',
+                type: 'POST',
+                data: {
+                    id: $(this).data('id')
+                },
+                success: function (data) {
+                    dialogcenter.html('Kész. Frissítsd az oldalt.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+
     }
 );

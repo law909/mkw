@@ -1194,6 +1194,15 @@ if (\mkw\store::isSuperzoneB2B()) {
     }
 }
 
+$router->map('GET', '/admin/wc/termekfa', 'termekfaController#uploadToWc', 'admintermekfauploadtowc');
+$router->map('GET', '/admin/wc/termekvaltozatadattipus', 'termekvaltozatadattipusController#uploadToWc', 'admintermekvaltozatadattipusuploadtowc');
+$router->map('GET', '/admin/wc/termekvaltozatertek', 'termekvaltozatertekController#uploadToWc', 'admintermekvaltozatertekuploadtowc');
+$router->map('GET', '/admin/wc/termekcimke', 'termekcimkeController#uploadToWc', 'admintermekcimkeuploadtowc');
+$router->map('GET', '/admin/wc/termek', 'termekController#uploadToWc', 'admintermekuploadtowc');
+
+$router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');
+
+
 $router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
 //$router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
@@ -1207,3 +1216,4 @@ $router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCs
 $router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
 $router->map('GET', '/admin/t/mpttagimport', 'adminController#MPTPartnerImport', 'adminmptpartnerimport');
 $router->map('GET', '/admin/t/fszlahivdatum', 'adminController#fszlahivdatumJavit', 'adminfszlahivdatumjavit');
+$router->map('GET', '/admin/t/wco', 'wcwebhookController#orderCreated', 'adminwco');

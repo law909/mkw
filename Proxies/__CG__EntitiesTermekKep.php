@@ -67,10 +67,10 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'wcdate'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'wcdate'];
     }
 
     /**
@@ -366,6 +366,50 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRejtett', [$rejtett]);
 
         return parent::setRejtett($rejtett);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
+
+        return parent::getWcid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcid($wcid): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
+
+        parent::setWcid($wcid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWcdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
+
+        return parent::getWcdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWcdate($adat = NULL): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
+
+        parent::setWcdate($adat);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace mkw;
 
+use Automattic\WooCommerce\Client;
 use Controllers\mnrnavigationController;
 use Controllers\termekfaController;
 use Doctrine\ORM\EntityManager;
@@ -1434,6 +1435,50 @@ class store
     public static function isMiniCRMOn()
     {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
+    }
+
+    public static function isWoocommerceOn()
+    {
+        return self::getSetupValue('woocommerce', false) == 1;
+    }
+
+    public static function getWcKey()
+    {
+        return self::getConfigValue('wc.key');
+    }
+
+    public static function getWcSecret()
+    {
+        return self::getConfigValue('wc.secret');
+    }
+
+    public static function getWcUrl()
+    {
+        return self::getConfigValue('wc.url');
+    }
+
+    public static function getWcWebshopNum()
+    {
+        return self::getConfigValue('wc.webshopnum');
+    }
+
+    public static function getWcImageUrlPrefix()
+    {
+        return self::getConfigValue('wc.imageurlprefix');
+    }
+
+    public static function getWcClient()
+    {
+        return new Client(
+            self::getWcUrl(),
+            self::getWcKey(),
+            self::getWcSecret(),
+            [
+                'wp_api' => true,
+                'version' => 'wc/v3',
+                'timeout' => 3600
+            ]
+        );
     }
 
     public static function getSzallitasiKoltsegMode()

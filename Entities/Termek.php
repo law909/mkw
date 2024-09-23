@@ -429,7 +429,14 @@ class Termek
      * @ORM\OrderBy({"created" = "DESC"})
      */
     private $termekertekelesek;
-
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $wcid;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private $wcdate;
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $kepwcid;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $wctiltva = 0;
 
     public function __toString()
     {
@@ -3018,9 +3025,9 @@ class Termek
         $this->eladhato = $eladhato;
     }
 
-    public function getXLathato()
+    public function getNLathato($n)
     {
-        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+        switch ($n) {
             case 1:
                 return $this->getLathato();
             case 2:
@@ -3054,6 +3061,11 @@ class Termek
             default:
                 return $this->getLathato();
         }
+    }
+
+    public function getXLathato()
+    {
+        return $this->getNLathato(\mkw\store::getSetupValue('webshopnum', 1));
     }
 
     /**
@@ -3463,4 +3475,109 @@ class Termek
         $this->jogaervenyessegnap = $jogaervenyessegnap;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getWcid()
+    {
+        return $this->wcid;
+    }
+
+    /**
+     * @param mixed $wcid
+     */
+    public function setWcid($wcid): void
+    {
+        $this->wcid = $wcid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWcdate()
+    {
+        return $this->wcdate;
+    }
+
+    public function getWcdateStr($wcdate)
+    {
+        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
+    }
+
+    /**
+     * @param mixed $wcdate
+     */
+    public function setWcdate($adat = null): void
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->wcdate = $adat;
+        } else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$sqlDateTimeFormat);
+            }
+            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    public function getNevForditas($ford, $locale)
+    {
+        if ($ford[$locale]['nev']) {
+            return $ford[$locale]['nev'];
+        }
+        return $this->getNev();
+    }
+
+    public function getLeirasForditas($ford, $locale)
+    {
+        if ($ford[$locale]['leiras']) {
+            return $ford[$locale]['leiras'];
+        }
+        return $this->getLeiras();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKepwcid()
+    {
+        return $this->kepwcid;
+    }
+
+    /**
+     * @param mixed $kepwcid
+     */
+    public function setKepwcid($kepwcid): void
+    {
+        $this->kepwcid = $kepwcid;
+    }
+
+    public function findTermekKepByUrl($url)
+    {
+        $result = null;
+        /** @var TermekKep $kep */
+        foreach ($this->getTermekKepek() as $kep) {
+            if ($kep->getUrl() == $url) {
+                $result = $kep;
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWctiltva()
+    {
+        return $this->wctiltva;
+    }
+
+    /**
+     * @param int $wctiltva
+     */
+    public function setWctiltva($wctiltva): void
+    {
+        $this->wctiltva = $wctiltva;
+    }
+    
 }

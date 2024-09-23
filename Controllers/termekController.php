@@ -2,13 +2,18 @@
 
 namespace Controllers;
 
+use Automattic\WooCommerce\Client;
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Arsav;
 use Entities\Termek;
 use Entities\TermekAr;
+use Entities\Termekcimketorzs;
+use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
 use Entities\Valutanem;
+use http\Env\Url;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -1806,4 +1811,266 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->clear();
         }
     }
+
+    public function uploadToWc()
+    {
+        /** @var Client $wc */
+        $wc = store::getWcClient();
+        $eur = $this->getRepo(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+
+        $filter = new FilterDescriptor();
+        $filter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
+        $categories = $this->getRepo(TermekFa::class)->getAll($filter);
+
+        $termekdone = [];
+
+        /** @var TermekFa $category */
+        foreach ($categories as $category) {
+            $tfilter = new FilterDescriptor();
+            $tfilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $category->getId());
+            $tfilter->addFilter('wctiltva', '<>', 1);
+            $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
+            /** @var Termek $termek */
+            foreach ($termekek as $termek) {
+                if (!in_array($termek->getId(), $termekdone)) {
+                    $ford = $termek->getTranslationsArray();
+                    $nev = $termek->getNevForditas($ford, 'en_us');
+                    $leiras = $termek->getLeirasForditas($ford, 'en_us');
+                    $keszlet = $termek->getKeszlet() - $termek->getFoglaltMennyiseg();
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    $cats = [];
+                    if ($termek->getTermekfa1() && $termek->getTermekfa1()->getWcid()) {
+                        $cats[] = [
+                            'id' => $termek->getTermekfa1()->getWcid(),
+                        ];
+                    }
+                    if ($termek->getTermekfa2() && $termek->getTermekfa2()->getWcid()) {
+                        $cats[] = [
+                            'id' => $termek->getTermekfa2()->getWcid(),
+                        ];
+                    }
+                    if ($termek->getTermekfa3() && $termek->getTermekfa3()->getWcid()) {
+                        $cats[] = [
+                            'id' => $termek->getTermekfa3()->getWcid(),
+                        ];
+                    }
+                    $tags = [];
+                    /** @var Termekcimketorzs $cimke */
+                    foreach ($termek->getCimkek() as $cimke) {
+                        $tags[] = [
+                            'id' => $cimke->getWcid()
+                        ];
+                    }
+                    $valtozatertekek = [];
+                    /** @var TermekValtozat $valtozat */
+                    foreach ($termek->getValtozatok() as $valtozat) {
+                        if (
+                            (
+                                $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'] &&
+                                !in_array($valtozat->getErtek1(), $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'])
+                            ) ||
+                            !$valtozatertekek[$valtozat->getAdatTipus1Id()]['options']
+                        ) {
+                            $valtozatertekek[$valtozat->getAdatTipus1Id()]['wcid'] = $valtozat->getAdatTipus1()->getWcid();
+                            $valtozatertekek[$valtozat->getAdatTipus1Id()]['name'] = $valtozat->getAdatTipus1Nev();
+                            $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'][] = $valtozat->getErtek1();
+                        }
+                        if (
+                            (
+                                $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'] &&
+                                !in_array($valtozat->getErtek2(), $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'])
+                            ) ||
+                            !$valtozatertekek[$valtozat->getAdatTipus2Id()]['options']
+                        ) {
+                            $valtozatertekek[$valtozat->getAdatTipus2Id()]['wcid'] = $valtozat->getAdatTipus2()->getWcid();
+                            $valtozatertekek[$valtozat->getAdatTipus2Id()]['name'] = $valtozat->getAdatTipus2Nev();
+                            $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'][] = $valtozat->getErtek2();
+                        }
+                    }
+                    $attrs = [];
+                    foreach ($valtozatertekek as $valtozat) {
+                        $attrs[] = [
+                            'id' => $valtozat['wcid'],
+                            'name' => $valtozat['name'],
+                            'options' => $valtozat['options'],
+                            'position' => 0,
+                            'visible' => true,
+                            'variation' => true
+                        ];
+                    }
+                    $images = [];
+                    if ($termek->getKepurl()) {
+                        if ($termek->getKepwcid()) {
+                            $images[] = [
+                                'id' => $termek->getKepwcid()
+                            ];
+                        } else {
+                            $images[] = [
+                                'src' => \mkw\store::getWcImageUrlPrefix() . $termek->getKepurl(),
+                                'name' => $termek->getKepurl(),
+                                'alt' => $nev . ' - ' . $termek->getCikkszam()
+                            ];
+                        }
+                    }
+                    /** @var TermekKep $kep */
+                    foreach ($termek->getTermekKepek() as $kep) {
+                        if ($kep->getUrl()) {
+                            if ($kep->getWcid()) {
+                                $images[] = [
+                                    'id' => $kep->getWcid()
+                                ];
+                            } else {
+                                $images[] = [
+                                    'src' => \mkw\store::getWcImageUrlPrefix() . $kep->getUrl(),
+                                    'name' => $kep->getUrl(),
+                                    'alt' => $nev . ' - ' . $termek->getCikkszam()
+                                ];
+                            }
+                        }
+                    }
+                    $data = [
+                        'name' => $nev . ' - ' . $termek->getCikkszam(),
+                        'type' => 'variable',
+                        'status' => $termek->getInaktiv() ? 'draft' : 'publish',
+                        'catalog_visibility' =>
+                            !$termek->getNLathato(\mkw\store::getWcWebshopNum()) ||
+                            $termek->getNemkaphato() ||
+                            $termek->getFuggoben() ? 'hidden' : 'visible',
+                        'description' => preg_replace("/(\t|\n|\r)+/", "", $leiras),
+                        'short_description' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...',
+                        //'regular_price' => (string)$termek->getBruttoAr(null, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
+                        //'sale_price' => (string)$termek->getBruttoAr(null, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                        'stock_quantity' => $keszlet,
+                        'manage_stock' => true,
+                        'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
+                        'weight' => $termek->getSuly(),
+                        'dimensions' => [
+                            'length' => $termek->getHosszusag(),
+                            'width' => $termek->getSzelesseg(),
+                            'height' => $termek->getMagassag(),
+                        ],
+                        'categories' => $cats,
+                        'tags' => $tags,
+                        'attributes' => $attrs,
+                        'images' => $images,
+                    ];
+
+                    \mkw\store::writelog($termek->getId());
+                    \mkw\store::writelog(json_encode($data));
+
+                    $termekdone[] = $termek->getId();
+
+                    \mkw\store::writelog('termek mentes start');
+
+                    if (!$termek->getWcid()) {
+                        try {
+                            $result = $wc->post('products', $data);
+                        } catch (HttpClientException $e) {
+                            \mkw\store::writelog('HIBA');
+                            \mkw\store::writelog($e->getResponse()->getBody());
+                            throw $e;
+                        }
+                        \mkw\store::writelog(json_encode($result));
+
+                        foreach ($result->images as $image) {
+                            $tkep = $termek->findTermekKepByUrl($image->name);
+                            if ($tkep) {
+                                $tkep->setWcid($image->id);
+                                $tkep->setWcdate();
+                                $this->getEm()->persist($tkep);
+                            } elseif ($termek->getKepurl() == $image->name) {
+                                $termek->setKepwcid($image->id);
+                            }
+                        }
+
+                        $termek->setWcid($result->id);
+                        $termek->setWcdate();
+                        $this->getEm()->persist($termek);
+                        $this->getEm()->flush();
+                    } elseif ($termek->getWcdate() < $termek->getLastmod()) {
+                        $result = $wc->put('products/' . $termek->getWcid(), $data);
+
+                        foreach ($result->images as $image) {
+                            $tkep = $termek->findTermekKepByUrl($image->name);
+                            if ($tkep) {
+                                $tkep->setWcid($image->id);
+                                $tkep->setWcdate();
+                                $this->getEm()->persist($tkep);
+                            } elseif ($termek->getKepurl() == $image->name) {
+                                $termek->setKepwcid($image->id);
+                            }
+                        }
+
+                        $termek->setWcdate();
+                        $this->getEm()->persist($termek);
+                        $this->getEm()->flush();
+                    }
+
+                    \mkw\store::writelog('termek mentes stop');
+
+                    /** @var TermekValtozat $valtozat */
+                    foreach ($termek->getValtozatok() as $valtozat) {
+                        \mkw\store::writelog('valtozat: ' . $valtozat->getId());
+                        $vkeszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg();
+                        if ($vkeszlet < 0) {
+                            $vkeszlet = 0;
+                        }
+                        $variation = [
+                            'regular_price' => (string)$termek->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
+                            'sale_price' => '99',//(string)$termek->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                            //'date_on_sale_from' => '2025-01-01 00:00:00',
+                            //'date_on_sale_to' => '2025-03-01 00:00:00',
+                            'stock_quantity' => $vkeszlet,
+                            'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
+                            'status' => !$valtozat->getNLathato(\mkw\store::getWcWebshopNum()) ? 'draft' : 'publish',
+                            'manage_stock' => true,
+                        ];
+                        if ($valtozat->getKepwcid()) {
+                            $variation['image'] = [
+                                'id' => $valtozat->getKepwcid()
+                            ];
+                        } elseif ($valtozat->getKepurl()) {
+                            $variation['image'] = [
+                                'src' => \mkw\store::getWcImageUrlPrefix() . $valtozat->getKepurl(),
+                                'alt' => $nev . ' - ' . $termek->getCikkszam()
+                            ];
+                        }
+                        if ($valtozat->getAdatTipus1()?->getWcid()) {
+                            $variation['attributes'][] = [
+                                'id' => $valtozat->getAdatTipus1()->getWcid(),
+                                'option' => $valtozat->getErtek1(),
+                            ];
+                        }
+                        if ($valtozat->getAdatTipus2()?->getWcid()) {
+                            $variation['attributes'][] = [
+                                'id' => $valtozat->getAdatTipus2()->getWcid(),
+                                'option' => $valtozat->getErtek2(),
+                            ];
+                        }
+                        \mkw\store::writelog(json_encode($variation));
+                        \mkw\store::writelog('valtozat mentes start');
+                        if (!$valtozat->getWcid()) {
+                            $result = $wc->post('products/' . $termek->getWcid() . '/variations', $variation);
+                            \mkw\store::writelog(json_encode($result));
+
+                            $valtozat->setWcid($result->id);
+                            $valtozat->setWcdate();
+                            $this->getEm()->persist($valtozat);
+                            $this->getEm()->flush();
+                        } elseif ($valtozat->getWcdate() < $valtozat->getLastmod()) {
+                            $wc->put('products/' . $termek->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
+                            $valtozat->setWcdate();
+                            $this->getEm()->persist($valtozat);
+                            $this->getEm()->flush();
+                        }
+                        \mkw\store::writelog('valtozat mentes stop');
+                    }
+                }
+            }
+        }
+        echo 'OK';
+    }
+
 }

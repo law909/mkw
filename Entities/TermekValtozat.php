@@ -20,8 +20,8 @@ use mkwhelpers\FilterDescriptor;
 class TermekValtozat
 {
 
-    private $keszletinfo;
-    private $foglalasinfo;
+    private $keszletinfo = false;
+    private $foglalasinfo = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -173,6 +173,11 @@ class TermekValtozat
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minboltikeszlet;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $wcid;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private $wcdate;
 
     /**
      * @ORM\PrePersist
@@ -550,6 +555,20 @@ class TermekValtozat
         return '';
     }
 
+    public function getKepwcid()
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getWcid();
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepwcid();
+            }
+        }
+        return '';
+    }
+
     public function getKepurlMini($pre = '/')
     {
         if (!$this->termekfokep) {
@@ -859,9 +878,9 @@ class TermekValtozat
         }
     }
 
-    public function getXLathato()
+    public function getNLathato($n)
     {
-        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+        switch ($n) {
             case 1:
                 return $this->getLathato();
             case 2:
@@ -895,6 +914,11 @@ class TermekValtozat
             default:
                 return $this->getLathato();
         }
+    }
+
+    public function getXLathato()
+    {
+        return $this->getNLathato(\mkw\store::getSetupValue('webshopnum', 1));
     }
 
     /**
@@ -1272,6 +1296,50 @@ class TermekValtozat
     public function setElerheto15($elerheto15): void
     {
         $this->elerheto15 = $elerheto15;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWcid()
+    {
+        return $this->wcid;
+    }
+
+    /**
+     * @param mixed $wcid
+     */
+    public function setWcid($wcid): void
+    {
+        $this->wcid = $wcid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWcdate()
+    {
+        return $this->wcdate;
+    }
+
+    public function getWcdateStr($wcdate)
+    {
+        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
+    }
+
+    /**
+     * @param mixed $wcdate
+     */
+    public function setWcdate($adat = null): void
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->wcdate = $adat;
+        } else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$sqlDateTimeFormat);
+            }
+            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
+        }
     }
 
 }
