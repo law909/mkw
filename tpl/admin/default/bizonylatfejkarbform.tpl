@@ -148,6 +148,16 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><label for="SzallOrszagEdit">{at('Szállítási ország')}:</label></td>
+                            <td><select id="SzallOrszagEdit" name="partnerszallorszag">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $szallorszaglist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><label for="SzallirszamEdit">{at('Szállítási cím')}:</label></td>
                             <td colspan="7">
                                 <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">

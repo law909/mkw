@@ -296,6 +296,12 @@ class Partner
      */
     private $orszag;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Orszag")
+     * @ORM\JoinColumn(name="szallorszag_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $szallorszag;
+
     /** @ORM\Column(type="integer",nullable=true) */
     private $mijszmiotajogazik = 0;
 
@@ -727,6 +733,24 @@ class Partner
             $cim .= ' ';
         }
         $cim .= $this->hazszam;
+        return $cim;
+    }
+
+    public function getSzallcim()
+    {
+        $cim = $this->szallirszam;
+        if (($cim !== '') && ($this->szallvaros !== '')) {
+            $cim .= ' ';
+        }
+        $cim .= $this->szallvaros;
+        if (($cim !== '') && ($this->szallutca !== '')) {
+            $cim .= ', ';
+        }
+        $cim .= $this->szallutca;
+        if (($cim !== '') && ($this->szallhazszam !== '')) {
+            $cim .= ' ';
+        }
+        $cim .= $this->szallhazszam;
         return $cim;
     }
 
@@ -3541,6 +3565,49 @@ class Partner
                 $adat = date(\mkw\store::$sqlDateTimeFormat);
             }
             $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    public function isDefaultSzallorszag()
+    {
+        if ($this->szallorszag) {
+            return $this->szallorszag->isDefault();
+        }
+        return true;
+    }
+
+    public function getSzallorszag()
+    {
+        return $this->szallorszag;
+    }
+
+    public function getSzallorszagNev()
+    {
+        if ($this->szallorszag) {
+            return $this->szallorszag->getNev();
+        }
+        return '';
+    }
+
+    public function getSzallorszagId()
+    {
+        if ($this->szallorszag) {
+            return $this->szallorszag->getId();
+        }
+        return '';
+    }
+
+    public function setSzallorszag($val)
+    {
+        if ($this->szallorszag !== $val) {
+            $this->szallorszag = $val;
+        }
+    }
+
+    public function removeSzallorszag()
+    {
+        if ($this->szallorszag !== null) {
+            $this->szallorszag = null;
         }
     }
 

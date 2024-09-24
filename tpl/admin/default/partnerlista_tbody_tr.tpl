@@ -80,12 +80,12 @@
         </table>
     </td>
     <td class="cell">
-        <div>{$_partner.orszagnev}</div>
         {if ($setup.mptngy)}
             <div>Munkahely: {$_partner.mpt_munkahelynev}</div>
             <div>Számlázási név: {$_partner.szlanev}</div>
         {/if}
-        <div>Számlázási cím: {$_partner.cim}</div>
+        <div>Számlázási cím: {$_partner.orszagnev}, {$_partner.cim}</div>
+        <div>Szállítási cím: {$_partner.szallorszagnev}, {$_partner.szallcim}</div>
         {if ($_partner.lcim!=='')}
             <div>{at('Levelezési cím')}: {$_partner.lcim}</div>
         {/if}

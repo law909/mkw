@@ -556,6 +556,16 @@
                                placeholder="{at('házszám')}" autocomplete="off">
                     </td>
                 </tr>
+                <tr>
+                    <td><label for="SzallOrszagEdit">{at('Szállítási ország')}:</label></td>
+                    <td><select id="SzallOrszagEdit" name="szallorszag">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szallorszaglist as $_szt}
+                                <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\Orszag;
 use mkw\store;
 
 
@@ -41,6 +42,7 @@ class mugenraceCheckoutController extends checkoutController
         $szallutca = $this->params->getStringRequestParam('szallutca');
         $szamlaeqszall = $this->params->getBoolRequestParam('szamlaeqszall');
         $orszag = $this->params->getIntRequestParam('orszag');
+        $szallorszag = $this->params->getIntRequestParam('szallorszag');
         $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
         $fizetesimod = $this->params->getIntRequestParam('fizetesimod');
         $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
@@ -54,9 +56,10 @@ class mugenraceCheckoutController extends checkoutController
             $szamlairszam = $szallirszam;
             $szamlavaros = $szallvaros;
             $szamlautca = $szallutca;
+            $orszag = $szallorszag;
         }
 
-        $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
+        $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca && $szallorszag &&
             $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $orszag);
 
         if (!$ok) {
@@ -92,7 +95,11 @@ class mugenraceCheckoutController extends checkoutController
             $partner->setSzallirszam($szallirszam);
             $partner->setSzallvaros($szallvaros);
             $partner->setSzallutca($szallutca);
-            $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+            $szallorszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
+            if ($szallorszag) {
+                $partner->setSzallorszag($szallorszag);
+            }
+            $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszag', 0));
             if ($orszag) {
                 $partner->setOrszag($orszag);
             }
@@ -147,7 +154,7 @@ class mugenraceCheckoutController extends checkoutController
             $megrendfej->setPartnerirszam($szamlairszam);
             $megrendfej->setPartnervaros($szamlavaros);
             $megrendfej->setPartnerutca($szamlautca);
-            $orszagobj = $this->getRepo('Entities\Orszag')->find($orszag);
+            $orszagobj = $this->getRepo(Orszag::class)->find($orszag);
             if ($orszagobj) {
                 $megrendfej->setPartnerorszag($orszagobj);
             }
@@ -155,6 +162,10 @@ class mugenraceCheckoutController extends checkoutController
             $megrendfej->setSzallirszam($szallirszam);
             $megrendfej->setSzallvaros($szallvaros);
             $megrendfej->setSzallutca($szallutca);
+            $orszagobj = $this->getRepo(Orszag::class)->find($szallorszag);
+            if ($orszagobj) {
+                $megrendfej->setPartnerszallorszag($orszagobj);
+            }
 
             $megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
             $megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));

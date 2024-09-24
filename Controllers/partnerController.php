@@ -76,6 +76,8 @@ class partnerController extends \mkwhelpers\MattableController
         $x['hazszam'] = $t->getHazszam();
         $x['orszag'] = $t->getOrszag();
         $x['orszagnev'] = $t->getOrszagNev();
+        $x['szallorszag'] = $t->getSzallorszag();
+        $x['szallorszagnev'] = $t->getSzallorszagNev();
         $x['lcim'] = $t->getLCim();
         $x['lirszam'] = $t->getLirszam();
         $x['lvaros'] = $t->getLvaros();
@@ -99,6 +101,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['szallvaros'] = $t->getSzallvaros();
         $x['szallutca'] = $t->getSzallutca();
         $x['szallhazszam'] = $t->getSzallhazszam();
+        $x['szallcim'] = $t->getSzallcim();
         $x['nem'] = $t->getNem();
         $x['szuletesiido'] = $t->getSzuletesiido();
         $x['szuletesiidostr'] = $t->getSzuletesiidoStr();
@@ -443,6 +446,12 @@ class partnerController extends \mkwhelpers\MattableController
             } else {
                 $obj->setOrszag(null);
             }
+            $szallorszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
+            if ($szallorszag) {
+                $obj->setSzallorszag($szallorszag);
+            } else {
+                $obj->setSzallorszag(null);
+            }
             $partnertipus = \mkw\store::getEm()->getRepository(Partnertipus::class)->find($this->params->getIntRequestParam('partnertipus', 0));
             if ($partnertipus) {
                 $obj->setPartnertipus($partnertipus);
@@ -548,6 +557,10 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
             $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
             $obj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
+            $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
+            if ($orszag) {
+                $obj->setSzallorszag($orszag);
+            }
         }
 
         if ($subject === 'jelszo') {
@@ -762,6 +775,9 @@ class partnerController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('orszagfilter', null))) {
             $filter->addFilter('orszag', '=', $this->params->getIntRequestParam('orszagfilter'));
         }
+        if (!is_null($this->params->getRequestParam('szallorszagfilter', null))) {
+            $filter->addFilter('szallorszag', '=', $this->params->getIntRequestParam('szallorszagfilter'));
+        }
         $f = $this->params->getNumRequestParam('inaktivfilter', 9);
         if ($f != 9) {
             $filter->addFilter('inaktiv', '=', $f);
@@ -847,6 +863,7 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
         $orszag = new orszagController($this->params);
         $view->setVar('orszaglist', $orszag->getSelectList(0, true));
+        $view->setVar('szallorszaglist', $orszag->getSelectList(0, true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
         $arsav = new arsavController($this->params);
@@ -888,6 +905,7 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('szallitasimodlist', $szallmod->getSelectList($partner?->getSzallitasimodId()));
         $orszag = new orszagController($this->params);
         $view->setVar('orszaglist', $orszag->getSelectList($partner?->getOrszagId(), true));
+        $view->setVar('szallorszaglist', $orszag->getSelectList($partner?->getSzallorszagId(), true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList($partner?->getPartnertipusId()));
         $mpttagsagforma = new mpttagsagformaController($this->params);
@@ -1013,6 +1031,7 @@ class partnerController extends \mkwhelpers\MattableController
                 'uzletkoto' => $partner->getUzletkotoId(),
                 'bizonylatnyelv' => $partner->getBizonylatnyelv(),
                 'orszag' => $partner->getOrszagId(),
+                'szallorszag' => $partner->getSzallorszagId(),
                 'vatstatus' => $partner->getVatstatus(),
                 'szamlatipus' => $partner->getSzamlatipus(),
                 'szamlaegyeb' => $partner->getSzamlaegyeb(),
@@ -1421,6 +1440,7 @@ class partnerController extends \mkwhelpers\MattableController
 
             $orszagc = new orszagController($this->params);
             $view->setVar('orszaglist', $orszagc->getSelectList($user->getOrszagId()));
+            $view->setVar('szallorszaglist', $orszagc->getSelectList($user->getSzallorszagId()));
 
             $telkorzetc = new korzetszamController($this->params);
             $view->setVar('telkorzetlist', $telkorzetc->getSelectList($user->getTelkorzet()));

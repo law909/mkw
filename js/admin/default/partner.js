@@ -531,6 +531,7 @@ $(document).ready(function () {
                     '#beszallitofilter',
                     '#partnertipusfilter',
                     '#orszagfilter',
+                    '#szallorszagfilter',
                     '#inaktivfilter',
                     '#mptngyreszvetelfilter',
                     '#mptngydiakfilter',

@@ -357,6 +357,18 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=5, nullable=true) */
     private $partnerorszagiso3166;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Orszag")
+     * @ORM\JoinColumn(name="partnerszallorszag_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $partnerszallorszag;
+
+    /** @ORM\Column(type="string",length=255, nullable=true) */
+    private $partnerszallorszagnev;
+
+    /** @ORM\Column(type="string",length=5, nullable=true) */
+    private $partnerszallorszagiso3166;
+
     /** @ORM\Column(type="string",length=10,nullable=true) */
     private $partnerirszam;
 
@@ -1132,6 +1144,7 @@ class Bizonylatfej
         $ret['partnerfeketelistas'] = $this->getPartnerfeketelistas();
         $ret['partnerfeketelistaok'] = $this->getPartnerfeketelistaok();
         $ret['partnerorszag'] = $this->getPartnerorszagnev();
+        $ret['partnerszallorszag'] = $this->getPartnerszallorszagnev();
         $ret['szamlanev'] = $this->getPartnernev();
         $ret['szamlairszam'] = $this->getPartnerirszam();
         $ret['szamlavaros'] = $this->getPartnervaros();
@@ -2712,6 +2725,7 @@ class Bizonylatfej
         $this->setPartnervalligszam($val->getValligszam());
         $this->setPartnervaros($val->getVaros());
         $this->setPartnerhazszam($val->getHazszam());
+        $this->setPartnerorszag($val->getOrszag());
         $this->setPartnervatstatus($val->getVatstatus());
         $this->setPartnerszamlaegyeb($val->getSzamlaegyeb());
 
@@ -2720,6 +2734,7 @@ class Bizonylatfej
         $this->setSzallvaros($val->getSzallvaros());
         $this->setSzallutca($val->getSzallutca());
         $this->setSzallhazszam($val->getSzallhazszam());
+        $this->setPartnerszallorszag($val->getSzallorszag());
 
         $this->setPartnerszamlatipus($val->getSzamlatipus());
         $this->setBizonylatnyelv($val->getBizonylatnyelv());
@@ -2805,6 +2820,8 @@ class Bizonylatfej
                 $this->removeUzletkoto();
                 $this->removeFizmod();
                 $this->removeValutanem();
+                $this->removePartnerorszag();
+                $this->removePartnerszallorszag();
             }
         }
     }
@@ -4585,6 +4602,22 @@ class Bizonylatfej
     /**
      * @return mixed
      */
+    public function getPartnerszallorszagnev()
+    {
+        return $this->partnerszallorszagnev;
+    }
+
+    /**
+     * @param mixed $partnerszallorszagnev
+     */
+    public function setPartnerszallorszagnev($partnerszallorszagnev)
+    {
+        $this->partnerszallorszagnev = $partnerszallorszagnev;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getSzepkartyaszam()
     {
         return $this->szepkartyaszam;
@@ -4668,6 +4701,55 @@ class Bizonylatfej
             if (!$this->duplication) {
                 $this->partnerorszagnev = '';
                 $this->partnerorszagiso3166 = '';
+            }
+        }
+    }
+
+    /**
+     * @return \Entities\Orszag
+     */
+    public function getPartnerszallorszag()
+    {
+        return $this->partnerszallorszag;
+    }
+
+    public function getPartnerszallorszagId()
+    {
+        $fm = $this->getPartnerszallorszag();
+        if ($fm) {
+            return $fm->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Orszag $val
+     */
+    public function setPartnerszallorszag($val)
+    {
+        if (!($val instanceof \Entities\Orszag)) {
+            $val = \mkw\store::getEm()->getRepository(Orszag::class)->find($val);
+        }
+        if ($this->partnerszallorszag !== $val) {
+            if (!$val) {
+                $this->removePartnerszallorszag();
+            } else {
+                $this->partnerszallorszag = $val;
+                if (!$this->duplication) {
+                    $this->partnerszallorszagnev = $val->getNev();
+                    $this->partnerszallorszagiso3166 = $val->getIso3166();
+                }
+            }
+        }
+    }
+
+    public function removePartnerszallorszag()
+    {
+        if ($this->partnerszallorszag !== null) {
+            $this->partnerszallorszag = null;
+            if (!$this->duplication) {
+                $this->partnerszallorszagnev = '';
+                $this->partnerszallorszagiso3166 = '';
             }
         }
     }
@@ -4958,6 +5040,28 @@ class Bizonylatfej
     public function setPartnerorszagiso3166($partnerorszagiso3166)
     {
         $this->partnerorszagiso3166 = $partnerorszagiso3166;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerszallorszagiso3166()
+    {
+        if ($this->partnerszallorszagiso3166) {
+            return $this->partnerszallorszagiso3166;
+        }
+        if ($this->getPartnerszallorszag()) {
+            return $this->getPartnerszallorszag()->getIso3166();
+        }
+        return 'HU';
+    }
+
+    /**
+     * @param mixed $partnerorszagiso3166
+     */
+    public function setPartnerszallorszagiso3166($partnerorszagiso3166)
+    {
+        $this->partnerszallorszagiso3166 = $partnerorszagiso3166;
     }
 
     /**

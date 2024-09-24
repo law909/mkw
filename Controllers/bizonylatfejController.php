@@ -6,7 +6,11 @@ use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Emailtemplate;
+use Entities\Fizmod;
+use Entities\Orszag;
 use Entities\Partner;
+use Entities\Szallitasimod;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -426,6 +430,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['partnerfeketelistas'] = $t->getPartnerfeketelistas();
         $x['partnerfeketelistaok'] = $t->getPartnerfeketelistaok();
         $x['partnerorszagnev'] = $t->getPartnerorszagnev();
+        $x['partnerszallorszagnev'] = $t->getPartnerszallorszagnev();
         $x['raktar'] = $t->getRaktarId();
         $x['raktarnev'] = $t->getRaktarnev();
         $x['fizmod'] = $t->getFizmodId();
@@ -590,13 +595,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
             $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
-            $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+            $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
             if ($ck) {
                 $partnerobj->setFizmod($ck);
             }
-            $ck = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('partnerorszaf'));
+            $ck = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('partnerorszag'));
             if ($ck) {
                 $partnerobj->setOrszag($ck);
+            }
+            $ck = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('partnerszallorszag'));
+            if ($ck) {
+                $partnerobj->setSzallorszag($ck);
             }
             $partnerobj->setSzallnev($this->params->getStringRequestParam('szallnev'));
             $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
@@ -605,11 +614,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $partnerobj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
             $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
             $partnerobj->setSzamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
-            $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+            $ck = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod'));
             if ($ck) {
                 $partnerobj->setSzallitasimod($ck);
             }
-            $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $ck = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
             if ($ck) {
                 $partnerobj->setValutanem($ck);
             }
@@ -635,10 +644,23 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 if (!$partnerobj->getNev() && ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev())) {
                     $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
                 }
+                $ck = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('partnerorszag'));
+                if ($ck) {
+                    $partnerobj->setOrszag($ck);
+                }
                 $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
                 $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
                 $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
                 $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
+                $ck = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('partnerszallorszag'));
+                if ($ck) {
+                    $partnerobj->setSzallorszag($ck);
+                }
+                $partnerobj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+                $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+                $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+                $partnerobj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+                $partnerobj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
                 $this->getEm()->persist($partnerobj);
             }
         }
@@ -1423,6 +1445,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
             $orszagc = new orszagController($this->params);
             $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
+            $view->setVar('szallorszaglist', $orszagc->getSelectList(($record ? $record->getPartnerszallorszagId() : 0)));
 
             if ($record) {
                 $partner = $record->getPartner();
