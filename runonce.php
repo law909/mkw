@@ -375,6 +375,7 @@ if ($DBVersion < '0051') {
 
 if ($DBVersion < '0052') {
     \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termek set wctiltva=inaktiv');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0052');
 }
 
 /**

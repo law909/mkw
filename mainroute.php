@@ -193,3 +193,6 @@ $router->map('GET', '/t/copydepokeszletdownload', 'toolController#copydepokeszle
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 
 $router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');
+
+$router->map('POST', '/wcwh/order', 'wcwebhookController#orderCreated', 'wcwhorder');
+$router->map('POST', '/wcwh/partner', 'wcwebhookController#partnerCreated', 'wcwhpartner');

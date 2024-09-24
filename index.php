@@ -162,7 +162,16 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                         $__admintranslate->setLocale(store::getAdminLocale());
                     }
 
-                    if ((!in_array($match['name'], ['admincron', 'adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail']))) {
+                    if (!in_array(
+                        $match['name'],
+                        [
+                            'admincron',
+                            'adminshowlogin',
+                            'adminlogin',
+                            'adminrlbexport',
+                            'adminminicrmmail'
+                        ]
+                    )) {
                         $linuser = store::getAdminSession()->pk;
                         if (!$linuser) {
                             $redirected = true;
@@ -268,7 +277,9 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'kaposimotoexport',
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
-                            'partnercheckemail'
+                            'partnercheckemail',
+                            'wcwhorder',
+                            'wcwhpartner'
                         ])) {
                         $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                         $redirected = true;
