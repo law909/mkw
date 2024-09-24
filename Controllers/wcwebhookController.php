@@ -24,10 +24,18 @@ class wcwebhookController extends \mkwhelpers\MattableController
         parent::__construct($params);
     }
 
+    private function writelog($endpoint, $data)
+    {
+        $log = new \Entities\Webhooklog();
+        $log->setIp($_SERVER['REMOTE_ADDR']);
+        $log->setEndpoint($endpoint);
+        $log->setData($data);
+        $this->getEm()->persist($log);
+        $this->getEm()->flush($log);
+    }
+
     private function createErrorLog($type, $order, $error)
     {
-        // kell csinalni egy megrendeleslogot, oda irni a megrendeles szamat, order_keyt, datumot
-        // a log itemeket egyesevel olvasottnak kell jelolni az adminban
         $log = new Apierrorlog();
         $log->setType($type);
         switch ($type) {
@@ -42,8 +50,10 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
     public function orderCreated()
     {
-        //$wcorder = json_decode(file_get_contents('wcorder.json'), true);
-        $wcorder = json_decode(file_get_contents('php://input'), true);
+        //$params = file_get_contents('wcorder.json');
+        $params = file_get_contents('php://input');
+        $this->writelog('WCOrderCreated', $params);
+        $wcorder = json_decode($params, true);
 
         $iserror = false;
 
@@ -174,7 +184,9 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
     public function partnerCreated()
     {
-        $wcpartner = json_decode(file_get_contents('php://input'), true);
+        $params = file_get_contents('php://input');
+        $this->writelog('WCPartnerCreated', $params);
+        $wcpartner = json_decode($params, true);
 
         $iserror = false;
 
