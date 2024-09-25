@@ -11,6 +11,7 @@ use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Szallitasimod;
 use Entities\Termek;
 use Entities\TermekValtozat;
 use Entities\Valutanem;
@@ -57,6 +58,13 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
         $iserror = false;
 
+        $megr = $this->getRepo(Bizonylatfej::class)->findOneBy([
+            'wcid' => $wcorder['id']
+        ]);
+        if ($megr) {
+            $this->createErrorLog('wcorder', $wcorder, 'Már létezik megrendelés ezzel az azonosítóval: ' . $wcorder['id'] . ' => ' . $megr->getId());
+            $iserror = true;
+        }
         $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar));
         if (!$raktar) {
             $this->createErrorLog('wcorder', $wcorder, 'Nincs beállítva alapértelmezett raktár.');
@@ -65,6 +73,11 @@ class wcwebhookController extends \mkwhelpers\MattableController
         $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['billing']['country']]);
         if (!$orszag) {
             $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen ország: ' . $wcorder['billing']['country']);
+            $iserror = true;
+        }
+        $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['shipping']['country']]);
+        if (!$szallorszag) {
+            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen ország: ' . $wcorder['shipping']['country']);
             $iserror = true;
         }
         $valutanem = $this->getRepo(Valutanem::class)->findOneBy(['nev' => $wcorder['currency']]);
@@ -77,6 +90,12 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen fizetési mód: ' . $wcorder['payment_method']);
             $iserror = true;
         }
+        $szallmod = $this->getRepo(Szallitasimod::class)->findOneBy(['wcid' => $wcorder['shipping_lines'][0]['method_id']]);
+        if (!$szallmod) {
+            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen szállítási mód: ' . $wcorder['shipping_lines'][0]['method_id']);
+            $iserror = true;
+        }
+        $megr->setSzallitasimod($szallmod);
         foreach ($wcorder['line_items'] as $item) {
             $termek = $this->getRepo(Termek::class)->findOneBy(['wcid' => $item['product_id']]);
             if (!$termek) {
@@ -125,6 +144,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $partner->setSzallvaros($wcorder['shipping']['city']);
             $partner->setSzallutca($wcorder['shipping']['address_1']);
             $partner->setSzallhazszam($wcorder['shipping']['address_2']);
+            $partner->setSzallorszag($szallorszag);
 
             //$partner->setAdoszam('??????');
             //$partner->setVatstatus();
@@ -141,8 +161,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $megr->setValutanem($valutanem);
             $megr->setBankszamla($valutanem->getBankszamla());
             $megr->setFizmod($fizmod);
-
-            //$megr->setSzallitasimod($szallmod);
+            $megr->setSzallitasimod($szallmod);
 
             $megr->setKelt();
             $megr->setTeljesites();
@@ -195,6 +214,11 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->createErrorLog('wcorder', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
             $iserror = true;
         }
+        $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['shipping']['country']]);
+        if (!$szallorszag) {
+            $this->createErrorLog('wcorder', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
+            $iserror = true;
+        }
 
         if (!$iserror) {
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcpartner['id']]);
@@ -220,6 +244,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $partner->setSzallvaros($wcpartner['shipping']['city']);
             $partner->setSzallutca($wcpartner['shipping']['address_1']);
             $partner->setSzallhazszam($wcpartner['shipping']['address_2']);
+            $partner->setSzallorszag($szallorszag);
 
             //$partner->setAdoszam('??????');
             //$partner->setVatstatus();

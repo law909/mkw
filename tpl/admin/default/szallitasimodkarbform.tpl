@@ -32,6 +32,10 @@
                     <td colspan="5"><input id="FizmodEdit" name="fizmodok" type="text" size="80" maxlength="255" value="{$egyed.fizmodok}"></td>
                 </tr>
                 <tr>
+                    <td><label for="WcidEdit">{at('WooCommerce ID')}:</label></td>
+                    <td><input id="WcidEdit" name="wcid" type="text" size="80" maxlength="255" value="{$egyed.wcid}"></td>
+                </tr>
+                <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td colspan="5"><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
                 </tr>

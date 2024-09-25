@@ -13,7 +13,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Szallitasimod');
+        $this->setEntityName(Szallitasimod::class);
         $this->setKarbFormTplName('szallitasimodkarbform.tpl');
         $this->setKarbTplName('szallitasimodkarb.tpl');
         $this->setListBodyRowTplName('szallitasimodlista_tbody_tr.tpl');
@@ -40,6 +40,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $x['webes4'] = $t->getWebes4();
         $x['leiras'] = $t->getLeiras();
         $x['fizmodok'] = $t->getFizmodok();
+        $x['wcid'] = $t->getWcid();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
         $x['terminaltipus'] = $t->getTerminaltipus();
@@ -96,6 +97,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
+        $obj->setWcid($this->params->getStringRequestParam('wcid'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
         $obj->setTerminaltipus($this->params->getStringRequestParam('terminaltipus'));

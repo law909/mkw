@@ -17,6 +17,9 @@
         <div>{if ($_egyed.vanszallitasiktg)}{at('Van szállítási költség')}{else}{at('Nincs szállítási költség')}{/if}</div>
     </td>
     <td class="cell">
+        {$_egyed.wcid}
+    </td>
+    <td class="cell">
         {$_egyed.sorrend}
     </td>
 </tr>
