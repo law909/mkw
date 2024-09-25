@@ -120,6 +120,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $megr = new Bizonylatfej();
             $megr->setPersistentData();
             $megr->setBizonylattipus($biztipus);
+            $megr->setWebshopnum(\mkw\store::getWcWebshopNum());
 
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcorder['customer_id']]);
             if (!$partner) {
