@@ -1833,6 +1833,8 @@ class termekController extends \mkwhelpers\MattableController
             /** @var Termek $termek */
             foreach ($termekek as $termek) {
                 if (!in_array($termek->getId(), $termekdone)) {
+                    \mkw\store::writelog($termek->getId() . ': termék adatgyűjtés start');
+
                     $ford = $termek->getTranslationsArray();
                     $nev = $termek->getNevForditas($ford, 'en_us');
                     $leiras = $termek->getLeirasForditas($ford, 'en_us');
@@ -1951,28 +1953,27 @@ class termekController extends \mkwhelpers\MattableController
                             'width' => $termek->getSzelesseg(),
                             'height' => $termek->getMagassag(),
                         ],
+                        'featured' => $termek->getAjanlott(),
                         'categories' => $cats,
                         'tags' => $tags,
                         'attributes' => $attrs,
                         'images' => $images,
                     ];
-
-                    \mkw\store::writelog($termek->getId());
-                    \mkw\store::writelog(json_encode($data));
-
                     $termekdone[] = $termek->getId();
 
-                    \mkw\store::writelog('termek mentes start');
+                    \mkw\store::writelog($termek->getId() . ': termék adatgyűjtés stop');
+                    \mkw\store::writelog($termek->getId() . ': termék adat a woocommerceBE: ' . json_encode($data));
 
                     if (!$termek->getWcid()) {
+                        \mkw\store::writelog($termek->getId() . ': termék POST start');
                         try {
                             $result = $wc->post('products', $data);
                         } catch (HttpClientException $e) {
-                            \mkw\store::writelog('HIBA');
-                            \mkw\store::writelog($e->getResponse()->getBody());
+                            \mkw\store::writelog($termek->getId() . ':HIBA: ' . $e->getResponse()->getBody());
                             throw $e;
                         }
-                        \mkw\store::writelog(json_encode($result));
+                        \mkw\store::writelog($termek->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
+                        \mkw\store::writelog($termek->getId() . ': termék POST stop');
 
                         foreach ($result->images as $image) {
                             $tkep = $termek->findTermekKepByUrl($image->name);
@@ -1990,7 +1991,15 @@ class termekController extends \mkwhelpers\MattableController
                         $this->getEm()->persist($termek);
                         $this->getEm()->flush();
                     } elseif ($termek->getWcdate() < $termek->getLastmod()) {
-                        $result = $wc->put('products/' . $termek->getWcid(), $data);
+                        \mkw\store::writelog($termek->getId() . ': termék PUT start');
+                        try {
+                            $result = $wc->put('products/' . $termek->getWcid(), $data);
+                        } catch (HttpClientException $e) {
+                            \mkw\store::writelog($termek->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                            throw $e;
+                        }
+                        \mkw\store::writelog($termek->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
+                        \mkw\store::writelog($termek->getId() . ': termék PUT stop');
 
                         foreach ($result->images as $image) {
                             $tkep = $termek->findTermekKepByUrl($image->name);
@@ -2008,11 +2017,10 @@ class termekController extends \mkwhelpers\MattableController
                         $this->getEm()->flush();
                     }
 
-                    \mkw\store::writelog('termek mentes stop');
 
                     /** @var TermekValtozat $valtozat */
                     foreach ($termek->getValtozatok() as $valtozat) {
-                        \mkw\store::writelog('valtozat: ' . $valtozat->getId());
+                        \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés start');
                         $vkeszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg();
                         if ($vkeszlet < 0) {
                             $vkeszlet = 0;
@@ -2049,18 +2057,23 @@ class termekController extends \mkwhelpers\MattableController
                                 'option' => $valtozat->getErtek2(),
                             ];
                         }
-                        \mkw\store::writelog(json_encode($variation));
-                        \mkw\store::writelog('valtozat mentes start');
+                        \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
+                        \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
                         if (!$valtozat->getWcid()) {
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST start');
                             $result = $wc->post('products/' . $termek->getWcid() . '/variations', $variation);
-                            \mkw\store::writelog(json_encode($result));
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST start');
 
                             $valtozat->setWcid($result->id);
                             $valtozat->setWcdate();
                             $this->getEm()->persist($valtozat);
                             $this->getEm()->flush();
                         } elseif ($valtozat->getWcdate() < $valtozat->getLastmod()) {
-                            $wc->put('products/' . $termek->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT start');
+                            $result = $wc->put('products/' . $termek->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT start');
                             $valtozat->setWcdate();
                             $this->getEm()->persist($valtozat);
                             $this->getEm()->flush();

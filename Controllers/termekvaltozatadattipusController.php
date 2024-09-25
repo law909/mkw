@@ -53,9 +53,16 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
         $attributes = $this->getRepo()->getAll();
         /** @var TermekValtozatAdatTipus $attr */
         foreach ($attributes as $attr) {
+            if ($attr->getId() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                $attrnev = 'Color';
+            } elseif ($attr->getId() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                $attrnev = 'Size';
+            } else {
+                $attrnev = $attr->getNev();
+            }
             if (!$attr->getWcid()) {
                 $data = [
-                    'name' => $attr->getNev(),
+                    'name' => $attrnev,
                     'type' => 'select'
                 ];
                 $result = $wc->post('products/attributes', $data);
@@ -66,7 +73,7 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
                 \mkw\store::getEm()->flush();
             } else {
                 $data = [
-                    'name' => $attr->getNev(),
+                    'name' => $attrnev,
                     'type' => 'select'
                 ];
                 $wc->put('products/attributes/' . $attr->getWcid(), $data);
