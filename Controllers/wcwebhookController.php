@@ -6,6 +6,7 @@ namespace Controllers;
 use Entities\Apierrorlog;
 use Entities\Arfolyam;
 use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
@@ -65,6 +66,11 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->createErrorLog('wcorder', $wcorder, 'Már létezik megrendelés ezzel az azonosítóval: ' . $wcorder['id'] . ' => ' . $megr->getId());
             $iserror = true;
         }
+        $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->findOneBy(['wcid' => $wcorder['status']]);
+        if (!$bizstatusz) {
+            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen bizonylatstátusz: ' . $wcorder['status']);
+            $iserror = true;
+        }
         $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar));
         if (!$raktar) {
             $this->createErrorLog('wcorder', $wcorder, 'Nincs beállítva alapértelmezett raktár.');
@@ -95,7 +101,6 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen szállítási mód: ' . $wcorder['shipping_lines'][0]['method_id']);
             $iserror = true;
         }
-        $megr->setSzallitasimod($szallmod);
         foreach ($wcorder['line_items'] as $item) {
             $termek = $this->getRepo(Termek::class)->findOneBy(['wcid' => $item['product_id']]);
             if (!$termek) {
