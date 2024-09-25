@@ -1470,6 +1470,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function setStatusz()
     {
+        /** @var Bizonylatfej $bf */
         $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($bf) {
             $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
@@ -1479,6 +1480,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $bf->setBizonylatstatusz($statusz);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
+                $bf->sendStatusChangeToWc();
                 if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
                     $emailtpl = $statusz->getEmailtemplate();
                     $bf->sendStatuszEmail($emailtpl);

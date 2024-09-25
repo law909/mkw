@@ -2,6 +2,7 @@
 
 namespace Entities;
 
+use Automattic\WooCommerce\Client;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
@@ -930,6 +931,17 @@ class Bizonylatfej
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
             }
+        }
+    }
+
+    public function sendStatusChangeToWc()
+    {
+        if ($this->getWcid() && $this->getBizonylatstatusz()?->getWcid()) {
+            /** @var Client $wc */
+            $wc = store::getWcClient();
+            $wc->put('orders/' . $this->getWcid(), [
+                'status' => $this->getBizonylatstatusz()->getWcid()
+            ]);
         }
     }
 
