@@ -17,7 +17,7 @@
             <tr>
                 <td>{at('Azonosító')}:</td>
                 <td>{$_partner.id}</td>
-                <td>{at('WooCommerc ID:')}</td>
+                <td>{at('WooCommerce ID:')}</td>
                 <td>{$_partner.wcid}</td>
             </tr>
             <tr>

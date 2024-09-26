@@ -58,6 +58,7 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->detach($t);
         }
         $x['id'] = $t->getId();
+        $x['wcid'] = $t->getWcid();
         $x['vtsznev'] = $t->getVtszNev();
         $x['afanev'] = $t->getAfaNev();
         $x['nev'] = $t->getNev();

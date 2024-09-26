@@ -54,6 +54,7 @@ class partnerController extends \mkwhelpers\MattableController
             $this->getEm()->detach($t);
         }
         $x['id'] = $t->getId();
+        $x['wcid'] = $t->getWcid();
         $x['nev'] = $t->getNev();
         $x['vezeteknev'] = $t->getVezeteknev();
         $x['keresztnev'] = $t->getKeresztnev();
