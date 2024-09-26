@@ -123,12 +123,13 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
         if (!$iserror) {
             /** @var Bizonylattipus $biztipus */
-            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+            $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
 
             $megr = new Bizonylatfej();
             $megr->setPersistentData();
             $megr->setBizonylattipus($biztipus);
             $megr->setWebshopnum(\mkw\store::getWcWebshopNum());
+            $megr->setErbizonylatszam($wcorder['id']);
 
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcorder['customer_id']]);
             if (!$partner) {
@@ -179,7 +180,6 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megr->getTeljesites());
             $megr->setArfolyam($arf->getArfolyam());
 
-            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             $megr->setBizonylatstatusz($bizstatusz);
 
             $megr->setMegjegyzes($wcorder['customer_note']);
@@ -210,6 +210,65 @@ class wcwebhookController extends \mkwhelpers\MattableController
         header('HTTP/1.1 200 OK');
     }
 
+    private function fillPartner($partner, $wcpartner, $orszag, $szallorszag)
+    {
+        $partner->setWcid($wcpartner['id']);
+        if ($wcpartner['billing']['last_name']) {
+            $partner->setVezeteknev($wcpartner['billing']['last_name']);
+        }
+        if ($wcpartner['billing']['first_name']) {
+            $partner->setKeresztnev($wcpartner['billing']['first_name']);
+        }
+        if ($wcpartner['billing']['last_name'] || $wcpartner['billing']['first_name']) {
+            $partner->setNev($wcpartner['billing']['first_name'] . ' ' . $wcpartner['billing']['last_name']);
+        }
+        if ($wcpartner['email']) {
+            $partner->setEmail($wcpartner['email']);
+        }
+        if ($wcpartner['billing']['phone']) {
+            $partner->setTelefon($wcpartner['billing']['phone']);
+        }
+        if ($wcpartner['billing']['postcode']) {
+            $partner->setIrszam($wcpartner['billing']['postcode']);
+        }
+        if ($wcpartner['billing']['city']) {
+            $partner->setVaros($wcpartner['billing']['city']);
+        }
+        if ($wcpartner['billing']['address_1']) {
+            $partner->setUtca($wcpartner['billing']['address_1']);
+        }
+        if ($wcpartner['billing']['address_2']) {
+            $partner->setHazszam($wcpartner['billing']['address_2']);
+        }
+        if ($orszag) {
+            $partner->setOrszag($orszag);
+        }
+        if ($wcpartner['shipping']['last_name'] || $wcpartner['shipping']['first_name']) {
+            $partner->setSzallnev($wcpartner['shipping']['first_name'] . ' ' . $wcpartner['shipping']['last_name']);
+        }
+        if ($wcpartner['shipping']['postcode']) {
+            $partner->setSzallirszam($wcpartner['shipping']['postcode']);
+        }
+        if ($wcpartner['shipping']['city']) {
+            $partner->setSzallvaros($wcpartner['shipping']['city']);
+        }
+        if ($wcpartner['shipping']['address_1']) {
+            $partner->setSzallutca($wcpartner['shipping']['address_1']);
+        }
+        if ($wcpartner['shipping']['address_2']) {
+            $partner->setSzallhazszam($wcpartner['shipping']['address_2']);
+        }
+        if ($szallorszag) {
+            $partner->setSzallorszag($szallorszag);
+        }
+
+        //$partner->setAdoszam('??????');
+        //$partner->setVatstatus();
+        //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
+
+        $partner->setWcdate();
+    }
+
     public function partnerCreated()
     {
         $params = file_get_contents('php://input');
@@ -218,16 +277,16 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
         $iserror = false;
 
+        if ($wcpartner['billing']['last_name']) {
+            $this->createErrorLog('wcpartner', $wcpartner, 'Last_name nincs megadva');
+            $iserror = true;
+        }
+        if ($wcpartner['billing']['first_name']) {
+            $this->createErrorLog('wcpartner', $wcpartner, 'First_name nincs megadva');
+            $iserror = true;
+        }
         $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['billing']['country']]);
-        if (!$orszag) {
-            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
-            $iserror = true;
-        }
         $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['shipping']['country']]);
-        if (!$szallorszag) {
-            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
-            $iserror = true;
-        }
 
         if (!$iserror) {
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcpartner['id']]);
@@ -237,29 +296,8 @@ class wcwebhookController extends \mkwhelpers\MattableController
             if (!$partner) {
                 $partner = new Partner();
             }
-            $partner->setWcid($wcpartner['id']);
-            $partner->setVezeteknev($wcpartner['billing']['last_name']);
-            $partner->setKeresztnev($wcpartner['billing']['first_name']);
-            $partner->setNev($wcpartner['billing']['first_name'] . ' ' . $wcpartner['billing']['last_name']);
-            $partner->setEmail($wcpartner['email']);
-            $partner->setTelefon($wcpartner['billing']['phone']);
-            $partner->setIrszam($wcpartner['billing']['postcode']);
-            $partner->setVaros($wcpartner['billing']['city']);
-            $partner->setUtca($wcpartner['billing']['address_1']);
-            $partner->setHazszam($wcpartner['billing']['address_2']);
-            $partner->setOrszag($orszag);
-            $partner->setSzallnev($wcpartner['shipping']['first_name'] . ' ' . $wcpartner['shipping']['last_name']);
-            $partner->setSzallirszam($wcpartner['shipping']['postcode']);
-            $partner->setSzallvaros($wcpartner['shipping']['city']);
-            $partner->setSzallutca($wcpartner['shipping']['address_1']);
-            $partner->setSzallhazszam($wcpartner['shipping']['address_2']);
-            $partner->setSzallorszag($szallorszag);
 
-            //$partner->setAdoszam('??????');
-            //$partner->setVatstatus();
-            //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
-
-            $partner->setWcdate();
+            $this->fillPartner($partner, $wcpartner, $orszag, $szallorszag);
 
             $this->getEm()->persist($partner);
             $this->getEm()->flush();
@@ -276,15 +314,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
         $iserror = false;
 
         $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['billing']['country']]);
-        if (!$orszag) {
-            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
-            $iserror = true;
-        }
         $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['shipping']['country']]);
-        if (!$szallorszag) {
-            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
-            $iserror = true;
-        }
 
         if (!$iserror) {
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcpartner['id']]);
@@ -294,30 +324,8 @@ class wcwebhookController extends \mkwhelpers\MattableController
             if (!$partner) {
                 $partner = new Partner();
             }
-            $partner->setWcid($wcpartner['id']);
 
-            $partner->setVezeteknev($wcpartner['billing']['last_name']);
-            $partner->setKeresztnev($wcpartner['billing']['first_name']);
-            $partner->setNev($wcpartner['billing']['first_name'] . ' ' . $wcpartner['billing']['last_name']);
-            $partner->setEmail($wcpartner['email']);
-            $partner->setTelefon($wcpartner['billing']['phone']);
-            $partner->setIrszam($wcpartner['billing']['postcode']);
-            $partner->setVaros($wcpartner['billing']['city']);
-            $partner->setUtca($wcpartner['billing']['address_1']);
-            $partner->setHazszam($wcpartner['billing']['address_2']);
-            $partner->setOrszag($orszag);
-            $partner->setSzallnev($wcpartner['shipping']['first_name'] . ' ' . $wcpartner['shipping']['last_name']);
-            $partner->setSzallirszam($wcpartner['shipping']['postcode']);
-            $partner->setSzallvaros($wcpartner['shipping']['city']);
-            $partner->setSzallutca($wcpartner['shipping']['address_1']);
-            $partner->setSzallhazszam($wcpartner['shipping']['address_2']);
-            $partner->setSzallorszag($szallorszag);
-
-            //$partner->setAdoszam('??????');
-            //$partner->setVatstatus();
-            //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
-
-            $partner->setWcdate();
+            $this->fillPartner($partner, $wcpartner, $orszag, $szallorszag);
 
             $this->getEm()->persist($partner);
             $this->getEm()->flush();

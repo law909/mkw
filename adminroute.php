@@ -289,6 +289,18 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doPrint', 'adminmegrendelesfejprint');
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');
 
+$router->map('GET', '/admin/webshopbizfej/viewlist', 'webshopbizfejController#viewlist', 'adminwebshopbizfejviewlist');
+$router->map('GET', '/admin/webshopbizfej/getlistbody', 'webshopbizfejController#getlistbody', 'adminwebshopbizfejgetlistbody');
+$router->map('GET', '/admin/webshopbizfej/getkarb', 'webshopbizfejController#getkarb', 'adminwebshopbizfejgetkarb');
+$router->map('GET', '/admin/webshopbizfej/viewkarb', 'webshopbizfejController#viewkarb', 'adminwebshopbizfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/webshopbizfej/save', 'webshopbizfejController#save', 'adminwebshopbizfejsave');
+    $router->map('POST', '/admin/webshopbizfej/ront', 'webshopbizfejController#ront', 'adminwebshopbizfejront');
+    $router->map('POST', '/admin/webshopbizfej/fejexport', 'webshopbizfejController#fejexport', 'adminwebshopbizfejfejexport');
+    $router->map('POST', '/admin/webshopbizfej/tetelexport', 'webshopbizfejController#tetelexport', 'adminwebshopbizfejtetelexport');
+}
+$router->map('GET', '/admin/webshopbizfej/print', 'webshopbizfejController#doPrint', 'adminwebshopbizfejprint');
+
 $router->map('GET', '/admin/szallitofej/viewlist', 'szallitofejController#viewlist', 'adminszallitofejviewlist');
 $router->map('GET', '/admin/szallitofej/getlistbody', 'szallitofejController#getlistbody', 'adminszallitofejgetlistbody');
 $router->map('GET', '/admin/szallitofej/getkarb', 'szallitofejController#getkarb', 'adminszallitofejgetkarb');

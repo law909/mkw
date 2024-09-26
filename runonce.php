@@ -375,7 +375,33 @@ if ($DBVersion < '0051') {
 
 if ($DBVersion < '0052') {
     \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termek set wctiltva=inaktiv');
+
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0052');
+}
+
+if ($DBVersion < '0053') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo,'
+        . ' showemailbutton, showeddigimegrendeleseiurl, showgarancialisadatok) '
+        . ' VALUES '
+        . '("webshopbiz", "Webshop rendelés", "-1", "0", "WS", "1", "1",'
+        . ' "1", "0", "1", "1", "0", "0", "biz_webshopbiz.tpl", "1",'
+        . ' "0", "0", "0", "0", "0", "0", "1",'
+        . ' "0", "0", "0", "1", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0",'
+        . ' "0", "0", "0")'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Webshop rendelés","/admin/webshopbizfej/viewlist","/admin/webshopbizfej",20,0,550, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0053');
 }
 
 /**

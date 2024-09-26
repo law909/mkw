@@ -28,6 +28,10 @@
                     </tr>
                 {/if}
                 <tr>
+                    <td><label for="MozgatEdit">{at('Mozgat')}:</label></td>
+                    <td><input id="MozgatEdit" name="mozgat" type="checkbox"{if ($egyed.mozgat)} checked="checked"{/if}"></td>
+                </tr>
+                <tr>
                     <td><label for="WcidEdit">{at('WooCommerce ID')}:</label></td>
                     <td><select id="WcidEdit" name="wcid">
                             <option value=""{if ($egyed.wcid=='')} selected="selected"{/if}>válasszon</option>

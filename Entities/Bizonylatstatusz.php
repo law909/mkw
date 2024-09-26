@@ -33,6 +33,9 @@ class Bizonylatstatusz
     /** @ORM\Column(type="boolean") */
     private $foglal;
 
+    /** @ORM\Column(type="boolean") */
+    private $mozgat;
+
     /**
      * @ORM\ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
      * @ORM\JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -275,6 +278,22 @@ class Bizonylatstatusz
     public function setWcid($wcid): void
     {
         $this->wcid = $wcid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMozgat()
+    {
+        return $this->mozgat;
+    }
+
+    /**
+     * @param mixed $mozgat
+     */
+    public function setMozgat($mozgat): void
+    {
+        $this->mozgat = $mozgat;
     }
     
 }

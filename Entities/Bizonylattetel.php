@@ -524,23 +524,24 @@ class Bizonylattetel
             $this->mozgat = $mozgat;
         } else {
             $bf = $this->bizonylatfej;
-            if ($bf->getMese()) {
-                $this->mozgat = false;
-            } else {
-                $par = $this->getParbizonylattetel();
-                if ($par) {
-                    $this->walkParents($par);
-                    if ($this->vanmozgatoos) {
-                        $this->mozgat = false;
-                        return true;
-                    }
-                }
-                $t = $this->termek;
-                if ($bf && $t) {
-                    $this->mozgat = $bf->getMozgat() && $t->getMozgat();
-                } else {
+            $par = $this->getParbizonylattetel();
+            if ($par) {
+                $this->walkParents($par);
+                if ($this->vanmozgatoos) {
                     $this->mozgat = false;
+                    return true;
                 }
+            }
+            $t = $this->termek;
+            if ($bf && $t) {
+                $bs = $bf->getBizonylatstatusz();
+                if ($bs) {
+                    $this->mozgat = $bf->getMozgat() && $t->getMozgat() && $bs->getMozgat();
+                } else {
+                    $this->mozgat = $bf->getMozgat() && $t->getMozgat();
+                }
+            } else {
+                $this->mozgat = false;
             }
         }
     }

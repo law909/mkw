@@ -3468,7 +3468,7 @@ class Bizonylatfej
     public function setBizonylatstatusz($val)
     {
         if (!($val instanceof \Entities\Bizonylatstatusz)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find($val);
         }
         if ($this->bizonylatstatusz !== $val) {
             if (!$val) {

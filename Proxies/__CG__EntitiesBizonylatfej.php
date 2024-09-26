@@ -290,6 +290,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function sendStatusChangeToWc()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendStatusChangeToWc', []);
+
+        return parent::sendStatusChangeToWc();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toFoxpostv2API()
     {
 

@@ -41,6 +41,7 @@
                 {if ($setup.foglalas)}
                     <th>{at('Foglal')}</th>
                 {/if}
+                <th>{at('Mozgat')}</th>
                 <th>{at('Értékelhető')}</th>
                 <th>{at('Woocommerce ID')}</th>
                 <th>{at('Csoport')}</th>
