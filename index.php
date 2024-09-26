@@ -278,9 +278,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
                             'partnercheckemail',
-                            'wcwhorder',
-                            'wcwhpartner'
-                        ])) {
+                        ]) && (substr($match['name'], 0, 4) !== 'wcwh')) {
                         $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                         $redirected = true;
                         header('Location: ' . $router->generate('showlogin'));
