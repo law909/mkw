@@ -1476,7 +1476,7 @@ class store
             [
                 'wp_api' => true,
                 'version' => 'wc/v3',
-                'timeout' => 3600
+                'timeout' => 360000
             ]
         );
     }
