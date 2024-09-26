@@ -36,13 +36,16 @@ class wcwebhookController extends \mkwhelpers\MattableController
         $this->getEm()->flush($log);
     }
 
-    private function createErrorLog($type, $order, $error)
+    private function createErrorLog($type, $data, $error)
     {
         $log = new Apierrorlog();
         $log->setType($type);
         switch ($type) {
             case 'wcorder':
-                $log->setObjectid('ID: ' . $order['id'] . '; order_key: ' . $order['order_key']);
+                $log->setObjectid('ID: ' . $data['id'] . '; order_key: ' . $data['order_key']);
+                break;
+            case 'wcpartner':
+                $log->setObjectid('ID: ' . $data['id'] . '; email: ' . $data['email']);
                 break;
         }
         $log->setMessage($error);
@@ -217,12 +220,12 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
         $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['billing']['country']]);
         if (!$orszag) {
-            $this->createErrorLog('wcorder', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
+            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
             $iserror = true;
         }
         $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['shipping']['country']]);
         if (!$szallorszag) {
-            $this->createErrorLog('wcorder', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
+            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
             $iserror = true;
         }
 
@@ -263,4 +266,63 @@ class wcwebhookController extends \mkwhelpers\MattableController
         }
         header('HTTP/1.1 200 OK');
     }
+
+    public function partnerUpdated()
+    {
+        $params = file_get_contents('php://input');
+        $this->writelog('WCPartnerUpdated', $params);
+        $wcpartner = json_decode($params, true);
+
+        $iserror = false;
+
+        $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['billing']['country']]);
+        if (!$orszag) {
+            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['billing']['country']);
+            $iserror = true;
+        }
+        $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcpartner['shipping']['country']]);
+        if (!$szallorszag) {
+            $this->createErrorLog('wcpartner', $wcpartner, 'Ismeretlen ország: ' . $wcpartner['shipping']['country']);
+            $iserror = true;
+        }
+
+        if (!$iserror) {
+            $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcpartner['id']]);
+            if (!$partner) {
+                $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $wcpartner['email']]);
+            }
+            if (!$partner) {
+                $partner = new Partner();
+            }
+            $partner->setWcid($wcpartner['id']);
+
+            $partner->setVezeteknev($wcpartner['billing']['last_name']);
+            $partner->setKeresztnev($wcpartner['billing']['first_name']);
+            $partner->setNev($wcpartner['billing']['first_name'] . ' ' . $wcpartner['billing']['last_name']);
+            $partner->setEmail($wcpartner['email']);
+            $partner->setTelefon($wcpartner['billing']['phone']);
+            $partner->setIrszam($wcpartner['billing']['postcode']);
+            $partner->setVaros($wcpartner['billing']['city']);
+            $partner->setUtca($wcpartner['billing']['address_1']);
+            $partner->setHazszam($wcpartner['billing']['address_2']);
+            $partner->setOrszag($orszag);
+            $partner->setSzallnev($wcpartner['shipping']['first_name'] . ' ' . $wcpartner['shipping']['last_name']);
+            $partner->setSzallirszam($wcpartner['shipping']['postcode']);
+            $partner->setSzallvaros($wcpartner['shipping']['city']);
+            $partner->setSzallutca($wcpartner['shipping']['address_1']);
+            $partner->setSzallhazszam($wcpartner['shipping']['address_2']);
+            $partner->setSzallorszag($szallorszag);
+
+            //$partner->setAdoszam('??????');
+            //$partner->setVatstatus();
+            //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
+
+            $partner->setWcdate();
+
+            $this->getEm()->persist($partner);
+            $this->getEm()->flush();
+        }
+        header('HTTP/1.1 200 OK');
+    }
+
 }

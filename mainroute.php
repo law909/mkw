@@ -194,5 +194,6 @@ $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 
 $router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');
 
-$router->map('POST', '/wcwh/order', 'wcwebhookController#orderCreated', 'wcwhorder');
-$router->map('POST', '/wcwh/partner', 'wcwebhookController#partnerCreated', 'wcwhpartner');
+$router->map('POST', '/wcwh/ordercr', 'wcwebhookController#orderCreated', 'wcwhordercr');
+$router->map('POST', '/wcwh/partnercr', 'wcwebhookController#partnerCreated', 'wcwhpartnercr');
+$router->map('POST', '/wcwh/partnerup', 'wcwebhookController#partnerUpdated', 'wcwhpartnerup');
