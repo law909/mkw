@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Partner
 {
 
+    private $skipListener;
+
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -716,6 +718,53 @@ class Partner
         $x['vendeg'] = $this->getVendeg();
         $x['szamlaegyeb'] = $this->getSzamlaegyeb();
         return $x;
+    }
+
+    public function toWc()
+    {
+        $x = [
+            'email' => $this->getEmail(),
+            'first_name' => $this->getKeresztnev(),
+            'last_name' => $this->getVezeteknev(),
+        ];
+        $x['billing'] = [
+            'first_name' => $this->getKeresztnev(),
+            'last_name' => $this->getVezeteknev(),
+            'email' => $this->getEmail(),
+            'company' => $this->getNev(),
+            'address_1' => $this->getUtca(),
+            'address_2' => $this->getHazszam(),
+            'city' => $this->getVaros(),
+            'postcode' => $this->getIrszam(),
+            'country' => $this->getOrszag()?->getIso3166(),
+            'phone' => $this->getTelefon(),
+        ];
+        $x['shipping'] = [
+            'email' => $this->getEmail(),
+            'company' => $this->getSzallnev(),
+            'address_1' => $this->getSzallutca(),
+            'address_2' => $this->getSzallhazszam(),
+            'city' => $this->getSzallvaros(),
+            'postcode' => $this->getSzallirszam(),
+            'country' => $this->getSzallorszag()?->getIso3166(),
+            'phone' => $this->getTelefon(),
+        ];
+        return $x;
+    }
+
+    public function sendToWc()
+    {
+        $wc = \mkw\store::getWcClient();
+        $data = $this->toWc();
+
+        if ($this->getWcid()) {
+            \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
+            \mkw\store::writelog($this->getId() . ': partner adat PUT start');
+            $wc->put('customers/' . $this->getId(), $data);
+            \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
+            \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
+            $this->setWcdate();
+        }
     }
 
     public function getCim()
@@ -1683,6 +1732,9 @@ class Partner
         return true;
     }
 
+    /**
+     * @return Orszag | null
+     */
     public function getOrszag()
     {
         return $this->orszag;
@@ -3609,6 +3661,22 @@ class Partner
         if ($this->szallorszag !== null) {
             $this->szallorszag = null;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shouldSkipListener()
+    {
+        return $this->skipListener;
+    }
+
+    /**
+     * @param mixed $skipListener
+     */
+    public function setSkipListener($skipListener): void
+    {
+        $this->skipListener = $skipListener;
     }
 
 }

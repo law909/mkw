@@ -11,6 +11,7 @@ class PartnerListener
     private $em;
     private $uow;
     private $mptszakmaianyagmd;
+    private $partnermd;
 
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -18,6 +19,7 @@ class PartnerListener
         $this->uow = $this->em->getUnitOfWork();
 
         $this->mptszakmaianyagmd = $this->em->getClassMetadata(\Entities\MPTNGYSzakmaianyag::class);
+        $this->partnermd = $this->em->getClassMetadata(\Entities\Partner::class);
 
         $entities = $this->uow->getScheduledEntityInsertions();
         foreach ($entities as $entity) {
@@ -56,6 +58,17 @@ class PartnerListener
                     }
                     $this->em->persist($anyag);
                     $this->uow->recomputeSingleEntityChangeSet($this->mptszakmaianyagmd, $anyag);
+                }
+            }
+        }
+
+        $entities = $this->uow->getScheduledEntityUpdates();
+        foreach ($entities as $entity) {
+            if ($entity instanceof \Entities\Partner) {
+                if (!$entity->shouldSkipListener()) {
+                    $entity->sendToWc();
+                    $this->em->persist($entity);
+                    $this->uow->computeChangeSet($this->partnermd, $entity);
                 }
             }
         }

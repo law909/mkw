@@ -138,10 +138,17 @@ class wcwebhookController extends \mkwhelpers\MattableController
             if (!$partner) {
                 $partner = new Partner();
             }
+
+            $partner->setSkipListener(true);
+
             $partner->setWcid($wcorder['customer_id']);
             $partner->setVezeteknev($wcorder['billing']['last_name']);
             $partner->setKeresztnev($wcorder['billing']['first_name']);
-            $partner->setNev($wcorder['billing']['first_name'] . ' ' . $wcorder['billing']['last_name']);
+            if ($wcorder['billing']['company']) {
+                $partner->setNev($wcorder['billing']['company']);
+            } else {
+                $partner->setNev($wcorder['billing']['first_name'] . ' ' . $wcorder['billing']['last_name']);
+            }
             $partner->setEmail($wcorder['billing']['email']);
             $partner->setTelefon($wcorder['billing']['phone']);
             $partner->setIrszam($wcorder['billing']['postcode']);
@@ -149,7 +156,11 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $partner->setUtca($wcorder['billing']['address_1']);
             $partner->setHazszam($wcorder['billing']['address_2']);
             $partner->setOrszag($orszag);
-            $partner->setSzallnev($wcorder['shipping']['first_name'] . ' ' . $wcorder['shipping']['last_name']);
+            if ($wcorder['shipping']['company']) {
+                $partner->setSzallnev($wcorder['shipping']['company']);
+            } else {
+                $partner->setSzallnev($wcorder['shipping']['first_name'] . ' ' . $wcorder['shipping']['last_name']);
+            }
             $partner->setSzallirszam($wcorder['shipping']['postcode']);
             $partner->setSzallvaros($wcorder['shipping']['city']);
             $partner->setSzallutca($wcorder['shipping']['address_1']);
@@ -212,6 +223,8 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
     private function fillPartner($partner, $wcpartner, $orszag, $szallorszag)
     {
+        $partner->setSkipListener(true);
+
         $partner->setWcid($wcpartner['id']);
         if ($wcpartner['billing']['last_name']) {
             $partner->setVezeteknev($wcpartner['billing']['last_name']);
@@ -219,7 +232,9 @@ class wcwebhookController extends \mkwhelpers\MattableController
         if ($wcpartner['billing']['first_name']) {
             $partner->setKeresztnev($wcpartner['billing']['first_name']);
         }
-        if ($wcpartner['billing']['last_name'] || $wcpartner['billing']['first_name']) {
+        if ($wcpartner['billing']['company']) {
+            $partner->setNev($wcpartner['billing']['company']);
+        } elseif ($wcpartner['billing']['last_name'] || $wcpartner['billing']['first_name']) {
             $partner->setNev($wcpartner['billing']['first_name'] . ' ' . $wcpartner['billing']['last_name']);
         }
         if ($wcpartner['email']) {
@@ -243,7 +258,9 @@ class wcwebhookController extends \mkwhelpers\MattableController
         if ($orszag) {
             $partner->setOrszag($orszag);
         }
-        if ($wcpartner['shipping']['last_name'] || $wcpartner['shipping']['first_name']) {
+        if ($wcpartner['shipping']['company']) {
+            $partner->setSzallnev($wcpartner['shipping']['company']);
+        } elseif ($wcpartner['shipping']['last_name'] || $wcpartner['shipping']['first_name']) {
             $partner->setSzallnev($wcpartner['shipping']['first_name'] . ' ' . $wcpartner['shipping']['last_name']);
         }
         if ($wcpartner['shipping']['postcode']) {
