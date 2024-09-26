@@ -736,17 +736,19 @@ class Partner
             'address_2' => $this->getHazszam(),
             'city' => $this->getVaros(),
             'postcode' => $this->getIrszam(),
-            'country' => $this->getOrszag()?->getIso3166(),
+            'country' => $this->getOrszag()?->getIso3166() ? $this->getOrszag()->getIso3166() : '',
             'phone' => $this->getTelefon(),
         ];
         $x['shipping'] = [
-            'email' => $this->getEmail(),
+            'email' => '',
+            'first_name' => '',
+            'last_name' => '',
             'company' => $this->getSzallnev(),
             'address_1' => $this->getSzallutca(),
             'address_2' => $this->getSzallhazszam(),
             'city' => $this->getSzallvaros(),
             'postcode' => $this->getSzallirszam(),
-            'country' => $this->getSzallorszag()?->getIso3166(),
+            'country' => $this->getSzallorszag()?->getIso3166() ? $this->getSzallorszag()?->getIso3166() : '',
             'phone' => $this->getTelefon(),
         ];
         return $x;

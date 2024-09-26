@@ -66,9 +66,11 @@ class PartnerListener
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Partner) {
                 if (!$entity->shouldSkipListener()) {
-                    $entity->sendToWc();
-                    $this->em->persist($entity);
-                    $this->uow->computeChangeSet($this->partnermd, $entity);
+                    if ($entity->getLastmod() > $entity->getWcdate()) {
+                        $entity->sendToWc(); // $entity->setWcdate() called in this method
+                        $this->em->persist($entity);
+                        $this->uow->recomputeSingleEntityChangeSet($this->partnermd, $entity);
+                    }
                 }
             }
         }
