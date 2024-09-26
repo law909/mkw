@@ -2063,7 +2063,7 @@ class termekController extends \mkwhelpers\MattableController
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST start');
                             $result = $wc->post('products/' . $termek->getWcid() . '/variations', $variation);
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
-                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST start');
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST stop');
 
                             $valtozat->setWcid($result->id);
                             $valtozat->setWcdate();
@@ -2073,12 +2073,11 @@ class termekController extends \mkwhelpers\MattableController
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT start');
                             $result = $wc->put('products/' . $termek->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
-                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT start');
+                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT stop');
                             $valtozat->setWcdate();
                             $this->getEm()->persist($valtozat);
                             $this->getEm()->flush();
                         }
-                        \mkw\store::writelog('valtozat mentes stop');
                     }
                 }
             }
