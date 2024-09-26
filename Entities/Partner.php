@@ -762,7 +762,7 @@ class Partner
         if ($this->getWcid()) {
             \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
             \mkw\store::writelog($this->getId() . ': partner adat PUT start');
-            $wc->put('customers/' . $this->getId(), $data);
+            $wc->put('customers/' . $this->getWcid(), $data);
             \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
             \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
             $this->setWcdate();
