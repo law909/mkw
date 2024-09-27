@@ -1944,7 +1944,7 @@ class termekController extends \mkwhelpers\MattableController
                         'description' => preg_replace("/(\t|\n|\r)+/", "", $leiras),
                         'short_description' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...',
                         //'regular_price' => (string)$termek->getBruttoAr(null, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
-                        //'sale_price' => (string)$termek->getBruttoAr(null, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                        //'sale_price' => (string)$termek->getNettoAr(null, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
                         'stock_quantity' => $keszlet,
                         'manage_stock' => true,
                         'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
@@ -2028,7 +2028,7 @@ class termekController extends \mkwhelpers\MattableController
                         }
                         $variation = [
                             'regular_price' => (string)$termek->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
-                            'sale_price' => '99',//(string)$termek->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                            'sale_price' => (string)$termek->getNettoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
                             //'date_on_sale_from' => '2025-01-01 00:00:00',
                             //'date_on_sale_to' => '2025-03-01 00:00:00',
                             'stock_quantity' => $vkeszlet,
@@ -2061,7 +2061,9 @@ class termekController extends \mkwhelpers\MattableController
                         \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
                         \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
                         if (!$valtozat->getWcid()) {
-                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST start');
+                            \mkw\store::writelog(
+                                $termek->getId() . ':' . $valtozat->getId() . ': változat POST start: ' . 'products/' . $termek->getWcid() . '/variations'
+                            );
                             $result = $wc->post('products/' . $termek->getWcid() . '/variations', $variation);
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat POST stop');
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
@@ -2071,7 +2073,9 @@ class termekController extends \mkwhelpers\MattableController
                             $this->getEm()->persist($valtozat);
                             $this->getEm()->flush();
                         } elseif ($valtozat->getWcdate() < $valtozat->getLastmod()) {
-                            \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT start');
+                            \mkw\store::writelog(
+                                $termek->getId() . ':' . $valtozat->getId() . ': változat PUT start: ' . 'products/' . $termek->getWcid() . '/variations'
+                            );
                             $result = $wc->put('products/' . $termek->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat PUT stop');
                             \mkw\store::writelog($termek->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
