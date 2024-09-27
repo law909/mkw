@@ -3579,5 +3579,9 @@ class Termek
     {
         $this->wctiltva = $wctiltva;
     }
-    
+
+    public function shouldUploadToWc()
+    {
+        return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
+    }
 }

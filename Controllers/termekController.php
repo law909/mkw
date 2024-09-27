@@ -1991,7 +1991,7 @@ class termekController extends \mkwhelpers\MattableController
                         $termek->setWcdate();
                         $this->getEm()->persist($termek);
                         $this->getEm()->flush();
-                    } elseif ($termek->getWcdate() - $termek->getLastmod() < -1) {
+                    } elseif ($termek->shouldUploadToWc()) {
                         \mkw\store::writelog($termek->getId() . ': termék PUT start');
                         try {
                             $result = $wc->put('products/' . $termek->getWcid(), $data);
@@ -2072,7 +2072,7 @@ class termekController extends \mkwhelpers\MattableController
                             $valtozat->setWcdate();
                             $this->getEm()->persist($valtozat);
                             $this->getEm()->flush();
-                        } elseif ($valtozat->getWcdate() - $valtozat->getLastmod() < -1) {
+                        } elseif ($valtozat->shouldUploadToWc()) {
                             \mkw\store::writelog(
                                 $termek->getId() . ':' . $valtozat->getId() . ': változat PUT start: ' . 'products/' . $termek->getWcid() . '/variations'
                             );
