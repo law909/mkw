@@ -69,8 +69,7 @@ class BizonylattetelListener
 
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-                \mkw\store::writelog($entity->getCikkszam() . ': mozgat=' . $entity->getMozgat() . ', foglal=' . $entity->getFoglal());
-                if ($entity->getMozgat() || $entity->getFoglal()) {
+                if ($entity->getMozgat()) {
                     $entity->getTermek()->sendKeszletToWC();
                     if ($entity->getTermekvaltozat()) {
                         $entity->getTermekvaltozat()->sendKeszletToWC();
