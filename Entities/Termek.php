@@ -3617,7 +3617,7 @@ class Termek
         $wc = store::getWcClient();
         $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
 
-        \mkw\store::writelog($this->getId() . ': termék adatgyűjtés start');
+        \mkw\store::writelog($this->getId() . ': XXXXXXXXXXXXXXXtermék adatgyűjtés start');
 
         $ford = $this->getTranslationsArray();
         $nev = $this->getNevForditas($ford, 'en_us');
