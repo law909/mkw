@@ -3600,7 +3600,7 @@ class Termek
             ];
             $wc = store::getWcClient();
             try {
-                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():');
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
                 $result = $wc->put('products/' . $this->getWcid(), $data);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());

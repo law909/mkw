@@ -1363,7 +1363,8 @@ class TermekValtozat
             ];
             $wc = store::getWcClient();
             try {
-                $result = $wc->put('products/' . $this->getWcid() . '/variations/' . $this->getWcid(), $variation);
+                \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC(): ' . json_encode($variation));
+                $result = $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $variation);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
             }
