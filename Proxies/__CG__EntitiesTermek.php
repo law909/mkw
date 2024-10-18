@@ -3360,4 +3360,26 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         parent::setWctiltva($wctiltva);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldUploadToWc()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'shouldUploadToWc', []);
+
+        return parent::shouldUploadToWc();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendKeszletToWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendKeszletToWC', []);
+
+        return parent::sendKeszletToWC();
+    }
+
 }

@@ -44,7 +44,6 @@ class BizonylattetelListener
 
     public function onFlush(OnFlushEventArgs $args)
     {
-        /*
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
@@ -55,12 +54,16 @@ class BizonylattetelListener
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()
         );
-        */
-        //foreach ($entities as $entity) {
-        //    if ($entity instanceof \Entities\Bizonylattetel) {
-        //        $this->addTermekTranslations($entity);
-        //    }
-        //}
+        foreach ($entities as $entity) {
+            if ($entity instanceof \Entities\Bizonylattetel) {
+                if ($entity->getMozgat()) {
+                    $entity->getTermek()->sendKeszletToWC();
+                    if ($entity->getTermekvaltozat()) {
+                        $entity->getTermekvaltozat()->sendKeszletToWC();
+                    }
+                }
+            }
+        }
     }
 
 }

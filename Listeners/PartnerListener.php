@@ -68,7 +68,6 @@ class PartnerListener
                 if (!$entity->shouldSkipListener()) {
                     if ($entity->getLastmod() > $entity->getWcdate()) {
                         $entity->sendToWc(); // $entity->setWcdate() called in this method
-                        $this->em->persist($entity);
                         $this->uow->recomputeSingleEntityChangeSet($this->partnermd, $entity);
                     }
                 }

@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use Automattic\WooCommerce\Client;
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
@@ -3584,4 +3586,292 @@ class Termek
     {
         return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
     }
+
+    public function sendKeszletToWC()
+    {
+        if ($this->getWcid() && !$this->getWctiltva()) {
+            $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
+            if ($keszlet < 0) {
+                $keszlet = 0;
+            }
+            $data = [
+                'stock_quantity' => $keszlet,
+                'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
+            ];
+            $wc = store::getWcClient();
+            try {
+                $result = $wc->put('products/' . $this->getWcid(), $data);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+            }
+        }
+    }
+
+    public function uploadToWc($doFlush = true)
+    {
+        if ($this->getWctiltva()) {
+            return;
+        }
+
+        /** @var Client $wc */
+        $wc = store::getWcClient();
+        $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+
+        \mkw\store::writelog($this->getId() . ': termék adatgyűjtés start');
+
+        $ford = $this->getTranslationsArray();
+        $nev = $this->getNevForditas($ford, 'en_us');
+        $leiras = $this->getLeirasForditas($ford, 'en_us');
+        $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
+        if ($keszlet < 0) {
+            $keszlet = 0;
+        }
+        $cats = [];
+        if ($this->getTermekfa1() && $this->getTermekfa1()->getWcid()) {
+            $cats[] = [
+                'id' => $this->getTermekfa1()->getWcid(),
+            ];
+        }
+        if ($this->getTermekfa2() && $this->getTermekfa2()->getWcid()) {
+            $cats[] = [
+                'id' => $this->getTermekfa2()->getWcid(),
+            ];
+        }
+        if ($this->getTermekfa3() && $this->getTermekfa3()->getWcid()) {
+            $cats[] = [
+                'id' => $this->getTermekfa3()->getWcid(),
+            ];
+        }
+        $tags = [];
+        /** @var Termekcimketorzs $cimke */
+        foreach ($this->getCimkek() as $cimke) {
+            $tags[] = [
+                'id' => $cimke->getWcid()
+            ];
+        }
+        $valtozatertekek = [];
+        /** @var TermekValtozat $valtozat */
+        foreach ($this->getValtozatok() as $valtozat) {
+            if (
+                (
+                    $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'] &&
+                    !in_array($valtozat->getErtek1(), $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'])
+                ) ||
+                !$valtozatertekek[$valtozat->getAdatTipus1Id()]['options']
+            ) {
+                $valtozatertekek[$valtozat->getAdatTipus1Id()]['wcid'] = $valtozat->getAdatTipus1()->getWcid();
+                $valtozatertekek[$valtozat->getAdatTipus1Id()]['name'] = $valtozat->getAdatTipus1Nev();
+                $valtozatertekek[$valtozat->getAdatTipus1Id()]['options'][] = $valtozat->getErtek1();
+            }
+            if (
+                (
+                    $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'] &&
+                    !in_array($valtozat->getErtek2(), $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'])
+                ) ||
+                !$valtozatertekek[$valtozat->getAdatTipus2Id()]['options']
+            ) {
+                $valtozatertekek[$valtozat->getAdatTipus2Id()]['wcid'] = $valtozat->getAdatTipus2()->getWcid();
+                $valtozatertekek[$valtozat->getAdatTipus2Id()]['name'] = $valtozat->getAdatTipus2Nev();
+                $valtozatertekek[$valtozat->getAdatTipus2Id()]['options'][] = $valtozat->getErtek2();
+            }
+        }
+        $attrs = [];
+        foreach ($valtozatertekek as $valtozat) {
+            $attrs[] = [
+                'id' => $valtozat['wcid'],
+                'name' => $valtozat['name'],
+                'options' => $valtozat['options'],
+                'position' => 0,
+                'visible' => true,
+                'variation' => true
+            ];
+        }
+        $images = [];
+        if ($this->getKepurl()) {
+            if ($this->getKepwcid()) {
+                $images[] = [
+                    'id' => $this->getKepwcid()
+                ];
+            } else {
+                $images[] = [
+                    'src' => \mkw\store::getWcImageUrlPrefix() . $this->getKepurl(),
+                    'name' => $this->getKepurl(),
+                    'alt' => $nev . ' - ' . $this->getCikkszam()
+                ];
+            }
+        }
+        /** @var TermekKep $kep */
+        foreach ($this->getTermekKepek() as $kep) {
+            if ($kep->getUrl()) {
+                if ($kep->getWcid()) {
+                    $images[] = [
+                        'id' => $kep->getWcid()
+                    ];
+                } else {
+                    $images[] = [
+                        'src' => \mkw\store::getWcImageUrlPrefix() . $kep->getUrl(),
+                        'name' => $kep->getUrl(),
+                        'alt' => $nev . ' - ' . $this->getCikkszam()
+                    ];
+                }
+            }
+        }
+        $data = [
+            'name' => $nev . ' - ' . $this->getCikkszam(),
+            'type' => 'variable',
+            'status' => $this->getInaktiv() ? 'draft' : 'publish',
+            'catalog_visibility' =>
+                !$this->getNLathato(\mkw\store::getWcWebshopNum()) ||
+                $this->getNemkaphato() ||
+                $this->getFuggoben() ? 'hidden' : 'visible',
+            'description' => preg_replace("/(\t|\n|\r)+/", "", $leiras),
+            'short_description' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...',
+            'stock_quantity' => $keszlet,
+            'manage_stock' => true,
+            'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
+            'weight' => $this->getSuly(),
+            'dimensions' => [
+                'length' => $this->getHosszusag(),
+                'width' => $this->getSzelesseg(),
+                'height' => $this->getMagassag(),
+            ],
+            'featured' => $this->getAjanlott(),
+            'categories' => $cats,
+            'tags' => $tags,
+            'attributes' => $attrs,
+            'images' => $images,
+        ];
+
+        \mkw\store::writelog($this->getId() . ': termék adatgyűjtés stop');
+        \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBE: ' . json_encode($data));
+
+        if (!$this->getWcid()) {
+            \mkw\store::writelog($this->getId() . ': termék POST start');
+            try {
+                $result = $wc->post('products', $data);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                throw $e;
+            }
+            \mkw\store::writelog($this->getId() . ': termék POST stop');
+            \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
+
+            foreach ($result->images as $image) {
+                $tkep = $this->findTermekKepByUrl($image->name);
+                if ($tkep) {
+                    $tkep->setWcid($image->id);
+                    $tkep->setWcdate();
+                    \mkw\store::getEm()->persist($tkep);
+                } elseif ($this->getKepurl() == $image->name) {
+                    $this->setKepwcid($image->id);
+                }
+            }
+
+            $this->setWcid($result->id);
+            $this->setWcdate();
+            \mkw\store::getEm()->persist($this);
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+        } elseif ($this->shouldUploadToWc()) {
+            \mkw\store::writelog($this->getId() . ': termék PUT start');
+            try {
+                $result = $wc->put('products/' . $this->getWcid(), $data);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                throw $e;
+            }
+            \mkw\store::writelog($this->getId() . ': termék PUT stop');
+            \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
+
+            foreach ($result->images as $image) {
+                $tkep = $this->findTermekKepByUrl($image->name);
+                if ($tkep) {
+                    $tkep->setWcid($image->id);
+                    $tkep->setWcdate();
+                    \mkw\store::getEm()->persist($tkep);
+                } elseif ($this->getKepurl() == $image->name) {
+                    $this->setKepwcid($image->id);
+                }
+            }
+
+            $this->setWcdate();
+            \mkw\store::getEm()->persist($this);
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+        }
+
+
+        /** @var TermekValtozat $valtozat */
+        foreach ($this->getValtozatok() as $valtozat) {
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés start');
+            $vkeszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg();
+            if ($vkeszlet < 0) {
+                $vkeszlet = 0;
+            }
+            $variation = [
+                'regular_price' => (string)$this->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
+                'sale_price' => (string)$this->getNettoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                //'date_on_sale_from' => '2025-01-01 00:00:00',
+                //'date_on_sale_to' => '2025-03-01 00:00:00',
+                'stock_quantity' => $vkeszlet,
+                'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
+                'status' => !$valtozat->getNLathato(\mkw\store::getWcWebshopNum()) ? 'draft' : 'publish',
+                'manage_stock' => true,
+            ];
+            if ($valtozat->getKepwcid()) {
+                $variation['image'] = [
+                    'id' => $valtozat->getKepwcid()
+                ];
+            } elseif ($valtozat->getKepurl()) {
+                $variation['image'] = [
+                    'src' => \mkw\store::getWcImageUrlPrefix() . $valtozat->getKepurl(),
+                    'alt' => $nev . ' - ' . $this->getCikkszam()
+                ];
+            }
+            if ($valtozat->getAdatTipus1()?->getWcid()) {
+                $variation['attributes'][] = [
+                    'id' => $valtozat->getAdatTipus1()->getWcid(),
+                    'option' => $valtozat->getErtek1(),
+                ];
+            }
+            if ($valtozat->getAdatTipus2()?->getWcid()) {
+                $variation['attributes'][] = [
+                    'id' => $valtozat->getAdatTipus2()->getWcid(),
+                    'option' => $valtozat->getErtek2(),
+                ];
+            }
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
+            if (!$valtozat->getWcid()) {
+                \mkw\store::writelog(
+                    $this->getId() . ':' . $valtozat->getId() . ': változat POST start: ' . 'products/' . $this->getWcid() . '/variations'
+                );
+                $result = $wc->post('products/' . $this->getWcid() . '/variations', $variation);
+                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat POST stop');
+                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+
+                $valtozat->setWcid($result->id);
+                $valtozat->setWcdate();
+                \mkw\store::getEm()->persist($valtozat);
+                if ($doFlush) {
+                    \mkw\store::getEm()->flush();
+                }
+            } elseif ($valtozat->shouldUploadToWc()) {
+                \mkw\store::writelog(
+                    $this->getId() . ':' . $valtozat->getId() . ': változat PUT start: ' . 'products/' . $this->getWcid() . '/variations'
+                );
+                $result = $wc->put('products/' . $this->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
+                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat PUT stop');
+                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+                $valtozat->setWcdate();
+                \mkw\store::getEm()->persist($valtozat);
+                if ($doFlush) {
+                    \mkw\store::getEm()->flush();
+                }
+            }
+        }
+    }
+
 }

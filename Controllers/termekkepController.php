@@ -2,9 +2,11 @@
 
 namespace Controllers;
 
-class termekkepController extends \mkwhelpers\MattableController {
+class termekkepController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\TermekKep');
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
@@ -13,15 +15,15 @@ class termekkepController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    public function loadVars($t) {
-        $x = array();
+    public function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\TermekKep();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -34,29 +36,33 @@ class termekkepController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setUrl($this->params->getStringRequestParam('url'));
         $obj->setRejtett($this->params->getBoolRequestParam('rejtett'));
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('termektermekkepkarb.tpl');
         $view->setVar('kep', $this->loadVars(null));
         echo $view->getTemplateResult();
     }
 
-    public function getSelectList($termek, $selid) {
+    public function getSelectList($termek, $selid)
+    {
         $kepek = $this->getRepo()->getByTermek($termek);
-        $keplista = array();
+        $keplista = [];
         foreach ($kepek as $kep) {
-            $keplista[] = array('id' => $kep->getId(), 'caption' => $kep->getUrl(), 'selected' => $kep->getId() == $selid, 'url' => $kep->getUrlMini());
+            $keplista[] = ['id' => $kep->getId(), 'caption' => $kep->getUrl(), 'selected' => $kep->getId() == $selid, 'url' => $kep->getUrlMini()];
         }
         return $keplista;
     }
 
-    public function del() {
+    public function del()
+    {
         $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;

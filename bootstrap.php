@@ -27,6 +27,7 @@ use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\RendezvenyListener;
 use Listeners\MPTNGYSzakmaianyagListener;
+use Listeners\TermekListener;
 use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
@@ -134,6 +135,7 @@ $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
+$evm->addEventListener(['onFlush'], new TermekListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

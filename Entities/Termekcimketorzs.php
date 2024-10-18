@@ -1,5 +1,5 @@
 <?php
-
+// TODO wordpress
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekcimketorzsRepository")
  */
-class Termekcimketorzs extends Cimketorzs {
+class Termekcimketorzs extends Cimketorzs
+{
 
     /**
      * @ORM\Column(type="string",length=255,nullable=false)
@@ -42,12 +43,14 @@ class Termekcimketorzs extends Cimketorzs {
     /** @ORM\Column(type="string",length=7,nullable=true) */
     private $szinkod;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->termekek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function toLista() {
-        $x = array();
+    public function toLista()
+    {
+        $x = [];
         $x['caption'] = $this->getNev();
         $x['slug'] = $this->getSlug();
         $x['kepurl'] = $this->getKepUrlLarge();
@@ -59,43 +62,49 @@ class Termekcimketorzs extends Cimketorzs {
         $x['ismarka'] = $mk == $this->getKategoriaId();
         $x['kiemelt'] = $this->getKiemelt();
         $x['termekfilter'] = $this->getTermekFilter();
-        $x['termeklisturl'] = \mkw\store::getRouter()->generate('showmarka', true, array('slug' => $x['slug']));
+        $x['termeklisturl'] = \mkw\store::getRouter()->generate('showmarka', true, ['slug' => $x['slug']]);
         $x['leiras'] = $this->getLeiras();
         $x['szinkod'] = $this->getSzinkod();
         $x['gyartonev'] = $this->getGyartoNev();
         return $x;
     }
 
-    public function getTermekFilter() {
+    public function getTermekFilter()
+    {
         return 'szuro_' . $this->getKategoriaId() . '_' . $this->getId();
     }
 
-    public function getKategoria() {
+    public function getKategoria()
+    {
         return $this->kategoria;
     }
 
-    public function getKategoriaId() {
+    public function getKategoriaId()
+    {
         if ($this->kategoria) {
             return $this->kategoria->getId();
         }
         return '';
     }
 
-    public function getKategoriaNev() {
+    public function getKategoriaNev()
+    {
         if ($this->kategoria) {
             return $this->kategoria->getNev();
         }
         return '';
     }
 
-    public function setKategoria(Cimkekat $kategoria) {
+    public function setKategoria(Cimkekat $kategoria)
+    {
         if ($this->kategoria !== $kategoria) {
             $this->kategoria = $kategoria;
             $kategoria->addCimke($this);
         }
     }
 
-    public function removeKategoria() {
+    public function removeKategoria()
+    {
         if ($this->kategoria !== null) {
             $kategoria = $this->kategoria;
             $this->kategoria = null;
@@ -103,34 +112,41 @@ class Termekcimketorzs extends Cimketorzs {
         }
     }
 
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
-    public function setNev($nev) {
+    public function setNev($nev)
+    {
         $this->nev = $nev;
     }
 
-    public function getSlug() {
+    public function getSlug()
+    {
         return $this->slug;
     }
 
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
     }
 
-    public function getTermekek() {
+    public function getTermekek()
+    {
         return $this->termekek;
     }
 
-    public function addTermek(Termek $termek) {
+    public function addTermek(Termek $termek)
+    {
 //		if (!$this->termekek->contains($termek)) {  // deleted for speed
         $this->termekek->add($termek);
         $termek->addCimke($this);
 //		}
     }
 
-    public function removeTermek(Termek $termek) {
+    public function removeTermek(Termek $termek)
+    {
         // TODO ha sok termeknek van ilyen cimkeje, akkor lassu lesz
         if ($this->termekek->removeElement($termek)) {
             $termek->removeCimke($this);
@@ -139,46 +155,55 @@ class Termekcimketorzs extends Cimketorzs {
         return false;
     }
 
-    public function getKiemelt() {
+    public function getKiemelt()
+    {
         return $this->kiemelt;
     }
 
-    public function setKiemelt($adat) {
+    public function setKiemelt($adat)
+    {
         $this->kiemelt = $adat;
     }
-    public function getGyarto() {
+
+    public function getGyarto()
+    {
         return $this->gyarto;
     }
 
-    public function getGyartoNev() {
+    public function getGyartoNev()
+    {
         if ($this->gyarto) {
             return $this->gyarto->getNev();
         }
         return '';
     }
 
-    public function getGyartoId() {
+    public function getGyartoId()
+    {
         if ($this->gyarto) {
             return $this->gyarto->getId();
         }
         return '';
     }
 
-    public function setGyarto($gyarto) {
+    public function setGyarto($gyarto)
+    {
         $this->gyarto = $gyarto;
     }
 
     /**
      * @return mixed
      */
-    public function getSzinkod() {
+    public function getSzinkod()
+    {
         return $this->szinkod;
     }
 
     /**
      * @param mixed $szinkod
      */
-    public function setSzinkod($szinkod) {
+    public function setSzinkod($szinkod)
+    {
         $this->szinkod = $szinkod;
     }
 }

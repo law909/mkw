@@ -1,10 +1,13 @@
 <?php
+// TODO wordpress
 
 namespace Entities;
 
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 /**
@@ -1345,6 +1348,43 @@ class TermekValtozat
     public function shouldUploadToWc()
     {
         return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
+    }
+
+    public function sendKeszletToWC()
+    {
+        if ($this->getWcid()) {
+            $vkeszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
+            if ($vkeszlet < 0) {
+                $vkeszlet = 0;
+            }
+            $variation = [
+                'stock_quantity' => $vkeszlet,
+                'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
+            ];
+            $wc = store::getWcClient();
+            try {
+                $result = $wc->put('products/' . $this->getWcid() . '/variations/' . $this->getWcid(), $variation);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+            }
+        }
+    }
+
+    public function sendArToWC()
+    {
+        if ($this->getWcid()) {
+            $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+            $variation = [
+                'regular_price' => (string)$this->getTermek()?->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
+                'sale_price' => (string)$this->getTermek()?->getNettoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+            ];
+            $wc = store::getWcClient();
+            try {
+                $result = $wc->put('products/' . $this->getWcid() . '/variations/' . $this->getWcid(), $variation);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+            }
+        }
     }
 
 }
