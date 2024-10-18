@@ -69,11 +69,9 @@ class BizonylattetelListener
 
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-                if ($entity->getMozgat()) {
-                    $entity->getTermek()->sendKeszletToWC();
-                    if ($entity->getTermekvaltozat()) {
-                        $entity->getTermekvaltozat()->sendKeszletToWC();
-                    }
+                $entity->getTermek()->sendKeszletToWC();
+                if ($entity->getTermekvaltozat()) {
+                    $entity->getTermekvaltozat()->sendKeszletToWC();
                 }
             }
         }
