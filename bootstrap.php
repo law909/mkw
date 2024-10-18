@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
@@ -128,14 +129,14 @@ if (mkw\store::isMultilang()) {
 $evm->addEventListener(['onFlush', 'prePersist'], new BizonylatfejListener());
 $evm->addEventListener(['onFlush', 'prePersist'], new BankbizonylatfejListener());
 $evm->addEventListener(['onFlush', 'prePersist'], new PenztarbizonylatfejListener());
-$evm->addEventListener(['onFlush'], new BizonylattetelListener());
+$evm->addEventListener([Events::onFlush, Events::postFlush], new BizonylattetelListener());
 $evm->addEventListener(['prePersist'], new KuponListener());
 $evm->addEventListener(['prePersist'], new RendezvenyListener());
 $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
-$evm->addEventListener(['onFlush'], new TermekListener());
+$evm->addEventListener([Events::onFlush], new TermekListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

@@ -3,6 +3,7 @@
 namespace Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
 class BizonylattetelListener
 {
@@ -11,6 +12,7 @@ class BizonylattetelListener
     private $uow;
     private $bizonylattetelmd;
     private $bizonylatteteltranslationmd;
+    private $willmodify = [];
 
 
     /**
@@ -47,16 +49,27 @@ class BizonylattetelListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
-        $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
-
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()
         );
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-                if ($entity->getMozgat()) {
+                $this->willmodify[] = $entity;
+            }
+        }
+    }
+
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        $this->em = $args->getObjectManager();
+        $this->uow = $this->em->getUnitOfWork();
+
+        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
+
+        foreach ($this->willmodify as $entity) {
+            if ($entity instanceof \Entities\Bizonylattetel) {
+                if ($entity->getMozgat() || $entity->getFoglal()) {
                     $entity->getTermek()->sendKeszletToWC();
                     if ($entity->getTermekvaltozat()) {
                         $entity->getTermekvaltozat()->sendKeszletToWC();

@@ -3382,4 +3382,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::sendKeszletToWC();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function uploadToWc($doFlush = true)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'uploadToWc', [$doFlush]);
+
+        return parent::uploadToWc($doFlush);
+    }
+
 }
