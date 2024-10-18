@@ -3600,6 +3600,7 @@ class Termek
             ];
             $wc = store::getWcClient();
             try {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():');
                 $result = $wc->put('products/' . $this->getWcid(), $data);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
@@ -3617,7 +3618,7 @@ class Termek
         $wc = store::getWcClient();
         $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
 
-        \mkw\store::writelog($this->getId() . ': XXXXXXXXXXXXXXXtermék adatgyűjtés start');
+        \mkw\store::writelog($this->getId() . ': termék adatgyűjtés start');
 
         $ford = $this->getTranslationsArray();
         $nev = $this->getNevForditas($ford, 'en_us');
