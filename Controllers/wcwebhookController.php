@@ -124,7 +124,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
         if (!$iserror) {
             /** @var Bizonylattipus $biztipus */
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
-
+            
             $megr = new Bizonylatfej();
             $megr->setPersistentData();
             $megr->setBizonylattipus($biztipus);

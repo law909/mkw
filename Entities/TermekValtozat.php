@@ -310,7 +310,7 @@ class TermekValtozat
         if ($datum) {
             $filter->addFilter('bf.teljesites', '<=', $datum);
         }
-        $filter->addFilter('bf.bizonylattipus_id', '=', 'megrendeles');
+        $filter->addFilter('bf.bizonylattipus_id', 'IN', ['megrendeles', 'webshopbiz']);
         if ($kivevebiz) {
             $filter->addFilter('bf.id', '<>', $kivevebiz);
         }
