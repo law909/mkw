@@ -24,9 +24,11 @@ class TermekListener
         );
         foreach ($entities as $entity) {
             if ($entity instanceof Termek) {
-                \mkw\store::writelog('onFlush: ' . $entity->getId() . ': ' . $entity->getNev());
-                $entity->uploadToWc(false);
-                $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
+                if (\mkw\store::getSetupValue('woocommerce')) {
+                    \mkw\store::writelog('onFlush: ' . $entity->getId() . ': ' . $entity->getNev());
+                    $entity->uploadToWc(false);
+                    $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
+                }
             }
         }
     }
