@@ -75,7 +75,8 @@ class TermekErtekeles
             'elony' => $this->getElony(),
             'hatrany' => $this->getHatrany(),
             'szoveg' => $this->getSzoveg(),
-            'datum' => $this->getCreatedDateStr()
+            'datum' => $this->getCreatedDateStr(),
+            'valasz' => str_replace("\n", '<br>', $this->getValasz()),
         ];
     }
 

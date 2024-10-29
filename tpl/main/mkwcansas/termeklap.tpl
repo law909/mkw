@@ -285,6 +285,10 @@
                                                 <p>{$ertekeles.elony}</p>
                                                 <div><strong>Hátrányok</strong></div>
                                                 <p>{$ertekeles.hatrany}</p>
+                                                {if ($ertekeles.valasz)}
+                                                <div><strong>A Mindentkapni Webáruház válasza</strong></div>
+                                                <p>{$ertekeles.valasz}</p>
+                                                {/if}
                                             </div>
                                         {/foreach}
                                     </div>
