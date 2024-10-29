@@ -1512,4 +1512,37 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         parent::setWcdate($adat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldUploadToWc()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'shouldUploadToWc', []);
+
+        return parent::shouldUploadToWc();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendKeszletToWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendKeszletToWC', []);
+
+        return parent::sendKeszletToWC();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendArToWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendArToWC', []);
+
+        return parent::sendArToWC();
+    }
+
 }

@@ -4,6 +4,7 @@ namespace mkw;
 
 use Automattic\WooCommerce\Client;
 use Controllers\mnrnavigationController;
+use Controllers\popupController;
 use Controllers\termekfaController;
 use Doctrine\ORM\EntityManager;
 use Entities\Dolgozo;
@@ -658,6 +659,8 @@ class store
         $v->setVar('akciosjelolourl', self::getParameter(\mkw\consts::AkcioJelolo));
         $v->setVar('top10jelolourl', self::getParameter(\mkw\consts::Top10Jelolo));
         $v->setVar('ingyenszallitasjelolourl', self::getParameter(\mkw\consts::IngyenszallitasJelolo));
+        $popupc = new popupController(null);
+        $v->setVar('popups', $popupc->getForShow());
     }
 
     /**

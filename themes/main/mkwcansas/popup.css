@@ -1,0 +1,34 @@
+.shopmodal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 1000;
+}
+
+.shopmodal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.shopmodal-content {
+    position: relative;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    background-size: cover;
+    z-index: 1001;
+}
+
+.shopmodal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    padding: 1em;
+}
