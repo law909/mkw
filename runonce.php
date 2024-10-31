@@ -404,6 +404,16 @@ if ($DBVersion < '0053') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0053');
 }
 
+if ($DBVersion < '0054') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Popupok","/admin/popup/viewlist","/admin/popup",20,0,1200, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0054');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

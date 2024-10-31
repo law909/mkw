@@ -5,12 +5,11 @@ $(document).ready(function () {
         if (item.nemlathato) {
             return $('<li>')
                 .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                .appendTo( ul );
-        }
-        else {
+                .appendTo(ul);
+        } else {
             return $('<li>')
                 .append('<a>' + item.label + '</a>')
-                .appendTo( ul );
+                .appendTo(ul);
         }
     }
 
@@ -19,7 +18,7 @@ $(document).ready(function () {
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var termek = ui.item;
                 if (termek) {
                     var $this = $(this),
@@ -63,19 +62,19 @@ $(document).ready(function () {
                     }
                 });
             })
-            .on('click', '#FoKepBrowseButton', function (e) {
-                e.preventDefault();
-                var finder = new CKFinder(),
-                    $kepurl = $('#KepUrlEdit'),
-                    path = $kepurl.val();
-                if (path) {
-                    finder.startupPath = 'Images:' + path.substring(path.indexOf('/', 1));
-                }
-                finder.selectActionFunction = function (fileUrl, data) {
-                    $kepurl.val(fileUrl);
-                };
-                finder.popup();
-            });
+                .on('click', '#FoKepBrowseButton', function (e) {
+                    e.preventDefault();
+                    var finder = new CKFinder(),
+                        $kepurl = $('#KepUrlEdit'),
+                        path = $kepurl.val();
+                    if (path) {
+                        finder.startupPath = 'Images:' + path.substring(path.indexOf('/', 1));
+                    }
+                    finder.selectActionFunction = function (fileUrl, data) {
+                        $kepurl.val(fileUrl);
+                    };
+                    finder.popup();
+                });
 
             termektab
                 .on('click', '.js-termeknewbutton', function (e) {
@@ -88,7 +87,7 @@ $(document).ready(function () {
                             termektab.append(data);
                             $('.js-termeknewbutton,.js-termekdelbutton').button();
                             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                                .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+                                .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
                             $this.remove();
                         }
                     });
@@ -126,14 +125,14 @@ $(document).ready(function () {
                 var edit = $(this);
                 e.preventDefault();
                 dialogcenter.jstree({
-                        core: {animation: 100},
-                        plugins: ['themeroller', 'json_data', 'ui'],
-                        themeroller: {item: ''},
-                        json_data: {
-                            ajax: {url: '/admin/termekfa/jsonlist'}
-                        },
-                        ui: {select_limit: 1}
-                    })
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
+                })
                     .bind('loaded.jstree', function (event, data) {
                         dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                     });
@@ -161,7 +160,7 @@ $(document).ready(function () {
                     }
                 });
             })
-            .button();
+                .button();
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();
@@ -231,8 +230,7 @@ $(document).ready(function () {
                 cbs.closest('tr').each(function (index, elem) {
                     tomb.push($(elem).data('egyedid'));
                 });
-            }
-            else {
+            } else {
                 dialogcenter.html('Válasszon ki legalább egy blogposztot!').dialog({
                     resizable: false,
                     height: 140,
@@ -270,16 +268,16 @@ $(document).ready(function () {
                     }
                 });
             }
+
             var $this = $(this);
             e.preventDefault();
             doit();
         });
 
         mkwcomp.termekfaFilter.init('#termekfa');
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, termek, {independent: true}));
+            $('#mattkarb').mattkarb($.extend({}, blogposzt, {independent: true}));
         }
     }
 });

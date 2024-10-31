@@ -845,6 +845,16 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/blogposzttermek/del', 'blogposztController#removeTermek', 'adminblogposzttermekdel');
 }
 
+$router->map('GET', '/admin/popup/viewlist', 'popupController#viewlist', 'adminpopupviewlist');
+$router->map('GET', '/admin/popup/getlistbody', 'popupController#getlistbody', 'adminpopupgetlistbody');
+$router->map('GET', '/admin/popup/getkarb', 'popupController#getkarb', 'adminpopupgetkarb');
+$router->map('GET', '/admin/popup/viewkarb', 'popupController#viewkarb', 'adminpopupviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/popup/save', 'popupController#save', 'adminpopupsave');
+    $router->map('POST', '/admin/popup/setflag', 'popupController#setflag', 'adminpopupsetflag');
+    $router->map('POST', '/admin/popup/regenerateid', 'popupController#regenerateid', 'adminpopupregenerateid');
+}
+
 $router->map('GET', '/admin/template/viewlist', 'templateController#viewlist', 'admintemplateviewlist');
 $router->map('GET', '/admin/template/getlistbody', 'templateController#getlistbody', 'admintemplategetlistbody');
 $router->map('GET', '/admin/template/getkarb', 'templateController#getkarb', 'admintemplategetkarb');

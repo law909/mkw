@@ -43,7 +43,7 @@ class popupController extends \mkwhelpers\MattableController
         $x['closebuttoncolor'] = $t->getClosebuttoncolor();
         $x['closebuttonbackgroundcolor'] = $t->getClosebuttonbackgroundcolor();
         $x['contenttop'] = $t->getContenttop();
-
+        $x['kepurl'] = $t->getBackgroundimageurl();
         if ($forKarb) {
         }
         return $x;
@@ -63,7 +63,7 @@ class popupController extends \mkwhelpers\MattableController
         $obj->setHeadertext($this->params->getStringRequestParam('headertext'));
         $obj->setBodytext($this->params->getOriginalStringRequestParam('bodytext'));
         $obj->setClosebuttontext($this->params->getStringRequestParam('closebuttontext'));
-        $obj->setPopuporder($this->params->getintRequestParam('popuporder'));
+        $obj->setPopuporder($this->params->getIntRequestParam('popuporder'));
         $obj->setTriggerafterprevious($this->params->getBoolRequestParam('triggerafterprevious'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setContentwidth($this->params->getIntRequestParam('contentwidth'));
@@ -71,7 +71,7 @@ class popupController extends \mkwhelpers\MattableController
         $obj->setClosebuttoncolor($this->params->getStringRequestParam('closebuttoncolor'));
         $obj->setClosebuttonbackgroundcolor($this->params->getStringRequestParam('closebuttonbackgroundcolor'));
         $obj->setContenttop($this->params->getStringRequestParam('contenttop'));
-
+        $obj->setBackgroundimageurl($this->params->getStringRequestParam('kepurl'));
         return $obj;
     }
 
@@ -80,7 +80,7 @@ class popupController extends \mkwhelpers\MattableController
         $view = $this->createView('popuplista_tbody.tpl');
 
         $this->initPager($this->getRepo()->getCount([]));
-        $egyedek = $this->getRepo()->getWithJoins(
+        $egyedek = $this->getRepo()->getAll(
             [],
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
@@ -88,20 +88,6 @@ class popupController extends \mkwhelpers\MattableController
         );
 
         echo json_encode($this->loadDataToView($egyedek, 'popuplista', $view));
-    }
-
-    public function getSelectList($selid = null)
-    {
-        $rec = $this->getRepo()->getAllForSelectList([], []);
-        $res = [];
-        foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor['id'],
-                'caption' => $sor['nev'],
-                'selected' => ($sor['id'] == $selid)
-            ];
-        }
-        return $res;
     }
 
     public function viewlist()
@@ -121,7 +107,7 @@ class popupController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Popup'));
         $view->setVar('oper', $oper);
 
-        $bp = $this->getRepo()->findWithJoins($id);
+        $bp = $this->getRepo()->find($id);
 
         $view->setVar('egyed', $this->loadVars($bp, true));
 
@@ -148,7 +134,9 @@ class popupController extends \mkwhelpers\MattableController
 
     public function getForShow()
     {
-        $popups = $this->getRepo()->getAll(['inaktiv' => false], ['popuporder' => 'ASC']);
+        $filter = new FilterDescriptor();
+        $filter->addFilter('inaktiv', '=', false);
+        $popups = $this->getRepo()->getAll($filter, ['popuporder' => 'ASC']);
         $res = [];
         foreach ($popups as $popup) {
             $res[] = $this->loadVars($popup);
@@ -156,19 +144,15 @@ class popupController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    public function show()
+    public function regenerateid()
     {
-        $com = $this->params->getStringParam('popup');
-        /** @var \Entities\Popup $popup */
-        $popup = $this->getRepo()->findOneBySlug($com);
+        $id = $this->params->getIntRequestParam('id');
+        $popup = $this->getRepo()->find($id);
         if ($popup) {
-            $view = $this->getTemplateFactory()->createMainView('popup.tpl');
-            \mkw\store::fillTemplate($view);
-            $view->setVar('blogposzt', $popup->convertToArray());
-            $view->printTemplateResult(false);
-        } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            $this->getEm()->remove($popup);
+            $this->getEm()->flush();
+            $this->getEm()->persist($popup);
+            $this->getEm()->flush();
         }
     }
-
 }
