@@ -178,6 +178,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 $fizmodrec = new \Entities\SzallitasimodFizmodNovelo();
                 $fizmodrec->setSzallitasimod($obj);
                 $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
+                $fizmodrec->setMaxhatar($this->params->getNumRequestParam('fizmodmaxhatar_' . $fizmodid));
+                $fizmodrec->setErtekszazalek($this->params->getNumRequestParam('fizmodertekszazalek_' . $fizmodid));
                 if ($fizmod) {
                     $fizmodrec->setFizmod($fizmod);
                 }
@@ -186,6 +188,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 $fizmodrec = $this->getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->find($fizmodid);
                 if ($fizmodrec) {
                     $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
+                    $fizmodrec->setMaxhatar($this->params->getNumRequestParam('fizmodmaxhatar_' . $fizmodid));
+                    $fizmodrec->setErtekszazalek($this->params->getNumRequestParam('fizmodertekszazalek_' . $fizmodid));
                     if ($fizmod) {
                         $fizmodrec->setFizmod($fizmod);
                     }

@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\SzallitasimodFizmodNovelo;
 use mkw\store;
 
 class checkoutController extends \mkwhelpers\MattableController
@@ -188,22 +189,31 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function getFizmodList()
     {
-        $krepo = $this->getRepo('Entities\SzallitasimodFizmodNovelo');
+        $kosarrepo = $this->getRepo(Kosar::class);
+        $krepo = $this->getRepo(SzallitasimodFizmodNovelo::class);
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
         $fm = new fizmodController($this->params);
         $szm = $this->params->getIntRequestParam('szallitasimod');
         $szlist = $fm->getSelectList(null, $szm);
         $adat = [];
         foreach ($szlist as $szl) {
+            $szl['biztonsagikerdeskell'] = $szl['bankkartyas'];
+            /** @var SzallitasimodFizmodNovelo $x */
             $x = $krepo->getBySzallitasimodFizmod($szm, $szl['id']);
             if ($x) {
                 if (is_array($x)) {
                     $x = $x[0];
                 }
                 $szl['novelo'] = $x->getOsszeg();
+                $szl['maxhatar'] = $x->getMaxhatar();
+                $szl['ertekszazalek'] = $x->getErtekszazalek();
+                $e = $kosarrepo->calcSumBySessionId(\Zend_Session::getId());
+                if ($e && (($x->getMaxhatar() > 0 && $x->getMaxhatar() >= $e['sum']) || $x->getMaxhatar() == 0)) {
+                    $adat[] = $szl;
+                }
+            } else {
+                $adat[] = $szl;
             }
-            $szl['biztonsagikerdeskell'] = $szl['bankkartyas'];
-            $adat[] = $szl;
         }
         $view->setVar('fizmodlist', $adat);
         echo json_encode([
@@ -235,7 +245,7 @@ class checkoutController extends \mkwhelpers\MattableController
 
     private function _getTetelListData()
     {
-        $kr = $this->getRepo('Entities\Kosar');
+        $kr = $this->getRepo(Kosar::class);
         $kuponkod = $this->params->getStringRequestParam('kupon');
         $kuponszoveg = '';
         if ($kuponkod) {
