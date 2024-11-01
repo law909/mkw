@@ -52,11 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('shownPopups', JSON.stringify(shownPopups));
 
         const closeButton = popupElement.querySelector('.shopmodal-close-button');
-        closeButton.addEventListener('click', () => {
+        const closePopup = () => {
             popupElement.style.display = 'none';
-
+            document.removeEventListener('keydown', escHandler);
             schedulePopup(index + 1);
-        });
+        }
+
+        const escHandler = (event) => {
+            if (event.key === 'Escape' || event.keyCode === 27) {
+                closePopup();
+            }
+        };
+
+        closeButton.addEventListener('click', closePopup);
+        document.addEventListener('keydown', escHandler);
     };
 
     schedulePopup(0);
