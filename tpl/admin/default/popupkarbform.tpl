@@ -17,7 +17,7 @@
                 <tbody>
                 <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" value="{$egyed.nev}"></td>
+                    <td><input id="NevEdit" name="nev" type="text" value="{$egyed.nev}" title="csak belső azonosításra, nem jelenik meg"></td>
                 </tr>
                 <tr>
                     <td><label for="DisplayTimeEdit">{at('Megjelenés késleltetése (mp)')}:</label></td>
@@ -30,11 +30,12 @@
                 </tr>
                 <tr>
                     <td><label for="overlaybackgroundcolorEdit">{at('Overlay háttérszín')}:</label></td>
-                    <td><input id="overlaybackgroundcolorEdit" name="overlaybackgroundcolor" type="text" value="{$egyed.overlaybackgroundcolor}"></td>
+                    <td><input id="overlaybackgroundcolorEdit" name="overlaybackgroundcolor" type="text" value="{$egyed.overlaybackgroundcolor}"
+                               title="#rrggbb"></td>
                 </tr>
                 <tr>
                     <td><label for="overlayopacityEdit">{at('Overlay átlátszóság')}:</label></td>
-                    <td><input id="overlayopacityEdit" name="overlayopacity" type="number" value="{$egyed.overlayopacity}"></td>
+                    <td><input id="overlayopacityEdit" name="overlayopacity" type="number" step="any" value="{$egyed.overlayopacity}"></td>
                 </tr>
                 <tr>
                     <td><label for="headertextEdit">{at('Cím')}:</label></td>
@@ -50,24 +51,27 @@
                 </tr>
                 <tr>
                     <td><label for="closebuttoncolorEdit">{at('"Bezár" gomb betűszín')}:</label></td>
-                    <td><input id="closebuttoncolorEdit" name="closebuttoncolor" type="text" value="{$egyed.closebuttoncolor}"></td>
+                    <td><input id="closebuttoncolorEdit" name="closebuttoncolor" type="text" value="{$egyed.closebuttoncolor}" title="#rrggbb"></td>
                 </tr>
                 <tr>
                     <td><label for="closebuttonbackgroundcolorEdit">{at('"Bezár" gomb háttérszín')}:</label></td>
-                    <td><input id="closebuttonbackgroundcolorEdit" name="closebuttonbackgroundcolor" type="text" value="{$egyed.closebuttonbackgroundcolor}">
+                    <td><input id="closebuttonbackgroundcolorEdit" name="closebuttonbackgroundcolor" type="text" value="{$egyed.closebuttonbackgroundcolor}"
+                               title="#rrggbb">
                     </td>
                 </tr>
                 <tr>
                     <td><label for="contentwidthEdit">{at('Tartalom szélessége')}:</label></td>
-                    <td><input id="contentwidthEdit" name="contentwidth" type="text" value="{$egyed.contentwidth}"></td>
+                    <td><input id="contentwidthEdit" name="contentwidth" type="text" value="{$egyed.contentwidth}" title="% vagy px vagy más CSS mértékegység">
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="contentheightEdit">{at('Tartalom magassága')}:</label></td>
-                    <td><input id="contentheightEdit" name="contentheight" type="text" value="{$egyed.contentheight}"></td>
+                    <td><input id="contentheightEdit" name="contentheight" type="text" value="{$egyed.contentheight}"
+                               title="% vagy px vagy más CSS mértékegység"></td>
                 </tr>
                 <tr>
                     <td><label for="contenttopEdit">{at('Tartalom teteje')}:</label></td>
-                    <td><input id="contenttopEdit" name="contenttop" type="text" value="{$egyed.contenttop}"></td>
+                    <td><input id="contenttopEdit" name="contenttop" type="text" value="{$egyed.contenttop}" title="% vagy px vagy más CSS mértékegység"></td>
                 </tr>
                 <tr>
                     <td><label for="popuporderEdit">{at('Sorrend')}:</label></td>

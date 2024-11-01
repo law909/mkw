@@ -59,5 +59,5 @@
         </div>
     </div>
     <div id="mattkarb"></div>
-    <div id="termekfakarb"></div>
+    <div id="popuptesztcontainer"></div>
 {/block}

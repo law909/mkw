@@ -21,9 +21,9 @@
     <div id="popup{$popup.id}" class="shopmodal" style="display:none;">
         <div class="shopmodal-overlay popup{$popup.id}_overlay"></div>
         <div class="shopmodal-content popup{$popup.id}_content">
-            <span class="shopmodal-close-button popup{$popup.id}_close_button" data-popup-id="{$popup.id}">{$popup.closebuttontext|escape:'html'}</span>
-            <h1>{$popup.headertext|escape:'html'}</h1>
-            <p>{$popup.bodytext|escape:'html'}</p>
+            <span class="shopmodal-close-button popup{$popup.id}_close_button" data-popup-id="{$popup.id}">{$popup.closebuttontext}</span>
+            <h1>{$popup.headertext}</h1>
+            <p>{$popup.bodytext}</p>
         </div>
     </div>
 {/foreach}

@@ -66,8 +66,8 @@ class popupController extends \mkwhelpers\MattableController
         $obj->setPopuporder($this->params->getIntRequestParam('popuporder'));
         $obj->setTriggerafterprevious($this->params->getBoolRequestParam('triggerafterprevious'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setContentwidth($this->params->getIntRequestParam('contentwidth'));
-        $obj->setContentheight($this->params->getIntRequestParam('contentheight'));
+        $obj->setContentwidth($this->params->getStringRequestParam('contentwidth'));
+        $obj->setContentheight($this->params->getStringRequestParam('contentheight'));
         $obj->setClosebuttoncolor($this->params->getStringRequestParam('closebuttoncolor'));
         $obj->setClosebuttonbackgroundcolor($this->params->getStringRequestParam('closebuttonbackgroundcolor'));
         $obj->setContenttop($this->params->getStringRequestParam('contenttop'));
@@ -153,6 +153,16 @@ class popupController extends \mkwhelpers\MattableController
             $this->getEm()->flush();
             $this->getEm()->persist($popup);
             $this->getEm()->flush();
+        }
+    }
+
+    public function getPopupTeszt()
+    {
+        $popup = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($popup) {
+            $view = $this->createView('popupteszt.tpl');
+            $view->setVar('popup', $this->loadVars($popup));
+            $view->printTemplateResult();
         }
     }
 }

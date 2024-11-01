@@ -853,6 +853,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/popup/save', 'popupController#save', 'adminpopupsave');
     $router->map('POST', '/admin/popup/setflag', 'popupController#setflag', 'adminpopupsetflag');
     $router->map('POST', '/admin/popup/regenerateid', 'popupController#regenerateid', 'adminpopupregenerateid');
+    $router->map('GET', '/admin/popup/getpopupteszt', 'popupController#getpopupteszt', 'adminpopupgetpopupteszt');
 }
 
 $router->map('GET', '/admin/template/viewlist', 'templateController#viewlist', 'admintemplateviewlist');

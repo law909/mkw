@@ -10,6 +10,8 @@
                     <a class="mattable-editlink" href="#" data-popupid="{$_popup.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_popup.nev}</a>
                     <a class="mattable-dellink" href="#" data-popupid="{$_popup.id}" data-oper="del" title="{at('Töröl')}"><span
                             class="ui-icon ui-icon-circle-minus"></span></a>
+                    <a class="js-showpopupteszt" href="#" data-popupid="{$_popup.id}" title="{at('Teszt')}"><span
+                            class="ui-icon ui-icon-calculator"></span></a>
                     <div>{$_popup.headertext}</div>
                 </td>
             </tr>
