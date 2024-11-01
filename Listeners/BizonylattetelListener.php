@@ -69,7 +69,7 @@ class BizonylattetelListener
 
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-                if (\mkw\store::getSetupValue('woocommerce')) {
+                if (\mkw\store::isWoocommerceOn()) {
                     $entity->getTermek()->sendKeszletToWC();
                     if ($entity->getTermekvaltozat()) {
                         $entity->getTermekvaltozat()->sendKeszletToWC();

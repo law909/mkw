@@ -24,7 +24,7 @@ class TermekListener
         );
         foreach ($entities as $entity) {
             if ($entity instanceof Termek) {
-                if (\mkw\store::getSetupValue('woocommerce')) {
+                if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('onFlush: ' . $entity->getId() . ': ' . $entity->getNev());
                     $entity->uploadToWc(false);
                     $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
