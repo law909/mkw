@@ -67,10 +67,10 @@ class SzallitasimodFizmodNovelo extends \Entities\SzallitasimodFizmodNovelo impl
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'osszeg'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'osszeg', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'maxhatar', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'ertekszazalek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'osszeg'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'osszeg', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'maxhatar', '' . "\0" . 'Entities\\SzallitasimodFizmodNovelo' . "\0" . 'ertekszazalek'];
     }
 
     /**
@@ -278,6 +278,50 @@ class SzallitasimodFizmodNovelo extends \Entities\SzallitasimodFizmodNovelo impl
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$val]);
 
         return parent::setFizmod($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMaxhatar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMaxhatar', []);
+
+        return parent::getMaxhatar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMaxhatar($maxhatar): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMaxhatar', [$maxhatar]);
+
+        parent::setMaxhatar($maxhatar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getErtekszazalek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtekszazalek', []);
+
+        return parent::getErtekszazalek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setErtekszazalek($ertekszazalek): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtekszazalek', [$ertekszazalek]);
+
+        parent::setErtekszazalek($ertekszazalek);
     }
 
 }

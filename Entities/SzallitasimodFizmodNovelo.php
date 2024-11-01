@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="SzallitasimodFizmodNoveloRepository")
  * @Doctrine\ORM\Mapping\Table(name="szallitasimod_fizmodnovelo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class SzallitasimodFizmodNovelo {
+class SzallitasimodFizmodNovelo
+{
 
     /**
      * @ORM\Id
@@ -30,25 +31,32 @@ class SzallitasimodFizmodNovelo {
     private $fizmod;
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osszeg;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $maxhatar;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $ertekszazalek;
 
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return Szallitasimod
      */
-    public function getSzallitasimod() {
+    public function getSzallitasimod()
+    {
         return $this->szallitasimod;
     }
 
     /**
      * @param \Entities\Szallitasimod $val
      */
-    public function setSzallitasimod($val) {
+    public function setSzallitasimod($val)
+    {
         if (!($val instanceof \Entities\Szallitasimod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
         }
@@ -58,25 +66,29 @@ class SzallitasimodFizmodNovelo {
     /**
      * @return mixed
      */
-    public function getOsszeg() {
+    public function getOsszeg()
+    {
         return $this->osszeg;
     }
 
     /**
      * @param mixed $osszeg
      */
-    public function setOsszeg($osszeg) {
+    public function setOsszeg($osszeg)
+    {
         $this->osszeg = $osszeg;
     }
 
     /**
      * @return Fizmod
      */
-    public function getFizmod() {
+    public function getFizmod()
+    {
         return $this->fizmod;
     }
 
-    public function getFizmodNev() {
+    public function getFizmodNev()
+    {
         $v = $this->getFizmod();
         if ($v) {
             return $v->getNev();
@@ -84,7 +96,8 @@ class SzallitasimodFizmodNovelo {
         return '';
     }
 
-    public function getFizmodId() {
+    public function getFizmodId()
+    {
         $v = $this->getFizmod();
         if ($v) {
             return $v->getId();
@@ -95,11 +108,44 @@ class SzallitasimodFizmodNovelo {
     /**
      * @param \Entities\Fizmod $val
      */
-    public function setFizmod($val) {
+    public function setFizmod($val)
+    {
         if (!($val instanceof \Entities\Fizmod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
         }
         $this->fizmod = $val;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMaxhatar()
+    {
+        return $this->maxhatar;
+    }
+
+    /**
+     * @param mixed $maxhatar
+     */
+    public function setMaxhatar($maxhatar): void
+    {
+        $this->maxhatar = $maxhatar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getErtekszazalek()
+    {
+        return $this->ertekszazalek;
+    }
+
+    /**
+     * @param mixed $ertekszazalek
+     */
+    public function setErtekszazalek($ertekszazalek): void
+    {
+        $this->ertekszazalek = $ertekszazalek;
+    }
+    
 }
