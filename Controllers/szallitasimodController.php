@@ -95,7 +95,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
         $obj->setWebes3($this->params->getBoolRequestParam('webes3'));
         $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
+        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setWcid($this->params->getStringRequestParam('wcid'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
