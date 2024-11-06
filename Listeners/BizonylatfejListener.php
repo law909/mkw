@@ -142,6 +142,7 @@ class BizonylatfejListener
      * @param \Entities\Bizonylatfej $bizfej
      * @param \Entities\Kupon $kupon
      */
+    // TODO utanvetktg
     private function createSzallitasiKtg($bizfej, $kupon)
     {
         if (!$bizfej->isKellszallitasikoltsegetszamolni()) {

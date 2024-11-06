@@ -98,7 +98,7 @@ class Kosar
         $ret = [];
         $termek = $this->getTermek();
         $ret = $ret + $termek->toKosar($this->getTermekvaltozat());
-        $ret['noedit'] = $termek->getId() == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ret['noedit'] = \mkw\store::isUtanvetKtgTermek($termek->getId()) || \mkw\store::isSzallitasiKtgTermek($termek->getId());
         $ret['id'] = $this->getId();
         if ($partner && $partner->getSzamlatipus()) {
             $ret['nettoegysarhuf'] = $this->r((float)$this->getNettoegysar(), $kerekit);

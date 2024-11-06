@@ -568,6 +568,7 @@ class store
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
+        $v->setVar('utanvetktgtermek', self::getParameter(\mkw\consts::UtanvetKtgTermek));
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = [];
         $user['loggedin'] = $pr->checkloggedin();
@@ -1275,6 +1276,15 @@ class store
             $i = $termek->getId();
         }
         return $i == self::getParameter(\mkw\consts::SzallitasiKtgTermek);
+    }
+
+    public static function isUtanvetKtgTermek($termek)
+    {
+        $i = $termek;
+        if (is_a($termek, Termek::class)) {
+            $i = $termek->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::UtanvetKtgTermek);
     }
 
     public static function isFoxpostSzallitasimod($szm)

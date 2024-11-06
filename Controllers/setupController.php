@@ -264,6 +264,9 @@ class setupController extends \mkwhelpers\Controller
         $termek = new termekController($this->params);
         $view->setVar('szallitasiktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::UtanvetKtgTermek);
+        $view->setVar('utanvetktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
@@ -997,6 +1000,13 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
         } else {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, '');
+        }
+
+        $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('utanvetktgtermek', 0));
+        if ($szkt) {
+            $this->setObj(\mkw\consts::UtanvetKtgTermek, $szkt->getId());
+        } else {
+            $this->setObj(\mkw\consts::UtanvetKtgTermek, '');
         }
 
         $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('defaulttermek', 0));

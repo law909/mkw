@@ -287,6 +287,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $cnt > 0;
     }
 
+    public function haveUtanvetKtg($bf)
+    {
+        $bizfej = $bf;
+        if (is_string($bf)) {
+            $bizfej = $this->find($bf);
+        }
+        $termekid = \mkw\store::getIntParameter(\mkw\consts::UtanvetKtgTermek);
+        $cnt = 0;
+        foreach ($bizfej->getBizonylattetelek() as $btetel) {
+            if ($btetel->getTermekId() === $termekid) {
+                $cnt++;
+            }
+        }
+        return $cnt > 0;
+    }
+
     public function getSzallitasiKtgTetel($bf)
     {
         $bizfej = $bf;
@@ -294,6 +310,23 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $bizfej = $this->find($bf);
         }
         $termekid = \mkw\store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ret = null;
+        foreach ($bizfej->getBizonylattetelek() as $btetel) {
+            if ($btetel->getTermekId() === $termekid) {
+                $ret = $btetel;
+                break;
+            }
+        }
+        return $ret;
+    }
+
+    public function getUtanvetKtgTetel($bf)
+    {
+        $bizfej = $bf;
+        if (is_string($bf)) {
+            $bizfej = $this->find($bf);
+        }
+        $termekid = \mkw\store::getIntParameter(\mkw\consts::UtanvetKtgTermek);
         $ret = null;
         foreach ($bizfej->getBizonylattetelek() as $btetel) {
             if ($btetel->getTermekId() === $termekid) {

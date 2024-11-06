@@ -913,6 +913,7 @@ class Bizonylatfej
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
             $body->setVar('rendeles', $tpldata);
             $body->setVar('szktgtermek', \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+            $body->setVar('utanvetktgtermek', \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek));
             $body->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
             if (\mkw\store::getConfigValue('developer')) {
                 \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
@@ -1255,7 +1256,10 @@ class Bizonylatfej
         /** @var Bizonylattetel $tetel */
         foreach ($this->bizonylattetelek as $tetel) {
             $_x = $tetel->toLista();
-            if (!$_x['marertekelt'] && !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())) {
+            if (!$_x['marertekelt'] &&
+                !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId()) &&
+                !\mkw\store::isUtanvetKtgTermek($tetel->getTermekId())
+            ) {
                 $ret['vanmitertekelni'] = true;
             }
             $tetellist[] = $_x;
@@ -5346,7 +5350,8 @@ class Bizonylatfej
             /** @var Bizonylattetel $tetel */
             foreach ($this->bizonylattetelek as $tetel) {
                 if (!$tetel->isMarErtekelt() &&
-                    !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
+                    !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId()) &&
+                    !\mkw\store::isUtanvetKtgTermek($tetel->getTermekId())
                 ) {
                     $vanmit = true;
                 }

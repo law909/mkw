@@ -1185,6 +1185,16 @@
                                     {/foreach}
                                 </select></td>
                         </tr>
+                        <tr>
+                            <td><label for="UtanvetKtgTermekEdit">{at('Utánvét költség')}:</label></td>
+                            <td colspan="2"><select id="UtanvetKtgTermekEdit" name="utanvetktgtermek">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $utanvetktgtermeklist as $_utanvetktgtermek}
+                                        <option
+                                            value="{$_utanvetktgtermek.id}"{if ($_utanvetktgtermek.selected)} selected="selected"{/if}>{$_utanvetktgtermek.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

@@ -188,6 +188,7 @@ class kosarController extends \mkwhelpers\MattableController
         switch (true) {
             case \mkw\store::isMugenrace2021():
                 $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::UtanvetFizmod));
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanemnev = \mkw\store::getMainValutanemNev();
                 /** @var Valutanem $valutanem */
@@ -222,6 +223,7 @@ class kosarController extends \mkwhelpers\MattableController
                 $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
                 \mkw\store::fillTemplate($v);
                 $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek));
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = 'Ft';
                 if ($partner) {
@@ -258,6 +260,7 @@ class kosarController extends \mkwhelpers\MattableController
                 $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
                 \mkw\store::fillTemplate($v);
                 $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek));
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = 'HUF';
                 if ($partner) {
