@@ -3858,6 +3858,24 @@ class Termek
             $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $allvariations);
             \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat BATCH POST stop');
             \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+            foreach ($result['create'] as $res) {
+                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res['sku'], 3));
+                if ($valtozat) {
+                    $valtozat->setWcid($res['id']);
+                    $valtozat->setWcdate();
+                    \mkw\store::getEm()->persist($valtozat);
+                }
+            }
+            foreach ($result['update'] as $res) {
+                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res['id']]);
+                if ($valtozat) {
+                    $valtozat->setWcdate();
+                    \mkw\store::getEm()->persist($valtozat);
+                }
+            }
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
         }
     }
 
