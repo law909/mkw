@@ -3719,6 +3719,7 @@ class Termek
         }
         $data = [
             'name' => $nev . ' - ' . $this->getCikkszam(),
+            'sku' => 'T-' . $this->getId(),
             'type' => 'variable',
             'status' => $this->getInaktiv() ? 'draft' : 'publish',
             'catalog_visibility' =>
@@ -3803,15 +3804,16 @@ class Termek
             }
         }
 
-
+        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés start');
+        $allvariations = [];
         /** @var TermekValtozat $valtozat */
         foreach ($this->getValtozatok() as $valtozat) {
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés start');
             $vkeszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg();
             if ($vkeszlet < 0) {
                 $vkeszlet = 0;
             }
             $variation = [
+                'sku' => 'TV-' . $valtozat->getId(),
                 'regular_price' => (string)$this->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
                 'sale_price' => (string)$this->getNettoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
                 //'date_on_sale_from' => '2025-01-01 00:00:00',
@@ -3843,35 +3845,19 @@ class Termek
                     'option' => $valtozat->getErtek2(),
                 ];
             }
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
             if (!$valtozat->getWcid()) {
-                \mkw\store::writelog(
-                    $this->getId() . ':' . $valtozat->getId() . ': változat POST start: ' . 'products/' . $this->getWcid() . '/variations'
-                );
-                $result = $wc->post('products/' . $this->getWcid() . '/variations', $variation);
-                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat POST stop');
-                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
-
-                $valtozat->setWcid($result->id);
-                $valtozat->setWcdate();
-                \mkw\store::getEm()->persist($valtozat);
-                if ($doFlush) {
-                    \mkw\store::getEm()->flush();
-                }
+                $allvariations['create'][] = $variation;
             } elseif ($valtozat->shouldUploadToWc()) {
-                \mkw\store::writelog(
-                    $this->getId() . ':' . $valtozat->getId() . ': változat PUT start: ' . 'products/' . $this->getWcid() . '/variations'
-                );
-                $result = $wc->put('products/' . $this->getWcid() . '/variations/' . $valtozat->getWcid(), $variation);
-                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat PUT stop');
-                \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
-                $valtozat->setWcdate();
-                \mkw\store::getEm()->persist($valtozat);
-                if ($doFlush) {
-                    \mkw\store::getEm()->flush();
-                }
+                $allvariations['update'][] = $variation;
             }
+        }
+        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
+        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
+        if ($allvariations) {
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat BATCH POST start');
+            $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $allvariations);
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat BATCH POST stop');
+            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
         }
     }
 

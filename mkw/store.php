@@ -1271,6 +1271,9 @@ class store
 
     public static function isSzallitasiKtgTermek($termek)
     {
+        if (!$termek) {
+            return false;
+        }
         $i = $termek;
         if (is_a($termek, Termek::class)) {
             $i = $termek->getId();
@@ -1280,6 +1283,9 @@ class store
 
     public static function isUtanvetKtgTermek($termek)
     {
+        if (!$termek) {
+            return false;
+        }
         $i = $termek;
         if (is_a($termek, Termek::class)) {
             $i = $termek->getId();
