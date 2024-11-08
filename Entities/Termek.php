@@ -3589,6 +3589,20 @@ class Termek
 
     public function sendKeszletToWC()
     {
+        $data = $this->getKeszletToWC();
+        if ($data) {
+            $wc = store::getWcClient();
+            try {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
+                $result = $wc->put('products/' . $this->getWcid(), $data);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+            }
+        }
+    }
+
+    public function getKeszletToWC($needid = false)
+    {
         if ($this->getWcid() && !$this->getWctiltva()) {
             $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
             if ($keszlet < 0) {
@@ -3598,14 +3612,12 @@ class Termek
                 'stock_quantity' => $keszlet,
                 'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
             ];
-            $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
-                $result = $wc->put('products/' . $this->getWcid(), $data);
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+            if ($needid) {
+                $data['id'] = $this->getWcid();
             }
+            return $data;
         }
+        return false;
     }
 
     public function uploadToWc($doFlush = true)

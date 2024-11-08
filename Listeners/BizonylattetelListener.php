@@ -2,8 +2,10 @@
 
 namespace Listeners;
 
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use mkw\store;
 
 class BizonylattetelListener
 {
@@ -67,14 +69,25 @@ class BizonylattetelListener
 
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
 
+        $termekek = [];
+        $valtozatok = [];
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
-                    $entity->getTermek()->sendKeszletToWC();
+                    $termekek['update'][] = $entity->getTermek()->getKeszletToWC(true);
                     if ($entity->getTermekvaltozat()) {
                         $entity->getTermekvaltozat()->sendKeszletToWC();
                     }
                 }
+            }
+        }
+        if ($termekek) {
+            $wc = store::getWcClient();
+            try {
+                \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: ' . json_encode($termekek));
+                $result = $wc->post('products/batch', $termekek);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
             }
         }
     }
