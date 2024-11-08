@@ -70,7 +70,6 @@ class BizonylattetelListener
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
 
         $termekek = [];
-        $valtozatok = [];
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
@@ -81,7 +80,7 @@ class BizonylattetelListener
                 }
             }
         }
-        if ($termekek) {
+        if ($termekek && \mkw\store::isWoocommerceOn()) {
             $wc = store::getWcClient();
             try {
                 \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: ' . json_encode($termekek));

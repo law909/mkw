@@ -756,16 +756,18 @@ class Partner
 
     public function sendToWc()
     {
-        $wc = \mkw\store::getWcClient();
-        $data = $this->toWc();
+        if (\mkw\store::isWoocommerceOn()) {
+            $wc = \mkw\store::getWcClient();
+            $data = $this->toWc();
 
-        if ($this->getWcid()) {
-            \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
-            \mkw\store::writelog($this->getId() . ': partner adat PUT start');
-            $result = $wc->put('customers/' . $this->getWcid(), $data);
-            \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
-            \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBŐL: ' . json_encode($result));
-            $this->setWcdate();
+            if ($this->getWcid()) {
+                \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
+                \mkw\store::writelog($this->getId() . ': partner adat PUT start');
+                $result = $wc->put('customers/' . $this->getWcid(), $data);
+                \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
+                \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBŐL: ' . json_encode($result));
+                $this->setWcdate();
+            }
         }
     }
 

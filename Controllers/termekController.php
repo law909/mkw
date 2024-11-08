@@ -1815,31 +1815,33 @@ class termekController extends \mkwhelpers\MattableController
 
     public function uploadToWc()
     {
-        /** @var Client $wc */
-        $wc = store::getWcClient();
-        $eur = $this->getRepo(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        if (\mkw\store::isWoocommerceOn()) {
+            /** @var Client $wc */
+            $wc = store::getWcClient();
+            $eur = $this->getRepo(Valutanem::class)->findOneBy(['nev' => 'EUR']);
 
-        $filter = new FilterDescriptor();
-        $filter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
-        $categories = $this->getRepo(TermekFa::class)->getAll($filter);
+            $filter = new FilterDescriptor();
+            $filter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
+            $categories = $this->getRepo(TermekFa::class)->getAll($filter);
 
-        $termekdone = [];
+            $termekdone = [];
 
-        /** @var TermekFa $category */
-        foreach ($categories as $category) {
-            $tfilter = new FilterDescriptor();
-            $tfilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $category->getId());
-            $tfilter->addFilter('wctiltva', '<>', 1);
-            $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
-            /** @var Termek $termek */
-            foreach ($termekek as $termek) {
-                if (!in_array($termek->getId(), $termekdone)) {
-                    $termekdone[] = $termek->getId();
-                    $termek->uploadToWc(true);
+            /** @var TermekFa $category */
+            foreach ($categories as $category) {
+                $tfilter = new FilterDescriptor();
+                $tfilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $category->getId());
+                $tfilter->addFilter('wctiltva', '<>', 1);
+                $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
+                /** @var Termek $termek */
+                foreach ($termekek as $termek) {
+                    if (!in_array($termek->getId(), $termekdone)) {
+                        $termekdone[] = $termek->getId();
+                        $termek->uploadToWc(true);
+                    }
                 }
             }
+            echo 'OK';
         }
-        echo 'OK';
     }
 
 }

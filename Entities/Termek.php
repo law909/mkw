@@ -3589,14 +3589,16 @@ class Termek
 
     public function sendKeszletToWC()
     {
-        $data = $this->getKeszletToWC();
-        if ($data) {
-            $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
-                $result = $wc->put('products/' . $this->getWcid(), $data);
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+        if (\mkw\store::isWoocommerceOn()) {
+            $data = $this->getKeszletToWC();
+            if ($data) {
+                $wc = store::getWcClient();
+                try {
+                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
+                    $result = $wc->put('products/' . $this->getWcid(), $data);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+                }
             }
         }
     }
@@ -3622,6 +3624,9 @@ class Termek
 
     public function uploadToWc($doFlush = true)
     {
+        if (!\mkw\store::isWoocommerceOn()) {
+            return;
+        }
         if ($this->getWctiltva()) {
             return;
         }

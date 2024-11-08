@@ -1352,14 +1352,16 @@ class TermekValtozat
 
     public function sendKeszletToWC()
     {
-        $data = $this->getKeszletToWC();
-        if ($data) {
-            $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC(): ' . json_encode($data));
-                $result = $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $data);
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+        if (\mkw\store::isWoocommerceOn()) {
+            $data = $this->getKeszletToWC();
+            if ($data) {
+                $wc = store::getWcClient();
+                try {
+                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC(): ' . json_encode($data));
+                    $result = $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $data);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+                }
             }
         }
     }
@@ -1385,7 +1387,7 @@ class TermekValtozat
 
     public function sendArToWC()
     {
-        if ($this->getWcid()) {
+        if ($this->getWcid() && \mkw\store::isWoocommerceOn()) {
             $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
             $variation = [
                 'regular_price' => (string)$this->getTermek()?->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),

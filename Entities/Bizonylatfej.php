@@ -937,7 +937,7 @@ class Bizonylatfej
 
     public function sendStatusChangeToWc()
     {
-        if ($this->getWcid() && $this->getBizonylatstatusz()?->getWcid()) {
+        if ($this->getWcid() && $this->getBizonylatstatusz()?->getWcid() && \mkw\store::isWoocommerceOn()) {
             /** @var Client $wc */
             $wc = store::getWcClient();
             $wc->put('orders/' . $this->getWcid(), [

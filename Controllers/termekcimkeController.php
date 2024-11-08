@@ -251,29 +251,31 @@ class termekcimkeController extends \mkwhelpers\MattableController
 
     public function uploadToWc()
     {
-        $wc = \mkw\store::getWcClient();
-        $cimkek = $this->getRepo()->getAll();
-        /** @var Termekcimketorzs $cimke */
-        foreach ($cimkek as $cimke) {
-            if (!$cimke->getWcid()) {
-                $data = [
-                    'name' => $cimke->getNev()
-                ];
-                $result = $wc->post('products/tags', $data);
+        if (\mkw\store::isWoocommerceOn()) {
+            $wc = \mkw\store::getWcClient();
+            $cimkek = $this->getRepo()->getAll();
+            /** @var Termekcimketorzs $cimke */
+            foreach ($cimkek as $cimke) {
+                if (!$cimke->getWcid()) {
+                    $data = [
+                        'name' => $cimke->getNev()
+                    ];
+                    $result = $wc->post('products/tags', $data);
 
-                $cimke->setWcid($result->id);
-                $cimke->setWcdate();
-                \mkw\store::getEm()->persist($cimke);
-                \mkw\store::getEm()->flush();
-            } else {
-                $data = [
-                    'name' => $cimke->getNev()
-                ];
-                $wc->put('products/tags/' . $cimke->getWcid(), $data);
+                    $cimke->setWcid($result->id);
+                    $cimke->setWcdate();
+                    \mkw\store::getEm()->persist($cimke);
+                    \mkw\store::getEm()->flush();
+                } else {
+                    $data = [
+                        'name' => $cimke->getNev()
+                    ];
+                    $wc->put('products/tags/' . $cimke->getWcid(), $data);
 
-                $cimke->setWcdate();
-                \mkw\store::getEm()->persist($cimke);
-                \mkw\store::getEm()->flush();
+                    $cimke->setWcdate();
+                    \mkw\store::getEm()->persist($cimke);
+                    \mkw\store::getEm()->flush();
+                }
             }
         }
     }

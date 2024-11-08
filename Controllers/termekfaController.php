@@ -1330,10 +1330,12 @@ class termekfaController extends \mkwhelpers\MattableController
 
     public function uploadToWc()
     {
-        /** @var Client $wc */
-        $wc = store::getWcClient();
-        self::walkCategoryTree(null, null, $wc);
-        echo 'Ready.';
+        if (\mkw\store::isWoocommerceOn()) {
+            /** @var Client $wc */
+            $wc = store::getWcClient();
+            self::walkCategoryTree(null, null, $wc);
+            echo 'Ready.';
+        }
     }
 
 }
