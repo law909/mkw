@@ -124,7 +124,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
         if (!$iserror) {
             /** @var Bizonylattipus $biztipus */
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
-            
+
             $megr = new Bizonylatfej();
             $megr->setPersistentData();
             $megr->setBizonylattipus($biztipus);
@@ -213,6 +213,23 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 $tetel->setBruttoegysarhuf($tetel->getBruttoegysar() * $tetel->getArfolyam());
                 $tetel->calc();
                 $this->getEm()->persist($tetel);
+            }
+            $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+            if ($termek) {
+                foreach ($wcorder['shipping_lines'] as $item) {
+                    $tetel = new Bizonylattetel();
+                    $megr->addBizonylattetel($tetel);
+                    $tetel->setBizonylatfej($megr);
+
+                    $tetel->setPersistentData();
+                    $tetel->setTermek($termek);
+                    $tetel->setTermeknev($item['method_title']);
+                    $tetel->setMennyiseg(1);
+                    $tetel->setBruttoegysar($item['total']);
+                    $tetel->setBruttoegysarhuf($tetel->getBruttoegysar() * $tetel->getArfolyam());
+                    $tetel->calc();
+                    $this->getEm()->persist($tetel);
+                }
             }
             $megr->calcOsszesen();
             $this->getEm()->persist($megr);
