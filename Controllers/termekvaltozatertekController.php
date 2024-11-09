@@ -18,6 +18,7 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
 
     public function fill()
     {
+        \mkw\store::writelog('termekvaltozatertekController fill START');
         $tipusertekek = $this->getRepo(TermekValtozat::class)->getTipusErtek();
         foreach ($tipusertekek as $tipusertek) {
             $tve = $this->getRepo(TermekValtozatErtek::class)->findOneBy(['adattipus' => $tipusertek['adattipus'], 'ertek' => $tipusertek['ertek']]);
@@ -29,13 +30,14 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
                 \mkw\store::getEm()->flush();
             }
         }
+        \mkw\store::writelog('termekvaltozatertekController fill STOP');
     }
 
     public function uploadToWc()
     {
-        $this->fill();
-
         if (\mkw\store::isWoocommerceOn()) {
+            $this->fill();
+            \mkw\store::writelog('termekvaltozatertekController uploadtowc START');
             $tvatarr = [];
             $tvats = $this->getRepo(TermekValtozatAdatTipus::class)->getAll();
             /** @var TermekValtozatAdatTipus $tvat */
@@ -59,6 +61,7 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
                     \mkw\store::getEm()->flush();
                 }
             }
+            \mkw\store::writelog('termekvaltozatertekController uploadtowc STOP');
         }
     }
 
