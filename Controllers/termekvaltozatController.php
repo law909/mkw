@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Termek;
 use Entities\TermekValtozat;
 use mkw\store;
@@ -105,26 +106,58 @@ class termekvaltozatController extends \mkwhelpers\MattableController
 
     public function getemptyrow()
     {
-        $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
+        $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
         $view = $this->createView('termektermekvaltozatkarb.tpl');
         $view->setVar('valtozat', $this->loadVars(null, $termek, true));
         echo $view->getTemplateResult();
     }
 
+    /**
+     * @param TermekValtozat $o
+     * @param $parancs
+     *
+     * @return void
+     */
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($parancs == $this->delOperation) {
+            \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
+            if (\mkw\store::isWoocommerceOn()) {
+                $wc = store::getWcClient();
+                try {
+                    $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog('SAVE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
+                }
+            }
+        }
+    }
+
     public function delall()
     {
-        $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
+        $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
         $valtozatok = $termek->getValtozatok();
+        $ids = [];
         foreach ($valtozatok as $valt) {
             //$termek->removeValtozat($valt);
+            $ids[] = $valt->getId();
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();
+        if ($ids && \mkw\store::isWoocommerceOn()) {
+            $wc = store::getWcClient();
+            try {
+                \mkw\store::writelog('BATCH DELETE TermekValtozat: ' . json_encode($ids));
+                $result = $wc->post('products/' . $termek->getWcid() . '/variations/batch', ['delete' => $ids]);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog('BATCH DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
+            }
+        }
     }
 
     public function generate()
     {
-        $termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
+        $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
 
         $adattipus1 = $this->params->getIntRequestParam('valtozatadattipus1');
         $ertek1 = $this->params->getStringRequestParam('valtozatertek1');
