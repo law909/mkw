@@ -1357,8 +1357,9 @@ class TermekValtozat
             if ($data) {
                 $wc = store::getWcClient();
                 try {
-                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC(): ' . json_encode($data));
+                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() START: ' . json_encode($data));
                     $result = $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $data);
+                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() STOP');
                 } catch (HttpClientException $e) {
                     \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
                 }
@@ -1395,9 +1396,9 @@ class TermekValtozat
             ];
             $wc = store::getWcClient();
             try {
-                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC(): ');
-                \mkw\store::writelog('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid());
+                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() START');
                 $result = $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $variation);
+                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() STOP');
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
             }

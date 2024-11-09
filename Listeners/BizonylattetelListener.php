@@ -75,7 +75,9 @@ class BizonylattetelListener
                 if (\mkw\store::isWoocommerceOn()) {
                     $termekek[] = $entity->getTermek()->getKeszletToWC(true);
                     if ($entity->getTermekvaltozat()) {
+                        \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
                         $entity->getTermekvaltozat()->sendKeszletToWC();
+                        \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet STOP');
                     }
                 }
             }
@@ -87,8 +89,9 @@ class BizonylattetelListener
                 $tosend['update'][] = $termek;
                 if (($index + 1) % 100 == 0 || $index + 1 == count($termekek)) {
                     try {
-                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: ' . json_encode($tosend));
+                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek START: ' . json_encode($tosend));
                         $result = $wc->post('products/batch', $tosend);
+                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek STOP');
                         $tosend = [];
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
