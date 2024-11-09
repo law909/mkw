@@ -1381,6 +1381,9 @@ class TermekValtozat
             'status' => !$this->getNLathato(\mkw\store::getWcWebshopNum()) ? 'draft' : 'publish',
             'manage_stock' => true,
         ];
+        if ($this->getWcid()) {
+            $variation['id'] = $this->getWcid();
+        }
         if ($this->getTermek()) {
             $variation['regular_price'] = (string)$this->getTermek()->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price));
             $variation['sale_price'] = (string)$this->getTermek()->getNettoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount));
