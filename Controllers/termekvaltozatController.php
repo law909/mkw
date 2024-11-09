@@ -216,6 +216,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                     $valtdb = 0;
                     $valtozat = new \Entities\TermekValtozat();
                     $termek->addValtozat($valtozat);
+                    $valtozat->setTermek($termek);
                     $valtozat->setLathato($lathato);
                     $valtozat->setLathato2($lathato2);
                     $valtozat->setLathato3($lathato3);
