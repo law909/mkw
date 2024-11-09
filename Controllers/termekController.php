@@ -736,10 +736,10 @@ class termekController extends \mkwhelpers\MattableController
         }
         if ($parancs == $this->delOperation) {
             if (\mkw\store::isWoocommerceOn()) {
-                \mkw\store::writelog('DELETE products/' . $o->getWcid(), $o->getWcid());
+                \mkw\store::writelog('DELETE products/' . $o->getWcid());
                 $wc = store::getWcClient();
                 try {
-                    $result = $wc->delete('products/' . $o->getWcid(), $o->getWcid());
+                    $result = $wc->delete('products/' . $o->getWcid());
                 } catch (HttpClientException $e) {
                     \mkw\store::writelog('DELETE Termek:HIBA: ' . $e->getResponse()->getBody());
                 }
