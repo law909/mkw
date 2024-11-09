@@ -26,7 +26,7 @@ class TermekValtozatListener
             if ($entity instanceof TermekValtozat && !$entity->dontUploadToWC) {
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('onFlush: ' . $entity->getId());
-                    $entity->getTermek()?->setWcdate(null);
+                    $entity->getTermek()?->clearWcdate();
                     \mkw\store::getEm()->persist($entity->getTermek());
                     $this->uow->recomputeSingleEntityChangeSet($termekmd, $entity->getTermek());
                 }
@@ -47,7 +47,7 @@ class TermekValtozatListener
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('postFlush: ' . $entity->getId());
                     $flush = true;
-                    $entity->getTermek()?->setWcdate(null);
+                    $entity->getTermek()?->clearWcdate();
                     \mkw\store::getEm()->persist($entity->getTermek());
                 }
             }

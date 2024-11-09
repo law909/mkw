@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\TermekKep;
+
 class termekkepController extends \mkwhelpers\MattableController
 {
 
@@ -67,6 +69,7 @@ class termekkepController extends \mkwhelpers\MattableController
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         }
+        /** @var TermekKep $kep */
         $kep = $this->getRepo()->find($this->params->getNumRequestParam('id'));
         if ($kep) {
             /* 			unlink($mainpath . $kep->getUrl(''));
@@ -77,6 +80,8 @@ class termekkepController extends \mkwhelpers\MattableController
              */
             $this->getEm()->remove($kep);
             $this->getEm()->flush();
+            $kep->getTermek()->clearWcdate();
+            $kep->getTermek()->uploadToWC();
         }
         echo $this->params->getNumRequestParam('id');
     }

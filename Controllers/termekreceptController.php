@@ -1,11 +1,14 @@
 <?php
+
 namespace Controllers;
 
 use mkw\store;
 
-class termekreceptController extends \mkwhelpers\MattableController {
+class termekreceptController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\TermekRecept');
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
@@ -14,17 +17,17 @@ class termekreceptController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    public function loadVars($t, $forKarb = false) {
+    public function loadVars($t, $forKarb = false)
+    {
         $termek = new termekController($this->params);
         $tipus = new termekrecepttipusController($this->params);
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\TermekRecept();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -43,9 +46,11 @@ class termekreceptController extends \mkwhelpers\MattableController {
 
     /**
      * @param $obj \Entities\TermekRecept
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setMennyiseg($this->params->getFloatRequestParam('mennyiseg'));
         $obj->setKotelezo($this->params->getBoolRequestParam('kotelezo', false));
         $ck = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('altermek'));
@@ -59,9 +64,20 @@ class termekreceptController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('termektermekreceptkarb.tpl');
         $view->setVar('recept', $this->loadVars(null, true));
         echo $view->getTemplateResult();
+    }
+
+    protected function afterSave($o, $parancs = null)
+    {
+        switch ($parancs) {
+            case $this->delOperation:
+                $o->getTermek()?->clearWcdate();
+                $o->getTermek()?->uploadToWC();
+        }
+        parent::afterSave($o, $parancs);
     }
 }

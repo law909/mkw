@@ -1349,6 +1349,11 @@ class TermekValtozat
         }
     }
 
+    public function clearWcdate()
+    {
+        $this->wcdate = null;
+    }
+
     public function shouldUploadToWc()
     {
         return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
@@ -1418,7 +1423,7 @@ class TermekValtozat
                         $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
                         $this->dontUploadToWC = true;
                         $this->setWcid($result->id);
-                        $this->setWcdate();
+                        $this->setWcdate('');
                         \mkw\store::getEm()->persist($this);
                         \mkw\store::writelog($this->getId() . ': változat POST stop: ' . json_encode($result));
                     } catch (HttpClientException $e) {
@@ -1430,7 +1435,7 @@ class TermekValtozat
                     try {
                         $result = $wc->put('products/' . $this->getTermek()->getWcid() . '/variations/' . $this->getWcid(), $data);
                         $this->dontUploadToWC = true;
-                        $this->setWcdate();
+                        $this->setWcdate('');
                         \mkw\store::getEm()->persist($this);
                         \mkw\store::writelog($this->getId() . ': változat PUT stop: ' . json_encode($result));
                     } catch (HttpClientException $e) {

@@ -739,6 +739,7 @@ class termekController extends \mkwhelpers\MattableController
             case $this->editOperation:
                 $tvec = new termekvaltozatertekController(null);
                 $tvec->uploadToWc();
+                $o->clearWcdate();
                 $o->uploadToWc();
         }
         if ($parancs == $this->delOperation) {
@@ -1338,6 +1339,7 @@ class termekController extends \mkwhelpers\MattableController
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
+            $obj->uploadToWC();
             if ($kaphatolett) {
                 $tec = new termekertesitoController($this->params);
                 $tec->sendErtesito($obj);
@@ -1806,6 +1808,7 @@ class termekController extends \mkwhelpers\MattableController
             $termekek = $this->getRepo()->getAll($filter, []);
             $termekdb = 0;
             $batchsize = 20;
+            /** @var Termek $termek */
             foreach ($termekek as $termek) {
                 $termekdb++;
                 if ($tcs) {
@@ -1814,6 +1817,7 @@ class termekController extends \mkwhelpers\MattableController
                     $termek->setTermekcsoport(null);
                 }
                 $this->getEm()->persist($termek);
+                $termek->uploadToWC();
                 if (($termekdb % $batchsize) === 0) {
                     $this->getEm()->flush();
                 }

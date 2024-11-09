@@ -3515,14 +3515,17 @@ class Termek
     {
         if (is_a($adat, 'DateTime')) {
             $this->wcdate = $adat;
-        } elseif (is_null($adat)) {
-            $this->wcdate = null;
         } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$sqlDateTimeFormat);
             }
             $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
         }
+    }
+
+    public function clearWcdate()
+    {
+        $this->wcdate = null;
     }
 
     public function getNevForditas($ford, $locale)
@@ -3634,10 +3637,10 @@ class Termek
         if ($this->getWctiltva()) {
             return;
         }
-        if ($this->dontUploadToWC) {
+
+        if ($this->getWcid() && !$this->shouldUploadToWc()) {
             return;
         }
-
         /** @var Client $wc */
         $wc = store::getWcClient();
         $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
@@ -3786,7 +3789,7 @@ class Termek
                 $tkep = $this->findTermekKepByUrl($image->name);
                 if ($tkep) {
                     $tkep->setWcid($image->id);
-                    $tkep->setWcdate();
+                    $tkep->setWcdate('');
                     \mkw\store::getEm()->persist($tkep);
                 } elseif ($this->getKepurl() == $image->name) {
                     $this->setKepwcid($image->id);
@@ -3794,7 +3797,7 @@ class Termek
             }
 
             $this->setWcid($result->id);
-            $this->setWcdate();
+            $this->setWcdate('');
             $this->dontUploadToWC = true;
             \mkw\store::getEm()->persist($this);
             if ($doFlush) {
@@ -3815,14 +3818,14 @@ class Termek
                 $tkep = $this->findTermekKepByUrl($image->name);
                 if ($tkep) {
                     $tkep->setWcid($image->id);
-                    $tkep->setWcdate();
+                    $tkep->setWcdate('');
                     \mkw\store::getEm()->persist($tkep);
                 } elseif ($this->getKepurl() == $image->name) {
                     $this->setKepwcid($image->id);
                 }
             }
 
-            $this->setWcdate();
+            $this->setWcdate('');
             $this->dontUploadToWC = true;
             \mkw\store::getEm()->persist($this);
             if ($doFlush) {
@@ -3865,14 +3868,14 @@ class Termek
                         $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res->sku, 3));
                         if ($valtozat) {
                             $valtozat->setWcid($res->id);
-                            $valtozat->setWcdate();
+                            $valtozat->setWcdate('');
                             \mkw\store::getEm()->persist($valtozat);
                         }
                     }
                     foreach ($result->update as $res) {
                         $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res->id]);
                         if ($valtozat) {
-                            $valtozat->setWcdate();
+                            $valtozat->setWcdate('');
                             \mkw\store::getEm()->persist($valtozat);
                         }
                     }

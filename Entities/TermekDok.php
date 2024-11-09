@@ -8,7 +8,8 @@ use mkw\store;
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekDokRepository")
  */
-class TermekDok extends Dokumentumtar {
+class TermekDok extends Dokumentumtar
+{
 
     /**
      * @ORM\ManyToOne(targetEntity="termek",inversedBy="termekdokok")
@@ -16,22 +17,29 @@ class TermekDok extends Dokumentumtar {
      */
     private $termek;
 
-    public function getTermek() {
+    /**
+     * @return Termek
+     */
+    public function getTermek()
+    {
         return $this->termek;
     }
 
-    public function getTermekNev() {
+    public function getTermekNev()
+    {
         if ($this->termek) {
             return $this->termek->getNev();
         }
         return '';
     }
 
-    public function setTermek(Termek $r) {
+    public function setTermek(Termek $r)
+    {
         $this->termek = $r;
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
             $r = $this->termek;
             $this->termek = null;

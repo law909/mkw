@@ -56,7 +56,7 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
                     $result = $wc->post('products/attributes/' . $tvatarr[$ertek->getAdatTipusId()] . '/terms', $data);
 
                     $ertek->setWcid($result->id);
-                    $ertek->setWcdate();
+                    $ertek->setWcdate('');
                     \mkw\store::getEm()->persist($ertek);
                     \mkw\store::getEm()->flush();
                 }

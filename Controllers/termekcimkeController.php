@@ -263,7 +263,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     $result = $wc->post('products/tags', $data);
 
                     $cimke->setWcid($result->id);
-                    $cimke->setWcdate();
+                    $cimke->setWcdate('');
                     \mkw\store::getEm()->persist($cimke);
                     \mkw\store::getEm()->flush();
                 } else {
@@ -272,7 +272,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     ];
                     $wc->put('products/tags/' . $cimke->getWcid(), $data);
 
-                    $cimke->setWcdate();
+                    $cimke->setWcdate('');
                     \mkw\store::getEm()->persist($cimke);
                     \mkw\store::getEm()->flush();
                 }

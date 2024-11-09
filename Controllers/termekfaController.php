@@ -1283,7 +1283,7 @@ class termekfaController extends \mkwhelpers\MattableController
 
                         $category->setWcid($result->id);
                         $category->setKepwcid($result->image->id);
-                        $category->setWcdate();
+                        $category->setWcdate('');
                         \mkw\store::getEm()->persist($category);
                         \mkw\store::getEm()->flush();
 
@@ -1319,7 +1319,7 @@ class termekfaController extends \mkwhelpers\MattableController
                 $wc->put('products/categories', $data);
 
                 $category->setKepwcid($result->image->id);
-                $category->setWcdate();
+                $category->setWcdate('');
                 \mkw\store::getEm()->persist($category);
                 \mkw\store::getEm()->flush();
 

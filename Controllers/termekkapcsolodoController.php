@@ -1,11 +1,14 @@
 <?php
+
 namespace Controllers;
 
 use mkw\store;
 
-class termekkapcsolodoController extends \mkwhelpers\MattableController {
+class termekkapcsolodoController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\TermekKapcsolodo');
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
@@ -14,16 +17,16 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    public function loadVars($t, $forKarb = false) {
+    public function loadVars($t, $forKarb = false)
+    {
         $termek = new termekController($this->params);
-        $x = array();
+        $x = [];
         if (!$t) {
             $t = new \Entities\TermekKapcsolodo();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -39,7 +42,8 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $ck = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('altermek'));
         if ($ck) {
             $obj->setAlTermek($ck);
@@ -47,9 +51,21 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('termektermekkapcsolodokarb.tpl');
         $view->setVar('kapcsolodo', $this->loadVars(null, true));
         echo $view->getTemplateResult();
     }
+
+    protected function afterSave($o, $parancs = null)
+    {
+        switch ($parancs) {
+            case $this->delOperation:
+                $o->getTermek()?->clearWcdate();
+                $o->getTermek()?->uploadToWC();
+        }
+        parent::afterSave($o, $parancs);
+    }
+
 }

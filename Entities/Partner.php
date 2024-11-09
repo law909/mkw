@@ -766,7 +766,7 @@ class Partner
                 $result = $wc->put('customers/' . $this->getWcid(), $data);
                 \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
                 \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBŐL: ' . json_encode($result));
-                $this->setWcdate();
+                $this->setWcdate('');
             }
         }
     }

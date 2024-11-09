@@ -128,9 +128,15 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             case $this->editOperation:
                 $tvec = new termekvaltozatertekController(null);
                 $tvec->uploadToWc();
-                $o->getTermek()?->uploadToWC();
+                $termek = $o->getTermek();
+                if ($termek) {
+                    $termek->clearWcdate();
+                    $termek->uploadToWC();
+                }
             case $this->delOperation:
                 $o->deleteFromWC();
+                $o->getTermek()?->clearWcdate();
+                $o->getTermek()?->uploadToWC();
         }
     }
 
@@ -152,6 +158,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             try {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat: ' . json_encode($ids));
                 $result = $wc->post('products/' . $termek->getWcid() . '/variations/batch', ['delete' => $ids]);
+                $termek->clearWcdate();
+                $termek->uploadToWC();
             } catch (HttpClientException $e) {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
             }
@@ -309,6 +317,10 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 }
             }
             $this->getEm()->flush();
+            $termek->clearWcdate();
+            //$this->getEm()->persist($termek);
+            //$this->getEm()->flush();
+            $termek->uploadToWC();
         }
 
         $view = $this->createView('termektermekvaltozatkarb.tpl');

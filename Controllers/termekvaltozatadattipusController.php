@@ -69,7 +69,7 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
                     $result = $wc->post('products/attributes', $data);
 
                     $attr->setWcid($result->id);
-                    $attr->setWcdate();
+                    $attr->setWcdate('');
                     \mkw\store::getEm()->persist($attr);
                     \mkw\store::getEm()->flush();
                 } else {
@@ -79,7 +79,7 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
                     ];
                     $wc->put('products/attributes/' . $attr->getWcid(), $data);
 
-                    $attr->setWcdate();
+                    $attr->setWcdate('');
                     \mkw\store::getEm()->persist($attr);
                     \mkw\store::getEm()->flush();
                 }

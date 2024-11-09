@@ -171,7 +171,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             //$partner->setVatstatus();
             //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
 
-            $partner->setWcdate();
+            $partner->setWcdate('');
 
             $this->getEm()->persist($partner);
 
@@ -300,7 +300,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
         //$partner->setVatstatus();
         //$partner->setSzamlatipus(); // EU-beluli, kivuli, magyar
 
-        $partner->setWcdate();
+        $partner->setWcdate('');
     }
 
     public function partnerCreated()
