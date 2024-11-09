@@ -719,8 +719,8 @@ class termekController extends \mkwhelpers\MattableController
                 $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($vmbkid);
                 if ($valtozat) {
                     $valtozat->setMinboltikeszlet($this->params->getNumRequestParam('valtozatminboltikeszlet_' . $vmbkid));
+                    $this->getEm()->persist($valtozat);
                 }
-                $this->getEm()->persist($valtozat);
             }
         }
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
