@@ -29,6 +29,8 @@ use mkwhelpers\FilterDescriptor;
 class Termek
 {
 
+    public $dontUploadToWC = false;
+
     private static $translatedFields = [
         'nev' => ['caption' => 'Név', 'type' => 1],
         'leiras' => ['caption' => 'Leírás', 'type' => 2],
@@ -3630,6 +3632,9 @@ class Termek
         if ($this->getWctiltva()) {
             return;
         }
+        if ($this->dontUploadToWC) {
+            return;
+        }
 
         /** @var Client $wc */
         $wc = store::getWcClient();
@@ -3788,6 +3793,7 @@ class Termek
 
             $this->setWcid($result->id);
             $this->setWcdate();
+            $this->dontUploadToWC = true;
             \mkw\store::getEm()->persist($this);
             if ($doFlush) {
                 \mkw\store::getEm()->flush();
@@ -3815,13 +3821,14 @@ class Termek
             }
 
             $this->setWcdate();
+            $this->dontUploadToWC = true;
             \mkw\store::getEm()->persist($this);
             if ($doFlush) {
                 \mkw\store::getEm()->flush();
             }
         }
 
-        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés start');
+        \mkw\store::writelog($this->getId() . ': változat adatgyűjtés start');
         $allvariations = [];
         /** @var TermekValtozat $valtozat */
         foreach ($this->getValtozatok() as $valtozat) {
@@ -3868,13 +3875,13 @@ class Termek
                 $allvariations['update'][] = $variation;
             }
         }
-        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adatgyűjtés stop');
-        \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
+        \mkw\store::writelog($this->getId() . ': változat adatgyűjtés stop');
+        \mkw\store::writelog($this->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
         if ($allvariations) {
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat BATCH POST start');
+            \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
             $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $allvariations);
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat BATCH POST stop');
-            \mkw\store::writelog($this->getId() . ':' . $valtozat->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+            \mkw\store::writelog($this->getId() . ': változat BATCH POST stop');
+            \mkw\store::writelog($this->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
             foreach ($result['create'] as $res) {
                 $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res['sku'], 3));
                 if ($valtozat) {
