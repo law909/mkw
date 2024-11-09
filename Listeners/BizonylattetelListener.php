@@ -73,7 +73,7 @@ class BizonylattetelListener
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
-                    $termekek['update'][] = $entity->getTermek()->getKeszletToWC(true);
+                    $termekek[] = $entity->getTermek()->getKeszletToWC(true);
                     if ($entity->getTermekvaltozat()) {
                         $entity->getTermekvaltozat()->sendKeszletToWC();
                     }
@@ -82,11 +82,18 @@ class BizonylattetelListener
         }
         if ($termekek && \mkw\store::isWoocommerceOn()) {
             $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: ' . json_encode($termekek));
-                $result = $wc->post('products/batch', $termekek);
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
+            $tosend = [];
+            foreach ($termekek as $index => $termek) {
+                $tosend['update'][] = $termek;
+                if (($index + 1) % 100 == 0 || $index + 1 == count($termekek)) {
+                    try {
+                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: ' . json_encode($tosend));
+                        $result = $wc->post('products/batch', $tosend);
+                        $tosend = [];
+                    } catch (HttpClientException $e) {
+                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
+                    }
+                }
             }
         }
     }

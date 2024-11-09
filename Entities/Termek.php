@@ -3870,31 +3870,46 @@ class Termek
                 ];
             }
             if (!$valtozat->getWcid()) {
-                $allvariations['create'][] = $variation;
+                $variation['__jobtype'] = 'create';
+                $allvariations[] = $variation;
             } elseif ($valtozat->shouldUploadToWc()) {
-                $allvariations['update'][] = $variation;
+                $variation['__jobtype'] = 'update';
+                $allvariations[] = $variation;
             }
         }
         \mkw\store::writelog($this->getId() . ': változat adatgyűjtés stop');
-        \mkw\store::writelog($this->getId() . ': változat adat woocommerceBE: ' . json_encode($variation));
+        \mkw\store::writelog($this->getId() . ': változat adat woocommerceBE: ' . json_encode($allvariations));
         if ($allvariations) {
-            \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
-            $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $allvariations);
-            \mkw\store::writelog($this->getId() . ': változat BATCH POST stop');
-            \mkw\store::writelog($this->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
-            foreach ($result->create as $res) {
-                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res->sku, 3));
-                if ($valtozat) {
-                    $valtozat->setWcid($res->id);
-                    $valtozat->setWcdate();
-                    \mkw\store::getEm()->persist($valtozat);
+            $tosend = [];
+            foreach ($allvariations as $index => $variation) {
+                if ($variation['__jobtype'] == 'create') {
+                    unset($variation['__jobtype']);
+                    $tosend['create'][] = $variation;
+                } elseif ($variation['__jobtype'] == 'update') {
+                    unset($variation['__jobtype']);
+                    $tosend['update'][] = $variation;
                 }
-            }
-            foreach ($result->update as $res) {
-                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res->id]);
-                if ($valtozat) {
-                    $valtozat->setWcdate();
-                    \mkw\store::getEm()->persist($valtozat);
+                if (($index + 1) % 100 == 0 || $index + 1 == count($allvariations)) {
+                    \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
+                    $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $tosend);
+                    $tosend = [];
+                    \mkw\store::writelog($this->getId() . ': változat BATCH POST stop');
+                    \mkw\store::writelog($this->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+                    foreach ($result->create as $res) {
+                        $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res->sku, 3));
+                        if ($valtozat) {
+                            $valtozat->setWcid($res->id);
+                            $valtozat->setWcdate();
+                            \mkw\store::getEm()->persist($valtozat);
+                        }
+                    }
+                    foreach ($result->update as $res) {
+                        $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res->id]);
+                        if ($valtozat) {
+                            $valtozat->setWcdate();
+                            \mkw\store::getEm()->persist($valtozat);
+                        }
+                    }
                 }
             }
             if ($doFlush) {
