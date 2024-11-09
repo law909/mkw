@@ -11,7 +11,6 @@ class TermekValtozatListener
 {
     private $em;
     private $uow;
-    private $termekmd;
     private $toadd;
     private $isprocessingpostflush = false;
 
@@ -19,7 +18,7 @@ class TermekValtozatListener
     {
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
-        $this->termekmd = $this->em->getClassMetadata(TermekValtozat::class);
+        $termekmd = $this->em->getClassMetadata(Termek::class);
 
         $this->toadd = $this->uow->getScheduledEntityInsertions();
         $entities = $this->uow->getScheduledEntityUpdates();
@@ -27,8 +26,9 @@ class TermekValtozatListener
             if ($entity instanceof TermekValtozat && !$entity->dontUploadToWC) {
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('onFlush: ' . $entity->getId());
-                    $entity->uploadToWC(false);
-                    $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
+                    $entity->getTermek()?->setWcdate(null);
+                    \mkw\store::getEm()->persist($entity->getTermek());
+                    $this->uow->recomputeSingleEntityChangeSet($termekmd, $entity->getTermek());
                 }
             }
         }
@@ -42,13 +42,13 @@ class TermekValtozatListener
         $flush = false;
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
-        $this->termekmd = $this->em->getClassMetadata(TermekValtozat::class);
         foreach ($this->toadd as $entity) {
             if ($entity instanceof TermekValtozat && !$entity->dontUploadToWC) {
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('postFlush: ' . $entity->getId());
                     $flush = true;
-                    $entity->uploadToWC(false);
+                    $entity->getTermek()?->setWcdate(null);
+                    \mkw\store::getEm()->persist($entity->getTermek());
                 }
             }
         }

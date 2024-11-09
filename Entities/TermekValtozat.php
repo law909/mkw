@@ -398,6 +398,9 @@ class TermekValtozat
         return $this->id;
     }
 
+    /**
+     * @return Termek
+     */
     public function getTermek()
     {
         return $this->termek;

@@ -3515,6 +3515,8 @@ class Termek
     {
         if (is_a($adat, 'DateTime')) {
             $this->wcdate = $adat;
+        } elseif (is_null($adat)) {
+            $this->wcdate = null;
         } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$sqlDateTimeFormat);
