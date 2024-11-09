@@ -25,6 +25,7 @@ class TermekValtozat
 
     private $keszletinfo = false;
     private $foglalasinfo = false;
+    public $dontUploadToWC = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")

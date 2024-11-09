@@ -150,6 +150,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $wc = store::getWcClient();
             try {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat: ' . json_encode($ids));
+                \mkw\store::writelog('products/' . $termek->getWcid() . '/variations/batch');
                 $result = $wc->post('products/' . $termek->getWcid() . '/variations/batch', ['delete' => $ids]);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
