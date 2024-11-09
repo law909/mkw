@@ -1847,7 +1847,7 @@ class termekController extends \mkwhelpers\MattableController
                 foreach ($termekek as $termek) {
                     if (!in_array($termek->getId(), $termekdone)) {
                         $termekdone[] = $termek->getId();
-                        $termek->uploadToWc(true);
+                        $termek->uploadToWC(true);
                     }
                 }
             }

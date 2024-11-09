@@ -3624,7 +3624,7 @@ class Termek
         return false;
     }
 
-    public function uploadToWc($doFlush = true)
+    public function uploadToWC($doFlush = true)
     {
         if (!\mkw\store::isWoocommerceOn()) {
             return;
@@ -3832,43 +3832,7 @@ class Termek
         $allvariations = [];
         /** @var TermekValtozat $valtozat */
         foreach ($this->getValtozatok() as $valtozat) {
-            $vkeszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg();
-            if ($vkeszlet < 0) {
-                $vkeszlet = 0;
-            }
-            $variation = [
-                'sku' => 'TV-' . $valtozat->getId(),
-                'regular_price' => (string)$this->getBruttoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
-                'sale_price' => (string)$this->getNettoAr($valtozat, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
-                //'date_on_sale_from' => '2025-01-01 00:00:00',
-                //'date_on_sale_to' => '2025-03-01 00:00:00',
-                'stock_quantity' => $vkeszlet,
-                'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
-                'status' => !$valtozat->getNLathato(\mkw\store::getWcWebshopNum()) ? 'draft' : 'publish',
-                'manage_stock' => true,
-            ];
-            if ($valtozat->getKepwcid()) {
-                $variation['image'] = [
-                    'id' => $valtozat->getKepwcid()
-                ];
-            } elseif ($valtozat->getKepurl()) {
-                $variation['image'] = [
-                    'src' => \mkw\store::getWcImageUrlPrefix() . $valtozat->getKepurl(),
-                    'alt' => $nev . ' - ' . $this->getCikkszam()
-                ];
-            }
-            if ($valtozat->getAdatTipus1()?->getWcid()) {
-                $variation['attributes'][] = [
-                    'id' => $valtozat->getAdatTipus1()->getWcid(),
-                    'option' => $valtozat->getErtek1(),
-                ];
-            }
-            if ($valtozat->getAdatTipus2()?->getWcid()) {
-                $variation['attributes'][] = [
-                    'id' => $valtozat->getAdatTipus2()->getWcid(),
-                    'option' => $valtozat->getErtek2(),
-                ];
-            }
+            $variation = $valtozat->toWC($eur, $nev);
             if (!$valtozat->getWcid()) {
                 $variation['__jobtype'] = 'create';
                 $allvariations[] = $variation;

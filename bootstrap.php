@@ -14,6 +14,7 @@ use Gedmo\Blameable\BlameableListener;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Timestampable\TimestampableListener;
 use Listeners\ArsavListener;
+use Listeners\TermekValtozatListener;
 use mkw\store;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
@@ -137,6 +138,7 @@ $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
 $evm->addEventListener([Events::onFlush, Events::postFlush], new TermekListener());
+$evm->addEventListener([Events::onFlush, Events::postFlush], new TermekValtozatListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

@@ -1351,9 +1351,95 @@ class TermekValtozat
         return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
     }
 
+    public function toWC($eur = null, $termeknev = null)
+    {
+        if (!$termeknev) {
+            $ford = $this->getTermek()->getTranslationsArray();
+            $termeknev = $this->getTermek()->getNevForditas($ford, 'en_us');
+        }
+        if (!$eur) {
+            $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        }
+        $vkeszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
+        if ($vkeszlet < 0) {
+            $vkeszlet = 0;
+        }
+        $variation = [
+            'sku' => 'TV-' . $this->getId(),
+            //'date_on_sale_from' => '2025-01-01 00:00:00',
+            //'date_on_sale_to' => '2025-03-01 00:00:00',
+            'stock_quantity' => $vkeszlet,
+            'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
+            'status' => !$this->getNLathato(\mkw\store::getWcWebshopNum()) ? 'draft' : 'publish',
+            'manage_stock' => true,
+        ];
+        if ($this->getTermek()) {
+            $variation['regular_price'] = (string)$this->getTermek()->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price));
+            $variation['sale_price'] = (string)$this->getTermek()->getNettoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount));
+        }
+        if ($this->getKepwcid()) {
+            $variation['image'] = [
+                'id' => $this->getKepwcid()
+            ];
+        } elseif ($this->getKepurl()) {
+            $variation['image'] = [
+                'src' => \mkw\store::getWcImageUrlPrefix() . $this->getKepurl(),
+                'alt' => $termeknev . ' - ' . $this->getCikkszam()
+            ];
+        }
+        if ($this->getAdatTipus1()?->getWcid()) {
+            $variation['attributes'][] = [
+                'id' => $this->getAdatTipus1()->getWcid(),
+                'option' => $this->getErtek1(),
+            ];
+        }
+        if ($this->getAdatTipus2()?->getWcid()) {
+            $variation['attributes'][] = [
+                'id' => $this->getAdatTipus2()->getWcid(),
+                'option' => $this->getErtek2(),
+            ];
+        }
+        return $variation;
+    }
+
+    public function uploadToWC($doflush = true)
+    {
+        if (\mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
+            $wc = store::getWcClient();
+            $data = $this->toWC();
+            if (!$this->getWcid()) {
+                \mkw\store::writelog($this->getId() . ': változat POST start');
+                try {
+                    $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
+                    $this->dontUploadToWC = true;
+                    $this->setWcid($result['id']);
+                    $this->setWcdate();
+                    \mkw\store::getEm()->persist($this);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                    throw $e;
+                }
+            } elseif ($this->shouldUploadToWc()) {
+                \mkw\store::writelog($this->getId() . ': változat PUT start');
+                try {
+                    $result = $wc->put('products/' . $this->getTermek()->getWcid() . '/variations/' . $this->getWcid(), $data);
+                    $this->dontUploadToWC = true;
+                    $this->setWcdate();
+                    \mkw\store::getEm()->persist($this);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                    throw $e;
+                }
+            }
+            if ($doflush) {
+                \mkw\store::getEm()->flush();
+            }
+        }
+    }
+
     public function sendKeszletToWC()
     {
-        if (\mkw\store::isWoocommerceOn()) {
+        if (\mkw\store::isWoocommerceOn() && !$this->dontUploadToWC && $this->getWcid()) {
             $data = $this->getKeszletToWC();
             if ($data) {
                 $wc = store::getWcClient();
@@ -1389,7 +1475,7 @@ class TermekValtozat
 
     public function sendArToWC()
     {
-        if ($this->getWcid() && \mkw\store::isWoocommerceOn()) {
+        if ($this->getWcid() && \mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
             $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
             $variation = [
                 'regular_price' => (string)$this->getTermek()?->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
