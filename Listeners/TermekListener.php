@@ -12,6 +12,7 @@ class TermekListener
     private $uow;
     private $termekmd;
     private $toadd;
+    private $isprocessingpostflush = false;
 
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -34,6 +35,11 @@ class TermekListener
 
     public function postFlush(PostFlushEventArgs $args)
     {
+        if ($this->isprocessingpostflush) {
+            return;
+        }
+        $flush = false;
+        $this->isprocessingpostflush = true;
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
         $this->termekmd = $this->em->getClassMetadata(Termek::class);
@@ -41,11 +47,15 @@ class TermekListener
             if ($entity instanceof Termek && !$entity->dontUploadToWC) {
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('postFlush: ' . $entity->getId() . ': ' . $entity->getNev());
+                    $flush = true;
                     $entity->uploadToWC(false);
-                    $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
                 }
             }
         }
+        if ($flush) {
+            $this->em->flush();
+        }
+        $this->isprocessingpostflush = false;
     }
 
 }

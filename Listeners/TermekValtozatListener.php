@@ -13,6 +13,7 @@ class TermekValtozatListener
     private $uow;
     private $termekmd;
     private $toadd;
+    private $isprocessingpostflush = false;
 
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -35,6 +36,10 @@ class TermekValtozatListener
 
     public function postFlush(PostFlushEventArgs $args)
     {
+        if ($this->isprocessingpostflush) {
+            return;
+        }
+        $flush = false;
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
         $this->termekmd = $this->em->getClassMetadata(TermekValtozat::class);
@@ -42,11 +47,15 @@ class TermekValtozatListener
             if ($entity instanceof TermekValtozat && !$entity->dontUploadToWC) {
                 if (\mkw\store::isWoocommerceOn()) {
                     \mkw\store::writelog('postFlush: ' . $entity->getId());
+                    $flush = true;
                     $entity->uploadToWC(false);
-                    $this->uow->recomputeSingleEntityChangeSet($this->termekmd, $entity);
                 }
             }
         }
+        if ($flush) {
+            $this->em->flush();
+        }
+        $this->isprocessingpostflush = false;
     }
 
 }
