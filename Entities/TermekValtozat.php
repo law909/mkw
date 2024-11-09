@@ -1409,6 +1409,7 @@ class TermekValtozat
             $data = $this->toWC();
             if (!$this->getWcid()) {
                 \mkw\store::writelog($this->getId() . ': változat POST start');
+                \mkw\store::writelog($this->getTermek()->getId());
                 \mkw\store::writelog('products/' . $this->getTermek()->getWcid() . '/variations');
                 try {
                     $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
