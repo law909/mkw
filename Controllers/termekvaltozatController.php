@@ -122,10 +122,10 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     {
         if ($parancs == $this->delOperation) {
             if (\mkw\store::isWoocommerceOn() && $o->getWcid()) {
-                \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
+                \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations' . $o->getWcid());
                 $wc = store::getWcClient();
                 try {
-                    $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
+                    $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations/' . $o->getWcid());
                 } catch (HttpClientException $e) {
                     \mkw\store::writelog('DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
                 }
