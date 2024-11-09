@@ -734,6 +734,17 @@ class termekController extends \mkwhelpers\MattableController
             $tec = new termekertesitoController($this->params);
             $tec->sendErtesito($o);
         }
+        if ($parancs == $this->delOperation) {
+            if (\mkw\store::isWoocommerceOn()) {
+                \mkw\store::writelog('DELETE products/' . $o->getWcid(), $o->getWcid());
+                $wc = store::getWcClient();
+                try {
+                    $result = $wc->delete('products/' . $o->getWcid(), $o->getWcid());
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog('DELETE Termek:HIBA: ' . $e->getResponse()->getBody());
+                }
+            }
+        }
         parent::afterSave($o, $parancs);
     }
 

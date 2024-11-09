@@ -121,13 +121,13 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     protected function afterSave($o, $parancs = null)
     {
         if ($parancs == $this->delOperation) {
-            \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
             if (\mkw\store::isWoocommerceOn()) {
+                \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
                 $wc = store::getWcClient();
                 try {
                     $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
                 } catch (HttpClientException $e) {
-                    \mkw\store::writelog('SAVE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
+                    \mkw\store::writelog('DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
                 }
             }
         }
