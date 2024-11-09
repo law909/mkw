@@ -121,7 +121,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     protected function afterSave($o, $parancs = null)
     {
         if ($parancs == $this->delOperation) {
-            if (\mkw\store::isWoocommerceOn()) {
+            if (\mkw\store::isWoocommerceOn() && $o->getWcid()) {
                 \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations', $o->getWcid());
                 $wc = store::getWcClient();
                 try {
@@ -140,7 +140,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $ids = [];
         foreach ($valtozatok as $valt) {
             //$termek->removeValtozat($valt);
-            $ids[] = $valt->getId();
+            if ($valt->getWcid()) {
+                $ids[] = $valt->getId();
+            }
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();
