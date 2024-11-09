@@ -136,7 +136,7 @@ $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
-$evm->addEventListener([Events::onFlush], new TermekListener());
+$evm->addEventListener([Events::onFlush, Events::postFlush], new TermekListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],
