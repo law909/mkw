@@ -1410,26 +1410,26 @@ class TermekValtozat
             \mkw\store::writelog('valtozat.uploadtowc, termek id=' . $this->getTermek()->getId());
             if ($this->getTermek()->getWcid()) {
                 if (!$this->getWcid()) {
-                    \mkw\store::writelog($this->getId() . ': változat POST start');
+                    \mkw\store::writelog($this->getId() . ': változat POST start: ' . json_encode($data));
                     try {
                         $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
                         $this->dontUploadToWC = true;
                         $this->setWcid($result->id);
                         $this->setWcdate();
                         \mkw\store::getEm()->persist($this);
-                        \mkw\store::writelog($this->getId() . ': változat POST stop');
+                        \mkw\store::writelog($this->getId() . ': változat POST stop: ' . json_encode($result));
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
                         throw $e;
                     }
                 } elseif ($this->shouldUploadToWc()) {
-                    \mkw\store::writelog($this->getId() . ': változat PUT start');
+                    \mkw\store::writelog($this->getId() . ': változat PUT start: ' . json_encode($data));
                     try {
                         $result = $wc->put('products/' . $this->getTermek()->getWcid() . '/variations/' . $this->getWcid(), $data);
                         $this->dontUploadToWC = true;
                         $this->setWcdate();
                         \mkw\store::getEm()->persist($this);
-                        \mkw\store::writelog($this->getId() . ': változat PUT stop');
+                        \mkw\store::writelog($this->getId() . ': változat PUT stop: ' . json_encode($result));
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
                         throw $e;
