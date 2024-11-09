@@ -53,7 +53,7 @@ class TermekValtozatListener
             }
         }
         if ($flush) {
-            $this->em->flush();
+            \mkw\store::getEm()->flush();
         }
         $this->isprocessingpostflush = false;
     }
