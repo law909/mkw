@@ -3883,15 +3883,15 @@ class Termek
             \mkw\store::writelog($this->getId() . ': változat BATCH POST stop');
             \mkw\store::writelog($this->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
             foreach ($result->create as $res) {
-                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res['sku'], 3));
+                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res->sku, 3));
                 if ($valtozat) {
-                    $valtozat->setWcid($res['id']);
+                    $valtozat->setWcid($res->id);
                     $valtozat->setWcdate();
                     \mkw\store::getEm()->persist($valtozat);
                 }
             }
             foreach ($result->update as $res) {
-                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res['id']]);
+                $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res->id]);
                 if ($valtozat) {
                     $valtozat->setWcdate();
                     \mkw\store::getEm()->persist($valtozat);
