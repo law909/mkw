@@ -1411,14 +1411,13 @@ class TermekValtozat
             if ($this->getTermek()->getWcid()) {
                 if (!$this->getWcid()) {
                     \mkw\store::writelog($this->getId() . ': változat POST start');
-                    \mkw\store::writelog($this->getTermek()->getId());
-                    \mkw\store::writelog('products/' . $this->getTermek()->getWcid() . '/variations');
                     try {
                         $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
                         $this->dontUploadToWC = true;
-                        $this->setWcid($result['id']);
+                        $this->setWcid($result->id);
                         $this->setWcdate();
                         \mkw\store::getEm()->persist($this);
+                        \mkw\store::writelog($this->getId() . ': változat POST stop');
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
                         throw $e;
@@ -1430,6 +1429,7 @@ class TermekValtozat
                         $this->dontUploadToWC = true;
                         $this->setWcdate();
                         \mkw\store::getEm()->persist($this);
+                        \mkw\store::writelog($this->getId() . ': változat PUT stop');
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
                         throw $e;

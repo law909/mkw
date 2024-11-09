@@ -49,7 +49,6 @@ class TermekListener
                     \mkw\store::writelog('postFlush: ' . $entity->getId() . ': ' . $entity->getNev());
                     $flush = true;
                     $entity->uploadToWC(false);
-                    \mkw\store::writelog('postFlush after uploadToWC: ' . $entity->getId() . ': ' . $entity->getWcid());
                 }
             }
         }
