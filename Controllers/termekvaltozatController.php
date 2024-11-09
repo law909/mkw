@@ -4,7 +4,10 @@ namespace Controllers;
 
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Termek;
+use Entities\TermekKep;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatAdatTipus;
+use Entities\TermekValtozatErtek;
 use mkw\store;
 
 class termekvaltozatController extends \mkwhelpers\MattableController
@@ -12,7 +15,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\TermekValtozat');
+        $this->setEntityName(TermekValtozat::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
@@ -120,16 +123,14 @@ class termekvaltozatController extends \mkwhelpers\MattableController
      */
     protected function afterSave($o, $parancs = null)
     {
-        if ($parancs == $this->delOperation) {
-            if (\mkw\store::isWoocommerceOn() && $o->getWcid()) {
-                \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations' . $o->getWcid());
-                $wc = store::getWcClient();
-                try {
-                    $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations/' . $o->getWcid());
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog('DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
-                }
-            }
+        switch ($parancs) {
+            case $this->addOperation:
+            case $this->editOperation:
+                $tvec = new termekvaltozatertekController(null);
+                $tvec->uploadToWc();
+                $o->getTermek()?->uploadToWC();
+            case $this->delOperation:
+                $o->deleteFromWC();
         }
     }
 
@@ -150,7 +151,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $wc = store::getWcClient();
             try {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat: ' . json_encode($ids));
-                \mkw\store::writelog('products/' . $termek->getWcid() . '/variations/batch');
                 $result = $wc->post('products/' . $termek->getWcid() . '/variations/batch', ['delete' => $ids]);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog('BATCH DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
@@ -209,8 +209,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $cikkszamok = explode(';', $cikkszam);
             $idegencikkszamok = explode(';', $idegencikkszam);
             $cikl = 0;
-            $at1 = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus1);
-            $at2 = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus2);
+            $at1 = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find($adattipus1);
+            $at2 = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find($adattipus2);
             foreach ($ertekek1 as $ertek1) {
                 foreach ($ertekek2 as $ertek2) {
                     $valtdb = 0;
@@ -295,7 +295,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                         $valtdb++;
                     }
 
-                    $kep = $this->getEm()->getRepository('Entities\TermekKep')->find($kepid);
+                    $kep = $this->getEm()->getRepository(TermekKep::class)->find($kepid);
                     if ($kep) {
                         $valtozat->setKep($kep);
                     }

@@ -3884,4 +3884,18 @@ class Termek
         }
     }
 
+    public function deleteFromWC()
+    {
+        if (!\mkw\store::isWoocommerceOn() || !$this->getWcid()) {
+            return;
+        }
+        \mkw\store::writelog('DELETE products/' . $this->getWcid());
+        $wc = store::getWcClient();
+        try {
+            $result = $wc->delete('products/' . $this->getWcid());
+        } catch (HttpClientException $e) {
+            \mkw\store::writelog('DELETE Termek:HIBA: ' . $e->getResponse()->getBody());
+        }
+    }
+
 }

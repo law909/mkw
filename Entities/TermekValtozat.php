@@ -1502,4 +1502,18 @@ class TermekValtozat
         }
     }
 
+    public function deleteFromWC()
+    {
+        if (!\mkw\store::isWoocommerceOn() || !$this->getWcid() || !$this->getTermek()?->getWcid()) {
+            return false;
+        }
+        \mkw\store::writelog('DELETE products/' . $o->getTermek()?->getWcid() . '/variations' . $o->getWcid());
+        $wc = store::getWcClient();
+        try {
+            $result = $wc->delete('products/' . $o->getTermek()?->getWcid() . '/variations/' . $o->getWcid());
+        } catch (HttpClientException $e) {
+            \mkw\store::writelog('DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
+        }
+    }
+
 }
