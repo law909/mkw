@@ -1407,6 +1407,7 @@ class TermekValtozat
         if (\mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
             $wc = store::getWcClient();
             $data = $this->toWC();
+            \mkw\store::writelog('valtozat.uploadtowc, termek id=' . $this->getTermek()->getId());
             if ($this->getTermek()->getWcid()) {
                 if (!$this->getWcid()) {
                     \mkw\store::writelog($this->getId() . ': változat POST start');
@@ -1437,6 +1438,8 @@ class TermekValtozat
                 if ($doflush) {
                     \mkw\store::getEm()->flush();
                 }
+            } else {
+                \mkw\store::writelog('nincs termek wcid????????????');
             }
         }
     }
