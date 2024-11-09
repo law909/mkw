@@ -317,9 +317,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 }
             }
             $this->getEm()->flush();
+            $tvec = new termekvaltozatertekController(null);
+            $tvec->uploadToWc();
             $termek->clearWcdate();
-            //$this->getEm()->persist($termek);
-            //$this->getEm()->flush();
             $termek->uploadToWC();
         }
 
