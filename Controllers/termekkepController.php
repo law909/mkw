@@ -116,6 +116,7 @@ class termekkepController extends \mkwhelpers\MattableController
         curl_close($ch);
 
         $response_data = json_decode($response, true);
+        \mkw\store::writelog('deleteMediaFromWP: ' . $response);
         return isset($response_data['deleted']) && $response_data['deleted'] == true;
     }
 
