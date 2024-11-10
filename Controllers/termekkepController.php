@@ -89,6 +89,7 @@ class termekkepController extends \mkwhelpers\MattableController
 
     protected function deleteMediaFromWP($media_id)
     {
+        \mkw\store::writelog('deleteMediaFromWP: ' . $media_id);
         $site_url = \mkw\store::getWcUrl();
         $endpoint = $site_url . '/wp-json/wp/v2/media/' . $media_id;
         $headers = [
@@ -106,6 +107,7 @@ class termekkepController extends \mkwhelpers\MattableController
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
+            \mkw\store::writelog('Error: ' . curl_errno($ch) . '->' . curl_error($ch));
             $err = curl_error($ch);
             curl_close($ch);
             return $err;
