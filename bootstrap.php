@@ -14,7 +14,6 @@ use Gedmo\Blameable\BlameableListener;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Timestampable\TimestampableListener;
 use Listeners\ArsavListener;
-use Listeners\TermekValtozatListener;
 use mkw\store;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
@@ -29,7 +28,6 @@ use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\RendezvenyListener;
 use Listeners\MPTNGYSzakmaianyagListener;
-use Listeners\TermekListener;
 use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
@@ -137,8 +135,6 @@ $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
-//$evm->addEventListener([Events::onFlush, Events::postFlush], new TermekListener());
-//$evm->addEventListener([Events::onFlush, Events::postFlush], new TermekValtozatListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

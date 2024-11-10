@@ -1500,6 +1500,16 @@ class store
         );
     }
 
+    public static function getWpAppName()
+    {
+        return self::getConfigValue('wp.appname');
+    }
+
+    public static function getWpAppPassword()
+    {
+        return self::getConfigValue('wp.apppassword');
+    }
+
     public static function getSzallitasiKoltsegMode()
     {
         $szm = self::getSetupValue('szallitasikoltsegmode');

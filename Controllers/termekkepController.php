@@ -80,10 +80,42 @@ class termekkepController extends \mkwhelpers\MattableController
              */
             $this->getEm()->remove($kep);
             $this->getEm()->flush();
+            $this->deleteMediaFromWP($kep->getWcid());
             $kep->getTermek()->clearWcdate();
             $kep->getTermek()->uploadToWC();
         }
         echo $this->params->getNumRequestParam('id');
     }
+
+    protected function deleteMediaFromWP($media_id)
+    {
+        $site_url = \mkw\store::getWcUrl();
+        $endpoint = $site_url . '/wp-json/wp/v2/media/' . $media_id;
+        $headers = [
+            'Authorization: Basic ' . base64_encode(\mkw\store::getWpAppName() . ':' . \mkw\store::getWpAppPassword()),
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $endpoint . '?force=true');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $err = curl_error($ch);
+            curl_close($ch);
+            return $err;
+        }
+
+        curl_close($ch);
+
+        $response_data = json_decode($response, true);
+        return isset($response_data['deleted']) && $response_data['deleted'] == true;
+    }
+
 
 }
