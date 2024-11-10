@@ -3745,7 +3745,7 @@ class Termek
             }
         }
         $data = [
-            'name' => $nev . $this->getCikkszam() ? ' - ' . $this->getCikkszam() : '',
+            'name' => $nev . ($this->getCikkszam() ? ' - ' . $this->getCikkszam() : ''),
             'sku' => 'T-' . $this->getId(),
             'type' => 'variable',
             'status' => $this->getInaktiv() ? 'draft' : 'publish',
