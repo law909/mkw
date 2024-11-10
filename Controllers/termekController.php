@@ -378,8 +378,12 @@ class termekController extends \mkwhelpers\MattableController
                     $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
                     $this->getEm()->persist($kep);
                 } elseif ($oper == 'edit') {
+                    /** @var TermekKep $kep */
                     $kep = \mkw\store::getEm()->getRepository('Entities\TermekKep')->find($kepid);
                     if ($kep) {
+                        if ($kep->getUrl() !== $this->params->getStringRequestParam('kepurl_' . $kepid)) {
+                            $kep->setWcid(null);
+                        }
                         $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
                         $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
                         $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
