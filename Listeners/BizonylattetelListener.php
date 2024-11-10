@@ -70,10 +70,14 @@ class BizonylattetelListener
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
 
         $termekek = [];
+        $tids = [];
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
-                    $termekek[] = $entity->getTermek()->getKeszletToWC(true);
+                    if (!$tids[$entity->getTermek()->getId()]) {
+                        $tids[$entity->getTermek()->getId()] = true;
+                        $termekek[] = $entity->getTermek()->getKeszletToWC(true);
+                    }
                     if ($entity->getTermekvaltozat()) {
                         \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
                         $entity->getTermekvaltozat()->sendKeszletToWC();
