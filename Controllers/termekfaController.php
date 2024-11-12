@@ -1241,7 +1241,7 @@ class termekfaController extends \mkwhelpers\MattableController
         header('Location: ' . $newlink);
     }
 
-    private static function walkCategoryTree($parentId = null, $wcparentid = null, $wc = null)
+    public static function walkCategoryTree($parentId = null, $wcparentid = null, $wc = null)
     {
         $filter = new FilterDescriptor();
         if (!$parentId) {

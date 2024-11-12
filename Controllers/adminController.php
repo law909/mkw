@@ -363,6 +363,8 @@ class adminController extends mkwhelpers\Controller
     {
         $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
         $farepo->regenerateKarKod();
+        $wc = \mkw\store::getWcClient();
+        termekfaController::walkCategoryTree(null, null, $wc);
         echo 'ok';
     }
 

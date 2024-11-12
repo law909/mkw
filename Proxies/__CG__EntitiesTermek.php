@@ -3286,6 +3286,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function clearWcdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearWcdate', []);
+
+        return parent::clearWcdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getNevForditas($ford, $locale)
     {
 
@@ -3402,6 +3413,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'uploadToWC', [$doFlush]);
 
         return parent::uploadToWC($doFlush);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteFromWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
+
+        return parent::deleteFromWC();
     }
 
 }
