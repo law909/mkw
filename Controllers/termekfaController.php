@@ -1316,7 +1316,7 @@ class termekfaController extends \mkwhelpers\MattableController
                         ];
                     }
                 }
-                $wc->put('products/categories', $data);
+                $wc->put('products/categories/' . $category->getWcid(), $data);
 
                 $category->setKepwcid($result->image->id);
                 $category->setWcdate('');

@@ -3771,8 +3771,7 @@ class Termek
             'images' => $images,
         ];
 
-        \mkw\store::writelog($this->getId() . ': termék adatgyűjtés stop');
-        \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBE: ' . json_encode($data));
+        \mkw\store::writelog($this->getId() . ': stop');
 
         if (!$this->getWcid()) {
             \mkw\store::writelog($this->getId() . ': termék POST start');
@@ -3783,7 +3782,6 @@ class Termek
                 throw $e;
             }
             \mkw\store::writelog($this->getId() . ': termék POST stop');
-            \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
 
             foreach ($result->images as $image) {
                 $tkep = $this->findTermekKepByUrl($image->name);
@@ -3812,7 +3810,6 @@ class Termek
                 throw $e;
             }
             \mkw\store::writelog($this->getId() . ': termék PUT stop');
-            \mkw\store::writelog($this->getId() . ': termék adat a woocommerceBŐL: ' . json_encode($result));
 
             foreach ($result->images as $image) {
                 $tkep = $this->findTermekKepByUrl($image->name);
@@ -3846,8 +3843,7 @@ class Termek
                 $allvariations[] = $variation;
             }
         }
-        \mkw\store::writelog($this->getId() . ': változat adatgyűjtés stop');
-        \mkw\store::writelog($this->getId() . ': változat adat woocommerceBE: ' . json_encode($allvariations));
+        \mkw\store::writelog($this->getId() . ': stop');
         if ($allvariations) {
             $tosend = [];
             foreach ($allvariations as $index => $variation) {
@@ -3862,8 +3858,7 @@ class Termek
                     \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
                     $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $tosend);
                     $tosend = [];
-                    \mkw\store::writelog($this->getId() . ': változat BATCH POST stop');
-                    \mkw\store::writelog($this->getId() . ': változat adat woocommerceBŐL' . json_encode($result));
+                    \mkw\store::writelog($this->getId() . ': stop');
                     foreach ($result->create as $res) {
                         $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find(substr($res->sku, 3));
                         if ($valtozat) {
