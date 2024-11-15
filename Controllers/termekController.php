@@ -1846,6 +1846,7 @@ class termekController extends \mkwhelpers\MattableController
             $categories = $this->getRepo(TermekFa::class)->getAll($filter);
 
             $termekdone = [];
+            $uploadedcount = 0;
 
             /** @var TermekFa $category */
             foreach ($categories as $category) {
@@ -1855,9 +1856,13 @@ class termekController extends \mkwhelpers\MattableController
                 $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
                 /** @var Termek $termek */
                 foreach ($termekek as $termek) {
+                    if ($uploadedcount >= 5) {
+                        return null;
+                    }
                     if (!in_array($termek->getId(), $termekdone)) {
                         $termekdone[] = $termek->getId();
                         $termek->uploadToWC(true);
+                        $uploadedcount++;
                     }
                 }
             }
