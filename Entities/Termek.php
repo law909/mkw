@@ -3772,6 +3772,7 @@ class Termek
         ];
 
         \mkw\store::writelog($this->getId() . ': stop');
+        \mkw\store::writelog($this->getId() . ': images: ' . json_encode($images));
 
         if (!$this->getWcid()) {
             \mkw\store::writelog($this->getId() . ': termék POST start');
@@ -3827,7 +3828,9 @@ class Termek
                 \mkw\store::getEm()->flush();
             }
         }
-
+        if ($result) {
+            \mkw\store::writelog($this->getId() . ': images wordpressből: ' . json_encode($result->images));
+        }
         \mkw\store::writelog($this->getId() . ': változat adatgyűjtés start');
         $allvariations = [];
         /** @var TermekValtozat $valtozat */
@@ -3851,6 +3854,9 @@ class Termek
                 } elseif ($variation['__jobtype'] == 'update') {
                     unset($variation['__jobtype']);
                     $tosend['update'][] = $variation;
+                }
+                if (array_key_exists('image', $variation)) {
+                    \mkw\store::writelog($variation['sku'] . ': image: ' . json_encode($variation['image']));
                 }
                 if (($index + 1) % 100 == 0 || $index + 1 == count($allvariations)) {
                     \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
