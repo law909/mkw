@@ -415,21 +415,23 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function remove($termekid, $vid = null)
     {
-        $sessionid = \Zend_Session::getId();
+        if ($termekid) {
+            $sessionid = \Zend_Session::getId();
 
-        $partnerid = null;
-        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
-        if ($partner) {
-            $partnerid = $partner->getId();
-        }
+            $partnerid = null;
+            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            if ($partner) {
+                $partnerid = $partner->getId();
+            }
 
-        $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+            $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
-        $sor = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
-        if ($sor) {
+            $sor = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+            if ($sor) {
 //            $termekid = $sor->getTermekId();
-            $this->_em->remove($sor);
-            $this->_em->flush();
+                $this->_em->remove($sor);
+                $this->_em->flush();
+            }
         }
     }
 
@@ -438,7 +440,6 @@ class KosarRepository extends \mkwhelpers\Repository
         $sessionid = \Zend_Session::getId();
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
-            $termekid = $sor->getTermekId();
             $this->_em->remove($sor);
             $this->_em->flush();
             return true;
