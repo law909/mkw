@@ -1393,6 +1393,7 @@ class TermekValtozat
                 'id' => $this->getKepwcid()
             ];
         } elseif ($this->getKepurl()) {
+            // ez itt nem jo, mert nem adok meg name-t es nem irom vissza a feltoltott kep id-t
             $variation['image'] = [
                 'src' => \mkw\store::getWcImageUrlPrefix() . $this->getKepurl(),
                 'alt' => $termeknev . ' - ' . $this->getCikkszam()

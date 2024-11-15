@@ -3560,14 +3560,18 @@ class Termek
         $this->kepwcid = $kepwcid;
     }
 
-    public function findTermekKepByUrl($url)
+    public function findTermekKepBy($vmi)
     {
+        $pcs = explode('-', $vmi);
+        $id = $pcs[2];
         $result = null;
-        /** @var TermekKep $kep */
-        foreach ($this->getTermekKepek() as $kep) {
-            if ($kep->getUrl() == $url) {
-                $result = $kep;
-                break;
+        if ($id) {
+            /** @var TermekKep $kep */
+            foreach ($this->getTermekKepek() as $kep) {
+                if ($kep->getId() == $id) {
+                    $result = $kep;
+                    break;
+                }
             }
         }
         return $result;
@@ -3723,7 +3727,7 @@ class Termek
             } else {
                 $images[] = [
                     'src' => \mkw\store::getWcImageUrlPrefix() . $this->getKepurl(),
-                    'name' => $this->getKepurl(),
+                    'name' => 'T-' . $this->getId() . '-',
                     'alt' => $nev . ' - ' . $this->getCikkszam()
                 ];
             }
@@ -3738,7 +3742,7 @@ class Termek
                 } else {
                     $images[] = [
                         'src' => \mkw\store::getWcImageUrlPrefix() . $kep->getUrl(),
-                        'name' => $kep->getUrl(),
+                        'name' => 'T-' . $this->getId() . '-' . $kep->getId(),
                         'alt' => $nev . ' - ' . $this->getCikkszam()
                     ];
                 }
@@ -3784,12 +3788,12 @@ class Termek
             \mkw\store::writelog($this->getId() . ': termék POST stop');
 
             foreach ($result->images as $image) {
-                $tkep = $this->findTermekKepByUrl($image->name);
+                $tkep = $this->findTermekKepBy($image->name);
                 if ($tkep) {
                     $tkep->setWcid($image->id);
                     $tkep->setWcdate('');
                     \mkw\store::getEm()->persist($tkep);
-                } elseif ($this->getKepurl() == $image->name) {
+                } else {
                     $this->setKepwcid($image->id);
                 }
             }
@@ -3811,12 +3815,12 @@ class Termek
             \mkw\store::writelog($this->getId() . ': termék PUT stop');
 
             foreach ($result->images as $image) {
-                $tkep = $this->findTermekKepByUrl($image->name);
+                $tkep = $this->findTermekKepBy($image->name);
                 if ($tkep) {
                     $tkep->setWcid($image->id);
                     $tkep->setWcdate('');
                     \mkw\store::getEm()->persist($tkep);
-                } elseif ($this->getKepurl() == $image->name) {
+                } else {
                     $this->setKepwcid($image->id);
                 }
             }
