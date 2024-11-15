@@ -1856,7 +1856,7 @@ class termekController extends \mkwhelpers\MattableController
                 $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
                 /** @var Termek $termek */
                 foreach ($termekek as $termek) {
-                    if ($uploadedcount >= 5) {
+                    if ($uploadedcount >= 25) {
                         return null;
                     }
                     if (!in_array($termek->getId(), $termekdone)) {
