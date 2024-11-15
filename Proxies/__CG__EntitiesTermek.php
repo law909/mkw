@@ -3341,12 +3341,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function findTermekKepByUrl($url)
+    public function findTermekKepBy($vmi)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'findTermekKepByUrl', [$url]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'findTermekKepBy', [$vmi]);
 
-        return parent::findTermekKepByUrl($url);
+        return parent::findTermekKepBy($vmi);
     }
 
     /**

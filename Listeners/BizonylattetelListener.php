@@ -81,7 +81,7 @@ class BizonylattetelListener
                     if ($entity->getTermekvaltozat()) {
                         \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
                         $entity->getTermekvaltozat()->sendKeszletToWC();
-                        \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet STOP');
+                        \mkw\store::writelog('STOP');
                     }
                 }
             }
@@ -95,7 +95,7 @@ class BizonylattetelListener
                     try {
                         \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek START: ' . json_encode($tosend));
                         $result = $wc->post('products/batch', $tosend);
-                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek STOP');
+                        \mkw\store::writelog('STOP');
                         $tosend = [];
                     } catch (HttpClientException $e) {
                         \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
