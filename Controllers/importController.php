@@ -5709,6 +5709,8 @@ class importController extends \mkwhelpers\Controller
                 }
             }
 
+            $kellwcbe = false;
+
             $termek = false;
             if ($kod) {
                 $termek = $termekrepo->find($kod);
@@ -5722,14 +5724,13 @@ class importController extends \mkwhelpers\Controller
                 if (is_array($termek)) {
                     $termek = $termek[0];
                 }
-            } else {
-                if ($createuj && is_array($nev) && array_key_exists('HU', $nev)) {
-                    $ujtermek = true;
-                    $termek = new \Entities\Termek();
-                    $termek->setMekod($this->getME('db'));
-                    if ($parent) {
-                        $termek->setTermekfa1($parent);
-                    }
+            } elseif ($createuj && is_array($nev) && array_key_exists('HU', $nev)) {
+                $ujtermek = true;
+                $termek = new \Entities\Termek();
+                $termek->setMekod($this->getME('db'));
+                $kellwcbe = true;
+                if ($parent) {
+                    $termek->setTermekfa1($parent);
                 }
             }
             if ($termek) {
@@ -5738,6 +5739,7 @@ class importController extends \mkwhelpers\Controller
                 }
                 if ($cikkszam) {
                     $termek->setCikkszam($cikkszam);
+                    $kellwcbe = true;
                 }
                 if ($vtsz) {
                     $vtsz = $this->createVtsz($vtsz, $afa);
@@ -5771,6 +5773,7 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setArsav($_arsav);
                                     }
                                     $ar->setBrutto($ertek);
+                                    $kellwcbe = true;
                                     \mkw\store::getEm()->persist($ar);
                                 }
                             }
@@ -5800,6 +5803,7 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setArsav($_arsav);
                                     }
                                     $ar->setNetto($ertek);
+                                    $kellwcbe = true;
                                     \mkw\store::getEm()->persist($ar);
                                 }
                             }
@@ -5824,14 +5828,21 @@ class importController extends \mkwhelpers\Controller
                             }
                             $translation->setLocale($loc);
                             $translation->setContent($text);
+                            $kellwcbe = true;
                             \mkw\store::getEm()->persist($translation);
                         } else {
                             $termek->setNev($text);
+                            $kellwcbe = true;
                         }
                     }
                 }
                 \mkw\store::getEm()->persist($termek);
                 \mkw\store::getEm()->flush();
+
+                if ($kellwcbe) {
+                    $termek->clearWcdate();
+                    $termek->uploadToWC();
+                }
 
 //                if (is_array($nev)) {
 //                    foreach($nev as $loc => $text) {

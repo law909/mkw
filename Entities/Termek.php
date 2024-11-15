@@ -3779,7 +3779,6 @@ class Termek
                 $result = $wc->post('products', $data);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
-                throw $e;
             }
             \mkw\store::writelog($this->getId() . ': termék POST stop');
 
@@ -3807,7 +3806,6 @@ class Termek
                 $result = $wc->put('products/' . $this->getWcid(), $data);
             } catch (HttpClientException $e) {
                 \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
-                throw $e;
             }
             \mkw\store::writelog($this->getId() . ': termék PUT stop');
 
@@ -3856,7 +3854,11 @@ class Termek
                 }
                 if (($index + 1) % 100 == 0 || $index + 1 == count($allvariations)) {
                     \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
-                    $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $tosend);
+                    try {
+                        $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $tosend);
+                    } catch (HttpClientException $e) {
+                        \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                    }
                     $tosend = [];
                     \mkw\store::writelog($this->getId() . ': stop');
                     foreach ($result->create as $res) {

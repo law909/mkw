@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Automattic\WooCommerce\Client;
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Partnercimketorzs;
 use Entities\TermekFa;
@@ -1279,7 +1280,11 @@ class termekfaController extends \mkwhelpers\MattableController
                             }
                         }
 
-                        $result = $wc->post('products/categories', $data);
+                        try {
+                            $result = $wc->post('products/categories', $data);
+                        } catch (HttpClientException $e) {
+                            \mkw\store::writelog($category->getWcid() . ' :termékkategória POST:HIBA: ' . $e->getMessage());
+                        }
 
                         $category->setWcid($result->id);
                         $category->setKepwcid($result->image->id);
@@ -1316,8 +1321,11 @@ class termekfaController extends \mkwhelpers\MattableController
                         ];
                     }
                 }
-                $wc->put('products/categories/' . $category->getWcid(), $data);
-
+                try {
+                    $wc->put('products/categories/' . $category->getWcid(), $data);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($category->getWcid() . ' :termékkategória PUT:HIBA: ' . $e->getMessage());
+                }
                 $category->setKepwcid($result->image->id);
                 $category->setWcdate('');
                 \mkw\store::getEm()->persist($category);
