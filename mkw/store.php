@@ -552,7 +552,9 @@ class store
         $kc = new \Controllers\kosarController(null);
         $minidata = $kc->getMiniData();
         $v->setVar('kosar', $minidata);
-        $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
+        if ($minidata && array_key_exists('termekdb', $minidata)) {
+            $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
+        }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $p = new \mkwhelpers\ParameterHandler();

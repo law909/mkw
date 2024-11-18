@@ -378,7 +378,7 @@
                         <tr>
                             <td class="px-4 py-2 whitespace-nowrap" x-text="item[0]"></td>
                             <td class="px-4 py-2 whitespace-nowrap" x-text="item[1]"></td>
-                            <td class="px-4 py-2 whitespace-nowrap" x-text="item[2]"></td>
+                            <td class="px-4 py-2 whitespace-nowrap" :class="item[2] < 0 ? 'text-red-500': 'text-green-500'" x-text="item[2]"></td>
                             <td class="px-4 py-2 whitespace-nowrap" x-text="item[3]"></td>
                             <td class="px-4 py-2 whitespace-nowrap" x-text="item[4]"></td>
                         </tr>
@@ -399,8 +399,8 @@
                             <span x-text="item[1]"></span>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <span class="font-medium text-gray-700">Összeg:</span>
-                            <span x-text="item[2]"></span>
+                            <span class="font-medium">Összeg:</span>
+                            <span :class="item[2] < 0 ? 'text-red-500': 'text-green-500'" x-text="item[2]"></span>
                         </div>
                         <div class="flex justify-between mt-2">
                             <span class="font-medium text-gray-700">Bizonylatszám:</span>
