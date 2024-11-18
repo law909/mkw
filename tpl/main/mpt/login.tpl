@@ -2,11 +2,11 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/js/main/mpt/login.js" defer></script>
     <script src="/js/alpine/cdn.min.js" defer></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 <div class="bg-white p-6 rounded shadow-md w-full max-w-md">

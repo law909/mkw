@@ -11,7 +11,7 @@
     {/if}
     <script src="/js/main/mpt/main.js" defer></script>
     <script src="/js/alpine/cdn.min.js" defer></script>
-    <script src="https://unpkg.com/iodine/dist/iodine.min.js"></script>
+    <script src="/js/iodine/iodine.min.umd.js"></script>
 </head>
 <body class="bg-gray-100" x-data="mainData">
 <nav class="bg-white shadow" x-data="{ open: false }">
