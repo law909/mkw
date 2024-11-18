@@ -16,7 +16,7 @@
         <!-- Logo or Site Title -->
         <div class="text-xl font-semibold">
             <!-- Add your logo or site title here -->
-            <a href="#" class="text-gray-800">My Site</a>
+            <a href="#" class="text-gray-800">MPT Tagság</a>
         </div>
         <!-- Hamburger Menu Button (Mobile) -->
         <div class="md:hidden">
