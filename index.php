@@ -294,7 +294,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
 
     if (!$redirected) {
         try {
-            if (!callTheController($match['target'], $match)) {
+            if ($match && !callTheController($match['target'], $match)) {
                 header('HTTP/1.1 404 Not found');
                 callTheController('mainController#show404', []);
             }

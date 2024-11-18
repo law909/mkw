@@ -741,7 +741,7 @@ class store
             $url = $uri['scheme'] . '://' . $uri['host'];
         }
         $rag = '';
-        if (($slug[0] !== '/') && $slug) {
+        if ($slug && ($slug[0] !== '/')) {
             $rag = '/';
         }
         return $url . $rag . $slug;
