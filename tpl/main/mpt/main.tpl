@@ -67,7 +67,7 @@
 
 <div class="container mx-auto px-4 py-6">
     <div x-show="page === 'myData'">
-        <!-- First Group: Tagság -->
+        <!-- Tagság -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Tagság</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <!-- Second Group: Személyes Adatok -->
+        <!-- Személyes Adatok -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Személyes Adatok</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <!-- Third Group: Elérhetőség -->
+        <!-- Elérhetőség -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Elérhetőség</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -137,7 +137,7 @@
             </div>
         </div>
 
-        <!-- Fourth Group: Számlázási Adatok -->
+        <!-- Számlázási Adatok -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Számlázási Adatok</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -190,7 +190,7 @@
             </div>
         </div>
 
-        <!-- Fifth Group: Munkahely és Lakcím -->
+        <!-- Munkahely és Lakcím -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Munkahely és Lakcím</h2>
             <!-- Munkahely -->
@@ -256,7 +256,7 @@
             </div>
         </div>
 
-        <!-- Sixth Group: Végzettség -->
+        <!-- Végzettség -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Végzettség</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -288,7 +288,7 @@
             </div>
         </div>
 
-        <!-- Seventh Group: Születési Dátum -->
+        <!-- Születési Dátum -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Születési Dátum</h2>
             <div class="flex flex-col md:flex-row md:-mx-2">
@@ -300,7 +300,7 @@
             </div>
         </div>
 
-        <!-- Eighth Group: Tagság Részletei -->
+        <!-- Tagság Részletei -->
         <div class="bg-white p-6 mb-4 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Tagság Részletei</h2>
             <div class="flex flex-col md:flex-row md:flex-wrap md:-mx-2">
@@ -309,8 +309,6 @@
                     <label class="block text-sm font-medium text-gray-700">Tagság forma</label>
                     <select x-model="data.tagsagForma" class="mt-1 block w-full border border-gray-300 rounded-md p-2">
                         <option value="">Válassz</option>
-                        <option value="rendestag">Rendes tag</option>
-                        <option value="parolotag">Pártoló tag</option>
                     </select>
                 </div>
                 <!-- Tagozat -->
@@ -318,9 +316,6 @@
                     <label class="block text-sm font-medium text-gray-700">Tagozat</label>
                     <select x-model="data.tagozat" class="mt-1 block w-full border border-gray-300 rounded-md p-2">
                         <option value="">Válassz</option>
-                        <option value="fiatalok">Fiatalok</option>
-                        <option value="kozepkoruak">Középkorúak</option>
-                        <option value="idosek">Idősek</option>
                     </select>
                 </div>
                 <!-- Szekció 1 -->
@@ -358,9 +353,14 @@
 
     <!-- Finances Page -->
     <div x-show="page === 'finances'">
-        <!-- Responsive Finances Section -->
         <div class="bg-white p-6 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Pénzügyek</h2>
+            <div class="border rounded-lg mb-4 p-4 bg-white shadow">
+                <div class="flex justify-between">
+                    <span class="font-medium text-gray-700">Egyenleg:</span>
+                    <span x-text="">0</span>
+                </div>
+            </div>
             <!-- Table for larger screens -->
             <div class="hidden md:block">
                 <table class="min-w-full divide-y divide-gray-200">
