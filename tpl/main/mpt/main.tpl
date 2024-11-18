@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adataim</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/js/main/mpt/main.js" defer></script>
     <script src="/js/alpine/cdn.min.js" defer></script>
     <script src="https://unpkg.com/iodine/dist/iodine.min.js"></script>
+    <link rel="stylesheet" href="/themes/main/mpt/mpt.css">
 </head>
 <body class="bg-gray-100" x-data="mainData">
 <nav class="bg-white shadow" x-data="{ open: false }">
