@@ -76,6 +76,10 @@ function mainData() {
         },
 
         fetchFinances() {
+            this.finances = [
+                [2006, 'előírás', 6000, 'ismeretlen', '2006.01.01'],
+                [2006, 'befizetés', 6000, 'bef1212', '2006.05.19'],
+            ];
             fetch('/api/finances')
                 .then(response => response.json())
                 .then(json => {

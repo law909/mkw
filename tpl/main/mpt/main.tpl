@@ -10,15 +10,11 @@
     <script src="https://unpkg.com/iodine/dist/iodine.min.js"></script>
 </head>
 <body class="bg-gray-100" x-data="mainData">
-<!-- Navigation Menu -->
 <nav class="bg-white shadow" x-data="{ open: false }">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <!-- Logo or Site Title -->
         <div class="text-xl font-semibold">
-            <!-- Add your logo or site title here -->
             <a href="#" class="text-gray-800">MPT Tagság</a>
         </div>
-        <!-- Hamburger Menu Button (Mobile) -->
         <div class="md:hidden">
             <button @click="open = !open" class="text-gray-800 focus:outline-none">
                 <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -33,7 +29,6 @@
                 </svg>
             </button>
         </div>
-        <!-- Navigation Links -->
         <div class="hidden md:flex space-x-4">
             <button class="hover:text-blue-500" :class="{ 'font-bold text-blue-500': page === 'myData' }"
                     @click="page = 'myData'">Adataim
@@ -45,12 +40,10 @@
                     @click="page = 'changePassword'">Jelszó módosítás
             </button>
         </div>
-        <!-- Logout Button -->
         <div class="hidden md:block">
             <button class="text-red-500 hover:text-red-600" @click="logout()">Kilépés</button>
         </div>
     </div>
-    <!-- Mobile Menu -->
     <div x-show="open" class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <button class="block w-full text-left px-3 py-2 hover:bg-gray-100"
@@ -65,7 +58,6 @@
                     :class="{ 'font-bold text-blue-500': page === 'changePassword' }"
                     @click="page = 'changePassword'; open = false">Jelszó módosítás
             </button>
-            <!-- Logout Button -->
             <button class="block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100"
                     @click="logout(); open = false">Kilépés
             </button>
@@ -73,9 +65,7 @@
     </div>
 </nav>
 
-<!-- Main Content -->
 <div class="container mx-auto px-4 py-6">
-    <!-- My Data Page -->
     <div x-show="page === 'myData'">
         <!-- First Group: Tagság -->
         <div class="bg-white p-6 mb-4 shadow rounded">
@@ -366,11 +356,13 @@
         </div>
     </div>
 
+    <!-- Finances Page -->
     <div x-show="page === 'finances'">
-        <!-- Responsive Finances Table -->
+        <!-- Responsive Finances Section -->
         <div class="bg-white p-6 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Pénzügyek</h2>
-            <div class="overflow-x-auto">
+            <!-- Table for larger screens -->
+            <div class="hidden md:block">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                     <tr>
@@ -394,12 +386,38 @@
                     </tbody>
                 </table>
             </div>
+            <!-- Boxes for mobile -->
+            <div class="md:hidden">
+                <template x-for="item in finances" :key="item[3]">
+                    <div class="border rounded-lg mb-4 p-4 bg-white shadow">
+                        <div class="flex justify-between">
+                            <span class="font-medium text-gray-700">Év:</span>
+                            <span x-text="item[0]"></span>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="font-medium text-gray-700">Típus:</span>
+                            <span x-text="item[1]"></span>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="font-medium text-gray-700">Összeg:</span>
+                            <span x-text="item[2]"></span>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="font-medium text-gray-700">Bizonylatszám:</span>
+                            <span x-text="item[3]"></span>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="font-medium text-gray-700">Dátum:</span>
+                            <span x-text="item[4]"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </div>
 
     <!-- Change Password Page -->
     <div x-show="page === 'changePassword'">
-        <!-- Responsive Change Password Form -->
         <div class="bg-white p-6 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Jelszó módosítás</h2>
             <div class="flex flex-col md:flex-row md:-mx-2">
