@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adataim</title>
+    {if ($developer)}
+        <script src="https://cdn.tailwindcss.com"></script>
+    {else}
+        <link rel="stylesheet" href="/themes/main/mpt/mpt.css">
+    {/if}
     <script src="/js/main/mpt/main.js" defer></script>
     <script src="/js/alpine/cdn.min.js" defer></script>
     <script src="https://unpkg.com/iodine/dist/iodine.min.js"></script>
-    <link rel="stylesheet" href="/themes/main/mpt/mpt.css">
 </head>
 <body class="bg-gray-100" x-data="mainData">
 <nav class="bg-white shadow" x-data="{ open: false }">
@@ -356,7 +360,7 @@
         <div class="bg-white p-6 shadow rounded">
             <h2 class="text-lg font-semibold mb-4">Pénzügyek</h2>
             <div class="border rounded-lg mb-4 p-4 bg-white shadow">
-                <div class="flex justify-between">
+                <div class="flex justify-between md:justify-normal md:space-x-4">
                     <span class="font-medium text-gray-700">Egyenleg:</span>
                     <span x-text="">0</span>
                 </div>
@@ -436,10 +440,10 @@
                     <p class="text-red-500 text-sm mt-1" x-show="passwordErrors.confirm" x-text="passwordErrors.confirm"></p>
                 </div>
             </div>
-            <!-- Save Password Button -->
-            <div class="mt-6">
-                <button @click="changePassword()" class="bg-blue-500 text-white px-4 py-2 rounded">Mentés</button>
-            </div>
+        </div>
+        <!-- Save Password Button -->
+        <div class="mt-6">
+            <button @click="changePassword()" class="bg-blue-500 text-white px-4 py-2 rounded">Mentés</button>
         </div>
     </div>
 </div>
