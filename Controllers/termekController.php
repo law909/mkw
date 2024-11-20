@@ -911,7 +911,7 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
-            $filter->addFilter('_xx.termekmenu1karkod', 'LIKE', $faszuro);
+            $filter->addFilter(['_xx.termekmenu1karkod'], 'LIKE', $faszuro);
         }
 
         $this->vanshowarsav = false;
