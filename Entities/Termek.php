@@ -3818,7 +3818,6 @@ class Termek
         ];
 
         \mkw\store::writelog($this->getId() . ': stop');
-        \mkw\store::writelog($this->getId() . ': images: ' . json_encode($images));
 
         if (!$this->getWcid()) {
             \mkw\store::writelog($this->getId() . ': termék POST start');
@@ -3873,9 +3872,6 @@ class Termek
             if ($doFlush) {
                 \mkw\store::getEm()->flush();
             }
-        }
-        if ($result) {
-            \mkw\store::writelog($this->getId() . ': images wordpressből: ' . json_encode($result->images));
         }
         \mkw\store::writelog($this->getId() . ': változat adatgyűjtés start');
         $allvariations = [];
