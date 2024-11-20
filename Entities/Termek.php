@@ -3702,6 +3702,13 @@ class Termek
         if ($keszlet < 0) {
             $keszlet = 0;
         }
+        $meta = [];
+        if ($this->getCikkszam()) {
+            $meta[] = [
+                'key' => 'partnumber',
+                'value' => $this->getCikkszam(),
+            ];
+        }
         $cats = [];
         if ($this->getTermekmenu1() && $this->getTermekmenu1()->getWcid()) {
             $cats[] = [
@@ -3783,7 +3790,7 @@ class Termek
             }
         }
         $data = [
-            'name' => $nev . ($this->getCikkszam() ? ' - ' . $this->getCikkszam() : ''),
+            'name' => $nev,
             'sku' => 'T-' . $this->getId(),
             'type' => 'variable',
             'status' => $this->getInaktiv() ? 'draft' : 'publish',
@@ -3807,6 +3814,7 @@ class Termek
             'tags' => $tags,
             'attributes' => $attrs,
             'images' => $images,
+            'meta_data' => $meta,
         ];
 
         \mkw\store::writelog($this->getId() . ': stop');
