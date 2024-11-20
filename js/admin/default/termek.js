@@ -728,6 +728,46 @@ $(document).ready(function () {
                 });
             })
                 .button();
+            $('.js-termekmenubutton').on('click', function (e) {
+                var edit = $(this);
+                e.preventDefault();
+                dialogcenter.jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekmenu/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
+                })
+                    .bind('loaded.jstree', function (event, data) {
+                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                    });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'Töröl': function () {
+                            edit.attr('data-value', 0);
+                            $('span', edit).text(edit.attr('data-text'));
+                            $(this).dialog('close');
+                        },
+                        'OK': function () {
+                            dialogcenter.jstree('get_selected').each(function () {
+                                var treenode = $(this).children('a');
+                                edit.attr('data-value', treenode.attr('id').split('_')[1]);
+                                $('span', edit).text(treenode.text());
+                            });
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            })
+                .button();
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();
@@ -752,6 +792,10 @@ $(document).ready(function () {
             var x = {};
             x['cimkek[]'] = cimkek;
             $('.js-termekfabutton').each(function () {
+                $this = $(this);
+                x[$this.attr('data-name')] = $this.attr('data-value');
+            });
+            $('.js-termekmenubutton').each(function () {
                 $this = $(this);
                 x[$this.attr('data-name')] = $this.attr('data-value');
             });
@@ -802,6 +846,7 @@ $(document).ready(function () {
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');
+                    mkwcomp.termekmenuFilter.clearChecks('#termekmenu');
                 },
                 onFilter: function (obj) {
                     var cimkek = new Array(), fak;
@@ -814,6 +859,10 @@ $(document).ready(function () {
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fak.length > 0) {
                         obj['fafilter'] = fak;
+                    }
+                    menuk = mkwcomp.termekmenuFilter.getFilter('#termekmenu');
+                    if (menuk.length > 0) {
+                        obj['menufilter'] = menuk;
                     }
                 }
             },
@@ -1045,6 +1094,7 @@ $(document).ready(function () {
             $(this).toggleClass('ui-state-hover');
         });
         mkwcomp.termekfaFilter.init('#termekfa');
+        mkwcomp.termekmenuFilter.init('#termekmenu');
     } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb($.extend({}, termek, {independent: true}));

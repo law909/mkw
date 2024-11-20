@@ -10,6 +10,7 @@ use Entities\TermekAr;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekKep;
+use Entities\TermekMenu;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
 use Entities\Valutanem;
@@ -201,6 +202,8 @@ class termekController extends \mkwhelpers\MattableController
         $x['termekfa1'] = $t->getTermekfa1Id();
         $x['termekfa2'] = $t->getTermekfa2Id();
         $x['termekfa3'] = $t->getTermekfa3Id();
+        $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
+        $x['termekmenu1'] = $t->getTermekmenu1Id();
         $x['kepurl'] = $t->getKepurl();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
@@ -336,7 +339,7 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setJogaervenyessegnap($this->params->getIntRequestParam('jogaervenyessegnap'));
         }
 
-        $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
+        $farepo = \mkw\store::getEm()->getRepository(TermekFa::class);
         $fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
         if ($fa) {
             $obj->setTermekfa1($fa);
@@ -354,6 +357,13 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setTermekfa3($fa);
         } else {
             $obj->setTermekfa3(null);
+        }
+        $menurepo = \mkw\store::getEm()->getRepository(TermekMenu::class);
+        $menu = $menurepo->find($this->params->getIntRequestParam('termekmenu1'));
+        if ($menu) {
+            $obj->setTermekmenu1($menu);
+        } else {
+            $obj->setTermekmenu1(null);
         }
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
@@ -884,12 +894,24 @@ class termekController extends \mkwhelpers\MattableController
         if (!empty($fv)) {
             $ff = new \mkwhelpers\FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
             $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             $filter->addFilter(['_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod'], 'LIKE', $faszuro);
+        }
+
+        $fv = $this->params->getArrayRequestParam('menufilter');
+        if (!empty($fv)) {
+            $ff = new \mkwhelpers\FilterDescriptor();
+            $ff->addFilter('id', 'IN', $fv);
+            $res = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($ff, []);
+            $faszuro = [];
+            foreach ($res as $sor) {
+                $faszuro[] = $sor->getKarkod() . '%';
+            }
+            $filter->addFilter('_xx.termekmenu1karkod', 'LIKE', $faszuro);
         }
 
         $this->vanshowarsav = false;

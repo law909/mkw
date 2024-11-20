@@ -361,10 +361,17 @@ class adminController extends mkwhelpers\Controller
 
     public function regeneratekarkod()
     {
-        $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
+        $farepo = \mkw\store::getEm()->getRepository(Entities\TermekFa::class);
         $farepo->regenerateKarKod();
+        echo 'ok';
+    }
+
+    public function regeneratemenukarkod()
+    {
+        $menurepo = \mkw\store::getEm()->getRepository(Entities\TermekMenu::class);
+        $menurepo->regenerateKarKod();
         $wc = \mkw\store::getWcClient();
-        termekfaController::walkCategoryTree(null, null, $wc);
+        termekmenuController::walkCategoryTree(null, null, $wc);
         echo 'ok';
     }
 

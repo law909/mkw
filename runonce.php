@@ -414,6 +414,33 @@ if ($DBVersion < '0054') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0054');
 }
 
+if ($DBVersion < '0055') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Termék menü","/admin/termekmenu/viewlist","/admin/termekmenu",20,0,1300, "")'
+    );
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO termekmenu (parent_id, nev, slug, karkod, lathato, lathato2, lathato3, lathato4, lathato5, lathato6, lathato7, lathato8, lathato9,'
+        . ' lathato10, lathato11, lathato12, lathato13, lathato14,lathato15)'
+        . ' VALUES '
+        . '(null, "Termék menü","termekmenu","00001", 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0)'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0055');
+}
+
+if ($DBVersion < '0056') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Termék menü rendezése","","",40,0,800, "js-regeneratemenukarkod")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0056');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

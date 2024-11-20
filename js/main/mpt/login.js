@@ -6,7 +6,6 @@ function loginForm() {
         errors: {},
         submitForm() {
             this.errors = {};
-            // Simple form validation
             if (!this.email) {
                 this.errors.email = 'Az email cím megadása kötelező.';
             }

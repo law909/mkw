@@ -228,6 +228,7 @@ if (\mkw\store::isBankpenztar()) {
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
+$router->map('GET', '/admin/regeneratemenukarkod', 'adminController#regeneratemenukarkod', 'adminregeneratemenukarkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
 $router->map('GET', '/admin/setgrideditbutton', 'adminController#setGridEditButton', 'adminsetgrideditbutton');
 $router->map('GET', '/admin/seteditstyle', 'adminController#setEditStyle', 'adminseteditstyle');
@@ -664,6 +665,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekfatranslation/save', 'termekfatranslationController#save', 'admintermekfatranslationsave');
 }
 
+$router->map('GET', '/admin/termekmenutranslation/getemptyrow', 'termekmenutranslationController#getemptyrow', 'admintermekmenutranslationgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekmenutranslation/save', 'termekmenutranslationController#save', 'admintermekmenutranslationsave');
+}
+
 $router->map('GET', '/admin/statlaptranslation/getemptyrow', 'statlaptranslationController#getemptyrow', 'adminstatlaptranslationgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/statlaptranslation/save', 'statlaptranslationController#save', 'adminstatlaptranslationsave');
@@ -949,6 +955,16 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/termekfa/viewlist', 'termekfaController#viewlist', 'admintermekfaviewlist');
 $router->map('GET', '/admin/termekfa/regenerateslug', 'termekfaController#regenerateSlug', 'admintermekfaregenerateslug');
+
+$router->map('GET', '/admin/termekmenu/getkarb', 'termekmenuController#getkarb', 'admintermekmenugetkarb');
+$router->map('GET', '/admin/termekmenu/jsonlist', 'termekmenuController#jsonlist', 'admintermekmenujsonlist');
+$router->map('GET', '/admin/termekmenu/isdeletable', 'termekmenuController#isdeletable', 'admintermekmenuisdeletable');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekmenu/save', 'termekmenuController#save', 'admintermekmenusave');
+    $router->map('POST', '/admin/termekmenu/move', 'termekmenuController#move', 'admintermekmenumove');
+}
+$router->map('GET', '/admin/termekmenu/viewlist', 'termekmenuController#viewlist', 'admintermekmenuviewlist');
+$router->map('GET', '/admin/termekmenu/regenerateslug', 'termekmenuController#regenerateSlug', 'admintermekmenuregenerateslug');
 
 $router->map('GET', '/admin/kosar/viewlist', 'kosarController#viewlist', 'adminkosarviewlist');
 $router->map('GET', '/admin/kosar/getlistbody', 'kosarController#getlistbody', 'adminkosargetlistbody');

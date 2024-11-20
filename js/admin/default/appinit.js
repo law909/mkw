@@ -60,6 +60,12 @@ $(document).ready(
                 url: '/admin/regeneratekarkod'
             });
         });
+        $('.js-regeneratemenukarkod').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/regeneratemenukarkod'
+            });
+        });
         $('.js-orarendprint').each(function () {
             $(this).attr('target', '_blank');
         });

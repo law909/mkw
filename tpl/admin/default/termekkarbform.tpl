@@ -62,6 +62,14 @@
                         <input id="ArukeresofanevEdit" name="arukeresofanev" maxlength=255 value="{$egyed.arukeresofanev}">
                     </td>
                 </tr>
+                <tr>
+                    <td><label>{at('Menü')}:</label></td>
+                    <td>
+                        <span id="TermekMenu1" class="js-termekmenubutton" data-text="{at('válasszon')}"
+                              data-name="termekmenu1"
+                              data-value="{$egyed.termekmenu1}">{if ($egyed.termekmenu1nev)}{$egyed.termekmenu1nev}{else}{at('válasszon')}{/if}</span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <table>

@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {if ($developer)}
+        <script src="https://cdn.tailwindcss.com"></script>
+    {else}
+        <link rel="stylesheet" href="/themes/main/mpt/mpt.css">
+    {/if}
     <script src="/js/main/mpt/login.js" defer></script>
     <script src="/js/alpine/cdn.min.js" defer></script>
 </head>

@@ -46,11 +46,11 @@
                 </select>
                 {if ($setup.multishop)}
                     {for $cikl = 2 to $enabledwebshops}
-                    <select id="lathato{$cikl}filter" name="lathato{$cikl}filter">
-                        <option value="9">{at('Mindegy')} {$webshop{$cikl}name}</option>
-                        <option value="1">{at('Látható')} {$webshop{$cikl}name}</option>
-                        <option value="0">{at('Nem látható')} {$webshop{$cikl}name}</option>
-                    </select>
+                        <select id="lathato{$cikl}filter" name="lathato{$cikl}filter">
+                            <option value="9">{at('Mindegy')} {$webshop{$cikl}name}</option>
+                            <option value="1">{at('Látható')} {$webshop{$cikl}name}</option>
+                            <option value="0">{at('Nem látható')} {$webshop{$cikl}name}</option>
+                        </select>
                     {/for}
                 {/if}
                 <select id="nemkaphatofilter" name="nemkaphatofilter">
@@ -89,6 +89,8 @@
             </div>
             <div class="matt-hseparator"></div>
             <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
+            <div class="matt-hseparator"></div>
+            <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"></div>
             <div class="matt-hseparator"></div>
             <div id="cimkefiltercontainer">
                 <div id="cimkefiltercontainerhead"><a id="cimkefiltercollapse" href="#"
@@ -158,9 +160,9 @@
         <label>Termékcsoport: </label>
         <select class="js-tcsset">
             <option value="">{at('válasszon')}</option>
-        {foreach $termekcsoportlist as $_tcs}
-            <option value="{$_tcs.id}">{$_tcs.caption}</option>
-        {/foreach}
+            {foreach $termekcsoportlist as $_tcs}
+                <option value="{$_tcs.id}">{$_tcs.caption}</option>
+            {/foreach}
         </select>
     </div>
 {/block}

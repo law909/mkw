@@ -66,10 +66,16 @@ if (\mkw\store::isMPTNGY()) {
 
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
-if (\mkw\store::isMPTNGY()) {
-    $router->map('POST', '/login/ment', 'mptngypartnerController#doLogin', 'dologin');
-} else {
-    $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
+switch (true) {
+    case \mkw\store::isMPTNGY():
+        $router->map('POST', '/login/ment', 'mptngypartnerController#doLogin', 'dologin');
+        break;
+    case \mkw\store::isMPT():
+        $router->map('POST', '/login/ment', 'mptpartnerController#doLogin', 'dologin');
+        break;
+    default:
+        $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
+        break;
 }
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');
 $router->map('GET', '/logout', 'partnerController#doLogout', 'dologout');

@@ -11,10 +11,12 @@ use mkw\store;
  * @ORM\Table(name="blogposzt",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
- * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"})
+ * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
+ * 		@ORM\index(name="termekmenukarkod_idx",columns={"termekmenu1karkod"})
  * })
  */
-class Blogposzt {
+class Blogposzt
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -94,6 +96,15 @@ class Blogposzt {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekfa3karkod = '';
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekMenu",inversedBy="blogposztok1")
+     * @ORM\JoinColumn(name="termekmenu1_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termekmenu1;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekmenu1karkod = '';
+
     /** @ORM\Column(type="text",nullable=true) */
     private $kepurl = '';
 
@@ -112,12 +123,14 @@ class Blogposzt {
     /** @ORM\ManyToMany(targetEntity="Termek", mappedBy="blogposztok", cascade={"persist"}) */
     private $termekek;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->termekek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function convertToArray() {
-        $ret = array(
+    public function convertToArray()
+    {
+        $ret = [
             'slug' => $this->getSlug(),
             'cim' => $this->getCim(),
             'kivonat' => $this->getKivonat(),
@@ -130,70 +143,82 @@ class Blogposzt {
             'megjelenesdatumstr' => $this->getMegjelenesdatumStr(),
             'showseodescription' => $this->getShowSeodescription(),
             'lathato' => $this->getLathato()
-        );
+        ];
         return $ret;
     }
 
-    public function getLink() {
-        return \mkw\store::getRouter()->generate('showblogposzt', \mkw\store::getConfigValue('mainurl', true), array('blogposzt' => $this->getSlug()));
+    public function getLink()
+    {
+        return \mkw\store::getRouter()->generate('showblogposzt', \mkw\store::getConfigValue('mainurl', true), ['blogposzt' => $this->getSlug()]);
     }
 
-    public function getShowSeodescription() {
+    public function getShowSeodescription()
+    {
         if ($this->seodescription) {
             return $this->seodescription;
         }
         return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Blogseodescription);
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -203,37 +228,41 @@ class Blogposzt {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
         return null;
     }
 
-    public function getKepurl($pre = '/') {
+    public function getKepurl($pre = '/')
+    {
         if ($this->kepurl) {
             if ($this->kepurl[0] !== $pre) {
                 return $pre . $this->kepurl;
-            }
-            else {
+            } else {
                 return $this->kepurl;
             }
         }
         return '';
     }
 
-    public function getKepurlMini($pre = '/') {
+    public function getKepurlMini($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -243,7 +272,8 @@ class Blogposzt {
         return '';
     }
 
-    public function getKepurlSmall($pre = '/') {
+    public function getKepurlSmall($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -253,7 +283,8 @@ class Blogposzt {
         return '';
     }
 
-    public function getKepurlMedium($pre = '/') {
+    public function getKepurlMedium($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -263,7 +294,8 @@ class Blogposzt {
         return '';
     }
 
-    public function getKepurlLarge($pre = '/') {
+    public function getKepurlLarge($pre = '/')
+    {
         $kepurl = $this->getKepurl($pre);
         if ($kepurl) {
             $t = explode('.', $kepurl);
@@ -273,40 +305,45 @@ class Blogposzt {
         return '';
     }
 
-    public function setKepurl($kepurl) {
+    public function setKepurl($kepurl)
+    {
         $this->kepurl = $kepurl;
         if (!$kepurl) {
             $this->setKepleiras(null);
         }
     }
 
-    public function getKepleiras() {
+    public function getKepleiras()
+    {
         return $this->kepleiras;
     }
 
-    public function setKepleiras($kepleiras) {
+    public function setKepleiras($kepleiras)
+    {
         $this->kepleiras = $kepleiras;
     }
 
-    public function getMegjelenesdatum() {
+    public function getMegjelenesdatum()
+    {
         if (!$this->id && !$this->megjelenesdatum) {
             $this->megjelenesdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->megjelenesdatum;
     }
 
-    public function getMegjelenesdatumStr() {
+    public function getMegjelenesdatumStr()
+    {
         if ($this->getMegjelenesdatum()) {
             return $this->getMegjelenesdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setMegjelenesdatum($adat = '') {
+    public function setMegjelenesdatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->megjelenesdatum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -314,11 +351,13 @@ class Blogposzt {
         }
     }
 
-    public function getTermekfa1() {
+    public function getTermekfa1()
+    {
         return $this->termekfa1;
     }
 
-    public function getTermekfa1Nev() {
+    public function getTermekfa1Nev()
+    {
         if ($this->termekfa1) {
             if ($this->termekfa1->getId() > 1) {
                 return $this->termekfa1->getNev();
@@ -327,29 +366,32 @@ class Blogposzt {
         return '';
     }
 
-    public function getTermekfa1Id() {
+    public function getTermekfa1Id()
+    {
         if ($this->termekfa1) {
             return $this->termekfa1->getId();
         }
         return 1;
     }
 
-    public function setTermekfa1($termekfa) {
+    public function setTermekfa1($termekfa)
+    {
         $this->termekfa1 = $termekfa;
         if ($termekfa) {
             $this->termekfa1karkod = $termekfa->getKarkod();
 //            $termekfa->addTermek1($this);
-        }
-        else {
+        } else {
             $this->termekfa1karkod = '';
         }
     }
 
-    public function getTermekfa2() {
+    public function getTermekfa2()
+    {
         return $this->termekfa2;
     }
 
-    public function getTermekfa2Nev() {
+    public function getTermekfa2Nev()
+    {
         if ($this->termekfa2) {
             if ($this->termekfa2->getId() > 1) {
                 return $this->termekfa2->getNev();
@@ -358,29 +400,32 @@ class Blogposzt {
         return '';
     }
 
-    public function getTermekfa2Id() {
+    public function getTermekfa2Id()
+    {
         if ($this->termekfa2) {
             return $this->termekfa2->getId();
         }
         return 1;
     }
 
-    public function setTermekfa2($termekfa) {
+    public function setTermekfa2($termekfa)
+    {
         $this->termekfa2 = $termekfa;
         if ($termekfa) {
             $this->termekfa2karkod = $termekfa->getKarkod();
 //            $termekfa->addTermek2($this);
-        }
-        else {
+        } else {
             $this->termekfa2karkod = '';
         }
     }
 
-    public function getTermekfa3() {
+    public function getTermekfa3()
+    {
         return $this->termekfa3;
     }
 
-    public function getTermekfa3Nev() {
+    public function getTermekfa3Nev()
+    {
         if ($this->termekfa3) {
             if ($this->termekfa3->getId() > 1) {
                 return $this->termekfa3->getNev();
@@ -389,118 +434,169 @@ class Blogposzt {
         return '';
     }
 
-    public function getTermekfa3Id() {
+    public function getTermekfa3Id()
+    {
         if ($this->termekfa3) {
             return $this->termekfa3->getId();
         }
         return 1;
     }
 
-    public function setTermekfa3($termekfa) {
+    public function setTermekfa3($termekfa)
+    {
         $this->termekfa3 = $termekfa;
         if ($termekfa) {
             $this->termekfa3karkod = $termekfa->getKarkod();
 //            $termekfa->addTermek3($this);
-        }
-        else {
+        } else {
             $this->termekfa3karkod = '';
         }
     }
 
-    public function getShowCim() {
+    public function getTermekmenu1()
+    {
+        return $this->termekmenu1;
+    }
+
+    public function getTermekmenu1Nev()
+    {
+        if ($this->termekmenu1) {
+            if ($this->termekmenu1->getId() > 1) {
+                return $this->termekmenu1->getNev();
+            }
+        }
+        return '';
+    }
+
+    public function getTermekmenu1Id()
+    {
+        if ($this->termekmenu1) {
+            return $this->termekmenu1->getId();
+        }
+        return 1;
+    }
+
+    public function setTermekmenu1($termekmenu)
+    {
+        $this->termekmenu1 = $termekmenu;
+        if ($termekmenu) {
+            $this->termekmenu1karkod = $termekmenu->getKarkod();
+//            $termekmenu->addTermek1($this);
+        } else {
+            $this->termekmenu1karkod = '';
+        }
+    }
+
+    public function getShowCim()
+    {
         return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Blogoldalcim);
     }
 
     /**
      * @return mixed
      */
-    public function getCim() {
+    public function getCim()
+    {
         return $this->cim;
     }
 
     /**
      * @param mixed $cim
      */
-    public function setCim($cim) {
+    public function setCim($cim)
+    {
         $this->cim = $cim;
     }
 
     /**
      * @return mixed
      */
-    public function getKivonat() {
+    public function getKivonat()
+    {
         return $this->kivonat;
     }
 
     /**
      * @param mixed $kivonat
      */
-    public function setKivonat($kivonat) {
+    public function setKivonat($kivonat)
+    {
         $this->kivonat = $kivonat;
     }
 
     /**
      * @return mixed
      */
-    public function getSzoveg() {
+    public function getSzoveg()
+    {
         return $this->szoveg;
     }
 
     /**
      * @param mixed $szoveg
      */
-    public function setSzoveg($szoveg) {
+    public function setSzoveg($szoveg)
+    {
         $this->szoveg = $szoveg;
     }
 
     /**
      * @return mixed
      */
-    public function getLathato() {
+    public function getLathato()
+    {
         return $this->lathato;
     }
 
     /**
      * @param mixed $lathato
      */
-    public function setLathato($lathato) {
+    public function setLathato($lathato)
+    {
         $this->lathato = $lathato;
     }
 
-    public function getSlug() {
+    public function getSlug()
+    {
         return $this->slug;
     }
 
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
     }
 
     /**
      * @return mixed
      */
-    public function getSeodescription() {
+    public function getSeodescription()
+    {
         return $this->seodescription;
     }
 
     /**
      * @param mixed $seodescription
      */
-    public function setSeodescription($seodescription) {
+    public function setSeodescription($seodescription)
+    {
         $this->seodescription = $seodescription;
     }
 
-    public function getTermekek() {
+    public function getTermekek()
+    {
         return $this->termekek;
     }
 
-    public function addTermek(Termek $termek) {
+    public function addTermek(Termek $termek)
+    {
 //		if (!$this->termekek->contains($termek)) {  // deleted for speed
         $this->termekek->add($termek);
         $termek->addBlogposzt($this);
 //		}
     }
 
-    public function removeTermek(Termek $termek) {
+    public function removeTermek(Termek $termek)
+    {
         // TODO ha sok termeknek van ilyen cimkeje, akkor lassu lesz
         if ($this->termekek->removeElement($termek)) {
             $termek->removeBlogposzt($this);

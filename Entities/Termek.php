@@ -16,6 +16,7 @@ use mkwhelpers\FilterDescriptor;
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
  * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
+ * 		@ORM\index(name="termekmenukarkod_idx",columns={"termekmenu1karkod"}),
  * 		@ORM\index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
  * 		@ORM\index(name="termekslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekvonalkod_idx",columns={"vonalkod"}),
@@ -285,6 +286,15 @@ class Termek
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekfa3karkod = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekMenu",inversedBy="termekek1")
+     * @ORM\JoinColumn(name="termekmenu1_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termekmenu1;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekmenu1karkod = '';
 
     /** @ORM\Column(type="text",nullable=true) */
     private $kepurl = '';
@@ -1883,6 +1893,40 @@ class Termek
 //            $termekfa->addTermek3($this);
         } else {
             $this->termekfa3karkod = '';
+        }
+    }
+
+    public function getTermekmenu1()
+    {
+        return $this->termekmenu1;
+    }
+
+    public function getTermekmenu1Nev()
+    {
+        if ($this->termekmenu1) {
+            if ($this->termekmenu1->getId() > 1) {
+                return $this->termekmenu1->getNev();
+            }
+        }
+        return '';
+    }
+
+    public function getTermekmenu1Id()
+    {
+        if ($this->termekmenu1) {
+            return $this->termekmenu1->getId();
+        }
+        return 1;
+    }
+
+    public function setTermekmenu1($termekmenu)
+    {
+        $this->termekmenu1 = $termekmenu;
+        if ($termekmenu) {
+            $this->termekmenu1karkod = $termekmenu->getKarkod();
+//            $termekmenu->addTermek1($this);
+        } else {
+            $this->termekmenu1karkod = '';
         }
     }
 
@@ -3659,19 +3703,9 @@ class Termek
             $keszlet = 0;
         }
         $cats = [];
-        if ($this->getTermekfa1() && $this->getTermekfa1()->getWcid()) {
+        if ($this->getTermekmenu1() && $this->getTermekmenu1()->getWcid()) {
             $cats[] = [
-                'id' => $this->getTermekfa1()->getWcid(),
-            ];
-        }
-        if ($this->getTermekfa2() && $this->getTermekfa2()->getWcid()) {
-            $cats[] = [
-                'id' => $this->getTermekfa2()->getWcid(),
-            ];
-        }
-        if ($this->getTermekfa3() && $this->getTermekfa3()->getWcid()) {
-            $cats[] = [
-                'id' => $this->getTermekfa3()->getWcid(),
+                'id' => $this->getTermekmenu1()->getWcid(),
             ];
         }
         $tags = [];
