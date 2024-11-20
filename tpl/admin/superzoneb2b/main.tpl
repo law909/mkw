@@ -158,8 +158,8 @@
                     <div class="mainboxinner ui-corner-top">Woocommerce feltöltés</div>
                 </div>
                 <div class="mainboxinner">
-                    <button class="js-wctermekfa ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
-                            class="ui-button-text">Termék kategóriák</span></button>
+                    <button class="js-wctermekmenu ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Termék menük</span></button>
                     <button class="js-wctermekvaltozatadattipus ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
                             class="ui-button-text">Termékváltozat adattípusok</span></button>
                     <button class="js-wctermekvaltozatertek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span

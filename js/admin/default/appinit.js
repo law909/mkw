@@ -260,10 +260,10 @@ $(document).ready(
         });
         $('.js-backorder').button();
 
-        $(document).on('click', '.js-wctermekfa', function (e) {
+        $(document).on('click', '.js-wctermekmenu', function (e) {
             e.preventDefault();
             $.ajax({
-                url: '/admin/wc/termekfa',
+                url: '/admin/wc/termekmenu',
                 type: 'GET',
                 success: function (data) {
                     dialogcenter.html('A feltöltés kész.').dialog({

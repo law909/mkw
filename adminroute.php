@@ -1233,7 +1233,7 @@ if (\mkw\store::isSuperzoneB2B()) {
     }
 }
 
-$router->map('GET', '/admin/wc/termekfa', 'termekfaController#uploadToWc', 'admintermekfauploadtowc');
+$router->map('GET', '/admin/wc/termekmenu', 'termekmenuController#uploadToWc', 'admintermekmenuuploadtowc');
 $router->map('GET', '/admin/wc/termekvaltozatadattipus', 'termekvaltozatadattipusController#uploadToWc', 'admintermekvaltozatadattipusuploadtowc');
 $router->map('GET', '/admin/wc/termekvaltozatertek', 'termekvaltozatertekController#uploadToWc', 'admintermekvaltozatertekuploadtowc');
 $router->map('GET', '/admin/wc/termekcimke', 'termekcimkeController#uploadToWc', 'admintermekcimkeuploadtowc');
