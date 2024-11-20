@@ -201,7 +201,9 @@ class termekController extends \mkwhelpers\MattableController
         $x['termekfa3'] = $t->getTermekfa3Id();
         $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
         $x['termekmenu1'] = $t->getTermekmenu1Id();
+
         $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
+
         $x['kepurl'] = $t->getKepurl();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();

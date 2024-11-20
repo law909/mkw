@@ -1926,7 +1926,7 @@ class Termek
                 return $this->termekmenu1->getPath($this->termekmenu1);
             }
         }
-        return '';
+        return [];
     }
 
     public function setTermekmenu1($termekmenu)
