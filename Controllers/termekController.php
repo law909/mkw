@@ -1865,14 +1865,14 @@ class termekController extends \mkwhelpers\MattableController
 
             $filter = new FilterDescriptor();
             $filter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
-            $categories = $this->getRepo(TermekFa::class)->getAll($filter);
+            $categories = $this->getRepo(TermekMenu::class)->getAll($filter);
 
             $termekdone = [];
 
             /** @var TermekFa $category */
             foreach ($categories as $category) {
                 $tfilter = new FilterDescriptor();
-                $tfilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $category->getId());
+                $tfilter->addFilter(['_xx.termekmenu1'], '=', $category->getId());
                 $tfilter->addFilter('wctiltva', '<>', 1);
                 $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
                 /** @var Termek $termek */
