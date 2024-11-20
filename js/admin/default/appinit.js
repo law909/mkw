@@ -279,7 +279,7 @@ $(document).ready(
                 }
             });
         });
-        $('.js-wctermekfa').button();
+        $('.js-wctermekmenu').button();
 
         $(document).on('click', '.js-wctermekvaltozatadattipus', function (e) {
             e.preventDefault();

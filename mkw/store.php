@@ -6,7 +6,6 @@ use Automattic\WooCommerce\Client;
 use Controllers\mnrnavigationController;
 use Controllers\popupController;
 use Controllers\termekfaController;
-use Doctrine\ORM\EntityManager;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
@@ -14,7 +13,6 @@ use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\Valutanem;
-use http\Params;
 
 class store
 {
