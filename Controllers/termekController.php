@@ -3,18 +3,15 @@
 namespace Controllers;
 
 use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Arsav;
 use Entities\Termek;
 use Entities\TermekAr;
-use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekMenu;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
 use Entities\Valutanem;
-use http\Env\Url;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -28,7 +25,7 @@ class termekController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Termek');
+        $this->setEntityName(Termek::class);
         $this->setKarbFormTplName('termekkarbform.tpl');
         $this->setKarbTplName('termekkarb.tpl');
         $this->setListBodyRowTplName('termeklista_tbody_tr.tpl');
@@ -204,6 +201,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['termekfa3'] = $t->getTermekfa3Id();
         $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
         $x['termekmenu1'] = $t->getTermekmenu1Id();
+        $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
         $x['kepurl'] = $t->getKepurl();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();

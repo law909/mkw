@@ -1919,6 +1919,16 @@ class Termek
         return 1;
     }
 
+    public function getTermekmenu1Path()
+    {
+        if ($this->termekmenu1) {
+            if ($this->termekmenu1->getId() > 1) {
+                return $this->termekmenu1->getPath($this->termekmenu1);
+            }
+        }
+        return '';
+    }
+
     public function setTermekmenu1($termekmenu)
     {
         $this->termekmenu1 = $termekmenu;
@@ -3817,7 +3827,7 @@ class Termek
             'meta_data' => $meta,
         ];
 
-        \mkw\store::writelog($this->getId() . ': stop');
+        \mkw\store::writelog($this->getId() . ': stop: ' . json_encode($data));
 
         if (!$this->getWcid()) {
             \mkw\store::writelog($this->getId() . ': termék POST start');

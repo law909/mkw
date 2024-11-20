@@ -1113,4 +1113,15 @@ class TermekMenu
         return $this->getLeiras();
     }
 
+    public function getPath($parent)
+    {
+        $navi = [$parent->getNev()];
+        $szulo = $parent->getParent();
+        while ($szulo) {
+            $navi[] = $szulo->getNev();
+            $szulo = $szulo->getParent();
+        }
+        return array_reverse($navi);
+    }
+
 }

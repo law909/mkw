@@ -68,6 +68,7 @@
                         <span id="TermekMenu1" class="js-termekmenubutton" data-text="{at('válasszon')}"
                               data-name="termekmenu1"
                               data-value="{$egyed.termekmenu1}">{if ($egyed.termekmenu1nev)}{$egyed.termekmenu1nev}{else}{at('válasszon')}{/if}</span>
+                        <span>{$egyed.termekmenu1path}</span>
                     </td>
                 </tr>
                 </tbody>

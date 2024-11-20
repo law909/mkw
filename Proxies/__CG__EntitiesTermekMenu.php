@@ -1391,4 +1391,15 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
         return parent::getLeirasForditas($ford, $locale);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getPath($parent)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPath', [$parent]);
+
+        return parent::getPath($parent);
+    }
+
 }

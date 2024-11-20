@@ -76,6 +76,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         $x['lathato13'] = $t->getLathato13();
         $x['lathato14'] = $t->getLathato14();
         $x['lathato15'] = $t->getLathato15();
+        $x['path'] = implode('/', $t->getPath($t));
         if (\mkw\store::isMultilang()) {
             $translations = [];
             $translationsCtrl = new termekmenutranslationController($this->params);
