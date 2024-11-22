@@ -257,7 +257,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
             $cimkek = $this->getRepo()->getAll();
             $toupdate['update'] = [];
             $toupdatecnt = 0;
-            \mkw\store::writelog('termekvaltozatertekController uploadtowc START');
+            \mkw\store::writelog('termekcimkeController uploadtowc START');
             /** @var Termekcimketorzs $cimke */
             foreach ($cimkek as $cimke) {
                 if (!$cimke->getWcid()) {
@@ -303,7 +303,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     \mkw\store::writelog('BATCH POST:HIBA: ' . $e->getMessage() . ':' . json_encode($toupdate));
                 }
             }
-            \mkw\store::writelog('termekvaltozatertekController uploadtowc STOP');
+            \mkw\store::writelog('termekcimkeController uploadtowc STOP');
         }
     }
 }
