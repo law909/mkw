@@ -1389,13 +1389,13 @@ class TermekValtozat
                 $this,
                 null,
                 $eur,
-                \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()))
             );
             $variation['sale_price'] = (string)$this->getTermek()->getNettoAr(
                 $this,
                 null,
                 $eur,
-                \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()))
             );
         }
         if ($this->getKepwcid()) {
@@ -1511,13 +1511,13 @@ class TermekValtozat
                     $this,
                     null,
                     $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()))
                 ),
                 'sale_price' => (string)$this->getTermek()?->getNettoAr(
                     $this,
                     null,
                     $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()))
                 ),
             ];
             $wc = store::getWcClient();

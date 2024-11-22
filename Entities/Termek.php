@@ -3979,13 +3979,13 @@ class Termek
                     $valtozat,
                     null,
                     $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()))
                 ),
                 'sale_price' => (string)$this->getNettoAr(
                     $valtozat,
                     null,
                     $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()))
                 ),
             ];
             $index++;

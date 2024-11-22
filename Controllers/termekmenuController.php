@@ -323,9 +323,14 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
         $categories = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($filter);
 
+        \mkw\store::writelog('walkCategoryTree:parentid: ' . $parentId);
+
         /** @var TermekMenu $category */
         foreach ($categories as $category) {
+            \mkw\store::writelog('walkCategoryTree: ' . $category->getId() . ' : ' . $category->getNev());
             if (!$category->getWcid()) {
+                \mkw\store::writelog('walkCategoryTree:nlathato: ' . $category->getNLathato(\mkw\store::getWcWebshopNum()));
+
                 if ($category->getNLathato(\mkw\store::getWcWebshopNum())) {
                     $ford = $category->getTranslationsArray();
                     $nev = $category->getNevForditas($ford, 'en_us');

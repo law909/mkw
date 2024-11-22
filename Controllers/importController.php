@@ -5660,8 +5660,8 @@ class importController extends \mkwhelpers\Controller
         $maxcol = $sheet->getHighestColumn();
         $maxcolindex = Coordinate::columnIndexFromString($maxcol);
 
-        $wcarsav1 = \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')));
-        $wcarsav2 = \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')));
+        $wcarsav1 = \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()));
+        $wcarsav2 = \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()));
 
         $afa = \mkw\store::getEm()->getRepository(Afa::class)->findByErtek(27);
         $afa = $afa[0];
