@@ -407,6 +407,8 @@ class termekmenuController extends \mkwhelpers\MattableController
                 \mkw\store::getEm()->flush();
 
                 self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
+            } else {
+                self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
             }
         }
     }
