@@ -1372,6 +1372,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getTermekmenu1Path()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekmenu1Path', []);
+
+        return parent::getTermekmenu1Path();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setTermekmenu1($termekmenu)
     {
 
@@ -3468,6 +3479,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
 
         return parent::deleteFromWC();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendArToWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendArToWC', []);
+
+        return parent::sendArToWC();
     }
 
 }
