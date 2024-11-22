@@ -1385,8 +1385,18 @@ class TermekValtozat
             $variation['id'] = $this->getWcid();
         }
         if ($this->getTermek()) {
-            $variation['regular_price'] = (string)$this->getTermek()->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price));
-            $variation['sale_price'] = (string)$this->getTermek()->getNettoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount));
+            $variation['regular_price'] = (string)$this->getTermek()->getBruttoAr(
+                $this,
+                null,
+                $eur,
+                \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+            );
+            $variation['sale_price'] = (string)$this->getTermek()->getNettoAr(
+                $this,
+                null,
+                $eur,
+                \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+            );
         }
         if ($this->getKepwcid()) {
             $variation['image'] = [
@@ -1497,8 +1507,18 @@ class TermekValtozat
         if ($this->getWcid() && \mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
             $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
             $variation = [
-                'regular_price' => (string)$this->getTermek()?->getBruttoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Price)),
-                'sale_price' => (string)$this->getTermek()?->getNettoAr($this, null, $eur, \mkw\store::getParameter(\mkw\consts::Webshop4Discount)),
+                'regular_price' => (string)$this->getTermek()?->getBruttoAr(
+                    $this,
+                    null,
+                    $eur,
+                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                ),
+                'sale_price' => (string)$this->getTermek()?->getNettoAr(
+                    $this,
+                    null,
+                    $eur,
+                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                ),
             ];
             $wc = store::getWcClient();
             try {

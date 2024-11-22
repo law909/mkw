@@ -756,6 +756,8 @@ class termekController extends \mkwhelpers\MattableController
             case $this->editOperation:
                 $tvec = new termekvaltozatertekController(null);
                 $tvec->uploadToWc();
+                $tcc = new termekcimkeController(null);
+                $tcc->uploadToWc();
                 $o->clearWcdate();
                 $o->uploadToWc();
         }

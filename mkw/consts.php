@@ -403,8 +403,20 @@ class consts
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
 
-    public static function getWebshopPriceConst()
+    public static function getWebshopPriceConst($_webshopNum = null)
     {
-        return 'Webshop' . \mkw\store::getWebshopNum() . 'Price';
+        if (is_null($_webshopNum)) {
+            $_webshopNum = \mkw\store::getWebshopNum();
+        }
+        return 'Webshop' . $_webshopNum . 'Price';
     }
+
+    public static function getWebshopDiscountConst($_webshopNum = null)
+    {
+        if (is_null($_webshopNum)) {
+            $_webshopNum = \mkw\store::getWebshopNum();
+        }
+        return 'Webshop' . $_webshopNum . 'Discount';
+    }
+
 }

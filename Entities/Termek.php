@@ -1896,6 +1896,9 @@ class Termek
         }
     }
 
+    /**
+     * @return TermekMenu
+     */
     public function getTermekmenu1()
     {
         return $this->termekmenu1;
@@ -3953,6 +3956,59 @@ class Termek
             $result = $wc->delete('products/' . $this->getWcid());
         } catch (HttpClientException $e) {
             \mkw\store::writelog('DELETE Termek:HIBA: ' . $e->getResponse()->getBody());
+        }
+    }
+
+    public function sendArToWC()
+    {
+        if (!\mkw\store::isWoocommerceOn()) {
+            return;
+        }
+        if ($this->getWctiltva()) {
+            return;
+        }
+
+        if (!$this->getWcid()) {
+            return;
+        }
+        /** @var Client $wc */
+        $wc = store::getWcClient();
+        $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        $variations = [];
+        $index = 0;
+        foreach ($this->getValtozatok() as $valtozat) {
+            $variations['update'] = [
+                'regular_price' => (string)$this->getBruttoAr(
+                    $valtozat,
+                    null,
+                    $eur,
+                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                ),
+                'sale_price' => (string)$this->getNettoAr(
+                    $valtozat,
+                    null,
+                    $eur,
+                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')))
+                ),
+            ];
+            $index++;
+            if (($index + 1) % 100 == 0 || $index + 1 == count($this->getValtozatok())) {
+                \mkw\store::writelog($this->getId() . ':SendArToWC:változat BATCH POST start');
+                try {
+                    $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $variations);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                }
+                $variations = [];
+                \mkw\store::writelog($this->getId() . ': stop');
+                foreach ($result->update as $res) {
+                    $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->findOneBy(['wcid' => $res->id]);
+                    if ($valtozat) {
+                        $valtozat->setWcdate('');
+                        \mkw\store::getEm()->persist($valtozat);
+                    }
+                }
+            }
         }
     }
 

@@ -7,10 +7,12 @@ use Entities\Arsav;
 use Entities\ME;
 use Entities\Partner;
 use Entities\Termek;
+use Entities\TermekAr;
 use Entities\Termekcimkekat;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekValtozat;
+use Entities\Valutanem;
 use Entities\Vtsz;
 use mkw\store;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -5635,7 +5637,7 @@ class importController extends \mkwhelpers\Controller
 
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+        $parent = \mkw\store::getEm()->getRepository(TermekFa::class)->find($parentid);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         if ($dbtol < 2) {
@@ -5658,13 +5660,16 @@ class importController extends \mkwhelpers\Controller
         $maxcol = $sheet->getHighestColumn();
         $maxcolindex = Coordinate::columnIndexFromString($maxcol);
 
-        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+        $wcarsav1 = \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getConfigValue('wc.webshopnum')));
+        $wcarsav2 = \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getConfigValue('wc.webshopnum')));
+
+        $afa = \mkw\store::getEm()->getRepository(Afa::class)->findByErtek(27);
         $afa = $afa[0];
-        $termekrepo = \mkw\store::getEm()->getRepository('Entities\Termek');
-        $termekarrepo = \mkw\store::getEm()->getRepository('Entities\TermekAr');
+        $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
+        $termekarrepo = \mkw\store::getEm()->getRepository(TermekAr::class);
         $arsavrepo = $this->getRepo(Arsav::class);
         $valutanemek = [];
-        $vnemek = \mkw\store::getEm()->getRepository('Entities\Valutanem')->getAll([], []);
+        $vnemek = \mkw\store::getEm()->getRepository(Valutanem::class)->getAll([], []);
         foreach ($vnemek as $vn) {
             $valutanemek[$vn->getNev()] = $vn;
         }
@@ -5728,7 +5733,6 @@ class importController extends \mkwhelpers\Controller
                 $ujtermek = true;
                 $termek = new \Entities\Termek();
                 $termek->setMekod($this->getME('db'));
-                $kellwcbe = true;
                 if ($parent) {
                     $termek->setTermekfa1($parent);
                 }
@@ -5739,7 +5743,6 @@ class importController extends \mkwhelpers\Controller
                 }
                 if ($cikkszam) {
                     $termek->setCikkszam($cikkszam);
-                    $kellwcbe = true;
                 }
                 if ($vtsz) {
                     $vtsz = $this->createVtsz($vtsz, $afa);
@@ -5772,8 +5775,10 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setValutanem($valutanem);
                                         $ar->setArsav($_arsav);
                                     }
+                                    if ($ar->getBrutto() != $ertek && ($_arsav->getId() == $wcarsav1 || $_arsav->getId() == $wcarsav2)) {
+                                        $kellwcbe = true;
+                                    }
                                     $ar->setBrutto($ertek);
-                                    $kellwcbe = true;
                                     \mkw\store::getEm()->persist($ar);
                                 }
                             }
@@ -5802,8 +5807,10 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setValutanem($valutanem);
                                         $ar->setArsav($_arsav);
                                     }
+                                    if ($ar->getNetto() != $ertek && ($_arsav->getId() == $wcarsav1 || $_arsav->getId() == $wcarsav2)) {
+                                        $kellwcbe = true;
+                                    }
                                     $ar->setNetto($ertek);
-                                    $kellwcbe = true;
                                     \mkw\store::getEm()->persist($ar);
                                 }
                             }
@@ -5828,20 +5835,17 @@ class importController extends \mkwhelpers\Controller
                             }
                             $translation->setLocale($loc);
                             $translation->setContent($text);
-                            $kellwcbe = true;
                             \mkw\store::getEm()->persist($translation);
                         } else {
                             $termek->setNev($text);
-                            $kellwcbe = true;
                         }
                     }
                 }
                 \mkw\store::getEm()->persist($termek);
                 \mkw\store::getEm()->flush();
 
-                if ($kellwcbe) {
-                    $termek->clearWcdate();
-                    $termek->uploadToWC();
+                if ($termek->getTermekmenu1()?->getWcid() && $kellwcbe) {
+                    $termek->sendArToWC();
                 }
 
 //                if (is_array($nev)) {
