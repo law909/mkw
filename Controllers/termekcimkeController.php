@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Termekcimketorzs;
 use mkw\store;
 
@@ -254,6 +255,8 @@ class termekcimkeController extends \mkwhelpers\MattableController
         if (\mkw\store::isWoocommerceOn()) {
             $wc = \mkw\store::getWcClient();
             $cimkek = $this->getRepo()->getAll();
+            $toupdate['update'] = [];
+            $toupdatecnt = 0;
             \mkw\store::writelog('termekvaltozatertekController uploadtowc START');
             /** @var Termekcimketorzs $cimke */
             foreach ($cimkek as $cimke) {
@@ -268,14 +271,35 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     \mkw\store::getEm()->persist($cimke);
                     \mkw\store::getEm()->flush();
                 } else {
-                    $data = [
+                    $toupdatecnt++;
+                    $toupdate['update'][] = [
                         'name' => $cimke->getNev()
                     ];
-                    $wc->put('products/tags/' . $cimke->getWcid(), $data);
+
+                    if ($toupdatecnt >= 100) {
+                        \mkw\store::writelog('BATCH POST start: ' . json_encode($toupdate));
+                        $toupdatecnt = 0;
+                        try {
+                            $wc->post('products/tags/batch', $toupdate);
+                            \mkw\store::writelog('BATCH POST stop:');
+                        } catch (HttpClientException $e) {
+                            \mkw\store::writelog('BATCH POST:HIBA: ' . $e->getMessage());
+                        }
+                        $toupdate['update'] = [];
+                    }
 
                     $cimke->setWcdate('');
                     \mkw\store::getEm()->persist($cimke);
                     \mkw\store::getEm()->flush();
+                }
+            }
+            if (count($toupdate['update']) > 0) {
+                \mkw\store::writelog('BATCH POST start: ' . json_encode($toupdate));
+                try {
+                    $wc->post('products/tags/batch', $toupdate);
+                    \mkw\store::writelog('BATCH POST stop:');
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog('BATCH POST:HIBA: ' . $e->getMessage() . ':' . json_encode($toupdate));
                 }
             }
             \mkw\store::writelog('termekvaltozatertekController uploadtowc STOP');
