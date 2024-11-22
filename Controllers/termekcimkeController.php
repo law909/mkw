@@ -254,6 +254,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
         if (\mkw\store::isWoocommerceOn()) {
             $wc = \mkw\store::getWcClient();
             $cimkek = $this->getRepo()->getAll();
+            \mkw\store::writelog('termekvaltozatertekController uploadtowc START');
             /** @var Termekcimketorzs $cimke */
             foreach ($cimkek as $cimke) {
                 if (!$cimke->getWcid()) {
@@ -277,6 +278,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     \mkw\store::getEm()->flush();
                 }
             }
+            \mkw\store::writelog('termekvaltozatertekController uploadtowc STOP');
         }
     }
 }
