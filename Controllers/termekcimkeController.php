@@ -273,6 +273,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                 } else {
                     $toupdatecnt++;
                     $toupdate['update'][] = [
+                        'id' => $cimke->getWcid(),
                         'name' => $cimke->getNev()
                     ];
 
