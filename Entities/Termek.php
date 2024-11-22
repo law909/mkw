@@ -3910,9 +3910,6 @@ class Termek
                     unset($variation['__jobtype']);
                     $tosend['update'][] = $variation;
                 }
-                if (array_key_exists('image', $variation)) {
-                    \mkw\store::writelog($variation['sku'] . ': image: ' . json_encode($variation['image']));
-                }
                 if (($index + 1) % 100 == 0 || $index + 1 == count($allvariations)) {
                     \mkw\store::writelog($this->getId() . ': változat BATCH POST start');
                     try {

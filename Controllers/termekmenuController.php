@@ -321,7 +321,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         } else {
             $filter->addFilter('parent', '=', $parentId);
         }
-        $filter->addSql('((_xx.wcdate<_xx.lastmod) OR (_xx.wcdate IS NULL))');
         $categories = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($filter);
 
         /** @var TermekMenu $category */
