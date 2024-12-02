@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Kosar;
+use Entities\Partner;
+use Entities\Termek;
 use Entities\TermekValtozat;
 use Entities\Valutanem;
 
@@ -10,7 +13,7 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Kosar');
+        $this->setEntityName(Kosar::class);
 //		$this->setKarbFormTplName('kosarkarbform.tpl');
 //		$this->setKarbTplName('kosarkarb.tpl');
         $this->setListBodyRowTplName('kosarlista_tbody_tr.tpl');
@@ -54,11 +57,11 @@ class kosarController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
-        $ck = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+        $ck = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
         }
-        $ck = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+        $ck = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termek'));
         if ($ck) {
             $obj->setTermek($ck);
         }
@@ -150,7 +153,7 @@ class kosarController extends \mkwhelpers\MattableController
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = '';
                 $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
-                $valutanemobj = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                $valutanemobj = $this->getRepo(Valutanem::class)->find($valutanemid);
                 if ($valutanemobj) {
                     $valutanem = $valutanemobj->getNev();
                 }
@@ -298,7 +301,7 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function add()
     {
-        $termek = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('id'));
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('id'));
         $vid = null;
         switch ($this->params->getIntRequestParam('jax', 0)) {
             case 2:
@@ -354,7 +357,7 @@ class kosarController extends \mkwhelpers\MattableController
     {
         $termekid = $this->params->getIntRequestParam('termek');
         if ($termekid) {
-            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
                 $vids = $this->params->getArrayRequestParam('ids');
                 $values = $this->params->getArrayRequestParam('values');
@@ -364,7 +367,7 @@ class kosarController extends \mkwhelpers\MattableController
                     $vid = $vids[$cikl];
                     $value = $values[$cikl];
                     $kedv = $kedvezmenyek[$cikl];
-                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                    $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
                     if ($termekvaltozat) {
                         $this->getRepo()->addTo($termekid, $vid, null, $value, $kedv);
                     }
@@ -446,13 +449,13 @@ class kosarController extends \mkwhelpers\MattableController
                 $valutanem = $partner->getValutanem();
             }
             if (!$valutanem) {
-                $valutanem = $this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem);
+                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainSession()->valutanem);
                 $valutanemnev = \mkw\store::getMainSession()->valutanemnev;
             }
         }
         $ker = 0;
         if (!$valutanem) {
-            $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         if ($valutanem) {
             $ker = 2;
@@ -550,7 +553,7 @@ class kosarController extends \mkwhelpers\MattableController
                             \mkw\store::getParameter(\mkw\consts::Webshop2Price)
                         )
                     );
-                    $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
+                    $sor->setValutanem($this->getRepo(Valutanem::class)->find(\mkw\store::getMainSession()->valutanem));
                     $this->getEm()->persist($sor);
                     break;
                 case \mkw\store::isMugenrace2021():
@@ -562,7 +565,7 @@ class kosarController extends \mkwhelpers\MattableController
                             \mkw\store::getParameter(\mkw\consts::Webshop4Price)
                         )
                     );
-                    $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
+                    $sor->setValutanem($this->getRepo(Valutanem::class)->find(\mkw\store::getMainSession()->valutanem));
                     $this->getEm()->persist($sor);
                     break;
             }

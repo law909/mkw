@@ -2,8 +2,11 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusz;
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\Kupon;
 use Entities\SzallitasimodFizmodNovelo;
 use mkw\store;
 
@@ -12,7 +15,7 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Kosar');
+        $this->setEntityName(Kosar::class);
         parent::__construct($params);
     }
 
@@ -252,7 +255,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $e = $kr->calcSumBySessionId(\Zend_Session::getId());
             $ertek = $e['sum'];
             /** @var \Entities\Kupon $kupon */
-            $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+            $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
             if ($kupon) {
                 if ($kupon->isErvenyes()) {
                     if ($kupon->isIngyenSzallitas()) {
@@ -313,13 +316,13 @@ class checkoutController extends \mkwhelpers\MattableController
         $szallmod = \mkw\store::getMainSession()->lastszallmod;
         $fizmod = \mkw\store::getMainSession()->lastfizmod;
         $fizmodnev = '';
-        $f = $this->getRepo('Entities\Fizmod')->find($fizmod);
+        $f = $this->getRepo(Fizmod::class)->find($fizmod);
         if ($f) {
             $fizmodnev = $f->getNev();
         }
 
         $fizetendo = 0;
-        $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
+        $mr = $this->getRepo(Bizonylatfej::class)->find($mrszam);
         if ($mr) {
             $fizetendo = $mr->getFizetendo();
         }
@@ -363,7 +366,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $fizazon = preg_replace('/[^0-9]/', '', $this->params->getStringRequestParam('fizazon'));
 
         if ($mrszam) {
-            $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
+            $mr = $this->getRepo(Bizonylatfej::class)->find($mrszam);
             if ($mr) {
                 $fizetendo = $mr->getFizetendo();
                 if ($fizetendo != 0) {
@@ -499,14 +502,14 @@ class checkoutController extends \mkwhelpers\MattableController
     public function saveCheckoutFizmod()
     {
         $megrendelesszam = $this->params->getStringRequestParam('megrendelesszam');
-        $f = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizetesimod'));
+        $f = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizetesimod'));
 
-        $mf = $this->getRepo('Entities\Bizonylatfej')->find($megrendelesszam);
+        $mf = $this->getRepo(Bizonylatfej::class)->find($megrendelesszam);
         if ($mf && $f) {
             $mf->setFizmod($f);
             $this->getEm()->persist($mf);
             $this->getEm()->flush();
-            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             if ($bizstatusz) {
                 $mf->sendStatuszEmail($bizstatusz->getEmailtemplate());
             }

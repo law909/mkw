@@ -702,7 +702,7 @@ class Bizonylatfej
             $mincimlet = $this->getValutanem()->getMincimlet();
             $kerekit = $this->getValutanem()->getKerekit();
         }
-        $defavaluta = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $defavaluta = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         if ($defavaluta) {
             $defakerekit = $defavaluta->getKerekit();
         }
@@ -747,7 +747,7 @@ class Bizonylatfej
     {
         $regifizmod = $this->getFizmod();
         if ($regifizmod && $regifizmod->getRugalmas()) {
-            $fh = \mkw\store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
+            $fh = \mkw\store::getEm()->getRepository(FizmodHatar::class)->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
             if ($fh) {
                 $this->setFizmod($fh->getFizmod());
             }
@@ -832,7 +832,7 @@ class Bizonylatfej
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
-        return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylat($this->getId());
+        return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylat($this->getId());
     }
 
     public function getOsztottEgyenleg()
@@ -840,7 +840,7 @@ class Bizonylatfej
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
-        return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylatDatum($this->getId());
+        return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylatDatum($this->getId());
     }
 
     public function getKedvezmenyCount()
@@ -1590,7 +1590,7 @@ class Bizonylatfej
 
         $result = $result . '<invoiceSummary>';
         $result = $result . '<summaryNormal>';
-        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
+        $afasum = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->getAFAOsszesito($this);
         foreach ($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
             $result = $result . '<vatRate>';
@@ -1836,7 +1836,7 @@ class Bizonylatfej
 
         $result = $result . '<invoiceSummary>';
         $result = $result . '<summaryNormal>';
-        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
+        $afasum = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->getAFAOsszesito($this);
         foreach ($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
             $result = $result . '<vatRate>';
@@ -2479,7 +2479,7 @@ class Bizonylatfej
     public function setFizmod($val)
     {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Fizmod::class)->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {
@@ -2532,7 +2532,7 @@ class Bizonylatfej
     public function setSzallitasimod($val)
     {
         if (!($val instanceof \Entities\Szallitasimod)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($val);
         }
         if ($this->szallitasimod !== $val) {
             if (!$val) {
@@ -2627,7 +2627,7 @@ class Bizonylatfej
     public function setValutanem($val)
     {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Valutanem::class)->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
@@ -3232,7 +3232,7 @@ class Bizonylatfej
     public function setRaktar($val)
     {
         if (!($val instanceof \Entities\Raktar)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Raktar::class)->find($val);
         }
         if ($this->raktar !== $val) {
             if (!$val) {
@@ -4319,7 +4319,7 @@ class Bizonylatfej
     public function getKuponObject()
     {
         if ($this->kupon) {
-            return \mkw\store::getEm()->getRepository('\Entities\Kupon')->find($this->kupon);
+            return \mkw\store::getEm()->getRepository(Kupon::class)->find($this->kupon);
         }
         return false;
     }
@@ -4502,7 +4502,7 @@ class Bizonylatfej
     public function setFelhasznalo($val)
     {
         if (!($val instanceof \Entities\Dolgozo)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($val);
         }
         if ($this->felhasznalo !== $val) {
             if (!$val) {
@@ -4695,7 +4695,7 @@ class Bizonylatfej
     public function setPartnerorszag($val)
     {
         if (!($val instanceof \Entities\Orszag)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Orszag::class)->find($val);
         }
         if ($this->partnerorszag !== $val) {
             if (!$val) {
@@ -5106,7 +5106,7 @@ class Bizonylatfej
                 }
             }
 
-            $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
+            $ur = \mkw\store::getEm()->getRepository(Unnepnap::class);
             $unnep = $ur->countUnnepnap($this->getKelt(), $k);
             if ($unnep) {
                 for ($i = 1; $i <= $unnep; $i++) {

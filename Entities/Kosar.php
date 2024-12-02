@@ -444,14 +444,12 @@ class Kosar
     public function setAfa($val)
     {
         if (!is_object($val)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Afa')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Afa::class)->find($val);
         }
         if (!$val) {
             $this->removeAfa();
-        } else {
-            if ($this->afa !== $val) {
-                $this->afa = $val;
-            }
+        } elseif ($this->afa !== $val) {
+            $this->afa = $val;
         }
     }
 

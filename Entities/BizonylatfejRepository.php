@@ -11,7 +11,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Bizonylatfej');
+        $this->setEntityname(Bizonylatfej::class);
         $this->setOrders([
             '1' => ['caption' => 'biz.szám szerint csökkenő', 'order' => ['_xx.id' => 'DESC']],
             '2' => ['caption' => 'biz.szám szerint növekvő', 'order' => ['_xx.id' => 'ASC']],
@@ -463,7 +463,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
             $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
@@ -524,7 +524,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             ];
         }
 
-        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
+        $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($partnercimkefilter);
 
         /**********************
          * nyito
@@ -810,7 +810,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
             $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
@@ -836,10 +836,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
         $bizstatuszObj = false;
         if ($bizstatusz) {
-            $bizstatuszObj = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($bizstatusz);
+            $bizstatuszObj = $this->getRepo(Bizonylatstatusz::class)->findOneById($bizstatusz);
         }
 
-        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
+        $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($partnercimkefilter);
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bf.rontott', '=', false);
@@ -1073,7 +1073,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 break;
         }
 
-        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
+        $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($partnercimkefilter);
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
@@ -1220,7 +1220,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
     public function getAllKeszpenzes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
     {
-        $fizmodok = $this->getRepo('Entities\Fizmod')->getAllKeszpenzes();
+        $fizmodok = $this->getRepo(Fizmod::class)->getAllKeszpenzes();
         $fmids = [];
         foreach ($fizmodok as $fm) {
             $fmids[] = $fm->getId();

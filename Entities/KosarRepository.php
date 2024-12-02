@@ -10,7 +10,7 @@ class KosarRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Kosar');
+        $this->setEntityname(Kosar::class);
         $this->setOrders([
             '1' => ['caption' => 'létrehozás dátuma szerint csökkenő', 'order' => ['_xx.created' => 'DESC', '_xx.sessionid' => 'ASC']],
             '2' => ['caption' => 'létrehozás dátuma szerint növekvő', 'order' => ['_xx.created' => 'ASC', '_xx.sessionid' => 'ASC']],
@@ -174,11 +174,11 @@ class KosarRepository extends \mkwhelpers\Repository
 
 
         $partnerid = null;
-        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         if ($partner) {
             $partnerid = $partner->getId();
             if ($partner->getSzamlatipus() > 0) {
-                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                $nullasafa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
         switch (true) {
@@ -324,13 +324,13 @@ class KosarRepository extends \mkwhelpers\Repository
         $sessionid = \Zend_Session::getId();
 
         $partnerid = null;
-        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         if ($partner) {
             $partnerid = $partner->getId();
             if ($partner->getSzamlatipus() > 0 ||
                 (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem))
             ) {
-                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                $nullasafa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
 
@@ -368,11 +368,11 @@ class KosarRepository extends \mkwhelpers\Repository
                 $k->novelMennyiseg($mennyiseg);
             } else {
                 /** @var \Entities\Termek $termek */
-                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                $termek = $this->getRepo(Termek::class)->find($termekid);
                 if ($termek) {
-                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
                     if ($vid) {
-                        $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                        $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
                     }
                     $k = new \Entities\Kosar();
                     $k->setTermek($termek);
@@ -419,7 +419,7 @@ class KosarRepository extends \mkwhelpers\Repository
             $sessionid = \Zend_Session::getId();
 
             $partnerid = null;
-            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            $partner = $this->getRepo(Partner::class)->getLoggedInUser();
             if ($partner) {
                 $partnerid = $partner->getId();
             }
@@ -471,9 +471,9 @@ class KosarRepository extends \mkwhelpers\Repository
     public function clear($partnerid = false)
     {
         if ($partnerid) {
-            $partner = $this->getRepo('Entities\Partner')->find($partnerid);
+            $partner = $this->getRepo(Partner::class)->find($partnerid);
         } else {
-            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         }
         if ($partner) {
             $k = $this->getDataByPartner($partner);
@@ -555,7 +555,7 @@ class KosarRepository extends \mkwhelpers\Repository
         $ktg = 0;
         $szamol = true;
         if ($szallmod) {
-            $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
+            $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
 
@@ -563,7 +563,7 @@ class KosarRepository extends \mkwhelpers\Repository
         $ertek = $e['sum'];
         $cnt = $e['count'];
         /** @var Kupon $kupon */
-        $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+        $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
         if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
             $szamol = false;
         }
@@ -571,7 +571,7 @@ class KosarRepository extends \mkwhelpers\Repository
         if ($szamol) {
             if ($cnt != 0) {
                 $partner = \mkw\store::getLoggedInUser();
-                $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
+                $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                     $szallmod,
                     $fizmod,
                     \mkw\store::getPartnerOrszag($partner),
