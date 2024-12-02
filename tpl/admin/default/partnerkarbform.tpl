@@ -299,7 +299,7 @@
                     <tr>
                         <td><label for="mpt_TelefonEdit">{at('Telefon')}:</label></td>
                         <td><input id="mpt_TelefonEdit" name="telefon" type="text" size="40" maxlength="40"
-                                   value="{$partner.telefon}"{if ($setup.mpt)} required="required"{/if}></td>
+                                   value="{$partner.telefon}"></td>
                     </tr>
                     <tr>
                         <td><label for="MPTSzamlazasinevEdit">{at('Számlázási név')}:</label></td>
@@ -556,7 +556,7 @@
                         </td>
                     {else}
                         <td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40"
-                                   value="{$partner.telefon}"{if ($setup.mpt)} required="required"{/if}></td>
+                                   value="{$partner.telefon}"></td>
                     {/if}
                 </tr>
                 <tr>
