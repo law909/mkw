@@ -20,9 +20,6 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
     {
         $filter = new FilterDescriptor();
         switch (\mkw\store::getWebshopNum()) {
-            case 1:
-                $filter->addFilter('webes', '=', true);
-                break;
             case 2:
                 $filter->addFilter('webes2', '=', true);
                 break;
@@ -32,6 +29,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
             case 4:
                 $filter->addFilter('webes4', '=', true);
                 break;
+            case 1:
             default:
                 $filter->addFilter('webes', '=', true);
                 break;
@@ -39,16 +37,16 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
         return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getSzallitasiKoltseg($szallmod, $fizmod, $orszag, $valutanem, $ertek)
+    public function getSzallitasiKoltseg($szallmod, $orszag, $valutanem, $ertek)
     {
         $ktg = 0;
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
-                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
+                $ktg = \mkw\store::getEm()->getRepository(SzallitasimodHatar::class)->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
             case 'orszagonkent':
-                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodOrszag')->getBySzallitasimodOrszagValutanemHatar(
+                $ktg = \mkw\store::getEm()->getRepository(SzallitasimodOrszag::class)->getBySzallitasimodOrszagValutanemHatar(
                     $szallmod,
                     $orszag,
                     $valutanem,
@@ -57,16 +55,40 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
         }
-        if ($fizmod && $ktg > 0) {
-            $n = \mkw\store::getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->getBySzallitasimodFizmod($szallmod, $fizmod);
+        return $ktg;
+    }
+
+    public function getUtanvetKoltseg($szallmod, $fizmod, $ertek)
+    {
+        $ktg = 0;
+        if ($szallmod && $fizmod) {
+            /** @var SzallitasimodFizmodNovelo $n */
+            $n = \mkw\store::getEm()->getRepository(SzallitasimodFizmodNovelo::class)->getBySzallitasimodFizmod($szallmod, $fizmod);
             if ($n) {
                 if (is_array($n)) {
                     $n = $n[0];
                 }
-                $ktg += $n->getOsszeg();
+                if ($n->getErtekszazalek()) {
+                    $ktg = round($ertek * $n->getErtekszazalek() / 100);
+                } else {
+                    $ktg = $n->getOsszeg();
+                }
             }
         }
         return $ktg;
+    }
+
+    public function getKezelesiKoltsegTermekek()
+    {
+        $szms = $this->getAll();
+        $termekek = [];
+        /** @var Szallitasimod $szm */
+        foreach ($szms as $szm) {
+            if ($szm->getTermek()) {
+                $termekek[$szm->getTermekId()] = $szm->getTermekId();
+            }
+        }
+        return $termekek;
     }
 
 }

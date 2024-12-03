@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
 use Sqids\Sqids;
+use stdClass;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
@@ -741,6 +742,23 @@ class Bizonylatfej
         } else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
         }
+    }
+
+    public function calcBruttoWithoutKtgs()
+    {
+        $ret = new StdClass();
+        $ret->cnt = 0;
+        $ret->brutto = 0;
+        $ktgs = \mkw\store::getEm()->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+        $ktgs[] = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ktgs[] = \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek);
+        foreach ($this->bizonylattetelek as $bt) {
+            if (!in_array($bt->getTermekId(), $ktgs)) {
+                $ret->cnt++;
+                $ret->brutto = $ret->brutto + $bt->getBrutto();
+            }
+        }
+        return $ret;
     }
 
     public function calcRugalmasFizmod()

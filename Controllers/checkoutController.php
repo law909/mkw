@@ -207,10 +207,16 @@ class checkoutController extends \mkwhelpers\MattableController
                 if (is_array($x)) {
                     $x = $x[0];
                 }
-                $szl['novelo'] = $x->getOsszeg();
                 $szl['maxhatar'] = $x->getMaxhatar();
                 $szl['ertekszazalek'] = $x->getErtekszazalek();
                 $e = $kosarrepo->calcSumBySessionId(\Zend_Session::getId());
+                if ($e) {
+                    if ($x->getErtekszazalek()) {
+                        $szl['novelo'] = round($e['sum'] * $x->getErtekszazalek() / 100);
+                    } else {
+                        $szl['novelo'] = $x->getOsszeg();
+                    }
+                }
                 if ($e && (($x->getMaxhatar() > 0 && $x->getMaxhatar() >= $e['sum']) || $x->getMaxhatar() == 0)) {
                     $adat[] = $szl;
                 }
@@ -273,6 +279,11 @@ class checkoutController extends \mkwhelpers\MattableController
             }
         }
         $this->getRepo(Kosar::class)->createSzallitasiKtg(
+            $this->params->getIntRequestParam('szallitasimod'),
+            $this->params->getIntRequestParam('fizmod'),
+            $kuponkod
+        );
+        $this->getRepo(Kosar::class)->createUtanvetKtg(
             $this->params->getIntRequestParam('szallitasimod'),
             $this->params->getIntRequestParam('fizmod'),
             $kuponkod

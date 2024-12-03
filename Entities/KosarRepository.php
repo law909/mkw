@@ -103,11 +103,16 @@ class KosarRepository extends \mkwhelpers\Repository
 
         $filter = new FilterDescriptor();
         $filter->addFilter('sessionid', '=', $sessionid);
+
+        $ktgs = $this->getRepo(Szallitasimod::class)->getKezelesiKoltsegTermekek();
         if ($szktid) {
-            $filter->addFilter('termek', '<>', $szktid);
+            $ktgs[] = $szktid;
         }
         if ($utanvetktid) {
-            $filter->addFilter('termek', '<>', $utanvetktid);
+            $ktgs[] = $utanvetktid;
+        }
+        if ($ktgs) {
+            $filter->addFilter('termek', 'NOT IN', $ktgs);
         }
 
         $q = $this->_em->createQuery(
@@ -492,7 +497,43 @@ class KosarRepository extends \mkwhelpers\Repository
         }
     }
 
-    // TODO utanvetktg
+    public function createUtanvetKtg($szallmod = null, $fizmod = null, $kuponkod = null)
+    {
+        $szamol = true;
+        if ($szallmod) {
+            $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
+            $szamol = $szm->getVanszallitasiktg();
+        }
+        $termekid = \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek);
+        $termek = $this->getRepo(Termek::class)->find($termekid);
+
+        if ($termekid && $termek) {
+            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $ertek = $e['sum'];
+            $cnt = $e['count'];
+            /** @var Kupon $kupon */
+            $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
+            if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
+                $szamol = false;
+            }
+
+            if ($szamol) {
+                if ($cnt != 0) {
+                    $ktg = $this->getRepo(Szallitasimod::class)->getUtanvetKoltseg(
+                        $szallmod,
+                        $fizmod,
+                        $ertek
+                    );
+                    $this->add($termekid, null, $ktg);
+                } else {
+                    $this->remove($termek);
+                }
+            } else {
+                $this->remove($termek);
+            }
+        }
+    }
+
     public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
     {
         $szamol = true;
@@ -518,7 +559,6 @@ class KosarRepository extends \mkwhelpers\Repository
                     $partner = \mkw\store::getLoggedInUser();
                     $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                         $szallmod,
-                        $fizmod,
                         \mkw\store::getPartnerOrszag($partner),
                         \mkw\store::getPartnerValutanem($partner),
                         $ertek
@@ -543,13 +583,16 @@ class KosarRepository extends \mkwhelpers\Repository
 
             if ($termek) {
                 $this->add($termek->getId(), null, $termek->getBruttoAr(), mennyiseg: 1, egymennyiseg: true);
-                \mkw\store::getMainSession()->lastkezelesiktgid = $termek->getId();
-            } elseif (\mkw\store::getMainSession()->lastkezelesiktgid) {
-                $this->remove(\mkw\store::getMainSession()->lastkezelesiktgid);
+            } else {
+                $kezelesitermekek = $this->getRepo(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+                foreach ($kezelesitermekek as $termek) {
+                    $this->remove($termek);
+                }
             }
         }
     }
 
+    // TODO remove
     public function calcSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
     {
         $ktg = 0;
@@ -573,7 +616,6 @@ class KosarRepository extends \mkwhelpers\Repository
                 $partner = \mkw\store::getLoggedInUser();
                 $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                     $szallmod,
-                    $fizmod,
                     \mkw\store::getPartnerOrszag($partner),
                     \mkw\store::getPartnerValutanem($partner),
                     $ertek

@@ -213,6 +213,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function calcBruttoWithoutKtgs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcBruttoWithoutKtgs', []);
+
+        return parent::calcBruttoWithoutKtgs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function calcRugalmasFizmod()
     {
 
