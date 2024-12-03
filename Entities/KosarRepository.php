@@ -592,39 +592,6 @@ class KosarRepository extends \mkwhelpers\Repository
         }
     }
 
-    // TODO remove
-    public function calcSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
-    {
-        $ktg = 0;
-        $szamol = true;
-        if ($szallmod) {
-            $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
-            $szamol = $szm->getVanszallitasiktg();
-        }
-
-        $e = $this->calcSumBySessionId(\Zend_Session::getId());
-        $ertek = $e['sum'];
-        $cnt = $e['count'];
-        /** @var Kupon $kupon */
-        $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
-        if ($kupon && $kupon->isErvenyes() && $kupon->isMinimumosszegMegvan($ertek) && $kupon->isIngyenSzallitas()) {
-            $szamol = false;
-        }
-
-        if ($szamol) {
-            if ($cnt != 0) {
-                $partner = \mkw\store::getLoggedInUser();
-                $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
-                    $szallmod,
-                    \mkw\store::getPartnerOrszag($partner),
-                    \mkw\store::getPartnerValutanem($partner),
-                    $ertek
-                );
-            }
-        }
-        return $ktg;
-    }
-
     public function getHash()
     {
         $sorok = $this->getDataBySessionId(\Zend_Session::getId());
