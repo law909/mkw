@@ -524,7 +524,11 @@ class KosarRepository extends \mkwhelpers\Repository
                         $fizmod,
                         $ertek
                     );
-                    $this->add($termekid, null, $ktg);
+                    if ($ktg) {
+                        $this->add($termekid, null, $ktg);
+                    } else {
+                        $this->remove($termek);
+                    }
                 } else {
                     $this->remove($termek);
                 }
@@ -563,7 +567,11 @@ class KosarRepository extends \mkwhelpers\Repository
                         \mkw\store::getPartnerValutanem($partner),
                         $ertek
                     );
-                    $this->add($termekid, null, $ktg);
+                    if ($ktg) {
+                        $this->add($termekid, null, $ktg);
+                    } else {
+                        $this->remove($termek);
+                    }
                 } else {
                     $this->remove($termek);
                 }

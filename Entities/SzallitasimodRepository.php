@@ -68,8 +68,8 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
                 if (is_array($n)) {
                     $n = $n[0];
                 }
-                if ($n->getErtekszazalek()) {
-                    $ktg = round($ertek * $n->getErtekszazalek() / 100);
+                if ($n->getErtekszazalek() != 0) {
+                    $ktg = max(round($ertek * $n->getErtekszazalek() / 100), $n->getOsszeg());
                 } else {
                     $ktg = $n->getOsszeg();
                 }

@@ -211,8 +211,8 @@ class checkoutController extends \mkwhelpers\MattableController
                 $szl['ertekszazalek'] = $x->getErtekszazalek();
                 $e = $kosarrepo->calcSumBySessionId(\Zend_Session::getId());
                 if ($e) {
-                    if ($x->getErtekszazalek()) {
-                        $szl['novelo'] = round($e['sum'] * $x->getErtekszazalek() / 100);
+                    if ($x->getErtekszazalek() != 0) {
+                        $szl['novelo'] = max(round($e['sum'] * $x->getErtekszazalek() / 100), $x->getOsszeg());
                     } else {
                         $szl['novelo'] = $x->getOsszeg();
                     }

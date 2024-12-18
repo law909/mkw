@@ -340,6 +340,7 @@ class termekmenuController extends \mkwhelpers\MattableController
                             'name' => $nev,
                             'parent' => $wcparentid,
                             'descrition' => $leiras,
+                            'menu_order' => $category->getSorrend(),
                         ];
                         if ($category->getKepurl()) {
                             if ($category->getKepwcid()) {
@@ -381,7 +382,8 @@ class termekmenuController extends \mkwhelpers\MattableController
                 $data = [
                     'name' => $nev,
                     'parent' => $wcparentid,
-                    'descrition' => $leiras
+                    'descrition' => $leiras,
+                    'menu_order' => $category->getSorrend(),
                 ];
                 if ($category->getKepurl()) {
                     if ($category->getKepwcid()) {

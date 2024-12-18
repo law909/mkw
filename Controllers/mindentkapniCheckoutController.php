@@ -2,8 +2,15 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatstatusz;
+use Entities\Bizonylattipus;
+use Entities\CsomagTerminal;
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\Partner;
+use Entities\Raktar;
+use Entities\Szallitasimod;
+use Entities\Valutanem;
 use mkw\store;
 
 class mindentkapniCheckoutController extends checkoutController
@@ -152,7 +159,7 @@ class mindentkapniCheckoutController extends checkoutController
                 break;
         }
 
-        $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+        $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\Zend_Session::getId());
         $ok = $ok && count($kosartetelek) > 0;
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';
@@ -173,7 +180,7 @@ class mindentkapniCheckoutController extends checkoutController
                     $pc->login($kapcsemail, $jelszo1);
                     break;
                 default: // be van jelentkezve
-                    $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+                    $partner = $this->getRepo(Partner::class)->getLoggedInUser();
                     break;
             }
             $partner->setSzallnev($szallnev);
@@ -199,7 +206,7 @@ class mindentkapniCheckoutController extends checkoutController
             $partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
             $this->getEm()->persist($partner);
 
-            $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
             $megrendfej = new \Entities\Bizonylatfej();
             $megrendfej->setPersistentData();
             switch ($regkell) {
@@ -226,30 +233,30 @@ class mindentkapniCheckoutController extends checkoutController
             $megrendfej->setArfolyam(1);
             $megrendfej->setPartner($partner);
             $megrendfej->setKupon($kuponkod);
-            $megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
-            $megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
+            $megrendfej->setFizmod($this->getEm()->getRepository(Fizmod::class)->find($fizetesimod));
+            $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
             $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
-            $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+            $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
             $megrendfej->setValutanem($valutanem);
             $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
-            $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+            $megrendfej->setRaktar($this->getRepo(Raktar::class)->find($raktarid));
             $megrendfej->setBankszamla($valutanem->getBankszamla());
             $megrendfej->setWebshopmessage($webshopmessage);
             $megrendfej->setCouriermessage($couriermessage);
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
-                $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
+                $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
             } else {
-                $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             }
             $megrendfej->setBizonylatstatusz($bizstatusz);
             if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
-                $fpc = $this->getRepo('Entities\CsomagTerminal')->find($csomagterminalid);
+                $fpc = $this->getRepo(CsomagTerminal::class)->find($csomagterminalid);
                 if ($fpc) {
                     $megrendfej->setCsomagterminal($fpc);
                 }
             }
             if (\mkw\store::isTOFSzallitasimod($szallitasimod)) {
-                $fpc = $this->getRepo('Entities\CsomagTerminal')->find($tofterminalid);
+                $fpc = $this->getRepo(CsomagTerminal::class)->find($tofterminalid);
                 if ($fpc) {
                     $megrendfej->setCsomagterminal($fpc);
                 }
