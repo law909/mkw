@@ -1481,6 +1481,11 @@ class store
         return self::getConfigValue('wc.webshopnum');
     }
 
+    public static function getWcParcelLabelUrl()
+    {
+        return self::getConfigValue('wc.parcellabelurl');
+    }
+
     public static function getWcImageUrlPrefix()
     {
         return self::getConfigValue('wc.imageurlprefix');

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 
+use Entities\Afa;
 use Entities\Apierrorlog;
 use Entities\Arfolyam;
 use Entities\Bizonylatfej;
@@ -81,13 +82,19 @@ class wcwebhookController extends \mkwhelpers\MattableController
         }
         $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['billing']['country']]);
         if (!$orszag) {
-            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen ország: ' . $wcorder['billing']['country']);
-            $iserror = true;
+            $orszag = new Orszag();
+            $orszag->setIso3166($wcorder['billing']['country']);
+            $orszag->setNev($wcorder['billing']['country']);
+            $this->getEm()->persist($orszag);
+            $this->getEm()->flush();
         }
         $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['shipping']['country']]);
         if (!$szallorszag) {
-            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen ország: ' . $wcorder['shipping']['country']);
-            $iserror = true;
+            $szallorszag = new Orszag();
+            $szallorszag->setIso3166($wcorder['shipping']['country']);
+            $szallorszag->setNev($wcorder['shipping']['country']);
+            $this->getEm()->persist($szallorszag);
+            $this->getEm()->flush();
         }
         $valutanem = $this->getRepo(Valutanem::class)->findOneBy(['nev' => $wcorder['currency']]);
         if (!$valutanem) {
@@ -103,6 +110,20 @@ class wcwebhookController extends \mkwhelpers\MattableController
         if (!$szallmod) {
             $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen szállítási mód: ' . $wcorder['shipping_lines'][0]['method_id']);
             $iserror = true;
+        }
+        $afa = null;
+        if (array_key_exists('tax_lines', $wcorder)) {
+            $taxline = $wcorder['tax_lines'][0];
+            if ($taxline) {
+                $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $taxline['rate_percent']]);
+                if (!$afa) {
+                    $afa = new Afa();
+                    $afa->setErtek($taxline['rate_percent']);
+                    $afa->setNev($taxline['rate_percent'] . '%');
+                    $this->getEm()->persist($afa);
+                    $this->getEm()->flush();
+                }
+            }
         }
         foreach ($wcorder['line_items'] as $item) {
             $termek = $this->getRepo(Termek::class)->findOneBy(['wcid' => $item['product_id']]);
@@ -193,6 +214,13 @@ class wcwebhookController extends \mkwhelpers\MattableController
 
             $megr->setBizonylatstatusz($bizstatusz);
 
+            if (array_key_exists('meta_data', $wcorder)) {
+                foreach ($wcorder['meta_data'] as $meta) {
+                    if ($meta['key'] == '_vp_woo_pont_parcel_pdf') {
+                        $megr->setGlsparcellabelurl(\mkw\store::getWcParcelLabelUrl() . '/' . $meta['value']);
+                    }
+                }
+            }
             $megr->setMegjegyzes($wcorder['customer_note']);
             $megr->setBelsomegjegyzes('WooCommerce ID: ' . $wcorder['id'] . '; order_key: ' . $wcorder['order_key']);
 
@@ -208,9 +236,12 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 if ($valtozat) {
                     $tetel->setTermekvaltozat($valtozat);
                 }
+                if ($afa) {
+                    $tetel->setAfa($afa);
+                }
                 $tetel->setMennyiseg($item['quantity']);
-                $tetel->setBruttoegysar($item['price']);
-                $tetel->setBruttoegysarhuf($tetel->getBruttoegysar() * $tetel->getArfolyam());
+                $tetel->setNettoegysar($item['price']);
+                $tetel->setNettoegysarhuf($tetel->getNettoegysar() * $tetel->getArfolyam());
                 $tetel->calc();
                 $this->getEm()->persist($tetel);
             }
@@ -224,9 +255,12 @@ class wcwebhookController extends \mkwhelpers\MattableController
                     $tetel->setPersistentData();
                     $tetel->setTermek($termek);
                     $tetel->setTermeknev($item['method_title']);
+                    if ($afa) {
+                        $tetel->setAfa($afa);
+                    }
                     $tetel->setMennyiseg(1);
-                    $tetel->setBruttoegysar($item['total']);
-                    $tetel->setBruttoegysarhuf($tetel->getBruttoegysar() * $tetel->getArfolyam());
+                    $tetel->setNettoegysar($item['total']);
+                    $tetel->setNettoegysarhuf($tetel->getNettoegysar() * $tetel->getArfolyam());
                     $tetel->calc();
                     $this->getEm()->persist($tetel);
                 }
