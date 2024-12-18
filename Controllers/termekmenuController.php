@@ -375,7 +375,7 @@ class termekmenuController extends \mkwhelpers\MattableController
                 } else {
                     self::walkCategoryTree($category->getId(), null, $wc);
                 }
-            } elseif ($category->getWcdate() < $category->getLastmod()) {
+            } else {
                 $ford = $category->getTranslationsArray();
                 $nev = $category->getNevForditas($ford, 'en_us');
                 $leiras = $category->getLeirasForditas($ford, 'en_us');
@@ -408,8 +408,6 @@ class termekmenuController extends \mkwhelpers\MattableController
                 \mkw\store::getEm()->persist($category);
                 \mkw\store::getEm()->flush();
 
-                self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
-            } else {
                 self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
             }
         }
