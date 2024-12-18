@@ -5844,10 +5844,6 @@ class importController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->persist($termek);
                 \mkw\store::getEm()->flush();
 
-                if ($termek->getTermekmenu1()?->getWcid() && $kellwcbe) {
-                    $termek->sendArToWC();
-                }
-
 //                if (is_array($nev)) {
 //                    foreach($nev as $loc => $text) {
 //                        $termek->setNev($text);

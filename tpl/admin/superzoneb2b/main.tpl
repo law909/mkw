@@ -168,6 +168,8 @@
                             class="ui-button-text">Termék címkék</span></button>
                     <button class="js-wctermek ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
                             class="ui-button-text">Termék</span></button>
+                    <button class="js-wctermekarak ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                            class="ui-button-text">Árak</span></button>
                 </div>
             </div>
         </div>

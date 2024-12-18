@@ -3956,7 +3956,7 @@ class Termek
         }
     }
 
-    public function sendArToWC()
+    public function sendArToWC($wcclient = null, $eur = null)
     {
         if (!\mkw\store::isWoocommerceOn()) {
             return;
@@ -3968,9 +3968,15 @@ class Termek
         if (!$this->getWcid()) {
             return;
         }
-        /** @var Client $wc */
-        $wc = store::getWcClient();
-        $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        if (!$wcclient) {
+            /** @var Client $wc */
+            $wc = store::getWcClient();
+        } else {
+            $wc = $wcclient;
+        }
+        if (!$eur) {
+            $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        }
         $variations = [];
         $index = 0;
         foreach ($this->getValtozatok() as $valtozat) {

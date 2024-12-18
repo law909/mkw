@@ -1238,6 +1238,7 @@ $router->map('GET', '/admin/wc/termekvaltozatadattipus', 'termekvaltozatadattipu
 $router->map('GET', '/admin/wc/termekvaltozatertek', 'termekvaltozatertekController#uploadToWc', 'admintermekvaltozatertekuploadtowc');
 $router->map('GET', '/admin/wc/termekcimke', 'termekcimkeController#uploadToWc', 'admintermekcimkeuploadtowc');
 $router->map('GET', '/admin/wc/termek', 'termekController#uploadToWc', 'admintermekuploadtowc');
+$router->map('GET', '/admin/wc/termekar', 'termekarController#uploadToWc', 'admintermekaruploadtowc');
 
 $router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');
 

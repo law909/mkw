@@ -365,6 +365,27 @@ $(document).ready(
         });
         $('.js-wctermek').button();
 
+        $(document).on('click', '.js-wctermekarak', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/wc/termekar',
+                type: 'GET',
+                success: function (data) {
+                    dialogcenter.html('A feltöltés kész.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    })
+                }
+            });
+        });
+        $('.js-wctermekarak').button();
+
         $(document).on('click', '.js-apierrorlogclose', function (e) {
             e.preventDefault();
             $.ajax({

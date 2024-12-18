@@ -3484,12 +3484,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function sendArToWC()
+    public function sendArToWC($wcclient = NULL, $eur = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendArToWC', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendArToWC', [$wcclient, $eur]);
 
-        return parent::sendArToWC();
+        return parent::sendArToWC($wcclient, $eur);
     }
 
 }
