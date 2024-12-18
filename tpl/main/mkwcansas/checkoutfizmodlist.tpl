@@ -4,7 +4,7 @@
                data-caption="{$fizmod.caption}"
                data-biztonsagikerdeskell="{$fizmod.biztonsagikerdeskell}"
         >
-        {$fizmod.caption}{if $fizmod.novelo} (díja: {number_format($fizmod.novelo,0,',',' ')} Ft){/if}
+        {$fizmod.caption}{if $fizmod.novelo} (díja: {number_format($fizmod.novelo,0,',',' ')} Ft){else} (díja: 0 Ft){/if}
     </label>
     {if ($fizmod.leiras)}
         <div class="chk-courierdesc folyoszoveg">{$fizmod.leiras}</div>

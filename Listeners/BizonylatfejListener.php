@@ -5,6 +5,7 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Entities\Afa;
+use Entities\Feketelista;
 use Entities\Szallitasimod;
 use Entities\Termek;
 
@@ -142,6 +143,92 @@ class BizonylatfejListener
     }
 
     /**
+     * @param $ktg
+     * @param \Entities\Bizonylatfej $bizfej
+     * @param mixed $termekid
+     * @param $nullasafa
+     * @param $termek
+     *
+     * @return void
+     */
+    private function createBiztetel($ktg, \Entities\Bizonylatfej $bizfej, mixed $termekid): void
+    {
+        $ktg = $ktg * 1;
+
+        if ($ktg) {
+            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
+                $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            }
+            $termek = $this->em->getRepository(Termek::class)->find($termekid);
+
+            foreach ($bizfej->getBizonylattetelek() as $btetel) {
+                if ($btetel->getTermekId() == $termekid) {
+                    $k = $btetel;
+                }
+            }
+            if ($k) {
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                } else {
+                    $k->setAfa($termek->getAfa());
+                }
+                $k->setBruttoegysar($ktg);
+                $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
+            } else {
+                $k = new \Entities\Bizonylattetel();
+                $bizfej->addBizonylattetel($k);
+                $k->setPersistentData();
+                $k->setArvaltoztat(0);
+                if ($termek) {
+                    $k->setTermek($termek);
+                }
+                $k->setMozgat();
+                $k->setFoglal();
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                    $k->setNettoegysar($ktg);
+                    $k->setNettoegysarhuf($ktg * $k->getArfolyam());
+                } else {
+                    $k->setAfa($termek->getAfa());
+                    $k->setBruttoegysar($ktg);
+                    $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
+                }
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
+            }
+        } else {
+            $this->removeBiztetel($bizfej, $termekid);
+        }
+    }
+
+    private function removeBiztetel($bizfej, $termekid)
+    {
+        if ($termekid) {
+            foreach ($bizfej->getBizonylattetelek() as $tetel) {
+                if ($tetel->getTermekId() == $termekid) {
+                    $tetel->setNettoegysar(0);
+                    $tetel->setNettoegysarhuf(0);
+                    $tetel->calc();
+                    $this->em->persist($tetel);
+                    $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
+                    /*
+                    $bizfej->removeBizonylattetel($tetel);
+                    $this->em->remove($tetel);
+                    $this->uow->scheduleForDelete($tetel);
+                    */
+                    //$this->uow->computeChangeSet($this->bizonylattetelmd, $tetel); // must use this for uow->remove()
+                }
+            }
+        }
+    }
+
+    /**
      * @param \Entities\Bizonylatfej $bizfej
      * @param \Entities\Kupon $kupon
      */
@@ -164,6 +251,7 @@ class BizonylatfejListener
             $szamol = $szallmod->getVanszallitasiktg();
         }
 
+        $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         // $bruttoegysar csak vatera megrendeles importkor van megadva, ilyenkor mindegy, hogy milyen szall.mod van
         if ($szamol || $bruttoegysar) {
             if ($bizsum->cnt != 0) {
@@ -172,17 +260,17 @@ class BizonylatfejListener
                         $szallmod,
                         $bizfej->getPartner()->getOrszag(),
                         $bizfej->getValutanem(),
-                        $bizsum->ertek
+                        $bizsum->brutto
                     );
                 } else {
                     $ktg = $bruttoegysar;
                 }
-                $this->createBiztetel($ktg, $bizfej, \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+                $this->createBiztetel($ktg, $bizfej, $termekid);
             } else {
-                //$this->removeBiztetel($bizfej, $termekid);
+                $this->removeBiztetel($bizfej, $termekid);
             }
         } else {
-            //$this->removeBiztetel($bizfej, $termekid);
+            $this->removeBiztetel($bizfej, $termekid);
         }
     }
 
@@ -207,19 +295,20 @@ class BizonylatfejListener
             $szamol = $szallmod->getVanszallitasiktg();
         }
 
+        $termekid = \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek);
         if ($szamol) {
             if ($bizsum->cnt != 0) {
                 $ktg = $this->em->getRepository(Szallitasimod::class)->getUtanvetKoltseg(
                     $szallmod,
                     $bizfej->getFizmod(),
-                    $bizsum->ertek
+                    $bizsum->brutto
                 );
-                $this->createBiztetel($ktg, $bizfej, \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek));
+                $this->createBiztetel($ktg, $bizfej, $termekid);
             } else {
-                //$this->removeBiztetel($bizfej, $termekid);
+                $this->removeBiztetel($bizfej, $termekid);
             }
         } else {
-            //$this->removeBiztetel($bizfej, $termekid);
+            $this->removeBiztetel($bizfej, $termekid);
         }
     }
 
@@ -234,37 +323,48 @@ class BizonylatfejListener
             if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
                 $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
-            $k = new \Entities\Bizonylattetel();
-            $bizfej->addBizonylattetel($k);
-            $k->setPersistentData();
-            $k->setArvaltoztat(0);
-            if ($kezktg) {
-                $k->setTermek($kezktg);
+            foreach ($bizfej->getBizonylattetelek() as $btetel) {
+                if ($btetel->getTermekId() == $kezktg->getId()) {
+                    $k = $btetel;
+                }
             }
-            $k->setMozgat();
-            $k->setFoglal();
-            $k->setMennyiseg(1);
-            if ($nullasafa) {
-                $k->setAfa($nullasafa);
-                $k->setNettoegysar($kezktg->getNettoAr());
-                $k->setNettoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
+            if ($k) {
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                }
+                $k->setBruttoegysar($kezktg->getBruttoAr());
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
             } else {
-                $k->setAfa($kezktg->getAfa());
-                $k->setBruttoegysar($kezktg->getNettoAr());
-                $k->setBruttoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
+                $k = new \Entities\Bizonylattetel();
+                $bizfej->addBizonylattetel($k);
+                $k->setPersistentData();
+                $k->setArvaltoztat(0);
+                if ($kezktg) {
+                    $k->setTermek($kezktg);
+                }
+                $k->setMozgat();
+                $k->setFoglal();
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                    $k->setNettoegysar($kezktg->getNettoAr());
+                    $k->setNettoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
+                } else {
+                    $k->setAfa($kezktg->getAfa());
+                    $k->setBruttoegysar($kezktg->getBruttoAr());
+                    $k->setBruttoegysarhuf($kezktg->getBruttoAr() * $k->getArfolyam());
+                }
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
             }
-            $k->calc();
-            $this->em->persist($k);
-            $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
-        }
-    }
-
-    private function removeBiztetel($bizfej, $termekid)
-    {
-        foreach ($bizfej->getBizonylattetelek() as $tetel) {
-            if ($tetel->getTermekId() == $termekid) {
-                $bizfej->removeBizonylattetel($tetel);
-                $this->em->remove($tetel);
+        } else {
+            $ktgs = $this->em->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+            foreach ($ktgs as $ktg) {
+                $this->removeBiztetel($bizfej, $ktg);
             }
         }
     }
@@ -280,7 +380,7 @@ class BizonylatfejListener
         foreach ($pbizek as $pbiz) {
             $pbiz->setRontott(true);
             $this->em->persist($pbiz);
-            $this->uow->computeChangeSet($this->penztarbizonylatfejmd, $pbiz);
+            $this->uow->recomputeSingleEntityChangeSet($this->penztarbizonylatfejmd, $pbiz);
         }
     }
 
@@ -370,7 +470,7 @@ class BizonylatfejListener
                         $uj = new \Entities\BizonylatfejTranslation($trans->getLocale(), 'fizmodnev', $trans->getContent());
                         $entity->addTranslation($uj);
                         $this->em->persist($uj);
-                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $uj);
+                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $translation);
                     }
                 }
             }
@@ -399,7 +499,7 @@ class BizonylatfejListener
                         $uj = new \Entities\BizonylatfejTranslation($trans->getLocale(), 'szallitasimodnev', $trans->getContent());
                         $entity->addTranslation($uj);
                         $this->em->persist($uj);
-                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $uj);
+                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $translation);
                     }
                 }
             }
@@ -470,7 +570,7 @@ class BizonylatfejListener
                     $entity->calcSzallitasiido();
                     $entity->calcNAVBekuldendo();
 
-                    $feketelistarepo = $this->em->getRepository('Entities\Feketelista');
+                    $feketelistarepo = $this->em->getRepository(Feketelista::class);
                     $fok = $feketelistarepo->getFeketelistaOk($entity->getPartneremail(), $entity->getIp());
                     if ($fok === false) {
                         $entity->setPartnerfeketelistas(false);
@@ -501,71 +601,6 @@ class BizonylatfejListener
                     $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
                 }
             }
-        }
-    }
-
-    /**
-     * @param $ktg
-     * @param \Entities\Bizonylatfej $bizfej
-     * @param mixed $termekid
-     * @param $nullasafa
-     * @param $termek
-     *
-     * @return void
-     */
-    private function createBiztetel($ktg, \Entities\Bizonylatfej $bizfej, mixed $termekid): void
-    {
-        $ktg = $ktg * 1;
-
-        if ($ktg) {
-            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-            }
-            $termek = $this->em->getRepository(Termek::class)->find($termekid);
-
-            foreach ($bizfej->getBizonylattetelek() as $btetel) {
-                if ($btetel->getTermekId() == $termekid) {
-                    $k = $btetel;
-                }
-            }
-            if ($k) {
-                $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
-                } else {
-                    $k->setAfa($termek->getAfa());
-                }
-                $k->setBruttoegysar($ktg);
-                $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
-                $k->calc();
-                $this->em->persist($k);
-                $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
-            } else {
-                $k = new \Entities\Bizonylattetel();
-                $bizfej->addBizonylattetel($k);
-                $k->setPersistentData();
-                $k->setArvaltoztat(0);
-                if ($termek) {
-                    $k->setTermek($termek);
-                }
-                $k->setMozgat();
-                $k->setFoglal();
-                $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
-                    $k->setNettoegysar($ktg);
-                    $k->setNettoegysarhuf($ktg * $k->getArfolyam());
-                } else {
-                    $k->setAfa($termek->getAfa());
-                    $k->setBruttoegysar($ktg);
-                    $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
-                }
-                $k->calc();
-                $this->em->persist($k);
-                $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
-            }
-        } else {
-            //$this->removeBiztetel($bizfej, $termekid);
         }
     }
 
