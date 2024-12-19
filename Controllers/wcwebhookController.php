@@ -427,6 +427,8 @@ class wcwebhookController extends \mkwhelpers\MattableController
             /** @var Bizonylatfej $order */
             $order = $this->getRepo(Bizonylatfej::class)->findOneBy(['wcid' => $params['order_id']]);
             if ($order) {
+                $order->setKellszallitasikoltsegetszamolni(false);
+                $order->dontUploadToWC = true;
                 $newdata = $order->getSzamlazzdata();
                 $newdata[] = $params;
                 $order->setSzamlazzdata($newdata);
