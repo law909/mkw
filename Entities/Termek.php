@@ -3983,11 +3983,12 @@ class Termek
         }
         $variations = [];
         $index = 0;
+        /** @var TermekValtozat $valtozat */
         foreach ($this->getValtozatok() as $valtozat) {
             $variations['update'] = [
                 'id' => $valtozat->getWcid(),
-                'regular_price' => $valtozat->calcRegularPrice($eur),
-                'sale_price' => $valtozat->calcSalePrice($eur),
+                'regular_price' => $valtozat->calcRegularPriceForWC($eur),
+                'sale_price' => $valtozat->calcSalePriceForWC($eur),
             ];
             $index++;
             if (($index + 1) % 100 == 0 || $index + 1 == count($this->getValtozatok())) {
