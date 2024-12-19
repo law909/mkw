@@ -508,6 +508,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
         $x['forditottadozas'] = $t->isForditottadozas();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();
+        $x['szamlazzdata'] = $t->getSzamlazzdata();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&
             (
                 ($t->getNaveredmeny() == 'ABORTED') ||

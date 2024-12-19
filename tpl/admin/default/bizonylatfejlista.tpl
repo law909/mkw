@@ -218,6 +218,9 @@
                 {if ($setup.osztottfizmod)}
                     <th></th>
                 {/if}
+                {if ($setup.woocommerce)}
+                    <th>Számlázz.hu</th>
+                {/if}
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

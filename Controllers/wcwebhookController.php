@@ -406,6 +406,18 @@ class wcwebhookController extends \mkwhelpers\MattableController
     {
         $params = file_get_contents('php://input');
         \mkw\store::writelog('WCDocumentCreated: ' . $params);
+        $params = json_decode($params, true);
+        if (array_key_exists('order_id', $params)) {
+            /** @var Bizonylatfej $order */
+            $order = $this->getRepo(Bizonylatfej::class)->findOneBy(['wcid' => $params['order_id']]);
+            if ($order) {
+                $newdata = $order->getSzamlazzdata();
+                $newdata[] = $params;
+                $order->setSzamlazzdata($newdata);
+                $this->getEm()->persist($order);
+                $this->getEm()->flush();
+            }
+        }
         header('HTTP/1.1 200 OK');
     }
 }

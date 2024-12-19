@@ -672,6 +672,8 @@ class Bizonylatfej
     private $wcid;
     /** @ORM\Column(type="datetime", nullable=true) */
     private $wcdate;
+    /** @ORM\Column(type="json", nullable=true) */
+    private $szamlazzdata;
 
     public function __toString()
     {
@@ -5452,6 +5454,22 @@ class Bizonylatfej
             }
             $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzamlazzdata()
+    {
+        return $this->szamlazzdata;
+    }
+
+    /**
+     * @param mixed $szamlazzdata
+     */
+    public function setSzamlazzdata($szamlazzdata): void
+    {
+        $this->szamlazzdata = $szamlazzdata;
     }
 
 }

@@ -381,4 +381,13 @@
             </table>
         </td>
     {/if}
+    {if ($setup.woocommerce)}
+        <td class="cell">
+            {foreach $_egyed.szamlazzdata as $szd}
+                <div>
+                    <span>{$szd.document_type} </span><a href="{$szd.document_url}" target="_blank">{$szd.document_number}</a>
+                </div>
+            {/foreach}
+        </td>
+    {/if}
 </tr>
