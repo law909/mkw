@@ -34,158 +34,51 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * @var array<string, null> properties to be lazy loaded, indexed by property name
      */
-    public static $lazyPropertiesNames = [
-    ];
+    public static $lazyPropertiesNames = array (
+);
 
     /**
      * @var array<string, mixed> default values of properties to be lazy loaded, with keys being the property names
      *
      * @see \Doctrine\Common\Proxy\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = [
-    ];
+    public static $lazyPropertiesDefaults = array (
+);
+
 
 
     public function __construct(?\Closure $initializer = null, ?\Closure $cloner = null)
     {
+
         $this->__initializer__ = $initializer;
-        $this->__cloner__ = $cloner;
+        $this->__cloner__      = $cloner;
     }
 
 
+
+
+
+
+
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return [
-                '__isInitialized__',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo',
-                'dontUploadToWC',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid',
-                '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'
-            ];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'];
         }
 
-        return [
-            '__isInitialized__',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo',
-            'dontUploadToWC',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid',
-            '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'
-        ];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'];
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (TermekValtozat $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -193,16 +86,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy::$lazyPropertiesDefaults as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
             };
+
         }
     }
 
     /**
-     *
+     * 
      */
     public function __clone()
     {
@@ -282,12 +176,13 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
     public function generateVonalkod()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateVonalkod', []);
 
         return parent::generateVonalkod();
@@ -298,6 +193,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function toEmag()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'toEmag', []);
 
         return parent::toEmag();
@@ -306,8 +202,9 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getMozgasDb($datum = null, $raktarid = null)
+    public function getMozgasDb($datum = NULL, $raktarid = NULL)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgasDb', [$datum, $raktarid]);
 
         return parent::getMozgasDb($datum, $raktarid);
@@ -316,8 +213,9 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
+    public function getKeszlet($datum = NULL, $raktarid = NULL, $nonegativ = false)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszlet', [$datum, $raktarid, $nonegativ]);
 
         return parent::getKeszlet($datum, $raktarid, $nonegativ);
@@ -326,8 +224,9 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getFoglaltMennyiseg($kivevebiz = null)
+    public function getFoglaltMennyiseg($kivevebiz = NULL)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', [$kivevebiz]);
 
         return parent::getFoglaltMennyiseg($kivevebiz);
@@ -339,7 +238,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
-            return (int)parent::getId();
+            return (int)  parent::getId();
         }
 
 
@@ -353,6 +252,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getTermek()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
@@ -363,6 +263,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setTermek($termek)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$termek]);
 
         return parent::setTermek($termek);
@@ -373,6 +274,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
 
         return parent::getLathato();
@@ -383,6 +285,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato($lathato)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$lathato]);
 
         return parent::setLathato($lathato);
@@ -393,6 +296,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto', []);
 
         return parent::getElerheto();
@@ -403,6 +307,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto($elerheto)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto', [$elerheto]);
 
         return parent::setElerheto($elerheto);
@@ -413,6 +318,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getTermekfokep()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfokep', []);
 
         return parent::getTermekfokep();
@@ -423,6 +329,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setTermekfokep($adat)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfokep', [$adat]);
 
         return parent::setTermekfokep($adat);
@@ -433,6 +340,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus1()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus1', []);
 
         return parent::getAdatTipus1();
@@ -443,6 +351,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus1Id()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus1Id', []);
 
         return parent::getAdatTipus1Id();
@@ -453,6 +362,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus1Nev()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus1Nev', []);
 
         return parent::getAdatTipus1Nev();
@@ -463,6 +373,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setAdatTipus1($at)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdatTipus1', [$at]);
 
         return parent::setAdatTipus1($at);
@@ -473,6 +384,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getErtek1()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek1', []);
 
         return parent::getErtek1();
@@ -483,6 +395,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setErtek1($ertek)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek1', [$ertek]);
 
         return parent::setErtek1($ertek);
@@ -493,6 +406,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus2()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus2', []);
 
         return parent::getAdatTipus2();
@@ -503,6 +417,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus2Id()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus2Id', []);
 
         return parent::getAdatTipus2Id();
@@ -513,6 +428,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getAdatTipus2Nev()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdatTipus2Nev', []);
 
         return parent::getAdatTipus2Nev();
@@ -523,6 +439,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setAdatTipus2($at)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdatTipus2', [$at]);
 
         return parent::setAdatTipus2($at);
@@ -533,6 +450,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getErtek2()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek2', []);
 
         return parent::getErtek2();
@@ -543,6 +461,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setErtek2($ertek)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek2', [$ertek]);
 
         return parent::setErtek2($ertek);
@@ -553,6 +472,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLastmod()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
@@ -563,6 +483,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getCreated()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
@@ -573,6 +494,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getNetto()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
@@ -583,6 +505,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setNetto($netto)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$netto]);
 
         return parent::setNetto($netto);
@@ -593,6 +516,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getBrutto()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
@@ -603,6 +527,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setBrutto($brutto)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$brutto]);
 
         return parent::setBrutto($brutto);
@@ -613,6 +538,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepurl($pre = '/')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', [$pre]);
 
         return parent::getKepurl($pre);
@@ -623,6 +549,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepwcid()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepwcid', []);
 
         return parent::getKepwcid();
@@ -633,6 +560,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepurlMini($pre = '/')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMini', [$pre]);
 
         return parent::getKepurlMini($pre);
@@ -643,6 +571,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepurlSmall($pre = '/')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', [$pre]);
 
         return parent::getKepurlSmall($pre);
@@ -653,6 +582,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepurlMedium($pre = '/')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', [$pre]);
 
         return parent::getKepurlMedium($pre);
@@ -663,6 +593,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepurlLarge($pre = '/')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', [$pre]);
 
         return parent::getKepurlLarge($pre);
@@ -673,6 +604,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepleiras()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', []);
 
         return parent::getKepleiras();
@@ -683,6 +615,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKep()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKep', []);
 
         return parent::getKep();
@@ -693,6 +626,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getKepId()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepId', []);
 
         return parent::getKepId();
@@ -703,6 +637,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setKep($kep)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKep', [$kep]);
 
         return parent::setKep($kep);
@@ -713,6 +648,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getIdegencikkszam()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegencikkszam', []);
 
         return parent::getIdegencikkszam();
@@ -723,6 +659,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setIdegencikkszam($idegencikkszam)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegencikkszam', [$idegencikkszam]);
 
         return parent::setIdegencikkszam($idegencikkszam);
@@ -733,6 +670,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getCikkszam()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszam', []);
 
         return parent::getCikkszam();
@@ -743,6 +681,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setCikkszam($cikkszam)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCikkszam', [$cikkszam]);
 
         return parent::setCikkszam($cikkszam);
@@ -753,6 +692,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getNev()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
@@ -763,6 +703,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getVonalkod()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVonalkod', []);
 
         return parent::getVonalkod();
@@ -773,6 +714,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setVonalkod($vonalkod)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVonalkod', [$vonalkod]);
 
         return parent::setVonalkod($vonalkod);
@@ -783,6 +725,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getBeerkezesdatum()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeerkezesdatum', []);
 
         return parent::getBeerkezesdatum();
@@ -793,6 +736,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getBeerkezesdatumStr()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeerkezesdatumStr', []);
 
         return parent::getBeerkezesdatumStr();
@@ -803,6 +747,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setBeerkezesdatum($adat = '')
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBeerkezesdatum', [$adat]);
 
         return parent::setBeerkezesdatum($adat);
@@ -813,6 +758,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getSzin()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzin', []);
 
         return parent::getSzin();
@@ -823,6 +769,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getMeret()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMeret', []);
 
         return parent::getMeret();
@@ -833,6 +780,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto2()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto2', []);
 
         return parent::getElerheto2();
@@ -843,6 +791,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto2($elerheto2)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto2', [$elerheto2]);
 
         return parent::setElerheto2($elerheto2);
@@ -853,6 +802,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto3()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto3', []);
 
         return parent::getElerheto3();
@@ -863,6 +813,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto3($elerheto3)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto3', [$elerheto3]);
 
         return parent::setElerheto3($elerheto3);
@@ -873,6 +824,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto4()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto4', []);
 
         return parent::getElerheto4();
@@ -883,6 +835,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto4($elerheto4)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto4', [$elerheto4]);
 
         return parent::setElerheto4($elerheto4);
@@ -893,6 +846,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato2()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato2', []);
 
         return parent::getLathato2();
@@ -903,6 +857,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato2($lathato2)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato2', [$lathato2]);
 
         return parent::setLathato2($lathato2);
@@ -913,6 +868,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato3()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato3', []);
 
         return parent::getLathato3();
@@ -923,6 +879,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato3($lathato3)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$lathato3]);
 
         return parent::setLathato3($lathato3);
@@ -933,6 +890,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato4()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato4', []);
 
         return parent::getLathato4();
@@ -943,6 +901,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato4($lathato4)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato4', [$lathato4]);
 
         return parent::setLathato4($lathato4);
@@ -953,6 +912,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getXElerheto()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXElerheto', []);
 
         return parent::getXElerheto();
@@ -963,6 +923,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getNLathato($n)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNLathato', [$n]);
 
         return parent::getNLathato($n);
@@ -973,6 +934,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getXLathato()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXLathato', []);
 
         return parent::getXLathato();
@@ -983,6 +945,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getMinboltikeszlet()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMinboltikeszlet', []);
 
         return parent::getMinboltikeszlet();
@@ -993,6 +956,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function calcMinBoltiKeszlet()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcMinBoltiKeszlet', []);
 
         return parent::calcMinBoltiKeszlet();
@@ -1003,6 +967,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setMinboltikeszlet($minboltikeszlet)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMinboltikeszlet', [$minboltikeszlet]);
 
         return parent::setMinboltikeszlet($minboltikeszlet);
@@ -1013,6 +978,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato5()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato5', []);
 
         return parent::getLathato5();
@@ -1023,6 +989,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato5($lathato5): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato5', [$lathato5]);
 
         parent::setLathato5($lathato5);
@@ -1033,6 +1000,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato6()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato6', []);
 
         return parent::getLathato6();
@@ -1043,6 +1011,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato6($lathato6): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato6', [$lathato6]);
 
         parent::setLathato6($lathato6);
@@ -1053,6 +1022,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato7()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato7', []);
 
         return parent::getLathato7();
@@ -1063,6 +1033,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato7($lathato7): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato7', [$lathato7]);
 
         parent::setLathato7($lathato7);
@@ -1073,6 +1044,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato8()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato8', []);
 
         return parent::getLathato8();
@@ -1083,6 +1055,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato8($lathato8): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato8', [$lathato8]);
 
         parent::setLathato8($lathato8);
@@ -1093,6 +1066,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato9()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato9', []);
 
         return parent::getLathato9();
@@ -1103,6 +1077,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato9($lathato9): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato9', [$lathato9]);
 
         parent::setLathato9($lathato9);
@@ -1113,6 +1088,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato10()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato10', []);
 
         return parent::getLathato10();
@@ -1123,6 +1099,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato10($lathato10): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato10', [$lathato10]);
 
         parent::setLathato10($lathato10);
@@ -1133,6 +1110,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato11()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato11', []);
 
         return parent::getLathato11();
@@ -1143,6 +1121,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato11($lathato11): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato11', [$lathato11]);
 
         parent::setLathato11($lathato11);
@@ -1153,6 +1132,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato12()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato12', []);
 
         return parent::getLathato12();
@@ -1163,6 +1143,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato12($lathato12): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato12', [$lathato12]);
 
         parent::setLathato12($lathato12);
@@ -1173,6 +1154,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato13()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato13', []);
 
         return parent::getLathato13();
@@ -1183,6 +1165,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato13($lathato13): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato13', [$lathato13]);
 
         parent::setLathato13($lathato13);
@@ -1193,6 +1176,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato14()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato14', []);
 
         return parent::getLathato14();
@@ -1203,6 +1187,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato14($lathato14): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato14', [$lathato14]);
 
         parent::setLathato14($lathato14);
@@ -1213,6 +1198,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getLathato15()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato15', []);
 
         return parent::getLathato15();
@@ -1223,6 +1209,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setLathato15($lathato15): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato15', [$lathato15]);
 
         parent::setLathato15($lathato15);
@@ -1233,6 +1220,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto5()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto5', []);
 
         return parent::getElerheto5();
@@ -1243,6 +1231,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto5($elerheto5): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto5', [$elerheto5]);
 
         parent::setElerheto5($elerheto5);
@@ -1253,6 +1242,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto6()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto6', []);
 
         return parent::getElerheto6();
@@ -1263,6 +1253,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto6($elerheto6): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto6', [$elerheto6]);
 
         parent::setElerheto6($elerheto6);
@@ -1273,6 +1264,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto7()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto7', []);
 
         return parent::getElerheto7();
@@ -1283,6 +1275,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto7($elerheto7): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto7', [$elerheto7]);
 
         parent::setElerheto7($elerheto7);
@@ -1293,6 +1286,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto8()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto8', []);
 
         return parent::getElerheto8();
@@ -1303,6 +1297,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto8($elerheto8): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto8', [$elerheto8]);
 
         parent::setElerheto8($elerheto8);
@@ -1313,6 +1308,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto9()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto9', []);
 
         return parent::getElerheto9();
@@ -1323,6 +1319,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto9($elerheto9): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto9', [$elerheto9]);
 
         parent::setElerheto9($elerheto9);
@@ -1333,6 +1330,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto10()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto10', []);
 
         return parent::getElerheto10();
@@ -1343,6 +1341,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto10($elerheto10): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto10', [$elerheto10]);
 
         parent::setElerheto10($elerheto10);
@@ -1353,6 +1352,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto11()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto11', []);
 
         return parent::getElerheto11();
@@ -1363,6 +1363,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto11($elerheto11): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto11', [$elerheto11]);
 
         parent::setElerheto11($elerheto11);
@@ -1373,6 +1374,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto12()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto12', []);
 
         return parent::getElerheto12();
@@ -1383,6 +1385,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto12($elerheto12): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto12', [$elerheto12]);
 
         parent::setElerheto12($elerheto12);
@@ -1393,6 +1396,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto13()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto13', []);
 
         return parent::getElerheto13();
@@ -1403,6 +1407,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto13($elerheto13): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto13', [$elerheto13]);
 
         parent::setElerheto13($elerheto13);
@@ -1413,6 +1418,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto14()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto14', []);
 
         return parent::getElerheto14();
@@ -1423,6 +1429,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto14($elerheto14): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto14', [$elerheto14]);
 
         parent::setElerheto14($elerheto14);
@@ -1433,6 +1440,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getElerheto15()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto15', []);
 
         return parent::getElerheto15();
@@ -1443,6 +1451,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setElerheto15($elerheto15): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto15', [$elerheto15]);
 
         parent::setElerheto15($elerheto15);
@@ -1453,6 +1462,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getWcid()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
 
         return parent::getWcid();
@@ -1463,6 +1473,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function setWcid($wcid): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
 
         parent::setWcid($wcid);
@@ -1473,6 +1484,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getWcdate()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
 
         return parent::getWcdate();
@@ -1483,6 +1495,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function getWcdateStr($wcdate)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdateStr', [$wcdate]);
 
         return parent::getWcdateStr($wcdate);
@@ -1491,8 +1504,9 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function setWcdate($adat = null): void
+    public function setWcdate($adat = NULL): void
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
 
         parent::setWcdate($adat);
@@ -1503,6 +1517,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function clearWcdate()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearWcdate', []);
 
         return parent::clearWcdate();
@@ -1513,6 +1528,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function shouldUploadToWc()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'shouldUploadToWc', []);
 
         return parent::shouldUploadToWc();
@@ -1521,8 +1537,53 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function toWC($eur = null, $termeknev = null)
+    public function calcStockForWC()
     {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcStockForWC', []);
+
+        return parent::calcStockForWC();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStockInfoForWC($needid = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStockInfoForWC', [$needid]);
+
+        return parent::getStockInfoForWC($needid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcRegularPriceForWC($valutanem)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcRegularPriceForWC', [$valutanem]);
+
+        return parent::calcRegularPriceForWC($valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcSalePriceForWC($valutanem)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSalePriceForWC', [$valutanem]);
+
+        return parent::calcSalePriceForWC($valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toWC($eur = NULL, $termeknev = NULL)
+    {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'toWC', [$eur, $termeknev]);
 
         return parent::toWC($eur, $termeknev);
@@ -1533,6 +1594,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function uploadToWC($doflush = true)
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'uploadToWC', [$doflush]);
 
         return parent::uploadToWC($doflush);
@@ -1543,6 +1605,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function sendKeszletToWC()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendKeszletToWC', []);
 
         return parent::sendKeszletToWC();
@@ -1551,18 +1614,9 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getStockInfoForWC($needid = false)
-    {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszletToWC', [$needid]);
-
-        return parent::getStockInfoForWC($needid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function sendArToWC()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendArToWC', []);
 
         return parent::sendArToWC();
@@ -1573,6 +1627,7 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
      */
     public function deleteFromWC()
     {
+
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
 
         return parent::deleteFromWC();

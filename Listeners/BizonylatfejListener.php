@@ -537,11 +537,23 @@ class BizonylatfejListener
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
         $this->kuponmd = $this->em->getClassMetadata('Entities\Kupon');
 
+        $updatedentities = $this->uow->getScheduledEntityUpdates();
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
-            $this->uow->getScheduledEntityUpdates()
+            $updatedentities,
         );
 
+        foreach ($updatedentities as $entity) {
+            if ($entity instanceof \Entities\Bizonylatfej && $entity->getWcid()) {
+                $changeSet = $this->uow->getEntityChangeSet($entity);
+                if (isset($changeSet['bizonylatstatusz'])) {
+                    [$oldValue, $newValue] = $changeSet['bizonylatstatusz'];
+                    if ($oldValue->getId() !== $newValue->getId()) {
+                        $entity->sendStatusChangeToWc();
+                    }
+                }
+            }
+        }
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
                 /** @var \Entities\Bizonylattetel $tetel */
