@@ -76,7 +76,7 @@ class BizonylattetelListener
                 if (\mkw\store::isWoocommerceOn()) {
                     if (!$tids[$entity->getTermek()->getId()]) {
                         $tids[$entity->getTermek()->getId()] = true;
-                        $termekek[] = $entity->getTermek()->getKeszletToWC(true);
+                        $termekek[] = $entity->getTermek()->getStockInfoForWC(true);
                     }
                     if ($entity->getTermekvaltozat()) {
                         \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');

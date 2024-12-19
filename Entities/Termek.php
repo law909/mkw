@@ -3655,29 +3655,19 @@ class Termek
         return $this->getWcdate()?->getTimestamp() - $this->getLastmod()?->getTimestamp() < -1;
     }
 
-    public function sendKeszletToWC()
+    public function calcStockForWC()
     {
-        if (\mkw\store::isWoocommerceOn()) {
-            $data = $this->getKeszletToWC();
-            if ($data) {
-                $wc = store::getWcClient();
-                try {
-                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
-                    $result = $wc->put('products/' . $this->getWcid(), $data);
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
-                }
-            }
+        $vkeszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
+        if ($vkeszlet < 0) {
+            $vkeszlet = 0;
         }
+        return $vkeszlet;
     }
 
-    public function getKeszletToWC($needid = false)
+    public function getStockInfoForWC($needid = false)
     {
         if ($this->getWcid() && !$this->getWctiltva()) {
-            $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
-            if ($keszlet < 0) {
-                $keszlet = 0;
-            }
+            $keszlet = $this->calcStockForWC();
             $data = [
                 'stock_quantity' => $keszlet,
                 'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
@@ -3687,7 +3677,24 @@ class Termek
             }
             return $data;
         }
-        return false;
+        return [];
+    }
+
+
+    public function sendKeszletToWC()
+    {
+        if (\mkw\store::isWoocommerceOn()) {
+            $data = $this->getStockInfoForWC();
+            if ($data) {
+                $wc = store::getWcClient();
+                try {
+                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
+                    $wc->put('products/' . $this->getWcid(), $data);
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
+                }
+            }
+        }
     }
 
     public function uploadToWC($doFlush = true)
@@ -3711,10 +3718,6 @@ class Termek
         $ford = $this->getTranslationsArray();
         $nev = $this->getNevForditas($ford, 'en_us');
         $leiras = $this->getLeirasForditas($ford, 'en_us');
-        $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg();
-        if ($keszlet < 0) {
-            $keszlet = 0;
-        }
         $meta = [];
         if ($this->getCikkszam()) {
             $meta[] = [
@@ -3802,33 +3805,34 @@ class Termek
                 }
             }
         }
-        $data = [
-            'name' => $nev,
-            'sku' => 'T-' . $this->getId(),
-            'type' => 'variable',
-            'status' => $this->getInaktiv() ? 'draft' : 'publish',
-            'catalog_visibility' =>
-                !$this->getNLathato(\mkw\store::getWcWebshopNum()) ||
-                $this->getNemkaphato() ||
-                $this->getFuggoben() ? 'hidden' : 'visible',
-            'description' => preg_replace("/(\t|\n|\r)+/", "", $leiras),
-            'short_description' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...',
-            'stock_quantity' => $keszlet,
-            'manage_stock' => true,
-            'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
-            'weight' => (string)$this->getSuly(),
-            'dimensions' => [
-                'length' => (string)$this->getHosszusag(),
-                'width' => (string)$this->getSzelesseg(),
-                'height' => (string)$this->getMagassag(),
+        $data = array_merge_recursive(
+            [
+                'name' => $nev,
+                'sku' => 'T-' . $this->getId(),
+                'type' => 'variable',
+                'status' => $this->getInaktiv() ? 'draft' : 'publish',
+                'catalog_visibility' =>
+                    !$this->getNLathato(\mkw\store::getWcWebshopNum()) ||
+                    $this->getNemkaphato() ||
+                    $this->getFuggoben() ? 'hidden' : 'visible',
+                'description' => preg_replace("/(\t|\n|\r)+/", "", $leiras),
+                'short_description' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...',
+                'manage_stock' => true,
+                'weight' => (string)$this->getSuly(),
+                'dimensions' => [
+                    'length' => (string)$this->getHosszusag(),
+                    'width' => (string)$this->getSzelesseg(),
+                    'height' => (string)$this->getMagassag(),
+                ],
+                'featured' => $this->getAjanlott(),
+                'categories' => $cats,
+                'tags' => $tags,
+                'attributes' => $attrs,
+                'images' => $images,
+                'meta_data' => $meta,
             ],
-            'featured' => $this->getAjanlott(),
-            'categories' => $cats,
-            'tags' => $tags,
-            'attributes' => $attrs,
-            'images' => $images,
-            'meta_data' => $meta,
-        ];
+            $this->getStockInfoForWC()
+        );
 
         \mkw\store::writelog($this->getId() . ': stop: ' . json_encode($data));
 
@@ -3981,18 +3985,9 @@ class Termek
         $index = 0;
         foreach ($this->getValtozatok() as $valtozat) {
             $variations['update'] = [
-                'regular_price' => (string)$this->getBruttoAr(
-                    $valtozat,
-                    null,
-                    $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()))
-                ),
-                'sale_price' => (string)$this->getNettoAr(
-                    $valtozat,
-                    null,
-                    $eur,
-                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()))
-                ),
+                'id' => $valtozat->getWcid(),
+                'regular_price' => $valtozat->calcRegularPrice($eur),
+                'sale_price' => $valtozat->calcSalePrice($eur),
             ];
             $index++;
             if (($index + 1) % 100 == 0 || $index + 1 == count($this->getValtozatok())) {
