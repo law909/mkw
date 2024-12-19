@@ -134,6 +134,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             /** @var Bizonylattipus $biztipus */
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
 
+            /** @var Bizonylatfej $megr */
             $megr = $this->getRepo(Bizonylatfej::class)->findOneBy(['wcid' => $wcorder['id']]);
             if (!$megr) {
                 $megr = new Bizonylatfej();
@@ -144,6 +145,11 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 $megr->setKelt();
                 $megr->setTeljesites();
                 $megr->setEsedekesseg();
+            } else {
+                foreach ($megr->getBizonylattetelek() as $tetel) {
+                    $this->getEm()->remove($tetel);
+                    $this->getEm()->flush();
+                }
             }
             $megr->setKellszallitasikoltsegetszamolni(false);
             $megr->dontUploadToWC = true;
