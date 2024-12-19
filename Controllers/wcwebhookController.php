@@ -276,7 +276,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
     public function orderUpdated()
     {
         $params = file_get_contents('php://input');
-        \mkw\store::writelog('WCOrderUpdated', $params);
+        \mkw\store::writelog('WCOrderUpdated: ' . $params);
         header('HTTP/1.1 200 OK');
     }
 
