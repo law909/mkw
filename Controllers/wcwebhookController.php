@@ -402,4 +402,10 @@ class wcwebhookController extends \mkwhelpers\MattableController
         header('HTTP/1.1 200 OK');
     }
 
+    public function documentCreated()
+    {
+        $params = file_get_contents('php://input');
+        \mkw\store::writelog('WCDocumentCreated', $params);
+        header('HTTP/1.1 200 OK');
+    }
 }

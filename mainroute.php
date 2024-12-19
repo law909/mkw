@@ -203,3 +203,4 @@ $router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');
 $router->map('POST', '/wcwh/ordercr', 'wcwebhookController#orderCreated', 'wcwhordercr');
 $router->map('POST', '/wcwh/partnercr', 'wcwebhookController#partnerCreated', 'wcwhpartnercr');
 $router->map('POST', '/wcwh/partnerup', 'wcwebhookController#partnerUpdated', 'wcwhpartnerup');
+$router->map('POST', '/wcwh/documentcr', 'wcwebhookController#documentCreated', 'wcwhdocumentcreated');
