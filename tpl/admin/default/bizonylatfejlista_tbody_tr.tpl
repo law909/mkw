@@ -247,11 +247,20 @@
                         </td>
                     </tr>
                 {/if}
-                {if ($_egyed.glsparcellabelurl)}
-                    <tr>
-                        <td>{at('Címke')}:</td>
-                        <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
-                    </tr>
+                {if ($setup.woocommerce)}
+                    {if ($_egyed.wcglsparcellabelurl)}
+                        <tr>
+                            <td>{at('Címke')}:</td>
+                            <td><a href="{$_egyed.wcparcellabelurl}/{$_egyed.wcglsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                        </tr>
+                    {/if}
+                {else}
+                    {if ($_egyed.glsparcellabelurl)}
+                        <tr>
+                            <td>{at('Címke')}:</td>
+                            <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                        </tr>
+                    {/if}
                 {/if}
             {/if}
             {if ($showkupon)}

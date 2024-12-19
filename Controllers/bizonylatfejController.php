@@ -505,6 +505,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['barionpaymentstatus'] = $t->getBarionpaymentstatus();
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
+        $x['wcglsparcellabelurl'] = $t->getGlsparcellabelurl('');
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
         $x['forditottadozas'] = $t->isForditottadozas();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();

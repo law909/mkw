@@ -40,6 +40,7 @@ class generalDataLoader
         $view->setVar('jsversion', \mkw\store::getJSVersion());
         $view->setVar('bootstrapjsversion', \mkw\store::getBootstrapJSVersion());
         $view->setVar('localelist', \mkw\store::getLocaleList());
+        $view->setVar('wcparcellabelurl', \mkw\store::getConfigValue('wc.parcelabelurl'));
         $setup = \mkw\store::getSetup();
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', \mkw\store::getTheme());

@@ -215,7 +215,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             if (array_key_exists('meta_data', $wcorder)) {
                 foreach ($wcorder['meta_data'] as $meta) {
                     if ($meta['key'] == '_vp_woo_pont_parcel_pdf') {
-                        $megr->setGlsparcellabelurl(\mkw\store::getWcParcelLabelUrl() . '/' . $meta['value']);
+                        $megr->setGlsparcellabelurl($meta['value']);
                     }
                 }
             }
