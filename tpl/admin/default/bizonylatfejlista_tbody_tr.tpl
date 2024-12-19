@@ -251,7 +251,7 @@
                     {if ($_egyed.wcglsparcellabelurl)}
                         <tr>
                             <td>{at('Címke')}:</td>
-                            <td><a href="{$_egyed.wcparcellabelurl}/{$_egyed.wcglsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                            <td><a href="{$wcparcellabelurl}/{$_egyed.wcglsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
                         </tr>
                     {/if}
                 {else}
