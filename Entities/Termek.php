@@ -3992,7 +3992,7 @@ class Termek
             ];
             $index++;
             if (($index + 1) % 100 == 0 || $index + 1 == count($this->getValtozatok())) {
-                \mkw\store::writelog($this->getId() . ':SendArToWC:változat BATCH POST start');
+                \mkw\store::writelog($this->getId() . ':SendArToWC:változat BATCH POST start: ' . json_encode($variations));
                 try {
                     $result = $wc->post('products/' . $this->getWcid() . '/variations/batch', $variations);
                 } catch (HttpClientException $e) {
