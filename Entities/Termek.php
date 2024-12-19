@@ -174,49 +174,49 @@ class Termek
     private $slug;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato = 1;
+    private $lathato = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato2 = 1;
+    private $lathato2 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato3 = 1;
+    private $lathato3 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato4 = 1;
+    private $lathato4 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato5 = 1;
+    private $lathato5 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato6 = 1;
+    private $lathato6 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato7 = 1;
+    private $lathato7 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato8 = 1;
+    private $lathato8 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato9 = 1;
+    private $lathato9 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato10 = 1;
+    private $lathato10 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato11 = 1;
+    private $lathato11 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato12 = 1;
+    private $lathato12 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato13 = 1;
+    private $lathato13 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato14 = 1;
+    private $lathato14 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato15 = 1;
+    private $lathato15 = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $hozzaszolas = 1;
