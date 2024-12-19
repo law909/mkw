@@ -3985,7 +3985,7 @@ class Termek
         $index = 0;
         /** @var TermekValtozat $valtozat */
         foreach ($this->getValtozatok() as $valtozat) {
-            $variations['update'] = [
+            $variations['update'][] = [
                 'id' => $valtozat->getWcid(),
                 'regular_price' => $valtozat->calcRegularPriceForWC($eur),
                 'sale_price' => $valtozat->calcSalePriceForWC($eur),
