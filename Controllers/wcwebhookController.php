@@ -151,6 +151,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $megr->setBizonylattipus($biztipus);
             $megr->setWebshopnum(\mkw\store::getWcWebshopNum());
             $megr->setErbizonylatszam($wcorder['id']);
+            $megr->setKellszallitasikoltsegetszamolni(false);
 
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcorder['customer_id']]);
             if (!$partner) {
