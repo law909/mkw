@@ -2,6 +2,11 @@
     <tbody>
     <input name="valtozatid[]" type="hidden" value="{$valtozat.id}">
     <input name="valtozatoper_{$valtozat.id}" type="hidden" value="{$valtozat.oper}">
+    {if ($setup.woocommerce)}
+        <tr>
+            <td>Woocommerce ID: {$valtozat.wcid}</td>
+        </tr>
+    {/if}
     <tr>
         <td class="mattable-cell">
             <label for="VElerhetoEdit{$valtozat.id}">{at('Elérhető')} {$webshop1name}:

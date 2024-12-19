@@ -92,6 +92,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['beerkezesdatum'] = $t->getBeerkezesdatum();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         $x['minboltikeszlet'] = $t->getMinboltikeszlet();
+        $x['wcid'] = $t->getWcid();
         return $x;
     }
 
