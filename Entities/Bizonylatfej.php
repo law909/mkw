@@ -22,6 +22,7 @@ class Bizonylatfej
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
     private $simpleedit = false;
+    public $dontUploadToWC = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)

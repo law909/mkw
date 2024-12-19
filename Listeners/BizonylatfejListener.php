@@ -544,7 +544,7 @@ class BizonylatfejListener
         );
 
         foreach ($updatedentities as $entity) {
-            if ($entity instanceof \Entities\Bizonylatfej && $entity->getWcid()) {
+            if ($entity instanceof \Entities\Bizonylatfej && $entity->getWcid() && !$entity->dontUploadToWC) {
                 $changeSet = $this->uow->getEntityChangeSet($entity);
                 if (isset($changeSet['bizonylatstatusz'])) {
                     [$oldValue, $newValue] = $changeSet['bizonylatstatusz'];

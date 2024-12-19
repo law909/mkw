@@ -54,22 +54,10 @@ class wcwebhookController extends \mkwhelpers\MattableController
 //        $this->getEm()->flush();
     }
 
-    public function orderCreated()
+    private function createOrModifyOrder($wcorder)
     {
-        //$params = file_get_contents('wcorder.json');
-        $params = file_get_contents('php://input');
-        $this->writelog('WCOrderCreated', $params);
-        $wcorder = json_decode($params, true);
-
         $iserror = false;
 
-        $megr = $this->getRepo(Bizonylatfej::class)->findOneBy([
-            'wcid' => $wcorder['id']
-        ]);
-        if ($megr) {
-            $this->createErrorLog('wcorder', $wcorder, 'Már létezik megrendelés ezzel az azonosítóval: ' . $wcorder['id'] . ' => ' . $megr->getId());
-            $iserror = true;
-        }
         $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->findOneBy(['wcid' => $wcorder['status']]);
         if (!$bizstatusz) {
             $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen bizonylatstátusz: ' . $wcorder['status']);
@@ -146,12 +134,19 @@ class wcwebhookController extends \mkwhelpers\MattableController
             /** @var Bizonylattipus $biztipus */
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
 
-            $megr = new Bizonylatfej();
-            $megr->setPersistentData();
-            $megr->setBizonylattipus($biztipus);
-            $megr->setWebshopnum(\mkw\store::getWcWebshopNum());
-            $megr->setErbizonylatszam($wcorder['id']);
+            $megr = $this->getRepo(Bizonylatfej::class)->findOneBy(['wcid' => $wcorder['id']]);
+            if (!$megr) {
+                $megr = new Bizonylatfej();
+                $megr->setPersistentData();
+                $megr->setBizonylattipus($biztipus);
+                $megr->setWebshopnum(\mkw\store::getWcWebshopNum());
+                $megr->setErbizonylatszam($wcorder['id']);
+                $megr->setKelt();
+                $megr->setTeljesites();
+                $megr->setEsedekesseg();
+            }
             $megr->setKellszallitasikoltsegetszamolni(false);
+            $megr->dontUploadToWC = true;
 
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcorder['customer_id']]);
             if (!$partner) {
@@ -205,10 +200,6 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $megr->setBankszamla($valutanem->getBankszamla());
             $megr->setFizmod($fizmod);
             $megr->setSzallitasimod($szallmod);
-
-            $megr->setKelt();
-            $megr->setTeljesites();
-            $megr->setEsedekesseg();
 
             $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megr->getTeljesites());
             $megr->setArfolyam($arf->getArfolyam());
@@ -270,13 +261,25 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->getEm()->persist($megr);
         }
         $this->getEm()->flush();
+    }
+
+    public function orderCreated()
+    {
+        $params = file_get_contents('php://input');
+        $this->writelog('WCOrderCreated', $params);
+
+        $this->createOrModifyOrder(json_decode($params, true));
+
         header('HTTP/1.1 200 OK');
     }
 
     public function orderUpdated()
     {
         $params = file_get_contents('php://input');
-        \mkw\store::writelog('WCOrderUpdated: ' . $params);
+        $this->writelog('WCOrderUpdated', $params);
+
+        $this->createOrModifyOrder(json_decode($params, true));
+
         header('HTTP/1.1 200 OK');
     }
 
@@ -412,7 +415,7 @@ class wcwebhookController extends \mkwhelpers\MattableController
     public function documentCreated()
     {
         $params = file_get_contents('php://input');
-        \mkw\store::writelog('WCDocumentCreated: ' . $params);
+        $this->writelog('WCDocumentCreated', $params);
         $params = json_decode($params, true);
         if (array_key_exists('order_id', $params)) {
             /** @var Bizonylatfej $order */
