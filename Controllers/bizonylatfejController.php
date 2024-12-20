@@ -1151,9 +1151,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $id = $this->params->getStringRequestParam('id');
         if ($id) {
+            /** @var Bizonylatfej $bf */
             $bf = $this->getRepo()->find($id);
             if ($bf) {
                 $bf->setKellszallitasikoltsegetszamolni(false);
+                $bf->dontUploadToWC = true;
                 $bf->setRontott(true);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
