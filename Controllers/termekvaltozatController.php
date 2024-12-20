@@ -170,6 +170,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function generate()
     {
         $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
+        if (!$termek) {
+            return;
+        }
 
         $adattipus1 = $this->params->getIntRequestParam('valtozatadattipus1');
         $ertek1 = $this->params->getStringRequestParam('valtozatertek1');

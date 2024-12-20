@@ -745,6 +745,12 @@ class termekController extends \mkwhelpers\MattableController
         return $obj;
     }
 
+    /**
+     * @param Termek $o
+     * @param $parancs
+     *
+     * @return void
+     */
     protected function afterSave($o, $parancs = null)
     {
         if ($this->kaphatolett) {
