@@ -122,6 +122,18 @@
                 {/for}
             {/if}
             <tr>
+                <td><a href="#" data-id="{$_termek.id}" data-flag="feltoltheto"
+                       class="js-flagcheckbox{if ($_termek.feltoltheto)} ui-state-hover{/if}">{at('Feltölthető')} {$webshop1name}</a></td>
+            </tr>
+            {if ($setup.multishop)}
+                {for $cikl = 2 to $enabledwebshops}
+                    <tr>
+                        <td><a href="#" data-id="{$_termek.id}" data-flag="feltoltheto{$cikl}"
+                               class="js-flagcheckbox{if ($_termek["feltoltheto$cikl"])} ui-state-hover{/if}">{at('Feltölthető')} {$webshop{$cikl}name}</a></td>
+                    </tr>
+                {/for}
+            {/if}
+            <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="ajanlott"
                        class="js-flagcheckbox{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a></td>
             </tr>

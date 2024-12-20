@@ -451,6 +451,20 @@ class Termek
     private $kepwcid;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $wctiltva = 0;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $feltoltheto = 0;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $feltoltheto2 = 0;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $feltoltheto3 = 0;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $feltoltheto4 = 0;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $feltoltheto5 = 0;
 
     public function __toString()
     {
@@ -3666,33 +3680,40 @@ class Termek
 
     public function getStockInfoForWC($needid = false)
     {
-        if ($this->getWcid() && !$this->getWctiltva()) {
-            $keszlet = $this->calcStockForWC();
-            $data = [
-                'stock_quantity' => $keszlet,
-                'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
-            ];
-            if ($needid) {
-                $data['id'] = $this->getWcid();
-            }
-            return $data;
+        $keszlet = $this->calcStockForWC();
+        $data = [
+            'stock_quantity' => $keszlet,
+            'stock_status' => $keszlet > 0 ? 'instock' : 'outofstock',
+        ];
+        if ($needid) {
+            $data['id'] = $this->getWcid();
         }
-        return [];
+        return $data;
     }
 
 
     public function sendKeszletToWC()
     {
         if (\mkw\store::isWoocommerceOn()) {
-            $data = $this->getStockInfoForWC();
-            if ($data) {
-                $wc = store::getWcClient();
-                try {
-                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
-                    $wc->put('products/' . $this->getWcid(), $data);
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
-                }
+            return;
+        }
+        if ($this->getWctiltva()) {
+            return;
+        }
+        if (!$this->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
+        if ($this->getWcid()) {
+            return;
+        }
+        $data = $this->getStockInfoForWC();
+        if ($data) {
+            $wc = store::getWcClient();
+            try {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC(): ' . json_encode($data));
+                $wc->put('products/' . $this->getWcid(), $data);
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':Termek->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
             }
         }
     }
@@ -3705,7 +3726,9 @@ class Termek
         if ($this->getWctiltva()) {
             return;
         }
-
+        if (!$this->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
         if ($this->getWcid() && !$this->shouldUploadToWc()) {
             return;
         }
@@ -3968,7 +3991,9 @@ class Termek
         if ($this->getWctiltva()) {
             return;
         }
-
+        if (!$this->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
         if (!$this->getWcid()) {
             return;
         }
@@ -4007,6 +4032,104 @@ class Termek
                 }
             }
         }
+    }
+
+    public function getNFeltoltheto($n)
+    {
+        switch ($n) {
+            case 1:
+                return $this->getFeltoltheto();
+            case 2:
+                return $this->getFeltoltheto2();
+            case 3:
+                return $this->getFeltoltheto3();
+            case 4:
+                return $this->getFeltoltheto4();
+            case 5:
+                return $this->getFeltoltheto5();
+            default:
+                return $this->getLathato();
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeltoltheto()
+    {
+        return $this->feltoltheto;
+    }
+
+    /**
+     * @param int $feltoltheto
+     */
+    public function setFeltoltheto($feltoltheto): void
+    {
+        $this->feltoltheto = $feltoltheto;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeltoltheto2()
+    {
+        return $this->feltoltheto2;
+    }
+
+    /**
+     * @param int $feltoltheto2
+     */
+    public function setFeltoltheto2($feltoltheto2): void
+    {
+        $this->feltoltheto2 = $feltoltheto2;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeltoltheto3()
+    {
+        return $this->feltoltheto3;
+    }
+
+    /**
+     * @param int $feltoltheto3
+     */
+    public function setFeltoltheto3($feltoltheto3): void
+    {
+        $this->feltoltheto3 = $feltoltheto3;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeltoltheto4()
+    {
+        return $this->feltoltheto4;
+    }
+
+    /**
+     * @param int $feltoltheto4
+     */
+    public function setFeltoltheto4($feltoltheto4): void
+    {
+        $this->feltoltheto4 = $feltoltheto4;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeltoltheto5()
+    {
+        return $this->feltoltheto5;
+    }
+
+    /**
+     * @param int $feltoltheto5
+     */
+    public function setFeltoltheto5($feltoltheto5): void
+    {
+        $this->feltoltheto5 = $feltoltheto5;
     }
 
 }

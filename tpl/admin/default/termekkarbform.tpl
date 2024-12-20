@@ -447,6 +447,16 @@
                     {/for}
                 {/if}
             </div>
+            <div>
+                <input id="FeltolthetoCheck" name="feltoltheto" type="checkbox"
+                       {if ($egyed.feltoltheto)}checked="checked"{/if}>{at('Feltölthető')} {$webshop1name}
+                {if ($setup.multishop)}
+                    {for $cikl = 2 to $enabledwebshops}
+                        <input id="Feltoltheto{$cikl}Check" name="feltoltheto{$cikl}" type="checkbox"
+                               {if ($egyed["feltoltheto$cikl"])}checked="checked"{/if}>{at('Feltölthető')} {$webshop{$cikl}name}
+                    {/for}
+                {/if}
+            </div>
             <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
                    {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}
             <input id="FuggobenCheck" name="fuggoben" type="checkbox"

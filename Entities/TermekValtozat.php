@@ -1458,80 +1458,107 @@ class TermekValtozat
 
     public function uploadToWC($doflush = true)
     {
-        if (\mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
-            $wc = store::getWcClient();
-            $data = $this->toWC();
-            \mkw\store::writelog('valtozat.uploadtowc, termek id=' . $this->getTermek()->getId());
-            if ($this->getTermek()->getWcid()) {
-                if (!$this->getWcid()) {
-                    \mkw\store::writelog($this->getId() . ': változat POST start: ' . json_encode($data));
-                    try {
-                        $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
-                        $this->dontUploadToWC = true;
-                        $this->setWcid($result->id);
-                        $this->setWcdate('');
-                        \mkw\store::getEm()->persist($this);
-                        \mkw\store::writelog($this->getId() . ': változat POST stop: ' . json_encode($result));
-                    } catch (HttpClientException $e) {
-                        \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
-                        throw $e;
-                    }
-                } elseif ($this->shouldUploadToWc()) {
-                    \mkw\store::writelog($this->getId() . ': változat PUT start: ' . json_encode($data));
-                    try {
-                        $result = $wc->put('products/' . $this->getTermek()->getWcid() . '/variations/' . $this->getWcid(), $data);
-                        $this->dontUploadToWC = true;
-                        $this->setWcdate('');
-                        \mkw\store::getEm()->persist($this);
-                        \mkw\store::writelog($this->getId() . ': változat PUT stop: ' . json_encode($result));
-                    } catch (HttpClientException $e) {
-                        \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
-                        throw $e;
-                    }
+        if (!\mkw\store::isWoocommerceOn()) {
+            return;
+        }
+        if ($this->dontUploadToWC) {
+            return;
+        }
+        if (!$this->termek->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
+        $wc = store::getWcClient();
+        $data = $this->toWC();
+        \mkw\store::writelog('valtozat.uploadtowc, termek id=' . $this->getTermek()->getId());
+        if ($this->getTermek()->getWcid()) {
+            if (!$this->getWcid()) {
+                \mkw\store::writelog($this->getId() . ': változat POST start: ' . json_encode($data));
+                try {
+                    $result = $wc->post('products/' . $this->getTermek()->getWcid() . '/variations', $data);
+                    $this->dontUploadToWC = true;
+                    $this->setWcid($result->id);
+                    $this->setWcdate('');
+                    \mkw\store::getEm()->persist($this);
+                    \mkw\store::writelog($this->getId() . ': változat POST stop: ' . json_encode($result));
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                    throw $e;
                 }
-                if ($doflush) {
-                    \mkw\store::getEm()->flush();
+            } elseif ($this->shouldUploadToWc()) {
+                \mkw\store::writelog($this->getId() . ': változat PUT start: ' . json_encode($data));
+                try {
+                    $result = $wc->put('products/' . $this->getTermek()->getWcid() . '/variations/' . $this->getWcid(), $data);
+                    $this->dontUploadToWC = true;
+                    $this->setWcdate('');
+                    \mkw\store::getEm()->persist($this);
+                    \mkw\store::writelog($this->getId() . ': változat PUT stop: ' . json_encode($result));
+                } catch (HttpClientException $e) {
+                    \mkw\store::writelog($this->getId() . ':HIBA: ' . $e->getResponse()->getBody());
+                    throw $e;
                 }
-            } else {
-                \mkw\store::writelog('nincs termek wcid????????????');
             }
+            if ($doflush) {
+                \mkw\store::getEm()->flush();
+            }
+        } else {
+            \mkw\store::writelog('nincs termek wcid????????????');
         }
     }
 
     public function sendKeszletToWC()
     {
-        if (\mkw\store::isWoocommerceOn() && !$this->dontUploadToWC && $this->getWcid()) {
-            $data = $this->getStockInfoForWC();
-            if ($data) {
-                $wc = store::getWcClient();
-                try {
-                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() START: ' . json_encode($data));
-                    $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $data);
-                    \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() STOP');
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
-                }
+        if (!\mkw\store::isWoocommerceOn()) {
+            return;
+        }
+        if (!$this->getWcid()) {
+            return;
+        }
+        if ($this->dontUploadToWC) {
+            return;
+        }
+        if (!$this->termek->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
+        $data = $this->getStockInfoForWC();
+        if ($data) {
+            $wc = store::getWcClient();
+            try {
+                \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() START: ' . json_encode($data));
+                $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $data);
+                \mkw\store::writelog($this->getId() . ':wcid:' . $this->getWcid() . ':TermekValtozat->sendKeszletToWC() STOP');
+            } catch (HttpClientException $e) {
+                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
             }
         }
     }
 
     public function sendArToWC()
     {
-        if ($this->getWcid() && \mkw\store::isWoocommerceOn() && !$this->dontUploadToWC) {
-            $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
-            $variation = [
-                'regular_price' => $this->calcRegularPriceForWC($eur),
-                'sale_price' => $this->calcSalePriceForWC($eur),
-            ];
+        if (!\mkw\store::isWoocommerceOn()) {
+            return;
+        }
+        if (!$this->getWcid()) {
+            return;
+        }
+        if ($this->dontUploadToWC) {
+            return;
+        }
+        if (!$this->termek->getNFeltoltheto(\mkw\store::getWcWebshopNum())) {
+            return;
+        }
+        $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        $variation = [
+            'regular_price' => $this->calcRegularPriceForWC($eur),
+            'sale_price' => $this->calcSalePriceForWC($eur),
+        ];
 
-            $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() START');
-                $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $variation);
-                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() STOP');
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
-            }
+        $wc = store::getWcClient();
+        try {
+            \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() START');
+            $wc->put('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid(), $variation);
+            \mkw\store::writelog($this->getId() . ':TermekValtozat->sendArToWC() STOP');
+        } catch (HttpClientException $e) {
+            \mkw\store::writelog($this->getId() . ':TermekValtozat->sendKeszletToWC():HIBA: ' . $e->getResponse()->getBody());
         }
     }
 

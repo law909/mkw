@@ -441,6 +441,14 @@ if ($DBVersion < '0056') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0056');
 }
 
+if ($DBVersion < '0057') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE termek SET feltoltheto=lathato,feltoltheto2=lathato2,feltoltheto3=lathato3,feltoltheto4=lathato4,feltoltheto5=lathato5'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0057');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

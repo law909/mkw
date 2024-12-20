@@ -75,6 +75,12 @@ class termekController extends \mkwhelpers\MattableController
         $x['rovidleiras'] = $t->getRovidleiras();
         $x['leiras'] = $t->getLeiras();
         $x['seodescription'] = $t->getSeodescription();
+        $x['feltoltheto'] = $t->getFeltoltheto();
+        $x['feltoltheto1'] = $t->getFeltoltheto();
+        $x['feltoltheto2'] = $t->getFeltoltheto2();
+        $x['feltoltheto3'] = $t->getFeltoltheto3();
+        $x['feltoltheto4'] = $t->getFeltoltheto4();
+        $x['feltoltheto5'] = $t->getFeltoltheto5();
         $x['lathato'] = $t->getLathato();
         $x['lathato1'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();
@@ -289,6 +295,11 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+        $obj->setFeltoltheto($this->params->getBoolRequestParam('feltoltheto'));
+        $obj->setFeltoltheto2($this->params->getBoolRequestParam('feltoltheto2'));
+        $obj->setFeltoltheto3($this->params->getBoolRequestParam('feltoltheto3'));
+        $obj->setFeltoltheto4($this->params->getBoolRequestParam('feltoltheto4'));
+        $obj->setFeltoltheto5($this->params->getBoolRequestParam('feltoltheto5'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
         $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
@@ -1289,6 +1300,21 @@ class termekController extends \mkwhelpers\MattableController
             switch ($flag) {
                 case 'inaktiv':
                     $obj->setInaktiv($kibe);
+                    break;
+                case 'feltoltheto':
+                    $obj->setFeltoltheto($kibe);
+                    break;
+                case 'feltoltheto2':
+                    $obj->setFeltoltheto2($kibe);
+                    break;
+                case 'feltoltheto3':
+                    $obj->setFeltoltheto3($kibe);
+                    break;
+                case 'feltoltheto4':
+                    $obj->setFeltoltheto4($kibe);
+                    break;
+                case 'feltoltheto5':
+                    $obj->setFeltoltheto5($kibe);
                     break;
                 case 'lathato':
                     $obj->setLathato($kibe);
