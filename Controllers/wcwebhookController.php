@@ -13,6 +13,7 @@ use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Partnertipus;
 use Entities\Szallitasimod;
 use Entities\Termek;
 use Entities\TermekValtozat;
@@ -155,11 +156,15 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $megr->dontUploadToWC = true;
 
             $partner = $this->getRepo(Partner::class)->findOneBy(['wcid' => $wcorder['customer_id']]);
-            if (!$partner) {
+            if (!$partner || !$wcorder['customer_id']) {
                 $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $wcorder['billing']['email']]);
             }
             if (!$partner) {
                 $partner = new Partner();
+                $wcpartnertipus = $this->getRepo(Partnertipus::class)->find(\mkw\store::getParameter(\mkw\consts::WCPartnerTipus));
+                if ($wcpartnertipus) {
+                    $partner->setPartnertipus($wcpartnertipus);
+                }
             }
 
             $partner->setSkipListener(true);
@@ -216,6 +221,9 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 foreach ($wcorder['meta_data'] as $meta) {
                     if ($meta['key'] == '_vp_woo_pont_parcel_pdf') {
                         $megr->setGlsparcellabelurl($meta['value']);
+                    }
+                    if ($meta['key'] == '_vp_woo_pont_parcel_number') {
+                        $megr->setFuvarlevelszam($meta['value']);
                     }
                 }
             }
@@ -380,6 +388,10 @@ class wcwebhookController extends \mkwhelpers\MattableController
             }
             if (!$partner) {
                 $partner = new Partner();
+                $wcpartnertipus = $this->getRepo(Partnertipus::class)->find(\mkw\store::getParameter(\mkw\consts::WCPartnerTipus));
+                if ($wcpartnertipus) {
+                    $partner->setPartnertipus($wcpartnertipus);
+                }
             }
 
             $this->fillPartner($partner, $wcpartner, $orszag, $szallorszag);
@@ -408,6 +420,10 @@ class wcwebhookController extends \mkwhelpers\MattableController
             }
             if (!$partner) {
                 $partner = new Partner();
+                $wcpartnertipus = $this->getRepo(Partnertipus::class)->find(\mkw\store::getParameter(\mkw\consts::WCPartnerTipus));
+                if ($wcpartnertipus) {
+                    $partner->setPartnertipus($wcpartnertipus);
+                }
             }
 
             $this->fillPartner($partner, $wcpartner, $orszag, $szallorszag);

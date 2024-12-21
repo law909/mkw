@@ -403,6 +403,8 @@ class consts
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
 
+    const WCPartnerTipus = 'wcpartnertipus';
+
     public static function getWebshopPriceConst($_webshopNum = null)
     {
         if (is_null($_webshopNum)) {

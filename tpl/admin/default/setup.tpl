@@ -1346,6 +1346,17 @@
                         </table>
                     </div>
                     <div id="WebshopSetupTab" class="mattkarb-page" data-visible="visible">
+                        <div>
+                            <label for="WCPartnerTipusEdit">Woocommerce partner típus:</label>
+                            <select id="WCPartnerTipusEdit" name="wcpartnertipus">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $wcpartnertipuslist as $_wcpartnertipus}
+                                    <option
+                                        value="{$_wcpartnertipus.id}"{if ($_wcpartnertipus.selected)} selected="selected"{/if}>{$_wcpartnertipus.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="matt-hseparator"></div>
                         {for $cikl = 1 to $enabledwebshops}
                             <div>
                                 <label>{at('Webshop név')} {$cikl}:</label>

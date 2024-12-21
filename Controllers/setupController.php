@@ -8,6 +8,7 @@ use Entities\Jogaoratipus;
 use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Parameterek;
 use Entities\Partner;
+use Entities\Partnertipus;
 use Entities\Statlap;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -581,6 +582,8 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::FelvetelAlattTipus);
         $partnertipusc = new partnertipusController($this->params);
         $view->setVar('felvetelalattpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WCPartnerTipus);
+        $view->setVar('wcpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -1640,13 +1643,22 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::FelvetelAlattCimke, '');
         }
 
-        $felvetelalattpartnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find(
+        $felvetelalattpartnertipus = \mkw\store::getEm()->getRepository(Partnertipus::class)->find(
             $this->params->getIntRequestParam('felvetelalattpartnertipus', 0)
         );
         if ($felvetelalattpartnertipus) {
             $this->setObj(\mkw\consts::FelvetelAlattTipus, $felvetelalattpartnertipus->getId());
         } else {
             $this->setObj(\mkw\consts::FelvetelAlattTipus, '');
+        }
+
+        $wcpartnertipus = \mkw\store::getEm()->getRepository(Partnertipus::class)->find(
+            $this->params->getIntRequestParam('wcpartnertipus', 0)
+        );
+        if ($wcpartnertipus) {
+            $this->setObj(\mkw\consts::WCPartnerTipus, $wcpartnertipus->getId());
+        } else {
+            $this->setObj(\mkw\consts::WCPartnerTipus, '');
         }
 
         $spanyolcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));
