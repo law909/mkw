@@ -36,6 +36,7 @@ document.addEventListener("alpine:init", () => {
             mptngybankett: false,
             mptngykapcsolatnev: null,
             mptngydiak: false,
+            mptngyphd: false,
             mptngynyugdijas: false,
             mptngympttag: false,
             mpt_munkahelynev: null,
@@ -118,14 +119,22 @@ document.addEventListener("alpine:init", () => {
                     this.reg.lutca = this.reg.utca;
                 }
             });
+            this.$watch('reg.mptngyphd', (value) => {
+                if (value) {
+                    this.reg.mptngynyugdijas = false;
+                    this.reg.mptngydiak = false;
+                }
+            })
             this.$watch('reg.mptngynyugdijas', (value) => {
                 if (value) {
                     this.reg.mptngydiak = false;
+                    this.reg.mptngyphd = false;
                 }
             });
             this.$watch('reg.mptngydiak', (value) => {
                 if (value) {
                     this.reg.mptngynyugdijas = false;
+                    this.reg.mptngyphd = false;
                 }
             });
             this.$watch('reg.invmaganszemely', (value) => {

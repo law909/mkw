@@ -2072,6 +2072,9 @@ class store
 
     public static function getMPTNGYDate($day)
     {
+        if ($day < 1 || $day > 3) {
+            return '';
+        }
         $l = self::getMPTNGYDateList();
         return $l[$day]['caption'];
     }

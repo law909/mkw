@@ -45,11 +45,11 @@
                                         <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
                                         <td x-text="any.kezdodatumstr + ' - ' + any.kezdoido" data-label="{t('Kezdés')}"></td>
                                         <td>
-                                            <!--button
+                                            <button
                                                 class="btn btn-secondary"
                                                 @click="edit(any.id)"
                                                 x-show="!any.vegleges && any.editable && loaded >= loadCount"
-                                            >{t('Módosítás')}</button-->
+                                            >{t('Módosítás')}</button>
                                             <div x-show="any.vegleges">{t('Beküldve')}</div>
                                             <div x-show="any.biralatkesz">
                                                 <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
@@ -61,15 +61,15 @@
 
                                 </tbody>
                             </table>
-                            <!--div class="co-control-row">
+                            <div class="co-control-row">
                                 <button
                                     x-cloak
                                     class="btn btn-primary"
                                     @click="createNew()"
                                 >{t('Új anyag feltöltése')}</button>
-                            </div-->
+                            </div>
                         </div>
-                        <!--div x-show="showEditor">
+                        <div x-show="showEditor">
                             {$uf = t('Új felvitel')}
                             <h4 x-text="anyag.cim ? anyag.cim : '{$uf}'"></h4>
                             <div class="co-control-row">
@@ -457,7 +457,7 @@
                                 <button class="btn btn-secondary" @click="save(true)">{t('Beküldés')}</button>
                                 <button class="btn btn-secondary" @click="cancel()">{t('Mégsem')}</button>
                             </div>
-                        </div-->
+                        </div>
                     </div>
                 </div>
             </div>

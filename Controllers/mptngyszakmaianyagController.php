@@ -720,7 +720,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                     if (!$ell['elsoszerzo']) {
                         $ret['fields']['szerzo1email'] = [
                             'valid' => false,
-                            'error' => t('Maximum két anyagnak lehet az első szerzője')
+                            'error' => t('Maximum egy anyagnak lehet az első szerzője')
                         ];
                     }
                     if (!$ell['szimpoziumelnok']) {

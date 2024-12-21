@@ -67,6 +67,7 @@ class mptngypartnerController extends partnerController
             $p->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
             $p->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
             $p->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
+            $p->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
             $p->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
             $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
             if ($mptngyszerepkor) {
@@ -96,7 +97,7 @@ class mptngypartnerController extends partnerController
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
 //				\Zend_Session::writeClose();
                 /** @var \Entities\Partner $partnerobj */
-                $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find(\mkw\store::getMainSession()->pk);
+                $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {
                     $mc = new mainController($this->params);
                     $mc->setOrszag($partnerobj->getOrszagId());
@@ -164,7 +165,7 @@ class mptngypartnerController extends partnerController
             }
             $filter->addFilter('vegleges', '=', true);
             $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
-            $res['elsoszerzo'] = $res['elsoszerzodb'] < 2;
+            $res['elsoszerzo'] = $res['elsoszerzodb'] < 1;
 
             // egy résztvevő egy esetben lehet szimpóziumi elnök
             if ($isSzimpozium) {

@@ -205,6 +205,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngybefizetesdatum'] = $t->getMptngybefizetesdatumStr();
         $x['mptngybefizetesmodnev'] = $t->getMptngybefizetesmod()?->getNev();
         $x['mptngynemveszreszt'] = $t->isMptngynemveszreszt();
+        $x['mptngyphd'] = $t->isMptngyphd();
         $x['xnemrendelhet'] = $t->isXNemrendelhet();
         $x['nemrendelhet'] = $t->isNemrendelhet();
         $x['nemrendelhet2'] = $t->isNemrendelhet2();
@@ -365,6 +366,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngybefizetes($this->params->getNumRequestParam('mptngybefizetes'));
             $obj->setMptngybefizetesdatum($this->params->getStringRequestParam('mptngybefizetesdatum'));
             $obj->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
+            $obj->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
             $obj->setNemrendelhet($this->params->getBoolRequestParam('nemrendelhet'));
             $obj->setNemrendelhet2($this->params->getBoolRequestParam('nemrendelhet2'));
             $obj->setNemrendelhet3($this->params->getBoolRequestParam('nemrendelhet3'));
@@ -1046,9 +1048,12 @@ class partnerController extends \mkwhelpers\MattableController
                 'mptngynapreszvetel3' => $partner->isMptngynapreszvetel3(),
                 'mptngyvipvacsora' => $partner->isMptngyvipvacsora(),
                 'mptngybankett' => $partner->isMptngybankett(),
-                'mptnyugdijasdiak' => $partner->isMptngynyugdijas() ? t('Nyugdíjas') : ($partner->isMptngydiak() ? t('Diák') : ''),
+                'mptnyugdijasdiak' => $partner->isMptngynyugdijas() ? t('Nyugdíjas') : ($partner->isMptngydiak() ? t('Diák') : ($partner->isMptngyphd() ? t(
+                    'Phd hallgató'
+                ) : '')),
                 'mptngydiak' => $partner->isMptngydiak(),
                 'mptngynyugdijas' => $partner->isMptngynyugdijas(),
+                'mptngyphd' => $partner->isMptngyphd(),
                 'mptngympttag' => $partner->isMptngympttag(),
                 'mptngyszerepkor' => $partner->getMptngyszerepkorId(),
                 'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),

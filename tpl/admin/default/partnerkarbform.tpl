@@ -474,6 +474,10 @@
                         <td><input id="mptngydiakEdit" type="checkbox" name="mptngydiak"{if ($partner.mptngydiak)} checked{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="mptngyphdEdit">Phd hallgató:</label></td>
+                        <td><input id="mptngyphdEdit" type="checkbox" name="mptngyphd"{if ($partner.mptngyphd)} checked{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="mptngynyugdijasEdit">Nyugdíjas:</label></td>
                         <td><input id="mptngynyugdijasEdit" type="checkbox" name="mptngynyugdijas"{if ($partner.mptngynyugdijas)} checked{/if}></td>
                     </tr>

@@ -575,6 +575,9 @@ class Partner
     private $mptngynemveszreszt = false;
 
     /** @ORM\Column(type="boolean") */
+    private $mptngyphd = false;
+
+    /** @ORM\Column(type="boolean") */
     private $nemrendelhet = false;
 
     /** @ORM\Column(type="boolean") */
@@ -3681,6 +3684,22 @@ class Partner
     public function setSkipListener($skipListener): void
     {
         $this->skipListener = $skipListener;
+    }
+
+    /**
+     * @return int
+     */
+    public function isMptngyphd()
+    {
+        return $this->mptngyphd;
+    }
+
+    /**
+     * @param int $mptngyphd
+     */
+    public function setMptngyphd($mptngyphd): void
+    {
+        $this->mptngyphd = $mptngyphd;
     }
 
 }

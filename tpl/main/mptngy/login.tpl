@@ -272,6 +272,12 @@
                             </label>
                         </div>
                         <div class="co-control-row">
+                            <label for="phdEdit" class="co-label">
+                                <input id="phdEdit" type="checkbox" x-model="reg.mptngyphd">
+                                {t('Phd hallgató vagyok')}
+                            </label>
+                        </div>
+                        <div class="co-control-row">
                             <label for="nyugdijasEdit" class="co-label">
                                 <input id="nyugdijasEdit" type="checkbox" x-model="reg.mptngynyugdijas">
                                 {t('Nyugdíjas vagyok')}
