@@ -504,9 +504,13 @@ class MPTNGYSzakmaianyag
         $f1 = "getSzerzo{$num}email";
         $f2 = "getSzerzo{$num}";
 
-        if ($num === 6) {
+        if ($num === 0) {
             $f1 = 'getBeszelgetopartneremail';
             $f2 = 'getBeszelgetopartner';
+        }
+        if ($num === -1) {
+            $f1 = 'getOpponensemail';
+            $f2 = 'getOpponens';
         }
 
         if ($this->$f1()) {
@@ -520,13 +524,19 @@ class MPTNGYSzakmaianyag
         $ret = $this->isSzerzoRegistered(1) &&
             $this->isSzerzoRegistered(2) &&
             $this->isSzerzoRegistered(3) &&
-            $this->isSzerzoRegistered(4);
+            $this->isSzerzoRegistered(4) &&
+            $this->isSzerzoRegistered(5) &&
+            $this->isSzerzoRegistered(6) &&
+            $this->isSzerzoRegistered(7) &&
+            $this->isSzerzoRegistered(8) &&
+            $this->isSzerzoRegistered(9) &&
+            $this->isSzerzoRegistered(10);
 
         if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)) {
-            $ret = $ret && $this->isSzerzoRegistered(5);
+            $ret = $ret && $this->isSzerzoRegistered(-1);
         }
         if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus)) {
-            $ret = $ret && $this->isSzerzoRegistered(6);
+            $ret = $ret && $this->isSzerzoRegistered(0);
         }
         return $ret;
     }

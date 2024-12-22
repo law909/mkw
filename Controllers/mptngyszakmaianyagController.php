@@ -109,7 +109,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo3registered'] = $t->isSzerzoRegistered(3);
         $x['szerzo4registered'] = $t->isSzerzoRegistered(4);
         $x['szerzo5registered'] = $t->isSzerzoRegistered(5);
-        $x['beszelgetopartnerregistered'] = $t->isSzerzoRegistered(6);
+        $x['szerzo6registered'] = $t->isSzerzoRegistered(6);
+        $x['szerzo7registered'] = $t->isSzerzoRegistered(7);
+        $x['szerzo8registered'] = $t->isSzerzoRegistered(8);
+        $x['szerzo9registered'] = $t->isSzerzoRegistered(9);
+        $x['szerzo10registered'] = $t->isSzerzoRegistered(10);
+        $x['beszelgetopartnerregistered'] = $t->isSzerzoRegistered(0);
+        $x['opponensregistered'] = $t->isSzerzoRegistered(-1);
         $x['szimpozium'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
         $x['konyvbemutato'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus));
         $x['vegleges'] = $t->isVegleges();
@@ -744,7 +750,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $se = 'setBeszelgetopartneremail';
         }
         /* Opponens */
-        if ($num === -10) {
+        if ($num === -1) {
             $email = $this->params->getStringRequestParam('opponensemail');
             $g = 'getOpponensemail';
             $go = 'getOpponens';

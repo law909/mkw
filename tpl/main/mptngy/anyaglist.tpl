@@ -20,151 +20,152 @@
         </div>
     </div>
     <div class="co-container" x-cloak>
-    <div class="co-data-container">
-        <div class="co-row co-flex-dir-row">
-            <div class="co-col-100 padding">
-                <h2>{t('Szakmai anyagok')}</h2>
-                <div x-show="!showEditor">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="th-w-10"></th>
-                            <th>{t('Cím')}</th>
-                            <th>{t('Tulajdonos')}</th>
-                            <th>{t('Típus')}</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <template x-for="any in anyaglist" :key="any.id">
-                            <tr :class="!any.allszerzoregistered ? 'red' : ''">
-                                <td x-text="any.id" data-label="{t('Azonosító')}"></td>
-                                <td x-text="any.cim" data-label="{t('Cím')}"></td>
-                                <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
-                                <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
-                                <td>
-                                    <button
-                                        class="btn btn-secondary"
-                                        @click="edit(any.id)"
-                                        x-show="!any.vegleges && any.editable && loaded >= loadCount"
-                                    >{t('Módosítás')}</button>
-                                    <div x-show="any.vegleges">{t('Beküldve')}</div>
-                                    <div x-show="any.biralatkesz">
-                                        <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
-                                        <span x-show="!any.konferencianszerepelhet" class="redtext">Elutasítva, nem szerepelhet a konferencián.</span>
-                                    </div>
-                                </td>
+        <div class="co-data-container">
+            <div class="co-row co-flex-dir-row">
+                <div class="co-col-100 padding">
+                    <h2>{t('Szakmai anyagok')}</h2>
+                    <div x-show="!showEditor">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="th-w-10"></th>
+                                <th>{t('Cím')}</th>
+                                <th>{t('Tulajdonos')}</th>
+                                <th>{t('Típus')}</th>
+                                <th></th>
                             </tr>
-                        </template>
+                            </thead>
+                            <tbody>
+                            <template x-for="any in anyaglist" :key="any.id">
+                                <tr :class="!any.allszerzoregistered ? 'red' : ''">
+                                    <td x-text="any.id" data-label="{t('Azonosító')}"></td>
+                                    <td x-text="any.cim" data-label="{t('Cím')}"></td>
+                                    <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
+                                    <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
+                                    <td>
+                                        <button
+                                            class="btn btn-secondary"
+                                            @click="edit(any.id)"
+                                            x-show="!any.vegleges && any.editable && loaded >= loadCount"
+                                        >{t('Módosítás')}</button>
+                                        <div x-show="any.vegleges">{t('Beküldve')}</div>
+                                        <div x-show="any.biralatkesz">
+                                            <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
+                                            <span x-show="!any.konferencianszerepelhet" class="redtext">Elutasítva, nem szerepelhet a konferencián.</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
 
-                        </tbody>
-                    </table>
-                    <!--div class="co-control-row">
+                            </tbody>
+                        </table>
+                        <!--div class="co-control-row">
                                 <button
                                     x-cloak
                                     class="btn btn-primary"
                                     @click="createNew()"
                                 >{t('Új anyag feltöltése')}</button>
                             </div-->
-                </div>
-                <div x-show="showEditor">
-                    {$uf = t('Új felvitel')}
-                    <h4 x-text="anyag.cim ? anyag.cim : '{$uf}'"></h4>
-                    <div class="co-control-row">
-                        <label for="cimEdit" class="co-label">{t('Cím')}</label>
-                        <input
-                            id="cimEdit"
-                            class="co-input"
-                            :class="validation.cim && !validation.cim.valid ? 'error' : ''"
-                            type="text"
-                            x-model="anyag.cim"
-                        >
-                        <div class="co-error" x-text="validation.cim && validation.cim.error"></div>
                     </div>
-                    <div class="co-control-row">
-                        <label for="tulajEdit" class="co-label">{t('Tulajdonos')}</label>
-                        <input
-                            id="tulajEdit"
-                            class="co-input"
-                            :class="validation.tulajdonosnev && !validation.tulajdonosnev.valid ? 'error' : ''"
-                            type="text"
-                            x-model="anyag.tulajdonosnev"
-                            disabled
-                        >
-                        <div class="co-error" x-text="validation.tulajdonosnev && validation.tulajdonosnev.error"></div>
-                    </div>
-                    <div class="co-control-row">
-                        <label for="tipusEdit" class="co-label">{t('Típus')}</label>
-                        <select
-                            id="tipusEdit"
-                            class="co-input"
-                            :class="validation.tipus && !validation.tipus.valid ? 'error' : ''"
-                            x-model="anyag.tipus"
-                        >
-                            <option value="">{t('válasszon')}</option>
-                            <template x-for="tipus in anyagtipuslist" :key="tipus.id">
-                                <option
-                                    :value="tipus.id"
-                                    x-text="tipus.caption"
-                                ></option>
-                            </template>
-                        </select>
-                        <div class="co-error" x-text="validation.tipus && validation.tipus.error"></div>
-                    </div>
-
-                    <div class="co-row co-flex-dir-column">
+                    <div x-show="showEditor">
+                        {$uf = t('Új felvitel')}
+                        <h4 x-text="anyag.cim ? anyag.cim : '{$uf}'"></h4>
                         <div class="co-control-row">
-                            <label for="szerzo1Edit" class="co-label">{t('Első szerző')} email</label>
+                            <label for="cimEdit" class="co-label">{t('Cím')}</label>
                             <input
-                                id="szerzo1Edit"
+                                id="cimEdit"
                                 class="co-input"
-                                :class="validation.szerzo1email && !validation.szerzo1email.valid ? 'error' : ''"
-                                type="email"
-                                x-model="anyag.szerzo1email"
-                                @change="checkSzerzo(1)"
+                                :class="validation.cim && !validation.cim.valid ? 'error' : ''"
+                                type="text"
+                                x-model="anyag.cim"
                             >
-                            <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
-                            <div class="co-error" x-text="validation.szerzo1email && validation.szerzo1email.error"></div>
+                            <div class="co-error" x-text="validation.cim && validation.cim.error"></div>
                         </div>
-                        <div class="co-control-row co-col-container">
-                            <div class="co-col co-col-33">
-                                <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
+                        <div class="co-control-row">
+                            <label for="tulajEdit" class="co-label">{t('Tulajdonos')}</label>
+                            <input
+                                id="tulajEdit"
+                                class="co-input"
+                                :class="validation.tulajdonosnev && !validation.tulajdonosnev.valid ? 'error' : ''"
+                                type="text"
+                                x-model="anyag.tulajdonosnev"
+                                disabled
+                            >
+                            <div class="co-error" x-text="validation.tulajdonosnev && validation.tulajdonosnev.error"></div>
+                        </div>
+                        <div class="co-control-row">
+                            <label for="tipusEdit" class="co-label">{t('Típus')}</label>
+                            <select
+                                id="tipusEdit"
+                                class="co-input"
+                                :class="validation.tipus && !validation.tipus.valid ? 'error' : ''"
+                                x-model="anyag.tipus"
+                            >
+                                <option value="">{t('válasszon')}</option>
+                                <template x-for="tipus in anyagtipuslist" :key="tipus.id">
+                                    <option
+                                        :value="tipus.id"
+                                        x-text="tipus.caption"
+                                    ></option>
+                                </template>
+                            </select>
+                            <div class="co-error" x-text="validation.tipus && validation.tipus.error"></div>
+                        </div>
+
+                        <div class="co-row co-flex-dir-column">
+                            <div class="co-control-row">
+                                <label for="szerzo1Edit" class="co-label">{t('Első szerző')} email</label>
                                 <input
-                                    id="szerzo2Edit"
+                                    id="szerzo1Edit"
                                     class="co-input"
-                                    :class="validation.szerzo2email && !validation.szerzo2email.valid ? 'error' : ''"
+                                    :class="validation.szerzo1email && !validation.szerzo1email.valid ? 'error' : ''"
                                     type="email"
-                                    x-model="anyag.szerzo2email"
-                                    @change="checkSzerzo(2)"
+                                    x-model="anyag.szerzo1email"
+                                    @change="checkSzerzo(1)"
                                 >
-                                <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
-                                <div class="co-error" x-text="validation.szerzo2email && validation.szerzo2email.error"></div>
+                                <div class="co-hint red" x-show="szerzo1unknown">{t('A szerző még nem regisztrált')}</div>
+                                <div class="co-error" x-text="validation.szerzo1email && validation.szerzo1email.error"></div>
                             </div>
-                            <div class="co-col co-col-33">
-                                <label for="szerzo3Edit" class="co-label">{t('Szerző')} 3 email</label>
-                                <input
-                                    id="szerzo3Edit"
-                                    class="co-input"
-                                    :class="validation.szerzo3email && !validation.szerzo3email.valid ? 'error' : ''"
-                                    type="email"
-                                    x-model="anyag.szerzo3email"
-                                    @change="checkSzerzo(3)"
-                                >
-                                <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
-                                <div class="co-error" x-text="validation.szerzo3email && validation.szerzo3email.error"></div>
-                            </div>
-                            <div class="co-col co-col-33">
-                                <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
-                                <input
-                                    id="szerzo4Edit"
-                                    class="co-input"
-                                    :class="validation.szerzo4email && !validation.szerzo4email.valid ? 'error' : ''"
-                                    type="email"
-                                    x-model="anyag.szerzo4email"
-                                    @change="checkSzerzo(4)"
-                                >
-                                <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
-                                <div class="co-error" x-text="validation.szerzo4email && validation.szerzo4email.error"></div>
+                            <div class="co-control-row co-col-container">
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo2Edit" class="co-label">{t('Szerző')} 2 email</label>
+                                    <input
+                                        id="szerzo2Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo2email && !validation.szerzo2email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo2email"
+                                        @change="checkSzerzo(2)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo2unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo2email && validation.szerzo2email.error"></div>
+                                </div>
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo3Edit" class="co-label">{t('Szerző')} 3 email</label>
+                                    <input
+                                        id="szerzo3Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo3email && !validation.szerzo3email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo3email"
+                                        @change="checkSzerzo(3)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo3unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo3email && validation.szerzo3email.error"></div>
+                                </div>
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo4Edit" class="co-label">{t('Szerző')} 4 email</label>
+                                    <input
+                                        id="szerzo4Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo4email && !validation.szerzo4email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo4email"
+                                        @change="checkSzerzo(4)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo4unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo4email && validation.szerzo4email.error"></div>
+                                </div>
                             </div>
                             <div class="co-control-row co-col-container">
                                 <div class="co-col co-col-33">
@@ -206,73 +207,74 @@
                                     <div class="co-hint red" x-show="szerzo7unknown">{t('A szerző még nem regisztrált')}</div>
                                     <div class="co-error" x-text="validation.szerzo7email && validation.szerzo7email.error"></div>
                                 </div>
-                                <div class="co-control-row co-col-container">
-                                    <div class="co-col co-col-33">
-                                        <label for="szerzo8Edit" class="co-label">{t('Szerző')} 8 email</label>
-                                        <input
-                                            id="szerzo8Edit"
-                                            class="co-input"
-                                            :class="validation.szerzo8email && !validation.szerzo8email.valid ? 'error' : ''"
-                                            type="email"
-                                            x-model="anyag.szerzo8email"
-                                            @change="checkSzerzo(8)"
-                                        >
-                                        <div class="co-hint red" x-show="szerzo8unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo8email && validation.szerzo8email.error"></div>
-                                    </div>
-                                    <div class="co-col co-col-33">
-                                        <label for="szerzo9Edit" class="co-label">{t('Szerző')} 9 email</label>
-                                        <input
-                                            id="szerzo9Edit"
-                                            class="co-input"
-                                            :class="validation.szerzo9email && !validation.szerzo9email.valid ? 'error' : ''"
-                                            type="email"
-                                            x-model="anyag.szerzo9email"
-                                            @change="checkSzerzo(9)"
-                                        >
-                                        <div class="co-hint red" x-show="szerzo9unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo9email && validation.szerzo9email.error"></div>
-                                    </div>
-                                    <div class="co-col co-col-33">
-                                        <label for="szerzo10Edit" class="co-label">{t('Szerző')} 10 email</label>
-                                        <input
-                                            id="szerzo10Edit"
-                                            class="co-input"
-                                            :class="validation.szerzo10email && !validation.szerzo10email.valid ? 'error' : ''"
-                                            type="email"
-                                            x-model="anyag.szerzo10email"
-                                            @change="checkSzerzo(10)"
-                                        >
-                                        <div class="co-hint red" x-show="szerzo10unknown">{t('A szerző még nem regisztrált')}</div>
-                                        <div class="co-error" x-text="validation.szerzo10email && validation.szerzo10email.error"></div>
-                                    </div>
-                                </div>
-                                <div class="co-control-row">
-                                    <label for="egyebszerzoEdit" class="co-label">{t('Egyéb szerzők')}</label>
-                                    <textarea
-                                        id="egyebszerzoEdit"
-                                        class="co-input"
-                                        type=""
-                                        x-model="anyag.egyebszerzok"
-                                        rows="8"
-                                    ></textarea>
-                                </div>
-                                <div
-                                    class="co-control-row"
-                                    x-show="szimpozium"
-                                >
-                                    <label for="opponensEdit" class="co-label">{t('Opponens')} email</label>
+                            </div>
+                            <div class="co-control-row co-col-container">
+
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo8Edit" class="co-label">{t('Szerző')} 8 email</label>
                                     <input
-                                        id="opponensEdit"
+                                        id="szerzo8Edit"
                                         class="co-input"
-                                        :class="validation.opponensemail && !validation.opponensemail.valid ? 'error' : ''"
+                                        :class="validation.szerzo8email && !validation.szerzo8email.valid ? 'error' : ''"
                                         type="email"
-                                        x-model="anyag.opponensemail"
-                                        @change="checkSzerzo(-1)"
+                                        x-model="anyag.szerzo8email"
+                                        @change="checkSzerzo(8)"
                                     >
-                                    <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
-                                    <div class="co-error" x-text="validation.opponensemail && validation.opponensemail.error"></div>
+                                    <div class="co-hint red" x-show="szerzo8unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo8email && validation.szerzo8email.error"></div>
                                 </div>
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo9Edit" class="co-label">{t('Szerző')} 9 email</label>
+                                    <input
+                                        id="szerzo9Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo9email && !validation.szerzo9email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo9email"
+                                        @change="checkSzerzo(9)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo9unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo9email && validation.szerzo9email.error"></div>
+                                </div>
+                                <div class="co-col co-col-33">
+                                    <label for="szerzo10Edit" class="co-label">{t('Szerző')} 10 email</label>
+                                    <input
+                                        id="szerzo10Edit"
+                                        class="co-input"
+                                        :class="validation.szerzo10email && !validation.szerzo10email.valid ? 'error' : ''"
+                                        type="email"
+                                        x-model="anyag.szerzo10email"
+                                        @change="checkSzerzo(10)"
+                                    >
+                                    <div class="co-hint red" x-show="szerzo10unknown">{t('A szerző még nem regisztrált')}</div>
+                                    <div class="co-error" x-text="validation.szerzo10email && validation.szerzo10email.error"></div>
+                                </div>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="egyebszerzoEdit" class="co-label">{t('Egyéb szerzők')}</label>
+                                <textarea
+                                    id="egyebszerzoEdit"
+                                    class="co-input"
+                                    type=""
+                                    x-model="anyag.egyebszerzok"
+                                    rows="8"
+                                ></textarea>
+                            </div>
+                            <div
+                                class="co-control-row"
+                                x-show="szimpozium"
+                            >
+                                <label for="opponensEdit" class="co-label">{t('Opponens')} email</label>
+                                <input
+                                    id="opponensEdit"
+                                    class="co-input"
+                                    :class="validation.opponensemail && !validation.opponensemail.valid ? 'error' : ''"
+                                    type="email"
+                                    x-model="anyag.opponensemail"
+                                    @change="checkSzerzo(-1)"
+                                >
+                                <div class="co-hint red" x-show="szerzo5unknown">{t('Az opponens még nem regisztrált')}</div>
+                                <div class="co-error" x-text="validation.opponensemail && validation.opponensemail.error"></div>
                             </div>
                             <div
                                 class="co-control-row co-col-container"
