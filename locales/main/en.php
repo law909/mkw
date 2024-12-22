@@ -278,4 +278,5 @@ return [
     'Törlés' => 'Clear',
     'Tovább a fizetéshez' => 'Checkout',
     'db' => 'piece',
+    'karakter' => 'characters',
 ];

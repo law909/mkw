@@ -492,7 +492,8 @@
                                     </div>
                                 </div>
                                 <div class="co-control-row">
-                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')} (<span x-text="anyag.tartalom.length"></span> karakter)</label>
+                                    <label for="tartalomEdit" class="co-label">{t('Tartalom')} 1500 - 3000 {t('karakter')} (<span
+                                            x-text="anyag.tartalom.length"></span> karakter)</label>
                                     <textarea
                                         id="tartalomEdit"
                                         class="co-input"
