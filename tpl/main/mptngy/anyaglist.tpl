@@ -59,13 +59,13 @@
 
                             </tbody>
                         </table>
-                        <!--div class="co-control-row">
-                                <button
-                                    x-cloak
-                                    class="btn btn-primary"
-                                    @click="createNew()"
-                                >{t('Új anyag feltöltése')}</button>
-                            </div-->
+                        <div class="co-control-row">
+                            <button
+                                x-cloak
+                                class="btn btn-primary"
+                                @click="createNew()"
+                            >{t('Új anyag feltöltése')}</button>
+                        </div>
                     </div>
                     <div x-show="showEditor">
                         {$uf = t('Új felvitel')}
