@@ -18,8 +18,14 @@
         <div>Szerző 2: {$_egyed.szerzo2nev} ({$_egyed.szerzo2email})</div>
         <div>Szerző 3: {$_egyed.szerzo3nev} ({$_egyed.szerzo3email})</div>
         <div>Szerző 4: {$_egyed.szerzo4nev} ({$_egyed.szerzo4email})</div>
+        <div>Szerző 5: {$_egyed.szerzo5nev} ({$_egyed.szerzo5email})</div>
+        <div>Szerző 6: {$_egyed.szerzo6nev} ({$_egyed.szerzo6email})</div>
+        <div>Szerző 7: {$_egyed.szerzo7nev} ({$_egyed.szerzo7email})</div>
+        <div>Szerző 8: {$_egyed.szerzo8nev} ({$_egyed.szerzo8email})</div>
+        <div>Szerző 9: {$_egyed.szerzo9nev} ({$_egyed.szerzo9email})</div>
+        <div>Szerző 10: {$_egyed.szerzo10nev} ({$_egyed.szerzo10email})</div>
         {if ($_egyed.szimpozium)}
-            <div>Opponens: {$_egyed.szerzo5nev} ({$_egyed.szerzo5email})</div>
+            <div>Opponens: {$_egyed.opponensnev} ({$_egyed.opponensemail})</div>
         {/if}
         <div>Egyéb szerzők:</div>
         <div>

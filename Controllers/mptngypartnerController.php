@@ -155,7 +155,7 @@ class mptngypartnerController extends partnerController
             $isSzimpoziumEloadas = $this->params->getIntRequestParam('tipus') == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumEloadasTipus);
 
             $elsoszerzoemail = $this->params->getStringRequestParam('szerzo1email');
-            $opponensemail = $this->params->getStringRequestParam('szerzo5email');
+            $opponensemail = $this->params->getStringRequestParam('opponensemail');
 
             // egy résztvevő első szerző maximum kétszer lehet
             $filter = new FilterDescriptor();
@@ -185,7 +185,7 @@ class mptngypartnerController extends partnerController
             // egy résztvevő egy esetben lehet opponens
             if ($isSzimpozium) {
                 $filter->clear();
-                $filter->addFilter('szerzo5email', '=', $opponensemail);
+                $filter->addFilter('opponensemail', '=', $opponensemail);
                 if ($anyag) {
                     $filter->addFilter('id', '<>', $anyag);
                 }
@@ -204,6 +204,18 @@ class mptngypartnerController extends partnerController
             $res['szerzo3'] = $res['szerzo3db'] < 5;
             $res['szerzo4db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo4email'), $anyag);
             $res['szerzo4'] = $res['szerzo4db'] < 5;
+            $res['szerzo5db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo5email'), $anyag);
+            $res['szerzo5'] = $res['szerzo5db'] < 5;
+            $res['szerzo6db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo6email'), $anyag);
+            $res['szerzo6'] = $res['szerzo6db'] < 5;
+            $res['szerzo7db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo7email'), $anyag);
+            $res['szerzo7'] = $res['szerzo7db'] < 5;
+            $res['szerzo8db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo8email'), $anyag);
+            $res['szerzo8'] = $res['szerzo8db'] < 5;
+            $res['szerzo9db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo9email'), $anyag);
+            $res['szerzo9'] = $res['szerzo9db'] < 5;
+            $res['szerzo10db'] = $this->countSzerzo($this->params->getStringRequestParam('szerzo10email'), $anyag);
+            $res['szerzo10'] = $res['szerzo10db'] < 5;
 
             // az opponens nem lehet szerzője azoknak a szimpózium előadásoknak amelyiknek opponense
             if ($isSzimpozium) {
@@ -215,8 +227,10 @@ class mptngypartnerController extends partnerController
                 }
                 $filter->clear();
                 $filter->addSql(
-                    "(_xx.szerzo1email='$opponensemail') OR (_xx.szerzo2email='$opponensemail') OR " .
-                    "(_xx.szerzo3email='$opponensemail') OR (_xx.szerzo4email='$opponensemail')"
+                    "((_xx.szerzo1email='$opponensemail') OR (_xx.szerzo2email='$opponensemail') OR " .
+                    "(_xx.szerzo3email='$opponensemail') OR (_xx.szerzo4email='$opponensemail') OR (_xx.szerzo5email='$opponensemail') OR " .
+                    "(_xx.szerzo6email='$opponensemail') OR (_xx.szerzo7email='$opponensemail') OR " .
+                    "(_xx.szerzo8email='$opponensemail') OR (_xx.szerzo9email='$opponensemail') OR (_xx.szerzo10email='$opponensemail'))"
                 );
                 $filter->addFilter('id', 'IN', $eloadasids);
                 $res['opponensszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
@@ -226,7 +240,8 @@ class mptngypartnerController extends partnerController
             $res['opponensszerzo'] = $res['opponensszerzodb'] == 0;
 
             $res['success'] = $res['elsoszerzo'] && $res['szimpoziumelnok'] && $res['opponens'] &&
-                $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'] &&
+                $res['szerzo2'] && $res['szerzo3'] && $res['szerzo4'] && $res['szerzo5'] &&
+                $res['szerzo6'] && $res['szerzo7'] && $res['szerzo8'] && $res['szerzo9'] && $res['szerzo10'] &&
                 $res['opponensszerzo'];
         }
         return $res;

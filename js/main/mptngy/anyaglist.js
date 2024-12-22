@@ -10,7 +10,6 @@ document.addEventListener("alpine:init", () => {
         sajatanyaglist: [],
         sajatanyaglistLoaded: false,
         anyagtipuslist: [],
-        datumlist: [],
         temakorlist: [],
         me: {
             nev: null,
@@ -23,6 +22,12 @@ document.addEventListener("alpine:init", () => {
         szerzo3unknown: null,
         szerzo4unknown: null,
         szerzo5unknown: null,
+        szerzo6unknown: null,
+        szerzo7unknown: null,
+        szerzo8unknown: null,
+        szerzo9unknown: null,
+        szerzo10unknown: null,
+        opponensunknown: null,
         beszelgetopartnerunknown: null,
         rules: {
             cim: ['required'],
@@ -31,10 +36,16 @@ document.addEventListener("alpine:init", () => {
             szerzo2email: ['optional', 'email'],
             szerzo3email: ['optional', 'email'],
             szerzo4email: ['optional', 'email'],
+            szerzo5email: ['optional', 'email'],
+            szerzo6email: ['optional', 'email'],
+            szerzo7email: ['optional', 'email'],
+            szerzo8email: ['optional', 'email'],
+            szerzo9email: ['optional', 'email'],
+            szerzo10email: ['optional', 'email'],
             konyvkiadasho: ['konyvkiadashoreal'],
         },
         bekuldRules: {
-            szerzo5email: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
+            opponensemail: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
             beszelgetopartneremail: ['beszelgetorequired', 'beszelgetoregistered', 'beszelgetovstulaj'],
             konyvkiadasho: ['konyvkiadashorequired', 'konyvkiadashoreal', 'konyvkiadashorange'],
             szerzo1email: ['allszerzoregistered'],
@@ -52,15 +63,19 @@ document.addEventListener("alpine:init", () => {
                 id: null,
                 cim: null,
                 tulajdonosnev: null,
-                kezdodatum: null,
-                kezdoido: null,
                 tipus: null,
                 szimpozium: false,
+                opponensemail: null,
                 szerzo1email: null,
                 szerzo2email: null,
                 szerzo3email: null,
                 szerzo4email: null,
                 szerzo5email: null,
+                szerzo6email: null,
+                szerzo7email: null,
+                szerzo8email: null,
+                szerzo9email: null,
+                szerzo10email: null,
                 beszelgetopartneremail: null,
                 eloadas1: null,
                 eloadas2: null,
@@ -80,11 +95,17 @@ document.addEventListener("alpine:init", () => {
                 konyvkiadasho: '',
                 egyebszerzok: '',
             };
+            this.opponensunknown = null;
             this.szerzo1unknown = null;
             this.szerzo2unknown = null;
             this.szerzo3unknown = null;
             this.szerzo4unknown = null;
             this.szerzo5unknown = null;
+            this.szerzo6unknown = null;
+            this.szerzo7unknown = null;
+            this.szerzo8unknown = null;
+            this.szerzo9unknown = null;
+            this.szerzo10unknown = null;
             this.beszelgetopartnerunknown = null;
 
         },
@@ -106,6 +127,12 @@ document.addEventListener("alpine:init", () => {
             this.szerzo3unknown = !a.szerzo3registered;
             this.szerzo4unknown = !a.szerzo4registered;
             this.szerzo5unknown = !a.szerzo5registered;
+            this.szerzo6unknown = !a.szerzo6registered;
+            this.szerzo7unknown = !a.szerzo7registered;
+            this.szerzo8unknown = !a.szerzo8registered;
+            this.szerzo9unknown = !a.szerzo9registered;
+            this.szerzo10unknown = !a.szerzo10registered;
+            this.opponensunknown = !a.opponensregistered;
             this.beszelgetopartnerunknown = !a.beszelgetopartnerregistered;
             this.showEditor = true;
         },
@@ -245,13 +272,13 @@ document.addEventListener("alpine:init", () => {
 
             Iodine.rule('opponensregistered', () => {
                 if (this.anyag.szimpozium) {
-                    return !this.szerzo5unknown;
+                    return !this.opponensunknown;
                 }
                 return true;
             });
             Iodine.setErrorMessage('opponensregistered', 'Az opponensnek regisztrálnia kell');
 
-            Iodine.rule('opponensvstulaj', () => this.anyag.szerzo5email !== this.me.email);
+            Iodine.rule('opponensvstulaj', () => this.anyag.opponensemail !== this.me.email);
             Iodine.setErrorMessage('opponensvstulaj', 'Az elnök és az opponens nem lehet ugyanaz');
 
             Iodine.rule('beszelgetorequired', (value) => {
@@ -287,6 +314,24 @@ document.addEventListener("alpine:init", () => {
                 if (this.anyag.szerzo4email && this.szerzo4unknown) {
                     ret = false;
                 }
+                if (this.anyag.szerzo5email && this.szerzo5unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo6email && this.szerzo6unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo7email && this.szerzo7unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo8email && this.szerzo8unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo9email && this.szerzo9unknown) {
+                    ret = false;
+                }
+                if (this.anyag.szerzo10email && this.szerzo10unknown) {
+                    ret = false;
+                }
                 return ret;
             });
             Iodine.setErrorMessage('allszerzoregistered', 'Minden szerzőnek regisztrálnia kell');
@@ -316,12 +361,6 @@ document.addEventListener("alpine:init", () => {
                     this.anyagtipuslist = data;
                     this.loaded++;
                 });
-            fetch(new URL('/datumlist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.datumlist = data;
-                    this.loaded++;
-                });
             fetch(new URL('/partner/getdata', location.origin))
                 .then((response) => response.json())
                 .then((data) => {
@@ -342,9 +381,13 @@ document.addEventListener("alpine:init", () => {
             let url = new URL('/checkpartnerunknown', location.origin),
                 f = 'szerzo' + num + 'email',
                 t = 'szerzo' + num + 'unknown';
-            if (num === 6) {
+            if (num === 0) {
                 f = 'beszelgetopartneremail';
                 t = 'beszelgetopartnerunknown';
+            }
+            if (num === -1) {
+                f = 'opponensemail';
+                t = 'opponensunknown';
             }
             if (this.anyag[f] && Iodine.assertEmail(this.anyag[f])) {
                 url.searchParams.append('email', this.anyag[f]);

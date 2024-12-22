@@ -74,6 +74,44 @@ class MPTNGYSzakmaianyag
 
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo6;
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo7;
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo8;
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo9;
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $szerzo10;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $opponens;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="beszelgetopartner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
@@ -219,6 +257,36 @@ class MPTNGYSzakmaianyag
      * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $szerzo5email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo6email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo7email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo8email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo9email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $szerzo10email;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $opponensemail;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
@@ -2017,6 +2085,360 @@ class MPTNGYSzakmaianyag
     public function setEgyebszerzokorg($egyebszerzokorg): void
     {
         $this->egyebszerzokorg = $egyebszerzokorg;
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo6()
+    {
+        return $this->szerzo6;
+    }
+
+    public function getSzerzo6Id()
+    {
+        if ($this->szerzo6) {
+            return $this->szerzo6->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo6Nev()
+    {
+        if ($this->szerzo6) {
+            return $this->szerzo6->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo6($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo6();
+        } else {
+            $this->szerzo6 = $val;
+        }
+    }
+
+    public function removeSzerzo6()
+    {
+        if ($this->szerzo6 !== null) {
+            $this->szerzo6 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo7()
+    {
+        return $this->szerzo7;
+    }
+
+    public function getSzerzo7Id()
+    {
+        if ($this->szerzo7) {
+            return $this->szerzo7->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo7Nev()
+    {
+        if ($this->szerzo7) {
+            return $this->szerzo7->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo7($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo7();
+        } else {
+            $this->szerzo7 = $val;
+        }
+    }
+
+    public function removeSzerzo7()
+    {
+        if ($this->szerzo7 !== null) {
+            $this->szerzo7 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo8()
+    {
+        return $this->szerzo8;
+    }
+
+    public function getSzerzo8Id()
+    {
+        if ($this->szerzo8) {
+            return $this->szerzo8->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo8Nev()
+    {
+        if ($this->szerzo8) {
+            return $this->szerzo8->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo8($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo8();
+        } else {
+            $this->szerzo8 = $val;
+        }
+    }
+
+    public function removeSzerzo8()
+    {
+        if ($this->szerzo8 !== null) {
+            $this->szerzo8 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo9()
+    {
+        return $this->szerzo9;
+    }
+
+    public function getSzerzo9Id()
+    {
+        if ($this->szerzo9) {
+            return $this->szerzo9->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo9Nev()
+    {
+        if ($this->szerzo9) {
+            return $this->szerzo9->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo9($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo9();
+        } else {
+            $this->szerzo9 = $val;
+        }
+    }
+
+    public function removeSzerzo9()
+    {
+        if ($this->szerzo9 !== null) {
+            $this->szerzo9 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getSzerzo10()
+    {
+        return $this->szerzo10;
+    }
+
+    public function getSzerzo10Id()
+    {
+        if ($this->szerzo10) {
+            return $this->szerzo10->getId();
+        }
+        return '';
+    }
+
+    public function getSzerzo10Nev()
+    {
+        if ($this->szerzo10) {
+            return $this->szerzo10->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setSzerzo10($val)
+    {
+        if (!$val) {
+            $this->removeSzerzo10();
+        } else {
+            $this->szerzo10 = $val;
+        }
+    }
+
+    public function removeSzerzo10()
+    {
+        if ($this->szerzo10 !== null) {
+            $this->szerzo10 = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Partner
+     */
+    public function getOpponens()
+    {
+        return $this->opponens;
+    }
+
+    public function getOpponensId()
+    {
+        if ($this->opponens) {
+            return $this->opponens->getId();
+        }
+        return '';
+    }
+
+    public function getOpponensNev()
+    {
+        if ($this->opponens) {
+            return $this->opponens->getNev();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setOpponens($val)
+    {
+        if (!$val) {
+            $this->removeOpponens();
+        } else {
+            $this->opponens = $val;
+        }
+    }
+
+    public function removeOpponens()
+    {
+        if ($this->opponens !== null) {
+            $this->opponens = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo6email()
+    {
+        return $this->szerzo6email;
+    }
+
+    /**
+     * @param mixed $szerzo6email
+     */
+    public function setSzerzo6email($szerzo6email): void
+    {
+        $this->szerzo6email = $szerzo6email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo7email()
+    {
+        return $this->szerzo7email;
+    }
+
+    /**
+     * @param mixed $szerzo7email
+     */
+    public function setSzerzo7email($szerzo7email): void
+    {
+        $this->szerzo7email = $szerzo7email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo8email()
+    {
+        return $this->szerzo8email;
+    }
+
+    /**
+     * @param mixed $szerzo8email
+     */
+    public function setSzerzo8email($szerzo8email): void
+    {
+        $this->szerzo8email = $szerzo8email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo9email()
+    {
+        return $this->szerzo9email;
+    }
+
+    /**
+     * @param mixed $szerzo9email
+     */
+    public function setSzerzo9email($szerzo9email): void
+    {
+        $this->szerzo9email = $szerzo9email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzerzo10email()
+    {
+        return $this->szerzo10email;
+    }
+
+    /**
+     * @param mixed $szerzo10email
+     */
+    public function setSzerzo10email($szerzo10email): void
+    {
+        $this->szerzo10email = $szerzo10email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOpponensemail()
+    {
+        return $this->opponensemail;
+    }
+
+    /**
+     * @param mixed $opponensemail
+     */
+    public function setOpponensemail($opponensemail): void
+    {
+        $this->opponensemail = $opponensemail;
     }
 
 

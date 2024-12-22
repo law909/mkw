@@ -67,10 +67,10 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tema', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzokorg', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'pluszbiralokell', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'terem'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo6', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo7', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo8', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo9', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo10', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'opponens', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo6email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo7email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo8email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo9email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo10email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'opponensemail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tema', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzokorg', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'pluszbiralokell', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'terem'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tema', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzokorg', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'pluszbiralokell', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'terem'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'id', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'created', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'lastmod', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tulajdonos', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo6', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo7', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo8', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo9', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo10', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'opponens', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartner', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tipus', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'eloadas5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'cim', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tartalom', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kulcsszo5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'biralo3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'kezdoido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegido', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konferencianszerepelhet', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo1email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo2email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo3email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo4email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo5email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo6email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo7email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo8email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo9email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'szerzo10email', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'opponensemail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'beszelgetopartneremail', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'vegleges', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'temakor3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'tema', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'konyvkiadasho', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzok', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'egyebszerzokorg', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont1', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont2', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont3', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont4', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szempont5', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3szovegesertekeles', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b1biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b2biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'b3biralatkesz', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'pluszbiralokell', '' . "\0" . 'Entities\\MPTNGYSzakmaianyag' . "\0" . 'terem'];
     }
 
     /**
@@ -2368,6 +2368,468 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEgyebszerzokorg', [$egyebszerzokorg]);
 
         parent::setEgyebszerzokorg($egyebszerzokorg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6', []);
+
+        return parent::getSzerzo6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo6Id()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6Id', []);
+
+        return parent::getSzerzo6Id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo6Nev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6Nev', []);
+
+        return parent::getSzerzo6Nev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo6($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo6', [$val]);
+
+        return parent::setSzerzo6($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzerzo6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzerzo6', []);
+
+        return parent::removeSzerzo6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7', []);
+
+        return parent::getSzerzo7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo7Id()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7Id', []);
+
+        return parent::getSzerzo7Id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo7Nev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7Nev', []);
+
+        return parent::getSzerzo7Nev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo7($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo7', [$val]);
+
+        return parent::setSzerzo7($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzerzo7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzerzo7', []);
+
+        return parent::removeSzerzo7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8', []);
+
+        return parent::getSzerzo8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo8Id()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8Id', []);
+
+        return parent::getSzerzo8Id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo8Nev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8Nev', []);
+
+        return parent::getSzerzo8Nev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo8($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo8', [$val]);
+
+        return parent::setSzerzo8($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzerzo8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzerzo8', []);
+
+        return parent::removeSzerzo8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9', []);
+
+        return parent::getSzerzo9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo9Id()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9Id', []);
+
+        return parent::getSzerzo9Id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo9Nev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9Nev', []);
+
+        return parent::getSzerzo9Nev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo9($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo9', [$val]);
+
+        return parent::setSzerzo9($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzerzo9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzerzo9', []);
+
+        return parent::removeSzerzo9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10', []);
+
+        return parent::getSzerzo10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo10Id()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10Id', []);
+
+        return parent::getSzerzo10Id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo10Nev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10Nev', []);
+
+        return parent::getSzerzo10Nev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo10($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo10', [$val]);
+
+        return parent::setSzerzo10($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzerzo10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzerzo10', []);
+
+        return parent::removeSzerzo10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOpponens()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponens', []);
+
+        return parent::getOpponens();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOpponensId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponensId', []);
+
+        return parent::getOpponensId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOpponensNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponensNev', []);
+
+        return parent::getOpponensNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOpponens($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOpponens', [$val]);
+
+        return parent::setOpponens($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeOpponens()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeOpponens', []);
+
+        return parent::removeOpponens();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo6email()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6email', []);
+
+        return parent::getSzerzo6email();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo6email($szerzo6email): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo6email', [$szerzo6email]);
+
+        parent::setSzerzo6email($szerzo6email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo7email()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7email', []);
+
+        return parent::getSzerzo7email();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo7email($szerzo7email): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo7email', [$szerzo7email]);
+
+        parent::setSzerzo7email($szerzo7email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo8email()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8email', []);
+
+        return parent::getSzerzo8email();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo8email($szerzo8email): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo8email', [$szerzo8email]);
+
+        parent::setSzerzo8email($szerzo8email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo9email()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9email', []);
+
+        return parent::getSzerzo9email();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo9email($szerzo9email): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo9email', [$szerzo9email]);
+
+        parent::setSzerzo9email($szerzo9email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzerzo10email()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10email', []);
+
+        return parent::getSzerzo10email();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzerzo10email($szerzo10email): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzerzo10email', [$szerzo10email]);
+
+        parent::setSzerzo10email($szerzo10email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOpponensemail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponensemail', []);
+
+        return parent::getOpponensemail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOpponensemail($opponensemail): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOpponensemail', [$opponensemail]);
+
+        parent::setOpponensemail($opponensemail);
     }
 
 }

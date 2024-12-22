@@ -140,6 +140,78 @@
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo5emailEdit" name="szerzo5email" type="email" value="{$egyed.szerzo5email}">
+                        <select id="szerzo5Edit" name="szerzo5">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo5list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo6emailEdit" name="szerzo6email" type="email" value="{$egyed.szerzo6email}">
+                        <select id="szerzo6Edit" name="szerzo6">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo6list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo7emailEdit" name="szerzo7email" type="email" value="{$egyed.szerzo7email}">
+                        <select id="szerzo7Edit" name="szerzo7">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo7list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo8emailEdit" name="szerzo8email" type="email" value="{$egyed.szerzo8email}">
+                        <select id="szerzo8Edit" name="szerzo8">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo8list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo9emailEdit" name="szerzo9email" type="email" value="{$egyed.szerzo9email}">
+                        <select id="szerzo9Edit" name="szerzo9">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo9list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="szerzo10emailEdit" name="szerzo10email" type="email" value="{$egyed.szerzo10email}">
+                        <select id="szerzo10Edit" name="szerzo10">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $szerzo10list as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="egyebszerzokEdit">{at('Egyéb szerzők')}:</label></td>
                     <td><textarea id="egyebszerzokEdit" name="egyebszerzok" rows="10" cols="80">{$egyed.egyebszerzok}</textarea></td>
                 </tr>
@@ -151,10 +223,10 @@
                 <tr class="onlyszimpozium hidden">
                     <td><label for="opponensEdit">{at('Opponens')}:</label></td>
                     <td>
-                        <input id="szerzo5emailEdit" name="szerzo5email" type="email" value="{$egyed.szerzo5email}" class="onlyszimpozium hidden">
-                        <select id="szerzo5Edit" name="szerzo5" class="onlyszimpozium hidden">
+                        <input id="opponensemailEdit" name="opponensemail" type="email" value="{$egyed.opponensemail}" class="onlyszimpozium hidden">
+                        <select id="opponensEdit" name="opponens" class="onlyszimpozium hidden">
                             <option value="">{at('válasszon')}</option>
-                            {foreach $szerzo5list as $_mk}
+                            {foreach $opponenslist as $_mk}
                                 <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                             {/foreach}
                         </select>

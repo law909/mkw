@@ -38,6 +38,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['tartalom'] = $t->getTartalom();
         $x['tulajdonos'] = $t->getTulajdonosId();
         $x['tulajdonosnev'] = $t->getTulajdonos()?->getNev();
+        $x['opponens'] = $t->getOpponensId();
+        $x['opponensnev'] = $t->getOpponensNev();
+        $x['opponensemail'] = $t->getOpponensemail();
         $x['szerzo1'] = $t->getSzerzo1Id();
         $x['szerzo1nev'] = $t->getSzerzo1Nev();
         $x['szerzo1email'] = $t->getSzerzo1email();
@@ -53,6 +56,21 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo5'] = $t->getSzerzo5Id();
         $x['szerzo5nev'] = $t->getSzerzo5Nev();
         $x['szerzo5email'] = $t->getSzerzo5email();
+        $x['szerzo6'] = $t->getSzerzo6Id();
+        $x['szerzo6nev'] = $t->getSzerzo6Nev();
+        $x['szerzo6email'] = $t->getSzerzo6email();
+        $x['szerzo7'] = $t->getSzerzo7Id();
+        $x['szerzo7nev'] = $t->getSzerzo7Nev();
+        $x['szerzo7email'] = $t->getSzerzo7email();
+        $x['szerzo8'] = $t->getSzerzo8Id();
+        $x['szerzo8nev'] = $t->getSzerzo8Nev();
+        $x['szerzo8email'] = $t->getSzerzo8email();
+        $x['szerzo9'] = $t->getSzerzo9Id();
+        $x['szerzo9nev'] = $t->getSzerzo9Nev();
+        $x['szerzo9email'] = $t->getSzerzo9email();
+        $x['szerzo10'] = $t->getSzerzo10Id();
+        $x['szerzo10nev'] = $t->getSzerzo10Nev();
+        $x['szerzo10email'] = $t->getSzerzo10email();
         $x['beszelgetopartner'] = $t->getBeszelgetopartnerId();
         $x['beszelgetopartnernev'] = $t->getBeszelgetopartnerNev();
         $x['beszelgetopartneremail'] = $t->getBeszelgetopartneremail();
@@ -225,6 +243,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 $obj->removeTulajdonos();
             }
 
+            $opponens = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('opponens'));
+            if ($opponens) {
+                $obj->setOpponens($opponens);
+            } else {
+                $obj->removeOpponens();
+            }
             $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo1'));
             if ($szerzo) {
                 $obj->setSzerzo1($szerzo);
@@ -255,6 +279,37 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             } else {
                 $obj->removeSzerzo5();
             }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo6'));
+            if ($szerzo) {
+                $obj->setSzerzo6($szerzo);
+            } else {
+                $obj->removeSzerzo6();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo7'));
+            if ($szerzo) {
+                $obj->setSzerzo7($szerzo);
+            } else {
+                $obj->removeSzerzo7();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo8'));
+            if ($szerzo) {
+                $obj->setSzerzo8($szerzo);
+            } else {
+                $obj->removeSzerzo8();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo9'));
+            if ($szerzo) {
+                $obj->setSzerzo9($szerzo);
+            } else {
+                $obj->removeSzerzo9();
+            }
+            $szerzo = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('szerzo10'));
+            if ($szerzo) {
+                $obj->setSzerzo10($szerzo);
+            } else {
+                $obj->removeSzerzo10();
+            }
+
             $bp = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('beszelgetopartner'));
             if ($bp) {
                 $obj->setBeszelgetopartner($bp);
@@ -360,11 +415,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
 
         if (!is_null($this->params->getRequestParam('szerzofilter', null))) {
-            $filter->addFilter(['szerzo2', 'szerzo3', 'szerzo4'], '=', $this->params->getIntRequestParam('szerzofilter'));
+            $filter->addFilter(['szerzo2', 'szerzo3', 'szerzo4', 'szerzo5', 'szerzo6', 'szerzo7', 'szerzo8', 'szerzo9', 'szerzo10'],
+                '=',
+                $this->params->getIntRequestParam('szerzofilter'));
         }
 
         if (!is_null($this->params->getRequestParam('opponensfilter', null))) {
-            $filter->addFilter('szerzo5', '=', $this->params->getIntRequestParam('opponensfilter'));
+            $filter->addFilter('opponens', '=', $this->params->getIntRequestParam('opponensfilter'));
         }
 
         $f = $this->params->getNumRequestParam('bekuldvefilter', 9);
@@ -463,11 +520,17 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
         $pc = new partnerController($this->params);
         $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonosId()));
+        $view->setVar('opponenslist', $pc->getSelectList($anyag?->getOpponensId()));
         $view->setVar('szerzo1list', $pc->getSelectList($anyag?->getSzerzo1Id()));
         $view->setVar('szerzo2list', $pc->getSelectList($anyag?->getSzerzo2Id()));
         $view->setVar('szerzo3list', $pc->getSelectList($anyag?->getSzerzo3Id()));
         $view->setVar('szerzo4list', $pc->getSelectList($anyag?->getSzerzo4Id()));
         $view->setVar('szerzo5list', $pc->getSelectList($anyag?->getSzerzo5Id()));
+        $view->setVar('szerzo6list', $pc->getSelectList($anyag?->getSzerzo6Id()));
+        $view->setVar('szerzo7list', $pc->getSelectList($anyag?->getSzerzo7Id()));
+        $view->setVar('szerzo8list', $pc->getSelectList($anyag?->getSzerzo8Id()));
+        $view->setVar('szerzo9list', $pc->getSelectList($anyag?->getSzerzo9Id()));
+        $view->setVar('szerzo10list', $pc->getSelectList($anyag?->getSzerzo10Id()));
         $view->setVar('beszelgetopartnerlist', $pc->getSelectList($anyag?->getBeszelgetopartnerId()));
 
         $ac = new mptngyszakmaianyagController($this->params);
@@ -582,11 +645,17 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter = new FilterDescriptor();
             $filter->addSql(
                 '(_xx.tulajdonos=' . $partner->getId() . ') OR ' .
+                '(_xx.opponens=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo1=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo2=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo3=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo4=' . $partner->getId() . ') OR ' .
                 '(_xx.szerzo5=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo6=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo7=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo8=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo9=' . $partner->getId() . ') OR ' .
+                '(_xx.szerzo10=' . $partner->getId() . ') OR ' .
                 '(_xx.beszelgetopartner=' . $partner->getId() . ')'
             );
 
@@ -667,12 +736,20 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $s = "setSzerzo{$num}";
         $se = "setSzerzo{$num}email";
         /* Beszelgetopartner */
-        if ($num === 6) {
+        if ($num === 0) {
             $email = $this->params->getStringRequestParam('beszelgetopartneremail');
             $g = 'getBeszelgetopartneremail';
             $go = 'getBeszelgetopartner';
             $s = 'setBeszelgetopartner';
             $se = 'setBeszelgetopartneremail';
+        }
+        /* Opponens */
+        if ($num === -10) {
+            $email = $this->params->getStringRequestParam('opponensemail');
+            $g = 'getOpponensemail';
+            $go = 'getOpponens';
+            $s = 'setOpponens';
+            $se = 'setOpponensemail';
         }
 
         $obj->$se($email);
@@ -706,12 +783,18 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                         $oper = 'add';
                     }
                     $anyag = $this->setFields($anyag, $oper, true);
+                    $anyag = $this->setSzerzoByEmail($anyag, 0); // beszelgetopartner
+                    $anyag = $this->setSzerzoByEmail($anyag, -1); // opponens
                     $anyag = $this->setSzerzoByEmail($anyag, 1);
                     $anyag = $this->setSzerzoByEmail($anyag, 2);
                     $anyag = $this->setSzerzoByEmail($anyag, 3);
                     $anyag = $this->setSzerzoByEmail($anyag, 4);
                     $anyag = $this->setSzerzoByEmail($anyag, 5);
                     $anyag = $this->setSzerzoByEmail($anyag, 6);
+                    $anyag = $this->setSzerzoByEmail($anyag, 7);
+                    $anyag = $this->setSzerzoByEmail($anyag, 8);
+                    $anyag = $this->setSzerzoByEmail($anyag, 9);
+                    $anyag = $this->setSzerzoByEmail($anyag, 10);
                     $anyag->setTulajdonos($partner);
                     $this->getEm()->persist($anyag);
                     $this->getEm()->flush();
@@ -730,7 +813,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                         ];
                     }
                     if (!$ell['opponens']) {
-                        $ret['fields']['szerzo5email'] = [
+                        $ret['fields']['opponensemail'] = [
                             'valid' => false,
                             'error' => t('Maximum egy szimpóziumnak lehet az opponense')
                         ];
@@ -753,8 +836,44 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                             'error' => t('Maximum öt anyagnak lehet a szerzője')
                         ];
                     }
-                    if (!$ell['opponensszerzo']) {
+                    if (!$ell['szerzo5']) {
                         $ret['fields']['szerzo5email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo6']) {
+                        $ret['fields']['szerzo6email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo7']) {
+                        $ret['fields']['szerzo7email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo8']) {
+                        $ret['fields']['szerzo8email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo9']) {
+                        $ret['fields']['szerzo9email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['szerzo10']) {
+                        $ret['fields']['szerzo10email'] = [
+                            'valid' => false,
+                            'error' => t('Maximum öt anyagnak lehet a szerzője')
+                        ];
+                    }
+                    if (!$ell['opponensszerzo']) {
+                        $ret['fields']['opponensemail'] = [
                             'valid' => false,
                             'error' => t('Nem lehet opponense olyan előadásnak, aminek a szerzője')
                         ];
