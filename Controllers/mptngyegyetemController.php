@@ -43,7 +43,7 @@ class mptngyegyetemController extends JQGridController
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid)
+    public function getSelectList($selid = null)
     {
         $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
