@@ -1,9 +1,9 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
-        konyvkiadashoTol: '2021.09',
-        konyvkiadashoIg: '2023.06',
-        loadCount: 5,
-        loaded: 0,
+        konyvkiadashoTol: '2023.07',
+        konyvkiadashoIg: '2025.04',
+        loaded: false,
+        firstLoad: true,
         showEditor: false,
         validation: {},
         anyaglist: [],
@@ -11,12 +11,17 @@ document.addEventListener("alpine:init", () => {
         sajatanyaglistLoaded: false,
         anyagtipuslist: [],
         temakorlist: [],
+        egyetemlist: [],
+        karlist: [],
         me: {
             nev: null,
         },
         anyag: null,
         szimpozium: false,
         konyvbemutato: false,
+        egyetem: null,
+        kar: null,
+        egyetemegyeb: null,
         szerzo1unknown: null,
         szerzo2unknown: null,
         szerzo3unknown: null,
@@ -43,6 +48,7 @@ document.addEventListener("alpine:init", () => {
             szerzo9email: ['optional', 'email'],
             szerzo10email: ['optional', 'email'],
             konyvkiadasho: ['konyvkiadashoreal'],
+            egyetem: ['egyetem'],
         },
         bekuldRules: {
             opponensemail: ['opponensrequired', 'opponensregistered', 'opponensvstulaj'],
@@ -58,6 +64,12 @@ document.addEventListener("alpine:init", () => {
             temakor1: ['temakor'],
             kulcsszo1: ['kulcsszo'],
         },
+        init() {
+            this.initVars();
+            this.setRules();
+            this.setWatchers();
+            this.getLists();
+        },
         initVars() {
             this.anyag = {
                 id: null,
@@ -65,6 +77,9 @@ document.addEventListener("alpine:init", () => {
                 tulajdonosnev: null,
                 tipus: null,
                 szimpozium: false,
+                egyetem: null,
+                kar: null,
+                egyetemegyeb: null,
                 opponensemail: null,
                 szerzo1email: null,
                 szerzo2email: null,
@@ -112,37 +127,7 @@ document.addEventListener("alpine:init", () => {
         clearErrors() {
             this.validation = {};
         },
-        createNew() {
-            this.anyag.tulajdonosnev = this.me.nev;
-            this.showEditor = true;
-        },
-        edit(id) {
-            const a = this.anyaglist.find(el => el.id === parseInt(id));
-            Object.keys(this.anyag).forEach(key => {
-                this.anyag[key] = a[key];
-            });
-            this.anyag.tulajdonosnev = this.me.nev;
-            this.szerzo1unknown = !a.szerzo1registered;
-            this.szerzo2unknown = !a.szerzo2registered;
-            this.szerzo3unknown = !a.szerzo3registered;
-            this.szerzo4unknown = !a.szerzo4registered;
-            this.szerzo5unknown = !a.szerzo5registered;
-            this.szerzo6unknown = !a.szerzo6registered;
-            this.szerzo7unknown = !a.szerzo7registered;
-            this.szerzo8unknown = !a.szerzo8registered;
-            this.szerzo9unknown = !a.szerzo9registered;
-            this.szerzo10unknown = !a.szerzo10registered;
-            this.opponensunknown = !a.opponensregistered;
-            this.beszelgetopartnerunknown = !a.beszelgetopartnerregistered;
-            this.showEditor = true;
-        },
-        cancel() {
-            this.showEditor = false;
-            this.getLists();
-        },
-        getLists() {
-            this.initVars();
-
+        setRules() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('minLength', 'Legalább [PARAM] karakter hosszú legyen');
@@ -336,39 +321,15 @@ document.addEventListener("alpine:init", () => {
             });
             Iodine.setErrorMessage('allszerzoregistered', 'Minden szerzőnek regisztrálnia kell');
 
-            fetch(new URL('/anyaglist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.anyaglist = data;
-                    this.loaded++;
-                });
-            fetch(new URL('/temakorlist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.temakorlist = data;
-                    this.loaded++;
-                });
-            fetch(new URL('/sajatanyaglist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.sajatanyaglist = data;
-                    this.sajatanyaglistLoaded = true;
-                    this.loaded++;
-                });
-            fetch(new URL('/szakmaianyagtipuslist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.anyagtipuslist = data;
-                    this.loaded++;
-                });
-            fetch(new URL('/partner/getdata', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.me = data;
-                    this.anyag.tulajdonosnev = this.me.nev;
-                    this.loaded++;
-                });
-
+            Iodine.rule('egyetem', () => {
+                if ((!this.anyag.egyetem || !this.anyag.kar) && !this.anyag.egyetemegyeb) {
+                    return false;
+                }
+                return true;
+            });
+            Iodine.setErrorMessage('egyetem', 'Egyetemet és kart vagy "Egyetem egyéb"-t meg kell adni');
+        },
+        setWatchers() {
             this.$watch('anyag.tipus', (value) => {
                 const atl = this.anyagtipuslist.find(el => el.id === parseInt(value));
                 this.szimpozium = (atl && atl.szimpozium);
@@ -376,6 +337,50 @@ document.addEventListener("alpine:init", () => {
                 this.konyvbemutato = (atl && atl.konyvbemutato);
                 this.anyag.konyvbemutato = (atl && atl.konyvbemutato);
             });
+
+            this.$watch('anyag.egyetem', (value, oldvalue) => {
+                if (!this.showEditor) {
+                    return;
+                }
+                console.log('firstload:', this.firstLoad);
+                let url = new URL('/karlist', location.origin);
+                url.searchParams.append('egyetem', value);
+                fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        this.karlist = data;
+                        if (!this.firstLoad) {
+                            this.anyag.kar = null;
+                        }
+                        let kar = this.anyag.kar;
+                        this.anyag.kar = null;
+                        this.anyag.kar = kar;
+                        this.firstLoad = false;
+                    });
+            });
+        },
+        getLists() {
+            const anyaglistfetch = fetch(new URL('/anyaglist', location.origin)).then((response) => response.json());
+            const temakorlistfetch = fetch(new URL('/temakorlist', location.origin)).then((response) => response.json());
+            const sajatanyaglistfetch = fetch(new URL('/sajatanyaglist', location.origin)).then((response) => response.json());
+            const szakmaianyagtipuslistfetch = fetch(new URL('/szakmaianyagtipuslist', location.origin)).then((response) => response.json());
+            const partnerfetch = fetch(new URL('/partner/getdata', location.origin)).then((response) => response.json());
+            const egyetemlistfetch = fetch(new URL('/egyetemlist', location.origin)).then((response) => response.json());
+            Promise.all([anyaglistfetch, temakorlistfetch, sajatanyaglistfetch, szakmaianyagtipuslistfetch, partnerfetch, egyetemlistfetch])
+                .then(([anyaglistdata, temakorlistdata, sajatanyaglistdata, szakmaianyagtipuslistdata, partnerdata, egyetemlistdata]) => {
+                    this.anyaglist = anyaglistdata;
+                    this.temakorlist = temakorlistdata;
+                    this.sajatanyaglist = sajatanyaglistdata;
+                    this.sajatanyaglistLoaded = true;
+                    this.anyagtipuslist = szakmaianyagtipuslistdata;
+                    this.me = partnerdata;
+                    this.anyag.tulajdonosnev = this.me.nev;
+                    this.egyetemlist = egyetemlistdata;
+                    this.loaded = true;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
         checkSzerzo(num) {
             let url = new URL('/checkpartnerunknown', location.origin),
@@ -404,11 +409,34 @@ document.addEventListener("alpine:init", () => {
                 this[t] = false;
             }
         },
-        logout() {
-            location.href = '/logout';
+        createNew() {
+            this.anyag.tulajdonosnev = this.me.nev;
+            this.showEditor = true;
         },
-        adataim() {
-            location.href = '/adataim';
+        edit(id) {
+            const a = this.anyaglist.find(el => el.id === parseInt(id));
+            Object.keys(this.anyag).forEach(key => {
+                this.anyag[key] = a[key];
+            });
+            this.anyag.tulajdonosnev = this.me.nev;
+            this.szerzo1unknown = !a.szerzo1registered;
+            this.szerzo2unknown = !a.szerzo2registered;
+            this.szerzo3unknown = !a.szerzo3registered;
+            this.szerzo4unknown = !a.szerzo4registered;
+            this.szerzo5unknown = !a.szerzo5registered;
+            this.szerzo6unknown = !a.szerzo6registered;
+            this.szerzo7unknown = !a.szerzo7registered;
+            this.szerzo8unknown = !a.szerzo8registered;
+            this.szerzo9unknown = !a.szerzo9registered;
+            this.szerzo10unknown = !a.szerzo10registered;
+            this.opponensunknown = !a.opponensregistered;
+            this.beszelgetopartnerunknown = !a.beszelgetopartnerregistered;
+            this.showEditor = true;
+        },
+        cancel() {
+            this.showEditor = false;
+            this.firstLoad = true;
+            this.initVars();
         },
         save(send = false) {
             let rules = this.rules;
@@ -431,6 +459,8 @@ document.addEventListener("alpine:init", () => {
                     .then((respdata) => {
                         if (respdata.success) {
                             this.showEditor = false;
+                            this.firstLoad = true;
+                            this.initVars();
                             this.getLists();
                         } else {
                             this.validation = respdata.fields;
@@ -446,6 +476,12 @@ document.addEventListener("alpine:init", () => {
                 this.validation = valid.fields;
                 alert('Kérjük javítsa a pirossal jelölt mezőket.');
             }
+        },
+        logout() {
+            location.href = '/logout';
+        },
+        adataim() {
+            location.href = '/adataim';
         },
     }));
 });

@@ -2032,6 +2032,77 @@ $().ready(
         });
         createNav(_arsav, arsavgrid);
 
+        // MPTNGY Kar grid
+        var _mptngykar = {
+            grid: '#mptngykargrid',
+            pager: '#mptngykargridpager'
+        }
+        var mptngykargrid = $(_mptngykar.grid).jqGrid({
+            url: '/admin/mptngykar/jsonlist',
+            editurl: '/admin/mptngykar/save',
+            datatype: 'json',
+            colModel: [
+                {
+                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
+                },
+                {
+                    name: 'egyetem', index: 'egyetem', label: 'Egyetem', width: 25,
+                    editable: true,
+                    edittype: 'select',
+                    editoptions: {size: 4, dataUrl: '/admin/mptngyegyetem/htmllist'},
+                    formoptions: {rowpos: 2, label: 'Egyetem:'}
+                }],
+            rowNum: 100000,
+            rowList: [10, 20, 30],
+            pager: _mptngykar.pager,
+            sortname: 'nev',
+            sortorder: 'asc',
+            viewrecords: true,
+            loadonce: false,
+            gridview: true,
+            height: 100,
+            width: 320,
+            hiddengrid: true,
+            caption: 'MPT NGY Kar'
+        });
+        createNav(_mptngykar, mptngykargrid);
+
+        // MPTNGY Egyetem grid
+        var _mptngyegyetem = {
+            grid: '#mptngyegyetemgrid',
+            pager: '#mptngyegyetemgridpager'
+        }
+        var mptngyegyetemgrid = $(_mptngyegyetem.grid).jqGrid({
+            url: '/admin/mptngyegyetem/jsonlist',
+            editurl: '/admin/mptngyegyetem/save',
+            datatype: 'json',
+            colModel: [
+                {
+                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                    editable: true,
+                    editoptions: {size: 25, maxlength: 255},
+                    editrules: {required: true},
+                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
+                }],
+            rowNum: 100000,
+            rowList: [10, 20, 30],
+            pager: _mptngyegyetem.pager,
+            sortname: 'nev',
+            sortorder: 'asc',
+            viewrecords: true,
+            loadonce: false,
+            gridview: true,
+            height: 100,
+            width: 320,
+            hiddengrid: true,
+            caption: 'MPT NGY Egyetem'
+        });
+        createNav(_mptngyegyetem, mptngyegyetemgrid);
+
         // Altalanos
         $('.ui-search-toolbar').hide();
         $('.ui-jqgrid-titlebar').on('click', function (e) {

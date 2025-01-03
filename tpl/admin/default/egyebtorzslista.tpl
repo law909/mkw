@@ -188,6 +188,14 @@
                 <div id="mptngyszakmaianyagtipusgridpager"></div>
             </div>
             <div class="egyebadat-grid">
+                <table id="mptngyegyetemgrid"></table>
+                <div id="mptngyegyetemgridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
+                <table id="mptngykargrid"></table>
+                <div id="mptngykargridpager"></div>
+            </div>
+            <div class="egyebadat-grid">
                 <table id="teremgrid"></table>
                 <div id="teremgridpager"></div>
             </div>

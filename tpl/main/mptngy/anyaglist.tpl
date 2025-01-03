@@ -5,7 +5,7 @@
 {/block}
 
 {block "body"}
-    <div x-data="anyaglist" x-init="getLists">
+    <div x-data="anyaglist">
     <div class="co-container co-header" x-cloak>
         <div class="co-col-50 padding">
             <div x-text="me.nev"></div>
@@ -46,7 +46,7 @@
                                         <button
                                             class="btn btn-secondary"
                                             @click="edit(any.id)"
-                                            x-show="!any.vegleges && any.editable && loaded >= loadCount"
+                                            x-show="!any.vegleges && any.editable && loaded"
                                         >{t('Módosítás')}</button>
                                         <div x-show="any.vegleges">{t('Beküldve')}</div>
                                         <div x-show="any.biralatkesz">
@@ -59,13 +59,13 @@
 
                             </tbody>
                         </table>
-                        <!--div class="co-control-row">
+                        <div class="co-control-row">
                             <button
                                 x-cloak
                                 class="btn btn-primary"
                                 @click="createNew()"
                             >{t('Új anyag feltöltése')}</button>
-                        </div-->
+                        </div>
                     </div>
                     <div x-show="showEditor">
                         {$uf = t('Új felvitel')}
@@ -92,6 +92,56 @@
                                 disabled
                             >
                             <div class="co-error" x-text="validation.tulajdonosnev && validation.tulajdonosnev.error"></div>
+                        </div>
+                        <div class="co-control-row co-col-container">
+                            <div class="co-col co-col-50">
+                                <label for="egyetemEdit" class="co-label">{t('Egyetem')}</label>
+                                <select
+                                    id="egyetemEdit"
+                                    class="co-input"
+                                    :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
+                                    x-model="anyag.egyetem"
+                                >
+                                    <option value="">{t('válasszon')}</option>
+                                    <template x-for="egyetem in egyetemlist" :key="egyetem.id">
+                                        <option
+                                            :value="egyetem.id"
+                                            x-text="egyetem.caption"
+                                        ></option>
+                                    </template>
+
+                                </select>
+                                <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
+                            </div>
+                            <div class="co-col co-col-50">
+                                <label for="karEdit" class="co-label">{t('Kar')}</label>
+                                <select
+                                    id="karEdit"
+                                    class="co-input"
+                                    :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
+                                    x-model="anyag.kar"
+                                >
+                                    <option value="">{t('válasszon')}</option>
+                                    <template x-for="kar in karlist" :key="kar.id">
+                                        <option
+                                            :value="kar.id"
+                                            x-text="kar.caption"
+                                        ></option>
+                                    </template>
+                                </select>
+                                <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
+                            </div>
+                        </div>
+                        <div class="co-control-row">
+                            <label for="egyetemegyebEdit" class="co-label">{t('Egyetem egyéb')}</label>
+                            <input
+                                id="egyetemegyebEdit"
+                                class="co-input"
+                                :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
+                                type="text"
+                                x-model="anyag.egyetemegyeb"
+                            >
+                            <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
                         </div>
                         <div class="co-control-row">
                             <label for="tipusEdit" class="co-label">{t('Típus')}</label>

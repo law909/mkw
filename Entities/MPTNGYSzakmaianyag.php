@@ -413,6 +413,24 @@ class MPTNGYSzakmaianyag
      */
     private $terem;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYEgyetem")
+     * @ORM\JoinColumn(name="egyetem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $egyetem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYKar")
+     * @ORM\JoinColumn(name="kar_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $kar;
+
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $egyetemegyeb;
+
+
     public function calcB1pont()
     {
         if ($this->getBiralo1()) {
@@ -2451,5 +2469,94 @@ class MPTNGYSzakmaianyag
         $this->opponensemail = $opponensemail;
     }
 
+    /**
+     * @return MPTNGYEgyetem
+     */
+    public function getEgyetem()
+    {
+        return $this->egyetem;
+    }
+
+    public function getEgyetemId()
+    {
+        return $this->egyetem?->getId();
+    }
+
+    public function getEgyetemNev()
+    {
+        return $this->egyetem?->getNev();
+    }
+
+    /**
+     * @param \Entities\MPTNGYEgyetem $val
+     */
+    public function setEgyetem($val)
+    {
+        if (!$val) {
+            $this->removeEgyetem();
+        } else {
+            $this->egyetem = $val;
+        }
+    }
+
+    public function removeEgyetem()
+    {
+        if ($this->egyetem !== null) {
+            $this->egyetem = null;
+        }
+    }
+
+    /**
+     * @return MPTNGYKar
+     */
+    public function getKar()
+    {
+        return $this->kar;
+    }
+
+    public function getKarId()
+    {
+        return $this->kar?->getId();
+    }
+
+    public function getKarNev()
+    {
+        return $this->kar?->getNev();
+    }
+
+    /**
+     * @param \Entities\MPTNGYKar $val
+     */
+    public function setKar($val)
+    {
+        if (!$val) {
+            $this->removeKar();
+        } else {
+            $this->kar = $val;
+        }
+    }
+
+    public function removeKar()
+    {
+        if ($this->kar !== null) {
+            $this->kar = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEgyetemegyeb()
+    {
+        return $this->egyetemegyeb;
+    }
+
+    /**
+     * @param mixed $egyetemegyeb
+     */
+    public function setEgyetemegyeb($egyetemegyeb): void
+    {
+        $this->egyetemegyeb = $egyetemegyeb;
+    }
 
 }

@@ -145,6 +145,14 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/htmllist', 'mptngyszakmaianyagtipusController#htmllist', 'adminmptngyszakmaianyagtipushtmllist');
     $router->map('POST', '/admin/mptngyszakmaianyagtipus/save', 'mptngyszakmaianyagtipusController#save', 'adminmptngyszakmaianyagtipussave');
 
+    $router->map('GET', '/admin/mptngyegyetem/jsonlist', 'mptngyegyetemController#jsonlist', 'adminmptngyegyetemjsonlist');
+    $router->map('GET', '/admin/mptngyegyetem/htmllist', 'mptngyegyetemController#htmllist', 'adminmptngyegyetemhtmllist');
+    $router->map('POST', '/admin/mptngyegyetem/save', 'mptngyegyetemController#save', 'adminmptngyegyetemsave');
+
+    $router->map('GET', '/admin/mptngykar/jsonlist', 'mptngykarController#jsonlist', 'adminmptngykarjsonlist');
+    $router->map('GET', '/admin/mptngykar/htmllist', 'mptngykarController#htmllist', 'adminmptngykarhtmllist');
+    $router->map('POST', '/admin/mptngykar/save', 'mptngykarController#save', 'adminmptngykarsave');
+
     $router->map('GET', '/admin/mptngyszakmaianyag/viewlist', 'mptngyszakmaianyagController#viewlist', 'adminmptngyszakmaianyagviewlist');
     $router->map('GET', '/admin/mptngyszakmaianyag/getlistbody', 'mptngyszakmaianyagController#getlistbody', 'adminmptngyszakmaianyaggetlistbody');
     $router->map('GET', '/admin/mptngyszakmaianyag/getkarb', 'mptngyszakmaianyagController#getkarb', 'adminmptngyszakmaianyaggetkarb');

@@ -62,6 +62,8 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('POST', '/szakmaianyag/ment', 'mptngyszakmaianyagController#pubSave', 'mptngypubsave');
     $router->map('GET', '/adataim', 'mptngypartnerController#adataim', 'mptngyadataim');
     $router->map('POST', '/adataim/ment', 'mptngypartnerController#saveAdataim', 'mptngysaveadataim');
+    $router->map('GET', '/egyetemlist', 'mptngyegyetemController#getList', 'mptngygetegyetemlist');
+    $router->map('GET', '/karlist', 'mptngykarController#getList', 'mptngygetkarlist');
 }
 
 $router->map('GET', '', 'mainController#view', 'home');

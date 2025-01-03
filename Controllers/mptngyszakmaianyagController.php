@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Jogaterem;
+use Entities\MPTNGYEgyetem;
+use Entities\MPTNGYKar;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\MPTNGYTema;
@@ -24,6 +26,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         parent::__construct($params);
     }
 
+    /**
+     * @param MPTNGYSzakmaianyag $t
+     * @param $forKarb
+     *
+     * @return array
+     */
     protected function loadVars($t, $forKarb = false)
     {
         $x = [];
@@ -74,6 +82,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['beszelgetopartner'] = $t->getBeszelgetopartnerId();
         $x['beszelgetopartnernev'] = $t->getBeszelgetopartnerNev();
         $x['beszelgetopartneremail'] = $t->getBeszelgetopartneremail();
+        $x['egyetem'] = $t->getEgyetemId();
+        $x['egyetemnev'] = $t->getEgyetemNev();
+        $x['kar'] = $t->getKarId();
+        $x['karnev'] = $t->getKarNev();
+        $x['egyetemegyeb'] = $t->getEgyetemegyeb();
         $x['kezdodatum'] = $t->getKezdodatum();
         $x['kezdoido'] = $t->getKezdoido();
         $x['kezdodatumstr'] = $t->getKezdodatumStr();
@@ -395,6 +408,21 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->removeTemakor3();
         }
 
+        $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('egyetem'));
+        if ($egyetem) {
+            $obj->setEgyetem($egyetem);
+        } else {
+            $obj->removeEgyetem();
+        }
+
+        $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('kar'));
+        if ($kar) {
+            $obj->setKar($kar);
+        } else {
+            $obj->removeKar();
+        }
+
+        $obj->setEgyetemegyeb($this->params->getStringRequestParam('egyetemegyeb'));
         return $obj;
     }
 
@@ -499,6 +527,10 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('teremlist', $jt->getSelectList());
         $tx = new mptngytemaController($this->params);
         $view->setVar('temalist', $tx->getSelectList());
+        $ec = new mptngyegyetemController($this->params);
+        $view->setVar('egyetemlist', $ec->getSelectList());
+        $kc = new mptngykarController($this->params);
+        $view->setVar('karlist', $kc->getSelectList());
 
         $view->printTemplateResult();
     }
@@ -523,6 +555,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
         $xt = new mptngytemaController($this->params);
         $view->setVar('temalist', $xt->getSelectList($anyag?->getTema()?->getId()));
+
+        $ec = new mptngyegyetemController($this->params);
+        $view->setVar('egyetemlist', $ec->getSelectList($anyag?->getEgyetemId()));
+        $kc = new mptngykarController($this->params);
+        $view->setVar('karlist', $kc->getSelectList($anyag?->getKarId()));
 
         $pc = new partnerController($this->params);
         $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonosId()));
@@ -775,6 +812,15 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             } else {
                 $ell['success'] = true;
             }
+
+            $egyetem = $this->params->getIntRequestParam('egyetem');
+            $kar = $this->params->getIntRequestParam('kar');
+            $egyetemegyeb = $this->params->getStringRequestParam('egyetemegyeb');
+
+            if ((!$egyetem || !$kar) && !$egyetemegyeb) {
+                $ell['success'] = false;
+                $ell['egyetem'] = false;
+            }
             if ($ell) {
                 if ($ell['success']) {
                     $ret['success'] = true;
@@ -882,6 +928,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                         $ret['fields']['opponensemail'] = [
                             'valid' => false,
                             'error' => t('Nem lehet opponense olyan előadásnak, aminek a szerzője')
+                        ];
+                    }
+                    if (!$ell['egyetem']) {
+                        $ret['fields']['egyetem'] = [
+                            'valid' => false,
+                            'error' => t('Egyetemet és kart vagy "Egyetem egyéb"-t meg kell adni')
                         ];
                     }
                 }
