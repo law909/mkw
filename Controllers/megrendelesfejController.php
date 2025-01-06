@@ -148,8 +148,6 @@ class megrendelesfejController extends bizonylatfejController
             ]
         );
         $glsres = $glsapi->printLabels($glsmegrend, $pdfname);
-        \mkw\store::writelog(print_r($glsapi->getLasterrors(), true));
-        \mkw\store::writelog(print_r($glsres, true));
         if ($glsres) {
             $pdfname = implode('/', [
                 rtrim($glsapi->getPdfdirectory(), '/'),
