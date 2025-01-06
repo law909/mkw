@@ -199,6 +199,7 @@ class consts
     const GLSPassword = 'glspassword';
     const GLSTerminalURL = 'glsterminalurl';
     const GLSParcelLabelDir = 'glsparcellabeldir';
+    const GLSSM2 = 'glssm2';
 
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';

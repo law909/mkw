@@ -1046,12 +1046,14 @@ class Bizonylatfej
             ],
             'PickupDate' => "/Date(" . (time() * 1000) . ")/",
             'ServiceList' => [
-                [
-                    'Code' => 'SM2',
-                    'SM2Parameter' => $sm2par
-                ]
             ]
         ];
+        if (\mkw\store::getParameter(\mkw\consts::GLSSM2) && $this->getPartnertelefon()) {
+            $result['ServiceList'][] = [
+                'Code' => 'SM2',
+                'SM2Parameter' => $sm2par
+            ];
+        }
         if (\mkw\store::isGLSSzallitasimod($this->getSzallitasimodId())) {
             $psdpar = new \stdClass();
             $psdpar->StringValue = $this->getCsomagterminalIdegenId();

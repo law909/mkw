@@ -372,6 +372,9 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::GLSClientNumber, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSPassword);
         $view->setVar(\mkw\consts::GLSPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSSM2);
+        $view->setVar(\mkw\consts::GLSSM2, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::EmagAPIUrl);
         $view->setVar(\mkw\consts::EmagAPIUrl, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmagUsername);
@@ -1159,6 +1162,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::GLSClientNumber, $this->params->getStringRequestParam('glsclientnumber'));
         $this->setObj(\mkw\consts::GLSPassword, $this->params->getStringRequestParam('glspassword'));
         $this->setObj(\mkw\consts::GLSParcelLabelDir, $this->params->getStringRequestParam('glsparcellabeldir'));
+        $this->setObj(\mkw\consts::GLSSM2, $this->params->getBoolRequestParam('glssm2'));
         \mkw\store::createDirectoryRecursively($this->params->getStringRequestParam('glsparcellabeldir'));
         $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'), true);
         $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));

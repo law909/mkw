@@ -157,6 +157,10 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="GLSSM2Edit">{at('GLS SMS értesítő kell')}:</label></span>
+                            <input id="GLSSM2Edit" name="glssm2" type="checkbox"{if ($glssm2)} checked="checked"{/if}>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="TOFSzallmodEdit">{at('TOF száll.mód')}:</label></span>
                             <select id="TOFSzallmodEdit" name="tofszallmod">
                                 <option value="">{at('válasszon')}</option>

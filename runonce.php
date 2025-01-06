@@ -449,6 +449,11 @@ if ($DBVersion < '0057') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0057');
 }
 
+if ($DBVersion < '0058') {
+    \mkw\store::setParameter(\mkw\consts::GLSSM2, 1);
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0058');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
