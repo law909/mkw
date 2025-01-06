@@ -1,7 +1,7 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
         konyvkiadashoTol: '2023.07',
-        konyvkiadashoIg: '2025.04',
+        konyvkiadashoIg: '2025.05',
         loaded: false,
         firstLoad: true,
         showEditor: false,
