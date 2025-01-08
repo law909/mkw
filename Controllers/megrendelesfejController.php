@@ -148,6 +148,10 @@ class megrendelesfejController extends bizonylatfejController
             ]
         );
         $glsres = $glsapi->printLabels($glsmegrend, $pdfname);
+        $glserror = $glsapi->getLasterrors();
+        if ($glserror) {
+            \mkw\store::writeLog('GLS API error: ' . json_encode($glserror), 'gls_api_error.txt');
+        }
         if ($glsres) {
             $pdfname = implode('/', [
                 rtrim($glsapi->getPdfdirectory(), '/'),
