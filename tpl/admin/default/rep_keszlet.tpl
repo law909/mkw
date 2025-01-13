@@ -20,6 +20,7 @@
         </thead>
         <tbody>
         {$sum = 0}
+        {$arsum = 0}
         {foreach $lista as $elem}
             <tr>
                 <td class="cell">{$elem.cikkszam}</td>
@@ -30,6 +31,7 @@
                 <td class="cell">{$elem.bizid}</td>
             </tr>
             {$sum = $sum + $elem.keszlet}
+            {$arsum = $arsum + ($elem.ar * $elem.keszlet)}
         {/foreach}
         </tbody>
         <tfoot>
@@ -38,7 +40,7 @@
             <td></td>
             <td>Összesen:</td>
             <td class="textalignright">{$sum}</td>
-            <td></td>
+            <td class="textalignright">{$arsum}</td>
             <td></td>
         </tr>
         </tfoot>
