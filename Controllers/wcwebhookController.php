@@ -69,52 +69,75 @@ class wcwebhookController extends \mkwhelpers\MattableController
             $this->createErrorLog('wcorder', $wcorder, 'Nincs beállítva alapértelmezett raktár.');
             $iserror = true;
         }
-        $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['billing']['country']]);
-        if (!$orszag) {
-            $orszag = new Orszag();
-            $orszag->setIso3166($wcorder['billing']['country']);
-            $orszag->setNev($wcorder['billing']['country']);
-            $this->getEm()->persist($orszag);
-            $this->getEm()->flush();
-        }
-        $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['shipping']['country']]);
-        if (!$szallorszag) {
-            $szallorszag = new Orszag();
-            $szallorszag->setIso3166($wcorder['shipping']['country']);
-            $szallorszag->setNev($wcorder['shipping']['country']);
-            $this->getEm()->persist($szallorszag);
-            $this->getEm()->flush();
-        }
-        $valutanem = $this->getRepo(Valutanem::class)->findOneBy(['nev' => $wcorder['currency']]);
-        if (!$valutanem) {
-            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen valutanem: ' . $wcorder['currency']);
+        if (!$wcorder['billing']['country']) {
+            $this->createErrorLog('wcorder', $wcorder, 'Nincs megadva számlázási ország');
             $iserror = true;
+        } else {
+            $orszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['billing']['country']]);
+            if (!$orszag) {
+                $orszag = new Orszag();
+                $orszag->setIso3166($wcorder['billing']['country']);
+                $orszag->setNev($wcorder['billing']['country']);
+                $this->getEm()->persist($orszag);
+                $this->getEm()->flush();
+            }
         }
-        $fizmod = $this->getRepo(Fizmod::class)->findOneBy(['wcid' => $wcorder['payment_method']]);
-        if (!$fizmod) {
-            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen fizetési mód: ' . $wcorder['payment_method']);
+        if (!$wcorder['shipping']['country']) {
+            $this->createErrorLog('wcorder', $wcorder, 'Nincs megadva szállítási ország');
             $iserror = true;
+        } else {
+            $szallorszag = $this->getRepo(Orszag::class)->findOneBy(['iso3166' => $wcorder['shipping']['country']]);
+            if (!$szallorszag) {
+                $szallorszag = new Orszag();
+                $szallorszag->setIso3166($wcorder['shipping']['country']);
+                $szallorszag->setNev($wcorder['shipping']['country']);
+                $this->getEm()->persist($szallorszag);
+                $this->getEm()->flush();
+            }
         }
-        $szallmod = $this->getRepo(Szallitasimod::class)->findOneBy(['wcid' => $wcorder['shipping_lines'][0]['method_id']]);
-        if (!$szallmod) {
-            $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen szállítási mód: ' . $wcorder['shipping_lines'][0]['method_id']);
+        if (!$wcorder['currency']) {
+            $this->createErrorLog('wcorder', $wcorder, 'Nincs megadva valutanem');
             $iserror = true;
+        } else {
+            $valutanem = $this->getRepo(Valutanem::class)->findOneBy(['nev' => $wcorder['currency']]);
+            if (!$valutanem) {
+                $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen valutanem: ' . $wcorder['currency']);
+                $iserror = true;
+            }
         }
-        $afa = null;
-        if (array_key_exists('tax_lines', $wcorder)) {
-            $taxline = $wcorder['tax_lines'][0];
-            if ($taxline) {
-                $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $taxline['rate_percent']]);
-                if (!$afa) {
-                    $afa = new Afa();
-                    $afa->setErtek($taxline['rate_percent']);
-                    $afa->setNev($taxline['rate_percent'] . '%');
-                    $this->getEm()->persist($afa);
+        if (!$wcorder['payment_method']) {
+            $this->createErrorLog('wcorder', $wcorder, 'Nincs megadva fizetési mód');
+            $iserror = true;
+        } else {
+            $fizmod = $this->getRepo(Fizmod::class)->findOneBy(['wcid' => $wcorder['payment_method']]);
+            if (!$fizmod) {
+                $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen fizetési mód: ' . $wcorder['payment_method']);
+                $iserror = true;
+            }
+        }
+        if (!array_key_exists('method_id', $wcorder['shipping_lines'][0]) || !$wcorder['shipping_lines'][0]['method_id']) {
+            $this->createErrorLog('wcorder', $wcorder, 'Nincs megadva szállítási mód');
+            $iserror = true;
+        } else {
+            $szallmod = $this->getRepo(Szallitasimod::class)->findOneBy(['wcid' => $wcorder['shipping_lines'][0]['method_id']]);
+            if (!$szallmod) {
+                $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen szállítási mód: ' . $wcorder['shipping_lines'][0]['method_id']);
+                $iserror = true;
+            }
+        }
+        $van_vat_rate = false;
+        foreach ($wcorder['line_items'] as $item) {
+            if (array_key_exists('vat_rate', $item) && $item['vat_rate']) {
+                $van_vat_rate = true;
+                $lineafa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $item['vat_rate']]);
+                if (!$lineafa) {
+                    $lineafa = new Afa();
+                    $lineafa->setErtek($item['vat_rate']);
+                    $lineafa->setNev($item['vat_rate'] . '%');
+                    $this->getEm()->persist($lineafa);
                     $this->getEm()->flush();
                 }
             }
-        }
-        foreach ($wcorder['line_items'] as $item) {
             $termek = $this->getRepo(Termek::class)->findOneBy(['wcid' => $item['product_id']]);
             if (!$termek) {
                 $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen termék: ' . $item['product_id'] . '; ' . $item['name']);
@@ -127,6 +150,21 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 if (!$valtozat) {
                     $this->createErrorLog('wcorder', $wcorder, 'Ismeretlen változat: ' . $item['variation_id'] . '; ' . $item['name']);
                     $iserror = true;
+                }
+            }
+        }
+        // VAT rate fallback if WC doesn't send vat_rate per line_items
+        $afa = null;
+        if (array_key_exists('tax_lines', $wcorder)) {
+            $taxline = $wcorder['tax_lines'][0];
+            if ($taxline) {
+                $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $taxline['rate_percent']]);
+                if (!$afa) {
+                    $afa = new Afa();
+                    $afa->setErtek($taxline['rate_percent']);
+                    $afa->setNev($taxline['rate_percent'] . '%');
+                    $this->getEm()->persist($afa);
+                    $this->getEm()->flush();
                 }
             }
         }
@@ -242,7 +280,14 @@ class wcwebhookController extends \mkwhelpers\MattableController
                 if ($valtozat) {
                     $tetel->setTermekvaltozat($valtozat);
                 }
-                if ($afa) {
+                if (array_key_exists('vat_rate', $item) && $item['vat_rate']) {
+                    $lineafa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $item['vat_rate']]);
+                    if ($lineafa) {
+                        $tetel->setAfa($lineafa);
+                    } elseif ($afa) {
+                        $tetel->setAfa($afa);
+                    }
+                } elseif ($afa) { // VAT rate fallback if WC doesn't send vat_rate per line_items
                     $tetel->setAfa($afa);
                 }
                 $tetel->setMennyiseg($item['quantity']);
