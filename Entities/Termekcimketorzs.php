@@ -79,7 +79,7 @@ class Termekcimketorzs extends Cimketorzs
         \mkw\store::writelog('DELETE products/tags/' . $this->getWcid());
         $wc = store::getWcClient();
         try {
-            $result = $wc->delete('products/tags/' . $this->getWcid());
+            $result = $wc->delete('products/tags/' . $this->getWcid(), ['force' => true]);
         } catch (HttpClientException $e) {
             \mkw\store::writelog('DELETE Termekcimke:HIBA: ' . $e->getResponse()->getBody() . ':' . $e->getCode());
         }
