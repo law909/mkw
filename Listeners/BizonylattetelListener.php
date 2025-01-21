@@ -98,7 +98,7 @@ class BizonylattetelListener
                         \mkw\store::writelog('STOP');
                         $tosend = [];
                     } catch (HttpClientException $e) {
-                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody());
+                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody() . ':' . $e->getCode());
                     }
                 }
             }

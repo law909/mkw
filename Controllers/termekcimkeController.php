@@ -143,6 +143,20 @@ class termekcimkeController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
+    /**
+     * @param Termekcimketorzs $o
+     * @param $parancs
+     *
+     * @return void
+     */
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($parancs == $this->delOperation) {
+            $o->deleteFromWc();
+        }
+        parent::afterSave($o, $parancs);
+    }
+
     public function setmenulathato()
     {
         $id = $this->params->getIntRequestParam('id');

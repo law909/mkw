@@ -2,8 +2,10 @@
 // TODO wordpress
 namespace Entities;
 
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekcimketorzsRepository")
@@ -67,6 +69,20 @@ class Termekcimketorzs extends Cimketorzs
         $x['szinkod'] = $this->getSzinkod();
         $x['gyartonev'] = $this->getGyartoNev();
         return $x;
+    }
+
+    public function deleteFromWC()
+    {
+        if (!\mkw\store::isWoocommerceOn() || !$this->getWcid()) {
+            return;
+        }
+        \mkw\store::writelog('DELETE products/tags/' . $this->getWcid());
+        $wc = store::getWcClient();
+        try {
+            $result = $wc->delete('products/tags/' . $this->getWcid());
+        } catch (HttpClientException $e) {
+            \mkw\store::writelog('DELETE Termekcimke:HIBA: ' . $e->getResponse()->getBody() . ':' . $e->getCode());
+        }
     }
 
     public function getTermekFilter()
