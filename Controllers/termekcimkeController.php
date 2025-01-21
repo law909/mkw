@@ -264,6 +264,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                     $data = [
                         'name' => $cimke->getNev()
                     ];
+                    \mkw\store::writelog('POST: ' . json_encode($data));
                     $result = $wc->post('products/tags', $data);
 
                     $cimke->setWcid($result->id);
