@@ -9,6 +9,8 @@ use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -1453,13 +1455,14 @@ class exportController extends \mkwhelpers\Controller
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, 'ID')
                 ->setCellValue('B' . $sor, 'SKU')
-                ->setCellValue('C' . $sor, 'EAN code')
-                ->setCellValue('D' . $sor, 'Name');
+                ->setCellValue('C' . $sor, 'Name');
             $sor++;
             $excel->setActiveSheetIndex(0)
-                ->setCellValue('C' . $sor, 'Color')
-                ->setCellValue('D' . $sor, 'Size')
-                ->setCellValue('E' . $sor, 'Ordered Qty.');
+                ->setCellValue('C' . $sor, 'EAN code')
+                ->setCellValue('D' . $sor, 'Color')
+                ->setCellValue('E' . $sor, 'Size')
+                ->setCellValue('F' . $sor, 'Stock')
+                ->setCellValue('G' . $sor, 'Ordered Qty.');
             $sor++;
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('B' . $sor, $termekfa['fanev'])
@@ -1469,22 +1472,17 @@ class exportController extends \mkwhelpers\Controller
                 'SELECT t.id,t.cikkszam,t.vonalkod,COALESCE(tt.content,t.nev) AS termeknev '
                 . 'FROM termek t '
                 . 'LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
-                . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) ',
+                . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
                 $trsm
             )->getScalarResult();
             foreach ($termekek as $termek) {
                 $excel->setActiveSheetIndex(0)
                     ->setCellValue('B' . $sor, $termek['cikkszam'])
-                    ->setCellValue('C' . $sor, $termek['vonalkod'])
-                    ->setCellValue('D' . $sor, $termek['termeknev']);
+                    ->setCellValue('C' . $sor, $termek['termeknev']);
                 $excel->setActiveSheetIndex(0)
                     ->getStyle('B' . $sor)->getFont()->setBold(true)->setSize(16);
                 $excel->setActiveSheetIndex(0)
                     ->getStyle('C' . $sor)->getFont()->setBold(true)->setSize(16);
-                $excel->setActiveSheetIndex(0)
-                    ->getStyle('D' . $sor)->getFont()->setBold(true)->setSize(16);
-                $excel->setActiveSheetIndex(0)
-                    ->getStyle('C' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
 
                 $sor++;
                 $valtfilter = new FilterDescriptor();
@@ -1500,6 +1498,8 @@ class exportController extends \mkwhelpers\Controller
                         'valtadattipus2id' => $valtozat->getAdatTipus2Id(),
                         'valtertek1' => $valtozat->getErtek1(),
                         'valtertek2' => $valtozat->getErtek2(),
+                        'vonalkod' => $valtozat->getVonalkod(),
+                        'keszlet' => max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg(), 0),
                     ];
                 }
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
@@ -1550,12 +1550,16 @@ class exportController extends \mkwhelpers\Controller
                 foreach ($valtozattomb as $valtozat) {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $valtozat['id'])
-                        ->setCellValue('C' . $sor, $valtozat['valtertek1'])
-                        ->setCellValue('D' . $sor, $valtozat['valtertek2']);
+                        ->setCellValue('C' . $sor, $valtozat['vonalkod'])
+                        ->setCellValue('D' . $sor, $valtozat['valtertek1'])
+                        ->setCellValue('E' . $sor, $valtozat['valtertek2'])
+                        ->setCellValue('F' . $sor, $valtozat['keszlet']);
                     $excel->setActiveSheetIndex(0)
-                        ->getStyle('D' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                        ->getCell('C' . $sor)->setDataType(DataType::TYPE_STRING);
                     $excel->setActiveSheetIndex(0)
-                        ->getStyle('E' . $sor)
+                        ->getStyle('C' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    $excel->setActiveSheetIndex(0)
+                        ->getStyle('G' . $sor)
                         ->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                     $sor++;
                 }
@@ -1566,6 +1570,7 @@ class exportController extends \mkwhelpers\Controller
         $excel->setActiveSheetIndex(0)->getColumnDimension('A')->setVisible(false);
         $excel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
         $excel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+        $excel->setActiveSheetIndex(0)->getColumnDimension('D')->setAutoSize(true);
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
