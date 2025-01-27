@@ -2,12 +2,15 @@
 
 namespace Controllers;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Partner;
 use Entities\SzallitasimodHatar;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class exportController extends \mkwhelpers\Controller
 {
@@ -1412,4 +1415,174 @@ class exportController extends \mkwhelpers\Controller
         echo json_encode($sor);
     }
 
+    public function orderformExport()
+    {
+        function x($o)
+        {
+            if ($o <= 26) {
+                return chr(65 + $o);
+            }
+            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
+        }
+
+        $tfrsm = new ResultSetMapping();
+        $tfrsm->addScalarResult('id', 'id');
+        $tfrsm->addScalarResult('karkod', 'karkod');
+        $tfrsm->addScalarResult('sorrend', 'sorrend');
+        $tfrsm->addScalarResult('fanev', 'fanev');
+
+        $trsm = new ResultSetMapping();
+        $trsm->addScalarResult('id', 'id');
+        $trsm->addScalarResult('cikkszam', 'cikkszam');
+        $trsm->addScalarResult('vonalkod', 'vonalkod');
+        $trsm->addScalarResult('termeknev', 'termeknev');
+
+        $excel = new Spreadsheet();
+        $sor = 1;
+
+        $termekfak = $this->getEm()->createNativeQuery(
+            'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,coalesce(tt.content,tf.nev) AS fanev '
+            . 'FROM termekfa tf '
+            . 'LEFT JOIN termekfa_translations tt ON (tf.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
+            . 'WHERE tf.menu1lathato=1 and tf.lathato=1 '
+            . 'ORDER BY sorrend',
+            $tfrsm
+        )->getScalarResult();
+
+        foreach ($termekfak as $termekfa) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, 'ID')
+                ->setCellValue('B' . $sor, 'SKU')
+                ->setCellValue('C' . $sor, 'EAN code')
+                ->setCellValue('D' . $sor, 'Name');
+            $sor++;
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('C' . $sor, 'Color')
+                ->setCellValue('D' . $sor, 'Size')
+                ->setCellValue('E' . $sor, 'Ordered Qty.');
+            $sor++;
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $sor, $termekfa['fanev'])
+                ->getStyle('B' . $sor)->getFont()->setBold(true)->setSize(20);
+            $sor++;
+            $termekek = $this->getEm()->createNativeQuery(
+                'SELECT t.id,t.cikkszam,t.vonalkod,COALESCE(tt.content,t.nev) AS termeknev '
+                . 'FROM termek t '
+                . 'LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
+                . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) ',
+                $trsm
+            )->getScalarResult();
+            foreach ($termekek as $termek) {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $sor, $termek['cikkszam'])
+                    ->setCellValue('C' . $sor, $termek['vonalkod'])
+                    ->setCellValue('D' . $sor, $termek['termeknev']);
+                $excel->setActiveSheetIndex(0)
+                    ->getStyle('B' . $sor)->getFont()->setBold(true)->setSize(16);
+                $excel->setActiveSheetIndex(0)
+                    ->getStyle('C' . $sor)->getFont()->setBold(true)->setSize(16);
+                $excel->setActiveSheetIndex(0)
+                    ->getStyle('D' . $sor)->getFont()->setBold(true)->setSize(16);
+                $excel->setActiveSheetIndex(0)
+                    ->getStyle('C' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+
+                $sor++;
+                $valtfilter = new FilterDescriptor();
+                $valtfilter->addFilter('termek', '=', $termek['id']);
+                $valtfilter->addFilter('lathato', '=', 1);
+                $valtozatok = $this->getRepo(TermekValtozat::class)->getAll($valtfilter);
+                $valtozattomb = [];
+                /** @var TermekValtozat $valtozat */
+                foreach ($valtozatok as $valtozat) {
+                    $valtozattomb[] = [
+                        'id' => $valtozat->getId(),
+                        'valtadattipus1id' => $valtozat->getAdatTipus1Id(),
+                        'valtadattipus2id' => $valtozat->getAdatTipus2Id(),
+                        'valtertek1' => $valtozat->getErtek1(),
+                        'valtertek2' => $valtozat->getErtek2(),
+                    ];
+                }
+                $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
+                $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
+                $sorrend = explode(',', $s);
+                $a = $valtozattomb;
+                uasort($a, function ($e, $f) use ($sorrend, $rendezendo) {
+                    if ($e['valtadattipus1id'] == $rendezendo) {
+                        $ertek = $e['valtertek1'];
+                        $eszin = $e['valtertek2'];
+                    } elseif ($e['valtadattipus2id'] == $rendezendo) {
+                        $ertek = $e['valtertek2'];
+                        $eszin = $e['valtertek1'];
+                    } else {
+                        $ertek = false;
+                        $eszin = false;
+                    }
+                    $ve = array_search($ertek, $sorrend);
+                    if ($ve === false) {
+                        $ve = 0;
+                    }
+                    $ve = $eszin
+                        . str_pad((string)$ve, 6, '0', STR_PAD_LEFT);
+
+                    if ($f['valtadattipus1id'] == $rendezendo) {
+                        $ertek = $f['valtertek1'];
+                        $fszin = $f['valtertek2'];
+                    } elseif ($f['valtadattipus2id'] == $rendezendo) {
+                        $ertek = $f['valtertek2'];
+                        $fszin = $f['valtertek1'];
+                    } else {
+                        $ertek = false;
+                        $fszin = false;
+                    }
+                    $vf = array_search($ertek, $sorrend);
+                    if ($vf === false) {
+                        $vf = 0;
+                    }
+                    $vf = $fszin
+                        . str_pad((string)$vf, 6, '0', STR_PAD_LEFT);
+
+                    if ($ve === $vf) {
+                        return 0;
+                    }
+                    return ($ve < $vf) ? -1 : 1;
+                });
+                $valtozattomb = array_values($a);
+                foreach ($valtozattomb as $valtozat) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $sor, $valtozat['id'])
+                        ->setCellValue('C' . $sor, $valtozat['valtertek1'])
+                        ->setCellValue('D' . $sor, $valtozat['valtertek2']);
+                    $excel->setActiveSheetIndex(0)
+                        ->getStyle('D' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    $excel->setActiveSheetIndex(0)
+                        ->getStyle('E' . $sor)
+                        ->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                    $sor++;
+                }
+                $sor++;
+            }
+        }
+
+        $excel->setActiveSheetIndex(0)->getColumnDimension('A')->setVisible(false);
+        $excel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
+        $excel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('orderform') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
 }

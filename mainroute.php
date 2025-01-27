@@ -185,6 +185,7 @@ $router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport',
 $router->map('GET', '/export/kaposimoto', 'exportController#KaposimotoExport', 'kaposimotoexport');
 $router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
+$router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');

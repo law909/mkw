@@ -275,6 +275,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'szamlapdf',
                             'a2aprocesscmd',
                             'kaposimotoexport',
+                            'orderformexport',
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
                             'partnercheckemail',
