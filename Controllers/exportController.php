@@ -1499,7 +1499,7 @@ class exportController extends \mkwhelpers\Controller
                         'valtertek1' => $valtozat->getErtek1(),
                         'valtertek2' => $valtozat->getErtek2(),
                         'vonalkod' => $valtozat->getVonalkod(),
-                        'keszlet' => max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg(), 0),
+                        'keszlet' => max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0),
                     ];
                 }
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
