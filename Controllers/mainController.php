@@ -292,7 +292,7 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                                $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                                 $vtt[$valt->getErtek1()]['bejon'] = $vtt[$valt->getErtek1()]['bejon'] || (($valt->getBeerkezesdatumStr(
                                     )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getErtek1()]['link'] = \mkw\store::getRouter()->generate(
@@ -309,7 +309,7 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek2()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                                $vtt[$valt->getErtek2()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                                 $vtt[$valt->getErtek2()]['bejon'] = $vtt[$valt->getErtek2()]['bejon'] || (($valt->getBeerkezesdatumStr(
                                     )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getErtek2()]['link'] = \mkw\store::getRouter()->generate(
