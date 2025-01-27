@@ -14,6 +14,8 @@ use Entities\TermekValtozat,
 use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -1717,14 +1719,13 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('A1', 'ID')
             ->setCellValue('B1', 'Variation ID')
             ->setCellValue('C1', 'SKU')
-            ->setCellValue('D1', 'title')
-            ->setCellValue('E1', 'description')
-            ->setCellValue('F1', 'main image')
-            ->setCellValue('G1', 'images')
-            ->setCellValue('H1', 'size')
-            ->setCellValue('I1', 'color')
-            ->setCellValue('J1', 'barcode')
-            ->setCellValue('K1', 'stock');
+            ->setCellValue('D1', 'Title')
+            ->setCellValue('E1', 'Description')
+            ->setCellValue('F1', 'Main image')
+            ->setCellValue('G1', 'Images')
+            ->setCellValue('H1', 'Size')
+            ->setCellValue('I1', 'Color')
+            ->setCellValue('J1', 'EAN code');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
@@ -1738,40 +1739,47 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($kepek as $kep) {
                 $kepurlarr[] = \mkw\store::getFullUrl($kep->getUrl(), \mkw\store::getConfigValue('mainurl'));
             }
+            $ford = $termek->getTranslationsArray();
+            $nev = $termek->getNevForditas($ford, 'en_us');
+            $leiras = $termek->getLeirasForditas($ford, 'en_us');
+
             if ($termek->getValtozatok()) {
                 /** @var TermekValtozat $valtozat */
                 foreach ($termek->getValtozatok() as $valtozat) {
                     $excel->setActiveSheetIndex(0)
-                        ->setCellValue(x(0) . $sor, $termek->getId())
-                        ->setCellValue(x(1) . $sor, $valtozat->getId())
-                        ->setCellValue(x(2) . $sor, $termek->getCikkszam())
-                        ->setCellValue(x(3) . $sor, $termek->getNev())
-                        ->setCellValue(x(4) . $sor, $termek->getLeiras())
-                        ->setCellValue(x(5) . $sor, $termek->getKepurl())
-                        ->setCellValue(x(6) . $sor, implode(';', $kepurlarr))
-                        ->setCellValue(x(7) . $sor, $valtozat->getMeret())
-                        ->setCellValue(x(8) . $sor, $valtozat->getSzin())
-                        ->setCellValue(x(9) . $sor, $valtozat->getVonalkod())
-                        ->setCellValue(x(10) . $sor, $valtozat->getKeszlet(null, null, true));
+                        ->setCellValue('A' . $sor, $termek->getId())
+                        ->setCellValue('B' . $sor, $valtozat->getId())
+                        ->setCellValue('C' . $sor, $termek->getCikkszam())
+                        ->setCellValue('D' . $sor, $nev)
+                        ->setCellValue('E' . $sor, $leiras)
+                        ->setCellValue('F' . $sor, $termek->getKepurl())
+                        ->setCellValue('G' . $sor, implode(';', $kepurlarr))
+                        ->setCellValue('H' . $sor, $valtozat->getMeret())
+                        ->setCellValue('I' . $sor, $valtozat->getSzin())
+                        ->setCellValue('J' . $sor, $valtozat->getVonalkod());
+                    $excel->setActiveSheetIndex(0)
+                        ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                     $sor++;
                 }
             } else {
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x(0) . $sor, $termek->getId())
-                    ->setCellValue(x(2) . $sor, $termek->getCikkszam())
-                    ->setCellValue(x(3) . $sor, $termek->getNev())
-                    ->setCellValue(x(4) . $sor, $termek->getLeiras())
-                    ->setCellValue(x(5) . $sor, $termek->getKepurl())
-                    ->setCellValue(x(6) . $sor, implode(';', $kepurlarr))
-                    ->setCellValue(x(9) . $sor, $termek->getVonalkod())
-                    ->setCellValue(x(10) . $sor, $termek->getKeszlet(null, null, true));
+                    ->setCellValue('A' . $sor, $termek->getId())
+                    ->setCellValue('C' . $sor, $termek->getCikkszam())
+                    ->setCellValue('D' . $sor, $nev)
+                    ->setCellValue('E' . $sor, $leiras)
+                    ->setCellValue('F' . $sor, $termek->getKepurl())
+                    ->setCellValue('G' . $sor, implode(';', $kepurlarr))
+                    ->setCellValue('J' . $sor, $termek->getVonalkod());
+                $excel->setActiveSheetIndex(0)
+                    ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                 $sor++;
             }
         }
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('amazonexport') . '.xlsx');
+        $filename = uniqid('amazonexport') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1780,7 +1788,7 @@ class termekController extends \mkwhelpers\MattableController
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 

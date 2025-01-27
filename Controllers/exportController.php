@@ -1419,14 +1419,6 @@ class exportController extends \mkwhelpers\Controller
 
     public function orderformExport()
     {
-        function x($o)
-        {
-            if ($o <= 26) {
-                return chr(65 + $o);
-            }
-            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
-        }
-
         $tfrsm = new ResultSetMapping();
         $tfrsm->addScalarResult('id', 'id');
         $tfrsm->addScalarResult('karkod', 'karkod');
