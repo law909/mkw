@@ -1154,7 +1154,7 @@ class termekController extends \mkwhelpers\MattableController
                 switch (true) {
                     case \mkw\store::isMindentkapni():
                         foreach ($res as $r) {
-                            $ret[] = [
+                            $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
                                 'me' => $r->getMekodId(),
@@ -1173,13 +1173,14 @@ class termekController extends \mkwhelpers\MattableController
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];
                             if ($r->getKiirtnev()) {
-                                $ret['value'] = $r->getKiirtnev();
+                                $x['value'] = $r->getKiirtnev();
                             }
+                            $ret[] = $x;
                         }
                         break;
                     case \mkw\store::isSuperzoneB2B():
                         foreach ($res as $r) {
-                            $ret[] = [
+                            $x = [
                                 'value' => $r->getNev(),
                                 'label' => $r->getCikkszam() . ' ' . $r->getNev(),
                                 'id' => $r->getId(),
@@ -1199,13 +1200,14 @@ class termekController extends \mkwhelpers\MattableController
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];
                             if ($r->getKiirtnev()) {
-                                $ret['value'] = $r->getKiirtnev();
+                                $x['value'] = $r->getKiirtnev();
                             }
+                            $ret[] = $x;
                         }
                         break;
                     default:
                         foreach ($res as $r) {
-                            $ret[] = [
+                            $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
                                 'me' => $r->getMekodId(),
@@ -1224,8 +1226,9 @@ class termekController extends \mkwhelpers\MattableController
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
                             ];
                             if ($r->getKiirtnev()) {
-                                $ret['value'] = $r->getKiirtnev();
+                                $x['value'] = $r->getKiirtnev();
                             }
+                            $ret[] = $x;
                         }
                         break;
                 }
