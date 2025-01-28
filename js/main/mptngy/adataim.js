@@ -26,6 +26,8 @@ document.addEventListener("alpine:init", () => {
             mptngympttag: false,
             mptngyszerepkor: null,
             mpt_munkahelynev: null,
+            jelszo1: null,
+            jelszo2: null,
         },
         rules: {
             szlanev: ['required'],
@@ -33,6 +35,8 @@ document.addEventListener("alpine:init", () => {
             irszam: ['required'],
             varos: ['required'],
             utca: ['required'],
+            jelszo1: ['passwordLength'],
+            jelszo2: ['passwordsSame'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
             mptngynemveszreszt: ['reszvetel'],
@@ -47,6 +51,16 @@ document.addEventListener("alpine:init", () => {
         getLists() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
+            Iodine.setErrorMessage('passwordLength', 'Legalább 10 karakter hosszú legyen');
+
+            Iodine.rule('passwordLength', (value) => {
+                if (value) {
+                    return value.length >= 10;
+                }
+                return true;
+            });
+            Iodine.rule('passwordsSame', (value) => value === this.reg.jelszo1);
+            Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
 
             Iodine.rule('reszvetel', (value) => {
                 return this.reg.mptngynemveszreszt ||

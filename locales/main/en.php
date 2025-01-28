@@ -279,4 +279,9 @@ return [
     'Tovább a fizetéshez' => 'Checkout',
     'db' => 'piece',
     'karakter' => 'characters',
+    'Egyetemi Intézet/Tanszék/Csoport neve ill. ha a munkahely nem egyetem, hanem más szervezet' => 'University Institute/Department/Group name, or if the workplace is not a university, the name of the other organization',
+    'Egyetem' => 'University',
+    'Kar' => 'Faculty',
+    'Jelszó változtatás' => 'Change password',
+    'Új jelszó ismét' => 'New password again',
 ];

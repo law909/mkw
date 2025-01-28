@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=3"></script>
+    <script src="/js/main/mptngy/adataim.js?v=4"></script>
 {/block}
 
 {block "body"}
@@ -187,6 +187,19 @@
                         </template>
                     </div>
                     <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
+                </div>
+            </div>
+            <div class="co-row co-flex-dir-column">
+                <h4>{t('Jelszó változtatás')}</h4>
+                <div class="co-control-row">
+                    <label for="regPw1Edit" class="co-label">{t('Új jelszó')}</label>
+                    <input id="regPw1Edit" class="co-input" type="password" x-model="reg.jelszo1">
+                    <div class="co-error" x-text="validation.jelszo2 && validation.jelszo1.error"></div>
+                </div>
+                <div class="co-control-row">
+                    <label for="regPw2Edit" class="co-label">{t('Új jelszó ismét')}</label>
+                    <input id="regPw2Edit" class="co-input" type="password" x-model="reg.jelszo2">
+                    <div class="co-error" x-text="validation.jelszo2 && validation.jelszo2.error"></div>
                 </div>
             </div>
             <div class="co-row co-flex-dir-column">

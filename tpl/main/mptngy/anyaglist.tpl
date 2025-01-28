@@ -133,7 +133,8 @@
                             </div>
                         </div>
                         <div class="co-control-row">
-                            <label for="egyetemegyebEdit" class="co-label">{t('Egyetem egyéb')}</label>
+                            <label for="egyetemegyebEdit"
+                                   class="co-label">{t('Egyetemi Intézet/Tanszék/Csoport neve ill. ha a munkahely nem egyetem, hanem más szervezet')}</label>
                             <input
                                 id="egyetemegyebEdit"
                                 class="co-input"

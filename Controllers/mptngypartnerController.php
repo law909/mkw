@@ -69,6 +69,9 @@ class mptngypartnerController extends partnerController
             $p->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
             $p->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
             $p->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
+            if ($this->params->getStringRequestParam('jelszo1')) {
+                $p->setJelszo($this->params->getStringRequestParam('jelszo1'));
+            }
             $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
             if ($mptngyszerepkor) {
                 $p->setMptngyszerepkor($mptngyszerepkor);
