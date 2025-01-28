@@ -18,7 +18,7 @@ class TermekRepository extends \mkwhelpers\Repository
         ]);
         $this->setBatches([
             'arexport' => 'Export árazáshoz',
-            'amazonexport' => 'Export változatokkal (Amazon)',
+            'fcmotoexport' => 'Export változatokkal (FC-MOTO)',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'tcsset' => 'Termékcsoport módosítás',
         ]);

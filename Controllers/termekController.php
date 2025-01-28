@@ -14,7 +14,6 @@ use Entities\TermekValtozat,
 use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -1704,7 +1703,7 @@ class termekController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
-    public function amazonexport()
+    public function fcmotoexport()
     {
         function x($o)
         {
@@ -1752,7 +1751,7 @@ class termekController extends \mkwhelpers\MattableController
                         ->setCellValue('C' . $sor, $termek->getCikkszam())
                         ->setCellValue('D' . $sor, $nev)
                         ->setCellValue('E' . $sor, $leiras)
-                        ->setCellValue('F' . $sor, $termek->getKepurl())
+                        ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
                         ->setCellValue('G' . $sor, implode(';', $kepurlarr))
                         ->setCellValue('H' . $sor, $valtozat->getMeret())
                         ->setCellValue('I' . $sor, $valtozat->getSzin())
@@ -1767,7 +1766,7 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('C' . $sor, $termek->getCikkszam())
                     ->setCellValue('D' . $sor, $nev)
                     ->setCellValue('E' . $sor, $leiras)
-                    ->setCellValue('F' . $sor, $termek->getKepurl())
+                    ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
                     ->setCellValue('G' . $sor, implode(';', $kepurlarr))
                     ->setCellValue('J' . $sor, $termek->getVonalkod());
                 $excel->setActiveSheetIndex(0)
@@ -1778,7 +1777,7 @@ class termekController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filename = uniqid('amazonexport') . '.xlsx';
+        $filename = uniqid('fcmotoexport') . '.xlsx';
         $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 

@@ -904,8 +904,8 @@ $(document).ready(function () {
                             }
                         });
                         break;
-                    case 'amazonexport':
-                        href = '/admin/termek/amazonexport?ids=' + tomb.join(',');
+                    case 'fcmotoexport':
+                        href = '/admin/termek/fcmotoexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
                             resizable: false,
                             height: 140,

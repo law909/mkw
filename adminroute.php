@@ -608,7 +608,7 @@ $router->map('GET', '/admin/termek/viewkarb', 'termekController#viewkarb', 'admi
 $router->map('GET', '/admin/termek/getnetto', 'termekController#getnetto', 'admintermekgetnetto');
 $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'admintermekgetbrutto');
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
-$router->map('GET', '/admin/termek/amazonexport', 'termekController#amazonexport', 'admintermekamazonexport');
+$router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport', 'admintermekfcmotoexport');
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
