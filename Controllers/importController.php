@@ -11,6 +11,7 @@ use Entities\TermekAr;
 use Entities\Termekcimkekat;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
+use Entities\TermekTranslation;
 use Entities\TermekValtozat;
 use Entities\Valutanem;
 use Entities\Vtsz;
@@ -5859,6 +5860,112 @@ class importController extends \mkwhelpers\Controller
             }
         }
     }
+
+    public function szcimkeimport()
+    {
+//        $translaterepo = \mkw\store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
+
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        if ($dbtol < 2) {
+            $dbtol = 2;
+        }
+
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+        $maxcol = $sheet->getHighestColumn();
+        $maxcolindex = Coordinate::columnIndexFromString($maxcol);
+
+        $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
+        $ttr = $this->getRepo(TermekTranslation::class);
+        $tcr = $this->getRepo(Termekcimketorzs::class);
+        $tckr = $this->getRepo(Termekcimkekat::class);
+
+        $fej = [];
+        for ($col = 0; $col < $maxcolindex; ++$col) {
+            $cell = $sheet->getCellByColumnAndRow($col + 1, 1);
+            $fej[$col] = $cell->getValue();
+        }
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $kod = false;
+            $nev = false;
+            $cimkek = [];
+
+            for ($col = 0; $col < $maxcolindex; ++$col) {
+                $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
+                if ($fej[$col] == 'kod') {
+                    $kod = $cell->getValue();
+                } elseif ($fej[$col] == 'NAME') {
+                    $nev = $cell->getValue();
+                } elseif ($fej[$col]) {
+                    $cimkek[$col] = $cell->getValue();
+                }
+            }
+
+            $termek = false;
+            if ($kod) {
+                $termek = $termekrepo->find($kod);
+            }
+
+            if ($termek) {
+                if (is_array($termek)) {
+                    $termek = $termek[0];
+                }
+            } else {
+                continue;
+            }
+            if ($termek) {
+                if ($nev) {
+                    $translation = $ttr->findOneBy([
+                        'object' => $termek->getId(),
+                        'locale' => 'en_us',
+                        'field' => 'nev',
+                    ]);
+                    if ($translation && !str_contains($translation->getContent(), $nev)) {
+                        $translation->setContent($nev . ' ' . $translation->getContent());
+                        $this->getEm()->persist($translation);
+                    }
+                }
+                foreach ($cimkek as $cimkekey => $cimke) {
+                    if (isset($fej[$cimkekey])) {
+                        $ckat = $tckr->findOneBy(['nev' => $fej[$cimkekey]]);
+                        if (!$ckat) {
+                            $ckat = new Termekcimkekat();
+                            $ckat->setNev($fej[$cimkekey]);
+                            $this->getEm()->persist($ckat);
+                        }
+                        if ($cimke) {
+                            $tc = $tcr->findOneBy(['kategoria' => $ckat->getId(), 'nev' => $cimke]);
+                            if (!$tc) {
+                                $tc = new Termekcimketorzs();
+                                $tc->setKategoria($ckat);
+                                $tc->setNev($cimke);
+                                $tc->setMenu1lathato(true);
+                                $this->getEm()->persist($tc);
+                            }
+                            $termek->addCimke($tc);
+                        }
+                    }
+                }
+
+                $this->getEm()->persist($termek);
+                $this->getEm()->flush();
+            }
+        }
+    }
+
 
     public function copydepotermekImport()
     {
