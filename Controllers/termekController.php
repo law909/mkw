@@ -1833,7 +1833,7 @@ class termekController extends \mkwhelpers\MattableController
                             ->setCellValue('E' . $sor, '10003707')
                             ->setCellValue('F' . $sor, 'MUGENRACE')
                             ->setCellValue('G' . $sor, $termektrans['en_us']['nev']) // Almárka
-                            ->setCellValue('H' . $sor, 'MOTORCYCLE ' . $kattrans['en_us']['nev'])
+                            ->setCellValue('H' . $sor, $kattrans['en_us']['nev'])
                             ->setCellValue('I' . $sor, 'Angol')
                             ->setCellValue('J' . $sor, $valtozat->getSzin() . ' ' . $valtozat->getMeret())
                             ->setCellValue('K' . $sor, 'Angol')
