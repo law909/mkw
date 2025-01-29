@@ -1797,6 +1797,102 @@ class termekController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    public function gs1export()
+    {
+        $ids = $this->params->getStringRequestParam('ids');
+        $ids = explode(',', $ids);
+
+        $filenev = \mkw\store::exporttemplatePath('gs1template.xlsx');
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
+        $termekek = $this->getRepo()->getWithValtozatok($filter);
+        $sor = 3;
+        /** @var Termek $termek */
+        foreach ($termekek as $termek) {
+            $ford = $termek->getTranslationsArray();
+            $nev = $termek->getNevForditas($ford, 'en_us');
+            $leiras = $termek->getLeirasForditas($ford, 'en_us');
+
+            if ($termek->getValtozatok()) {
+                /** @var TermekFa $kat */
+                $kat = $termek->getTermekfa1();
+                $kattrans = $kat->getTranslationsArray();
+                $termektrans = $termek->getTranslationsArray();
+                /** @var TermekValtozat $valtozat */
+                foreach ($termek->getValtozatok() as $valtozat) {
+                    if (!$valtozat->getVonalkod()) {
+                        $excel->setActiveSheetIndex(0)
+                            ->setCellValue('A' . $sor, \mkw\store::getParameter(\mkw\consts::GS1Datasource))
+                            ->setCellValue('B' . $sor, \mkw\store::getParameter(\mkw\consts::GS1DatasourceName))
+                            ->setCellValue('C' . $sor, 'Alap')
+                            ->setCellValue('E' . $sor, '10003707')
+                            ->setCellValue('F' . $sor, 'MUGENRACE')
+                            ->setCellValue('G' . $sor, $termektrans['en_us']['nev']) // Almárka
+                            ->setCellValue('H' . $sor, 'MOTORCYCLE ' . $kattrans['en_us']['nev'])
+                            ->setCellValue('I' . $sor, 'Angol')
+                            ->setCellValue('J' . $sor, $valtozat->getSzin() . ' ' . $valtozat->getMeret())
+                            ->setCellValue('K' . $sor, 'Angol')
+                            ->setCellValue('L' . $sor, 1)
+                            ->setCellValue('M' . $sor, 'Piece')
+                            ->setCellValue(
+                                'N' . $sor,
+                                '=CONCATENATE(F' . $sor . '," ",G' . $sor . '," ",H' . $sor . '," ",J' . $sor . '," ",L' . $sor . '," ",M' . $sor . ')'
+                            )
+                            ->setCellValue('O' . $sor, 'Angol')
+                            ->setCellValue('P' . $sor, 'Igen')
+                            ->setCellValue('Q' . $sor, 'Alaptermék')
+                            ->setCellValue('R' . $sor, $valtozat->getCikkszam())
+                            ->setCellValue('S' . $sor, 'Beszállító által kiadott (Belső azonosító)')
+                            ->setCellValue('T' . $sor, $termek->getSuly())
+                            ->setCellValue('U' . $sor, 'Kilogramm')
+                            ->setCellValue('V' . $sor, $termek->getMagassag())
+                            ->setCellValue('W' . $sor, 'Centiméter')
+                            ->setCellValue('X' . $sor, $termek->getHosszusag())
+                            ->setCellValue('Y' . $sor, 'Centiméter')
+                            ->setCellValue('Z' . $sor, $termek->getSzelesseg())
+                            ->setCellValue('AA' . $sor, 'Centiméter')
+                            ->setCellValue('AB' . $sor, 'Nem')
+                            ->setCellValue('AC' . $sor, 'Nem')
+                            ->setCellValue('AD' . $sor, $valtozat->getId());
+                        $sor++;
+                    }
+                }
+            } elseif (!$termek->getVonalkod()) {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $sor, $termek->getId())
+                    ->setCellValue('C' . $sor, $termek->getCikkszam())
+                    ->setCellValue('D' . $sor, $nev)
+                    ->setCellValue('E' . $sor, $leiras)
+                    ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
+                    ->setCellValue('J' . $sor, $termek->getVonalkod());
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('gs1export') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
     public function cikkszamosexport()
     {
         function x($o)

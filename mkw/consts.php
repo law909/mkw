@@ -406,6 +406,9 @@ class consts
 
     const WCPartnerTipus = 'wcpartnertipus';
 
+    const GS1Datasource = 'gs1datasource';
+    const GS1DatasourceName = 'gs1datasourcename';
+
     public static function getWebshopPriceConst($_webshopNum = null)
     {
         if (is_null($_webshopNum)) {

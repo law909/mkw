@@ -19,6 +19,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->setBatches([
             'arexport' => 'Export árazáshoz',
             'fcmotoexport' => 'Export változatokkal (FC-MOTO)',
+            'gs1export' => 'GS1 export',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'tcsset' => 'Termékcsoport módosítás',
         ]);

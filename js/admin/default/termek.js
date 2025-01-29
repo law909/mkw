@@ -917,6 +917,19 @@ $(document).ready(function () {
                             }
                         });
                         break;
+                    case 'gs1export':
+                        href = '/admin/termek/gs1export?ids=' + tomb.join(',');
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
                     case 'cikkszamosexport':
                         href = '/admin/termek/cikkszamosexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({

@@ -1956,6 +1956,11 @@ class store
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
     }
 
+    public static function exporttemplatePath($filename)
+    {
+        return getcwd() . '/exporttemplates/' . $filename;
+    }
+
     public static function storageUrl($filename)
     {
         return '/' . self::getConfigValue('path.storage', '') . $filename;
