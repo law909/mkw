@@ -571,11 +571,12 @@ class BizonylatfejListener
                     /** @var \Entities\Kupon $kupon */
                     $kupon = $entity->getKuponObject();
 
-                    $this->createVasarlasiUtalvany($entity, $kupon);
-                    $this->createSzallitasiKtg($entity, $kupon);
-                    $this->createUtanvetKtg($entity, $kupon);
-                    $this->createKezelesiKoltseg($entity, $kupon);
-
+                    if (!$entity->getStorno()) {
+                        $this->createVasarlasiUtalvany($entity, $kupon);
+                        $this->createSzallitasiKtg($entity, $kupon);
+                        $this->createUtanvetKtg($entity, $kupon);
+                        $this->createKezelesiKoltseg($entity, $kupon);
+                    }
                     $entity->calcOsszesen();
                     $entity->calcRugalmasFizmod();
                     $entity->calcOsztottFizetendo();
