@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Automattic\WooCommerce\Client;
 use Entities\Arsav;
+use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\TermekFa;
@@ -1727,7 +1728,11 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('G1', 'Images')
             ->setCellValue('H1', 'Size')
             ->setCellValue('I1', 'Color')
-            ->setCellValue('J1', 'EAN code');
+            ->setCellValue('J1', 'EAN code')
+            ->setCellValue('K1', 'Net price')
+            ->setCellValue('L1', 'Gross price');
+
+        $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
@@ -1758,7 +1763,9 @@ class termekController extends \mkwhelpers\MattableController
                         ->setCellValue('G' . $sor, implode(';', $kepurlarr))
                         ->setCellValue('H' . $sor, $valtozat->getMeret())
                         ->setCellValue('I' . $sor, $valtozat->getSzin())
-                        ->setCellValue('J' . $sor, $valtozat->getVonalkod());
+                        ->setCellValue('J' . $sor, $valtozat->getVonalkod())
+                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
+                        ->setCellValue('L' . $sor, $termek->getBruttoAr($valtozat, $fcmoto));
                     $excel->setActiveSheetIndex(0)
                         ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                     $sor++;

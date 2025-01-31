@@ -409,6 +409,8 @@ class consts
     const GS1Datasource = 'gs1datasource';
     const GS1DatasourceName = 'gs1datasourcename';
 
+    const FCMoto = 'fcmoto';
+
     public static function getWebshopPriceConst($_webshopNum = null)
     {
         if (is_null($_webshopNum)) {
