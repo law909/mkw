@@ -1027,6 +1027,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
     $router->map('POST', '/admin/import/szcimkeimport', 'importController#szcimkeimport', 'adminszcimkeimport');
+    $router->map('POST', '/admin/import/szeanimport', 'importController#szeanimport', 'adminszeanimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
     $router->map('POST', '/admin/import/aszfdownload', 'importController#aszfdownload', 'adminaszfdownload');

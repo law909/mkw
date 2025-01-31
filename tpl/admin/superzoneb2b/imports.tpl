@@ -45,6 +45,10 @@
                     <div>
                         <a href="/admin/import/szcimkeimport" class="js-szcimkeimport">Termék adatok cimkékkel</a>
                     </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/szeanimport" class="js-szeanimport">Termékváltozat vonalkódok</a>
+                    </div>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
                         <li>kod - termék kódja</li>
