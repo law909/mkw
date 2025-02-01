@@ -1,7 +1,7 @@
 {extends "main.tpl"}
 
 {block "prescript"}
-    <script src="/js/pubadmin/mptngy/biralas.js?v=3"></script>
+    <script src="/js/pubadmin/mptngy/biralas.js?v=4"></script>
 {/block}
 
 {block "main"}

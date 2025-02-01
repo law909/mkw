@@ -6,7 +6,7 @@ document.addEventListener("alpine:init", () => {
             temakorlist: [],
         },
         rules: {
-            maxdb: ['required', 'min:1'],
+            maxdb: ['required', 'min:10'],
             temakorlist: ['min1db'],
         },
         clearErrors() {

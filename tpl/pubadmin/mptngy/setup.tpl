@@ -11,7 +11,7 @@
             <div class="co-row co-flex-dir-row">
                 <div class="co-col">
                     <div class="co-control-row">
-                        <label for="maxdbEdit" class="co-label">{t('Maximum vállalt absztrakt')}</label>
+                        <label for="maxdbEdit" class="co-label">{t('Maximum vállalt absztrakt')} {t('(min. 10)')}</label>
                         <input
                             id="maxdbEdit"
                             class="co-input"
