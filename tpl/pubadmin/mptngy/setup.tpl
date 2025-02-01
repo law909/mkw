@@ -1,7 +1,7 @@
 {extends "main.tpl"}
 
 {block "prescript"}
-    <script src="/js/pubadmin/mptngy/setup.js?v=2"></script>
+    <script src="/js/pubadmin/mptngy/setup.js?v=3"></script>
 {/block}
 
 {block "main"}
