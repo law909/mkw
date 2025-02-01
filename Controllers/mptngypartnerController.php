@@ -166,6 +166,9 @@ class mptngypartnerController extends partnerController
             if ($anyag) {
                 $filter->addFilter('id', '<>', $anyag);
             }
+            if ($this->params->getIntRequestParam('tipus')) {
+                $filter->addFilter('tipus', '=', $this->params->getIntRequestParam('tipus'));
+            }
             $filter->addFilter('vegleges', '=', true);
             $res['elsoszerzodb'] = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($filter);
             $res['elsoszerzo'] = $res['elsoszerzodb'] < 1;
