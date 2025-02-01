@@ -1729,8 +1729,7 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('H1', 'Size')
             ->setCellValue('I1', 'Color')
             ->setCellValue('J1', 'EAN code')
-            ->setCellValue('K1', 'Net price')
-            ->setCellValue('L1', 'Gross price');
+            ->setCellValue('K1', 'Net price');
 
         $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
 
@@ -1764,8 +1763,7 @@ class termekController extends \mkwhelpers\MattableController
                         ->setCellValue('H' . $sor, $valtozat->getMeret())
                         ->setCellValue('I' . $sor, $valtozat->getSzin())
                         ->setCellValue('J' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
-                        ->setCellValue('L' . $sor, $termek->getBruttoAr($valtozat, $fcmoto));
+                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto));
                     $excel->setActiveSheetIndex(0)
                         ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                     $sor++;

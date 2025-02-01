@@ -1434,6 +1434,8 @@ class exportController extends \mkwhelpers\Controller
         $excel = new Spreadsheet();
         $sor = 1;
 
+        $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
+
         $termekfak = $this->getEm()->createNativeQuery(
             'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,coalesce(tt.content,tf.nev) AS fanev '
             . 'FROM termekfa tf '
@@ -1443,7 +1445,9 @@ class exportController extends \mkwhelpers\Controller
             $tfrsm
         )->getScalarResult();
 
+        $total = [];
         foreach ($termekfak as $termekfa) {
+            $vegsor = 0;
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, 'ID')
                 ->setCellValue('B' . $sor, 'SKU')
@@ -1454,7 +1458,10 @@ class exportController extends \mkwhelpers\Controller
                 ->setCellValue('D' . $sor, 'Color')
                 ->setCellValue('E' . $sor, 'Size')
                 ->setCellValue('F' . $sor, 'Stock')
-                ->setCellValue('G' . $sor, 'Ordered Qty.');
+                ->setCellValue('G' . $sor, 'Retail price')
+                ->setCellValue('H' . $sor, 'Discount price')
+                ->setCellValue('I' . $sor, 'Ordered Qty.')
+                ->setCellValue('J' . $sor, 'Price');
             $sor++;
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('B' . $sor, $termekfa['fanev'])
@@ -1468,6 +1475,16 @@ class exportController extends \mkwhelpers\Controller
                 $trsm
             )->getScalarResult();
             foreach ($termekek as $termek) {
+                if ($vegsor) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('H' . $vegsor, 'SUM')
+                        ->setCellValue('I' . $vegsor, '=SUM(I' . $kezdosor . ':I' . $vegsor - 1 . ')')
+                        ->setCellValue('J' . $vegsor, '=SUM(J' . $kezdosor . ':J' . $vegsor - 1 . ')');
+                    $excel->getActiveSheet()->getStyle('H' . $vegsor)->getFont()->setBold(true);
+                    $excel->getActiveSheet()->getStyle('I' . $vegsor)->getFont()->setBold(true);
+                    $excel->getActiveSheet()->getStyle('J' . $vegsor)->getFont()->setBold(true);
+                    $total[] = $vegsor;
+                }
                 $excel->setActiveSheetIndex(0)
                     ->setCellValue('B' . $sor, $termek['cikkszam'])
                     ->setCellValue('C' . $sor, $termek['termeknev']);
@@ -1477,11 +1494,13 @@ class exportController extends \mkwhelpers\Controller
                     ->getStyle('C' . $sor)->getFont()->setBold(true)->setSize(16);
 
                 $sor++;
+                $kezdosor = $sor;
                 $valtfilter = new FilterDescriptor();
                 $valtfilter->addFilter('termek', '=', $termek['id']);
                 $valtfilter->addFilter('lathato', '=', 1);
                 $valtozatok = $this->getRepo(TermekValtozat::class)->getAll($valtfilter);
                 $valtozattomb = [];
+                $termekobj = $this->getRepo(Termek::class)->find($termek['id']);
                 /** @var TermekValtozat $valtozat */
                 foreach ($valtozatok as $valtozat) {
                     $valtozattomb[] = [
@@ -1492,6 +1511,8 @@ class exportController extends \mkwhelpers\Controller
                         'valtertek2' => $valtozat->getErtek2(),
                         'vonalkod' => $valtozat->getVonalkod(),
                         'keszlet' => max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0),
+                        'retailprice' => $termekobj->getKedvezmenynelkuliNettoAr($valtozat, $fcmoto),
+                        'discountprice' => $termekobj->getNettoAr($valtozat, $fcmoto),
                     ];
                 }
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
@@ -1545,19 +1566,52 @@ class exportController extends \mkwhelpers\Controller
                         ->setCellValue('C' . $sor, $valtozat['vonalkod'])
                         ->setCellValue('D' . $sor, $valtozat['valtertek1'])
                         ->setCellValue('E' . $sor, $valtozat['valtertek2'])
-                        ->setCellValue('F' . $sor, $valtozat['keszlet']);
+                        ->setCellValue('F' . $sor, $valtozat['keszlet'])
+                        ->setCellValue('G' . $sor, $valtozat['retailprice'])
+                        ->setCellValue('H' . $sor, $valtozat['discountprice'])
+                        ->setCellValue('J' . $sor, '=I' . $sor . '*H' . $sor);
                     $excel->setActiveSheetIndex(0)
                         ->getCell('C' . $sor)->setDataType(DataType::TYPE_STRING);
                     $excel->setActiveSheetIndex(0)
                         ->getStyle('C' . $sor)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                     $excel->setActiveSheetIndex(0)
-                        ->getStyle('G' . $sor)
+                        ->getStyle('I' . $sor)
                         ->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                     $sor++;
                 }
+                $vegsor = $sor;
                 $sor++;
             }
         }
+
+        if ($vegsor) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('H' . $vegsor, 'SUM')
+                ->setCellValue('I' . $vegsor, '=SUM(I' . $kezdosor . ':I' . $vegsor - 1 . ')')
+                ->setCellValue('J' . $vegsor, '=SUM(J' . $kezdosor . ':J' . $vegsor - 1 . ')');
+            $excel->getActiveSheet()->getStyle('H' . $vegsor)->getFont()->setBold(true);
+            $excel->getActiveSheet()->getStyle('I' . $vegsor)->getFont()->setBold(true);
+            $excel->getActiveSheet()->getStyle('J' . $vegsor)->getFont()->setBold(true);
+            $total[] = $vegsor;
+        }
+
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('H' . $sor, 'Total')
+            ->setCellValue(
+                'I' . $sor,
+                '=' . implode('+', array_map(function ($val) {
+                    return 'I' . $val;
+                }, $total))
+            )
+            ->setCellValue(
+                'J' . $sor,
+                '=' . implode('+', array_map(function ($val) {
+                    return 'J' . $val;
+                }, $total))
+            );
+        $excel->getActiveSheet()->getStyle('H' . $sor)->getFont()->setBold(true)->setSize(16);
+        $excel->getActiveSheet()->getStyle('I' . $sor)->getFont()->setBold(true)->setSize(16);
+        $excel->getActiveSheet()->getStyle('J' . $sor)->getFont()->setBold(true)->setSize(16);
 
         $excel->setActiveSheetIndex(0)->getColumnDimension('A')->setVisible(false);
         $excel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
