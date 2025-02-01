@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=4"></script>
+    <script src="/js/main/mptngy/adataim.js?v=5"></script>
 {/block}
 
 {block "body"}
@@ -36,7 +36,18 @@
                     <div class="co-error" x-text="validation.invmaganszemely && validation.invmaganszemely.error"></div>
                 </div>
                 <div class="co-control-row">
-                    <label for="regInvNevEdit" class="co-label">{t('Név')}*</label>
+                    <label for="regNevEdit" class="co-label">{t('Név')}*</label>
+                    <input
+                        id="regNevEdit"
+                        class="co-input"
+                        :class="validation.nev && !validation.nev.valid ? 'error' : ''"
+                        type="text"
+                        x-model="reg.nev"
+                    >
+                    <div class="co-error" x-text="validation.nev && validation.nev.error"></div>
+                </div>
+                <div class="co-control-row">
+                    <label for="regInvNevEdit" class="co-label">{t('Számlázási név')}*</label>
                     <input
                         id="regInvNevEdit"
                         class="co-input"

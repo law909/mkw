@@ -5,6 +5,7 @@ document.addEventListener("alpine:init", () => {
             invcsoportos: null,
             invmaganszemely: null,
             vatstatus: null,
+            nev: null,
             szlanev: null,
             irszam: null,
             varos: null,
@@ -30,6 +31,7 @@ document.addEventListener("alpine:init", () => {
             jelszo2: null,
         },
         rules: {
+            nev: ['required'],
             szlanev: ['required'],
             adoszam: ['adoszam'],
             irszam: ['required'],
@@ -98,6 +100,7 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => response.json())
                 .then((data) => {
                     this.reg.adoszam = data.adoszam;
+                    this.reg.nev = data.nev;
                     this.reg.szlanev = data.szlanev;
                     this.reg.irszam = data.irszam;
                     this.reg.varos = data.varos;
@@ -134,7 +137,9 @@ document.addEventListener("alpine:init", () => {
                 });
 
             this.$watch('reg.nev', (value) => {
-                this.reg.szlanev = value;
+                if (!this.reg.szlanev) {
+                    this.reg.szlanev = value;
+                }
             });
             this.$watch('reg.invmaganszemely', (value) => {
                 switch (value) {

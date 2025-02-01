@@ -48,6 +48,7 @@ class mptngypartnerController extends partnerController
         /** @var Partner $p */
         $p = $this->getRepo()->getLoggedInUser();
         if ($p) {
+            $p->setNev($this->params->getStringRequestParam('nev'));
             $p->setSzlanev($this->params->getStringRequestParam('szlanev'));
             $p->setIrszam($this->params->getStringRequestParam('irszam'));
             $p->setVaros($this->params->getStringRequestParam('varos'));
