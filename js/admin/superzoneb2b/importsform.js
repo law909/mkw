@@ -28,7 +28,7 @@ $(document).ready(function () {
                 }
             }).button();
 
-            $('.js-szinvarimport, .js-szcimkeimport, .js-szeanimport').on('click', function (e) {
+            $('.js-szinvarimport, .js-szcimkeimport, .js-szeanimport, .js-fcmotoorderimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);
                 $.ajax({

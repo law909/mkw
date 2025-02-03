@@ -3,9 +3,15 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Arfolyam;
 use Entities\Arsav;
+use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusz;
+use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\ME;
 use Entities\Partner;
+use Entities\Partnertipus;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\Termekcimkekat;
@@ -18,6 +24,7 @@ use Entities\Vtsz;
 use mkw\store;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Proxies\__CG__\Entities\Raktar;
 use Symfony\Component\DomCrawler\Crawler;
 
 class importController extends \mkwhelpers\Controller
@@ -6007,6 +6014,88 @@ class importController extends \mkwhelpers\Controller
             }
         }
         $this->getEm()->flush();
+    }
+
+    public function fcmotoorderimport()
+    {
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+
+        $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+        $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(12); // függőben
+        $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+        $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+        $nullasafa = $afa->getId();
+        $nullasafakulcs = $afa->getErtek();
+
+        $megr = new Bizonylatfej();
+        $megr->setPersistentData();
+        $megr->setBizonylattipus($biztipus);
+        $megr->setErbizonylatszam($_FILES['toimport']['name']);
+        $megr->setKelt();
+        $megr->setTeljesites();
+        $megr->setEsedekesseg();
+        $megr->setKellszallitasikoltsegetszamolni(false);
+        $megr->dontUploadToWC = true;
+
+        /** @var Partner $partner */
+        $partner = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
+
+        $megr->setPartner($partner);
+        $megr->setRaktar($raktar);
+        $megr->setSzallitasimod($partner->getSzallitasimod());
+
+        $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($partner->getValutanem(), $megr->getTeljesites());
+        $megr->setArfolyam($arf->getArfolyam());
+
+        $megr->setBizonylatstatusz($bizstatusz);
+
+        $vantetel = false;
+
+        for ($row = 0; $row <= $maxrow; ++$row) {
+            $tvid = $sheet->getCell('A' . $row)->getValue();
+            $egysar = $sheet->getCell('H' . $row)->getValue();
+            $mennyiseg = $sheet->getCell('I' . $row)->getValue();
+            if ($tvid && $mennyiseg) {
+                /** @var TermekValtozat $tv */
+                $tv = $this->getRepo(TermekValtozat::class)->find($tvid);
+                if ($tv) {
+                    $tetel = new Bizonylattetel();
+                    $megr->addBizonylattetel($tetel);
+                    $tetel->setBizonylatfej($megr);
+
+                    $tetel->setPersistentData();
+                    $tetel->setTermek($tv->getTermek());
+                    $tetel->setTermekvaltozat($tv);
+                    if ($partner->getSzamlatipus() > 0) {
+                        $tetel->setAfa($nullasafa);
+                        $tetel->setAfakulcs($nullasafakulcs);
+                    }
+
+                    $tetel->setMennyiseg($mennyiseg);
+                    $tetel->setNettoegysar($egysar);
+                    $tetel->setNettoegysarhuf($tetel->getNettoegysar() * $tetel->getArfolyam());
+                    $tetel->calc();
+                    $this->getEm()->persist($tetel);
+                    $vantetel = true;
+                }
+            }
+        }
+        if ($vantetel) {
+            $megr->calcOsszesen();
+            $this->getEm()->persist($megr);
+            $this->getEm()->flush();
+        } else {
+            $this->getEm()->clear();
+        }
     }
 
     public function copydepotermekImport()

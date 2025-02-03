@@ -49,6 +49,10 @@
                     <div>
                         <a href="/admin/import/szeanimport" class="js-szeanimport">Termékváltozat vonalkódok</a>
                     </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/fcmotoorderimport" class="js-fcmotoorderimport">FCMoto rendelés</a>
+                    </div>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
                         <li>kod - termék kódja</li>
