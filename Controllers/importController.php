@@ -6039,7 +6039,7 @@ class importController extends \mkwhelpers\Controller
         $megr = new Bizonylatfej();
         $megr->setPersistentData();
         $megr->setBizonylattipus($biztipus);
-        $megr->setErbizonylatszam($_FILES['toimport']['name']);
+        $megr->setBelsomegjegyzes($_FILES['toimport']['name']);
         $megr->setKelt();
         $megr->setTeljesites();
         $megr->setEsedekesseg();
