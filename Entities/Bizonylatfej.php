@@ -1279,9 +1279,11 @@ class Bizonylatfej
         /** @var Bizonylattetel $tetel */
         foreach ($this->bizonylattetelek as $tetel) {
             $_x = $tetel->toLista();
+            $szallmods = \mkw\store::getEm()->getRepository(Szallitasimod::class)->findBy(['termek' => $tetel->getTermek()]);
             if (!$_x['marertekelt'] &&
                 !\mkw\store::isSzallitasiKtgTermek($tetel->getTermekId()) &&
-                !\mkw\store::isUtanvetKtgTermek($tetel->getTermekId())
+                !\mkw\store::isUtanvetKtgTermek($tetel->getTermekId()) &&
+                (count($szallmods) == 0)
             ) {
                 $ret['vanmitertekelni'] = true;
             }
