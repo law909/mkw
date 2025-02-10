@@ -4,7 +4,9 @@ namespace Controllers;
 
 use Entities\Afa;
 use Entities\Apiconsumer;
+use Entities\Arfolyam;
 use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
@@ -42,18 +44,18 @@ class a2aController extends \mkwhelpers\Controller
         $this->getEm()->flush($log);
     }
 
-    protected function gettermek_id($id)
+    protected function gettermek_id($id, $partner = null)
     {
         /** @var Termek $termek */
         $termek = $this->tr->find($id);
         $termekadat = null;
         if ($termek) {
-            $termekadat = $termek->toA2a();
+            $termekadat = $termek->toA2a($partner);
         }
         return $termekadat;
     }
 
-    protected function gettermek_ids($ids)
+    protected function gettermek_ids($ids, $partner = null)
     {
         $ret = [];
         $filter = new FilterDescriptor();
@@ -61,19 +63,19 @@ class a2aController extends \mkwhelpers\Controller
         $termekek = $this->tr->getWithJoins($filter);
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
-            $termekadat = $termek->toA2a();
+            $termekadat = $termek->toA2a($partner);
             $ret[] = $termekadat;
         }
         return $ret;
     }
 
-    protected function gettermek_all()
+    protected function gettermek_all($partner = null)
     {
         $ret = [];
         $termekek = $this->tr->getWithJoins(null);
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
-            $termekadat = $termek->toA2a();
+            $termekadat = $termek->toA2a($partner);
             $ret[] = $termekadat;
         }
         return $ret;
@@ -91,12 +93,12 @@ class a2aController extends \mkwhelpers\Controller
                     if ($valt->getXElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
-                        $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                        $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
                         if ($keszlet < 0) {
                             $keszlet = 0;
                         }
-                        $valtadat['keszlet'] = $keszlet;
-                        $x['valtozatok'][] = $valtadat;
+                        $valtadat['stock'] = $keszlet;
+                        $x['variations'][] = $valtadat;
                     }
                 }
             }
@@ -119,12 +121,12 @@ class a2aController extends \mkwhelpers\Controller
                     if ($valt->getXElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
-                        $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                        $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
                         if ($keszlet < 0) {
                             $keszlet = 0;
                         }
-                        $valtadat['keszlet'] = $keszlet;
-                        $x['valtozatok'][] = $valtadat;
+                        $valtadat['stock'] = $keszlet;
+                        $x['variations'][] = $valtadat;
                     }
                 }
             }
@@ -133,42 +135,13 @@ class a2aController extends \mkwhelpers\Controller
         return $ret;
     }
 
-    protected function getkategoria_id($id)
+    protected function getkategoriak()
     {
-        $kat = $this->tkr->find($id);
-        $katadat = null;
-        if ($kat) {
-            $katadat = $kat->toA2a();
-        }
-        return $katadat;
-    }
-
-    protected function getkategoria_idwithchildren($id = null)
-    {
-        function getChildren($parent)
-        {
-            $osszesgyerekadat = [];
-            $gyerekadat = null;
-            $gyerekek = $parent->getChildren();
-            foreach ($gyerekek as $gyerek) {
-                $gyerekadat = $gyerek->toA2a();
-                $gyerekadat['children'] = getChildren($gyerek);
-                $osszesgyerekadat[] = $gyerekadat;
-            }
-            return $osszesgyerekadat;
-        }
-
+        $termekfak = $this->getRepo(TermekFa::class)->getB2B();
         $result = [];
-
-        if (is_null($id)) {
-            $id = 1;
+        foreach ($termekfak as $termekfa) {
+            $result[] = $termekfa->toA2a();
         }
-        $first = $this->tkr->find($id);
-        if ($first) {
-            $result = $first->toA2a();
-            $result['children'] = getChildren($first);
-        }
-
         return $result;
     }
 
@@ -278,19 +251,17 @@ class a2aController extends \mkwhelpers\Controller
             ],
             'cmds' => [
                 'hello',
-                'gettermek' => [
+                'getproduct' => [
                     'ids' => [1, 2, 3, 4, 5], // vagy
                     'id' => 1062, // vagy
                     'all' => 1
                 ],
-                'getkeszlet' => [
+                'getstock' => [
                     'ids' => [1, 2, 3, 4, 5], // vagy
                     'id' => 1062
                 ],
-                'getkategoria' => [
-                    'all' => 1, // vagy
-                    'id' => 1, // vagy
-                    'idwithchildren' => 1
+                'getcategory' => [
+                    'all' => 1
                 ],
                 'partner' => [
                     'get' => 1,
@@ -367,6 +338,17 @@ class a2aController extends \mkwhelpers\Controller
                         ]
                     ]
                 ],
+                'b2border' => [
+                    'create' => [
+                        'id' => '',
+                        'notes' => '',
+                        'products' => [
+                            'product_id' => '',
+                            'productvariation_id' => '',
+                            'quantity' => 0,
+                        ]
+                    ]
+                ],
                 'getnaveredmenyriasztas'
             ]
         ];
@@ -396,31 +378,27 @@ class a2aController extends \mkwhelpers\Controller
                     case 'hello':
                         $results['hello'] = 'hello';
                         break;
-                    case 'gettermek':
+                    case 'getproduct':
                         if (array_key_exists('id', $cmd)) {
-                            $results['termek'] = $this->gettermek_id($cmd['id']);
+                            $results['product'] = $this->gettermek_id($cmd['id'], $consumer->getPartner());
                         } elseif (array_key_exists('ids', $cmd)) {
-                            $results['termekek'] = $this->gettermek_ids($cmd['ids']);
+                            $results['products'] = $this->gettermek_ids($cmd['ids'], $consumer->getPartner());
                         } elseif (array_key_exists('all', $cmd)) {
-                            $results['termekek'] = $this->gettermek_all();
+                            $results['products'] = $this->gettermek_all($consumer->getPartner());
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
-                    case 'getkeszlet':
+                    case 'getstock':
                         if (array_key_exists('id', $cmd)) {
-                            $results['keszlet'] = $this->getkeszlet_id($cmd['id']);
+                            $results['stock'] = $this->getkeszlet_id($cmd['id']);
                         } elseif (array_key_exists('ids', $cmd)) {
-                            $results['keszletek'] = $this->getkeszlet_ids($cmd['ids']);
+                            $results['stocks'] = $this->getkeszlet_ids($cmd['ids']);
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
-                    case 'getkategoria':
-                        if (array_key_exists('id', $cmd)) {
-                            $results['kategoria'] = $this->getkategoria_id($cmd['id']);
-                        } elseif (array_key_exists('idwithchildren', $cmd)) {
-                            $results['kategoriak'] = $this->getkategoria_idwithchildren($cmd['idwithchildren']);
-                        } elseif (array_key_exists('all', $cmd)) {
-                            $results['kategoriak'] = $this->getkategoria_idwithchildren();
+                    case 'getcategory':
+                        if (array_key_exists('all', $cmd)) {
+                            $results['categories'] = $this->getkategoriak();
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
@@ -646,6 +624,101 @@ class a2aController extends \mkwhelpers\Controller
 
                                 $results['success'] = 1;
                                 $results['bizonylatszam'] = $bizfej->getId();
+                            }
+                        }
+                        $this->writelog($consumer, $rawdata, json_encode($results));
+                        break;
+                    case 'b2border':
+                        if (array_key_exists('create', $cmd)) {
+                            $results['success'] = 0;
+                            $results['msg'] = '';
+
+                            $data = $cmd['create'];
+
+                            /** @var Bizonylattipus $biztipus */
+                            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+                            if (!$biztipus) {
+                                $results['msg'] .= ' "Order" type not found.';
+                            }
+                            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(12); // függőben
+                            /** @var Partner $partner */
+                            $partner = $consumer->getPartner();
+                            if (!$partner) {
+                                $results['msg'] .= ' Unknown partner.';
+                            }
+                            $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                            $nullasafa = $afa->getId();
+                            $nullasafakulcs = $afa->getErtek();
+
+                            foreach ($data['products'] as $tetel) {
+                                /** @var Termek $termek */
+                                $termek = $this->getRepo(Termek::class)->find($tetel['product_id']);
+                                if (!$termek) {
+                                    $result['msg'] .= ' ' . $tetel['product_id'] . ' unknown product.';
+                                } else {
+                                    /** @var TermekValtozat $termekvaltozat */
+                                    $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($tetel['productvariation_id']);
+                                    if (!$termekvaltozat || $termekvaltozat->getTermek()?->getId() !== $termek->getId()) {
+                                        $result['msg'] .= ' ' . $tetel['productvariation_id'] . ' unknown product variation.';
+                                    }
+                                }
+                            }
+
+                            if ($results['msg'] === '') {
+                                $bizfej = new Bizonylatfej();
+                                $bizfej->setPersistentData();
+                                $bizfej->setBizonylattipus($biztipus);
+                                $bizfej->setKelt();
+                                $bizfej->setTeljesites();
+                                $bizfej->setEsedekesseg();
+                                $bizfej->setKellszallitasikoltsegetszamolni(false);
+                                $bizfej->dontUploadToWC = true;
+
+                                $bizfej->setPartner($partner);
+                                $bizfej->setRaktar($raktar);
+                                $bizfej->setSzallitasimod($partner->getSzallitasimod());
+
+                                $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($partner->getValutanem(), $bizfej->getTeljesites());
+                                $bizfej->setArfolyam($arf->getArfolyam());
+
+                                $bizfej->setBizonylatstatusz($bizstatusz);
+                                $bizfej->setBelsomegjegyzes($data['id']);
+                                $bizfej->setMegjegyzes($data['notes']);
+
+                                $vantetel = false;
+
+                                foreach ($data['tetelek'] as $tetel) {
+                                    $tv = $this->getRepo(TermekValtozat::class)->find($tetel['productvariation_id']);
+
+                                    $biztetel = new Bizonylattetel();
+                                    $bizfej->addBizonylattetel($biztetel);
+                                    $biztetel->setBizonylatfej($bizfej);
+
+                                    $biztetel->setPersistentData();
+                                    $biztetel->setTermek($tv->getTermek());
+                                    $biztetel->setTermekvaltozat($tv);
+                                    if ($partner->getSzamlatipus() > 0) {
+                                        $biztetel->setAfa($nullasafa);
+                                        $biztetel->setAfakulcs($nullasafakulcs);
+                                    }
+
+                                    $biztetel->setMennyiseg($tetel['quantity']);
+                                    $biztetel->setNettoegysar($tv->getTermek()->getNettoAr($tv, $partner));
+                                    $biztetel->setNettoegysarhuf($biztetel->getNettoegysar() * $biztetel->getArfolyam());
+                                    $biztetel->calc();
+                                    $this->getEm()->persist($biztetel);
+                                    $vantetel = true;
+                                }
+                                if ($vantetel) {
+                                    $bizfej->calcOsszesen();
+                                    $this->getEm()->persist($bizfej);
+                                    $this->getEm()->flush();
+                                } else {
+                                    $this->getEm()->clear();
+                                }
+
+                                $results['success'] = 1;
+                                $results['order_id'] = $bizfej->getId();
                             }
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));

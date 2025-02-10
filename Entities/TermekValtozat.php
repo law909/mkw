@@ -1370,18 +1370,15 @@ class TermekValtozat
 
     public function getStockInfoForWC($needid = false)
     {
-        if ($this->getWcid()) {
-            $vkeszlet = $this->calcStockForWC();
-            $variation = [
-                'stock_quantity' => $vkeszlet,
-                'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
-            ];
-            if ($needid) {
-                $variation['id'] = $this->getWcid();
-            }
-            return $variation;
+        $vkeszlet = $this->calcStockForWC();
+        $variation = [
+            'stock_quantity' => $vkeszlet,
+            'stock_status' => $vkeszlet > 0 ? 'instock' : 'outofstock',
+        ];
+        if ($needid) {
+            $variation['id'] = $this->getWcid();
         }
-        return [];
+        return $variation;
     }
 
     public function calcRegularPriceForWC($valutanem)

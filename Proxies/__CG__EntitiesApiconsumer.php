@@ -67,10 +67,10 @@ class Apiconsumer extends \Entities\Apiconsumer implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner'];
     }
 
     /**
@@ -234,6 +234,28 @@ class Apiconsumer extends \Entities\Apiconsumer implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKulcs', [$kulcs]);
 
         return parent::setKulcs($kulcs);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartner()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
+
+        return parent::getPartner();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartner($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
+
+        return parent::setPartner($val);
     }
 
 }

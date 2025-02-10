@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Partner;
 use Entities\SzallitasimodHatar;
 use Entities\Termek;
+use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
@@ -1419,12 +1420,6 @@ class exportController extends \mkwhelpers\Controller
 
     public function orderformExport()
     {
-        $tfrsm = new ResultSetMapping();
-        $tfrsm->addScalarResult('id', 'id');
-        $tfrsm->addScalarResult('karkod', 'karkod');
-        $tfrsm->addScalarResult('sorrend', 'sorrend');
-        $tfrsm->addScalarResult('fanev', 'fanev');
-
         $trsm = new ResultSetMapping();
         $trsm->addScalarResult('id', 'id');
         $trsm->addScalarResult('cikkszam', 'cikkszam');
@@ -1436,14 +1431,7 @@ class exportController extends \mkwhelpers\Controller
 
         $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
 
-        $termekfak = $this->getEm()->createNativeQuery(
-            'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,coalesce(tt.content,tf.nev) AS fanev '
-            . 'FROM termekfa tf '
-            . 'LEFT JOIN termekfa_translations tt ON (tf.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
-            . 'WHERE tf.menu1lathato=1 and tf.lathato=1 '
-            . 'ORDER BY sorrend',
-            $tfrsm
-        )->getScalarResult();
+        $termekfak = $this->getRepo(TermekFa::class)->getB2BArray();
 
         $total = [];
         foreach ($termekfak as $termekfa) {

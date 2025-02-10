@@ -268,12 +268,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function toA2a()
+    public function toA2a($partner = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toA2a', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toA2a', [$partner]);
 
-        return parent::toA2a();
+        return parent::toA2a($partner);
     }
 
     /**

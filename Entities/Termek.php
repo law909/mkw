@@ -768,25 +768,21 @@ class Termek
         return $x;
     }
 
-    public function toA2a()
+    public function toA2a($partner = null)
     {
         $x = [];
-        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(['nev' => 'HUF']);
         $ford = $this->getTranslationsArray();
         $x['id'] = $this->getId();
-        $x['kepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
+        $x['image_url'] = \mkw\store::getFullUrl($this->getKepurlLarge());
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
-        $x['nev'] = $this->getNev();
-        $x['nev_en'] = $ford['en_us']['nev'];
-        $x['nev_it'] = $ford['it_it']['nev'];
-        $x['cikkszam'] = $this->getCikkszam();
-        $x['rovidleiras'] = $this->getRovidLeiras();
-        $x['leiras'] = $this->getLeiras();
-        $x['leiras_en'] = $ford['en_us']['leiras'];
-        $x['leiras_it'] = $ford['it_it']['leiras'];
-        $x['termekfaid'] = $this->getTermekfa1Id();
-        $x['termekfanev'] = $this->getTermekfa1()->getTeljesNev();
-        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $x['name'] = $this->getNev();
+        $x['name_en'] = $ford['en_us']['nev'];
+        $x['sku'] = $this->getCikkszam();
+        $x['short_description'] = $this->getRovidLeiras();
+        $x['description'] = $this->getLeiras();
+        $x['description_en'] = $ford['en_us']['leiras'];
+        $x['category_id'] = $this->getTermekfa1Id();
+        $x['category_name'] = $this->getTermekfa1()->getTeljesNev();
         $vtt = [];
         $valtozatok = $this->getValtozatok();
         if ($valtozatok) {
@@ -795,17 +791,12 @@ class Termek
                 if ($valt->getXElerheto()) {
                     $valtadat = [];
                     $valtadat['id'] = $valt->getId();
-                    $valtadat['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
                     $valtadat['elerheto'] = $valt->getElerheto3();
-                    $valtadat['vonalkod'] = $valt->getVonalkod();
-                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
-                    if ($keszlet < 0) {
-                        $keszlet = 0;
-                    }
-                    $valtadat['keszlet'] = $keszlet;
-                    $valtadat['minboltikeszlet'] = $valt->getMinboltikeszlet();
-                    $valtadat['ar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price));
-                    $valtadat['diszkontar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount));
+                    $valtadat['EAN'] = $valt->getVonalkod();
+                    $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
+                    $valtadat['stock'] = $keszlet;
+                    $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
+                    $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
                     if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
                         $valtadat['color'] = $valt->getErtek1();
                         $valtadat['size'] = $valt->getErtek2();
@@ -816,29 +807,20 @@ class Termek
                     $vtt[] = $valtadat;
                 }
             }
-            $x['valtozatok'] = $vtt;
-        } else {
-            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['bruttohuf'] = $this->getBruttoAr(
-                null,
-                \mkw\store::getLoggedInUser(),
-                \mkw\store::getMainSession()->valutanem,
-                \mkw\store::getParameter(\mkw\consts::Webshop3Price)
-            );
-            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr(null);
+            $x['variations'] = $vtt;
         }
         $altomb = [];
         foreach ($this->getTermekKepek(true) as $kep) {
             $egyed = [];
-            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
-            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
-            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
-            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
-            $egyed['leiras'] = $kep->getLeiras();
+            $egyed['img_url'] = \mkw\store::getFullUrl($kep->getUrlLarge());
+            $egyed['medium_img_url'] = \mkw\store::getFullUrl($kep->getUrlMedium());
+            $egyed['small_img_url'] = \mkw\store::getFullUrl($kep->getUrlSmall());
+            $egyed['mini_img_url'] = \mkw\store::getFullUrl($kep->getUrlMini());
+            $egyed['caption'] = $kep->getLeiras();
             $altomb[] = $egyed;
         }
-        $x['kepek'] = $altomb;
-        $x['inaktiv'] = $this->getInaktiv();
+        $x['images'] = $altomb;
+        $x['inactiv'] = $this->getInaktiv();
         return $x;
     }
 

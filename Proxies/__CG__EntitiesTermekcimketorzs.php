@@ -191,6 +191,17 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function deleteFromWC()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
+
+        return parent::deleteFromWC();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTermekFilter()
     {
 

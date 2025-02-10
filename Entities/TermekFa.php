@@ -263,35 +263,29 @@ class TermekFa
         $ford = $this->getTranslationsArray();
         $x = [];
         $x['id'] = $this->getId();
-        $x['nev'] = $this->getNev();
-        $x['nev_en'] = $ford['en_us']['nev'];
-        $x['nev_it'] = $ford['it_it']['nev'];
-        $x['rovidleiras'] = $this->getRovidleiras();
-        $x['rovidleiras_en'] = $ford['en_us']['rovidleiras'];
-        $x['rovidleiras_it'] = $ford['it_it']['rovidleiras'];
-        $x['leiras'] = $this->getLeiras();
-        $x['leiras_en'] = $ford['en_us']['leiras'];
-        $x['leiras_it'] = $ford['it_it']['leiras'];
-        $x['leiras2'] = $this->getLeiras2();
-        $x['leiras2_en'] = $ford['en_us']['leiras2'];
-        $x['leiras2_it'] = $ford['it_it']['leiras2'];
-        $x['leiras3'] = $this->getLeiras3();
-        $x['leiras3_en'] = $ford['en_us']['leiras3'];
-        $x['leiras3_it'] = $ford['it_it']['leiras3'];
-        $x['karkod'] = $this->getKarkod();
-        $x['sorrend'] = $this->getSorrend();
+        $x['name'] = $this->getNev();
+        $x['name_en'] = $ford['en_us']['nev'];
+        $x['short_description'] = $this->getRovidleiras();
+        $x['short_description_en'] = $ford['en_us']['rovidleiras'];
+        $x['description'] = $this->getLeiras();
+        $x['description_en'] = $ford['en_us']['leiras'];
+        $x['description2'] = $this->getLeiras2();
+        $x['description2_en'] = $ford['en_us']['leiras2'];
+        $x['description3'] = $this->getLeiras3();
+        $x['description3_en'] = $ford['en_us']['leiras3'];
+        $x['order'] = $this->getSorrend();
         if ($this->getKepurl()) {
-            $x['kepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
-            $x['kozepeskepurl'] = \mkw\store::getFullUrl($this->getKepurlMedium());
-            $x['kiskepurl'] = \mkw\store::getFullUrl($this->getKepurlSmall());
-            $x['minikepurl'] = \mkw\store::getFullUrl($this->getKepurlMini());
-            $x['kepleiras'] = $this->getKepleiras();
+            $x['img_url'] = \mkw\store::getFullUrl($this->getKepurlLarge());
+            $x['medium_img_url'] = \mkw\store::getFullUrl($this->getKepurlMedium());
+            $x['small_img_url'] = \mkw\store::getFullUrl($this->getKepurlSmall());
+            $x['mini_img_url'] = \mkw\store::getFullUrl($this->getKepurlMini());
+            $x['caption'] = $this->getKepleiras();
         } else {
-            $x['kepurl'] = null;
-            $x['kozepeskepurl'] = null;
-            $x['kiskepurl'] = null;
-            $x['minikepurl'] = null;
-            $x['kepleiras'] = null;
+            $x['img_url'] = null;
+            $x['medium_img_url'] = null;
+            $x['small_img_url'] = null;
+            $x['mini_img_url'] = null;
+            $x['caption'] = null;
         }
         return $x;
     }
