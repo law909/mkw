@@ -226,6 +226,12 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setSzerzo3email($this->params->getStringRequestParam('szerzo3email'));
             $obj->setSzerzo4email($this->params->getStringRequestParam('szerzo4email'));
             $obj->setSzerzo5email($this->params->getStringRequestParam('szerzo5email'));
+            $obj->setSzerzo6email($this->params->getStringRequestParam('szerzo6email'));
+            $obj->setSzerzo7email($this->params->getStringRequestParam('szerzo7email'));
+            $obj->setSzerzo8email($this->params->getStringRequestParam('szerzo8email'));
+            $obj->setSzerzo9email($this->params->getStringRequestParam('szerzo9email'));
+            $obj->setSzerzo10email($this->params->getStringRequestParam('szerzo10email'));
+            $obj->setOpponensemail($this->params->getStringRequestParam('opponensemail'));
             $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
         } else {
             if ($this->params->getBoolRequestParam('vegleges')) {
