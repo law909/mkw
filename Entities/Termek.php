@@ -780,7 +780,7 @@ class Termek
         $x['sku'] = $this->getCikkszam();
         $x['short_description'] = $this->getRovidLeiras();
         $x['description'] = $this->getLeiras();
-        $x['description_en'] = $ford['en_us']['leiras'];
+        $x['description_en'] = $ford['en_us']['leiras'] ?: '';
         $x['category_id'] = $this->getTermekfa1Id();
         $x['category_name'] = $this->getTermekfa1()->getTeljesNev();
         $vtt = [];
@@ -788,24 +788,21 @@ class Termek
         if ($valtozatok) {
             /** @var \Entities\TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
-                if ($valt->getXElerheto()) {
-                    $valtadat = [];
-                    $valtadat['id'] = $valt->getId();
-                    $valtadat['elerheto'] = $valt->getElerheto3();
-                    $valtadat['EAN'] = $valt->getVonalkod();
-                    $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
-                    $valtadat['stock'] = $keszlet;
-                    $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
-                    $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
-                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek1();
-                        $valtadat['size'] = $valt->getErtek2();
-                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek2();
-                        $valtadat['size'] = $valt->getErtek1();
-                    }
-                    $vtt[] = $valtadat;
+                $valtadat = [];
+                $valtadat['id'] = $valt->getId();
+                $valtadat['EAN'] = $valt->getVonalkod();
+                $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
+                $valtadat['stock'] = $keszlet;
+                $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
+                $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
+                if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                    $valtadat['color'] = $valt->getErtek1();
+                    $valtadat['size'] = $valt->getErtek2();
+                } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                    $valtadat['color'] = $valt->getErtek2();
+                    $valtadat['size'] = $valt->getErtek1();
                 }
+                $vtt[] = $valtadat;
             }
             $x['variations'] = $vtt;
         }
