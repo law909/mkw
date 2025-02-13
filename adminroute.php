@@ -166,6 +166,8 @@ if (\mkw\store::isMPTNGY()) {
 
     $router->map('GET', '/admin/recalcksz', 'adminController#recalcKonferencianszerepelhet', 'adminmptngyrecalckonferencianszerepelhet');
     $router->map('GET', '/admin/setszerzobyemail', 'adminController#setSzerzoByEmail', 'adminmptngysetszerzobyemail');
+
+    $router->map('POST', '/admin/import/mptngybiraloimport', 'importController#mptngybiraloimport', 'adminmptngybiraloimport');
 }
 
 if (\mkw\store::isBankpenztar()) {

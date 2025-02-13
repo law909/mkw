@@ -2094,4 +2094,16 @@ class store
                 return new mkwwkhtmltopdf($html);
         }
     }
+
+    public static function generatePassword($length = 8)
+    {
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $chars[random_int(0, strlen($chars) - 1)];
+        }
+
+        return $password;
+    }
 }

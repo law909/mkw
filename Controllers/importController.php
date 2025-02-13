@@ -9,7 +9,10 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
+use Entities\Dolgozo;
+use Entities\Felhasznalo;
 use Entities\ME;
+use Entities\Munkakor;
 use Entities\Partner;
 use Entities\Partnertipus;
 use Entities\Termek;
@@ -6459,5 +6462,35 @@ class importController extends \mkwhelpers\Controller
         \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         \curl_exec($ch);
         fclose($fh);
+    }
+
+    public function mptngybiraloimport()
+    {
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        $biralo = $this->getRepo(Munkakor::class)->find(2);
+
+        for ($row = 2; $row <= $maxrow; ++$row) {
+            $bir = new Dolgozo();
+            $bir->setNev($sheet->getCell('B' . $row)->getValue());
+            $bir->setEmail($sheet->getCell('C' . $row)->getValue());
+            $p = \mkw\store::generatePassword(10);
+            $bir->setJelszo($p);
+            $bir->setJelszotext($p);
+            $bir->setSzulido('');
+            $bir->setMunkaviszonykezdete('');
+            $bir->setMunkakor($biralo);
+            $this->getEm()->persist($bir);
+            $this->getEm()->flush();
+        }
+        echo 'OK';
     }
 }
