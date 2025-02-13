@@ -69,7 +69,7 @@ class a2aController extends \mkwhelpers\Controller
         ) {
             $termekadat = $termek->toA2a($partner);
         }
-        return $termekadat;
+        return [$termekadat];
     }
 
     protected function gettermek_ids($ids, $partner = null)
@@ -122,7 +122,7 @@ class a2aController extends \mkwhelpers\Controller
             $valtozatok = $termek->getValtozatok();
             if ($valtozatok) {
                 foreach ($valtozatok as $valt) {
-                    if ($valt->getXElerheto()) {
+                    if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
                         $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
@@ -150,7 +150,7 @@ class a2aController extends \mkwhelpers\Controller
             $valtozatok = $termek->getValtozatok();
             if ($valtozatok) {
                 foreach ($valtozatok as $valt) {
-                    if ($valt->getXElerheto()) {
+                    if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
                         $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
@@ -420,7 +420,7 @@ class a2aController extends \mkwhelpers\Controller
                         break;
                     case 'getproduct':
                         if (array_key_exists('id', $cmd)) {
-                            $results['product'] = $this->gettermek_id($cmd['id'], $consumer->getPartner());
+                            $results['products'] = $this->gettermek_id($cmd['id'], $consumer->getPartner());
                         } elseif (array_key_exists('ids', $cmd)) {
                             $results['products'] = $this->gettermek_ids($cmd['ids'], $consumer->getPartner());
                         } elseif (array_key_exists('all', $cmd)) {
