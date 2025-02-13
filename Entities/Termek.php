@@ -788,21 +788,23 @@ class Termek
         if ($valtozatok) {
             /** @var \Entities\TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
-                $valtadat = [];
-                $valtadat['id'] = $valt->getId();
-                $valtadat['EAN'] = $valt->getVonalkod();
-                $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
-                $valtadat['stock'] = $keszlet;
-                $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
-                $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
-                if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                    $valtadat['color'] = $valt->getErtek1();
-                    $valtadat['size'] = $valt->getErtek2();
-                } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                    $valtadat['color'] = $valt->getErtek2();
-                    $valtadat['size'] = $valt->getErtek1();
+                if ($valt->getLathato() && $valt->getElerheto()) {
+                    $valtadat = [];
+                    $valtadat['id'] = $valt->getId();
+                    $valtadat['EAN'] = $valt->getVonalkod();
+                    $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
+                    $valtadat['stock'] = $keszlet;
+                    $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
+                    $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $valtadat['color'] = $valt->getErtek1();
+                        $valtadat['size'] = $valt->getErtek2();
+                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $valtadat['color'] = $valt->getErtek2();
+                        $valtadat['size'] = $valt->getErtek1();
+                    }
+                    $vtt[] = $valtadat;
                 }
-                $vtt[] = $valtadat;
             }
             $x['variations'] = $vtt;
         }
