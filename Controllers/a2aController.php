@@ -44,12 +44,29 @@ class a2aController extends \mkwhelpers\Controller
         $this->getEm()->flush($log);
     }
 
+    protected function getFafilter()
+    {
+        $termekfak = $this->getRepo(TermekFa::class)->getB2B();
+        $fafilter = [];
+        /** @var TermekFa $termekfa */
+        foreach ($termekfak as $termekfa) {
+            $fafilter[] = $termekfa->getId();
+        }
+        return $fafilter;
+    }
+
     protected function gettermek_id($id, $partner = null)
     {
+        $fafilter = $this->getFafilter();
         /** @var Termek $termek */
         $termek = $this->tr->find($id);
         $termekadat = null;
-        if ($termek) {
+        if ($termek &&
+            $termek->getLathato() == 1 &&
+            $termek->getFuggoben() == 0 &&
+            $termek->getInaktiv() == 0 &&
+            in_array($termek->getTermekfa1Id(), $fafilter)
+        ) {
             $termekadat = $termek->toA2a($partner);
         }
         return $termekadat;
@@ -60,6 +77,13 @@ class a2aController extends \mkwhelpers\Controller
         $ret = [];
         $filter = new FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
+        $filter->addFilter('lathato', '=', 1);
+        $filter->addFilter('fuggoben', '=', 0);
+        $filter->addFilter('inaktiv', '=', 0);
+        $fafilter = $this->getFafilter();
+        if ($fafilter) {
+            $filter->addFilter('termekfa1', 'IN', $fafilter);
+        }
         $termekek = $this->tr->getWithJoins($filter);
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
@@ -72,7 +96,15 @@ class a2aController extends \mkwhelpers\Controller
     protected function gettermek_all($partner = null)
     {
         $ret = [];
-        $termekek = $this->tr->getWithJoins(null);
+        $filter = new FilterDescriptor();
+        $filter->addFilter('lathato', '=', 1);
+        $filter->addFilter('fuggoben', '=', 0);
+        $filter->addFilter('inaktiv', '=', 0);
+        $fafilter = $this->getFafilter();
+        if ($fafilter) {
+            $filter->addFilter('termekfa1', 'IN', $fafilter);
+        }
+        $termekek = $this->tr->getWithJoins($filter);
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
             $termekadat = $termek->toA2a($partner);
@@ -364,8 +396,16 @@ class a2aController extends \mkwhelpers\Controller
             $rawdata = $data;
         } else {
             $rawdata = $this->params->getOriginalStringRequestParam('data');
+            if (!$rawdata) {
+                $rawdata = file_get_contents('php://input');
+            }
         }
         $jsondata = json_decode($rawdata, true);
+
+        // nem lahtato, nem elerheto, nem kaphato, inaktiv termek eseten visszadobni a rendelest
+        // ha nincs annyi keszlet, visszadobni a rendelest
+        // ha nem a mi arunkat kuldi, vissyadobni a rendelest
+        // fcmoto orderform beolvasasnal is!!!!
 
         $auth = $jsondata['auth'];
         $consumer = $this->Auth($auth['name'], $auth['key']);
@@ -387,6 +427,12 @@ class a2aController extends \mkwhelpers\Controller
                             $results['products'] = $this->gettermek_all($consumer->getPartner());
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
+                        $i = 0;
+                        foreach ($results['products'] as $product) {
+                            \mkw\store::writelog($product['sku'] . ' ' . $product['name_en'] . ', id=' . $product['id']);
+                            $i++;
+                        }
+                        \mkw\store::writelog($i . ' product az apiban');
                         break;
                     case 'getstock':
                         if (array_key_exists('id', $cmd)) {

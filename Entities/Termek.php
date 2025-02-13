@@ -774,7 +774,7 @@ class Termek
         $ford = $this->getTranslationsArray();
         $x['id'] = $this->getId();
         $x['image_url'] = \mkw\store::getFullUrl($this->getKepurlLarge());
-        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', true, ['slug' => $this->getSlug()]);
         $x['name'] = $this->getNev();
         $x['name_en'] = $ford['en_us']['nev'];
         $x['sku'] = $this->getCikkszam();

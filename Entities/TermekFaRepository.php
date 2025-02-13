@@ -258,8 +258,8 @@ class TermekFaRepository extends \mkwhelpers\Repository
     public function getB2B()
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('menu1lathato', 1);
-        $filter->addFilter('lathato', 1);
+        $filter->addFilter('menu1lathato', '=', 1);
+        $filter->addFilter('lathato', '=', 1);
         return $this->getAll($filter, ['sorrend' => 'ASC']);
     }
 
