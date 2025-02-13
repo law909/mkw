@@ -74,11 +74,11 @@ class BizonylattetelListener
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
-                    if (!$tids[$entity->getTermek()->getId()]) {
+                    if (!$tids[$entity->getTermek()->getId()] && $entity->getTermek()->getWcid()) {
                         $tids[$entity->getTermek()->getId()] = true;
                         $termekek[] = $entity->getTermek()->getStockInfoForWC(true);
                     }
-                    if ($entity->getTermekvaltozat()) {
+                    if ($entity->getTermekvaltozat() && $entity->getTermekvaltozat()->getWcid()) {
                         \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
                         $entity->getTermekvaltozat()->sendKeszletToWC();
                         \mkw\store::writelog('STOP');
