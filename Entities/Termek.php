@@ -817,7 +817,6 @@ class Termek
             $altomb[] = $egyed;
         }
         $x['images'] = $altomb;
-        $x['inactiv'] = $this->getInaktiv();
         return $x;
     }
 
