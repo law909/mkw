@@ -135,7 +135,7 @@ class a2aController extends \mkwhelpers\Controller
                 }
             }
         }
-        return $x;
+        return [$x];
     }
 
     protected function getkeszlet_ids($ids)
@@ -436,7 +436,7 @@ class a2aController extends \mkwhelpers\Controller
                         break;
                     case 'getstock':
                         if (array_key_exists('id', $cmd)) {
-                            $results['stock'] = $this->getkeszlet_id($cmd['id']);
+                            $results['stocks'] = $this->getkeszlet_id($cmd['id']);
                         } elseif (array_key_exists('ids', $cmd)) {
                             $results['stocks'] = $this->getkeszlet_ids($cmd['ids']);
                         }
