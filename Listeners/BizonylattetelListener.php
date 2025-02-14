@@ -51,6 +51,8 @@ class BizonylattetelListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
+        $this->willmodify = [];
+
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()
@@ -86,6 +88,9 @@ class BizonylattetelListener
                 }
             }
         }
+
+        $this->willmodify = [];
+
         if ($termekek && \mkw\store::isWoocommerceOn()) {
             $wc = store::getWcClient();
             $tosend = [];
