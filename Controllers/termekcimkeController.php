@@ -151,8 +151,14 @@ class termekcimkeController extends \mkwhelpers\MattableController
      */
     protected function afterSave($o, $parancs = null)
     {
-        if ($parancs == $this->delOperation) {
-            $o->deleteFromWc();
+        switch ($parancs) {
+            case $this->addOperation:
+                $o->deleteFromWC();
+                break;
+            case $this->editOperation:
+            case $this->addOperation:
+                $this->uploadToWc();
+                break;
         }
         parent::afterSave($o, $parancs);
     }

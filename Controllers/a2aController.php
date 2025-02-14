@@ -427,12 +427,6 @@ class a2aController extends \mkwhelpers\Controller
                             $results['products'] = $this->gettermek_all($consumer->getPartner());
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
-                        $i = 0;
-                        foreach ($results['products'] as $product) {
-                            \mkw\store::writelog($product['sku'] . ' ' . $product['name_en'] . ', id=' . $product['id']);
-                            $i++;
-                        }
-                        \mkw\store::writelog($i . ' product az apiban');
                         break;
                     case 'getstock':
                         if (array_key_exists('id', $cmd)) {
