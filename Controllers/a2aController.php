@@ -677,20 +677,20 @@ class a2aController extends \mkwhelpers\Controller
                     case 'b2border':
                         if (array_key_exists('create', $cmd)) {
                             $results['success'] = 0;
-                            $results['msg'] = '';
+                            $results['msg'] = [];
 
                             $data = $cmd['create'];
 
                             /** @var Bizonylattipus $biztipus */
                             $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
                             if (!$biztipus) {
-                                $results['msg'] .= ' "Order" type not found.';
+                                $results['msg'][] = '"Order" type not found.';
                             }
                             $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(12); // függőben
                             /** @var Partner $partner */
                             $partner = $consumer->getPartner();
                             if (!$partner) {
-                                $results['msg'] .= ' Unknown partner.';
+                                $results['msg'][] = 'Unknown partner.';
                             }
                             $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                             $nullasafa = $afa->getId();
@@ -700,17 +700,31 @@ class a2aController extends \mkwhelpers\Controller
                                 /** @var Termek $termek */
                                 $termek = $this->getRepo(Termek::class)->find($tetel['product_id']);
                                 if (!$termek) {
-                                    $result['msg'] .= ' ' . $tetel['product_id'] . ' unknown product.';
+                                    $results['msg'][] = $tetel['product_id'] . ' unknown product.';
                                 } else {
+                                    if (!$termek->getLathato() || $termek->getFuggoben() || $termek->getInaktiv()) {
+                                        $results['msg'][] = $tetel['product_id'] . ' is not accessible, refresh your product data.';
+                                    }
                                     /** @var TermekValtozat $termekvaltozat */
                                     $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($tetel['productvariation_id']);
                                     if (!$termekvaltozat || $termekvaltozat->getTermek()?->getId() !== $termek->getId()) {
-                                        $result['msg'] .= ' ' . $tetel['productvariation_id'] . ' unknown product variation.';
+                                        $results['msg'][] = 'Product variation ' . $tetel['productvariation_id'] . ' is unknown.';
+                                    }
+                                    if ($termekvaltozat) {
+                                        $keszlet = $termekvaltozat->getKeszlet();
+                                        $foglalt = $termekvaltozat->getFoglaltMennyiseg();
+                                        $minbolt = $termekvaltozat->calcMinboltikeszlet();
+                                        if ($keszlet - $foglalt - $minbolt < $tetel['quantity']) {
+                                            $results['msg'][] = $tetel['productvariation_id'] . ' not enough stock, refresh your stock data.';
+                                        }
+                                        if (!$termekvaltozat->getElerheto()) {
+                                            $results['msg'][] = $tetel['productvariation_id'] . ' is not accessible, refresh your product data.';
+                                        }
                                     }
                                 }
                             }
 
-                            if ($results['msg'] === '') {
+                            if (count($results['msg']) === 0) {
                                 $bizfej = new Bizonylatfej();
                                 $bizfej->setPersistentData();
                                 $bizfej->setBizonylattipus($biztipus);
@@ -733,7 +747,7 @@ class a2aController extends \mkwhelpers\Controller
 
                                 $vantetel = false;
 
-                                foreach ($data['tetelek'] as $tetel) {
+                                foreach ($data['products'] as $tetel) {
                                     $tv = $this->getRepo(TermekValtozat::class)->find($tetel['productvariation_id']);
 
                                     $biztetel = new Bizonylattetel();
@@ -749,6 +763,9 @@ class a2aController extends \mkwhelpers\Controller
                                     }
 
                                     $biztetel->setMennyiseg($tetel['quantity']);
+                                    $biztetel->setEnettoegysar($tv->getTermek()->getKedvezmenynelkuliNettoAr($tv, $partner));
+                                    $biztetel->setEnettoegysarhuf($biztetel->getEnettoegysar() * $biztetel->getArfolyam());
+                                    $biztetel->setKedvezmeny($tv->getTermek()->getKedvezmeny($partner));
                                     $biztetel->setNettoegysar($tv->getTermek()->getNettoAr($tv, $partner));
                                     $biztetel->setNettoegysarhuf($biztetel->getNettoegysar() * $biztetel->getArfolyam());
                                     $biztetel->calc();
@@ -765,6 +782,7 @@ class a2aController extends \mkwhelpers\Controller
 
                                 $results['success'] = 1;
                                 $results['order_id'] = $bizfej->getId();
+                                $results['msg'][] = 'Order created.';
                             }
                         }
                         $this->writelog($consumer, $rawdata, json_encode($results));
