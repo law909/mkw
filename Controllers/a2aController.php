@@ -731,6 +731,8 @@ class a2aController extends \mkwhelpers\Controller
                                 $bizfej->setPartner($partner);
                                 $bizfej->setRaktar($raktar);
                                 $bizfej->setSzallitasimod($partner->getSzallitasimod());
+                                $bizfej->setValutanem($partner->getValutanem());
+                                $bizfej->setBankszamla($partner->getValutanem()->getBankszamla());
 
                                 $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($partner->getValutanem(), $bizfej->getTeljesites());
                                 $bizfej->setArfolyam($arf->getArfolyam());

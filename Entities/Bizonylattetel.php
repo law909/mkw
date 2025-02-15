@@ -1535,6 +1535,9 @@ class Bizonylattetel
     public function setEbruttoegysar($ebruttoegysar)
     {
         $this->ebruttoegysar = $ebruttoegysar;
+        if (!$this->duplication && $this->getAfa()) {
+            $this->enettoegysar = $this->getAfa()->calcNetto($ebruttoegysar);
+        }
     }
 
     /**
@@ -1543,6 +1546,9 @@ class Bizonylattetel
     public function setEbruttoegysarhuf($ebruttoegysarhuf)
     {
         $this->ebruttoegysarhuf = $ebruttoegysarhuf;
+        if (!$this->duplication && $this->getAfa()) {
+            $this->enettoegysarhuf = $this->getAfa()->calcNetto($ebruttoegysarhuf);
+        }
     }
 
     /**
@@ -1551,6 +1557,9 @@ class Bizonylattetel
     public function setEnettoegysar($enettoegysar)
     {
         $this->enettoegysar = $enettoegysar;
+        if (!$this->duplication && $this->getAfa()) {
+            $this->ebruttoegysar = $this->getAfa()->calcBrutto($enettoegysar);
+        }
     }
 
     /**
@@ -1559,6 +1568,9 @@ class Bizonylattetel
     public function setEnettoegysarhuf($enettoegysarhuf)
     {
         $this->enettoegysarhuf = $enettoegysarhuf;
+        if (!$this->duplication && $this->getAfa()) {
+            $this->ebruttoegysarhuf = $this->getAfa()->calcBrutto($enettoegysarhuf);
+        }
     }
 
     /**
