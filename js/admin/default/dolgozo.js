@@ -26,6 +26,10 @@ $(document).ready(function () {
     };
 
     if ($.fn.mattable) {
+        $('.js-maincheckbox').change(function () {
+            $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
+        });
+
         $('#mattable-select').mattable({
             filter: {
                 fields: ['#nevfilter']
@@ -88,10 +92,6 @@ $(document).ready(function () {
                     }
                 });
             }
-
-            $('.js-maincheckbox').change(function () {
-                $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
-            });
         });
     } else {
         if ($.fn.mattkarb) {
