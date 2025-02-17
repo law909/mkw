@@ -245,7 +245,7 @@ class TermekFaRepository extends \mkwhelpers\Repository
         $tfrsm->addScalarResult('karkod', 'karkod');
         $tfrsm->addScalarResult('sorrend', 'sorrend');
         $tfrsm->addScalarResult('fanev', 'fanev');
-        return $this->getEm()->createNativeQuery(
+        return $this->_em->createNativeQuery(
             'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,coalesce(tt.content,tf.nev) AS fanev '
             . 'FROM termekfa tf '
             . 'LEFT JOIN termekfa_translations tt ON (tf.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
