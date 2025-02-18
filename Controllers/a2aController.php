@@ -121,6 +121,7 @@ class a2aController extends \mkwhelpers\Controller
         if ($termek) {
             $valtozatok = $termek->getValtozatok();
             if ($valtozatok) {
+                /** @var TermekValtozat $valt */
                 foreach ($valtozatok as $valt) {
                     if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
@@ -149,6 +150,7 @@ class a2aController extends \mkwhelpers\Controller
             $x['id'] = $termek->getId();
             $valtozatok = $termek->getValtozatok();
             if ($valtozatok) {
+                /** @var TermekValtozat $valt */
                 foreach ($valtozatok as $valt) {
                     if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
