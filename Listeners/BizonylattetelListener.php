@@ -76,6 +76,7 @@ class BizonylattetelListener
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
                 if (\mkw\store::isWoocommerceOn()) {
+                    \mkw\store::writelog($entity->getBizonylatfejId() . ' BizonylattetelListener postFlush');
                     if (!$tids[$entity->getTermek()->getId()] && $entity->getTermek()->getWcid()) {
                         $tids[$entity->getTermek()->getId()] = true;
                         $termekek[] = $entity->getTermek()->getStockInfoForWC(true);
