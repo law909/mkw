@@ -292,10 +292,11 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
-                                \mkw\store::writelog($valt->getErtek1() . ' ' . $valt->getErtek2());
-                                \mkw\store::writelog($valt->getKeszlet());
-                                \mkw\store::writelog($valt->getFoglaltMennyiseg());
-                                \mkw\store::writelog($valt->calcMinboltikeszlet());
+                                \mkw\store::writelog(
+                                    $valt->getErtek1() . ' ' . $valt->getErtek2() . ':' .
+                                    $valt->getKeszlet() . ' - ' . $valt->getFoglaltMennyiseg() . ' - ' . $valt->calcMinboltikeszlet() . '=' .
+                                    $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet()
+                                );
                                 $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                                 $vtt[$valt->getErtek1()]['bejon'] = $vtt[$valt->getErtek1()]['bejon'] || (($valt->getBeerkezesdatumStr(
                                     )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
