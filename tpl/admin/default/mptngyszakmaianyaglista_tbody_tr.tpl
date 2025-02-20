@@ -38,8 +38,8 @@
             </div>
         </div>
     </td>
-    <td class="cell">
-        <pre class="ui-widget">{$_egyed.tartalom}</pre>
+    <td class="cell" style="width: 30%">
+        <span>{$_egyed.tartalom}</span>
     </td>
     <td class="cell">
         <div>Összes pont: {$_egyed.osszespont}</div>
