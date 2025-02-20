@@ -122,7 +122,8 @@ class store
         $handle = fopen(self::logsPath($fname), "a");
         $log = "";
         $separator = " ## ";
-        $log .= date('Y.m.d. H:i:s') . $separator;
+        [$usec, $sec] = explode(" ", microtime());
+        $log .= date('Y.m.d. H:i:s', $sec) . '.' . substr($usec, 2, 2) . $separator;
         $log .= self::getClientIp() . $separator;
         $log .= $text;
         $log .= "\n";
