@@ -13,7 +13,7 @@
         <div>Típus: {$_egyed.tipusnev}</div>
         <div>Tulajdonos: {$_egyed.tulajdonosnev}</div>
     </td>
-    <td class="cell">
+    <td class="cell" style="width: 30%">
         <div>Első szerző: {$_egyed.szerzo1nev} ({$_egyed.szerzo1email})</div>
         <div>Szerző 2: {$_egyed.szerzo2nev} ({$_egyed.szerzo2email})</div>
         <div>Szerző 3: {$_egyed.szerzo3nev} ({$_egyed.szerzo3email})</div>
