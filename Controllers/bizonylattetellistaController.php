@@ -374,7 +374,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     ->setCellValue('F1', t('Partner cím'))
                     ->setCellValue('G1', t('Cikkszám'))
                     ->setCellValue('H1', t('Termék'))
-                    ->setCellValue('I1', t('Mennyiség'));
+                    ->setCellValue('I1', t('Változat 1'))
+                    ->setCellValue('J1', t('Változat 2'))
+                    ->setCellValue('K1', t('Mennyiség'));
 
                 $sor = 2;
                 foreach ($mind as $item) {
@@ -389,8 +391,10 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                             $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'] . ' ' . $item['partnerhazszam']
                         )
                         ->setCellValue('G' . $sor, $item['cikkszam'])
-                        ->setCellValue('H' . $sor, $item['nev'] . ' ' . $item['ertek1'] . ' ' . $item['ertek2'])
-                        ->setCellValue('I' . $sor, $item['mennyiseg']);
+                        ->setCellValue('H' . $sor, $item['nev'])
+                        ->setCellValue('I' . $sor, $item['ertek1'])
+                        ->setCellValue('J' . $sor, $item['ertek2'])
+                        ->setCellValue('K' . $sor, $item['mennyiseg']);
                     $sor++;
                 }
                 break;
