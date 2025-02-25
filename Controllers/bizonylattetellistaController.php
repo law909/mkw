@@ -263,7 +263,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     ->setCellValue('C1', t('Változat 1'))
                     ->setCellValue('D1', t('Változat 2'))
                     ->setCellValue('E1', t('Mennyiség'))
-                    ->setCellValue('F1', t('Érték'));
+                    ->setCellValue('F1', t('Érték'))
+                    ->setCellValue('G1', t('EAN'));
 
                 $i = 5;
                 foreach ($raktarlista as $r) {
@@ -279,7 +280,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                         ->setCellValue('C' . $sor, $item['ertek1'])
                         ->setCellValue('D' . $sor, $item['ertek2'])
                         ->setCellValue('E' . $sor, $item['mennyiseg'])
-                        ->setCellValue('F' . $sor, $item['ertek']);
+                        ->setCellValue('F' . $sor, $item['ertek'])
+                        ->setCellValue('G' . $sor, $item['vonalkod']);
 
                     if (array_key_exists('keszletinfo', $item)) {
                         $i = 5;
@@ -304,7 +306,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     ->setCellValue('E1', t('Változat 1'))
                     ->setCellValue('F1', t('Változat 2'))
                     ->setCellValue('G1', t('Mennyiség'))
-                    ->setCellValue('H1', t('Érték'));
+                    ->setCellValue('H1', t('Érték'))
+                    ->setCellValue('I1', t('EAN'));
 
                 $i = 7;
                 foreach ($raktarlista as $r) {
@@ -325,7 +328,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                         ->setCellValue('E' . $sor, $item['ertek1'])
                         ->setCellValue('F' . $sor, $item['ertek2'])
                         ->setCellValue('G' . $sor, $item['mennyiseg'])
-                        ->setCellValue('H' . $sor, $item['ertek']);
+                        ->setCellValue('H' . $sor, $item['ertek'])
+                        ->setCellValue('I' . $sor, $item['vonalkod']);
 
                     if (array_key_exists('keszletinfo', $item)) {
                         $i = 7;
@@ -376,7 +380,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     ->setCellValue('H1', t('Termék'))
                     ->setCellValue('I1', t('Változat 1'))
                     ->setCellValue('J1', t('Változat 2'))
-                    ->setCellValue('K1', t('Mennyiség'));
+                    ->setCellValue('K1', t('Mennyiség'))
+                    ->setCellValue('L1', t('EAN'));
 
                 $sor = 2;
                 foreach ($mind as $item) {
@@ -394,7 +399,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                         ->setCellValue('H' . $sor, $item['nev'])
                         ->setCellValue('I' . $sor, $item['ertek1'])
                         ->setCellValue('J' . $sor, $item['ertek2'])
-                        ->setCellValue('K' . $sor, $item['mennyiseg']);
+                        ->setCellValue('K' . $sor, $item['mennyiseg'])
+                        ->setCellValue('L', $item['vonalkod']);
                     $sor++;
                 }
                 break;

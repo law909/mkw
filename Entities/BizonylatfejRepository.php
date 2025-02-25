@@ -891,11 +891,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $rsm->addScalarResult('nev', 'nev');
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
+                $rsm->addScalarResult('vonalkod', 'vonalkod');
 
                 $q = $this->_em->createNativeQuery(
                     'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2 '
+                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
@@ -925,12 +926,13 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $rsm->addScalarResult('nev', 'nev');
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
+                $rsm->addScalarResult('vonalkod', 'vonalkod');
 
                 $q = $this->_em->createNativeQuery(
                     'SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2 '
+                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
@@ -989,11 +991,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
                 $rsm->addScalarResult('statusznev', 'statusznev');
+                $rsm->addScalarResult('vonalkod', 'vonalkod');
 
                 $q = $this->_em->createNativeQuery(
                     'SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
                     . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,bt.mennyiseg, '
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev '
+                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN bizonylatstatusz bs ON (bf.bizonylatstatusz_id=bs.id)'
