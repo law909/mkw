@@ -400,7 +400,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                         ->setCellValue('I' . $sor, $item['ertek1'])
                         ->setCellValue('J' . $sor, $item['ertek2'])
                         ->setCellValue('K' . $sor, $item['mennyiseg'])
-                        ->setCellValue('L', $item['vonalkod']);
+                        ->setCellValue('L' . $sor, $item['vonalkod']);
                     $sor++;
                 }
                 break;
