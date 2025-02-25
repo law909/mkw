@@ -1241,12 +1241,6 @@ if (\mkw\store::isDarshan()) {
     $router->map('POST', '/admin/darshanstat', 'adminController#darshanStatisztika', 'admindarshanstat');
 }
 
-if (\mkw\store::isSuperzoneB2B()) {
-    if (haveJog(99)) {
-        //$router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
-    }
-}
-
 $router->map('GET', '/admin/wc/termekmenu', 'termekmenuController#uploadToWc', 'admintermekmenuuploadtowc');
 $router->map('GET', '/admin/wc/termekvaltozatadattipus', 'termekvaltozatadattipusController#uploadToWc', 'admintermekvaltozatadattipusuploadtowc');
 $router->map('GET', '/admin/wc/termekvaltozatertek', 'termekvaltozatertekController#uploadToWc', 'admintermekvaltozatertekuploadtowc');
@@ -1257,16 +1251,16 @@ $router->map('GET', '/admin/wc/termekar', 'termekarController#uploadToWc', 'admi
 $router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');
 
 
-$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
+//$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
 //$router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
 //$router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
-$router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
-$router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');
-$router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas', 'adminrepairfoglalas');
+//$router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
+//$router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');
+//$router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas', 'adminrepairfoglalas');
 //$router->map('GET', '/admin/t/emailcheck', 'adminController#checkEmail', 'adminemailcheck');
-$router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
-$router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');
-$router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
-$router->map('GET', '/admin/t/mpttagimport', 'adminController#MPTPartnerImport', 'adminmptpartnerimport');
-$router->map('GET', '/admin/t/fszlahivdatum', 'adminController#fszlahivdatumJavit', 'adminfszlahivdatumjavit');
+//$router->map('GET', '/admin/t/sptcsp', 'adminController#TermekcsoportPiszkalas', 'admintermekcsoportpiszkalas');
+//$router->map('GET', '/admin/t/makszutovidcsere', 'importController#makszutovIdCsere', 'adminmakszutovidcsere');
+//$router->map('GET', '/admin/t/ujdivatszamlare', 'adminController#ujdivatszamlare', 'adminujdivatszamlare');
+//$router->map('GET', '/admin/t/mpttagimport', 'adminController#MPTPartnerImport', 'adminmptpartnerimport');
+//$router->map('GET', '/admin/t/fszlahivdatum', 'adminController#fszlahivdatumJavit', 'adminfszlahivdatumjavit');
