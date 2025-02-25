@@ -1492,17 +1492,20 @@ class store
         return self::getConfigValue('wc.imageurlprefix');
     }
 
-    public static function getWcClient()
+    public static function getWcClient($options = [])
     {
         return new Client(
             self::getWcUrl(),
             self::getWcKey(),
             self::getWcSecret(),
-            [
-                'wp_api' => true,
-                'version' => 'wc/v3',
-                'timeout' => 360000
-            ]
+            array_merge(
+                [
+                    'wp_api' => true,
+                    'version' => 'wc/v3',
+                    'timeout' => 360000
+                ],
+                $options
+            )
         );
     }
 
