@@ -122,7 +122,7 @@
             <div class="matt-hseparator"></div>
             <div>
                 <label for="elsobiralokellfilter">{at('Első bíráló')}:</label>
-                <select id=elsobiralokellfilter" name="elsobiralokellfilter">
+                <select id="elsobiralokellfilter" name="elsobiralokellfilter">
                     <option value="9">{at('Mindegy')}</option>
                     <option value="0">{at('Nincs')}</option>
                     <option value="1">{at('Van')}</option>
