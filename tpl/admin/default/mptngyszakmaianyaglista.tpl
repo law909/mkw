@@ -124,14 +124,14 @@
                 <label for="elsobiralokellfilter">{at('Első bíráló')}:</label>
                 <select id=elsobiralokellfilter" name="elsobiralokellfilter">
                     <option value="9">{at('Mindegy')}</option>
-                    <option value="0">{at('Nem kell')}</option>
-                    <option value="1">{at('Kell')}</option>
+                    <option value="0">{at('Nincs')}</option>
+                    <option value="1">{at('Van')}</option>
                 </select>
                 <label for="masodikbiralokellfilter">{at('Második bíráló')}:</label>
                 <select id="masodikbiralokellfilter" name="masodikbiralokellfilter">
                     <option value="9">{at('Mindegy')}</option>
-                    <option value="0">{at('Nem kell')}</option>
-                    <option value="1">{at('Kell')}</option>
+                    <option value="0">{at('Nincs')}</option>
+                    <option value="1">{at('Van')}</option>
                 </select>
                 <label for="pluszbiralokellfilter">{at('Harmadik bíráló')}:</label>
                 <select id="pluszbiralokellfilter" name="pluszbiralokellfilter">
