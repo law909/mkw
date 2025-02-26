@@ -479,6 +479,26 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('konferencianszerepelhet', '=', $f);
         }
 
+        $f = $this->params->getNumRequestParam('elsobiralokellfilter', 9);
+        switch ($f) {
+            case 1:
+                $filter->addSql('((_xx.biralo1 IS NOT NULL) AND (_xx.biralo1<>0))');
+                break;
+            case 0:
+                $filter->addSql('((_xx.biralo1 IS NULL) OR (_xx.biralo1=0))');
+                break;
+        }
+
+        $f = $this->params->getNumRequestParam('masodikbiralokellfilter', 9);
+        switch ($f) {
+            case 1:
+                $filter->addSql('((_xx.biralo2 IS NOT NULL) AND (_xx.biralo2<>0))');
+                break;
+            case 0:
+                $filter->addSql('((_xx.biralo2 IS NULL) OR (_xx.biralo2=0))');
+                break;
+        }
+
         $f = $this->params->getNumRequestParam('pluszbiralokellfilter', 9);
         if ($f != 9) {
             $filter->addFilter('pluszbiralokell', '=', $f);

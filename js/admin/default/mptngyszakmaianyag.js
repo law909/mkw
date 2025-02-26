@@ -126,6 +126,8 @@ $(document).ready(function () {
                     '#opponensfilter',
                     '#idfilter',
                     '#pluszbiralokellfilter',
+                    '#elsobiralokellfilter',
+                    '#masodikbiralokellfilter',
                     '#temakor1filter',
                     '#tipusfilter',
                     '#teremfilter',
