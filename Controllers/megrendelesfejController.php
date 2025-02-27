@@ -503,6 +503,9 @@ class megrendelesfejController extends bizonylatfejController
                             'nettoegysar' => $tetel->getNettoegysar(),
                             'nettoegysarhuf' => $tetel->getNettoegysarhuf(),
                             'mennyiseg' => $tetel->getMennyiseg(),
+                            'enettoegysar' => $tetel->getEnettoegysar(),
+                            'enettoegysarhuf' => $tetel->getEnettoegysarhuf(),
+                            'kedvezmeny' => $tetel->getKedvezmeny(),
                         ];
                     } else {
                         $termekek[$kulcs]['mennyiseg'] += $tetel->getMennyiseg();
@@ -529,9 +532,9 @@ class megrendelesfejController extends bizonylatfejController
                     $biztetel->setAfa($termek['afaid']);
                     $biztetel->setMennyiseg($termek['mennyiseg']);
 
-                    //$biztetel->setEnettoegysar($tv->getTermek()->getKedvezmenynelkuliNettoAr($tv, $partner));
-                    //$biztetel->setEnettoegysarhuf($biztetel->getEnettoegysar() * $biztetel->getArfolyam());
-                    //$biztetel->setKedvezmeny($tv->getTermek()->getKedvezmeny($partner));
+                    $biztetel->setEnettoegysar($termek['enettoegysar']);
+                    $biztetel->setEnettoegysarhuf($termek['enettoegysarhuf']);
+                    $biztetel->setKedvezmeny($termek['kedvezmeny']);
                     $biztetel->setNettoegysar($termek['nettoegysar']);
                     $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
                     $biztetel->calc();
