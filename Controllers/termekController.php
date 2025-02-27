@@ -1729,7 +1729,13 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('H1', 'Size')
             ->setCellValue('I1', 'Color')
             ->setCellValue('J1', 'EAN code')
-            ->setCellValue('K1', 'Net price');
+            ->setCellValue('K1', 'Net price')
+            ->setCellValue('L1', 'Customs tariff number')
+            ->setCellValue('M1', 'Country of origin')
+            ->setCellValue('N1', 'Weight')
+            ->setCellValue('O1', 'Width')
+            ->setCellValue('P1', 'Height')
+            ->setCellValue('Q1', 'Length');
 
         $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
 
@@ -1763,7 +1769,13 @@ class termekController extends \mkwhelpers\MattableController
                         ->setCellValue('H' . $sor, $valtozat->getMeret())
                         ->setCellValue('I' . $sor, $valtozat->getSzin())
                         ->setCellValue('J' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto));
+                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
+                        ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
+                        ->setCellValue('M' . $sor, 'Pakistan')
+                        ->setCellValue('N' . $sor, $termek->getSuly())
+                        ->setCellValue('O' . $sor, $termek->getSzelesseg())
+                        ->setCellValue('P' . $sor, $termek->getMagassag())
+                        ->setCellValue('Q' . $sor, $termek->getHosszusag());
                     $excel->setActiveSheetIndex(0)
                         ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                     $sor++;
@@ -1776,7 +1788,15 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('E' . $sor, $leiras)
                     ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
                     ->setCellValue('G' . $sor, implode(';', $kepurlarr))
-                    ->setCellValue('J' . $sor, $termek->getVonalkod());
+                    ->setCellValue('J' . $sor, $termek->getVonalkod())
+                    ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
+                    ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
+                    ->setCellValue('M' . $sor, 'Pakistan')
+                    ->setCellValue('N' . $sor, $termek->getSuly())
+                    ->setCellValue('O' . $sor, $termek->getSzelesseg())
+                    ->setCellValue('P' . $sor, $termek->getMagassag())
+                    ->setCellValue('Q' . $sor, $termek->getHosszusag());
+
                 $excel->setActiveSheetIndex(0)
                     ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                 $sor++;
