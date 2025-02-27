@@ -1207,23 +1207,24 @@ var bizonylathelper = function ($) {
                 karb: getMattKarbConfig(bizonylattipus)
             });
             $('.mattable-batchbtn').on('click', function (e) {
-                var cbs;
+                let cbs,
+                    tomb = [];
                 e.preventDefault();
-                switch ($('.mattable-batchselect').val()) {
-                    case 'foxpostlabel':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
+                cbs = $('.maincheckbox:checked');
+                if (cbs.length) {
+                    cbs.closest('tr').each(function (index, elem) {
+                        tomb.push($(elem).data('egyedid'));
+                    });
+
+                    switch ($('.mattable-batchselect').val()) {
+                        case 'foxpostlabel':
                             dialogcenter.html('Biztos, hogy lekéri a megrendelés címkéket?').dialog({
                                 resizable: false,
                                 height: 140,
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var tomb = [],
-                                            dia = $(this);
-                                        cbs.closest('tr').each(function (index, elem) {
-                                            tomb.push($(elem).data('egyedid'));
-                                        });
+                                        var dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/generatefoxpostlabel',
                                             type: 'POST',
@@ -1241,33 +1242,15 @@ var bizonylathelper = function ($) {
                                     }
                                 }
                             });
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'foxpostsend':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
+                            break;
+                        case 'foxpostsend':
                             dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
                                 resizable: false,
                                 height: 140,
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var tomb = [],
-                                            dia = $(this);
-                                        cbs.closest('tr').each(function (index, elem) {
-                                            tomb.push($(elem).data('egyedid'));
-                                        });
+                                        var dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/sendtofoxpost',
                                             type: 'POST',
@@ -1285,33 +1268,15 @@ var bizonylathelper = function ($) {
                                     }
                                 }
                             });
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'glssend':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
+                            break;
+                        case 'glssend':
                             dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
                                 resizable: false,
                                 height: 140,
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var tomb = [],
-                                            dia = $(this);
-                                        cbs.closest('tr').each(function (index, elem) {
-                                            tomb.push($(elem).data('egyedid'));
-                                        });
+                                        var dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/sendtogls',
                                             type: 'POST',
@@ -1329,33 +1294,15 @@ var bizonylathelper = function ($) {
                                     }
                                 }
                             });
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'recalcprice':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
+                            break;
+                        case 'recalcprice':
                             dialogcenter.html('Biztos, hogy újra számolja a megrendelések árait?').dialog({
                                 resizable: false,
                                 height: 140,
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var tomb = [],
-                                            dia = $(this);
-                                        cbs.closest('tr').each(function (index, elem) {
-                                            tomb.push($(elem).data('egyedid'));
-                                        });
+                                        let dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/recalcprice',
                                             type: 'POST',
@@ -1373,75 +1320,21 @@ var bizonylathelper = function ($) {
                                     }
                                 }
                             });
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'excelfejexport':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
-                            var tomb = [],
-                                $exportform = $('#exportform');
-                            cbs.closest('tr').each(function (index, elem) {
-                                tomb.push($(elem).data('egyedid'));
-                            });
+                            break;
+                        case 'excelfejexport':
+                            var $exportform = $('#exportform');
                             $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/fejexport');
                             $('input[name="ids"]', $exportform).val(tomb);
                             $exportform.submit();
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'exceltetelexport':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
-                            var tomb = [],
-                                $exportform = $('#exportform');
-                            cbs.closest('tr').each(function (index, elem) {
-                                tomb.push($(elem).data('egyedid'));
-                            });
+                            break;
+                        case 'exceltetelexport':
+                            var $exportform = $('#exportform');
                             $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/tetelexport');
                             $('input[name="ids"]', $exportform).val(tomb);
                             $exportform.submit();
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
-                                resizable: false,
-                                height: 140,
-                                modal: true,
-                                buttons: {
-                                    'OK': function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    case 'sendemailek':
-                        cbs = $('.maincheckbox:checked');
-                        if (cbs.length) {
-                            let $dia = $('#emailsablondialog'),
-                                tomb = [];
-                            cbs.closest('tr').each(function (index, elem) {
-                                tomb.push($(elem).data('egyedid'));
-                            });
+                            break;
+                        case 'sendemailek':
+                            let $dia = $('#emailsablondialog');
                             $dia.dialog({
                                 title: 'Email sablon',
                                 resizable: true,
@@ -1469,19 +1362,45 @@ var bizonylathelper = function ($) {
                                     }
                                 }
                             });
-                        } else {
-                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
+                            break;
+                        case 'rendelesconcat':
+                            dialogcenter.html('Biztos, hogy összevonja a megrendeléseket?').dialog({
                                 resizable: false,
                                 height: 140,
                                 modal: true,
                                 buttons: {
-                                    'OK': function () {
+                                    'Igen': function () {
+                                        let dia = $(this);
+                                        $.ajax({
+                                            url: '/admin/megrendelesfej/concat',
+                                            type: 'POST',
+                                            data: {
+                                                ids: tomb
+                                            },
+                                            success: function () {
+                                                dia.dialog('close');
+                                                $('.mattable-tablerefresh').click();
+                                            }
+                                        });
+                                    },
+                                    'Nem': function () {
                                         $(this).dialog('close');
                                     }
                                 }
                             });
+                            break;
+                    }
+                } else {
+                    dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
                         }
-                        break;
+                    });
                 }
 
             });

@@ -62,7 +62,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['nettoegysar'] = $t->getNettoegysar();
         $x['bruttoegysar'] = $t->getBruttoegysar();
         $x['nettoegysarhuf'] = $t->getNettoegysarhuf();
-        $x['bruttoejs-termeklinkgysarhuf'] = $t->getBruttoegysarhuf();
+        $x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
 
         $x['enettoegysar'] = $t->getEnettoegysar();
         $x['ebruttoegysar'] = $t->getEbruttoegysar();

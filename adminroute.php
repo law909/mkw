@@ -299,6 +299,7 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doPrint', 'adminmegrendelesfejprint');
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');
+$router->map('POST', '/admin/megrendelesfej/concat', 'megrendelesfejController#concat', 'adminmegrendelesfejconcat');
 
 $router->map('GET', '/admin/webshopbizfej/viewlist', 'webshopbizfejController#viewlist', 'adminwebshopbizfejviewlist');
 $router->map('GET', '/admin/webshopbizfej/getlistbody', 'webshopbizfejController#getlistbody', 'adminwebshopbizfejgetlistbody');

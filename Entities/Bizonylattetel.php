@@ -891,20 +891,18 @@ class Bizonylattetel
     public function setVtsz($val)
     {
         if (!is_object($val)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Vtsz::class)->find($val);
         }
         if (!$val) {
             $this->removeVtsz();
-        } else {
-            if ($this->vtsz !== $val) {
-                $this->vtsz = $val;
-                $this->vtsznev = $val->getNev();
-                $this->vtszszam = $val->getSzam();
-                if (!$this->duplication) {
-                    $afa = $val->getAfa();
-                    if ($afa) {
-                        $this->setAfa($afa);
-                    }
+        } elseif ($this->vtsz !== $val) {
+            $this->vtsz = $val;
+            $this->vtsznev = $val->getNev();
+            $this->vtszszam = $val->getSzam();
+            if (!$this->duplication) {
+                $afa = $val->getAfa();
+                if ($afa) {
+                    $this->setAfa($afa);
                 }
             }
         }
@@ -948,16 +946,14 @@ class Bizonylattetel
     public function setAfa($val)
     {
         if (!is_object($val)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Afa')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Afa::class)->find($val);
         }
         if (!$val) {
             $this->removeAfa();
-        } else {
-            if ($this->afa !== $val) {
-                $this->afa = $val;
-                $this->setAfanev($val->getNev());
-                $this->setAfakulcs($val->getErtek());
-            }
+        } elseif ($this->afa !== $val) {
+            $this->afa = $val;
+            $this->setAfanev($val->getNev());
+            $this->setAfakulcs($val->getErtek());
         }
     }
 

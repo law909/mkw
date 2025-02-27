@@ -4,7 +4,9 @@ namespace Controllers;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\Termek;
 use Entities\TermekFa;
+use Entities\TermekValtozat;
 
 class megrendelesfejController extends bizonylatfejController
 {
@@ -20,6 +22,7 @@ class megrendelesfejController extends bizonylatfejController
         $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);
         $this->getRepo()->addToBatches(['recalcprice' => 'Árak újra számolása']);
         $this->getRepo()->addToBatches(['sendemailek' => 'Email sablon küldés']);
+        $this->getRepo()->addToBatches(['rendelesconcat' => 'Megrendelések összevonása']);
     }
 
     public function setVars($view)
@@ -467,5 +470,89 @@ class megrendelesfejController extends bizonylatfejController
                 }
             }
         }
+    }
+
+    public function concat()
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $ids = $this->params->getArrayRequestParam('ids');
+        \mkw\store::writelog('ORDER_CONCAT:START: ' . implode(',', $ids));
+        if ($ids) {
+            $filter->addFilter('id', 'IN', $ids);
+        }
+        $fejek = $this->getRepo()->getWithJoins($filter, []);
+        $partnerek = [];
+        $rendelesidk = [];
+        /** @var Bizonylatfej $fej */
+        foreach ($fejek as $fej) {
+            $partnerek[$fej->getPartnerId()] = $fej->getPartnernev();
+            $rendelesidk[] = $fej->getId();
+        }
+        if (count($partnerek) == 1) {
+            $termekek = [];
+            foreach ($fejek as $fej) {
+                /** @var Bizonylattetel $tetel */
+                foreach ($fej->getBizonylattetelek() as $tetel) {
+                    $kulcs = $tetel->getTermekId() . '-' . $tetel->getTermekvaltozatId() . '-' . $tetel->getNettoegysar();
+                    if (!isset($termekek[$kulcs])) {
+                        $termekek[$kulcs] = [
+                            'termekid' => $tetel->getTermekId(),
+                            'termekvaltozatid' => $tetel->getTermekvaltozatId(),
+                            'afaid' => $tetel->getAfaId(),
+                            'vtszid' => $tetel->getVtszId(),
+                            'nettoegysar' => $tetel->getNettoegysar(),
+                            'nettoegysarhuf' => $tetel->getNettoegysarhuf(),
+                            'mennyiseg' => $tetel->getMennyiseg(),
+                        ];
+                    } else {
+                        $termekek[$kulcs]['mennyiseg'] += $tetel->getMennyiseg();
+                    }
+                }
+            }
+            \mkw\store::writelog('ORDER_CONCAT:transaction start');
+            $this->getEm()->beginTransaction();
+            try {
+                $vantetel = false;
+                $fej = $fejek[0];
+                $ujfej = new Bizonylatfej();
+                $ujfej->duplicateFrom($fej);
+                $ujfej->clearId();
+                $ujfej->removeBizonylatstatusz();
+                $ujfej->setBelsomegjegyzes(implode(', ', $rendelesidk));
+                foreach ($termekek as $termek) {
+                    $biztetel = new Bizonylattetel();
+                    $ujfej->addBizonylattetel($biztetel);
+                    $tetel->setPersistentData();
+                    $biztetel->setTermek($this->getRepo(Termek::class)->find($termek['termekid']));
+                    $biztetel->setTermekvaltozat($this->getRepo(TermekValtozat::class)->find($termek['termekvaltozatid']));
+                    $biztetel->setVtsz($termek['vtszid']);
+                    $biztetel->setAfa($termek['afaid']);
+                    $biztetel->setMennyiseg($termek['mennyiseg']);
+
+                    //$biztetel->setEnettoegysar($tv->getTermek()->getKedvezmenynelkuliNettoAr($tv, $partner));
+                    //$biztetel->setEnettoegysarhuf($biztetel->getEnettoegysar() * $biztetel->getArfolyam());
+                    //$biztetel->setKedvezmeny($tv->getTermek()->getKedvezmeny($partner));
+                    $biztetel->setNettoegysar($termek['nettoegysar']);
+                    $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
+                    $biztetel->calc();
+                    $this->getEm()->persist($biztetel);
+                    $vantetel = true;
+                }
+                if ($vantetel) {
+                    $ujfej->calcOsszesen();
+                    $this->getEm()->persist($ujfej);
+                    \mkw\store::writelog('ORDER_CONCAT:flush start');
+                    $this->getEm()->flush();
+                    \mkw\store::writelog('ORDER_CONCAT:flush stop');
+                }
+                \mkw\store::writelog('ORDER_CONCAT:commit start');
+                $this->getEm()->commit();
+                \mkw\store::writelog('ORDER_CONCAT:commit stop');
+            } catch (\Exception $e) {
+                $this->getEm()->rollback();
+                throw $e;
+            }
+        }
+        \mkw\store::writelog('ORDER_CONCAT:STOP: ' . implode(',', $ids));
     }
 }
