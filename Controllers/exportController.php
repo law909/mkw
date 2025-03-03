@@ -1636,12 +1636,13 @@ class exportController extends \mkwhelpers\Controller
 
         $termekfak = $this->getRepo(TermekFa::class)->getB2BArray();
 
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, 'EAN')
+            ->setCellValue('B' . $sor, 'Article number')
+            ->setCellValue('C' . $sor, 'Quantity');
+        $sor++;
+
         foreach ($termekfak as $termekfa) {
-            $excel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $sor, 'EAN')
-                ->setCellValue('B' . $sor, 'Article number')
-                ->setCellValue('C' . $sor, 'Quantity');
-            $sor++;
             $termekek = $this->getEm()->createNativeQuery(
                 'SELECT t.id,t.cikkszam '
                 . 'FROM termek t '
