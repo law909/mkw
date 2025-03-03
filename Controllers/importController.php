@@ -6006,13 +6006,60 @@ class importController extends \mkwhelpers\Controller
             $tvid = $sheet->getCell('AD' . $row)->getValue();
             if ($tvid) {
                 $tv = $tvr->find($tvid);
+                if ($tv && $ean) {
+                    $tv->setVonalkod($ean);
+                    $this->getEm()->persist($tv);
+                    if ($row % 100 == 0) {
+                        $this->getEm()->flush();
+                    }
+                }
             }
+        }
+        $this->getEm()->flush();
+    }
 
-            if ($tv && $ean) {
-                $tv->setVonalkod($ean);
-                $this->getEm()->persist($tv);
-                if ($row % 100 == 0) {
-                    $this->getEm()->flush();
+    public function szmeretimport()
+    {
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        if ($dbtol < 3) {
+            $dbtol = 3;
+        }
+
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+        $maxcol = $sheet->getHighestColumn();
+
+        $tvr = $this->getRepo(TermekValtozat::class);
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $magassag = $sheet->getCell('V' . $row)->getValue();
+            $hosszusag = $sheet->getCell('X' . $row)->getValue();
+            $szelesseg = $sheet->getCell('Z' . $row)->getValue();
+            $tvid = $sheet->getCell('AD' . $row)->getValue();
+            if ($tvid) {
+                $tv = $tvr->find($tvid);
+                if ($tv) {
+                    /** @var Termek $termek */
+                    $termek = $tv->getTermek();
+                    $termek->setMagassag($magassag);
+                    $termek->setHosszusag($hosszusag);
+                    $termek->setSzelesseg($szelesseg);
+                    $this->getEm()->persist($termek);
+                    if ($row % 100 == 0) {
+                        $this->getEm()->flush();
+                    }
                 }
             }
         }

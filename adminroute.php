@@ -1031,6 +1031,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/szimport', 'importController#szImport', 'adminszimport');
     $router->map('POST', '/admin/import/szcimkeimport', 'importController#szcimkeimport', 'adminszcimkeimport');
     $router->map('POST', '/admin/import/szeanimport', 'importController#szeanimport', 'adminszeanimport');
+    $router->map('POST', '/admin/import/szmeretimport', 'importController#szmeretimport', 'adminszmeretimport');
     $router->map('POST', '/admin/import/fcmotoorderimport', 'importController#fcmotoorderimport', 'adminfcmotoorderimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');

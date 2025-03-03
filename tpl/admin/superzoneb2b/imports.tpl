@@ -51,6 +51,10 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <a href="/admin/import/szmeretimport" class="js-szmeretimport">Termék méretek</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/import/fcmotoorderimport" class="js-fcmotoorderimport">FCMoto rendelés</a>
                     </div>
                     <p>Az excel táblában használható fejlécek:</p>
