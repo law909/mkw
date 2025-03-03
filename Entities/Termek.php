@@ -494,7 +494,7 @@ class Termek
      */
     public function generateVonalkod()
     {
-        if (\mkw\store::getSetupValue('vonalkod') && !$this->vonalkod) {
+        if (\mkw\store::getSetupValue('vonalkodgeneration') && !$this->vonalkod) {
             $conn = \mkw\store::getEm()->getConnection();
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
             $stmt->executeStatement();
