@@ -186,6 +186,7 @@ $router->map('GET', '/export/kaposimoto', 'exportController#KaposimotoExport', '
 $router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 $router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
+$router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');

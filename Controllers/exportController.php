@@ -1624,4 +1624,65 @@ class exportController extends \mkwhelpers\Controller
 
         \unlink($filepath);
     }
+
+    public function fcmotostockExport()
+    {
+        $trsm = new ResultSetMapping();
+        $trsm->addScalarResult('id', 'id');
+        $trsm->addScalarResult('cikkszam', 'cikkszam');
+
+        $excel = new Spreadsheet();
+        $sor = 1;
+
+        $termekfak = $this->getRepo(TermekFa::class)->getB2BArray();
+
+        foreach ($termekfak as $termekfa) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, 'EAN')
+                ->setCellValue('B' . $sor, 'Article number')
+                ->setCellValue('C' . $sor, 'Quantity');
+            $sor++;
+            $termekek = $this->getEm()->createNativeQuery(
+                'SELECT t.id,t.cikkszam '
+                . 'FROM termek t '
+                . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
+                $trsm
+            )->getScalarResult();
+            foreach ($termekek as $termek) {
+                $valtfilter = new FilterDescriptor();
+                $valtfilter->addFilter('termek', '=', $termek['id']);
+                $valtfilter->addFilter('lathato', '=', 1);
+                $valtozatok = $this->getRepo(TermekValtozat::class)->getAll($valtfilter);
+                /** @var TermekValtozat $valtozat */
+                foreach ($valtozatok as $valtozat) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $sor, $valtozat->getVonalkod())
+                        ->setCellValue('C' . $sor, $termek['cikkszam'])
+                        ->setCellValue('D' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
+                    $sor++;
+                }
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('stock') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+
 }

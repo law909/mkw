@@ -750,7 +750,11 @@ class store
     {
         if ($url && $ret = parse_url($url)) {
             if (!isset($ret['scheme'])) {
-                $url = 'http://' . $url;
+                if (self::isSSL()) {
+                    $url = 'https://' . $url;
+                } else {
+                    $url = 'http://' . $url;
+                }
             }
         }
         return $url;
