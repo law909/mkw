@@ -1658,7 +1658,7 @@ class exportController extends \mkwhelpers\Controller
                 foreach ($valtozatok as $valtozat) {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('B' . $sor, $termek['cikkszam'])
+                        ->setCellValue('B' . $sor, $termek['cikkszam'] . '-' . $valtozat->getMeret())
                         ->setCellValue('C' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
                     $sor++;
                 }
