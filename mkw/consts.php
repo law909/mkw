@@ -410,6 +410,7 @@ class consts
     const GS1DatasourceName = 'gs1datasourcename';
 
     const FCMoto = 'fcmoto';
+    const MaximoMoto = 'maximomoto';
 
     public static function getWebshopPriceConst($_webshopNum = null)
     {

@@ -905,7 +905,20 @@ $(document).ready(function () {
                         });
                         break;
                     case 'fcmotoexport':
-                        href = '/admin/termek/fcmotoexport?ids=' + tomb.join(',');
+                        href = '/admin/termek/fcmotoexport?ids=' + tomb.join(',') + '&p=fcmoto';
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    case 'maximomotoexport':
+                        href = '/admin/termek/fcmotoexport?ids=' + tomb.join(',') + '&p=maximomoto';
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
                             resizable: false,
                             height: 140,

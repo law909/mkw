@@ -1714,6 +1714,7 @@ class termekController extends \mkwhelpers\MattableController
             return \mkw\store::getExcelCoordinate($o, '');
         }
 
+        $p = $this->params->getStringRequestParam('p');
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
 
@@ -1737,7 +1738,11 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('P1', 'Height')
             ->setCellValue('Q1', 'Length');
 
-        $fcmoto = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));
+        $partner = match ($p) {
+            'fcmoto' => $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto)),
+            'maximomoto' => $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::MaximoMoto)),
+            default => null,
+        };
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
@@ -1769,7 +1774,7 @@ class termekController extends \mkwhelpers\MattableController
                         ->setCellValue('H' . $sor, $valtozat->getMeret())
                         ->setCellValue('I' . $sor, $valtozat->getSzin())
                         ->setCellValue('J' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
+                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $partner))
                         ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
                         ->setCellValue('M' . $sor, 'Pakistan')
                         ->setCellValue('N' . $sor, $termek->getSuly())
@@ -1789,7 +1794,7 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
                     ->setCellValue('G' . $sor, implode(';', $kepurlarr))
                     ->setCellValue('J' . $sor, $termek->getVonalkod())
-                    ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $fcmoto))
+                    ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $partner))
                     ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
                     ->setCellValue('M' . $sor, 'Pakistan')
                     ->setCellValue('N' . $sor, $termek->getSuly())
