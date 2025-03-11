@@ -356,7 +356,19 @@ class Bizonylattetel
         $ret['afa'] = $this->getAfaertek();
         $ret['brutto'] = $this->getBrutto();
         $ret['kedvezmeny'] = $this->getKedvezmeny();
-        $ret['termeknev'] = $this->getTermeknev();
+        $nyelv = $this->getBizonylatfej()?->getBizonylatnyelv();
+        if (\mkw\store::isMultilang() && $nyelv) {
+            $tn = $this->getTranslatedTermeknev($nyelv);
+            if (!$tn) {
+                $tn = $this->getTermek()->getTranslatedNev($nyelv);
+                if (!$tn) {
+                    $tn = $this->getTermeknev();
+                }
+            }
+            $ret['termeknev'] = $tn;
+        } else {
+            $ret['termeknev'] = $this->getTermeknev();
+        }
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
         $ret['vtszszam'] = $this->getVtszszam();
@@ -770,6 +782,12 @@ class Bizonylattetel
             $valtnev = $this->getTermekvaltozat()->getNev();
         }
         return implode(' ', [$this->getTermeknev(), $valtnev]);
+    }
+
+    public function getTranslatedTermeknev($locale)
+    {
+        $ta = $this->getTranslationsArray();
+        return $ta[$locale]['termeknev'];
     }
 
     public function getTermeknev()
@@ -1418,6 +1436,16 @@ class Bizonylattetel
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    public function getTranslationsArray()
+    {
+        $r = [];
+        /** @var \Entities\BizonylattetelTranslation $tr */
+        foreach ($this->translations as $tr) {
+            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
+        }
+        return $r;
     }
 
     public function addTranslation(BizonylattetelTranslation $t)

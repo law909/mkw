@@ -371,6 +371,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getTranslatedNev($locale)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslatedNev', [$locale]);
+
+        return parent::getTranslatedNev($locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getNev()
     {
 

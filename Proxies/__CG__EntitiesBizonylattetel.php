@@ -657,6 +657,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getTranslatedTermeknev($locale)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslatedTermeknev', [$locale]);
+
+        return parent::getTranslatedTermeknev($locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTermeknev()
     {
 
@@ -1708,6 +1719,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
 
         return parent::getTranslations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslationsArray()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslationsArray', []);
+
+        return parent::getTranslationsArray();
     }
 
     /**

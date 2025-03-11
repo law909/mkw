@@ -1290,6 +1290,12 @@ class Termek
         return $this->id;
     }
 
+    public function getTranslatedNev($locale)
+    {
+        $ta = $this->getTranslationsArray();
+        return $ta[$locale]['nev'];
+    }
+
     public function getNev()
     {
         return $this->nev;
