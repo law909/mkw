@@ -201,6 +201,10 @@ class TermekValtozat
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->keszletinfo = false;
+        $this->foglalasinfo = false;
+        $this->dontUploadToWC = false;
     }
 
     public function toEmag()

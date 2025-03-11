@@ -533,6 +533,8 @@ class Termek
         $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->blogposztok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertekelesek = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->dontUploadToWC = false;
     }
 
     public function getUjTermek($min)
