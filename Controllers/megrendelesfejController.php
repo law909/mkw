@@ -525,7 +525,7 @@ class megrendelesfejController extends bizonylatfejController
                 foreach ($termekek as $termek) {
                     $biztetel = new Bizonylattetel();
                     $ujfej->addBizonylattetel($biztetel);
-                    $tetel->setPersistentData();
+                    $biztetel->setPersistentData();
                     $biztetel->setTermek($this->getRepo(Termek::class)->find($termek['termekid']));
                     $biztetel->setTermekvaltozat($this->getRepo(TermekValtozat::class)->find($termek['termekvaltozatid']));
                     $biztetel->setVtsz($termek['vtszid']);
