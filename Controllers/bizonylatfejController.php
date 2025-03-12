@@ -574,6 +574,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     protected function setFields(\Entities\Bizonylatfej $obj, $parancs)
     {
+        \mkw\store::writelog('bizonylatfejController.setFields() START');
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
@@ -852,6 +853,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $tetelids = $this->params->getArrayRequestParam('tetelid');
         $biztetelcontroller = new bizonylattetelController($this->params);
         foreach ($tetelids as $tetelid) {
+            \mkw\store::writelog($tetelid . ': biz.tetel feldolgozas START');
             if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
                 $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
 
@@ -1062,12 +1064,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
                 }
             }
+            \mkw\store::writelog($tetelid . ': biz.tetel feldolgozas STOP');
         }
+        \mkw\store::writeLog('bizonylatfejController.setFields() STOP');
         return $obj;
     }
 
     protected function afterSave($o, $parancs = null)
     {
+        \mkw\store::writelog('flush STOP, aftersave START');
         $oper = $this->params->getStringRequestParam('oper');
         parent::afterSave($o, $parancs);
         if ($oper === 'storno') {
@@ -1089,6 +1094,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $o->sendStatuszEmail($emailtpl);
             }
         }
+        \mkw\store::writelog('aftersave STOP');
     }
 
     public function checkKelt()

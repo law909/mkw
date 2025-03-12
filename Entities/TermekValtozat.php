@@ -23,8 +23,8 @@ use mkwhelpers\FilterDescriptor;
 class TermekValtozat
 {
 
-    private $keszletinfo = false;
-    private $foglalasinfo = false;
+    public $keszletinfo = false;
+    public $foglalasinfo = false;
     public $dontUploadToWC = false;
 
     /**
@@ -356,7 +356,7 @@ class TermekValtozat
             $this->calcKeszletInfo($datum, $raktarid);
         }
         $r = $this->keszletinfo['keszlet'];
-        unset($this->keszletinfo);
+        $this->keszletinfo = false;
         if ($nonegativ) {
             if ($r < 0) {
                 $r = 0;
@@ -375,24 +375,9 @@ class TermekValtozat
             if (!$this->foglalasinfo) {
                 $this->calcFoglalasInfo($kivevebiz);
             }
-            return $this->foglalasinfo['foglalas'];
-
-            /** @var \Entities\Bizonylattetel $bt */
-            /*
-            foreach($this->bizonylattetelek as $bt) {
-                $bf = $bt->getBizonylatfej();
-                if ($bf->getBizonylattipusId() === 'megrendeles') {
-                    $nemkivetel = true;
-                    if ($kivevebiz) {
-                        $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
-                    }
-                    if ($bt->getFoglal() && ($nemkivetel)) {
-                        $k += ($bt->getMennyiseg() * $bt->getIrany());
-                    }
-                }
-            }
-            return -1 * $k;
-            */
+            $r = $this->foglalasinfo['foglalas'];
+            $this->foglalasinfo = false;
+            return $r;
         }
         return 0;
     }
