@@ -943,6 +943,19 @@ $(document).ready(function () {
                             }
                         });
                         break;
+                    case 'colorexport':
+                        href = '/admin/termek/colorexport';
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
                     case 'cikkszamosexport':
                         href = '/admin/termek/cikkszamosexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({

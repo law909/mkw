@@ -55,6 +55,10 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <a href="/admin/import/szcolorimport" class="js-szcolorimport">Szín kódok</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/import/fcmotoorderimport" class="js-fcmotoorderimport">FCMoto rendelés</a>
                     </div>
                     <p>Az excel táblában használható fejlécek:</p>

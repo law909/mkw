@@ -22,6 +22,7 @@ use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekTranslation;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
 use Entities\Vtsz;
 use mkw\store;
@@ -6060,6 +6061,46 @@ class importController extends \mkwhelpers\Controller
                     if ($row % 100 == 0) {
                         $this->getEm()->flush();
                     }
+                }
+            }
+        }
+        $this->getEm()->flush();
+    }
+
+    public function szcolorimport()
+    {
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        if ($dbtol < 1) {
+            $dbtol = 1;
+        }
+
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+
+        $tver = $this->getRepo(TermekValtozatErtek::class);
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $ertek = $sheet->getCell('A' . $row)->getValue();
+            $charkod = $sheet->getCell('C' . $row)->getValue();
+            /** @var TermekValtozatErtek $tve */
+            $tve = $tver->findOneBy(['ertek' => $ertek]);
+            if ($tve) {
+                $tve->setCharkod($charkod);
+                $this->getEm()->persist($tve);
+                if ($row % 100 == 0) {
+                    $this->getEm()->flush();
                 }
             }
         }

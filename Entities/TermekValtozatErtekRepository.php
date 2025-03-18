@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class TermekValtozatErtekRepository extends \mkwhelpers\Repository
 {
 
@@ -13,4 +15,34 @@ class TermekValtozatErtekRepository extends \mkwhelpers\Repository
             '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']]
         ]);
     }
+
+    public function getAllColors()
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('adattipus', '=', \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin));
+        return $this->getAll($filter, ['ertek' => 'ASC']);
+    }
+
+    public function translate($tipus, $ertek)
+    {
+        $x = $this->findOneBy([
+            'adattipus' => $tipus,
+            'ertek' => $ertek,
+        ]);
+        if ($x) {
+            return $x->getCharkod();
+        }
+        return $ertek;
+    }
+
+    public function translateColor($ertek)
+    {
+        return $this->translate(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin), $ertek);
+    }
+
+    public function translateSize($ertek)
+    {
+        return $this->translate(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret), $ertek);
+    }
+
 }

@@ -32,6 +32,10 @@ class TermekValtozatErtek
     /** @ORM\Column(type="datetime", nullable=true) */
     private $wcdate;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $charkod;
+
+
     /**
      * @return mixed
      */
@@ -124,6 +128,22 @@ class TermekValtozatErtek
     public function setAdatTipus($at)
     {
         $this->adattipus = $at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCharkod()
+    {
+        return $this->charkod;
+    }
+
+    /**
+     * @param mixed $charkod
+     */
+    public function setCharkod($charkod): void
+    {
+        $this->charkod = $charkod;
     }
 
 }

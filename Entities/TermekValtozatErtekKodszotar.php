@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Entities\TermekValtozatErtekKodszotarRepository")
  * @ORM\Table(name="termekvaltozatertekkodszotar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class TermekValtozatErtekKodszotar {
+class TermekValtozatErtekKodszotar
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,35 +28,40 @@ class TermekValtozatErtekKodszotar {
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return mixed
      */
-    public function getErtek() {
+    public function getErtek()
+    {
         return $this->ertek;
     }
 
     /**
      * @param mixed $ertek
      */
-    public function setErtek($ertek) {
+    public function setErtek($ertek)
+    {
         $this->ertek = $ertek;
     }
 
     /**
      * @return mixed
      */
-    public function getKod() {
+    public function getKod()
+    {
         return $this->kod;
     }
 
     /**
      * @param mixed $kod
      */
-    public function setKod($kod) {
+    public function setKod($kod)
+    {
         $this->kod = $kod;
     }
 

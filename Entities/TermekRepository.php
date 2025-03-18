@@ -21,6 +21,7 @@ class TermekRepository extends \mkwhelpers\Repository
             'fcmotoexport' => 'Export változatokkal (FC-MOTO)',
             'maximomotoexport' => 'Export változatokkal (MAXIMOMOTO)',
             'gs1export' => 'GS1 export',
+            'colorexport' => 'Szín export',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'tcsset' => 'Termékcsoport módosítás',
         ]);

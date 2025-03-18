@@ -12,6 +12,7 @@ use Entities\TermekKep;
 use Entities\TermekMenu;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
+use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -1766,7 +1767,7 @@ class termekController extends \mkwhelpers\MattableController
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $termek->getId())
                         ->setCellValue('B' . $sor, $valtozat->getId())
-                        ->setCellValue('C' . $sor, $termek->getCikkszam())
+                        ->setCellValue('C' . $sor, strtoupper($termek->getCikkszam()))
                         ->setCellValue('D' . $sor, $nev)
                         ->setCellValue('E' . $sor, $leiras)
                         ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
@@ -1788,7 +1789,7 @@ class termekController extends \mkwhelpers\MattableController
             } else {
                 $excel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $sor, $termek->getId())
-                    ->setCellValue('C' . $sor, $termek->getCikkszam())
+                    ->setCellValue('C' . $sor, strtoupper($termek->getCikkszam()))
                     ->setCellValue('D' . $sor, $nev)
                     ->setCellValue('E' . $sor, $leiras)
                     ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
@@ -1917,6 +1918,47 @@ class termekController extends \mkwhelpers\MattableController
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
         header("Content-Disposition: attachment; filename=" . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function colorexport()
+    {
+        $tvec = new termekvaltozatertekController($this->params);
+        $tvec->fill();
+
+        $sor = 1;
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, 'Old color')
+            ->setCellValue('B' . $sor, 'New color')
+            ->setCellValue('C' . $sor, 'Color code');
+        $sor++;
+
+        $colors = $this->getRepo(TermekValtozatErtek::class)->getAllColors();
+        /** @var TermekValtozatErtek $color */
+        foreach ($colors as $color) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, $color->getErtek())
+                ->setCellValue('B' . $sor, $color->getErtek())
+                ->setCellValue('C' . $sor, $color->getCharkod());
+            $sor++;
+        }
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('colors') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
 

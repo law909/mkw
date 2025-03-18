@@ -9,8 +9,9 @@ use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatErtek;
+use Entities\TermekValtozatErtekRepository;
 use mkwhelpers\FilterDescriptor;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -881,106 +882,6 @@ class exportController extends \mkwhelpers\Controller
         }
     }
 
-    public function FCMotoExport()
-    {
-        $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
-
-        $ertek1 = array_merge(
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
-        );
-
-        foreach ($ertek1 as $eee1) {
-            $e1 = $eee1['ertek'];
-
-            $kodsz = $kodszotarrepo->findOneBy(['ertek' => $e1]);
-            if (!$kodsz) {
-                $kodsz = new \Entities\TermekValtozatErtekKodszotar();
-                $kodsz->setErtek($e1);
-                \mkw\store::getEm()->persist($kodsz);
-                \mkw\store::getEm()->flush();
-                $kodsz->setKod($kodsz->getId());
-                \mkw\store::getEm()->persist($kodsz);
-                \mkw\store::getEm()->flush();
-            }
-        }
-
-        header("Content-type: text/csv");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        header("Content-Disposition: attachment; filename=fcmoto.csv");
-
-        $sor = [
-            'Article Number',
-            'Color Number',
-            'Article Name',
-            'Color',
-            'Size',
-            'Stock',
-            'EAN Code',
-            'Description',
-            'Image URL'
-        ];
-        echo implode(";", $sor) . "\n";
-
-        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
-
-        $filter = new FilterDescriptor();
-        $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-        if ($karkod) {
-            $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
-        }
-
-        $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
-
-//        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
-
-        /** @var \Entities\Termek $t */
-        foreach ($res as $t) {
-            $valtozatok = $t->getValtozatok();
-            if ($valtozatok) {
-                /** @var \Entities\TermekValtozat $valt */
-                foreach ($valtozatok as $valt) {
-                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
-                    if ($keszlet < 0) {
-                        $keszlet = 0;
-                    }
-                    $sor = [
-                        '"' . $t->getCikkszam() . '"',
-                        '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
-                        '"' . $t->getNev() . '"',
-                        '"' . $valt->getSzin() . '"',
-                        '"' . $valt->getMeret() . '"',
-                        '"' . $keszlet . '"',
-                        '"' . $valt->getVonalkod() . '"',
-                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
-                        //'"' . $t->getBruttoAr($valt, null, $eur, 'eurar') . '"'
-                    ];
-                    echo implode(";", $sor) . "\n";
-                }
-            } else {
-                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
-                if ($keszlet < 0) {
-                    $keszlet = 0;
-                }
-                $sor = [
-                    '"' . $t->getCikkszam() . '"',
-                    '""',
-                    '"' . $t->getNev() . '"',
-                    '""',
-                    '""',
-                    '"' . $keszlet . '"',
-                    '"' . $t->getVonalkod() . '"',
-                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
-                    //'"' . $t->getBruttoAr(null, null, $eur, 'eurar') . '"'
-                ];
-                echo implode(";", $sor) . "\n";
-            }
-        }
-    }
-
     public function MugenraceExport()
     {
         $maxstock = $this->params->getNumRequestParam('max', 0);
@@ -1474,7 +1375,7 @@ class exportController extends \mkwhelpers\Controller
                     $total[] = $vegsor;
                 }
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue('B' . $sor, $termek['cikkszam'])
+                    ->setCellValue('B' . $sor, strtoupper($termek['cikkszam']))
                     ->setCellValue('C' . $sor, $termek['termeknev']);
                 $excel->setActiveSheetIndex(0)
                     ->getStyle('B' . $sor)->getFont()->setBold(true)->setSize(16);
@@ -1631,6 +1532,9 @@ class exportController extends \mkwhelpers\Controller
         $trsm->addScalarResult('id', 'id');
         $trsm->addScalarResult('cikkszam', 'cikkszam');
 
+        /** @var TermekValtozatErtekRepository $tver */
+        $tver = $this->getRepo(TermekValtozatErtek::class);
+
         $excel = new Spreadsheet();
         $sor = 1;
 
@@ -1658,7 +1562,10 @@ class exportController extends \mkwhelpers\Controller
                 foreach ($valtozatok as $valtozat) {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('B' . $sor, $termek['cikkszam'] . '-' . $valtozat->getMeret())
+                        ->setCellValue(
+                            'B' . $sor,
+                            strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret()
+                        )
                         ->setCellValue('C' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
                     $sor++;
                 }
@@ -1684,5 +1591,61 @@ class exportController extends \mkwhelpers\Controller
         \unlink($filepath);
     }
 
+    public function eanstockExport()
+    {
+        $trsm = new ResultSetMapping();
+        $trsm->addScalarResult('id', 'id');
+        $trsm->addScalarResult('cikkszam', 'cikkszam');
+
+        $excel = new Spreadsheet();
+        $sor = 1;
+
+        $termekfak = $this->getRepo(TermekFa::class)->getB2BArray();
+
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, 'EAN')
+            ->setCellValue('B' . $sor, 'Quantity');
+        $sor++;
+
+        foreach ($termekfak as $termekfa) {
+            $termekek = $this->getEm()->createNativeQuery(
+                'SELECT t.id,t.cikkszam '
+                . 'FROM termek t '
+                . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
+                $trsm
+            )->getScalarResult();
+            foreach ($termekek as $termek) {
+                $valtfilter = new FilterDescriptor();
+                $valtfilter->addFilter('termek', '=', $termek['id']);
+                $valtfilter->addFilter('lathato', '=', 1);
+                $valtozatok = $this->getRepo(TermekValtozat::class)->getAll($valtfilter);
+                /** @var TermekValtozat $valtozat */
+                foreach ($valtozatok as $valtozat) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $sor, $valtozat->getVonalkod())
+                        ->setCellValue('B' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
+                    $sor++;
+                }
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('eanstock') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
 
 }

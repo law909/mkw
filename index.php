@@ -260,9 +260,6 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                     } elseif (store::mustLogin() && !in_array($match['name'], [
                             'showlogin',
                             'dologin',
-                            'showfanta',
-                            'dofanta',
-                            'fcmotoexport',
                             'mugenraceexport',
                             'superzonehuexport',
                             'pubregistration',
@@ -276,6 +273,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'a2aprocesscmd',
                             'orderformexport',
                             'fcmotostockexport',
+                            'eanstockexport',
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
                             'partnercheckemail',

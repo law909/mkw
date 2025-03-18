@@ -179,7 +179,6 @@ $router->map('GET', '/export/argep', 'exportController#ArgepExport', 'argepexpor
 $router->map('GET', '/export/yusp', 'exportController#YuspExport', 'yuspexport');
 $router->map('GET', '/export/arukereso', 'exportController#ArukeresoExport', 'arukeresoexport');
 $router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'olcsobbatexport');
-//$router->map('GET', '/export/fcmoto', 'exportController#FCMotoExport', 'fcmotoexport');
 $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
 $router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
 $router->map('GET', '/export/kaposimoto', 'exportController#KaposimotoExport', 'kaposimotoexport');
@@ -187,6 +186,7 @@ $router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport')
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 $router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
 $router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
+$router->map('GET', '/export/eanstock', 'exportController#eanstockExport', 'eanstockexport');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');

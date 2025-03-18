@@ -613,6 +613,7 @@ $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'ad
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
 $router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport', 'admintermekfcmotoexport');
 $router->map('GET', '/admin/termek/gs1export', 'termekController#gs1export', 'admintermekgs1export');
+$router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport', 'admintermekcolorexport');
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
@@ -1032,6 +1033,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/szcimkeimport', 'importController#szcimkeimport', 'adminszcimkeimport');
     $router->map('POST', '/admin/import/szeanimport', 'importController#szeanimport', 'adminszeanimport');
     $router->map('POST', '/admin/import/szmeretimport', 'importController#szmeretimport', 'adminszmeretimport');
+    $router->map('POST', '/admin/import/szcolorimport', 'importController#szcolorimport', 'adminszcolorimport');
     $router->map('POST', '/admin/import/fcmotoorderimport', 'importController#fcmotoorderimport', 'adminfcmotoorderimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
