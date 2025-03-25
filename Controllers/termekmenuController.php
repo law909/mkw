@@ -400,11 +400,10 @@ class termekmenuController extends \mkwhelpers\MattableController
                 }
                 try {
                     $wc->put('products/categories/' . $category->getWcid(), $data);
+                    $category->setWcdate('');
                 } catch (HttpClientException $e) {
                     \mkw\store::writelog($category->getWcid() . ' :termékkategória PUT:HIBA: ' . $e->getMessage());
                 }
-                $category->setKepwcid($result->image->id);
-                $category->setWcdate('');
                 \mkw\store::getEm()->persist($category);
                 \mkw\store::getEm()->flush();
 
@@ -421,6 +420,66 @@ class termekmenuController extends \mkwhelpers\MattableController
             self::walkCategoryTree(null, null, $wc);
             echo 'Ready.';
         }
+    }
+
+    public static function walkPrestashopTree($parentId = null)
+    {
+        $filter = new FilterDescriptor();
+        if (!$parentId) {
+            $filter->addSql('(_xx.parent IS NULL)');
+        } else {
+            $filter->addFilter('parent', '=', $parentId);
+        }
+        $categories = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($filter);
+
+        /** @var TermekMenu $category */
+        foreach ($categories as $category) {
+            if ($category->getNLathato(\mkw\store::getWcWebshopNum())) {
+                $ford = $category->getTranslationsArray();
+                $nev = $category->getNevForditas($ford, 'en_us');
+                $leiras = $category->getLeirasForditas($ford, 'en_us');
+                if ($nev) {
+                    $data = [
+                        $category->getId(),
+                        1,
+                        $nev,
+                        'Home',
+                        0,
+                        $leiras,
+                        $nev,
+                        '',
+                        '',
+                        '',
+                        \mkw\store::getWcImageUrlPrefix() . $category->getKepurl()
+                    ];
+                    \mkw\store::writeLineToFile(implode(';', $data), 'categories.csv');
+                    self::walkPrestashopTree($category->getId());
+                } else {
+                    self::walkPrestashopTree($category->getId());
+                }
+            } else {
+                self::walkPrestashopTree($category->getId());
+            }
+        }
+    }
+
+    public function exportToPrestashop()
+    {
+        \mkw\store::writeLineToFile(implode(';', [
+            'Category ID',
+            'Active (0/1)',
+            'Name *',
+            'Parent category',
+            'Root category (0/1)',
+            'Description',
+            'Meta title',
+            'Meta keywords',
+            'Meta description',
+            'URL rewritten',
+            'Image URL'
+        ]), 'categories.csv');
+        self::walkPrestashopTree(null, null);
+        echo 'Ready.';
     }
 
 }

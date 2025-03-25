@@ -131,6 +131,14 @@ class store
         fclose($handle);
     }
 
+    public static function writeLineToFile($text, $fname)
+    {
+        $handle = fopen(self::storagePath($fname), "a");
+        $log = $text . "\n";
+        fwrite($handle, $log);
+        fclose($handle);
+    }
+
     public static function deletelog($fname)
     {
         if ($fname) {
