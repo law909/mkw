@@ -85,6 +85,7 @@
         {if ($setup.mptngy)}
             <div>Munkahely: {$_partner.mpt_munkahelynev}</div>
             <div>Számlázási név: {$_partner.szlanev}</div>
+            <div>Phd hallgató: {if ($_partner.mptngyphd)}igen{else}nem{/if}</div>
         {/if}
         <div>Számlázási cím: {$_partner.orszagnev}, {$_partner.cim}</div>
         <div>Szállítási cím: {$_partner.szallorszagnev}, {$_partner.szallcim}</div>
