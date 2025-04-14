@@ -524,6 +524,7 @@ class megrendelesfejController extends bizonylatfejController
                 $ujfej->setKelt('');
                 $ujfej->setTeljesites('');
                 $ujfej->setEsedekesseg('');
+                $ujfej->setHatarido('');
                 $ujfej->removeBizonylatstatusz();
                 $ujfej->setBelsomegjegyzes(implode(', ', $rendelesidk));
                 foreach ($termekek as $termek) {
