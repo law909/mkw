@@ -513,7 +513,7 @@ class megrendelesfejController extends bizonylatfejController
                     }
                 }
             }
-            \mkw\store::writelog('ORDER_CONCAT:transaction start');
+            //\mkw\store::writelog('ORDER_CONCAT:transaction start');
             \mkw\store::writelog('ORDER_CONCAT:termekek: ' . json_encode($termekek));
             //$this->getEm()->beginTransaction();
             //try {
@@ -549,11 +549,11 @@ class megrendelesfejController extends bizonylatfejController
                 $this->getEm()->persist($ujfej);
                 \mkw\store::writelog('ORDER_CONCAT:flush start');
                 $this->getEm()->flush();
-                \mkw\store::writelog('ORDER_CONCAT:flush stop');
+                \mkw\store::writelog('ORDER_CONCAT:flush stop ' . $ujfej->getId());
             }
-            \mkw\store::writelog('ORDER_CONCAT:commit start');
+            //\mkw\store::writelog('ORDER_CONCAT:commit start');
             //$this->getEm()->commit();
-            \mkw\store::writelog('ORDER_CONCAT:commit stop');
+            //\mkw\store::writelog('ORDER_CONCAT:commit stop');
             //} catch (\Exception $e) {
             //$this->getEm()->rollback();
             //    throw $e;
