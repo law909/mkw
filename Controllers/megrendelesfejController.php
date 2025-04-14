@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
 use Entities\Termek;
 use Entities\TermekFa;
@@ -240,8 +241,8 @@ class megrendelesfejController extends bizonylatfejController
         if ($regibiz) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = $this->getRepo(TermekFa::class)->find(\mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat))?->getKarkod();
-            $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
-            $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+            $teljesitheto = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
+            $backorder = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
             $this->getEm()->beginTransaction();
             try {
                 $ujdb = 0;
@@ -513,6 +514,7 @@ class megrendelesfejController extends bizonylatfejController
                 }
             }
             \mkw\store::writelog('ORDER_CONCAT:transaction start');
+            \mkw\store::writelog('ORDER_CONCAT:termekek: ' . json_encode($termekek));
             $this->getEm()->beginTransaction();
             try {
                 $vantetel = false;
@@ -539,6 +541,7 @@ class megrendelesfejController extends bizonylatfejController
                     $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
                     $biztetel->calc();
                     $this->getEm()->persist($biztetel);
+                    \mkw\store::writelog('ORDER_CONCAT:termek_id' . $termek['termekid'] . ' mennyiség: ' . $termek['mennyiseg']);
                     $vantetel = true;
                 }
                 if ($vantetel) {
