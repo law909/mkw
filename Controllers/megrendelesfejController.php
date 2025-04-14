@@ -513,51 +513,52 @@ class megrendelesfejController extends bizonylatfejController
                     }
                 }
             }
-            //\mkw\store::writelog('ORDER_CONCAT:transaction start');
-            \mkw\store::writelog('ORDER_CONCAT:termekek: ' . json_encode($termekek));
-            //$this->getEm()->beginTransaction();
-            //try {
-            $vantetel = false;
-            $fej = $fejek[0];
-            $ujfej = new Bizonylatfej();
-            $ujfej->duplicateFrom($fej);
-            $ujfej->clearId();
-            $ujfej->removeBizonylatstatusz();
-            $ujfej->setBelsomegjegyzes(implode(', ', $rendelesidk));
-            foreach ($termekek as $termek) {
-                $biztetel = new Bizonylattetel();
-                $ujfej->addBizonylattetel($biztetel);
-                $biztetel->setPersistentData();
-                $biztetel->setTermek($this->getRepo(Termek::class)->find($termek['termekid']));
-                $biztetel->setTermekvaltozat($this->getRepo(TermekValtozat::class)->find($termek['termekvaltozatid']));
-                $biztetel->setVtsz($termek['vtszid']);
-                $biztetel->setAfa($termek['afaid']);
-                $biztetel->setMennyiseg($termek['mennyiseg']);
+            \mkw\store::writelog('ORDER_CONCAT:transaction start');
+            $this->getEm()->beginTransaction();
+            try {
+                $vantetel = false;
+                $fej = $fejek[0];
+                $ujfej = new Bizonylatfej();
+                $ujfej->duplicateFrom($fej);
+                $ujfej->clearId();
+                $ujfej->setKelt('');
+                $ujfej->setTeljesites('');
+                $ujfej->setEsedekesseg('');
+                $ujfej->removeBizonylatstatusz();
+                $ujfej->setBelsomegjegyzes(implode(', ', $rendelesidk));
+                foreach ($termekek as $termek) {
+                    $biztetel = new Bizonylattetel();
+                    $ujfej->addBizonylattetel($biztetel);
+                    $biztetel->setPersistentData();
+                    $biztetel->setTermek($this->getRepo(Termek::class)->find($termek['termekid']));
+                    $biztetel->setTermekvaltozat($this->getRepo(TermekValtozat::class)->find($termek['termekvaltozatid']));
+                    $biztetel->setVtsz($termek['vtszid']);
+                    $biztetel->setAfa($termek['afaid']);
+                    $biztetel->setMennyiseg($termek['mennyiseg']);
 
-                $biztetel->setEnettoegysar($termek['enettoegysar']);
-                $biztetel->setEnettoegysarhuf($termek['enettoegysarhuf']);
-                $biztetel->setKedvezmeny($termek['kedvezmeny']);
-                $biztetel->setNettoegysar($termek['nettoegysar']);
-                $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
-                $biztetel->calc();
-                $this->getEm()->persist($biztetel);
-                \mkw\store::writelog('ORDER_CONCAT:termek_id' . $termek['termekid'] . ' mennyiség: ' . $termek['mennyiseg']);
-                $vantetel = true;
+                    $biztetel->setEnettoegysar($termek['enettoegysar']);
+                    $biztetel->setEnettoegysarhuf($termek['enettoegysarhuf']);
+                    $biztetel->setKedvezmeny($termek['kedvezmeny']);
+                    $biztetel->setNettoegysar($termek['nettoegysar']);
+                    $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
+                    $biztetel->calc();
+                    $this->getEm()->persist($biztetel);
+                    $vantetel = true;
+                }
+                if ($vantetel) {
+                    $ujfej->calcOsszesen();
+                    $this->getEm()->persist($ujfej);
+                    \mkw\store::writelog('ORDER_CONCAT:flush start');
+                    $this->getEm()->flush();
+                    \mkw\store::writelog('ORDER_CONCAT:flush stop ' . $ujfej->getId());
+                }
+                \mkw\store::writelog('ORDER_CONCAT:commit start');
+                $this->getEm()->commit();
+                \mkw\store::writelog('ORDER_CONCAT:commit stop');
+            } catch (\Exception $e) {
+                $this->getEm()->rollback();
+                throw $e;
             }
-            if ($vantetel) {
-                $ujfej->calcOsszesen();
-                $this->getEm()->persist($ujfej);
-                \mkw\store::writelog('ORDER_CONCAT:flush start');
-                $this->getEm()->flush();
-                \mkw\store::writelog('ORDER_CONCAT:flush stop ' . $ujfej->getId());
-            }
-            //\mkw\store::writelog('ORDER_CONCAT:commit start');
-            //$this->getEm()->commit();
-            //\mkw\store::writelog('ORDER_CONCAT:commit stop');
-            //} catch (\Exception $e) {
-            //$this->getEm()->rollback();
-            //    throw $e;
-            //}
         }
         \mkw\store::writelog('ORDER_CONCAT:STOP: ' . implode(',', $ids));
     }
