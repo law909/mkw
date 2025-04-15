@@ -533,6 +533,7 @@ class megrendelesfejController extends bizonylatfejController
                     $biztetel->setPersistentData();
                     $biztetel->setTermek($this->getRepo(Termek::class)->find($termek['termekid']));
                     $biztetel->setTermekvaltozat($this->getRepo(TermekValtozat::class)->find($termek['termekvaltozatid']));
+                    $biztetel->setFoglal();
                     $biztetel->setVtsz($termek['vtszid']);
                     $biztetel->setAfa($termek['afaid']);
                     $biztetel->setMennyiseg($termek['mennyiseg']);
