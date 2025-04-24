@@ -505,7 +505,11 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
 
         if (!is_null($this->params->getRequestParam('temakor1filter', null))) {
-            $filter->addFilter('temakor1', '=', $this->params->getIntRequestParam('temakor1filter'));
+            $filter->addSql(
+                '((_xx.temakor1=' . $this->params->getIntRequestParam('temakor1filter') . ') OR ' .
+                '(_xx.temakor2=' . $this->params->getIntRequestParam('temakor1filter') . ') OR ' .
+                '(_xx.temakor3=' . $this->params->getIntRequestParam('temakor1filter') . '))'
+            );
         }
 
         if (!is_null($this->params->getRequestParam('tipusfilter', null))) {
