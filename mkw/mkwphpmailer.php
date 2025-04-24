@@ -1,12 +1,15 @@
 <?php
+
 namespace mkw;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
-class mkwphpmailer {
+class mkwphpmailer
+{
 
     private $mailer;
-    private $to = array();
+    private $to = [];
     private $subject;
     private $message;
     private $headers;
@@ -14,12 +17,14 @@ class mkwphpmailer {
     private $attachment;
     public $ErrorInfo;
 
-    public function clear() {
-        $this->to = array();
+    public function clear()
+    {
+        $this->to = [];
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
     }
 
-    public function setTo($to) {
+    public function setTo($to)
+    {
         if ($to) {
             if (is_string($to)) {
                 $to = explode(',', $to);
@@ -30,52 +35,64 @@ class mkwphpmailer {
         }
     }
 
-    public function addTo($to) {
+    public function addTo($to)
+    {
         $this->setTo($to);
     }
 
-    public function getTo() {
+    public function getTo()
+    {
         return $this->to;
     }
 
-    public function setSubject($param) {
+    public function setSubject($param)
+    {
         $this->subject = $param;
     }
 
-    public function getSubject() {
+    public function getSubject()
+    {
         return $this->subject;
     }
 
-    public function setMessage($message) {
+    public function setMessage($message)
+    {
         $this->message = $message;
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 
-    public function setReplyTo($param) {
+    public function setReplyTo($param)
+    {
         $this->replyto = $param;
     }
 
-    public function getReplyTo() {
+    public function getReplyTo()
+    {
         return $this->replyto;
     }
 
-    public function setAttachment($fname) {
+    public function setAttachment($fname)
+    {
         $this->attachment = $fname;
     }
 
-    public function getAttachment() {
+    public function getAttachment()
+    {
         return $this->attachment;
     }
 
-    protected function getBccArray() {
+    protected function getBccArray()
+    {
         $bcc = \mkw\store::getParameter(\mkw\consts::EmailBcc);
         return explode(',', $bcc);
     }
 
-    protected function getStatuszValtasArray() {
+    protected function getStatuszValtasArray()
+    {
         $bcc = \mkw\store::getParameter(\mkw\consts::EmailStatuszValtas);
         if (!$bcc) {
             $bcc = \mkw\store::getParameter(\mkw\consts::EmailBcc);
@@ -83,13 +100,13 @@ class mkwphpmailer {
         return explode(',', $bcc);
     }
 
-    public function send($statusvaltas = false) {
-
+    public function send($statusvaltas = false)
+    {
         $this->mailer = new PHPMailer();
         $this->mailer->CharSet = 'UTF-8';
 
         if (\mkw\store::isMailDebug()) {
-            $this->mailer->SMTPDebug = 2;
+            $this->mailer->SMTPDebug = SMTP::DEBUG_LOWLEVEL;
         }
 
         $this->mailer->isSMTP();
@@ -115,26 +132,23 @@ class mkwphpmailer {
             $replyto = \mkw\store::getParameter(\mkw\consts::EmailReplyTo);
             $replytodata = explode(';', $replyto);
             $this->mailer->addReplyTo($replytodata[0], $replytodata[1]);
-        }
-        else {
+        } else {
             $this->mailer->addReplyTo($this->replyto);
         }
 
         if (!$this->to) {
             if ($statusvaltas) {
                 $bcc = $this->getStatuszValtasArray();
-            }
-            else {
+            } else {
                 $bcc = $this->getBccArray();
             }
-            foreach($bcc as $cim) {
+            foreach ($bcc as $cim) {
                 if ($cim) {
                     $this->mailer->addAddress($cim);
                 }
             }
-        }
-        else {
-            foreach($this->to as $t) {
+        } else {
+            foreach ($this->to as $t) {
                 if ($t) {
                     $this->mailer->addAddress($t);
                 }
@@ -142,11 +156,10 @@ class mkwphpmailer {
         }
         if ($statusvaltas) {
             $bcc = $this->getStatuszValtasArray();
-        }
-        else {
+        } else {
             $bcc = $this->getBccArray();
         }
-        foreach($bcc as $_bcc) {
+        foreach ($bcc as $_bcc) {
             if ($_bcc) {
                 $this->mailer->addBCC($_bcc);
             }
