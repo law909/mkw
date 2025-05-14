@@ -206,9 +206,12 @@ class mkwgmailmailer
         $gmailmessage->setRaw($mime);
 
         try {
-            $service->users_messages->send("me", $gmailmessage);
             if (\mkw\store::isMailDebug()) {
                 \mkw\store::writelog($rawMessage, 'emaildebug.log');
+            }
+            $x = $service->users_messages->send("me", $gmailmessage);
+            if (\mkw\store::isMailDebug()) {
+                \mkw\store::writelog(json_encode($x), 'emaildebug.log');
             }
         } catch (\Exception $e) {
             \mkw\store::writelog($e->getMessage() . '. Subject: ' . $subject, 'emailerror.log');
