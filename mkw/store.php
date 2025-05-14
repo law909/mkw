@@ -2135,14 +2135,22 @@ class store
         return $password;
     }
 
+    public static function getCredentialsPath()
+    {
+        if (self::getConfigValue('credentials.path')) {
+            return self::getConfigValue('credentials.path');
+        }
+        return getcwd();
+    }
+
     public static function keysPath($filename)
     {
-        return getcwd() . '/keys/' . $filename;
+        return self::getCredentialsPath() . '/keys/' . $filename;
     }
 
     public static function tokensPath($filename)
     {
-        return getcwd() . '/tokens/' . $filename;
+        return self::getCredentialsPath() . '/tokens/' . $filename;
     }
 
 }
