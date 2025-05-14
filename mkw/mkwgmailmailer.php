@@ -111,7 +111,9 @@ class mkwgmailmailer
 
         $service = new \Google_Service_Gmail($client);
 
-        $boundary = 'B_B_' . md5(rand());
+        $boundaryMixed = 'B_B_' . md5(rand());
+        $boundaryAlternative = 'B_A_' . md5(rand());
+
         $messageid = md5(rand()) . '@billy';
 
         $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
@@ -158,27 +160,32 @@ class mkwgmailmailer
         $rawMessage .= "X-Mailer: Billy v1\r\n";
 //        $rawMessage .= "Message-ID: <$messageid>\r\n";
         $rawMessage .= "MIME-Version: 1.0\r\n";
-        $rawMessage .= "Content-Type: multipart/alternative; boundary=\"$boundary\"\r\n";
+        $rawMessage .= "Content-Type: multipart/mixed; boundary=\"$boundaryMixed\"\r\n";
         $rawMessage .= "\r\n";
-        $rawMessage .= "--$boundary\r\n";
+        $rawMessage .= "--$boundaryMixed\r\n";
+        $rawMessage .= "Content-Type: multipart/alternative; boundary=\"$boundaryAlternative\"\r\n";
+        $rawMessage .= "\r\n";
+        $rawMessage .= "--$boundaryAlternative\r\n";
         $rawMessage .= "Content-Type: text/plain; charset=UTF-8\r\n";
         $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
         $rawMessage .= "\r\n";
         $rawMessage .= quoted_printable_encode(strip_tags($message)) . "\r\n";
-        $rawMessage .= "--$boundary\r\n";
+        $rawMessage .= "--$boundaryAlternative\r\n";
         $rawMessage .= "Content-Type: text/html; charset=UTF-8\r\n";
         $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
         $rawMessage .= "\r\n";
         $rawMessage .= quoted_printable_encode($message) . "\r\n";
+        $rawMessage .= "--$boundaryAlternative--\r\n";
+        $rawMessage .= "\r\n";
         if ($this->getAttachment()) {
-            $rawMessage .= "--$boundary\r\n";
+            $rawMessage .= "--$boundaryMixed\r\n";
             $rawMessage .= "Content-Type: $fileMimeType; name=\"$fileName\"\r\n";
             $rawMessage .= "Content-Disposition: attachment; filename=\"$fileName\"\r\n";
             $rawMessage .= "Content-Transfer-Encoding: base64\r\n";
             $rawMessage .= "\r\n";
             $rawMessage .= "$encodedData\r\n";
         }
-        $rawMessage .= "--$boundary--\r\n";
+        $rawMessage .= "--$boundaryMixed--\r\n";
 
         $mime = rtrim(strtr(base64_encode($rawMessage), '+/', '-_'), '=');
         $gmailmessage = new \Google_Service_Gmail_Message();
