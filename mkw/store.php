@@ -156,10 +156,22 @@ class store
         fclose($handle);
     }
 
+    public static function isMailerGmail()
+    {
+        return self::getConfigValue('mail.mailer') === 'gmail';
+    }
+
+    public static function isMailerPHPMailer()
+    {
+        return self::getConfigValue('mail.mailer') === 'phpmailer';
+    }
+
     public static function getMailer()
     {
-        if (self::getConfigValue('mail.mailer') === 'phpmailer') {
+        if (self::isMailerPHPMailer()) {
             return new mkwphpmailer();
+        } elseif (self::isMailerGmail()) {
+            return new mkwgmailmailer();
         } elseif (self::getConfigValue('mail.smtp', 0)) {
             return new mkwzendmailer();
         }
@@ -2122,4 +2134,15 @@ class store
 
         return $password;
     }
+
+    public static function keysPath($filename)
+    {
+        return getcwd() . '/keys/' . $filename;
+    }
+
+    public static function tokensPath($filename)
+    {
+        return getcwd() . '/tokens/' . $filename;
+    }
+
 }

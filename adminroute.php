@@ -1254,6 +1254,10 @@ $router->map('GET', '/admin/wc/termekar', 'termekarController#uploadToWc', 'admi
 
 $router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');
 
+if (\mkw\store::isMailerGmail()) {
+    $router->map('GET', '/oauth2/initiate', 'oauth2Controller#initiate', 'adminoauth2initiate');
+    $router->map('GET', '/oauth2/callback', 'oauth2Controller#callback', 'adminoauth2callback');
+}
 
 //$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
