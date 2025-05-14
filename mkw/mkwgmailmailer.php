@@ -137,7 +137,7 @@ class mkwgmailmailer
             $bcc = implode(',', $this->getBccArray());
         }
 
-        $subject = $this->getSubject();
+        $subject = mb_encode_mimeheader($this->getSubject(), 'UTF-8', 'Q');
         $message = $this->getMessage();
 
         if ($this->getAttachment()) {
