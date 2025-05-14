@@ -158,34 +158,48 @@ class mkwgmailmailer
         $rawMessage .= "X-Priority: 3\r\n";
         $rawMessage .= "X-Sender: $fromAddress\r\n";
         $rawMessage .= "X-Mailer: Billy v1\r\n";
-//        $rawMessage .= "Message-ID: <$messageid>\r\n";
         $rawMessage .= "MIME-Version: 1.0\r\n";
-        $rawMessage .= "Content-Type: multipart/mixed; boundary=\"$boundaryMixed\"\r\n";
-        $rawMessage .= "\r\n";
-        $rawMessage .= "--$boundaryMixed\r\n";
-        $rawMessage .= "Content-Type: multipart/alternative; boundary=\"$boundaryAlternative\"\r\n";
-        $rawMessage .= "\r\n";
-        $rawMessage .= "--$boundaryAlternative\r\n";
-        $rawMessage .= "Content-Type: text/plain; charset=UTF-8\r\n";
-        $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
-        $rawMessage .= "\r\n";
-        $rawMessage .= quoted_printable_encode(strip_tags($message)) . "\r\n";
-        $rawMessage .= "--$boundaryAlternative\r\n";
-        $rawMessage .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
-        $rawMessage .= "\r\n";
-        $rawMessage .= quoted_printable_encode($message) . "\r\n";
-        $rawMessage .= "--$boundaryAlternative--\r\n";
-        $rawMessage .= "\r\n";
-        if ($this->getAttachment()) {
+
+        if ($this->attachment) {
+            $rawMessage .= "Content-Type: multipart/mixed; boundary=\"$boundaryMixed\"\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= "--$boundaryMixed\r\n";
+            $rawMessage .= "Content-Type: multipart/alternative; boundary=\"$boundaryAlternative\"\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= "--$boundaryAlternative\r\n";
+            $rawMessage .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= quoted_printable_encode(strip_tags($message)) . "\r\n";
+            $rawMessage .= "--$boundaryAlternative\r\n";
+            $rawMessage .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= quoted_printable_encode($message) . "\r\n";
+            $rawMessage .= "--$boundaryAlternative--\r\n";
+            $rawMessage .= "\r\n";
             $rawMessage .= "--$boundaryMixed\r\n";
             $rawMessage .= "Content-Type: $fileMimeType; name=\"$fileName\"\r\n";
             $rawMessage .= "Content-Disposition: attachment; filename=\"$fileName\"\r\n";
             $rawMessage .= "Content-Transfer-Encoding: base64\r\n";
             $rawMessage .= "\r\n";
             $rawMessage .= "$encodedData\r\n";
+            $rawMessage .= "--$boundaryMixed--\r\n";
+        } else {
+            $rawMessage .= "Content-Type: multipart/alternative; boundary=\"$boundaryAlternative\"\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= "--$boundaryAlternative\r\n";
+            $rawMessage .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= quoted_printable_encode(strip_tags($message)) . "\r\n";
+            $rawMessage .= "--$boundaryAlternative\r\n";
+            $rawMessage .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $rawMessage .= "Content-Transfer-Encoding: quoted-printable\r\n";
+            $rawMessage .= "\r\n";
+            $rawMessage .= quoted_printable_encode($message) . "\r\n";
+            $rawMessage .= "--$boundaryAlternative--\r\n";
         }
-        $rawMessage .= "--$boundaryMixed--\r\n";
 
         $mime = rtrim(strtr(base64_encode($rawMessage), '+/', '-_'), '=');
         $gmailmessage = new \Google_Service_Gmail_Message();
