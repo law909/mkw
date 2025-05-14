@@ -7,10 +7,14 @@ class oauth2Controller
 
     public function initiate()
     {
+        \mkw\store::writelog('Initiating authentication', 'oauth2.txt');
         if (!file_exists(\mkw\store::tokensPath('token.json'))) {
+            \mkw\store::writelog('Token file does not exist', 'oauth2.txt');
             $client = \mkw\googleoauth::getClient();
+            \mkw\store::writelog('Creating authentication URL', 'oauth2.txt');
             $client->setPrompt('consent');
             $authUrl = $client->createAuthUrl();
+            \mkw\store::writelog('Redirecting to authentication URL>' . $authUrl, 'oauth2.txt');
             header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
         }
     }
