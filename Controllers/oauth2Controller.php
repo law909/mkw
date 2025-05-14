@@ -29,7 +29,7 @@ class oauth2Controller
 
             if ($token) {
                 file_put_contents(\mkw\store::tokensPath('token.json'), json_encode($token));
-                \mkw\store::writelog('Token saved', 'oauth2.txt');
+                \mkw\store::writelog('Token saved: ' . \mkw\store::tokensPath('token.json'), 'oauth2.txt');
             } else {
                 \mkw\store::writelog('Authentication failed', 'oauth2.txt');
             }
