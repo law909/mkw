@@ -277,6 +277,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
                             'partnercheckemail',
+                            'oauth2callback',
                         ]) && (substr($match['name'], 0, 4) !== 'wcwh')) {
                         $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                         $redirected = true;

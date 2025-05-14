@@ -209,3 +209,7 @@ $router->map('POST', '/wcwh/orderup', 'wcwebhookController#orderUpdated', 'wcwho
 $router->map('POST', '/wcwh/partnercr', 'wcwebhookController#partnerCreated', 'wcwhpartnercr');
 $router->map('POST', '/wcwh/partnerup', 'wcwebhookController#partnerUpdated', 'wcwhpartnerup');
 $router->map('POST', '/wcwh/documentcr', 'wcwebhookController#documentCreated', 'wcwhdocumentcreated');
+
+if (\mkw\store::isMailerGmail()) {
+    $router->map('GET', '/oauth2/callback', 'oauth2Controller#callback', 'oauth2callback');
+}
