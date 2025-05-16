@@ -118,7 +118,7 @@ class mkwgmailmailer
 
         $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
         $fromdata = explode(';', $from);
-        $fromName = $fromdata[1];
+        $fromName = mb_encode_mimeheader($fromdata[1], 'UTF-8', 'Q');
         $fromAddress = $fromdata[0];
 
         if (!$this->getTo()) {
