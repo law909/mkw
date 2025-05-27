@@ -392,9 +392,7 @@
                             <a href="{if ($ora['tanarurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['tanarurl'])}{/if}"
                                target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
                         </div>
-                        {if (($ora['szabadhely'] <= 5) && ($ora['szabadhely'] > 0))}
-                            <div>{$ora['szabadhely']} szabad hely</div>
-                        {/if}
+                        <div>{$ora['szabadhely']} szabad hely</div>
                     </div>
                     <div class="dtttanar">
                         {if (!$ora['elmarad'] && $ora['bejelentkezeskell'] && $ora['megvanhely'])}
