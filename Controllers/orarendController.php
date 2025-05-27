@@ -312,7 +312,11 @@ class orarendController extends \mkwhelpers\MattableController
             $orak['bejelentkezesdb'] = $this->getRepo('Entities\JogaBejelentkezes')->getAdottOraCount($napdatum, $item->getId());
             $orak['maxbejelentkezes'] = $item->getMaxferohely();
             $orak['szabadhely'] = $orak['maxbejelentkezes'] - $orak['bejelentkezesdb'];
-            $orak['megvanhely'] = $orak['szabadhely'] > 0;
+            if ($orak['maxbejelentkezes'] <= 0) {
+                $orak['megvanhely'] = true;
+            } else {
+                $orak['megvanhely'] = $orak['szabadhely'] > 0;
+            }
 
             $hf = new \mkwhelpers\FilterDescriptor();
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
