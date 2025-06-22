@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=12"></script>
+    <script src="/js/main/mptngy/login.js?v=13"></script>
 {/block}
 
 {block "body"}

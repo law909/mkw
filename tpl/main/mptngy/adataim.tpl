@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=6"></script>
+    <script src="/js/main/mptngy/adataim.js?v=7"></script>
 {/block}
 
 {block "body"}
