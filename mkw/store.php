@@ -241,6 +241,9 @@ class store
         if (!array_key_exists('termekautocomplete', self::$setup)) {
             self::$setup['termekautocomplete'] = true;
         }
+        if (!array_key_exists('show_adataim_egyebadatok', self::$setup)) {
+            self::$setup['show_adataim_egyebadatok'] = true;
+        }
     }
 
     public static function getIntParameter($par, $default = null)
