@@ -42,7 +42,6 @@ document.addEventListener("alpine:init", () => {
             jelszo2: ['passwordsSame'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
-            mptngynemveszreszt: ['reszvetel'],
         },
         szerepkorlist: [],
         selectedSzerepkorIndex: null,
@@ -67,6 +66,7 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
 
             if (this.show_adataim_egyebadatok) {
+                this.rules.mptngynemveszreszt = ['reszvetel'];
                 Iodine.rule('reszvetel', (value) => {
                     return this.reg.mptngynemveszreszt ||
                         this.reg.mptngynapreszvetel1 ||

@@ -53,10 +53,8 @@ document.addEventListener("alpine:init", () => {
             irszam: ['required'],
             varos: ['required'],
             utca: ['required'],
-            mptngyszerepkor: ['required'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
-            mptngynemveszreszt: ['reszvetel'],
         },
         szerepkorlist: [],
         selectedSzerepkorIndex: null,
@@ -96,6 +94,8 @@ document.addEventListener("alpine:init", () => {
             Iodine.setErrorMessage('emailFoglalt', 'Az email már foglalt')
 
             if (this.show_adataim_egyebadatok) {
+                this.rules.mptngyszerepkor = ['required'];
+                this.rules.mptngynemveszreszt = ['reszvetel'];
                 Iodine.rule('reszvetel', (value) => {
                     return this.reg.mptngynemveszreszt ||
                         this.reg.mptngynapreszvetel1 ||
