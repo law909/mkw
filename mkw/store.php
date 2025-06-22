@@ -244,6 +244,9 @@ class store
         if (!array_key_exists('show_adataim_egyebadatok', self::$setup)) {
             self::$setup['show_adataim_egyebadatok'] = true;
         }
+        if (!array_key_exists('ngyclosed', self::$setup)) {
+            self::$setup['ngyclosed'] = false;
+        }
     }
 
     public static function getIntParameter($par, $default = null)
