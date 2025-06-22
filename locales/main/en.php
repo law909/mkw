@@ -186,7 +186,7 @@ return [
     'Módosítsd adataidat' => 'Modify your data',
     'Év, hónap' => 'Year, month',
     'jelszó megismétlése' => 'retype your password',
-    'Munkahelyed' => 'Workplace',
+    'Munkahelyed' => 'Workplace/Affiliation',
     'Írd be a munkahelyed nevét, ha van' => 'Fill in your workplace',
     'Foglalkozás' => 'Profession',
     'Írd be a foglalkozásodat' => 'Fill in your profession',

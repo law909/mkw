@@ -1,5 +1,6 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("adataim", () => ({
+        show_adataim_egyebadatok: true,
         validation: [],
         reg: {
             invcsoportos: null,
@@ -51,6 +52,7 @@ document.addEventListener("alpine:init", () => {
             this.validation = {};
         },
         getLists() {
+            this.show_adataim_egyebadatok = this.$el.dataset.showAdataimEgyebadatok === 'true';
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('passwordLength', 'Legalább 10 karakter hosszú legyen');

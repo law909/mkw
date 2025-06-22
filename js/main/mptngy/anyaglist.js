@@ -1,5 +1,6 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data("anyaglist", () => ({
+        ngyclosed: false,
         konyvkiadashoTol: '2023.07',
         konyvkiadashoIg: '2025.05',
         loaded: false,
@@ -65,6 +66,7 @@ document.addEventListener("alpine:init", () => {
             kulcsszo1: ['kulcsszo'],
         },
         init() {
+            this.ngyclosed = this.$el.dataset.ngyclosed === 'true';
             this.initVars();
             this.setRules();
             this.setWatchers();

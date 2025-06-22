@@ -1,11 +1,11 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=23"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=24"></script>
 {/block}
 
 {block "body"}
-    <div x-data="anyaglist">
+<div x-data="anyaglist" data-ngyclosed="{if ($setup.ngyclosed)}true{else}false{/if}">
     <div class="co-container co-header" x-cloak>
         <div class="co-col-50 padding">
             <div x-text="me.nev"></div>
@@ -43,11 +43,13 @@
                                     <td x-text="any.tulajdonosnev" data-label="{t('Tulajdonos')}"></td>
                                     <td x-text="any.tipusnev" data-label="{t('Típus')}"></td>
                                     <td>
-                                        <!--button
-                                            class="btn btn-secondary"
-                                            @click="edit(any.id)"
-                                            x-show="!any.vegleges && any.editable && loaded"
-                                        >{t('Módosítás')}</button-->
+                                        {if (!$setup.ngyclosed)}
+                                            <button
+                                                class="btn btn-secondary"
+                                                @click="edit(any.id)"
+                                                x-show="!any.vegleges && any.editable && loaded"
+                                            >{t('Módosítás')}</button>
+                                        {/if}
                                         <div x-show="any.vegleges">{t('Beküldve')}</div>
                                         <div x-show="any.biralatkesz">
                                             <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
@@ -59,13 +61,15 @@
 
                             </tbody>
                         </table>
-                        <!--div class="co-control-row">
-                            <button
-                                x-cloak
-                                class="btn btn-primary"
-                                @click="createNew()"
-                            >{t('Új anyag feltöltése')}</button>
-                        </div-->
+                        {if ($setup.ngyclosed)}
+                            <div class="co-control-row">
+                                <button
+                                    x-cloak
+                                    class="btn btn-primary"
+                                    @click="createNew()"
+                                >{t('Új anyag feltöltése')}</button>
+                            </div>
+                        {/if}
                     </div>
                     <div x-show="showEditor">
                         {$uf = t('Új felvitel')}
