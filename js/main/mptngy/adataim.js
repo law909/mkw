@@ -66,15 +66,17 @@ document.addEventListener("alpine:init", () => {
             Iodine.rule('passwordsSame', (value) => value === this.reg.jelszo1);
             Iodine.setErrorMessage('passwordsSame', 'A két jelszó nem egyezik');
 
-            Iodine.rule('reszvetel', (value) => {
-                return this.reg.mptngynemveszreszt ||
-                    this.reg.mptngynapreszvetel1 ||
-                    this.reg.mptngynapreszvetel2 ||
-                    this.reg.mptngynapreszvetel3 ||
-                    this.reg.mptngybankett ||
-                    this.reg.mptngyvipvacsora;
-            });
-            Iodine.setErrorMessage('reszvetel', 'Jelölje meg, hogyan vesz részt');
+            if (this.show_adataim_egyebadatok) {
+                Iodine.rule('reszvetel', (value) => {
+                    return this.reg.mptngynemveszreszt ||
+                        this.reg.mptngynapreszvetel1 ||
+                        this.reg.mptngynapreszvetel2 ||
+                        this.reg.mptngynapreszvetel3 ||
+                        this.reg.mptngybankett ||
+                        this.reg.mptngyvipvacsora;
+                });
+                Iodine.setErrorMessage('reszvetel', 'Jelölje meg, hogyan vesz részt');
+            }
 
             Iodine.rule('requiredIfCsoportos', (value) => {
                 if (this.reg.invcsoportos === '2') {
@@ -155,58 +157,60 @@ document.addEventListener("alpine:init", () => {
                         this.reg.vatstatus = null;
                 }
             });
-            this.$watch('reg.mptngynemveszreszt', (value) => {
-                if (value) {
-                    this.reg.mptngynapreszvetel1 = false;
-                    this.reg.mptngyvipvacsora = false;
-                    this.reg.mptngynapreszvetel2 = false;
-                    this.reg.mptngybankett = false;
-                    this.reg.mptngynapreszvetel3 = false;
-                }
-            });
-            this.$watch('reg.mptngynapreszvetel1', (value) => {
-                if (value) {
-                    this.reg.mptngynemveszreszt = false;
-                }
-            });
-            this.$watch('reg.mptngyvipvacsora', (value) => {
-                if (value) {
-                    this.reg.mptngynemveszreszt = false;
-                }
-            });
-            this.$watch('reg.mptngynapreszvetel2', (value) => {
-                if (value) {
-                    this.reg.mptngynemveszreszt = false;
-                }
-            });
-            this.$watch('reg.mptngybankett', (value) => {
-                if (value) {
-                    this.reg.mptngynemveszreszt = false;
-                }
-            });
-            this.$watch('reg.mptngynapreszvetel3', (value) => {
-                if (value) {
-                    this.reg.mptngynemveszreszt = false;
-                }
-            });
-            this.$watch('reg.mptngynyugdijas', (value) => {
-                if (value) {
-                    this.reg.mptngydiak = false;
-                    this.reg.mptngyphd = false;
-                }
-            });
-            this.$watch('reg.mptngydiak', (value) => {
-                if (value) {
-                    this.reg.mptngynyugdijas = false;
-                    this.reg.mptngyphd = false;
-                }
-            });
-            this.$watch('reg.mptngyphd', (value) => {
-                if (value) {
-                    this.reg.mptngynyugdijas = false;
-                    this.reg.mptngydiak = false;
-                }
-            });
+            if (this.show_adataim_egyebadatok) {
+                this.$watch('reg.mptngynemveszreszt', (value) => {
+                    if (value) {
+                        this.reg.mptngynapreszvetel1 = false;
+                        this.reg.mptngyvipvacsora = false;
+                        this.reg.mptngynapreszvetel2 = false;
+                        this.reg.mptngybankett = false;
+                        this.reg.mptngynapreszvetel3 = false;
+                    }
+                });
+                this.$watch('reg.mptngynapreszvetel1', (value) => {
+                    if (value) {
+                        this.reg.mptngynemveszreszt = false;
+                    }
+                });
+                this.$watch('reg.mptngyvipvacsora', (value) => {
+                    if (value) {
+                        this.reg.mptngynemveszreszt = false;
+                    }
+                });
+                this.$watch('reg.mptngynapreszvetel2', (value) => {
+                    if (value) {
+                        this.reg.mptngynemveszreszt = false;
+                    }
+                });
+                this.$watch('reg.mptngybankett', (value) => {
+                    if (value) {
+                        this.reg.mptngynemveszreszt = false;
+                    }
+                });
+                this.$watch('reg.mptngynapreszvetel3', (value) => {
+                    if (value) {
+                        this.reg.mptngynemveszreszt = false;
+                    }
+                });
+                this.$watch('reg.mptngynyugdijas', (value) => {
+                    if (value) {
+                        this.reg.mptngydiak = false;
+                        this.reg.mptngyphd = false;
+                    }
+                });
+                this.$watch('reg.mptngydiak', (value) => {
+                    if (value) {
+                        this.reg.mptngynyugdijas = false;
+                        this.reg.mptngyphd = false;
+                    }
+                });
+                this.$watch('reg.mptngyphd', (value) => {
+                    if (value) {
+                        this.reg.mptngynyugdijas = false;
+                        this.reg.mptngydiak = false;
+                    }
+                });
+            }
         },
         save() {
             const valid = Iodine.assert(this.reg, this.rules);

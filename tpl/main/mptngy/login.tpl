@@ -1,11 +1,11 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/login.js?v=11"></script>
+    <script src="/js/main/mptngy/login.js?v=12"></script>
 {/block}
 
 {block "body"}
-    <div class="co-container" x-data="login" x-init="getLists">
+    <div class="co-container" x-data="login" x-init="getLists" data-show-adataim-egyebadatok="{if ($setup.show_adataim_egyebadatok)}true{else}false{/if}">
         <div class="co-data-container">
             <div class="co-row co-flex-dir-row" x-show="!regNeeded">
                 <div class="co-col-100 padding">
@@ -226,81 +226,83 @@
                         </div>
                     </div>
 
-                    <div class="co-row co-flex-dir-column">
-                        <h4>{t('Egyéb adatok')}</h4>
-                        <div class="co-control-row">
-                            <label for="nap1Edit" class="co-label">
-                                <input id="nap1Edit" type="checkbox" x-model="reg.mptngynapreszvetel1">
-                                {t('1. nap részt veszek')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="vipvacsEdit" class="co-label">
-                                <input id="vipvacsEdit" type="checkbox" x-model="reg.mptngyvipvacsora">
-                                {t('1. nap állófogadáson részt veszek')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="nap2Edit" class="co-label">
-                                <input id="nap2Edit" type="checkbox" x-model="reg.mptngynapreszvetel2">
-                                {t('2. nap részt veszek')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="bankettEdit" class="co-label">
-                                <input id="bankettEdit" type="checkbox" x-model="reg.mptngybankett">
-                                {t('2. nap banketten részt veszek')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="nap3Edit" class="co-label">
-                                <input id="nap3Edit" type="checkbox" x-model="reg.mptngynapreszvetel3">
-                                {t('3. nap részt veszek')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="nemveszresztEdit" class="co-label">
-                                <input id="nemveszresztEdit" type="checkbox" x-model="reg.mptngynemveszreszt">
-                                {t('Nem veszek részt, csak szerző vagyok')}
-                            </label>
-                            <div class="co-error" x-text="validation.mptngynemveszreszt && validation.mptngynemveszreszt.error"></div>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="diakEdit" class="co-label">
-                                <input id="diakEdit" type="checkbox" x-model="reg.mptngydiak">
-                                {t('Diák vagyok')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="phdEdit" class="co-label">
-                                <input id="phdEdit" type="checkbox" x-model="reg.mptngyphd">
-                                {t('Phd hallgató vagyok')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="nyugdijasEdit" class="co-label">
-                                <input id="nyugdijasEdit" type="checkbox" x-model="reg.mptngynyugdijas">
-                                {t('Nyugdíjas vagyok')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="mptEdit" class="co-label">
-                                <input id="mptEdit" type="checkbox" x-model="reg.mptngympttag">
-                                {t('MPT tag vagyok')}
-                            </label>
-                        </div>
-                        <div class="co-control-row">
-                            <div :class="validation.mptngyszerepkor && !validation.mptngyszerepkor.valid ? 'error-border' : ''">
-                                <template x-for="(szkor, i) in szerepkorlist">
-                                    <label class="co-label">
-                                        <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
-                                        <span x-text="szkor.nevtr"></span>
-                                    </label>
-                                </template>
+                    {if ($setup.show_adataim_egyebadatok)}
+                        <div class="co-row co-flex-dir-column">
+                            <h4>{t('Egyéb adatok')}</h4>
+                            <div class="co-control-row">
+                                <label for="nap1Edit" class="co-label">
+                                    <input id="nap1Edit" type="checkbox" x-model="reg.mptngynapreszvetel1">
+                                    {t('1. nap részt veszek')}
+                                </label>
                             </div>
-                            <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
+                            <div class="co-control-row">
+                                <label for="vipvacsEdit" class="co-label">
+                                    <input id="vipvacsEdit" type="checkbox" x-model="reg.mptngyvipvacsora">
+                                    {t('1. nap állófogadáson részt veszek')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="nap2Edit" class="co-label">
+                                    <input id="nap2Edit" type="checkbox" x-model="reg.mptngynapreszvetel2">
+                                    {t('2. nap részt veszek')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="bankettEdit" class="co-label">
+                                    <input id="bankettEdit" type="checkbox" x-model="reg.mptngybankett">
+                                    {t('2. nap banketten részt veszek')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="nap3Edit" class="co-label">
+                                    <input id="nap3Edit" type="checkbox" x-model="reg.mptngynapreszvetel3">
+                                    {t('3. nap részt veszek')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="nemveszresztEdit" class="co-label">
+                                    <input id="nemveszresztEdit" type="checkbox" x-model="reg.mptngynemveszreszt">
+                                    {t('Nem veszek részt, csak szerző vagyok')}
+                                </label>
+                                <div class="co-error" x-text="validation.mptngynemveszreszt && validation.mptngynemveszreszt.error"></div>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="diakEdit" class="co-label">
+                                    <input id="diakEdit" type="checkbox" x-model="reg.mptngydiak">
+                                    {t('Diák vagyok')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="phdEdit" class="co-label">
+                                    <input id="phdEdit" type="checkbox" x-model="reg.mptngyphd">
+                                    {t('Phd hallgató vagyok')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="nyugdijasEdit" class="co-label">
+                                    <input id="nyugdijasEdit" type="checkbox" x-model="reg.mptngynyugdijas">
+                                    {t('Nyugdíjas vagyok')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <label for="mptEdit" class="co-label">
+                                    <input id="mptEdit" type="checkbox" x-model="reg.mptngympttag">
+                                    {t('MPT tag vagyok')}
+                                </label>
+                            </div>
+                            <div class="co-control-row">
+                                <div :class="validation.mptngyszerepkor && !validation.mptngyszerepkor.valid ? 'error-border' : ''">
+                                    <template x-for="(szkor, i) in szerepkorlist">
+                                        <label class="co-label">
+                                            <input type="radio" name="szerepkor" x-model="reg.mptngyszerepkor" :value="szkor.id">
+                                            <span x-text="szkor.nevtr"></span>
+                                        </label>
+                                    </template>
+                                </div>
+                                <div class="co-error" x-text="validation.mptngyszerepkor && validation.mptngyszerepkor.error"></div>
+                            </div>
                         </div>
-                    </div>
+                    {/if}
 
                     <div class="co-control-row">
                         <button class="btn btn-primary" @click="save()">{t('Regisztráció')}</button>
