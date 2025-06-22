@@ -61,7 +61,7 @@
 
                             </tbody>
                         </table>
-                        {if ($setup.ngyclosed)}
+                        {if (!$setup.ngyclosed)}
                             <div class="co-control-row">
                                 <button
                                     x-cloak
