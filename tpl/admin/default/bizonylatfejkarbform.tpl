@@ -348,6 +348,10 @@
                         </tr>
                     {/if}
                     <tr>
+                        <td><label for="CsomagcountEdit">{at('Csomagok száma')}:</label></td>
+                        <td colspan="7"><input id="CsomagcountEdit" name="csomagcount" type="number" step="any" size="5" value="{$egyed.csomagcount}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="SzallitasiktgkellEdit">{at('Szállítási költséget kell számolni')}:</label></td>
                         <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
                     </tr>

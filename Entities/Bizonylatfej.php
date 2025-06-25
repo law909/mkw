@@ -675,6 +675,11 @@ class Bizonylatfej
     private $wcdate;
     /** @ORM\Column(type="json", nullable=true) */
     private $szamlazzdata;
+    /**
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    private $csomagcount;
+
 
     public function __toString()
     {
@@ -1023,7 +1028,7 @@ class Bizonylatfej
             'CODAmount' => $codamount,
             'CODReference' => $codref,
             'Content' => $this->getCouriermessage(),
-            'Count' => 1,
+            'Count' => $this->getCsomagcount() || 1,
             'DeliveryAddress' => [
                 'Name' => ($this->getSzallirszam() ? $this->getSzallnev() : $this->getPartnernev()),
                 'Street' => ($this->getSzallirszam() ? $this->getSzallutca() : $this->getPartnerutca()),
@@ -5476,5 +5481,22 @@ class Bizonylatfej
     {
         $this->szamlazzdata = $szamlazzdata;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCsomagcount()
+    {
+        return $this->csomagcount;
+    }
+
+    /**
+     * @param mixed $csomagcount
+     */
+    public function setCsomagcount($csomagcount): void
+    {
+        $this->csomagcount = $csomagcount;
+    }
+
 
 }

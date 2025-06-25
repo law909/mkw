@@ -385,6 +385,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['bizonylatnev'] = $t->getBizonylatnev();
         $x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['fuvarlevelszam'] = $t->getFuvarlevelszam();
+        $x['csomagcount'] = $t->getCsomagcount();
         if (\mkw\store::isFoxpostSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $t->getFuvarlevelszam();
         } elseif (\mkw\store::isGLSSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
@@ -735,6 +736,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
+        $obj->setCsomagcount($this->params->getIntRequestParam('csomagcount'));
         $obj->setKupon($this->params->getStringRequestParam('kupon'));
 
         $obj->setFakekintlevoseg($this->params->getBoolRequestParam('fakekintlevoseg'));
