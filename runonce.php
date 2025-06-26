@@ -454,6 +454,16 @@ if ($DBVersion < '0058') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0058');
 }
 
+if ($DBVersion < '0059') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(2, "Bank tételek","/admin/bankbizonylattetel/viewlist","/admin/bankbizonylattetel",40,1,150, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0059');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

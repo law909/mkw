@@ -1,5 +1,5 @@
-(function($) {
-    $.fn.mattkarb = function(options) {
+(function ($) {
+    $.fn.mattkarb = function (options) {
         if (!this.length) {
             return this;
         }
@@ -18,16 +18,16 @@
             ok: '#mattkarb-okbutton',
             viewUrl: '/admin/xx/viewkarb',
             saveUrl: '/admin/xx/save',
-            beforeShow: function() {
+            beforeShow: function () {
                 ;
             },
-            beforeHide: function() {
+            beforeHide: function () {
                 ;
             },
-            onSubmit: function() {
+            onSubmit: function () {
                 ;
             },
-            onCancel: function() {
+            onCancel: function () {
                 ;
             }
         };
@@ -43,15 +43,15 @@
         };
 
         var karbContainer = $(this),
-                header = $(setup.header),
-                footer = $(setup.footer),
-                cancelbtn = $(setup.cancel),
-                titlebar = $(setup.titlebar);
+            header = $(setup.header),
+            footer = $(setup.footer),
+            cancelbtn = $(setup.cancel),
+            titlebar = $(setup.titlebar);
 
-        var showKarb = function() {
+        var showKarb = function () {
             $(setup.form).ajaxForm({
                 type: 'POST',
-                beforeSerialize: function(form, opt) {
+                beforeSerialize: function (form, opt) {
                     var ret = true;
                     if ($.isFunction(setup.beforeSerialize)) {
                         ret = setup.beforeSerialize.call(this, form, opt, setup.quick);
@@ -72,7 +72,7 @@
                     }
                     return ret;
                 },
-                success: function(data) {
+                success: function (data) {
                     if ($.isFunction(setup.beforeHide)) {
                         setup.beforeHide.call(this);
                     }
@@ -84,28 +84,26 @@
             karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
             header.addClass('mattable-titlebar ui-widget-header ui-corner-top ui-helper-clearfix');
             titlebar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix');
-            titlebar.each(function() {
+            titlebar.each(function () {
                 $this = $(this);
                 var ref = $($this.attr(_dataattr.pagerefcontrol));
                 if (ref.attr(_dataattr.pagevisible) == 'hidden') {
                     $this.append('<a href="#" class="mattedit-titlebar-close">' +
-                            '<span class="ui-icon ui-icon-circle-triangle-s"></span></a>' +
-                            '<span class="ui-jqgrid-title">' + $this.attr(_dataattr.titlecaption) + '</span>');
-                }
-                else {
+                        '<span class="ui-icon ui-icon-circle-triangle-s"></span></a>' +
+                        '<span class="ui-jqgrid-title">' + $this.attr(_dataattr.titlecaption) + '</span>');
+                } else {
                     $this.append('<a href="#" class="mattedit-titlebar-close">' +
-                            '<span class="ui-icon ui-icon-circle-triangle-n"></span></a>' +
-                            '<span class="ui-jqgrid-title">' + $this.attr(_dataattr.titlecaption) + '</span>');
+                        '<span class="ui-icon ui-icon-circle-triangle-n"></span></a>' +
+                        '<span class="ui-jqgrid-title">' + $this.attr(_dataattr.titlecaption) + '</span>');
                 }
             });
             $(setup.ok).button();
             if (setup.independent) {
                 cancelbtn.hide();
-            }
-            else {
+            } else {
                 cancelbtn.button();
                 if ($.isFunction(setup.onCancel)) {
-                    cancelbtn.on('click', function(e) {
+                    cancelbtn.on('click', function (e) {
                         e.preventDefault();
                         if ($.isFunction(setup.beforeHide)) {
                             setup.beforeHide.call(this);
@@ -115,21 +113,20 @@
                 }
             }
             $(setup.tab).tabs();
-            titlebar.on('click', function(e) {
+            titlebar.on('click', function (e) {
                 e.preventDefault();
                 var ref = $($(this).attr(_dataattr.pagerefcontrol));
                 if (ref.attr(_dataattr.pagevisible) == 'hidden') {
                     ref.attr(_dataattr.pagevisible, 'visible');
                     ref.slideDown(setup.animationSpeed);
                     $('> a > span', this).removeClass('ui-icon-circle-triangle-s').addClass('ui-icon-circle-triangle-n');
-                }
-                else {
+                } else {
                     ref.attr(_dataattr.pagevisible, 'hidden');
                     ref.slideUp(setup.animationSpeed);
                     $('> a > span', this).removeClass('ui-icon-circle-triangle-n').addClass('ui-icon-circle-triangle-s');
                 }
             });
-            $(setup.page).each(function(index) {
+            $(setup.page).each(function (index) {
                 var $this = $(this).addClass('mattedit-page');
                 if ($this.attr(_dataattr.pagevisible) == 'hidden') {
                     $this.hide();
@@ -142,7 +139,7 @@
             $(document).scrollTop(0);
         };
 
-        var initialize = function() {
+        var initialize = function () {
             if ($.meta) {
                 setup = $.extend({}, setup, this.data());
             }

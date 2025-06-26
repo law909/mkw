@@ -186,6 +186,9 @@ if (\mkw\store::isBankpenztar()) {
     }
     $router->map('GET', '/admin/bankbizonylatfej/print', 'bankbizonylatfejController#doPrint', 'adminbankbizonylatfejprint');
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
+    $router->map('GET', '/admin/bankbizonylattetel/viewlist', 'bankbizonylattetelController#viewlist', 'adminbankbizonylattetelviewlist');
+    $router->map('GET', '/admin/bankbizonylattetel/viewselect', 'bankbizonylattetelController#viewselect', 'adminbankbizonylattetelviewselect');
+    $router->map('GET', '/admin/bankbizonylattetel/getlistbody', 'bankbizonylattetelController#getlistbody', 'adminbankbizonylattetelgetlistbody');
 
     $router->map('GET', '/admin/penztarbizonylatfej/viewlist', 'penztarbizonylatfejController#viewlist', 'adminpenztarbizonylatfejviewlist');
     $router->map('GET', '/admin/penztarbizonylatfej/getlistbody', 'penztarbizonylatfejController#getlistbody', 'adminpenztarbizonylatfejgetlistbody');
