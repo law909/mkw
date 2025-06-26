@@ -1028,7 +1028,7 @@ class Bizonylatfej
             'CODAmount' => $codamount,
             'CODReference' => $codref,
             'Content' => $this->getCouriermessage(),
-            'Count' => $this->getCsomagcount() || 1,
+            'Count' => $this->getCsomagcount() ? $this->getCsomagcount() : 1,
             'DeliveryAddress' => [
                 'Name' => ($this->getSzallirszam() ? $this->getSzallnev() : $this->getPartnernev()),
                 'Street' => ($this->getSzallirszam() ? $this->getSzallutca() : $this->getPartnerutca()),
