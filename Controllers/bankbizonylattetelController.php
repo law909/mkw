@@ -35,7 +35,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
         }
         $x['fejid'] = $t->getBizonylatfejId();
-        $x['keltstr'] = $t->getBizonylatfej()->getKeltStr();
+        $x['keltstr'] = $t->getBizonylatfej()?->getKeltStr();
         $x['irany'] = $t->getIrany();
         $x['datumstr'] = $t->getDatumStr();
         $x['netto'] = $t->getNetto();
