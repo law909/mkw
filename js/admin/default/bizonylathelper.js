@@ -242,7 +242,7 @@ var bizonylathelper = function ($) {
             },
             success: function (data) {
                 var d = JSON.parse(data);
-                if (d.response == 'ok') {
+                if (d.response === 'ok') {
                     retval = true;
                 }
             }
@@ -251,12 +251,18 @@ var bizonylathelper = function ($) {
     }
 
     function checkBizonylatFej(biztipus, bizszam) {
-        var keltedit = $('#KeltEdit'),
+        const keltedit = $('#KeltEdit'),
             dialogcenter = $('#dialogcenter'),
-            keltchanged = keltedit.attr('data-datum') != keltedit.val(),
-            keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus, bizszam)),
+            partnerselect = $('.js-partnerid'),
+            form = $('#mattkarb-form'),
+            keltchanged = keltedit.attr('data-datum') !== keltedit.val(),
+            keltok = (!keltchanged) || (keltchanged && checkKelt(keltedit.val(), biztipus, bizszam)),
             tetelok = ($('.js-termekid').length !== 0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
-            ret = keltok && tetelok;
+            partnerok = (isPartnerAutocomplete() && ((partnerselect.val() !== '') || (partnerselect.val() === '' && $('.js-ujpartnercb').val() === '1'))) || (!isPartnerAutocomplete()),
+            funnypartnermessage = form.data('funnypartnermessage'),
+            lastname = form.data('lastname'),
+            ret = keltok && tetelok && partnerok;
+        let msg;
         if (!keltok) {
             dialogcenter.html('A bizonylatoknak szigorú sorszámozás van előírva.').dialog({
                 resizable: false,
@@ -280,6 +286,24 @@ var bizonylathelper = function ($) {
                         }
                     }
                 });
+            } else {
+                if (!partnerok) {
+                    if (funnypartnermessage) {
+                        msg = lastname + ', kérlek figyelj oda jobban, az "Új" pipát elfelejtetted berakni!';
+                    } else {
+                        msg = 'Válasszon partnert, vagy kapcsolja be az "Új" pipát.';
+                    }
+                    dialogcenter.html(msg).dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
             }
         }
         return ret;

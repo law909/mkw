@@ -142,6 +142,11 @@ class Dolgozo
         return $this->nev;
     }
 
+    public function getKeresztnev()
+    {
+        return explode(' ', $this->getNev())[1];
+    }
+
     public function setNev($nev)
     {
         $this->nev = $nev;
@@ -646,5 +651,5 @@ class Dolgozo
     {
         return $this->mptngyszakmaianyagok3;
     }
-    
+
 }

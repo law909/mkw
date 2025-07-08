@@ -217,6 +217,17 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKeresztnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeresztnev', []);
+
+        return parent::getKeresztnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setNev($nev)
     {
 

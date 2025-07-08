@@ -67,10 +67,10 @@ class TermekValtozatErtek extends \Entities\TermekValtozatErtek implements \Doct
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'ertek', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'adattipus', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcdate'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'ertek', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'adattipus', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcdate', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'charkod'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'ertek', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'adattipus', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcdate'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'ertek', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'adattipus', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'wcdate', '' . "\0" . 'Entities\\TermekValtozatErtek' . "\0" . 'charkod'];
     }
 
     /**
@@ -311,6 +311,28 @@ class TermekValtozatErtek extends \Entities\TermekValtozatErtek implements \Doct
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdatTipus', [$at]);
 
         return parent::setAdatTipus($at);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCharkod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCharkod', []);
+
+        return parent::getCharkod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCharkod($charkod): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCharkod', [$charkod]);
+
+        parent::setCharkod($charkod);
     }
 
 }

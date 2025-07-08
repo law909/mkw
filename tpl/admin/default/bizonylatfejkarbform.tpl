@@ -4,7 +4,8 @@
     <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
     </div>
-    <form id="mattkarb-form" method="post" action="{$formaction}">
+    <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
+          data-funnypartnermessage="{$maintheme=='superzoneb2b'}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>

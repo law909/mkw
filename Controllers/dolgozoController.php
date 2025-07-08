@@ -228,6 +228,7 @@ class dolgozoController extends \mkwhelpers\MattableController
                 }
                 \mkw\store::getAdminSession()->loggedinuser = [
                     'name' => $d->getNev(),
+                    'lastname' => $d->getKeresztnev(),
                     'id' => $d->getId(),
                     'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
@@ -279,6 +280,7 @@ class dolgozoController extends \mkwhelpers\MattableController
                 }
                 \mkw\store::getPubAdminSession()->loggedinuser = [
                     'name' => $d->getNev(),
+                    'lastname' => $d->getKeresztnev(),
                     'id' => $d->getId(),
                     'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
