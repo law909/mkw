@@ -3,6 +3,7 @@
 namespace Controllers;
 
 
+use Entities\Bizonylatfej;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 

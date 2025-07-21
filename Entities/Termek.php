@@ -2421,6 +2421,9 @@ class Termek
                 $netto = $this->getAkciosnetto();
             }
             if (!is_null($valtozat)) {
+                if (!is_a($valtozat, TermekValtozat::class)) {
+                    $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat);
+                }
                 return $netto + $valtozat->getNetto();
             }
             return $netto;
@@ -2590,6 +2593,9 @@ class Termek
                 $brutto = $this->getAkciosbrutto();
             }
             if (!is_null($valtozat)) {
+                if (!is_a($valtozat, TermekValtozat::class)) {
+                    $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat);
+                }
                 return $brutto + $valtozat->getBrutto();
             }
             return $brutto;
@@ -2617,6 +2623,9 @@ class Termek
         if (!\mkw\store::isArsavok()) {
             $brutto = $this->getBrutto();
             if (!is_null($valtozat)) {
+                if (!is_a($valtozat, TermekValtozat::class)) {
+                    $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat);
+                }
                 return $brutto + $valtozat->getBrutto();
             }
             return $brutto;
@@ -2632,6 +2641,9 @@ class Termek
         if (!\mkw\store::isArsavok()) {
             $brutto = $this->getNetto();
             if (!is_null($valtozat)) {
+                if (!is_a($valtozat, TermekValtozat::class)) {
+                    $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat);
+                }
                 return $brutto + $valtozat->getNetto();
             }
             return $brutto;
