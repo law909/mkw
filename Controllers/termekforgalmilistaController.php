@@ -16,6 +16,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
 
         $view->setVar('pagetitle', t('Termékforgalmi lista'));
         $view->setVar('datumtipus', 'teljesites');
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat));
         $rc = new raktarController($this->params);
         $view->setVar('raktarlista', $rc->getSelectList());
         $partner = new partnerController($this->params);
