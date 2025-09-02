@@ -318,7 +318,7 @@ class BizonylatfejListener
     private function createKezelesiKoltseg($bizfej)
     {
         $szallmod = $bizfej->getSzallitasimod();
-        $kezktg = $szallmod->getTermek();
+        $kezktg = $szallmod?->getTermek();
         if ($kezktg) {
             if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
                 $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
