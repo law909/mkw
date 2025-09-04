@@ -162,7 +162,7 @@ class exportController extends \mkwhelpers\Controller
                     '"' . (array_key_exists(6, $keptomb) ? $keptomb[6] : '') . '"',
                     '"' . $t->getTermekfa1Nev() . '"',
                     '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
-                    '"-1"',
+                    '"1"',
                     '"' . $leiras . '"'
                 ];
                 echo implode(';', $sor) . "\n";
