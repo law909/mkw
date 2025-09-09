@@ -1110,8 +1110,10 @@ $(document).ready(function () {
                         valtozatid: $this.data('id')
                     },
                     success: function (data) {
-                        dialogcenter.html(data).dialog({
+                        d = JSON.parse(data);
+                        dialogcenter.html(d.html).dialog({
                             modal: true,
+                            title: d.title,
                             buttons: {
                                 'OK': function () {
                                     dialogcenter.dialog('close');

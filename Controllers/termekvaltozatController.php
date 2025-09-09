@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Automattic\WooCommerce\HttpClient\HttpClientException;
+use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
@@ -340,8 +341,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function getKeszletByRaktar()
     {
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
+        /** @var TermekValtozat $valtozat */
         $valtozat = $this->getRepo()->find($valtozatid);
-        $raktarak = $this->getRepo('Entities\Raktar')->getAllActive();
+        $raktarak = $this->getRepo(Raktar::class)->getAllActive();
         if ($valtozat) {
             $klist = [];
             foreach ($raktarak as $raktar) {
@@ -352,8 +354,12 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             }
             $view = $this->createView('termekkeszletreszletezo.tpl');
             $view->setVar('lista', $klist);
-            $view->printTemplateResult();
+            $tpl = $view->getTemplateResult();
         }
+        return json_encode([
+            'title' => $valtozat->getNev(),
+            'html' => $tpl,
+        ]);
     }
 
     public function getValtozatAdatok()
