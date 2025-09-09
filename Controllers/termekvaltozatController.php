@@ -356,7 +356,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $view->setVar('lista', $klist);
             $tpl = $view->getTemplateResult();
         }
-        return json_encode([
+        echo json_encode([
             'title' => $valtozat->getNev(),
             'html' => $tpl,
         ]);
