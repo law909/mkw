@@ -2,16 +2,19 @@
 
 namespace Controllers;
 
-class szamlafejController extends bizonylatfejController {
+class szamlafejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->biztipus = 'szamla';
         $this->setPageTitle('Számla');
         $this->setPluralPageTitle('Számlák');
         parent::__construct($params);
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)
+    {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
@@ -26,18 +29,29 @@ class szamlafejController extends bizonylatfejController {
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\store::convDate($egyed['teljesitesstr'])));
+                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam(
+                            $egyed['valutanem'],
+                            new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
+                        );
                         if ($arf) {
                             $egyed['arfolyam'] = $arf->getArfolyam();
+                        }
+                        $uk = $record->getUzletkoto();
+                        if ($uk) {
+                            $egyed['uzletkotojutalek'] = $uk->getJutalek();
+                        }
+                        $uk = $record->getBelsouzletkoto();
+                        if ($uk) {
+                            $egyed['belsouzletkotojutalek'] = $uk->getJutalek();
                         }
                         break;
                     case 'szallito':
                         $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
                         break;
                 }
-                $ttk = array();
+                $ttk = [];
                 $cikl = 1;
-                foreach($egyed['tetelek'] as $tetel) {
+                foreach ($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
@@ -68,9 +82,9 @@ class szamlafejController extends bizonylatfejController {
                     default:
                         $egyed['megjegyzes'] = $id . ' stornó bizonylata';
                 }
-                $ttk = array();
+                $ttk = [];
                 $cikl = 1;
-                foreach($egyed['tetelek'] as $tetel) {
+                foreach ($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'storno';
