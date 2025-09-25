@@ -43,7 +43,7 @@
                             <div class="submenu">
                                 <ul>
                                     {foreach $_menupont.children as $_mpelem}
-                                        <li><a href="{$_mpelem.link}">{$_mpelem.cikkszam}</a></li>
+                                        <li><a href="{$_mpelem.link}">{$_mpelem.cikkszam} {$_mpelem.caption}</a></li>
                                     {/foreach}
                                 </ul>
                             </div>
