@@ -17,7 +17,8 @@
 		"sqids/sqids": "^0.4.1",
 		"dompdf/dompdf": "^3.0",
 		"automattic/woocommerce":"^3.1.0",
-		"google/apiclient": "^2.14"
+		"google/apiclient": "^2.14",
+		"prestashop/prestashop-webservice-lib": "dev-master"
 	},
     "autoload": {
         "psr-4": {
@@ -27,7 +28,10 @@
             "Entities\\": "Entities",
             "Controllers\\": "Controllers",
             "Proxies\\": "Proxies"
-        }
+        },
+        "files": [
+            "vendor/prestashop/prestashop-webservice-lib/PSWebServiceLibrary.php"
+        ]
     },
     "config": {
         "platform": {

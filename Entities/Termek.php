@@ -7,8 +7,11 @@ use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\GuzzleException;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use PSWebServiceLibrary;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
@@ -465,6 +468,15 @@ class Termek
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $feltoltheto5 = 0;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $prestaid;
+
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private $prestadate;
+
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $prestatiltva = 0;
 
     public function __toString()
     {
@@ -4130,6 +4142,332 @@ class Termek
     public function setFeltoltheto5($feltoltheto5): void
     {
         $this->feltoltheto5 = $feltoltheto5;
+    }
+
+    /**
+     * Upload termek entity with its termekvaltozats to PrestaShop
+     */
+    public function uploadToPresta($doFlush = true)
+    {
+        if (!$this->isPrestaShopEnabled()) {
+            return;
+        }
+        if ($this->getPrestaTiltva()) {
+            return;
+        }
+        if (!$this->getNFeltoltheto(\mkw\store::getPrestaWebshopNum())) {
+            return;
+        }
+        if ($this->getPrestaId() && !$this->shouldUploadToPresta()) {
+            return;
+        }
+
+        \mkw\store::writelog($this->getId() . ': PrestaShop termék adatgyűjtés start');
+
+        $prestaClient = $this->getPrestaClient();
+        $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+
+        $ford = $this->getTranslationsArray();
+        $nev = $this->getNevForditas($ford, 'en_us');
+        if (!$nev) {
+            $nev = $this->getNev();
+        }
+        $leiras = $this->getLeirasForditas($ford, 'en_us');
+        if (!$leiras) {
+            $leiras = $this->getLeiras();
+        }
+
+        // Prepare product data for PrestaShop format
+        $productData = [
+            'name' => [
+                ['id' => 1, 'value' => $nev], // Language ID 1 for default language
+            ],
+            'description' => [
+                ['id' => 1, 'value' => preg_replace("/(\t|\n|\r)+/", "", $leiras)],
+            ],
+            'description_short' => [
+                ['id' => 1, 'value' => mb_substr(preg_replace("/(\t|\n|\r)+/", "", $leiras), 0, 100) . '...'],
+            ],
+            'reference' => 'T-' . $this->getId(),
+            'ean13' => $this->getVonalkod() ?: '',
+            'price' => $this->getNettoAr(null, null, $eur, null),
+            'active' => $this->getInaktiv() ? '0' : '1',
+            'show_price' => '1',
+            'online_only' => '0',
+            'minimal_quantity' => '1',
+            'weight' => (string)$this->getSuly(),
+            'width' => (string)$this->getSzelesseg(),
+            'height' => (string)$this->getMagassag(),
+            'depth' => (string)$this->getHosszusag(),
+            'available_for_order' => !$this->getNemkaphato() ? '1' : '0',
+            'show_condition' => '0',
+            'condition' => 'new',
+            'visibility' => $this->getNLathato(\mkw\store::getPrestaWebshopNum()) ? 'both' : 'none',
+        ];
+
+        // Add category if exists
+        if ($this->getTermekmenu1() && $this->getTermekmenu1()->getPrestaId()) {
+            $productData['id_category_default'] = $this->getTermekmenu1()->getPrestaId();
+            $productData['associations']['categories']['category'] = [
+                ['id' => $this->getTermekmenu1()->getPrestaId()]
+            ];
+        }
+
+        // Handle product creation or update
+        if (!$this->getPrestaId()) {
+            $this->createProductInPresta($prestaClient, $productData, $doFlush);
+        } elseif ($this->shouldUploadToPresta()) {
+            $this->updateProductInPresta($prestaClient, $productData, $doFlush);
+        }
+
+        // Handle variants upload
+        $this->uploadVariantsToPresta($prestaClient, $eur, $doFlush);
+
+        \mkw\store::writelog($this->getId() . ': PrestaShop termék feltöltés befejezve');
+    }
+
+    /**
+     * Create product in PrestaShop
+     */
+    private function createProductInPresta($prestaClient, $doFlush)
+    {
+        \mkw\store::writelog($this->getId() . ': PrestaShop termék POST start');
+
+        try {
+            $blankProduct = $prestaClient->get(['url' => '/products?schema=blank']);
+
+            $product = $blankProduct->product->children;
+
+            $ford = $this->getTranslationsArray();
+            $nev = $this->getNevForditas($ford, 'en_us');
+            if (!$nev) {
+                $nev = $this->getNev();
+            }
+            $leiras = $this->getLeirasForditas($ford, 'en_us');
+            if (!$leiras) {
+                $leiras = $this->getLeiras();
+            }
+
+            $product->name->language = $this->getNev();
+            $product->description = $this->getLeiras();
+            $product->description_short = $this->getRovidleiras();
+            $product->new = $productData['new'];
+            $product->reference = $productData['reference'];
+            $product->ean13 = $this->getVonalkod() ?: '';
+            $product->active = $this->getInaktiv();
+            $product->visibility = $this->getLathato();
+
+
+            $product->price = $productData['price'];
+            $product->show_price = $productData['show_price'];
+            $product->online_only = $productData['online_only'];
+            $product->weight = $productData['weight'];
+            $product->width = $productData['width'];
+            $product->height = $productData['height'];
+            $product->available_for_order = $productData['available_for_order'];
+            $product->show_condition = $productData['show_condition'];
+            $product->condition = $productData['condition'];
+            $product->id_category_default = $productData['id_category_default'];
+            $product->associations = $productData['associations'];
+
+            $xml = $this->arrayToPrestaXml($productData, 'product');
+            $response = $prestaClient->add([
+                'resource' => 'products',
+                'postXml' => $xml
+            ]);
+
+            $responseXml = simplexml_load_string($response);
+            $this->setPrestaId((int)$responseXml->product->id);
+            $this->setPrestaDate('');
+            $this->dontUploadToPresta = true;
+            \mkw\store::getEm()->persist($this);
+
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+
+            \mkw\store::writelog($this->getId() . ': PrestaShop termék POST sikeres, ID: ' . $this->getPrestaId());
+        } catch (\Exception $e) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop termék POST HIBA: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Update product in PrestaShop
+     */
+    private function updateProductInPresta($prestaClient, $productData, $doFlush)
+    {
+        \mkw\store::writelog($this->getId() . ': PrestaShop termék PUT start');
+
+        try {
+            $xml = $this->arrayToPrestaXml($productData, 'product');
+            $response = $prestaClient->edit([
+                'resource' => 'products',
+                'id' => $this->getPrestaId(),
+                'putXml' => $xml
+            ]);
+
+            $this->setPrestaDate('');
+            $this->dontUploadToPresta = true;
+            \mkw\store::getEm()->persist($this);
+
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+
+            \mkw\store::writelog($this->getId() . ': PrestaShop termék PUT sikeres');
+        } catch (\Exception $e) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop termék PUT HIBA: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Upload variants to PrestaShop
+     */
+    private function uploadVariantsToPresta($prestaClient, $eur, $doFlush)
+    {
+        if (!$this->getPrestaId()) {
+            return;
+        }
+
+        \mkw\store::writelog($this->getId() . ': PrestaShop változatok feltöltése kezdés');
+
+        /** @var TermekValtozat $valtozat */
+        foreach ($this->getValtozatok() as $valtozat) {
+            if (!$valtozat->getPrestaId() || $valtozat->shouldUploadToPresta()) {
+                $valtozat->uploadToPresta($prestaClient, $this->getPrestaId(), $eur, $doFlush);
+            }
+        }
+
+        \mkw\store::writelog($this->getId() . ': PrestaShop változatok feltöltése befejezve');
+    }
+
+    /**
+     * Convert array to PrestaShop XML format
+     */
+    private function arrayToPrestaXml($data, $rootElement)
+    {
+        $xml = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8'?><prestashop><$rootElement></$rootElement></prestashop>");
+        $productNode = $xml->$rootElement;
+
+        $this->arrayToXmlRecursive($data, $productNode);
+
+        return $xml->asXML();
+    }
+
+    /**
+     * Recursively convert array to XML
+     */
+    private function arrayToXmlRecursive($data, $xmlNode)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                if (is_numeric($key)) {
+                    $subNode = $xmlNode;
+                } else {
+                    $subNode = $xmlNode->addChild($key);
+                }
+
+                if (isset($value[0]) && is_array($value[0])) {
+                    // Handle multilang or association arrays
+                    foreach ($value as $item) {
+                        if (isset($item['id']) && isset($item['value'])) {
+                            // Multilang field
+                            $langNode = $subNode->addChild('language', htmlspecialchars($item['value']));
+                            $langNode->addAttribute('id', $item['id']);
+                        } elseif (isset($item['id'])) {
+                            // Association field
+                            $subNode->addChild('id', $item['id']);
+                        } else {
+                            $this->arrayToXmlRecursive($item, $subNode);
+                        }
+                    }
+                } else {
+                    $this->arrayToXmlRecursive($value, $subNode);
+                }
+            } else {
+                $xmlNode->addChild($key, htmlspecialchars($value));
+            }
+        }
+    }
+
+    /**
+     * Get PrestaShop webservice client
+     */
+    private function getPrestaClient()
+    {
+        return new PSWebServiceLibrary(
+            \mkw\store::getPrestaUrl(),
+            \mkw\store::getPrestaKey(),
+            false // Debug mode off
+        );
+    }
+
+    /**
+     * Check if PrestaShop integration is enabled
+     */
+    private function isPrestaShopEnabled()
+    {
+        return \mkw\store::getPrestaKey() && \mkw\store::getPrestaUrl();
+    }
+
+    /**
+     * Check if product should be uploaded to PrestaShop
+     */
+    private function shouldUploadToPresta()
+    {
+        // Implement logic similar to shouldUploadToWc()
+        return !isset($this->dontUploadToPresta) || !$this->dontUploadToPresta;
+    }
+
+    /**
+     * Get PrestaShop product ID
+     */
+    public function getPrestaId()
+    {
+        return $this->prestaid ?? null;
+    }
+
+    /**
+     * Set PrestaShop product ID
+     */
+    public function setPrestaId($prestaid): void
+    {
+        $this->prestaid = $prestaid;
+    }
+
+    /**
+     * Get PrestaShop upload date
+     */
+    public function getPrestaDate()
+    {
+        return $this->prestadate;
+    }
+
+    /**
+     * Set PrestaShop upload date
+     */
+    public function setPrestaDate($prestadate): void
+    {
+        if ($prestadate) {
+            if (is_string($prestadate)) {
+                $this->prestadate = new \DateTime($prestadate);
+            } else {
+                $this->prestadate = $prestadate;
+            }
+        } else {
+            $this->prestadate = new \DateTime();
+        }
+    }
+
+    /**
+     * Check if product is banned from PrestaShop
+     */
+    private function getPrestaTiltva()
+    {
+        return $this->prestatiltva ?? false;
     }
 
 }

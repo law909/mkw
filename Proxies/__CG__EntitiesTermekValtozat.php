@@ -67,10 +67,10 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'keszletinfo', 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'];
+            return ['__isInitialized__', 'keszletinfo', 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'prestaid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'prestadate'];
         }
 
-        return ['__isInitialized__', 'keszletinfo', 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate'];
+        return ['__isInitialized__', 'keszletinfo', 'foglalasinfo', 'dontUploadToWC', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto4', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto5', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto6', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto7', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto8', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto9', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto10', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto11', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto12', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto13', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto14', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto15', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'leltartetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'minboltikeszlet', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'wcdate', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'prestaid', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'prestadate'];
     }
 
     /**
@@ -1631,6 +1631,72 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
 
         return parent::deleteFromWC();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uploadToPresta($prestaClient, $productId, $eur = NULL, $doFlush = true)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'uploadToPresta', [$prestaClient, $productId, $eur, $doFlush]);
+
+        return parent::uploadToPresta($prestaClient, $productId, $eur, $doFlush);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldUploadToPresta()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'shouldUploadToPresta', []);
+
+        return parent::shouldUploadToPresta();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrestaId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrestaId', []);
+
+        return parent::getPrestaId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPrestaId($prestaid): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrestaId', [$prestaid]);
+
+        parent::setPrestaId($prestaid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrestaDate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrestaDate', []);
+
+        return parent::getPrestaDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPrestaDate($prestadate): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrestaDate', [$prestadate]);
+
+        parent::setPrestaDate($prestadate);
     }
 
 }

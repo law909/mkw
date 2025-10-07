@@ -7,6 +7,7 @@ use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\ResultSetMapping;
+use GuzzleHttp\Exception\GuzzleException;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -182,6 +183,12 @@ class TermekValtozat
     private $wcid;
     /** @ORM\Column(type="datetime", nullable=true) */
     private $wcdate;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $prestaid;
+
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private $prestadate;
 
     /**
      * @ORM\PrePersist
@@ -1559,6 +1566,221 @@ class TermekValtozat
             $result = $wc->delete('products/' . $this->getTermek()?->getWcid() . '/variations/' . $this->getWcid());
         } catch (HttpClientException $e) {
             \mkw\store::writelog('DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
+        }
+    }
+
+    /**
+     * Upload variant to PrestaShop
+     */
+    public function uploadToPresta($prestaClient, $productId, $eur = null, $doFlush = true)
+    {
+        if (!$productId) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat feltöltés HIBA - nincs termék ID');
+            return;
+        }
+
+        if (!$eur) {
+            $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
+        }
+
+        \mkw\store::writelog($this->getId() . ': PrestaShop változat feltöltés kezdés');
+
+        // Prepare variant data for PrestaShop
+        $variantData = [
+            'id_product' => $productId,
+            'reference' => 'TV-' . $this->getId(),
+            'ean13' => $this->getVonalkod() ?: '',
+            'price' => $this->getTermek()->getNettoAr($this, null, $eur, null),
+            'quantity' => $this->getKeszlet(null, null, false) ?: 0,
+            'minimal_quantity' => '1',
+            'default_on' => !$this->getPrestaId() ? '1' : '0', // First variant is default
+        ];
+
+        // Add attribute combinations
+        if ($this->getAdatTipus1() && $this->getErtek1()) {
+            $variantData['associations']['product_option_values']['product_option_value'][] = [
+                'id' => $this->getAttributeValueId($this->getAdatTipus1()->getId(), $this->getErtek1())
+            ];
+        }
+
+        if ($this->getAdatTipus2() && $this->getErtek2()) {
+            $variantData['associations']['product_option_values']['product_option_value'][] = [
+                'id' => $this->getAttributeValueId($this->getAdatTipus2()->getId(), $this->getErtek2())
+            ];
+        }
+
+        try {
+            if (!$this->getPrestaId()) {
+                $this->createVariantInPresta($prestaClient, $variantData, $doFlush);
+            } else {
+                $this->updateVariantInPresta($prestaClient, $variantData, $doFlush);
+            }
+        } catch (GuzzleException $e) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat feltöltés HIBA: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create variant in PrestaShop
+     */
+    private function createVariantInPresta($prestaClient, $variantData, $doFlush)
+    {
+        \mkw\store::writelog($this->getId() . ': PrestaShop változat POST start');
+
+        try {
+            $xml = $this->arrayToPrestaXml($variantData, 'combination');
+            $response = $prestaClient->add([
+                'resource' => 'combinations',
+                'postXml' => $xml
+            ]);
+
+            $responseXml = simplexml_load_string($response);
+            $this->setPrestaId((int)$responseXml->combination->id);
+            $this->setPrestaDate('');
+            $this->dontUploadToPresta = true;
+            \mkw\store::getEm()->persist($this);
+
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat POST sikeres, ID: ' . $this->getPrestaId());
+        } catch (\Exception $e) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat POST HIBA: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Update variant in PrestaShop
+     */
+    private function updateVariantInPresta($prestaClient, $variantData, $doFlush)
+    {
+        \mkw\store::writelog($this->getId() . ': PrestaShop változat PUT start');
+
+        try {
+            $xml = $this->arrayToPrestaXml($variantData, 'combination');
+            $response = $prestaClient->edit([
+                'resource' => 'combinations',
+                'id' => $this->getPrestaId(),
+                'putXml' => $xml
+            ]);
+
+            $this->setPrestaDate('');
+            $this->dontUploadToPresta = true;
+            \mkw\store::getEm()->persist($this);
+
+            if ($doFlush) {
+                \mkw\store::getEm()->flush();
+            }
+
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat PUT sikeres');
+        } catch (\Exception $e) {
+            \mkw\store::writelog($this->getId() . ': PrestaShop változat PUT HIBA: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Convert array to PrestaShop XML format
+     */
+    private function arrayToPrestaXml($data, $rootElement)
+    {
+        $xml = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8'?><prestashop><$rootElement></$rootElement></prestashop>");
+        $elementNode = $xml->$rootElement;
+
+        $this->arrayToXmlRecursive($data, $elementNode);
+
+        return $xml->asXML();
+    }
+
+    /**
+     * Recursively convert array to XML
+     */
+    private function arrayToXmlRecursive($data, $xmlNode)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                if (is_numeric($key)) {
+                    $subNode = $xmlNode;
+                } else {
+                    $subNode = $xmlNode->addChild($key);
+                }
+
+                if (isset($value[0]) && is_array($value[0])) {
+                    // Handle association arrays
+                    foreach ($value as $item) {
+                        if (isset($item['id'])) {
+                            // Association field
+                            $subNode->addChild('id', $item['id']);
+                        } else {
+                            $this->arrayToXmlRecursive($item, $subNode);
+                        }
+                    }
+                } else {
+                    $this->arrayToXmlRecursive($value, $subNode);
+                }
+            } else {
+                $xmlNode->addChild($key, htmlspecialchars($value));
+            }
+        }
+    }
+
+    /**
+     * Get attribute value ID for PrestaShop
+     */
+    private function getAttributeValueId($attributeId, $value)
+    {
+        // This would need to be implemented to map internal attribute values to PrestaShop attribute value IDs
+        // For now, return a placeholder that should be configured per PrestaShop installation
+        return 1; // Placeholder - should be mapped to actual PrestaShop attribute value IDs
+    }
+
+    /**
+     * Check if variant should be uploaded to PrestaShop
+     */
+    public function shouldUploadToPresta()
+    {
+        return !isset($this->dontUploadToPresta) || !$this->dontUploadToPresta;
+    }
+
+    /**
+     * Get PrestaShop variant ID
+     */
+    public function getPrestaId()
+    {
+        return $this->prestaid ?? null;
+    }
+
+    /**
+     * Set PrestaShop variant ID
+     */
+    public function setPrestaId($prestaid): void
+    {
+        $this->prestaid = $prestaid;
+    }
+
+    /**
+     * Get PrestaShop upload date
+     */
+    public function getPrestaDate()
+    {
+        return $this->prestadate;
+    }
+
+    /**
+     * Set PrestaShop upload date
+     */
+    public function setPrestaDate($prestadate): void
+    {
+        if ($prestadate) {
+            if (is_string($prestadate)) {
+                $this->prestadate = new \DateTime($prestadate);
+            } else {
+                $this->prestadate = $prestadate;
+            }
+        } else {
+            $this->prestadate = new \DateTime();
         }
     }
 

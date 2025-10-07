@@ -1549,6 +1549,26 @@ class store
         return self::getConfigValue('wp.apppassword');
     }
 
+    public static function getPrestaKey()
+    {
+        return self::getConfigValue('presta.key');
+    }
+
+    public static function getPrestaUrl()
+    {
+        return self::getConfigValue('presta.url');
+    }
+
+    public static function getPrestaWebshopNum()
+    {
+        return self::getConfigValue('presta.webshopnum');
+    }
+
+    public static function getPrestaImageUrlPrefix()
+    {
+        return self::getConfigValue('presta.imageurlprefix');
+    }
+
     public static function getSzallitasiKoltsegMode()
     {
         $szm = self::getSetupValue('szallitasikoltsegmode');
