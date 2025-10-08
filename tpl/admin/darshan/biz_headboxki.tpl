@@ -1,6 +1,6 @@
 <div class="headbox pull-left">
-    <div class="headboxborder border">
-        <div class="headboxinner">
+    <div class="height100percent border">
+        <div class="padding5">
             <p class="bold">Szállító:</p>
             <p class="nev bold">{$egyed.tulajnev}{if ($egyed.tulajegyenivallalkozo)} ({$egyed.tulajevnyilvszam}){/if}</p>
             {if ($egyed.tulajkisadozo)}
@@ -17,8 +17,8 @@
     </div>
 </div>
 <div class="headbox pull-left">
-    <div class="headboxborder border">
-        <div class="headboxinner">
+    <div class="height100percent border">
+        <div class="padding5">
             <p class="bold">Vevő:</p>
             <p class="nev bold">{$egyed.szamlanev}</p>
             <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
