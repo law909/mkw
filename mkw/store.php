@@ -956,7 +956,7 @@ class store
             $partnerhaladek = $partner->getFizhatido();
         }
         if (is_a($kelt, 'DateTime')) {
-            $dkelt = $kelt;
+            $dkelt = clone $kelt;
         } else {
             $dkelt = new \DateTime(self::convDate($kelt));
         }

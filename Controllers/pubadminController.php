@@ -235,11 +235,16 @@ class pubadminController extends mkwhelpers\Controller
                 $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
 
                 $szamlafej = new Bizonylatfej();
-                $szamlafej->setKellszallitasikoltsegetszamolni(false);
+                //$szamlafej->setKellszallitasikoltsegetszamolni(false);
                 $szamlafej->setPersistentData();
 
                 $szamlafej->setBizonylattipus($biztipus);
                 $szamlafej->setPartner($rvpartner);
+                if ($rvpartner->getSzallitasimod()) {
+                    $szamlafej->setSzallitasimod($rvpartner->getSzallitasimod());
+                } else {
+                    $szamlafej->setSzallitasimod($this->getRepo(Entities\Szallitasimod::class)->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod)));;
+                }
                 if (!$szamlafej->getPartnervatstatus()) {
                     $szamlafej->setPartnervatstatus(2);
                 }
@@ -260,7 +265,6 @@ class pubadminController extends mkwhelpers\Controller
                 $szamlafej->setTeljesites();
                 $szamlafej->setEsedekesseg(\mkw\store::calcEsedekesseg($szamlafej->getKelt(), $szamlafej->getFizmod(), $szamlafej->getPartner()));
                 $szamlafej->setBelsomegjegyzes('Automata számla pubadminból');
-                $this->getEm()->persist($szamlafej);
 
                 $szamlatetel = new Bizonylattetel();
                 $szamlafej->addBizonylattetel($szamlatetel);
@@ -280,6 +284,7 @@ class pubadminController extends mkwhelpers\Controller
 
                 $this->getEm()->persist($szamlatetel);
                 $szamlafej->calcOsszesen();
+                $this->getEm()->persist($szamlafej);
                 $this->getEm()->flush();
 
                 $email = $szamlafej->getPartneremail();
