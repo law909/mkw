@@ -17,6 +17,7 @@ class consts
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';
+    const KeszpenzFizmod = 'keszpenzfizmod';
     const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
     const ShowTermekArsav = 'showtermekarsav';
@@ -353,6 +354,7 @@ class consts
     const JogaBerlet10Termek = 'jogaberlet10termek';
     const JogaBerletKoszonoSablon = 'jogaberletkoszonosablon';
     const JogaBerletFelszolitoSablon = 'jogaberletfelszolitosablon';
+    const JogaBerletSzamlazvaSablon = 'jogaberletszamlazvasablon';
     const JogaBerletLefogjarniSablon = 'jogaberletlefogjarnisablon';
     const JogaBerletLejartSablon = 'jogaberletlejartsablon';
     const JogaBerletDatumLejartSablon = 'jogaberletdatumlejartsablon';

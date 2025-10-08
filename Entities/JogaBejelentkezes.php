@@ -94,6 +94,8 @@ class JogaBejelentkezes
             $rvpartner->setNev($this->getPartnernev());
             $rvpartner->setVezeteknev($this->getPartnerVezeteknev());
             $rvpartner->setKeresztnev($this->getPartnerKeresztnev());
+            $rvpartner->setSzamlatipus(0);
+            $rvpartner->setVatstatus(2);
             \mkw\store::getEm()->persist($rvpartner);
             \mkw\store::getEm()->flush();
         }

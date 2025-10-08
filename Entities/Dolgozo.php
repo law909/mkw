@@ -114,6 +114,9 @@ class Dolgozo
     /** @ORM\OneToMany(targetEntity="MPTNGYSzakmaianyag", mappedBy="biralo3") */
     private $mptngyszakmaianyagok3;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $autoszamla = false;
+
     public function __construct()
     {
         $this->jelenletek = new ArrayCollection();
@@ -650,6 +653,22 @@ class Dolgozo
     public function getMptngyszakmaianyagok3()
     {
         return $this->mptngyszakmaianyagok3;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoszamla()
+    {
+        return $this->autoszamla;
+    }
+
+    /**
+     * @param bool $autoszamla
+     */
+    public function setAutoszamla($autoszamla): void
+    {
+        $this->autoszamla = $autoszamla;
     }
 
 }

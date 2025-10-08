@@ -306,6 +306,12 @@ class Bizonylattetel
     private $wcid;
     /** @ORM\Column(type="datetime", nullable=true) */
     private $wcdate;
+    /**
+     * @ORM\ManyToOne(targetEntity="JogaBerlet")
+     * @ORM\JoinColumn(name="jogaberlet_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\JogaBerlet
+     */
+    private $jogaberlet;
 
 
     public function __construct()
@@ -1881,4 +1887,26 @@ class Bizonylattetel
         }
     }
 
+    public function getJogaberlet()
+    {
+        return $this->jogaberlet;
+    }
+
+    public function getJogaberletId()
+    {
+        if ($this->jogaberlet) {
+            return $this->jogaberlet->getId();
+        }
+        return 0;
+    }
+
+    public function setJogaberlet(JogaBerlet $jogaberlet)
+    {
+        $this->jogaberlet = $jogaberlet;
+    }
+
+    public function removeJogaberlet()
+    {
+        $this->jogaberlet = null;
+    }
 }

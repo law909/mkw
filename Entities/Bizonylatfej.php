@@ -2782,7 +2782,7 @@ class Bizonylatfej
         $this->setSzallhazszam($val->getSzallhazszam());
         $this->setPartnerszallorszag($val->getSzallorszag());
 
-        $this->setPartnerszamlatipus($val->getSzamlatipus());
+        $this->setPartnerSzamlatipus($val->getSzamlatipus());
         $this->setBizonylatnyelv($val->getBizonylatnyelv());
 
         $this->setPartnerktdatalany($val->getKtdatalany());

@@ -1208,6 +1208,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         /** @var Bizonylatfej $o */
         $o = $this->getRepo()->findForPrint($id);
         if ($o) {
+            if (!$this->biztipus) {
+                $this->biztipus = $o->getBizonylattipus()->getId();
+            }
             if ($o->getReportfile()) {
                 $tplname = $o->getReportfile();
             } else {

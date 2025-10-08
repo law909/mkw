@@ -955,14 +955,16 @@ class store
         if ($partner) {
             $partnerhaladek = $partner->getFizhatido();
         }
-        $dkelt = new \DateTime(self::convDate($kelt));
+        if (is_a($kelt, 'DateTime')) {
+            $dkelt = $kelt;
+        } else {
+            $dkelt = new \DateTime(self::convDate($kelt));
+        }
         if ($fmtipus === 'B') {
             if ($partnerhaladek) {
                 $dkelt->add(new \DateInterval('P' . $partnerhaladek . 'D'));
-            } else {
-                if ($fmhaladek) {
-                    $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
-                }
+            } elseif ($fmhaladek) {
+                $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
             }
         }
         return $dkelt->format(self::$DateFormat);

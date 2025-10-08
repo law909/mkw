@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Arsav;
 use Entities\Emailtemplate;
+use Entities\Fizmod;
 use Entities\Jogaoratipus;
 use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Parameterek;
@@ -209,6 +210,10 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::JogaBerletFelszolitoSablon);
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogaberletfelszolitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::JogaBerletSzamlazvaSablon);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('jogaberletszamlazvasablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletKoszonoSablon);
         $rskesablon = new emailtemplateController($this->params);
@@ -455,6 +460,8 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::UtanvetFizmod);
         $view->setVar('utanvetfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::KeszpenzFizmod);
+        $view->setVar('keszpenzfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SZEPFizmod);
         $view->setVar('szepkartyafizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SportkartyaFizmod);
@@ -1321,6 +1328,15 @@ class setupController extends \mkwhelpers\Controller
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::JogaBerletSzamlazvaSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::JogaBerletSzamlazvaSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::JogaBerletSzamlazvaSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
             $this->params->getIntRequestParam(\mkw\consts::JogaBerletKoszonoSablon, 0)
         );
         if ($levelsablon) {
@@ -1431,35 +1447,39 @@ class setupController extends \mkwhelpers\Controller
         }
 
         // alapertelmezes
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::Fizmod, $fizmod->getId());
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('utanvetfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('keszpenzfizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::KeszpenzFizmod, $fizmod->getId());
+        }
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('utanvetfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::UtanvetFizmod, $fizmod->getId());
         } else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::SZEPFizmod, $fizmod->getId());
         } else {
             $this->setObj(\mkw\consts::SZEPFizmod, '');
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('sportkartyafizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('sportkartyafizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::SportkartyaFizmod, $fizmod->getId());
         } else {
             $this->setObj(\mkw\consts::SportkartyaFizmod, '');
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('aycmfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('aycmfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::AYCMFizmod, $fizmod->getId());
         } else {
             $this->setObj(\mkw\consts::AYCMFizmod, '');
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('barionfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('barionfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::BarionFizmod, $fizmod->getId());
         } else {
@@ -1478,7 +1498,7 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::Szallitasimod, $szallmod->getId());
         }
         if (\mkw\store::isOTPay()) {
-            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
+            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('otpayfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
             } else {
@@ -1486,7 +1506,7 @@ class setupController extends \mkwhelpers\Controller
             }
         }
         if (\mkw\store::isMasterPass()) {
-            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
+            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('masterpassfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
             } else {

@@ -55,6 +55,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['mptngykiosztottdb'] = $t->getMptngyszakmaianyagok1()->count()
             + $t->getMptngyszakmaianyagok2()->count()
             + $t->getMptngyszakmaianyagok3()->count();
+        $x['autoszamla'] = $t->isAutoszamla();
         return $x;
     }
 
@@ -84,6 +85,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
         $obj->setMptngymaxdb($this->params->getIntRequestParam('mptngymaxdb'));
         $obj->setJelszotext($this->params->getStringRequestParam('jelszotext'));
+        $obj->setAutoszamla($this->params->getBoolRequestParam('autoszamla'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {

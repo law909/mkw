@@ -41,6 +41,11 @@
                     <td>Óra elmaradásról értesítjük a könyvelőt</td>
                 </tr>
             {/if}
+            {if ($_egyed.autoszamla)}
+                <tr>
+                    <td>Bérlet eladáskor automatikusan készül számla</td>
+                </tr>
+            {/if}
             </tbody>
         </table>
     </td>

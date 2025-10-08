@@ -4,7 +4,11 @@ namespace Controllers;
 
 use Carbon\Carbon;
 use Entities\Arsav;
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\Partner;
+use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers, Entities;
 
@@ -188,19 +192,22 @@ class pubadminController extends mkwhelpers\Controller
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
 
+            $rvpartner = \mkw\store::getEm()->getRepository(Entities\Partner::class)->findOneBy(['email' => $rv->getPartneremail()]);
+            if (!$rvpartner) {
+                $rvpartner = new Partner();
+                $rvpartner->setEmail($rv->getPartneremail());
+                $rvpartner->setNev($rv->getPartnernev());
+                $rvpartner->setVezeteknev($rv->getPartnerVezeteknev());
+                $rvpartner->setKeresztnev($rv->getPartnerKeresztnev());
+                $rvpartner->setSzamlatipus(0);
+                $rvpartner->setVatstatus(2);
+                \mkw\store::getEm()->persist($rvpartner);
+                \mkw\store::getEm()->flush();
+            }
+
             $tipusnev = 'órajegy';
             if ($type === 2 || $type === 3) {
                 $berlet = new Entities\JogaBerlet();
-                $rvpartner = \mkw\store::getEm()->getRepository(Entities\Partner::class)->findOneBy(['email' => $rv->getPartneremail()]);
-                if (!$rvpartner) {
-                    $rvpartner = new Partner();
-                    $rvpartner->setEmail($rv->getPartneremail());
-                    $rvpartner->setNev($rv->getPartnernev());
-                    $rvpartner->setVezeteknev($rv->getPartnerVezeteknev());
-                    $rvpartner->setKeresztnev($rv->getPartnerKeresztnev());
-                    \mkw\store::getEm()->persist($rvpartner);
-                    \mkw\store::getEm()->flush();
-                }
                 $berlet->setPartner($rvpartner);
                 switch ($type) {
                     case 2:
@@ -218,33 +225,126 @@ class pubadminController extends mkwhelpers\Controller
                 $berlet->setNincsfizetve($rv->isKesobbfizet());
                 $this->getEm()->persist($berlet);
                 $this->getEm()->flush();
+            } elseif ($type === 1) {
+                $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             }
-            if ($rv->isKesobbfizet()) {
-                $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon);
-            } else {
-                $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletKoszonoSablon);
-            }
-            if ($berlet) {
-                $berlet->sendEmail($sablon);
-            } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
-                $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find($sablon);
-                if ($emailtpl) {
+            if ($rv->getOrarend()->getDolgozo()->isAutoszamla()) {
+                /** @var Bizonylattipus $biztipus */
+                $biztipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
+                /** @var Valutanem $valutanem */
+                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+
+                $szamlafej = new Bizonylatfej();
+                $szamlafej->setKellszallitasikoltsegetszamolni(false);
+                $szamlafej->setPersistentData();
+
+                $szamlafej->setBizonylattipus($biztipus);
+                $szamlafej->setPartner($rvpartner);
+                if (!$szamlafej->getPartnervatstatus()) {
+                    $szamlafej->setPartnervatstatus(2);
+                }
+                if (!$szamlafej->getPartnerSzamlatipus()) {
+                    $szamlafej->setPartnerSzamlatipus(0);
+                }
+
+                $szamlafej->setRaktar($this->getRepo(Entities\Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
+                $szamlafej->setValutanem($valutanem);
+                $szamlafej->setBankszamla($valutanem->getBankszamla());
+                $szamlafej->setArfolyam(1);
+                if ($later) {
+                    $szamlafej->setFizmod($this->getRepo(Entities\Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::Fizmod)));
+                } else {
+                    $szamlafej->setFizmod($this->getRepo(Entities\Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod)));
+                }
+                $szamlafej->setKelt();
+                $szamlafej->setTeljesites();
+                $szamlafej->setEsedekesseg(\mkw\store::calcEsedekesseg($szamlafej->getKelt(), $szamlafej->getFizmod(), $szamlafej->getPartner()));
+                $szamlafej->setBelsomegjegyzes('Automata számla pubadminból');
+                $this->getEm()->persist($szamlafej);
+
+                $szamlatetel = new Bizonylattetel();
+                $szamlafej->addBizonylattetel($szamlatetel);
+                $szamlatetel->setBizonylatfej($szamlafej);
+
+                $szamlatetel->setPersistentData();
+                $szamlatetel->setTermek($termek);
+                $szamlatetel->setMennyiseg(1);
+                $szamlatetel->setBruttoegysar($price);
+                $szamlatetel->setBruttoegysarhuf($szamlatetel->getBruttoegysar() * $szamlatetel->getArfolyam());
+                $szamlatetel->calc();
+                if ($berlet) {
+                    $szamlatetel->setJogaberlet($berlet);
+                    $berlet->setSzamlazva(true);
+                    $this->getEm()->persist($berlet);
+                }
+
+                $this->getEm()->persist($szamlatetel);
+                $szamlafej->calcOsszesen();
+                $this->getEm()->flush();
+
+                $email = $szamlafej->getPartneremail();
+                if (\mkw\store::isSendableEmail($email)) {
+                    $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletSzamlazvaSablon));
+
+                    $bfcontroller = new bizonylatfejController($this->params);
+                    $html = $bfcontroller->getBizonylatHTML($szamlafej->getId());
+                    $pdf = \mkw\store::getPDFEngine($html);
+                    $filepath = \mkw\store::storagePath(\mkw\store::urlize($szamlafej->getId()) . '.pdf');
+                    $pdf->saveAs($filepath);
+
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $body = \mkw\store::getTemplateFactory()->createMainView(
                         'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
                     );
-                    $body->setVar('partnernev', $rv->getPartnernev());
+                    $body->setVar('szamla', $szamlafej->toLista());
+                    $body->setVar('megszolitas', $szamlafej->getPartner()->getSzamlalevelmegszolitas());
+                    $body->setVar('partnernev', $szamlafej->getPartnernev());
                     $body->setVar('datum', date(\mkw\store::$DateFormat));
                     $body->setVar('berlet', $tipusnev);
                     $body->setVar('ar', $price);
 
                     $mailer = \mkw\store::getMailer();
 
-                    $mailer->addTo($rv->getPartneremail());
+                    $mailer->setAttachment($filepath);
+                    $mailer->addTo($email);
                     $mailer->setSubject($subject->getTemplateResult());
                     $mailer->setMessage($body->getTemplateResult());
 
                     $mailer->send();
+
+                    $bfcontroller->setNyomtatva($szamlafej->getId(), true);
+
+                    \unlink($filepath);
+                }
+            } else {
+                if ($rv->isKesobbfizet()) {
+                    $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon);
+                } else {
+                    $sablon = \mkw\store::getParameter(\mkw\consts::JogaBerletKoszonoSablon);
+                }
+                if ($berlet) {
+                    $berlet->sendEmail($sablon);
+                } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
+                    $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find($sablon);
+                    if ($emailtpl) {
+                        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                        $body = \mkw\store::getTemplateFactory()->createMainView(
+                            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                        );
+                        $body->setVar('partnernev', $rv->getPartnernev());
+                        $body->setVar('datum', date(\mkw\store::$DateFormat));
+                        $body->setVar('berlet', $tipusnev);
+                        $body->setVar('ar', $price);
+
+                        $mailer = \mkw\store::getMailer();
+
+                        $mailer->addTo($rv->getPartneremail());
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
+                        $mailer->setAttachment();
+
+                        $mailer->send();
+                    }
                 }
             }
         }

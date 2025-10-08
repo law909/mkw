@@ -53,6 +53,7 @@ class jogaberletController extends \mkwhelpers\MattableController
         $x['createdstr'] = $t->getCreatedStr();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
+        $x['szamlazva'] = $t->isSzamlazva();
         if (!$uj) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('jogaberlet', '=', $t);
@@ -92,6 +93,7 @@ class jogaberletController extends \mkwhelpers\MattableController
         $obj->setElfogyottalkalom($this->params->getIntRequestParam('elfogyottalkalom'));
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
         $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
+        $obj->setSzamlazva($this->params->getBoolRequestParam('szamlazva', false));
         $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
         $oldlejart = $obj->isLejart();
         $obj->setLejart($this->params->getBoolRequestParam('lejart'));
@@ -438,6 +440,9 @@ class jogaberletController extends \mkwhelpers\MattableController
                     break;
                 case 'nincsfizetve':
                     $obj->setNincsfizetve($kibe);
+                    break;
+                case 'szamlazva':
+                    $obj->setSzamlazva($kibe);
                     break;
             }
             $this->getEm()->persist($obj);

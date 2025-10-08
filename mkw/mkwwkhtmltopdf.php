@@ -17,11 +17,16 @@ class mkwwkhtmltopdf
 
     public function saveAs($filename)
     {
-        $this->engine->saveAs($filename);
+        return $this->engine->saveAs($filename);
     }
 
     public function send($filename)
     {
         $this->engine->send($filename);
+    }
+
+    public function getError()
+    {
+        return $this->engine->getError();
     }
 }

@@ -95,6 +95,10 @@
                             {/foreach}
                         </select></td>
                 </tr>
+                <tr>
+                    <td><label for="AutoSzamlaEdit">{at('Bérlet eladáskor automatikusan készüljön számla')}</label></td>
+                    <td><input id="AutoSzamlaEdit" name="autoszamla" type="checkbox"{if ($egyed.autoszamla)} checked="checked"{/if}></td>
+                </tr>
                 {if ($setup.mptngy)}
                     <tr>
                         <td><label for="MPTNGYMaxvallaltdbEdit">{at('Maximum vállalt absztrakt')}:</label></td>

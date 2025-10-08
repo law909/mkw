@@ -96,6 +96,17 @@ class JogaBerlet
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $jogaelszamolasalap;
 
+    /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="jogaberlet",cascade={"persist"}) */
+    private $bizonylattetelek;
+
+    /** @ORM\Column(type="boolean") */
+    private $szamlazva = false;
+
+    public function __construct()
+    {
+        $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function sendEmail($sablonid)
     {
         \mkw\store::writelog($sablonid);
@@ -617,6 +628,32 @@ class JogaBerlet
     public function setJogaelszamolasalap($jogaelszamolasalap): void
     {
         $this->jogaelszamolasalap = $jogaelszamolasalap;
+    }
+
+    public function getBizonylattetelek()
+    {
+        return $this->bizonylattetelek;
+    }
+
+    public function getBizonylattetelekCount()
+    {
+        return $this->bizonylattetelek->count();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSzamlazva()
+    {
+        return $this->szamlazva;
+    }
+
+    /**
+     * @param bool $szamlazva
+     */
+    public function setSzamlazva($szamlazva): void
+    {
+        $this->szamlazva = $szamlazva;
     }
 
 }
