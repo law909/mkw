@@ -346,8 +346,6 @@ class pubadminController extends mkwhelpers\Controller
                         $mailer->addTo($rv->getPartneremail());
                         $mailer->setSubject($subject->getTemplateResult());
                         $mailer->setMessage($body->getTemplateResult());
-                        $mailer->setAttachment();
-
                         $mailer->send();
                     }
                 }
