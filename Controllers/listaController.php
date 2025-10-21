@@ -5,9 +5,11 @@ namespace Controllers;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
 
-class listaController extends \mkwhelpers\Controller {
+class listaController extends \mkwhelpers\Controller
+{
 
-    public function boltbannincsmasholvan() {
+    public function boltbannincsmasholvan()
+    {
         $rep = $this->getRepo('Entities\TermekValtozat');
         $raktarrepo = $this->getRepo('Entities\Raktar');
         $termekrepo = $this->getRepo('Entities\Termek');
@@ -36,7 +38,7 @@ class listaController extends \mkwhelpers\Controller {
             ->addFilter('bf.raktar_id', '<>', $raktarid)
             ->addFilter('bf.teljesites', '<=', date(\mkw\store::$DateFormat));
         if ($termekfa) {
-            $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $termekfa->getKarkod() . '%');
+            $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $termekfa->getKarkod() . '%');
         }
 
         $sql = 'SELECT bf.raktar_id, bt.termek_id, bt.termekvaltozat_id, SUM(bt.mennyiseg*bt.irany) AS keszlet FROM bizonylattetel bt '
@@ -51,7 +53,7 @@ class listaController extends \mkwhelpers\Controller {
         $q->setParameters($params);
 
         $keszletres = $q->getScalarResult();
-        $res = array();
+        $res = [];
         foreach ($keszletres as $kesz) {
             $valtozat = $rep->find($kesz['termekvaltozat_id']);
             if ($valtozat) {
@@ -89,7 +91,8 @@ class listaController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function napiJelentes($datum = null, $ig = null) {
+    public function napiJelentes($datum = null, $ig = null)
+    {
         if (!$datum) {
             $datum = date(\mkw\store::$SQLDateFormat);
         }
@@ -104,10 +107,10 @@ class listaController extends \mkwhelpers\Controller {
         $focsoportok = $farepo->getForParent(1);
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
 
-        $ret = array();
+        $ret = [];
 
-        $napijelentes = array();
-        foreach($focsoportok as $csoport) {
+        $napijelentes = [];
+        foreach ($focsoportok as $csoport) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter
                 ->addFilter('bf.teljesites', '>=', $datum)
@@ -116,8 +119,8 @@ class listaController extends \mkwhelpers\Controller {
                 ->addFilter('f.tipus', '=', 'P')
                 ->addFilter('bf.mese', '=', false)
                 ->addFilter('bf.raktar_id', '=', 3)
-                ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')
-                ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'garancialevel'));
+                ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
+                ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
 
             if ($kiskercimke) {
                 $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
@@ -135,8 +138,8 @@ class listaController extends \mkwhelpers\Controller {
         }
         $ret['napijelentes'] = $napijelentes;
 
-        $napijelentes = array();
-        foreach($focsoportok as $csoport) {
+        $napijelentes = [];
+        foreach ($focsoportok as $csoport) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter
                 ->addFilter('bf.teljesites', '>=', $datum)
@@ -145,8 +148,8 @@ class listaController extends \mkwhelpers\Controller {
                 ->addFilter('f.tipus', '=', 'B')
                 ->addFilter('bf.mese', '=', false)
                 ->addFilter('bf.raktar_id', '=', 3)
-                ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')
-                ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'garancialevel'));
+                ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
+                ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
 
             if ($kiskercimke) {
                 $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
@@ -170,7 +173,7 @@ class listaController extends \mkwhelpers\Controller {
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.mese', '=', false)
-            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet', 'szallito', 'garancialevel'));
+            ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'kivet', 'szallito', 'garancialevel']);
 
         $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
         $ret['nagykerforgalom'] = $nagykerforg;
@@ -194,7 +197,7 @@ class listaController extends \mkwhelpers\Controller {
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.mese', '=', false)
-            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet', 'garancialevel'));
+            ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'keziszamla']);
 
         $nemhufforg = $this->getRepo('Entities\Bizonylatfej')->calcNemHUFForgalom($filter);
         $ret['nemhufforgalom'] = $nemhufforg;
@@ -202,25 +205,30 @@ class listaController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    public function nemkaphatoertesito() {
+    public function nemkaphatoertesito()
+    {
         $sorrend = $this->params->getIntRequestParam('sorrend');
         switch ($sorrend) {
             case 1:
-                $order = array('t.nev' => 'ASC');
+                $order = ['t.nev' => 'ASC'];
                 break;
             case 2:
-                $order = array('t.cikkszam' => 'ASC');
+                $order = ['t.cikkszam' => 'ASC'];
                 break;
             case 3:
-                $order = array('created' => 'ASC');
+                $order = ['created' => 'ASC'];
                 break;
         }
         $rep = $this->getRepo('Entities\TermekErtesito');
         $termekek = $rep->getNemkaphatoTermekek($order);
-        $lista = array();
+        $lista = [];
         foreach ($termekek as $termek) {
-            $termek['karburl'] = \mkw\store::getRouter()->generate('admintermekviewkarb', false, array(),
-                array('oper' => 'edit', 'id' => $termek['id']));
+            $termek['karburl'] = \mkw\store::getRouter()->generate(
+                'admintermekviewkarb',
+                false,
+                [],
+                ['oper' => 'edit', 'id' => $termek['id']]
+            );
             $lista[] = $termek;
         }
 
