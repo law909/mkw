@@ -144,12 +144,25 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $termekfilter = $this->createTermekFilter();
 
+        $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
+        if ($minkeszletszamit) {
+            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany) - IF(t.minboltikeszlet IS NOT NULL, t.minboltikeszlet, _xx.minboltikeszlet)'
+                . ' FROM bizonylattetel bt'
+                . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . ' LEFT JOIN termek t ON t.id=bt.termek_id'
+                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) '
+                . 'AS keszlet';
+        } else {
+            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany)'
+                . ' FROM bizonylattetel bt'
+                . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) '
+                . 'AS keszlet';
+        }
+
         $q = $this->getEm()->createNativeQuery(
             'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
-            . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) AS keszlet'
+            . $keszletsql
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
             . $translationjoin
@@ -173,7 +186,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
             default:
                 break;
         }
-        
+
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
