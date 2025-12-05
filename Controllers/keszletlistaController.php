@@ -15,6 +15,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
     private $raktarnev;
     private $nevfilter;
     private $foglalasstr;
+    private $minkeszletstr;
     private $arsavstr;
     private $nettobruttostr;
 
@@ -146,6 +147,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
         if ($minkeszletszamit) {
+            $this->minkeszletstr = 'Min.készlet számít';
             $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany) - IF((t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet<>0), t.minboltikeszlet, _xx.minboltikeszlet)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -153,6 +155,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
                 . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) '
                 . 'AS keszlet';
         } else {
+            $this->minkeszletstr = '';
             $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -247,6 +250,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('nevfilter', $this->nevfilter);
         $report->setVar('foglalasstr', $this->foglalasstr);
+        $report->setVar('minkeszletstr', $this->minkeszletstr);
         $report->setVar('arsav', $this->arsavstr . ' ' . $this->nettobruttostr);
         $report->printTemplateResult();
     }
