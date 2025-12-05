@@ -2318,12 +2318,12 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function setJogaberlet(\Entities\JogaBerlet $jogaberlet)
+    public function setJogaberlet(?\Entities\JogaBerlet $jogaberlet): void
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogaberlet', [$jogaberlet]);
 
-        return parent::setJogaberlet($jogaberlet);
+        parent::setJogaberlet($jogaberlet);
     }
 
     /**

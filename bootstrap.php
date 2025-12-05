@@ -63,9 +63,9 @@ $config->setQueryCache($querycache);
 $config->setProxyDir(__DIR__ . '/Proxies');
 $config->setProxyNamespace('Proxies');
 if ($ini['developer']) {
-    $config->setAutoGenerateProxyClasses(true);
+    $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_ALWAYS);
 } else {
-    $config->setAutoGenerateProxyClasses(false);
+    $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_NEVER);
 }
 
 AnnotationRegistry::registerFile('vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
