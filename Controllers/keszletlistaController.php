@@ -146,7 +146,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
         if ($minkeszletszamit) {
-            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany) - IF(t.minboltikeszlet IS NOT NULL, t.minboltikeszlet, _xx.minboltikeszlet)'
+            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany) - IF((t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet<>0), t.minboltikeszlet, _xx.minboltikeszlet)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                 . ' LEFT JOIN termek t ON t.id=bt.termek_id'
