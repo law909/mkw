@@ -1900,7 +1900,7 @@ class Bizonylattetel
         return 0;
     }
 
-    public function setJogaberlet(JogaBerlet $jogaberlet)
+    public function setJogaberlet(JogaBerlet|null $jogaberlet): void
     {
         $this->jogaberlet = $jogaberlet;
     }
