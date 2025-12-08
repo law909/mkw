@@ -1108,6 +1108,26 @@
                     <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="MPTNGYRegSablonEdit">{at('Reg.visszaig. sablon')}:</label></span>
+                                <select id="MPTNGYRegSablonEdit" name="mptngyregvisszaigsablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngyregsablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="MPTNGYJelszoEmlekSablonEdit">{at('Jelszó emlékeztető sablon')}:</label></span>
+                                <select id="MPTNGYJelszoEmlekSablonEdit" name="mptngyjelszoemleksablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $mptngyjelszoemleksablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
                                 <label for="mptngyszimpoziumtipusEdit" class="setuplabel">{at('Szimpózium')}:</label>
                                 <select id="mptngyszimpoziumtipusEdit" name="mptngyszimpoziumtipus">
                                     <option value="">{at('válasszon')}</option>

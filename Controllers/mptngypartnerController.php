@@ -2,11 +2,11 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
-use mkwhelpers\ParameterHandler;
 
 class mptngypartnerController extends partnerController
 {
@@ -32,6 +32,26 @@ class mptngypartnerController extends partnerController
             $t = $this->setFields($t, 'add', 'minden');
             $this->getEm()->persist($t);
             $this->getEm()->flush();
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::MPTNGYRegVisszaigSablon));
+            if ($emailtpl) {
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
+                } else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($email);
+                    if ($emailtpl->isAszfcsatolaskell()) {
+                        $mailer->setAttachment(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName));
+                    }
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
             $this->login($email, $jelszo1);
             \Zend_Session::writeClose();
             echo json_encode([

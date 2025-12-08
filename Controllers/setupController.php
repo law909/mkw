@@ -247,6 +247,14 @@ class setupController extends \mkwhelpers\Controller
         $rskesablon = new emailtemplateController($this->params);
         $view->setVar('jogalemondasertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::MPTNGYRegVisszaigSablon);
+        $mptngyregsablon = new emailtemplateController($this->params);
+        $view->setVar('mptngyregsablonlist', $mptngyregsablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::MPTNGYJelszoEmlekSablon);
+        $mptngyjelszoemleksablon = new emailtemplateController($this->params);
+        $view->setVar('mptngyjelszoemleksablonlist', $mptngyjelszoemleksablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
@@ -1406,6 +1414,24 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaLemondasErtesitoSablon, $levelsablon->getId());
         } else {
             $this->setObj(\mkw\consts::JogaLemondasErtesitoSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::MPTNGYRegVisszaigSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::MPTNGYRegVisszaigSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::MPTNGYRegVisszaigSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::MPTNGYJelszoEmlekSablon, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::MPTNGYJelszoEmlekSablon, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::MPTNGYJelszoEmlekSablon, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));

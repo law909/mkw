@@ -403,6 +403,9 @@ class consts
     const MPTNGYSzempont4 = 'mptngyszempont4';
     const MPTNGYSzempont5 = 'mptngyszempont5';
 
+    const MPTNGYRegVisszaigSablon = 'mptngyregvisszaigsablon';
+    const MPTNGYJelszoEmlekSablon = 'mptngyjelszoemleksablon';
+
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
 
