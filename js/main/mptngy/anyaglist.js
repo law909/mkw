@@ -462,6 +462,7 @@ document.addEventListener("alpine:init", () => {
                         if (respdata.success) {
                             this.showEditor = false;
                             this.firstLoad = true;
+                            this.loaded = false;
                             this.initVars();
                             this.getLists();
                         } else {
