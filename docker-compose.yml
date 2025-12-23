@@ -1,0 +1,21 @@
+services:
+  mkw:
+    build:
+      context: .
+    container_name: mkw
+    volumes:
+      - .:/var/www/html
+    environment:
+      PHP_IDE_CONFIG: serverName=mkw
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - dev-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mkw.rule=Host(`mkw.local`)"
+      - "traefik.http.routers.mkw.entrypoints=web"
+
+networks:
+  dev-network:
+    external: true
