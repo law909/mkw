@@ -464,6 +464,17 @@ if ($DBVersion < '0059') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0059');
 }
 
+if ($DBVersion < '0060') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Színek","/admin/szin/viewlist","/admin/szin",40,0,220, ""),'
+        . '(7, "Méretek","/admin/meret/viewlist","/admin/meret",40,0,230, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0060');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

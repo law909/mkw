@@ -2,7 +2,8 @@
 
 namespace mkwhelpers;
 
-class MattableController extends Controller {
+class MattableController extends Controller
+{
 
     protected $operationName = 'oper';
     protected $idName = 'id';
@@ -20,76 +21,91 @@ class MattableController extends Controller {
     private $pagetitle;
     private $pluralpagetitle;
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         parent::__construct($params);
         $this->setTemplateFactory(\mkw\store::getTemplateFactory());
     }
 
-    public function setPageTitle($val) {
+    public function setPageTitle($val)
+    {
         $this->pagetitle = $val;
     }
 
-    public function getPageTitle() {
+    public function getPageTitle()
+    {
         return $this->pagetitle;
     }
 
-    public function setPluralPageTitle($val) {
+    public function setPluralPageTitle($val)
+    {
         $this->pluralpagetitle = $val;
     }
 
-    public function getPluralPageTitle() {
+    public function getPluralPageTitle()
+    {
         return $this->pluralpagetitle;
     }
 
-    protected function getPager() {
+    protected function getPager()
+    {
         return $this->pager;
     }
 
-    public function getListBodyRowTplName() {
+    public function getListBodyRowTplName()
+    {
         return $this->listBodyRowTplName;
     }
 
-    public function setListBodyRowTplName($name) {
+    public function setListBodyRowTplName($name)
+    {
         $this->listBodyRowTplName = $name;
     }
 
-    public function getListBodyRowVarName() {
+    public function getListBodyRowVarName()
+    {
         return $this->listBodyRowVarName;
     }
 
-    public function setListBodyRowVarName($name) {
+    public function setListBodyRowVarName($name)
+    {
         $this->listBodyRowVarName = $name;
     }
 
-    public function getKarbFormTplName() {
+    public function getKarbFormTplName()
+    {
         return $this->karbFormTplName;
     }
 
-    public function setKarbFormTplName($name) {
+    public function setKarbFormTplName($name)
+    {
         $this->karbFormTplName = $name;
     }
 
-    public function getKarbTplName() {
+    public function getKarbTplName()
+    {
         return $this->karbTplName;
     }
 
-    public function setKarbTplName($name) {
+    public function setKarbTplName($name)
+    {
         $this->karbTplName = $name;
     }
 
-    protected function setVars($view) {
-
+    protected function setVars($view)
+    {
     }
 
-    protected function beforeRemove($o) {
-
+    protected function beforeRemove($o)
+    {
     }
 
-    protected function afterSave($o, $parancs = null) {
-
+    protected function afterSave($o, $parancs = null)
+    {
     }
 
-    protected function saveData() {
+    protected function saveData()
+    {
         $parancs = $this->params->getRequestParam($this->operationName, '');
         $id = $this->params->getRequestParam($this->idName, 0);
         try {
@@ -120,14 +136,14 @@ class MattableController extends Controller {
                     }
                     break;
             }
-            return array('id' => $id, 'obj' => $obj, 'operation' => $parancs);
-        }
-        catch (Exception $e) {
+            return ['id' => $id, 'obj' => $obj, 'operation' => $parancs];
+        } catch (Exception $e) {
             throw $e;
         }
     }
 
-    public function save() {
+    public function save()
+    {
         try {
             $ret = $this->saveData();
             switch ($ret['operation']) {
@@ -142,19 +158,19 @@ class MattableController extends Controller {
                 case $this->delOperation:
                     echo $ret['id'];
             }
-        }
-        catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
 //            echo json_encode(array('error' => $ex->getMessage()));
         }
     }
 
-    protected function getOrderArray() {
+    protected function getOrderArray()
+    {
         //TODO SQLINJECTION
         return $this->getRepo()->getOrder($this->params->getRequestParam('order', 1));
     }
 
-    protected function initPager($elemcount, $elemperpage = null, $pageno = null) {
+    protected function initPager($elemcount, $elemperpage = null, $pageno = null)
+    {
         if (!$elemperpage) {
             $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
         }
@@ -164,35 +180,37 @@ class MattableController extends Controller {
         $this->pager = new PagerCalc($elemcount, $elemperpage, $pageno);
     }
 
-    protected function loadPagerValues($ide) {
+    protected function loadPagerValues($ide)
+    {
         if ($this->pager) {
             return $this->pager->loadValues($ide);
         }
         return $ide;
     }
 
-    protected function loadDataToView($data, $datavarname = '', $view = null) {
-        $vl = array();
+    protected function loadDataToView($data, $datavarname = '', $view = null)
+    {
+        $vl = [];
         foreach ($data as $t) {
             $vl[] = $this->loadVars($t);
         }
         $view->setVar($datavarname, $vl);
-        $result = array();
+        $result = [];
         $result['html'] = $view->getTemplateResult();
         $result = $this->loadPagerValues($result);
         return $result;
     }
 
-    protected function getListBodyRow($obj, $oper) {
+    protected function getListBodyRow($obj, $oper)
+    {
         $view = $this->createView($this->listBodyRowTplName);
         $this->setVars($view);
         $vl = $this->loadVars($obj);
         $view->setVar($this->listBodyRowVarName, $vl);
-        $result = array();
+        $result = [];
         if (is_object($obj)) {
             $result['id'] = $obj->getId();
-        }
-        else {
+        } else {
             $result['id'] = $obj['id'];
         }
         $result['oper'] = $oper;
@@ -200,11 +218,13 @@ class MattableController extends Controller {
         return $result;
     }
 
-    public function getkarb() {
+    public function getkarb()
+    {
         echo $this->_getkarb($this->karbFormTplName);
     }
 
-    public function viewkarb() {
+    public function viewkarb()
+    {
         echo $this->_getkarb($this->karbTplName);
     }
 

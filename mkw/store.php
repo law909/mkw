@@ -131,6 +131,34 @@ class store
         fclose($handle);
     }
 
+
+    public static function log_stack(string $label, string $fname = 'log.txt', int $depth = 25): void
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $depth);
+
+        $lines = [];
+        foreach ($trace as $i => $t) {
+            $file = $t['file'] ?? '[internal]';
+            $line = $t['line'] ?? 0;
+            $func = $t['function'] ?? '';
+            $cls = $t['class'] ?? '';
+            $type = $t['type'] ?? '';
+            $lines[] = sprintf("#%02d %s:%d %s%s%s()", $i, $file, $line, $cls, $type, $func);
+        }
+
+        $msg = sprintf(
+            "[%s] %s | mem=%.1fMB peak=%.1fMB\n%s\n\n",
+            date('c'),
+            $label,
+            memory_get_usage(true) / 1024 / 1024,
+            memory_get_peak_usage(true) / 1024 / 1024,
+            implode("\n", $lines)
+        );
+
+        error_log($msg, 3, self::logsPath($fname));
+    }
+
+
     public static function writeLineToFile($text, $fname)
     {
         $handle = fopen(self::storagePath($fname), "a");

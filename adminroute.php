@@ -606,6 +606,24 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/mnrlandingtranslation/save', 'mnrlandingtranslationController#save', 'adminmnrlandingtranslationsave');
 }
 
+$router->map('GET', '/admin/szin/viewlist', 'szinController#viewlist', 'adminszinviewlist');
+$router->map('GET', '/admin/szin/htmllist', 'szinController#htmllist', 'adminszinhtmllist');
+$router->map('GET', '/admin/szin/getlistbody', 'szinController#getlistbody', 'adminszingetlistbody');
+$router->map('GET', '/admin/szin/getkarb', 'szinController#getkarb', 'adminszingetkarb');
+$router->map('GET', '/admin/szin/viewkarb', 'szinController#viewkarb', 'adminszinviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/szin/save', 'szinController#save', 'adminszinsave');
+}
+
+$router->map('GET', '/admin/meret/viewlist', 'meretController#viewlist', 'adminmeretviewlist');
+$router->map('GET', '/admin/meret/htmllist', 'meretController#htmllist', 'adminmerethtmllist');
+$router->map('GET', '/admin/meret/getlistbody', 'meretController#getlistbody', 'adminmeretgetlistbody');
+$router->map('GET', '/admin/meret/getkarb', 'meretController#getkarb', 'adminmeretgetkarb');
+$router->map('GET', '/admin/meret/viewkarb', 'meretController#viewkarb', 'adminmeretviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/meret/save', 'meretController#save', 'adminmeretsave');
+}
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
