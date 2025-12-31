@@ -1,0 +1,146 @@
+/* alap beállítás minden gombra */
+button,
+.button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  font: inherit;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--btn-radius);
+  padding: var(--btn-padding);
+  font-weight: var(--btn-font-weight);
+  transition: background var(--btn-transition),
+              opacity var(--btn-transition),
+              transform var(--btn-transition);
+  // box-shadow: var(--btn-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 0.5rem;
+  width: max-content;
+
+  &:hover {
+    opacity: var(--link-hover-opacity);
+  }
+
+  &.small {
+    padding: var(--btn-padding-small);
+    font-size: 0.8rem;
+    height: 1.8rem;
+  }
+
+  &.large {
+    padding: var(--btn-padding-large);
+    font-size: 1.2rem;
+    font-weight: 900;
+    height: 3.4rem;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
+}
+
+/* ----- PRIMARY ----- */
+button.primary,
+input.primary[type="button"],
+input.primary[type="submit"],
+.button.primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+
+  .icon {
+    background-color: var(--btn-primary-text);
+  }
+
+  // &:hover {
+  //   // background: var(--btn-primary-bg-hover);
+  //   // transform: translateY(-1px);
+  //   // box-shadow: 0 4px 12px rgba(43,124,255,0.25);
+  //   opacity: var(--link-hover-opacity);
+  // }
+
+  &:active {
+    background: var(--btn-primary-bg-active);
+    // transform: translateY(0);
+    // box-shadow: 0 2px 6px rgba(43,124,255,0.2);
+  }
+}
+
+/* ----- SECONDARY ----- */
+button.secondary,
+.button.secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+
+  .icon {
+    background-color: var(--btn-secondary-text);
+  }
+
+  // &:hover {
+  //   // background: var(--btn-secondary-bg-hover);
+  //   // transform: translateY(-1px);
+  //   // box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  //   opacity: var(--link-hover-opacity);
+  // }
+
+  &:active {
+    background: var(--btn-secondary-bg-active);
+    // transform: translateY(0);
+    // box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+}
+
+
+/* disabled állapot */
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button.bordered,
+input.bordered[type="button"],
+input.bordered[type="submit"],
+.button.bordered {
+  background: var(--btn-bordered-bg);
+  border: 1px solid var(--btn-bordered-border);
+  color: var(--btn-bordered-text);
+
+  .icon {
+    background-color: var(--btn-bordered-text);
+  }
+
+  &:hover {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    // transform: translateY(-1px);
+    // box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    opacity: 1;
+
+    span {
+      color: var(--btn-primary-text);
+    }
+
+    .icon {
+      background-color: var(--btn-primary-text);
+    }
+  }
+
+  &:active {
+    // background: var(--btn-secondary-bg-active);
+    // transform: translateY(0);
+    // box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  &.inverse {
+    border: 1px solid var(  --btn-bordered-border--inverse);
+    color: var(--color-text-inverse);
+  }
+}

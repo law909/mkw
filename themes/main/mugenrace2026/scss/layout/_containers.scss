@@ -1,0 +1,50 @@
+@use '../mixins/breakpoints' as *;
+
+/* Alap konténerek */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+
+  /* Tablet */
+  @include tablet {
+    max-width: 900px;
+  }
+
+  /* Desktop */
+  @include desktop {
+    max-width: var(--breakpoint-desktop-max);
+  }
+}
+
+/* Kisebb konténer */
+.container-sm {
+  @extend .container;
+
+  @include desktop {
+    max-width: 900px;
+  }
+}
+
+/* Nagy konténer */
+.container-lg {
+  @extend .container;
+
+  @include desktop {
+    max-width: 1400px;
+  }
+}
+
+.container-full {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  &__with-padding {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+}
+
+

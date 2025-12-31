@@ -1,0 +1,53 @@
+@use '../mixins/breakpoints' as *;
+
+/* Grid rendszer */
+:root {
+  --grid-gap: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-large);
+  // margin-left: calc(var(--grid-gap) * -1);
+  // margin-right: calc(var(--grid-gap) * -1);
+}
+
+[class^="col-"] {
+  // padding-left: var(--grid-gap);
+  // padding-right: var(--grid-gap);
+  box-sizing: border-box;
+}
+
+.col {
+  flex: 1;
+  // padding-left: var(--grid-gap);
+  // padding-right: var(--grid-gap);
+  box-sizing: border-box;
+}
+
+/* 12 oszlopos rendszer */
+/* Desktop alapértelmezés */
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    width: calc(100% / 12 * #{$i});
+  }
+}
+
+/* Tablet */
+@include tablet {
+  @for $i from 1 through 12 {
+    .col-tablet-#{$i} {
+      width: calc(100% / 12 * #{$i});
+    }
+  }
+}
+
+/* Mobil */
+@include mobile {
+  @for $i from 1 through 12 {
+    .col-mobile-#{$i} {
+      width: calc(100% / 12 * #{$i});
+    }
+  }
+}

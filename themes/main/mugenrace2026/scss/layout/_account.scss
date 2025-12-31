@@ -1,0 +1,134 @@
+@use '../mixins/breakpoints' as *;
+
+
+.account-page {
+  padding-top: var(--spacing-lg);
+
+  .tabs-left {
+    &>.nav-tabs {
+      &>li {
+        &>a {
+          color: var(--color-text);
+        }
+      }
+    }
+  }
+
+  .tabbable {
+    margin-bottom: var(--spacing-lg);
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+
+      .nav-tabs {
+        // display: flex;
+        // overflow-x: auto;
+        // gap: var(--gap-sm);
+
+        float: unset;
+        margin-right: 0;
+        border-right: 0;
+      }
+    }
+  }
+
+  .acc-megrendelestablerow {
+
+  }
+
+  .acc-copyszamlaadat {
+    @include mobile {
+      padding-left: 0;
+    }
+  }
+
+  .controls {
+    &__address {
+      @include mobile {
+        flex-wrap: wrap;
+      }
+
+      input {
+        @include mobile {
+
+          &:nth-child(1) {
+            width: calc(40% - 8px) !important;
+          }
+
+          &:nth-child(2) {
+            width: calc(60% - 8px) !important;
+          }
+
+          &:nth-child(3) {
+            width: calc(70% - 8px) !important;
+          }
+
+          &:nth-child(4) {
+            width: calc(30% - 8px) !important;
+          }
+        }
+      }
+    }
+  }
+
+  .chk-relative {
+    width: 100%;
+  }
+
+  .acc-megrendeles {
+    width: 100%;
+    background: transparent;
+
+    td {
+      padding: 10px;
+    }
+  }
+  .acc-megrendelesbordertop {
+    border-top: solid 1px var(--color-border); 
+  }
+
+  .acc-megrendelesborderbottom {
+    border-bottom: 0;
+  }
+
+  .acc-megrendelestablerow {
+    background: unset;
+
+    &:hover {
+      background: var(--color-background-);
+    }
+
+  }
+}
+
+#megrend {
+  @include mobile {
+    overflow-x: scroll;
+    max-width: calc(100vw - 50px);
+  }
+}
+
+.form-horizontal {
+  max-width: 800px;
+
+  .controls {
+    display: flex;
+    gap: var(--gap-base);
+  }
+
+  .control-group {
+    margin-bottom: 0;
+  }
+}
+
+.form-actions {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.tab-pane {
+  a {
+    color: var(--color-link-text);
+  }
+}

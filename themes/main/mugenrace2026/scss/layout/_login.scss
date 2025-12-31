@@ -1,0 +1,53 @@
+@use '../mixins/breakpoints' as *;
+
+.login-page {
+
+  .row {
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+  
+  &__left {
+    background-image: url('/themes/main/mugenrace2026/img/pages/mugenrace-contact-1.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    
+    @include mobile {
+      width: 100%;
+      min-height: 300px;
+    }
+  }
+
+  &__right {
+
+    .form-header {
+      padding: 0 20px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .divider {
+      max-width: 400px;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    form {
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 40px 20px;
+    }
+
+    .loginform {
+      margin-top: 20px;
+    }
+  }
+}
+
+.controls-row {
+  display: flex;
+  gap: var(--gap-base);
+}

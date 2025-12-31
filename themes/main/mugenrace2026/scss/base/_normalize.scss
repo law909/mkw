@@ -1,0 +1,350 @@
+/* Basic Normalize */
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  display: block;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+a {
+  background-color: transparent;
+}
+
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+img {
+  border-style: none;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+
+.table-bordered {
+  border: unset;
+
+  th, td {
+    border: unset;
+  }
+}
+
+.whitebg {
+  background-color: unset;
+}
+
+
+img {
+  max-width: unset;
+}
+
+footer {
+  margin-top: unset;
+  padding-top: unset;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  height: unset;
+  display: unset;
+  border-radius: unset;
+}
+
+select, 
+textarea, 
+input[type="text"], 
+input[type="password"], 
+input[type="datetime"], 
+input[type="datetime-local"], 
+input[type="date"], 
+input[type="month"], 
+input[type="time"], 
+input[type="week"], 
+input[type="number"], 
+input[type="email"], 
+input[type="url"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="color"], 
+.uneditable-input {
+  border-radius: unset;
+  background-color: unset;
+  border: unset;
+  box-shadow: unset;
+  display: unset;
+  height: unset;
+  padding: unset;
+  margin-bottom: unset;
+  font-size: unset;
+  line-height: unset;
+  color: unset;
+  vertical-align: unset;
+  font-weight: unset;
+}
+
+.searchinputbox {
+  margin: unset;
+}
+
+#minikosar {
+  line-height: unset;
+}
+
+nav {
+  ul {
+    margin: unset;
+
+    li {
+      line-height: unset;
+    }
+  }
+}
+
+h1, h2, h3 {
+  line-height: unset;
+}
+
+.gtermekinner {
+  float: unset;
+  height: unset;
+  width: unset;
+
+}
+
+.chk-datagroupheader {
+  background-color: unset;
+  
+  &:hover {
+    background-color: unset;
+  }
+}
+
+.row {
+  margin-left: unset;
+  margin-right: unset;
+}
+
+.chk-loginrightborder {
+  border-right: unset;
+}
+
+.chk-controloffset {
+  margin-left: unset;
+}
+
+.chk-colleftborder {
+  border: unset;
+}
+
+.chk-colleftborder {
+    border: unset;
+}
+
+[class^="col"] {
+    float: unset;
+}
+.col30percent {
+  width: unset;
+  min-height: unset;
+}
+
+.chk-columncontainer {
+  margin-bottom: unset;
+}
+
+.width100percent {
+  width: unset;
+}
+.pull-left {
+    float: unset;
+}
+
+.chk-datagroupheader {
+    background-color: unset;
+    padding: unset;
+    margin-bottom: unset;
+    cursor: pointer;
+    font-size: unset;
+    font-weight: unset;
+}
+
+.chk-savecontainer {
+    border-style: unset;
+    border-width: unset;
+    border-color: unset;
+    padding: unset;
+    border-radius: unset;
+    background-color: unset;
+}
+
+.row:before, .row:after,
+.controls-row:before, .controls-row:after {
+    display: unset;
+    line-height: unset;
+    content: unset;
+}
+
+.controls-row:after {
+    clear: unset;
+}
+
+.chk-datagroupheader a {
+    font-size: unset;
+    font-weight: unset;
+    margin-left: unset;
+    color: unset;
+    text-decoration: unset;
+}
+
+.chk-columncontainer > div {
+  width: 100%;
+}
+
+.chk-colmargin > div {
+  margin-left: unset;
+}
+
+.lapozo {
+    clear: unset;
+    background-color: unset;
+    padding: unset;
+}
+
+span.aktualislap {
+    color: unset;
+    background-color: unset;
+    padding: unset;
+}
+
+.textaligncenter,
+.textalignright {
+    text-align: unset;
+}
+
+.btn {
+    display: unset;
+    padding: unset;
+    margin-bottom: unset;
+    font-size: unset;
+    line-height: unset;
+    color: unset;
+    text-align: unset;
+    text-shadow: unset;
+    vertical-align: unset;
+    cursor: unset;
+    background-color: unset;
+    background-image: unset;
+    background-repeat: unset;
+    border: unset;
+    border-color: unset;
+    border-color: unset;
+    border-bottom-color: unset;
+    -webkit-border-radius: unset;
+    -moz-border-radius: unset;
+    border-radius: unset;
+    filter: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+}
+
+.kapcsolodoTermekInner {
+  padding: unset;
+}
+
+.kosarbacontainer {
+  margin-top: unset;
+  padding-top: unset;
+}
+
+.szurokontener {
+    border-width: unset;
+    border-style: unset;
+    border-color: unset;
+    margin-bottom: unset;
+}
+
+.szurofej {
+  background-color: unset;
+
+  &:hover {
+    background-color: unset;
+  }
+}
+
+.kattext {
+  margin: unset;
+}
+
+.kat {
+  padding: unset;
+  float: unset;
+  width: unset;
+  cursor: unset;
+}
+
+.offset1 {
+  margin-left: unset;
+}
+
+.close {
+    float: unset;
+    font-size: unset;
+    font-weight: unset;
+    line-height: unset;
+    color: unset;
+    text-shadow: unset;
+    opacity: unset;
+    filter: unset;
+}
+
+form {
+    margin: unset;
+}
+
+header a:hover, 
+footer a:hover {
+  color: unset;
+}

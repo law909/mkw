@@ -1,0 +1,265 @@
+@use '../mixins/breakpoints' as *;
+
+.top-header {
+  // background-color: var(--color-background-inverse);
+  background-color: #212529fa;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  & * {
+    color: var(--color-text-inverse);
+  }
+
+  &__menu {
+    ul {
+      margin: 0;
+    }
+
+    a {
+      font-size: 11px;
+    }
+  }
+
+  .col {
+    &:first-child {
+      @include mobile {
+        display: none;
+      }
+    }
+  }
+
+}
+
+.header {
+  background-color: var(--color-background-inverse);
+  
+  // & * {
+  //   color: var(--color-text-inverse);
+  // }
+
+  &__logo {
+    max-width: 200px;
+
+    @include mobile {
+      max-width: 150px;
+    }
+  }
+
+  &__left {
+    max-width: 200px;
+
+    @include mobile-tablet {
+      height: 40px;
+    }
+  }
+
+  &__center {
+    
+    // @media only screen and (max-width: 450px) {
+    //   display: none;
+    // }
+  }
+
+  &__right {
+    max-width: 200px;
+  }
+
+  .right-menu ul {
+    flex-wrap: nowrap;
+  }
+
+  &__searchform {
+    display: none;
+    
+    &__open {
+      display: flex;
+      position: absolute;
+      width: 100%;
+      background: var(--color-background-inverse);
+      left: 0;
+      right: 0;
+      top: 0px;
+      padding: 18px;
+      z-index: 1;
+
+      @include mobile-tablet {
+        padding: 14px;
+      }
+    }
+
+    &-close {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      cursor: pointer;
+      bottom: 0;
+      margin: auto;
+    }
+
+    .searchinputbox {
+      width: 100%;
+      max-width: 800px;
+      position: relative;
+
+      @include mobile-tablet {
+        margin-right: 40px;
+      }
+
+      input {
+        border-radius: 50px !important;
+        padding: 8px 20px !important;
+      }
+
+      li {
+        color: var(--color-text-inverse);
+        background: transparent;
+        transition: background 0.2s;
+
+        a {
+          color: var(--color-text-inverse);
+
+          strong {
+            color: var(--color-text-inverse);
+            font-weight: 900;
+          }
+        }
+
+        &.active {
+          a {
+            background: var( --color-gray);
+            
+          }
+        }
+      }
+
+    }
+
+    .typeahead.dropdown-menu {
+      list-style-type: none;
+      position: absolute;
+      max-width: 800px;
+      left: 0 !important;
+      right: 0 !important;
+      background-color: var(--color-background-inverse);
+      z-index: 10;
+      height: fit-content;
+      display: block;
+      padding: var(--padding-base);
+      border-bottom-left-radius: var(--border-radius-base);
+      border-bottom-right-radius: var(--border-radius-base);
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      // li {
+      //   gap:5px;
+      // }
+    }
+  }
+  
+  .icon.cart {
+    cursor: pointer;
+  }
+}
+
+.headerorszag {
+  display: none;
+}
+
+.country-trigger {
+  cursor: pointer;
+  color: #fff;
+  font-weight: 500;
+}
+
+.country-modal {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  display: none;
+  z-index: 9999;
+
+  &__content {
+    padding: 40px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    
+  }
+
+  h2 {
+    font-weight: 900;
+    font-size: var( --font-size-header);
+    text-align: center;
+    color: var(--color-text);
+    margin-bottom: var(--gap-extra);
+  }
+}
+
+.country-modal.active {
+  display: block;
+}
+
+
+
+.country-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--gap-base);
+  max-width: var(--breakpoint-desktop-max);
+  margin: 0 auto;
+  overflow-y: auto;
+  height: 100%;
+  max-height: calc(100vh - 170px);
+  padding: 20px 20px 20px 0;
+
+  button {
+    // display: block;
+    width: 100%;
+    // padding: 16px;
+    // margin-bottom: 8px;
+    // text-align: left;
+    // border: 1px solid #ddd;
+    // background: #fff;
+    cursor: pointer;
+  }
+}
+
+.country-trigger {
+  font-size: 11px;
+  margin-left: var(--gap-base);
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+.header-country-wrapper {
+  margin-top: -4px;
+}
+
+.mini-cart {
+  position: relative;
+  cursor: pointer;
+
+  &__counter {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    z-index:1;
+  }
+}

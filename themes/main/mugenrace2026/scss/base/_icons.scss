@@ -1,0 +1,86 @@
+
+i.icon {
+  display: inline-flex;
+  mask-position: center center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+
+  background: no-repeat;
+  background-color: var(--color-icon);
+  width: 20px;
+  height: 20px;
+
+  &__click {
+    cursor: pointer;
+
+    &:hover {
+      opacity: var(--link-hover-opacity);
+    }
+  }
+
+  /* Colors */
+  &.primary {
+    background-color: var(--color-primary);
+  }
+  &.secondary {
+    background-color: var(--color-secondary);
+  }
+  &.white {
+    background-color: var(--color-white);
+  }
+
+  &.menu {
+    mask-image: url('../mugenrace2026/img/icons/icon-menu.svg');
+  }
+
+  &.close {
+    mask-image: url('../mugenrace2026/img/icons/icon-close.svg');
+  }
+
+  &.cart {
+    mask-image: url('../mugenrace2026/img/icons/icon-cart.svg');
+  }
+
+  &.search {
+    mask-image: url('../mugenrace2026/img/icons/icon-search.svg');
+  }
+
+  &.heart {
+    mask-image: url('../mugenrace2026/img/icons/icon-heart.svg');
+  }
+
+  &.facebook {
+    mask-image: url('../mugenrace2026/img/icons/icon-facebook.svg');
+  }
+
+  &.instagram {
+    mask-image: url('../mugenrace2026/img/icons/icon-instagram.svg');
+  }
+
+  &.arrow-right {
+    mask-image: url('../mugenrace2026/img/icons/icon-arrow-right.svg');
+  }
+  
+  &.arrow-left {
+    mask-image: url('../mugenrace2026/img/icons/icon-arrow-right.svg');
+    transform: rotate(180deg);
+  }
+
+  &.arrow-up {
+    mask-image: url('../mugenrace2026/img/icons/icon-arrow-right.svg');
+    transform: rotate(270deg);
+  }
+  
+  &.arrow-down {
+    mask-image: url('../mugenrace2026/img/icons/icon-arrow-right.svg');
+    transform: rotate(90deg);
+  }
+
+  &.filter {
+    mask-image: url('../mugenrace2026/img/icons/icon-filter.svg');
+  }
+
+  &.trash {
+    mask-image: url('../mugenrace2026/img/icons/icon-trash.svg');
+  }
+}

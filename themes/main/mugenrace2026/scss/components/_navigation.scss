@@ -1,0 +1,195 @@
+@use '../mixins/breakpoints' as *;
+
+nav {
+  ul {
+    list-style-type: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    gap: var(--gap-base);
+    padding-left: 0;
+
+    li {
+      font-size: 12px;
+
+      a {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.menu-toggle {
+  display: none !important;
+
+  @include mobile-tablet {
+    display: block !important;
+  }
+
+}
+
+.main-menu {
+  // position: relative;
+  margin: 0;
+  
+  &>ul {
+    margin: 0;
+    gap: var(--gap-large);
+     
+    @include mobile-tablet {
+      width: 100%;
+    }
+
+    &>li {
+      line-height: 50px;
+      vertical-align: middle;
+      @include mobile-tablet {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        line-height: 40px;
+      }
+
+      i.icon {
+        margin-bottom: -4px;
+        width: 18px;
+        height: 18px;
+      }
+
+      a {
+        font-weight: 700;
+        font-size: 13px;
+
+        &:hover {
+          color: var(--color-text-inverse);
+        }
+      }
+    }
+  }
+
+  @include mobile-tablet {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 0vh;
+    transition: height 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  &__open {
+    @include mobile-tablet {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--color-background-inverse);
+      height: 100vh;
+      gap: var(--gap-base);
+      z-index: 20;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 90px 20px 30px 30px;
+
+      ul {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  }
+
+  &__close {
+    display: none !important;
+
+    @include mobile-tablet {
+      display: block !important;
+      position: absolute;
+      top: 35px;
+      right: 15px;
+      cursor: pointer;
+    }
+  }
+
+  .sub {
+    // display: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+    // display: flex;
+    // flex-wrap: wrap;
+    // justify-content: flex-start;
+    // gap: var(--gap-small);
+    column-gap: var(--gap-small);
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    transition: opacity 0.4s, visibility 0.4s;
+    left: 0;
+    right: 0;
+    margin: auto;
+    // margin-top: 7px;
+    width: auto;
+    background-color: var(--color-background-white);
+    padding: var(--spacing-md);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  
+    @include mobile-tablet {
+      background-color: var(--color-background-inverse);
+      padding-top: 0;
+      margin-top: 20px;
+      box-shadow: none;
+    }
+
+    .sub__wrapper {
+      max-width: 1200px;
+
+      @include desktop {
+        margin: auto;
+      }
+    }
+
+    ul {
+      // flex-direction: column;
+      gap: 0;
+    }
+
+    li {
+      padding: 8px 20px;
+      color: var(--color-text);
+      font-size: var(--font-size-base);
+
+      @include mobile-tablet {
+        color: var(--color-text-inverse);
+        font-size: var(--font-size-small);
+      }
+
+      a {
+        font-size: var(--font-size-base);
+        color: var(--color-text);
+
+        @include mobile-tablet {
+          color: var(--color-text-inverse);
+          font-size: var(--font-size-small);
+        }
+
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+
+      &:hover {
+        opacity: 0.8;
+      } 
+    }
+  }
+
+  &>ul>li:hover .sub {
+    opacity: 1;
+    visibility: visible;
+
+    @include mobile-tablet {
+      width: 80%;
+      right: auto;
+    }
+  }
+}

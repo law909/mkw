@@ -1,0 +1,259 @@
+@use '../mixins/breakpoints' as *;
+
+
+.checkout-page {
+  
+  .main-menu,
+  .right-menu {
+    display: none;
+    
+  }
+
+  .header__left {
+    height: 50px;
+  }
+
+  .row {
+    width: 100%;
+
+    &>div {
+      width: 100%;
+    }
+  }
+
+  .controls-row {
+    &>div {
+      width: 100%;
+    }
+  }
+
+  .top-header,
+  i.icon.search {
+    display: none;
+  }
+
+  .form-header {
+    margin-top: var(--spacing-lg);
+
+  }
+}
+
+.checkout-form {
+  width: 100%;
+
+  &>div {
+
+  }
+
+  &>fieldset>.row {
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  .typeahead {
+    &.dropdown-menu {
+      list-style-type: none;
+      background-color: var(--color-background-white);
+      padding: var(--padding-base);
+      margin-top: -3px;
+      z-index: 111;
+      position: sticky;
+      border-left: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+
+      li {
+        margin-bottom: 5px;
+
+        a {
+          color: var(--color-text);
+        }
+      }
+    }
+  }
+
+  &__left {
+    padding: var(--spacing-lg);
+    padding-top: 0;
+
+    @include mobile {
+      justify-content: center;
+    }
+  }
+  
+  &__right {
+    padding: var(--spacing-lg);
+    padding-top: 0;
+    background-color: var(--color-background-white);
+    border-left: 1px solid var(--color-border);
+    
+    @include mobile {
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  &__content {
+    max-width: 500px;
+  }
+  
+  &__summary {
+    max-width: 500px;
+    width: 100%;
+    position: sticky;
+    top: 0;
+
+    .row {
+      .span10 {
+        width: 100%;
+      }
+    }
+  }
+
+  &__section {
+    gap: var(--gap-base);
+    display: flex;
+    flex-direction: column;
+    
+    h5 {
+      margin-bottom: 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    .chk-courierdesc {
+      margin-top: -10px;
+      padding-left: 27px;
+    }
+
+    .js-chkszallmodlist,
+    .js-chkfizmodlist {
+      margin-top: -10px;
+
+      label {
+        font-weight: 700;
+      }
+    }
+
+    .js-chkfizmodlist {
+      margin-top: -10px;
+    }
+  }
+
+  .chk-controllabel {
+    font-weight: 900;
+    font-size: 1.1rem;
+  }
+
+  .chk-colheader {
+    font-weight: 900;
+    margin-top: var(--spacing-sm);
+  }
+
+  .js-chktetellist {
+    margin-top: var(--spacing-sm);
+  }
+
+
+}
+
+.checkout-order-list {
+  margin-top: var(--spacing-lg) !important;
+  margin-bottom: var(--spacing-lg);
+  gap: var(--gap-large);
+
+  &__total-label {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  &__total-value {
+    font-weight: 900;
+    font-size: 1.2rem;
+  }
+}
+
+.checkout-order-list-item {
+  cursor: pointer;
+  width: 100%;
+  gap: var(--gap-base);
+  flex-wrap: wrap;
+
+  &__image {
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-right: var(--spacing-sm);
+    position: relative;
+    border-radius: 5px;
+    border: 2px solid var(--color-light);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      // border-radius: 5px;
+    }
+  }
+
+  &__details {
+    flex: 1;
+  }
+
+  &__caption {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  &__variants,
+  &__sku {
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;  
+  }
+
+  &__unit-price,
+  &__total-price {
+    font-weight: 700;
+  }
+
+  &__price {
+    margin-right: 0;
+    margin-left: auto;
+    margin-top: -15px;
+  }
+
+  &__quantity {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    position: absolute;
+    top: -13px;
+    right: -13px;
+    text-align: center;
+    background-color: var(--color-background-inverse);
+    color: var(--color-text-inverse);
+    border-radius: 8px;
+    border: 2px solid var(--color-text-inverse);
+  }
+
+}
+
+.checkout-page-thankyou,
+.checkout-page-error {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: var(--spacing-md);
+  }
+}
