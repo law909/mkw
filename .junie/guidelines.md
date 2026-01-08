@@ -56,6 +56,7 @@ Set `developer = 1` in `config.ini` to enable:
 
 ### Testing Approach
 
+Don't create tests unless the user asks for it.
 The project doesn't use a formal testing framework like PHPUnit. Instead, it follows a custom testing approach using simple PHP scripts.
 
 ### Running Tests
