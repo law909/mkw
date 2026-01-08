@@ -311,6 +311,7 @@ class termekfaController extends \mkwhelpers\MattableController
                     $t[] = $o;
                 }
                 return $t;
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());
@@ -747,6 +748,7 @@ class termekfaController extends \mkwhelpers\MattableController
                 }
                 return $ret;
 
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $kategoriafilter = new FilterDescriptor();
                 $nativkategoriafilter = new FilterDescriptor();

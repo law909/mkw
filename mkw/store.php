@@ -12,6 +12,7 @@ use Entities\MNRNavigation;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekFa;
+use Entities\Uzletkoto;
 use Entities\Valutanem;
 
 class store
@@ -585,7 +586,7 @@ class store
         $p = new \mkwhelpers\ParameterHandler();
         $oc = new \Controllers\orszagController($p);
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
-        if (self::isMugenrace()) {
+        if (self::isMugenrace() || self::isMugenrace2026()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
             $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
@@ -596,7 +597,7 @@ class store
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
         $v->setVar('utanvetktgtermek', self::getParameter(\mkw\consts::UtanvetKtgTermek));
-        $pr = self::getEm()->getRepository('Entities\Partner');
+        $pr = self::getEm()->getRepository(Partner::class);
         $user = [];
         $user['loggedin'] = $pr->checkloggedin();
         if ($user['loggedin']) {
@@ -628,7 +629,7 @@ class store
         $v->setVar('user', $user);
         if (self::isB2B()) {
             /** @var \Entities\UzletkotoRepository $ukr */
-            $ukr = self::getEm()->getRepository('Entities\Uzletkoto');
+            $ukr = self::getEm()->getRepository(Uzletkoto::class);
             $uk = [];
             $uk['loggedin'] = $ukr->checkloggedin();
             if ($uk['loggedin']) {
@@ -1452,6 +1453,11 @@ class store
     public static function isMugenrace()
     {
         return self::getTheme() === 'mugenrace';
+    }
+
+    public static function isMugenrace2026()
+    {
+        return self::getTheme() === 'mugenrace2026';
     }
 
     public static function isMugenrace2021()

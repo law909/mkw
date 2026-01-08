@@ -869,6 +869,7 @@ class Termek
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
         switch (true) {
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
                 $x['bruttohuf'] = $this->getBruttoAr(
@@ -949,7 +950,7 @@ class Termek
             }
             $x['valtozatok']['data'] = $adatt;
         } else {
-            if (\mkw\store::isMugenrace()) {
+            if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
                 $vtt = [];
                 $valtozatok = $this->getValtozatok();
                 foreach ($valtozatok as $valt) {
@@ -1016,7 +1017,7 @@ class Termek
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr(
                 $valtozat,
@@ -1079,6 +1080,7 @@ class Termek
         }
         $x['ertekelesek'] = $erts;
         switch (true) {
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
                 $x['bruttohuf'] = $this->getBruttoAr(
@@ -1167,7 +1169,7 @@ class Termek
         }
         $x['valtozatok'] = $vtt;
 
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $vtt = [];
             $valtozatok = $this->getValtozatok();
             foreach ($valtozatok as $valt) {
@@ -1221,7 +1223,7 @@ class Termek
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr(
                 $valtozat,
@@ -2117,6 +2119,7 @@ class Termek
         switch (true) {
             case \mkw\store::isMindentkapni():
                 return $this->valtozatok;
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
             case \mkw\store::isSuperzoneB2B():
             case \mkw\store::isMugenrace2021():

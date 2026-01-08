@@ -77,6 +77,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
                 break;
 
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $this->view->setVar('hirek', $hc->gethirlist());
                 $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
@@ -224,6 +225,7 @@ class mainController extends \mkwhelpers\Controller
     {
         switch (true) {
             case \mkw\store::isMindentkapni():
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController($this->params);
