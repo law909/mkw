@@ -464,6 +464,26 @@ if ($DBVersion < '0059') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0059');
 }
 
+if ($DBVersion < '0060') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Csapatok","/admin/csapat/viewlist","admincsapatviewlist",20,0,460, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0060');
+}
+
+if ($DBVersion < '0061') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Versenyzők","/admin/versenyzo/viewlist","adminversenyzoviewlist",20,0,470, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0061');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

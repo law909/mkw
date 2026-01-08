@@ -996,6 +996,22 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/uzletkoto/save', 'uzletkotoController#save', 'adminuzletkotosave');
 }
 
+$router->map('GET', '/admin/csapat/viewlist', 'csapatController#viewlist', 'admincsapatviewlist');
+$router->map('GET', '/admin/csapat/getlistbody', 'csapatController#getlistbody', 'admincsapatgetlistbody');
+$router->map('GET', '/admin/csapat/getkarb', 'csapatController#getkarb', 'admincsapatgetkarb');
+$router->map('GET', '/admin/csapat/viewkarb', 'csapatController#viewkarb', 'admincsapatviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/csapat/save', 'csapatController#save', 'admincsapatsave');
+}
+
+$router->map('GET', '/admin/versenyzo/viewlist', 'versenyzoController#viewlist', 'adminversenyzoviewlist');
+$router->map('GET', '/admin/versenyzo/getlistbody', 'versenyzoController#getlistbody', 'adminversenyzogetlistbody');
+$router->map('GET', '/admin/versenyzo/getkarb', 'versenyzoController#getkarb', 'adminversenyzogetkarb');
+$router->map('GET', '/admin/versenyzo/viewkarb', 'versenyzoController#viewkarb', 'adminversenyzoviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/versenyzo/save', 'versenyzoController#save', 'adminversenyzosave');
+}
+
 $router->map('GET', '/admin/kupon/viewlist', 'kuponController#viewlist', 'adminkuponviewlist');
 $router->map('GET', '/admin/kupon/getlistbody', 'kuponController#getlistbody', 'adminkupongetlistbody');
 $router->map('GET', '/admin/kupon/getkarb', 'kuponController#getkarb', 'adminkupongetkarb');
