@@ -19,7 +19,7 @@ class versenyzoController extends \mkwhelpers\MattableController
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false)
+    public function loadVars($t, $forKarb = false)
     {
         $v = [];
         if (!$t) {
@@ -116,6 +116,16 @@ class versenyzoController extends \mkwhelpers\MattableController
         $csapatctrl = new csapatController($this->params);
         $view->setVar('csapatlist', $csapatctrl->getSelectList($record?->getCsapatId()));
         $view->printTemplateResult();
+    }
+
+    public function getListAsArray()
+    {
+        $riders = $this->getRepo()->getWithJoins([], ['nev' => 'ASC']);
+        $versenyzok = [];
+        foreach ($riders as $rider) {
+            $versenyzok[] = $this->loadVars($rider);
+        }
+        return $versenyzok;
     }
 
 }

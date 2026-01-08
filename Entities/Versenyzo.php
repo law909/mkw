@@ -60,7 +60,7 @@ class Versenyzo
     private $kepleiras3;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Csapat")
+     * @ORM\ManyToOne(targetEntity="Csapat", inversedBy="versenyzok")
      * @ORM\JoinColumn(name="csapat_id", referencedColumnName="id",nullable=true,onDelete="set null")
      */
     private $csapat;

@@ -40,6 +40,7 @@ if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
     $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
     $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
     $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
+    $router->map('GET', '/teams', 'csapatController#showList', 'csapatlist');
 }
 
 if (\mkw\store::isMugenrace2021()) {

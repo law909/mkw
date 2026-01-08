@@ -573,7 +573,14 @@ class store
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
-            $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+            switch (true) {
+                case self::isMugenrace2026():
+                    $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+                    break;
+                default:
+                    $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+                    break;
+            }
         }
         $kc = new \Controllers\kosarController(null);
         $minidata = $kc->getMiniData();

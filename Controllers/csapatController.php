@@ -37,6 +37,13 @@ class csapatController extends \mkwhelpers\MattableController
         $v['kepurlsmall'] = $t->getKepurlSmall();
         $v['kepurlmini'] = $t->getKepurlMini();
         $v['kepleiras'] = $t->getKepleiras();
+        if (!$forKarb) {
+            $v['versenyzok'] = [];
+            $vctrl = new versenyzoController($this->params);
+            foreach ($t->getVersenyzok() as $versenyzo) {
+                $v['versenyzok'][] = $vctrl->loadVars($versenyzo);
+            }
+        }
         return $v;
     }
 
@@ -107,6 +114,24 @@ class csapatController extends \mkwhelpers\MattableController
             ];
         }
         return $csapatok;
+    }
+
+    public function getListAsArray()
+    {
+        $crec = $this->getRepo()->getWithJoins([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($crec as $csapat) {
+            $res[] = $this->loadVars($csapat);
+        }
+
+        return $res;
+    }
+
+    public function showList()
+    {
+        $view = $this->createMainView('csapatlist.tpl');
+        $view->setVar('csapatlista', $this->getListAsArray());
+        $view->printTemplateResult();
     }
 
 }

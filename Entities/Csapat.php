@@ -41,6 +41,16 @@ class Csapat
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $kepleiras;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Versenyzo", mappedBy="csapat")
+     */
+    private $versenyzok;
+
+    public function __construct()
+    {
+        $this->versenyzok = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -222,5 +232,10 @@ class Csapat
     public function setKepleiras($kepleiras)
     {
         $this->kepleiras = $kepleiras;
+    }
+
+    public function getVersenyzok()
+    {
+        return $this->versenyzok;
     }
 }
