@@ -168,10 +168,29 @@ class kosarController extends \mkwhelpers\MattableController
                 ];
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+
+                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $partner = \mkw\store::getLoggedInUser();
+                // $valutanemnev = \mkw\store::getMainValutanemNev();
+                /** @var Valutanem $valutanem */
+                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainValutanemId());
+                $s = [];
+                $szallido = 1;
+                /** @var \Entities\Kosar $sor */
+                foreach ($sorok as $sor) {
+                    $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
+                    if ($szallido < $sorszallido) {
+                        $szallido = $sorszallido;
+                    }
+                    $s[] = $sor->toLista($partner, $valutanem?->getKerekit());
+                }
+
                 return [
+                    'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
-                    'valutanem' => \mkw\store::getMainSession()->valutanemnev
+                    'valutanem' => \mkw\store::getMainSession()->valutanemnev,
+                    'tetellista' => $s
                 ];
             case \mkw\store::isMugenrace2021():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());

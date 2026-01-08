@@ -1,0 +1,217 @@
+@use '../mixins/breakpoints' as *;
+
+fieldset {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-base);
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="text"], 
+input[type="password"], 
+input[type="datetime"], 
+input[type="datetime-local"], 
+input[type="date"], 
+input[type="month"], 
+input[type="time"], 
+input[type="week"], 
+input[type="number"], 
+input[type="email"], 
+input[type="color"], 
+textarea,
+select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--field-padding) !important;
+  border: 1px solid var(--field-border);
+  // border-radius: var(--field-radius);
+  background: var(--field-bg);
+  color: var(--text-color);
+  transition: box-shadow var(--field-transition), border-color var(--field-transition), transform var(--field-transition);
+  outline: none;
+  font: inherit;
+  -webkit-appearance: none !important; /* select natív stílus csökkentéséhez */
+  -moz-appearance: none !important;
+  appearance: none !important;
+  
+}
+
+/* placeholder szín */
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-color);
+}
+
+/* fókusz */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--field-focus);
+  box-shadow: 0 0 0 4px rgba(108,160,255,0.12);
+}
+
+/* disabled állapot */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --------- select - egyedi nyíl (adat-URL SVG) --------- */
+/* ha nem szeretnéd az ikont, töröld a background-* sorokat */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath fill='%23999' d='M7 8L0 0h14z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 8px;
+  padding-right: 36px; /* hely a nyíl ikon számára */
+}
+
+/* mobilon lehet szükség külön beállításra */
+@media (max-width: 480px){
+  select {
+    padding-right: 40px;
+  }
+}
+
+/* --------- modern checkbox & radio egyszerűsített (accent-color) --------- */
+/* ez a legegyszerűbb, működik a legtöbb modern böngészőben */
+input[type="checkbox"],
+input[type="radio"] {
+  height: 1.15em;
+  width: 1.15em;
+  margin: 0 .5em 0 0;
+  vertical-align: middle;
+  accent-color: var(--accent); /* modern shortcut */
+  cursor: pointer;
+  transition: transform var(--field-transition);
+}
+
+/* kis hover/focus hatás */
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 3px solid rgba(43,124,255,0.14);
+  outline-offset: 2px;
+}
+
+/* --------- teljesen egyedi checkbox & radio (fallback / extra design) --------- */
+/* Ha szeretnéd a natívot teljesen felülírni, használd a label + .custom-* markup-ot (lásd HTML mintát) */
+
+/* alap wrapper */
+.custom-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* elrejti a natív inputot, de elérhető marad a képernyőolvasóknak */
+.custom-control input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* megjelenő hamis jelölő */
+.custom-checkbox .control-box,
+.custom-radio .control-box {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  transition: background var(--field-transition), border-color var(--field-transition), box-shadow var(--field-transition), transform var(--field-transition);
+}
+
+/* radio körkerekítés */
+.custom-radio .control-box {
+  border-radius: 50%;
+}
+
+/* jel (checkbox: pipa, radio: pont) - alap rejtve */
+.custom-checkbox .control-box::after,
+.custom-radio .control-box::after{
+  content: "";
+  display: block;
+  transform: scale(0);
+  transition: transform var(--field-transition) cubic-bezier(.2,.8,.2,1);
+}
+
+/* checkbox pipa - egyszerű pseudo forma */
+.custom-checkbox .control-box::after {
+  width: 0.55rem;
+  height: 0.3rem;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform-origin: left top;
+  transform: rotate(-45deg) scale(0);
+  border-radius: 1px;
+}
+
+/* radio belső pötty */
+.custom-radio .control-box::after {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: white;
+  transform: scale(0);
+}
+
+/* ha be van jelölve: színezés és megjelenítés */
+.custom-control input:checked + .control-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(43,124,255,0.12);
+}
+.custom-control input:checked + .control-box::after {
+  transform: rotate(-45deg) scale(1);
+}
+
+/* hover/active micro animáció */
+.custom-control:active .control-box {
+  transform: scale(0.98);
+}
+
+/* label szöveg */
+.custom-control .label-text {
+  font: inherit;
+  color: var(--text-color);
+}
+
+/* hozzáférhetőség: keyboard fókusz akkor is látható, ha a natív input kapja a fókuszt */
+.custom-control input:focus + .control-box {
+  box-shadow: 0 0 0 4px rgba(43,124,255,0.14);
+  border-color: var(--field-focus);
+}
+
+/* kisebb variánsok (opcionális) */
+.small-field { padding: 4px; font-size: 0.9rem; }
+.large-field { padding: 10px; font-size: 1.05rem; }
+
+.input-mini {
+  // @include mobile {
+    width: 60px !important;
+  // }
+}
+
+.input-medium {
+  // @include mobile {
+    width: 120px !important;
+  // }
+    
+}

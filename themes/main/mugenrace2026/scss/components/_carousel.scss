@@ -1,0 +1,82 @@
+
+
+.product-carousel-container {
+  width: 100%;
+  height: 600px;
+  display: flex;
+  
+  padding: 20px 20px 20px 0;
+  box-sizing: border-box;
+  // border-radius: 10px;
+  position: relative;
+}
+
+
+/* LEFT THUMB LIST */
+.thumbs {
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y:auto;
+  padding-right: 15px;
+}
+
+
+.thumbs img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+  padding: 5px;
+  background: var(--color-background-white);
+}
+
+
+.thumbs img.active {
+  border-color: black;
+}
+
+
+/* MAIN IMAGE */
+.main-image-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background-white);
+
+  .nav-btn-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    gap: var(--gap-base);
+    z-index: 10;
+  }
+}
+
+
+.main-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+
+/* NAV BUTTONS */
+.nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}

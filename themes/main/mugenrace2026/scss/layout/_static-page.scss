@@ -1,0 +1,70 @@
+@use '../mixins/breakpoints' as *;
+
+.static-page {
+  &__header {
+   
+  }
+
+  &__content {
+    margin-bottom: 50px;
+
+    .grid-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, max-content));
+      justify-content: start; /* vagy flex-start */
+      gap: var(--gap-base);
+      margin-bottom: var(--spacing-lg);
+      
+      @include mobile {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+    }
+  }
+}
+
+.rider_node {
+  // max-width: 230px;
+  background-color: var(--color-background-white);
+  padding-bottom: var(--spacing-sm);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .inner {
+      img {
+        filter: grayscale(0%);
+      } 
+    }
+  }
+  
+  .inner {
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      margin-bottom: var(--spacing-sm);
+      filter: grayscale(100%);
+      transition: filter 0.3s ease;
+    }
+  }
+
+  .rider-row {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .da_name {
+    font-size: 1.3rem;
+    font-weight: 900;
+    
+  }
+  
+  .da_team {
+    font-size: 1rem;
+
+  }
+
+  .rider_results {
+    font-size: 1rem;
+  }
+}

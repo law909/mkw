@@ -1,0 +1,45 @@
+.accordion {
+  width: 100%;
+  margin: 20px auto;
+  // border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.accordion-item + .accordion-item {
+  border-top: 1px solid #ccc;
+}
+
+.accordion-header {
+  // background: #f7f7f7;
+  padding: 15px 0;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.accordion-content {
+  display: none;
+  padding: 0;
+  // background: #fff;
+}
+
+
+/* Nyíl alap állapot (lefelé) */
+.accordion-header .arrow {
+  display: inline-block;
+  width: 0; 
+  height: 0; 
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #333;
+  transition: transform 0.3s;
+}
+
+/* Nyitott állapot — nyíl felfelé */
+.accordion-header.active .arrow {
+  transform: rotate(180deg);
+}

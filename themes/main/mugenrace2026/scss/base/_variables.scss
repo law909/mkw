@@ -1,0 +1,104 @@
+:root {
+  /* Colors */
+  --color-primary: #d0112b;
+  --color-primary-transparent: #d0112bcb;
+  --color-secondary: #6c757d;
+  --color-gray: #6c757d78;
+  --color-dark: #212529;
+  --color-light: #f8f9fa;
+  --color-white: #ffffff;
+  
+  --breakpoint-mobile-max: 768px;
+  --breakpoint-tablet-min: 769px;
+  --breakpoint-tablet-max: 1024px;
+  --breakpoint-desktop-max: 1500px;
+
+  --color-text: var(--color-dark);
+  --color-text-inverse: var(--color-light);
+  --color-text-disabled: var(--color-gray);
+  --color-link: var(--color-primary);
+  --color-link-inverse: var(--color-light);
+  --color-background: var(--color-light);
+  --color-background-white: var(--color-white);
+  --color-background-inverse: var(--color-dark);
+  --color-background-disabled: var(--color-light);
+  --color-border: var(--color-gray);
+  --color-border-dark: var(--color-dark);
+  --color-border-light: var(--color-light);
+  --color-icon: var(--color-dark);
+
+  --transition-speed: 0.3s;
+  --transition-slow: 0.5s;
+
+  --spacing-sm: 15px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  --spacing-xl: 40px;
+  --spacing-xxl: 50px;
+  --spacing-section: 80px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  --link-hover-opacity: 0.8;
+
+  /* Typography */
+  --font-base: 'Inter', sans-serif;
+  --font-size-base: 14px;
+  --font-size-small: 12px;
+  --font-size-large: 18px;
+  --font-size-header: 24px;
+  --line-height-base: 1.4;
+
+  --gap-base: 15px;
+  --gap-small: 5px;
+  --gap-large: 20px;
+  --gap-extra: 30px;
+
+  --padding-base: 1rem;
+  --padding-small: 0.5rem;
+  --padding-large: 1.5rem;
+
+  --border-radius-base: 1rem;
+
+  /* Inputs */
+  --field-border: #ccc;
+  --field-radius: 1rem; /* 16px approx, tetszés szerint módosítható */
+  --field-padding: 0.6rem;
+  --field-bg: var(--color-white);
+  --field-focus: var(--color-secondary);
+  --field-transition: 150ms;
+  --accent: var(--color-dark); /* checkbox/radio jel színe (modern browsers) */
+  --text-color: var(--color-text);
+  --placeholder-color: #999;
+
+  /* Buttons */
+  --btn-radius: 2rem;
+  --btn-padding: 0.65rem 1.8rem;
+  --btn-padding-small: 0.3rem 1rem;
+  --btn-padding-large: 0.5rem 1.2rem;
+  --btn-font-weight: 600;
+  --btn-transition: 180ms ease;
+
+  /* színek */
+  --btn-primary-bg: var(--color-dark);
+  --btn-primary-bg-hover: var(--color-dark);
+  --btn-primary-bg-active: var(--color-dark);
+  --btn-primary-text: var(--color-white);
+
+  --btn-secondary-bg: var(--color-background);
+  --btn-secondary-bg-hover: #eaeaea;
+  --btn-secondary-bg-active: #dcdcdc;
+  --btn-secondary-text: var(--color-text);
+
+  --btn-bordered-bg: transparent;
+  --btn-bordered-text: var(--color-border-dark);
+  --btn-bordered-border: var(--color-border-dark);
+  --btn-bordered-border--inverse: var(--color-border-light);
+
+  --btn-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}

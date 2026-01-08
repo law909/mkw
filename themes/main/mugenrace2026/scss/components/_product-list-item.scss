@@ -1,0 +1,88 @@
+.product-list-item {
+  width: 100%;
+  margin-bottom: 1rem;
+  position: relative;
+  
+  &:hover {
+    .product-list-item__image-container {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-small);
+  }
+
+  &__image-container {
+    background-color: var(--color-background-white);
+    margin-bottom: 10px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    aspect-ratio: 0.8;
+    object-fit: contain;
+  }
+
+  &__title { 
+    font-weight: 700;
+  }
+
+  &__code {
+    margin-top: -5px;
+
+    a {
+      font-size: 12px;
+      color: var(--color-secondary-text);
+    }
+  }
+
+  &__price {
+    font-size: var(--font-size-base);
+    font-weight: 700; 
+  }
+
+  &__variations-container {
+    position: relative;
+
+    .js-meretvaltozatedit {
+      display: none;
+    }
+  }
+
+  &__variations {
+    // visibility: hidden;
+    // opacity:0;
+    // transition: opacity 0.2s, visibility 0.2s;
+    // position: absolute;
+    // bottom: 30px;
+    // left:0;
+    // right: 0;
+    margin: auto;
+    width: auto;
+    background: var(--color-background);
+    padding: 10px 0;
+
+
+    .js-szinvaltozatedit {
+      display: none;
+    }
+  }
+  
+  // &:hover{
+  //   .product-list-item__variations {
+  //     opacity: 1;
+  //     visibility: visible;
+  //   }
+  // }
+}
+
+.gtermek {
+  border: 0;
+}

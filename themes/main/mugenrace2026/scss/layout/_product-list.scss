@@ -1,0 +1,156 @@
+@use '../mixins/breakpoints' as *;
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-base);
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+}
+
+.product-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: fixed;
+  gap: var(--gap-base);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  background: var(--color-background);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: var(--padding-base);
+  z-index: 15;
+  overflow-y: auto;
+  transition: transform 0.2s ease-in-out;
+  transform: translateX(100%);
+  color: var(--color-text);
+
+  #szuroform {
+    width: 100%;
+    color: var(--color-text);
+  }
+
+  .szurokontener {
+    margin-bottom: var(--gap-base);
+
+    .szurofej {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: var(--gap-small);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      padding-left: 0;
+      margin-left: 0;
+    }
+  }
+
+  &__open {
+    transform: translateX(0);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gap-base);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  &__toggle {
+    span {
+      @include mobile {
+        display: none;
+      }
+    }
+  }
+
+  // &__close {
+    
+  // }
+  
+}
+
+.category-description {
+  margin-bottom: var(--gap-base);
+  max-width: 800px;
+}
+
+.lapozo {
+  margin-top: var(--gap-base);
+  margin-bottom: var(--gap-base);
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-small);
+
+  .lapozooldalak {
+
+    .aktualislap {
+      font-weight: bold;
+      padding: 5px 10px;
+      border: 1px solid var(--color-border);
+    }
+
+    a {
+      padding: 5px 10px;
+      border: 1px solid var(--color-border);
+      text-decoration: none;
+      color: var(--color-text);
+
+      &:hover {
+        background-color: var(--color-background-hover);
+      }
+    }
+  }
+}
+
+
+.jslider {
+  .jslider-bg {
+  
+    i {
+      background: unset;
+    }
+  
+    .j {
+      background-color: var(--color-background-white);
+    }
+  
+    .f {
+      background-color: var(--color-background-white);
+    }
+  
+    .r {
+      background-color: var(--color-background-white);
+    }
+  
+    .v {
+      background-color: var(--color-background-inverse);
+    }
+  }
+  
+  .jslider-value {
+    top: -30px;
+    padding: 6px 4px 2px 4px;
+  }
+}
+
+#ArSzuro {
+  margin-top: var(--gap-base);
+}

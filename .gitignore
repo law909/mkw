@@ -34,7 +34,7 @@ nbproject/
 .svn/
 _notes/
 tpl/cache/
-tpl/templates_c/
+tpl/template_c/
 vendor/
 /vendor/
 /!docs/

@@ -133,6 +133,7 @@ class statlapController extends \mkwhelpers\MattableController {
     public function getstatlap($statlap) {
         $t = array();
         $t['szoveg'] = $statlap->getSzoveg();
+        $t['oldalcim'] = $statlap->getOldalcim();
         return $t;
     }
 

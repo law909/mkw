@@ -1,0 +1,130 @@
+
+  .option-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    
+    .select-option {
+      padding: 8px 9px;
+      border: 2px solid var(--color-border);
+      background-color: var(--color-background-white);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      transition: background-color 0.2s, color 0.2s;
+
+      &:hover {
+        background-color: var(--color-background-light);
+      }
+
+      &.active {
+        // background-color: var(--color-background-inverse);
+        color: var(--color-text-inverse);
+      }
+
+      &.disabled {
+        background-color: var(--color-background-disabled);
+        color: var(--color-text-disabled);
+        cursor: not-allowed;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .color-selector {
+    .select-option {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 2px solid var(--color-border);
+      box-sizing: border-box;
+
+      &.active {
+        border-color: var(--color-dark);
+        
+      }
+
+      &.red {
+        background-color: rgb(251, 51, 61);
+      }
+      &.blue {
+        background-color: rgb(0, 162, 255); 
+      }
+      &.green {
+        background-color: rgb(17, 209, 17); 
+      }
+      &.black {
+        background-color: rgb(47, 47, 47);
+      }
+      &.white {
+        background-color: white;
+      }
+      &.yellow {
+        background-color: rgb(255, 225, 0);
+      }
+      &.gray {
+        background-color: rgb(167, 167, 167);
+      }
+      &.white-black {
+        background: linear-gradient(45deg, white 50%, black 50%);
+      }
+      &.white-neon {
+        background: linear-gradient(45deg, white 50%, #39ff14 50%);
+      }
+      &.black-white-red {
+        background: linear-gradient(45deg, black 33%, white 33%, white 66%, red 66%);
+      }
+      &.black-white {
+        background: linear-gradient(45deg, black 50%, white 50%);
+      }
+      &.black-red {
+        background: linear-gradient(45deg, black 50%, red 50%);
+      }
+      &.black-white-green {
+        background: linear-gradient(45deg, black 33%, white 33%, white 66%, green 66%);
+      }
+      &.black-white-grey {
+        background: linear-gradient(45deg, black 33%, white 33%, white 66%, gray 66%);
+      }
+      &.tricolor {
+        background: linear-gradient(45deg, black 33%, red 33%, red 66%, green 66%);
+      }
+      &.black-blue {
+        background: linear-gradient(45deg, black 50%, blue 50%);
+      }
+      &.black-grey {
+        background: linear-gradient(45deg, black 50%, gray 50%);
+      }
+      &.black-white-blue {
+        background: linear-gradient(45deg, black 33%, white 33%, white 66%, blue 66%);
+      }
+      &.white-pink {
+        background: linear-gradient(45deg, white 50%, pink 50%);
+      }
+      &.black-fluo {
+        background: linear-gradient(45deg, black 50%, #39ff14 50%);
+      }
+      &.black-red-white {
+        background: linear-gradient(45deg, black 33%, red 33%, red 66%, white 66%);
+      }
+      &.black-blue-white {
+        background: linear-gradient(45deg, black 33%, blue 33%, blue 66%, white 66%);
+      }
+      &.black-red-grey {
+        background: linear-gradient(45deg, black 33%, red 33%, red 66%, gray 66%);
+      }
+
+    }
+  }
+
+  .size-selector {
+    .select-option {
+      
+      &.active {
+        color: var(--color-text-inverse);
+        background-color: var(--color-background-inverse);
+      }
+    }
+  }

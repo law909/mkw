@@ -1,0 +1,29 @@
+.news-datasheet {
+  margin-bottom: 50px;
+  
+  &__title {
+    font-size: 3rem;
+    font-weight: 900;
+    // margin-bottom: var(--spacing-md);
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  &__date {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    // margin-bottom: var(--spacing-lg);
+  }
+
+  &__content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  &__source {
+
+  }
+
+}
