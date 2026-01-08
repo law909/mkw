@@ -53,17 +53,31 @@
                                          class="js-valtozatbeerkezesdatumedit" type="text" size="12" data-datum="{$valtozat.beerkezesdatumstr}"></td>
     </tr>
     <tr>
-        <td class="mattable-cell">
-            <select name="valtozatadattipus1_{$valtozat.id}" required="required">
-                <option value="">{at('válasszon')}</option>
-                {foreach $valtozat.adattipus1lista as $at}
-                    <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
-                {/foreach}
-            </select>
-        </td>
-        <td class="mattable-cell">
-            <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" required="required">
-        </td>
+        {if ($setup.szinmode === 'fix')}
+            <td class="mattable-cell">
+                <label for="">Szín</label>
+            </td>
+            <td class="mattable-cell">
+                <select name="valtozatszin_{$valtozat.id}">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.szinlista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+        {else}
+            <td class="mattable-cell">
+                <select name="valtozatadattipus1_{$valtozat.id}" required="required">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.adattipus1lista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td class="mattable-cell">
+                <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" required="required">
+            </td>
+        {/if}
         <td class="mattable-cell">
             <label for="NettoEdit_{$valtozat.id}">{at('Nettó')}:</label>
         </td>
@@ -73,24 +87,38 @@
         </td>
     </tr>
     <tr>
-        <td class="mattable-cell">
-            <select name="valtozatadattipus2_{$valtozat.id}">
-                <option value="">{at('válasszon')}</option>
-                {foreach $valtozat.adattipus2lista as $at}
-                    <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
-                {/foreach}
-            </select>
-        </td>
-        <td class="mattable-cell">
-            <input name="valtozatertek2_{$valtozat.id}" type="text" value="{$valtozat.ertek2}">
-        </td>
-        <td class="mattable-cell">
-            <label for="BruttoEdit_{$valtozat.id}">{at('Bruttó')}:</label>
-        </td>
-        <td class="mattable-cell">
-            <input class="js-valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any"
-                   value="{$valtozat.brutto}">
-        </td>
+        {if ($setup.szinmode === 'fix')}
+            <td class="mattable-cell">
+                <label for="">Méret</label>
+            </td>
+            <td class="mattable-cell">
+                <select name="valtozatmeret_{$valtozat.id}">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.meretlista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+        {else}
+            <td class="mattable-cell">
+                <select name="valtozatadattipus2_{$valtozat.id}">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.adattipus2lista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td class="mattable-cell">
+                <input name="valtozatertek2_{$valtozat.id}" type="text" value="{$valtozat.ertek2}">
+            </td>
+            <td class="mattable-cell">
+                <label for="BruttoEdit_{$valtozat.id}">{at('Bruttó')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input class="js-valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any"
+                       value="{$valtozat.brutto}">
+            </td>
+        {/if}
     </tr>
     <tr>
         <td class="mattable-cell">

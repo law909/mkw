@@ -810,12 +810,12 @@ class Termek
                     $valtadat['stock'] = $keszlet;
                     $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
                     $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
-                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek1();
-                        $valtadat['size'] = $valt->getErtek2();
-                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek2();
-                        $valtadat['size'] = $valt->getErtek1();
+                    if (\mkw\store::isFixSzinMode()) {
+                        $valtadat['color'] = $valt->getSzinNev();
+                        $valtadat['size'] = $valt->getMeretNev();
+                    } else {
+                        $valtadat['color'] = $valt->getSzinValue();
+                        $valtadat['size'] = $valt->getMeretValue();
                     }
                     $vtt[] = $valtadat;
                 }
@@ -923,21 +923,29 @@ class Termek
                 $x['kepurl'] = $valtozat->getKepurlLarge();
             }
             $x['valtozatid'] = $valtozat->getId();
-            if ($this->getValtozatadattipusId() == $valtozat->getAdatTipus1Id()) {
-                $ertek = $valtozat->getErtek1();
-                $x['valtozatok']['fixname'] = $valtozat->getAdatTipus1Nev();
-                $x['valtozatok']['fixvalue'] = $ertek;
-                $x['valtozatok']['name'] = $valtozat->getAdatTipus2Nev();
-            } elseif ($this->getValtozatadattipusId() == $valtozat->getAdatTipus2Id()) {
-                $ertek = $valtozat->getErtek2();
-                $x['valtozatok']['fixname'] = $valtozat->getAdatTipus2Nev();
-                $x['valtozatok']['fixvalue'] = $ertek;
-                $x['valtozatok']['name'] = $valtozat->getAdatTipus1Nev();
+            if (\mkw\store::isFixSzinMode()) {
+                $ertek = $valtozat->getMeretNev();
+                $x['valtozatok']['fixname'] = 'Size';
+                $x['valtozatok']['fixvalue'] = $valtozat->getMeretNev();
+                $x['valtozatok']['name'] = 'Color';
+            } else {
+                if ($this->getValtozatadattipusId() == $valtozat->getAdatTipus1Id()) {
+                    $ertek = $valtozat->getErtek1();
+                    $x['valtozatok']['fixname'] = $valtozat->getAdatTipus1Nev();
+                    $x['valtozatok']['fixvalue'] = $ertek;
+                    $x['valtozatok']['name'] = $valtozat->getAdatTipus2Nev();
+                } elseif ($this->getValtozatadattipusId() == $valtozat->getAdatTipus2Id()) {
+                    $ertek = $valtozat->getErtek2();
+                    $x['valtozatok']['fixname'] = $valtozat->getAdatTipus2Nev();
+                    $x['valtozatok']['fixvalue'] = $ertek;
+                    $x['valtozatok']['name'] = $valtozat->getAdatTipus1Nev();
+                }
             }
             $adatt = [];
             $valtozatok = $this->getValtozatok();
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto()) {
+                    // TODO: szin meret
                     if ($this->getValtozatadattipusId() == $valt->getAdatTipus1Id() && $valt->getErtek1() == $ertek &&
                         $valt->getAdatTipus2Id()) {
                         $adatt[] = ['id' => $valt->getId(), 'value' => $valt->getErtek2(), 'selected' => $valt->getId() == $valtozat->getId()];
@@ -954,10 +962,14 @@ class Termek
                 $valtozatok = $this->getValtozatok();
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
-                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                            $vtt[$valt->getErtek1()] = $valt->getErtek1();
-                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                            $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                        if (\mkw\store::isFixSzinMode()) {
+                            $vtt[$valt->getSzinNev()] = $valt->getSzinNev();
+                        } else {
+                            if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                                $vtt[$valt->getErtek1()] = $valt->getErtek1();
+                            } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                                $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                            }
                         }
                     }
                 }
@@ -973,17 +985,28 @@ class Termek
                 }
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
-                        if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
-                            $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
-                            $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
-                            $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
-                            $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
-                        }
-                        if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
-                            $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
-                            $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
-                            $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
-                            $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
+                        if (\mkw\store::isFixSzinMode()) {
+                            $vtt[1]['tipusid'] = 1;
+                            $vtt[1]['name'] = 'Color';
+                            $vtt[1]['value'][$valt->getSzinNev()] = $valt->getSzinNev();
+                            $vtt[1]['selected'][$valt->getSzinNev()] = $db === 1;
+                            $vtt[2]['tipusid'] = 2;
+                            $vtt[2]['name'] = 'Size';
+                            $vtt[2]['value'][$valt->getMeretNev()] = $valt->getMeretNev();
+                            $vtt[2]['selected'][$valt->getMeretNev()] = $db === 1;
+                        } else {
+                            if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
+                                $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
+                                $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
+                                $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
+                                $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
+                            }
+                            if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
+                                $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
+                                $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
+                                $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                                $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
+                            }
                         }
                         if ($db === 1) {
                             if ($valt->getKeszlet() > 0) {
@@ -1153,15 +1176,24 @@ class Termek
         $valtozatok = $this->getValtozatok();
         foreach ($valtozatok as $valt) {
             if ($valt->getXElerheto()) {
-                if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
-                    $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
-                    $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
-                    $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
-                }
-                if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
-                    $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
-                    $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
-                    $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                if (\mkw\store::isFixSzinMode()) {
+                    $vtt[1]['tipusid'] = 1;
+                    $vtt[1]['name'] = 'Color';
+                    $vtt[1]['value'][$valt->getSzinNev()] = $valt->getSzinNev();
+                    $vtt[2]['tipusid'] = 2;
+                    $vtt[2]['name'] = 'Size';
+                    $vtt[2]['value'][$valt->getMeretNev()] = $valt->getMeretNev();
+                } else {
+                    if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
+                        $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
+                        $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
+                        $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
+                    }
+                    if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
+                        $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
+                        $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
+                        $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                    }
                 }
             }
         }
@@ -1172,10 +1204,14 @@ class Termek
             $valtozatok = $this->getValtozatok();
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto()) {
-                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $vtt[$valt->getErtek1()] = $valt->getErtek1();
-                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                    if (\mkw\store::isFixSzinMode()) {
+                        $vtt[$valt->getSzinNev()] = $valt->getSzinNev();
+                    } else {
+                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek1()] = $valt->getErtek1();
+                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                        }
                     }
                 }
             }

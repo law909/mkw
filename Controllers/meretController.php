@@ -77,9 +77,9 @@ class meretController extends \mkwhelpers\MattableController
         $res = [];
         foreach ($rec as $sor) {
             $res[] = [
-                'id' => $sor['id'],
-                'caption' => $sor['nev'],
-                'selected' => ($sor['id'] == $selid)
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid)
             ];
         }
         return $res;
@@ -90,7 +90,7 @@ class meretController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll();
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
         }
         $ret .= '</select>';
         echo $ret;

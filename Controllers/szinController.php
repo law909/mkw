@@ -80,9 +80,9 @@ class szinController extends \mkwhelpers\MattableController
         $res = [];
         foreach ($rec as $sor) {
             $res[] = [
-                'id' => $sor['id'],
-                'caption' => $sor['nev'],
-                'selected' => ($sor['id'] == $selid)
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid)
             ];
         }
         return $res;
@@ -93,7 +93,7 @@ class szinController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll();
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
         }
         $ret .= '</select>';
         echo $ret;
@@ -121,6 +121,82 @@ class szinController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($szin, true));
 
         $view->printTemplateResult();
+    }
+
+    public function fillValues()
+    {
+        $this->getEm()->getConnection()->beginTransaction();
+
+        try {
+            $sql = 'SELECT DISTINCT(ertek1) FROM termekvaltozat WHERE adattipus1_id=1 ORDER BY ertek1';
+            $stmt = $this->getEm()->getConnection()->prepare($sql);
+            $result = $stmt->executeQuery();
+
+            $sorrend = 100;
+            while ($row = $result->fetchAssociative()) {
+                $ertekNev = $row['ertek1'];
+                if (empty($ertekNev)) {
+                    continue;
+                }
+
+                $exists = $this->getRepo()->findBy(['nev' => $ertekNev]);
+
+                if (empty($exists)) {
+                    $szin = new \Entities\Szin();
+                    $szin->setNev($ertekNev);
+                    $szin->setSorrend($sorrend);
+                    $this->getEm()->persist($szin);
+                    $sorrend += 100;
+                }
+            }
+
+            $this->getEm()->flush();
+
+            $updateSql = 'UPDATE termekvaltozat tv 
+                      INNER JOIN szin s ON tv.ertek1 = s.nev 
+                      SET tv.szin_id = s.id 
+                      WHERE tv.adattipus1_id = 1';
+            $updateStmt = $this->getEm()->getConnection()->prepare($updateSql);
+            $updateStmt->executeQuery();
+
+            $sql = 'SELECT DISTINCT(ertek2) FROM termekvaltozat WHERE adattipus2_id=2 ORDER BY ertek2';
+            $stmt = $this->getEm()->getConnection()->prepare($sql);
+            $result = $stmt->executeQuery();
+
+            $sorrend = 100;
+            while ($row = $result->fetchAssociative()) {
+                $ertekNev = $row['ertek2'];
+                if (empty($ertekNev)) {
+                    continue;
+                }
+
+                $exists = $this->getRepo(\Entities\Meret::class)->findBy(['nev' => $ertekNev]);
+
+                if (empty($exists)) {
+                    $szin = new \Entities\Meret();
+                    $szin->setNev($ertekNev);
+                    $szin->setSorrend($sorrend);
+                    $this->getEm()->persist($szin);
+                    $sorrend += 100;
+                }
+            }
+
+            $this->getEm()->flush();
+
+            $updateSql = 'UPDATE termekvaltozat tv 
+                      INNER JOIN meret s ON tv.ertek2 = s.nev 
+                      SET tv.meret_id = s.id 
+                      WHERE tv.adattipus2_id = 2';
+            $updateStmt = $this->getEm()->getConnection()->prepare($updateSql);
+            $updateStmt->executeQuery();
+
+            $this->getEm()->getConnection()->commit();
+            echo 'Done.';
+        } catch (\Exception $e) {
+            \mkw\store::writelog('Error: ' . $e->getMessage());
+            $this->getEm()->getConnection()->rollBack();
+            echo 'Error: ' . $e->getMessage();
+        }
     }
 
 }

@@ -10,13 +10,13 @@ class SzinRepository extends \mkwhelpers\Repository
         parent::__construct($em, $class);
         $this->setEntityname(Szin::class);
         $this->setOrders([
-            '1' => ['caption' => 'név szerint', 'order' => ['nev' => 'ASC']],
+            '1' => ['caption' => 'sorrend és név szerint', 'order' => ['sorrend' => 'ASC', 'nev' => 'ASC']],
         ]);
     }
 
     public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)
     {
-        $order = array_merge($order, ['sorrend' => 'ASC', 'nev' => 'ASC']);
+        $order = ['sorrend' => 'ASC', 'nev' => 'ASC'];
         return parent::getAll($filter, $order, $offset, $elemcount);
     }
 

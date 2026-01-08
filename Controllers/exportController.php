@@ -954,10 +954,10 @@ class exportController extends \mkwhelpers\Controller
                     }
                     $sor = [
                         '"' . $t->getCikkszam() . '"',
-                        '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
+                        '"' . $kodszotarrepo->translate($valt->getSzinValue()) . '"',
                         '"' . $t->getNev() . '"',
-                        '"' . $valt->getSzin() . '"',
-                        '"' . $valt->getMeret() . '"',
+                        '"' . $valt->getSzinValue() . '"',
+                        '"' . $valt->getMeretValue() . '"',
                         '"' . $keszlet . '"',
                         '"' . (string)$valt->getVonalkod() . '"',
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
@@ -1063,8 +1063,8 @@ class exportController extends \mkwhelpers\Controller
                         'articleName' => $t->getNev(),
                         'articleNameEN' => $ford['en_us']['nev'],
                         'articleNameIT' => $ford['it_it']['nev'],
-                        'color' => $valt->getSzin(),
-                        'size' => $valt->getMeret(),
+                        'color' => $valt->getSzinValue(),
+                        'size' => $valt->getMeretValue(),
                         'inactive' => $t->getInaktiv(),
                         'visible' => ($t->getLathato3() && $valt->getLathato3()),
                         'stock' => $keszlet,
@@ -1257,8 +1257,8 @@ class exportController extends \mkwhelpers\Controller
                         $keszlet = 1;
                     }
                     $valtozattomb[] = [
-                        'color' => $valt->getSzin(),
-                        'size' => $valt->getMeret(),
+                        'color' => $valt->getSzinValue(),
+                        'size' => $valt->getMeretValue(),
                         'visible' => $valt->getLathato(),
                         'stock' => $keszlet,
                         'EANcode' => (string)$valt->getVonalkod(),
@@ -1564,7 +1564,7 @@ class exportController extends \mkwhelpers\Controller
                         ->setCellValue('A' . $sor, $valtozat->getVonalkod())
                         ->setCellValue(
                             'B' . $sor,
-                            strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret()
+                            strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzinValue()) . '-' . $valtozat->getMeretValue()
                         )
                         ->setCellValue('C' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
                     $sor++;

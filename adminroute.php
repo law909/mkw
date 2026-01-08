@@ -1279,6 +1279,8 @@ if (\mkw\store::isMailerGmail()) {
     $router->map('GET', '/admin/oauth2/initiate', 'oauth2Controller#initiate', 'adminoauth2initiate');
 }
 
+$router->map('GET', '/admin/fillszinvalues', 'szinController#fillValues', 'adminfillvalues');
+
 //$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
 //$router->map('GET', '/admin/t/presta', 'termekmenuController#exportToPrestashop', 'admintermekmenuexportToPrestashop');
