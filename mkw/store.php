@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Client;
 use Controllers\mnrnavigationController;
 use Controllers\popupController;
 use Controllers\termekfaController;
+use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
@@ -575,7 +576,8 @@ class store
         if ($needmenu) {
             switch (true) {
                 case self::isMugenrace2026():
-                    $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+                    $tmc = new termekmenuController(null);
+                    $v->setVar('menu1', $tmc->getTreeAsArray());
                     break;
                 default:
                     $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
