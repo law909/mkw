@@ -61,23 +61,8 @@ class termekmenuController extends \mkwhelpers\MattableController
         $x['emagid'] = $t->getEmagid();
         $x['arukeresoid'] = $t->getArukeresoid();
         $x['lathato'] = $t->getLathato();
-        $x['lathato1'] = $t->getLathato();
-        $x['lathato2'] = $t->getLathato2();
-        $x['lathato3'] = $t->getLathato3();
-        $x['lathato4'] = $t->getLathato4();
-        $x['lathato5'] = $t->getLathato5();
-        $x['lathato6'] = $t->getLathato6();
-        $x['lathato7'] = $t->getLathato7();
-        $x['lathato8'] = $t->getLathato8();
-        $x['lathato9'] = $t->getLathato9();
-        $x['lathato10'] = $t->getLathato10();
-        $x['lathato11'] = $t->getLathato11();
-        $x['lathato12'] = $t->getLathato12();
-        $x['lathato13'] = $t->getLathato13();
-        $x['lathato14'] = $t->getLathato14();
-        $x['lathato15'] = $t->getLathato15();
         $x['path'] = implode('/', $t->getPath($t));
-        if (\mkw\store::isMultilang()) {
+        if (false && \mkw\store::isMultilang()) {
             $translations = [];
             $translationsCtrl = new termekmenutranslationController($this->params);
             foreach ($t->getTranslations() as $tr) {
@@ -117,20 +102,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
-        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
-        $obj->setLathato4($this->params->getBoolRequestParam('lathato4'));
-        $obj->setLathato5($this->params->getBoolRequestParam('lathato5'));
-        $obj->setLathato6($this->params->getBoolRequestParam('lathato6'));
-        $obj->setLathato7($this->params->getBoolRequestParam('lathato7'));
-        $obj->setLathato8($this->params->getBoolRequestParam('lathato8'));
-        $obj->setLathato9($this->params->getBoolRequestParam('lathato9'));
-        $obj->setLathato10($this->params->getBoolRequestParam('lathato10'));
-        $obj->setLathato11($this->params->getBoolRequestParam('lathato11'));
-        $obj->setLathato12($this->params->getBoolRequestParam('lathato12'));
-        $obj->setLathato13($this->params->getBoolRequestParam('lathato13'));
-        $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
-        $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
         if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             $_tf = \Entities\TermekMenu::getTranslatedFields();
@@ -313,173 +284,44 @@ class termekmenuController extends \mkwhelpers\MattableController
         return $ret;
     }
 
-    public static function walkCategoryTree($parentId = null, $wcparentid = null, $wc = null)
+    public function getTreeAsArray($parentId = null)
     {
         $filter = new FilterDescriptor();
+        $filter->addFilter('lathato', '=', 1);
         if (!$parentId) {
             $filter->addSql('(_xx.parent IS NULL)');
         } else {
             $filter->addFilter('parent', '=', $parentId);
         }
-        $categories = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($filter);
 
-        \mkw\store::writelog('walkCategoryTree:parentid: ' . $parentId);
+        $categories = $this->getRepo()->getAll($filter);
+        $tree = [];
 
-        /** @var TermekMenu $category */
         foreach ($categories as $category) {
-            \mkw\store::writelog('walkCategoryTree: ' . $category->getId() . ' : ' . $category->getNev());
-            if (!$category->getWcid()) {
-                \mkw\store::writelog('walkCategoryTree:nlathato: ' . $category->getNLathato(\mkw\store::getWcWebshopNum()));
-
-                if ($category->getNLathato(\mkw\store::getWcWebshopNum())) {
-                    $ford = $category->getTranslationsArray();
-                    $nev = $category->getNevForditas($ford, 'en_us');
-                    $leiras = $category->getLeirasForditas($ford, 'en_us');
-                    if ($nev) {
-                        $data = [
-                            'name' => $nev,
-                            'parent' => $wcparentid,
-                            'descrition' => $leiras,
-                            'menu_order' => $category->getSorrend(),
-                        ];
-                        if ($category->getKepurl()) {
-                            if ($category->getKepwcid()) {
-                                $data['image'] = [
-                                    'id' => $category->getKepwcid()
-                                ];
-                            } else {
-                                $data['image'] = [
-                                    'src' => \mkw\store::getWcImageUrlPrefix() . $category->getKepurl(),
-                                    'name' => $category->getKepurl(),
-                                    'alt' => $nev
-                                ];
-                            }
-                        }
-
-                        try {
-                            $result = $wc->post('products/categories', $data);
-                        } catch (HttpClientException $e) {
-                            \mkw\store::writelog($category->getWcid() . ' :termékkategória POST:HIBA: ' . $e->getMessage());
-                        }
-
-                        $category->setWcid($result->id);
-                        $category->setKepwcid($result->image->id);
-                        $category->setWcdate('');
-                        \mkw\store::getEm()->persist($category);
-                        \mkw\store::getEm()->flush();
-
-                        self::walkCategoryTree($category->getId(), $result->id, $wc);
-                    } else {
-                        self::walkCategoryTree($category->getId(), null, $wc);
-                    }
-                } else {
-                    self::walkCategoryTree($category->getId(), null, $wc);
-                }
-            } else {
-                $ford = $category->getTranslationsArray();
-                $nev = $category->getNevForditas($ford, 'en_us');
-                $leiras = $category->getLeirasForditas($ford, 'en_us');
-                $data = [
-                    'name' => $nev,
-                    'parent' => $wcparentid,
-                    'descrition' => $leiras,
-                    'menu_order' => $category->getSorrend(),
-                ];
-                if ($category->getKepurl()) {
-                    if ($category->getKepwcid()) {
-                        $data['image'] = [
-                            'id' => $category->getKepwcid()
-                        ];
-                    } else {
-                        $data['image'] = [
-                            'src' => \mkw\store::getWcImageUrlPrefix() . $category->getKepurl(),
-                            'name' => $category->getKepurl(),
-                            'alt' => $nev
-                        ];
-                    }
-                }
-                try {
-                    $wc->put('products/categories/' . $category->getWcid(), $data);
-                    $category->setWcdate('');
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog($category->getWcid() . ' :termékkategória PUT:HIBA: ' . $e->getMessage());
-                }
-                \mkw\store::getEm()->persist($category);
-                \mkw\store::getEm()->flush();
-
-                self::walkCategoryTree($category->getId(), $category->getWcid(), $wc);
-            }
+            $categoryData = $this->loadVars($category);
+            $categoryData['children'] = $this->buildTreeBranch($category->getId());
+            $tree[] = $categoryData;
         }
+
+        return $tree;
     }
 
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            /** @var Client $wc */
-            $wc = store::getWcClient();
-            self::walkCategoryTree(null, null, $wc);
-            echo 'Ready.';
-        }
-    }
-
-    public static function walkPrestashopTree($parentId = null)
+    private function buildTreeBranch($parentId)
     {
         $filter = new FilterDescriptor();
-        if (!$parentId) {
-            $filter->addSql('(_xx.parent IS NULL)');
-        } else {
-            $filter->addFilter('parent', '=', $parentId);
-        }
-        $categories = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($filter);
+        $filter->addFilter('parent', '=', $parentId);
 
-        /** @var TermekMenu $category */
-        foreach ($categories as $category) {
-            if ($category->getNLathato(\mkw\store::getWcWebshopNum())) {
-                $ford = $category->getTranslationsArray();
-                $nev = $category->getNevForditas($ford, 'en_us');
-                $leiras = $category->getLeirasForditas($ford, 'en_us');
-                if ($nev) {
-                    $data = [
-                        $category->getId(),
-                        1,
-                        $nev,
-                        'Home',
-                        0,
-                        $leiras,
-                        $nev,
-                        '',
-                        '',
-                        '',
-                        \mkw\store::getWcImageUrlPrefix() . $category->getKepurl()
-                    ];
-                    \mkw\store::writeLineToFile(implode(';', $data), 'categories.csv');
-                    self::walkPrestashopTree($category->getId());
-                } else {
-                    self::walkPrestashopTree($category->getId());
-                }
-            } else {
-                self::walkPrestashopTree($category->getId());
-            }
+        $children = $this->getRepo()->getAll($filter);
+        $branch = [];
+
+        foreach ($children as $child) {
+            $childData = $this->loadVars($child);
+            $childData['children'] = $this->buildTreeBranch($child->getId());
+            $branch[] = $childData;
         }
+
+        return $branch;
     }
 
-    public function exportToPrestashop()
-    {
-        \mkw\store::writeLineToFile(implode(';', [
-            'Category ID',
-            'Active (0/1)',
-            'Name *',
-            'Parent category',
-            'Root category (0/1)',
-            'Description',
-            'Meta title',
-            'Meta keywords',
-            'Meta description',
-            'URL rewritten',
-            'Image URL'
-        ]), 'categories.csv');
-        self::walkPrestashopTree(null, null);
-        echo 'Ready.';
-    }
 
 }

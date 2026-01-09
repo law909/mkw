@@ -51,13 +51,7 @@
                 <tbody>
                 <tr>
                     <input id="LathatoCheck" name="lathato" type="checkbox"
-                           {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
-                    {if ($setup.multishop)}
-                        {for $cikl = 2 to $enabledwebshops}
-                            <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"
-                                   {if ($egyed["lathato$cikl"])}checked="checked"{/if}>{at('Látható')} {$webshop{$cikl}name}
-                        {/for}
-                    {/if}
+                           {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')}
                 </tr>
                 <tr>
                     <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>

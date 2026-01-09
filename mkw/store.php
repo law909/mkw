@@ -6,12 +6,14 @@ use Automattic\WooCommerce\Client;
 use Controllers\mnrnavigationController;
 use Controllers\popupController;
 use Controllers\termekfaController;
+use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekFa;
+use Entities\Uzletkoto;
 use Entities\Valutanem;
 
 class store
@@ -572,7 +574,15 @@ class store
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
-            $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+            switch (true) {
+                case self::isMugenrace2026():
+                    $tmc = new termekmenuController(null);
+                    $v->setVar('menu1', $tmc->getTreeAsArray());
+                    break;
+                default:
+                    $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+                    break;
+            }
         }
         $kc = new \Controllers\kosarController(null);
         $minidata = $kc->getMiniData();
@@ -585,7 +595,7 @@ class store
         $p = new \mkwhelpers\ParameterHandler();
         $oc = new \Controllers\orszagController($p);
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
-        if (self::isMugenrace()) {
+        if (self::isMugenrace() || self::isMugenrace2026()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
             $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
@@ -596,7 +606,7 @@ class store
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
         $v->setVar('utanvetktgtermek', self::getParameter(\mkw\consts::UtanvetKtgTermek));
-        $pr = self::getEm()->getRepository('Entities\Partner');
+        $pr = self::getEm()->getRepository(Partner::class);
         $user = [];
         $user['loggedin'] = $pr->checkloggedin();
         if ($user['loggedin']) {
@@ -628,7 +638,7 @@ class store
         $v->setVar('user', $user);
         if (self::isB2B()) {
             /** @var \Entities\UzletkotoRepository $ukr */
-            $ukr = self::getEm()->getRepository('Entities\Uzletkoto');
+            $ukr = self::getEm()->getRepository(Uzletkoto::class);
             $uk = [];
             $uk['loggedin'] = $ukr->checkloggedin();
             if ($uk['loggedin']) {
@@ -1452,6 +1462,11 @@ class store
     public static function isMugenrace()
     {
         return self::getTheme() === 'mugenrace';
+    }
+
+    public static function isMugenrace2026()
+    {
+        return self::getTheme() === 'mugenrace2026';
     }
 
     public static function isMugenrace2021()

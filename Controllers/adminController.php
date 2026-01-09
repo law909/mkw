@@ -370,8 +370,6 @@ class adminController extends mkwhelpers\Controller
     {
         $menurepo = \mkw\store::getEm()->getRepository(Entities\TermekMenu::class);
         $menurepo->regenerateKarKod();
-        $wc = \mkw\store::getWcClient();
-        termekmenuController::walkCategoryTree(null, null, $wc);
         echo 'ok';
     }
 

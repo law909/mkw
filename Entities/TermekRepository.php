@@ -357,6 +357,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 $q->setParameters($params);
                 return $q->getScalarResult();
 
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
             case \mkw\store::isMugenrace2021():
                 $rsm = new ResultSetMapping();
@@ -389,6 +390,7 @@ class TermekRepository extends \mkwhelpers\Repository
     public function getTermekListaCount($filter)
     {
         switch (true) {
+            case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $this->addAktivLathatoFilter($filter);
                 $q = $this->_em->createQuery(
@@ -515,7 +517,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addFilter('ajanlott', '=', true);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -548,7 +550,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addSQL($this->getAkciosFilterSQL());
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -581,7 +583,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($kiemeltfilter);
         $filter->addFilter('nemkaphato', '=', false);
         $kiemeltfilter->addFilter('kiemelt', '=', true);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $kiemeltfilter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -631,7 +633,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -647,7 +649,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -664,7 +666,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -728,7 +730,7 @@ class TermekRepository extends \mkwhelpers\Repository
             $filter = new FilterDescriptor();
             $this->addAktivLathatoFilter($filter);
             $filter->addFilter('nemkaphato', '=', 'false');
-            if (\mkw\store::isMugenrace()) {
+            if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
                 $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
                 if ($karkod) {
                     $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -804,7 +806,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
@@ -831,7 +833,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace()) {
+        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace

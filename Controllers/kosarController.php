@@ -169,6 +169,14 @@ class kosarController extends \mkwhelpers\MattableController
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
 
+                return [
+                    'netto' => $m[0][3],
+                    'brutto' => $m[0][2],
+                    'valutanem' => \mkw\store::getMainSession()->valutanemnev,
+                ];
+            case \mkw\store::isMugenrace2026():
+                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+
                 $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
                 $partner = \mkw\store::getLoggedInUser();
                 // $valutanemnev = \mkw\store::getMainValutanemNev();
@@ -563,6 +571,7 @@ class kosarController extends \mkwhelpers\MattableController
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
             switch (true) {
+                case \mkw\store::isMugenrace2026():
                 case \mkw\store::isMugenrace():
                     $sor->setBruttoegysar(
                         $sor->getTermek()->getBruttoAr(
