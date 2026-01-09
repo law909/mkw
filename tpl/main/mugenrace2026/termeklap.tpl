@@ -396,7 +396,7 @@
                                                     <div class="kapcsolodoTermekInner">
                                                         <a href="{$_hasonlo.link}">
                                                             <div class="kapcsolodoImageContainer product-datasheet__list-item-image">
-                                                                <img src="{$imagepath}{$_hasonlo.kepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
+                                                                <img src="{$imagepath}{$_hasonlo.kozepeskepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
                                                             </div>
                                                             <div class="product-datasheet__list-item-caption">{$_hasonlo.caption|lower|capitalize}</div>
                                                             <div class="product-datasheet__list-item-sku">{$_hasonlo.cikkszam}</div>
@@ -531,42 +531,47 @@
                         </div> *}
                     </div>
                 </div>
-                {if (count($hozzavasarolttermekek)>0)}
-                <div class="row">
-                    <div class="span9">
-                    <div class="blockHeader">
-                        <h2 class="main">{t('Ehhez a termékhez vásárolták még')}</h2>
-                    </div>
-                    <div id="hozzavasarolttermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
-                        {$lntcnt=count($hozzavasarolttermekek)}
-                        {$step=3}
-                        {for $i=0 to $lntcnt-1 step $step}
-                            <div>
-                            {for $j=0 to $step-1}
-                                {if ($i+$j<$lntcnt)}
-                                {$_termek=$hozzavasarolttermekek[$i+$j]}
-                                <div class="textaligncenter pull-left" style="width:{100/$step}%">
-                                    <div class="termekSliderTermekInner">
-                                        <a href="/termek/{$_termek.slug}">
-                                            <div class="termekSliderImageContainer">
-                                                <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
-                                            </div>
-                                            <div>{$_termek.caption}</div>
-                                            <div>{$_termek.cikkszam}</div>
-                                            <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
-                                        </a>
-                                    </div>
-                                </div>
-                                {/if}
-                            {/for}
-                            </div>
-                        {/for}
-                    </div>
-                    </div>
-                </div>
-                {/if}
             </div>
         </div>
+
+        {if (count($hozzavasarolttermekek)>0)}
+        <div class="row product-datasheet__recommended-products flex-col">
+            <div class="col">
+                <h2 class="main">{t('Ehhez a termékhez vásárolták még')}</h2>
+            </div>
+            <div  class=" col product-datasheet__recommended-products-list">
+            {* royalSlider contentSlider rsDefaultInv termekSlider *}
+            {* id="hozzavasarolttermekslider" *}
+                {$lntcnt=count($hozzavasarolttermekek)}
+                {$step=3}
+                {for $i=0 to $lntcnt-1 step $step}
+                    {* <div> *}
+                    {for $j=0 to $step-1}
+                        {if ($i+$j<$lntcnt)}
+                        {$_termek=$hozzavasarolttermekek[$i+$j]}
+                        <div class="textaligncenter pull-left product-datasheet__list-item">
+                            {* style="width:{100/$step}%" *}
+                            
+                            <div class="termekSliderTermekInner">
+                                <a href="/termek/{$_termek.slug}">
+                                    <div class="termekSliderImageContainer  product-datasheet__list-item-image">
+                                        <img src="{$imagepath}{$_termek.kozepeskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                    </div>
+                                    <div class="product-datasheet__list-item-caption">{$_termek.caption|lower|capitalize}</div>
+                                    <div class="product-datasheet__list-item-sku">{$_termek.cikkszam}</div>
+                                    <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
+                                    <a href="{$_termek.link}" class="button bordered okbtn">{t('Részletek')}</a>
+                                </a>
+                            </div>
+                        </div>
+                        {/if}
+                    {/for}
+                    {* </div> *}
+                {/for}
+            </div>
+        </div>
+        {/if}
+
         <div class="row product-datasheet__popular-products flex-col">
             <div class="col">
                 <h4 class="textaligncenter">{t('Legnépszerűbb termékeink')}</h4>
@@ -577,7 +582,7 @@
                     <div class="kapcsolodoTermekInner">
                         <a href="{$_nepszeru.link}">
                             <div class="kapcsolodoImageContainer  product-datasheet__list-item-image">
-                                <img src="{$imagepath}{$_nepszeru.kepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
+                                <img src="{$imagepath}{$_nepszeru.kozepeskepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
                             </div>
                             <div class="product-datasheet__list-item-caption">{$_nepszeru.caption|lower|capitalize}</div>
                             <div class="product-datasheet__list-item-sku">{$_nepszeru.cikkszam}</div>

@@ -348,3 +348,17 @@ header a:hover,
 footer a:hover {
   color: unset;
 }
+
+.termekSlider .rsOverflow, 
+.termekSlider .rsSlide {
+  background: unset;
+}
+
+.termekSlider {
+  background: unset;
+  border: unset;
+}
+
+.termekSliderTermekInner {
+  padding: unset;
+}

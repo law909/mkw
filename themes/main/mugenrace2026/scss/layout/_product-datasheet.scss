@@ -70,15 +70,51 @@
   &__popular-products-list {
     display: grid;
     gap: var(--gap-base);
-    grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+    // grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+    // max-height: 450px;
 
+    grid-template-columns: repeat(6, 1fr);
+    
     @include tablet {
-      grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+      grid-template-columns: repeat(3, 1fr);
     }
 
     @include mobile {
-      grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+      grid-template-columns: repeat(2, 1fr);
     }
+
+    // @include tablet {
+    //   grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+    // }
+
+    // @include mobile {
+    //   grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+    // }
+  }
+
+  &__recommended-products-list {
+    display: grid;
+    gap: var(--gap-base);
+    grid-template-columns: repeat(6, 1fr);
+    
+    @include tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+   
+    // grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+   
+    // @include tablet {
+    //   grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+    // }
+
+    // @include mobile {
+    //   grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+    // }
+
   }
 
   &__cart-container {
@@ -109,7 +145,8 @@
 
   &__related-products,
   &__similar-products,
-  &__popular-products {
+  &__popular-products,
+  &__recommended-products {
     .accordion-content {
       &>div {
         display: grid;
@@ -125,7 +162,7 @@
     
     .product-datasheet__list-item {
       // padding: 10px;
-      
+
       &>div {
         height: 100%;
         display: flex;
