@@ -29,7 +29,7 @@
 {var_dump($versenyzolista)}
 </pre> *}
         <div id="MainContent">
-            <section class="hero-section">
+            <section class="hero-section video">
                 {* <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero"> *}
                 <video autoplay muted loop class="hero-video">
                     <source src="https://phpstack-333569-6090507.cloudwaysapps.com/mugenrace-main-video.mp4" type="video/mp4">

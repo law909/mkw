@@ -135,6 +135,12 @@
     z-index: 1;
   }
 
+  &.video {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 200px;
+  }
+
   .hero-content {
     position: relative;
     z-index: 2;
@@ -152,8 +158,11 @@
 
     p {
       font-size: clamp(16px, 2vw, 24px);
-      margin-bottom: var(--spacing-lg);
-      margin-top: var(--spacing-sm);
+      
+      @include desktop {
+        margin-top: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+      }
     }
 
     &__inverse {
@@ -548,6 +557,12 @@
 @include tablet {
   .hero-section {
     height: 70vh;
+
+    .hero-content {
+      h1 {
+        font-size: clamp(22px, 5vw, 40px);
+      }
+    }
   }
 
   .carousel-item {
@@ -571,6 +586,19 @@
   .featured-collection-slider {
     padding: var(--spacing-xxl) var(--spacing-md);
   }
+}
+
+@include mobile {
+  .hero-section {
+    height: 50vh;
+    
+    .hero-content {
+      h1 {
+        font-size: clamp(18px, 5vw, 30px);
+      }
+    }
+  }
+
 }
 
 .button {
