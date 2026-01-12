@@ -103,11 +103,14 @@ $router->map('POST', '/kapcsolat/[ment:todo]', 'mainController#kapcsolat', 'save
 
 $router->map('GET', '/szuro', 'mainController#szuro', 'showszuro');
 $router->map('GET', '/termekfa/[:slug]', 'mainController#termekfa', 'showtermekfa');
+$router->map('GET', '/categories/[:slug]', 'mainController#termekmenu', 'showtermekmenu');
 $router->map('GET', '/termek/[:slug]', 'mainController#termek', 'showtermek');
+$router->map('GET', '/product/[:slug]', 'mainController#termek', 'showproduct');
 $router->map('GET', '/marka/[:slug]', 'mainController#marka', 'showmarka');
 $router->map('GET', '/valtozatar', 'mainController#valtozatar', 'valtozatar');
 $router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
 $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
+$router->map('GET', '/search', 'mainController#kereses', 'search');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
 $router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
 $router->map('GET', '/valtozatadatok', 'termekvaltozatController#getValtozatAdatok', 'getvaltozatadatok');

@@ -3,8 +3,10 @@
 namespace Controllers;
 
 use Entities\MNRLanding;
+use Entities\Statlap;
 use Entities\Termek;
 use Entities\TermekFa;
+use Entities\TermekMenu;
 use Entities\TermekValtozat;
 use mkw\consts;
 use mkw\store;
@@ -138,6 +140,34 @@ class mainController extends \mkwhelpers\Controller
         }
     }
 
+    public function termekmenu()
+    {
+        $tf = new termekmenuController($this->params);
+        $com = $this->params->getStringParam('slug');
+        /** @var TermekMenu $ag */
+        $ag = $tf->getRepo()->findOneBySlug($com);
+        if ($ag && !$ag->getInaktiv()) {
+            if (count($ag->getChildren()) > 0) {
+                $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
+                $t = $tf->getkatlista($ag);
+            } else {
+                $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
+                $t = $tf->gettermeklistaforparent($ag, 'categories');
+            }
+            foreach ($t as $k => $v) {
+                $this->view->setVar($k, $v);
+            }
+            \mkw\store::fillTemplate($this->view);
+            $this->view->setVar('kepurl', $ag->getKepurlLarge());
+            $this->view->setVar('pagetitle', $ag->getShowOldalcim());
+            $this->view->setVar('seodescription', $ag->getShowSeodescription());
+            $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
+            $this->view->printTemplateResult(true);
+        } else {
+            \mkw\store::redirectTo404($com, $this->params);
+        }
+    }
+
     public function marka()
     {
         $com = $this->params->getStringParam('slug');
@@ -192,7 +222,7 @@ class mainController extends \mkwhelpers\Controller
     {
         $term = trim($this->params->getStringRequestParam('term'));
         if ($term) {
-            $r = \mkw\store::getEm()->getRepository('\Entities\Termek');
+            $r = \mkw\store::getEm()->getRepository(Termek::class);
             $res = $r->getNevek($term);
             echo json_encode($res);
         } else {
@@ -202,8 +232,13 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->persist($log);
                 \mkw\store::getEm()->flush();
 
-                $tf = new termekfaController($this->params);
-                $t = $tf->gettermeklistaforparent(null, 'kereses');
+                if (\mkw\store::isMugenrace2026()) {
+                    $tf = new termekmenuController($this->params);
+                    $t = $tf->gettermeklistaforparent(null, 'search');
+                } else {
+                    $tf = new termekfaController($this->params);
+                    $t = $tf->gettermeklistaforparent(null, 'kereses');
+                }
 
                 $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
                 foreach ($t as $k => $v) {
@@ -262,7 +297,7 @@ class mainController extends \mkwhelpers\Controller
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
                     }
-                    $statlap = $this->getRepo('Entities\Statlap')->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
+                    $statlap = $this->getRepo(Statlap::class)->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
                     if ($statlap) {
                         $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());
                     }
