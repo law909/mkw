@@ -1576,6 +1576,18 @@ a.underline {
   width: 100%;
   overflow-x: hidden;
 }
+#MainContent .teams__item,
+#MainContent .sponsored-riders__item {
+  background-color: transparent;
+}
+#MainContent .sponsored-riders__item-category {
+  color: var(--color-text) !important;
+}
+#MainContent .sponsored-riders__items,
+#MainContent .teams__items {
+  display: flex;
+  grid-template-columns: none;
+}
 
 .hero-section {
   position: relative;
@@ -1589,6 +1601,15 @@ a.underline {
   overflow: hidden;
 }
 .hero-section img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+.hero-section video {
   position: absolute;
   top: 0;
   left: 0;
@@ -3381,10 +3402,15 @@ nav ul li a {
 }
 .main-menu .sub .sub__wrapper {
   max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
 }
 @media (min-width: 1025px) {
   .main-menu .sub .sub__wrapper {
     margin: auto;
+    flex-direction: row;
   }
 }
 .main-menu .sub ul {
@@ -3413,6 +3439,11 @@ nav ul li a {
 }
 .main-menu .sub li a:hover {
   color: var(--color-text);
+}
+@media (max-width: 1024px) {
+  .main-menu .sub li a:hover {
+    color: var(--color-text-inverse);
+  }
 }
 .main-menu .sub li:hover {
   opacity: 0.8;

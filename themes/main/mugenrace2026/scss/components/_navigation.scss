@@ -142,9 +142,14 @@ nav {
 
     .sub__wrapper {
       max-width: 1200px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-direction: column;
 
       @include desktop {
         margin: auto;
+        flex-direction: row;
       }
     }
 
@@ -174,6 +179,10 @@ nav {
 
         &:hover {
           color: var(--color-text);
+
+          @include mobile-tablet {
+            color: var(--color-text-inverse);
+          }
         }
       }
 

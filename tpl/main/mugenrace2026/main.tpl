@@ -22,11 +22,20 @@
 
 {block "kozep"}
     <div class="container-full whitebg">
-
-
+{* <pre>
+{var_dump($csapatlista)}
+<pre>
+</pre>
+{var_dump($versenyzolista)}
+</pre> *}
         <div id="MainContent">
             <section class="hero-section">
-                <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero">
+                {* <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero"> *}
+                <video autoplay muted loop class="hero-video">
+                    <source src="https://phpstack-333569-6090507.cloudwaysapps.com/mugenrace-main-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
                 <div class="hero-content hero-content__inverse flex-col flex-cc">
                     <h1>{t('Új kollekció 2025')}</h1>
                     <p>{t('Ismerd meg legújabb termékeinket')}</p>
@@ -168,6 +177,35 @@
             </div>
         </section>
 
+        <section class="featured-collection-slider featured-collection-slider__dark carousel-section">
+            <div class="container section-header small row flex-cb">
+                <div class="col flex-lc flex-col ta-l">
+                    <h2>{t('Csapatok')}</h2>
+                    <p></p>
+                </div>
+                <div class="col flex-cr">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn carousel-prev" aria-label="Preview">‹</button>
+                        <button class="carousel-btn carousel-next" aria-label="Next">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-container teams__list">
+                <div class="carousel-wrapper teams__items ">
+                    {foreach $csapatlista as $_csapat}
+                        <div class="kat teams__item" data-href="/teams/{$_csapat.slug}">
+                            <div class="kattext teams__item-content">
+                                {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="teams__item-image"> *}
+                                <img src="{$_csapat.kepurl}" alt="{$_csapat.kepleiras}" class="teams__item-image">
+                                <img src="{$_csapat.logourl}" alt="{$_csapat.logoleiras}" class="teams__item-logo">
+                                <h3 class="teams__item-title"><a href="/teams/{$_csapat.slug}">{$_csapat.nev}</a></h3>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
+            </div>
+        </section>
 
         <section class="full-banner left inverse">
             <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-5.jpg" alt="Banner">
@@ -175,6 +213,37 @@
                 <h2>{t('Új Kollekció')}</h2>
                 <p>{t('Fedezd fel legújabb termékeinket')}</p>
                 <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a>
+            </div>
+        </section>
+
+
+        <section class="featured-collection-slider featured-collection-slider__dark carousel-section">
+            <div class="container section-header small row flex-cb">
+                <div class="col flex-lc flex-col ta-l">
+                    <h2>{t('Szponzorált versenyzők')}</h2>
+                    <p></p>
+                </div>
+                <div class="col flex-cr">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn carousel-prev" aria-label="Preview">‹</button>
+                        <button class="carousel-btn carousel-next" aria-label="Next">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-container sponsored-riders__list">
+                <div class="carousel-wrapper sponsored-riders__items ">
+                    {foreach $versenyzolista as $_versenyzo}
+                        <div class="kat sponsored-riders__item" data-href="/sponsored-riders/{$_versenyzo.slug}">
+                            <div class="kattext sponsored-riders__item-content">
+                                {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
+                                <img src="{$_versenyzo.kepurl}" alt="{$_versenyzo.nev}" class="sponsored-riders__item-image">
+                                <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
+                                <div class="sponsored-riders__item-title"><a href="/sponsored-riders/{$_versenyzo.slug}">{$_versenyzo.nev}</a></div>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
             </div>
         </section>
 

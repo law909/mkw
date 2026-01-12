@@ -27,6 +27,11 @@
   object-fit: cover;
 }
 
+@mixin video-cover {
+  @include absolute-cover;
+  object-fit: cover;
+}
+
 @mixin text-uppercase {
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -93,6 +98,21 @@
 #MainContent {
   width: 100%;
   overflow-x: hidden;
+
+  .teams__item,
+  .sponsored-riders__item {
+    background-color: transparent;
+  }
+
+  .sponsored-riders__item-category {
+    color: var(--color-text) !important;
+  }
+
+  .sponsored-riders__items,
+  .teams__items {
+    display: flex;
+    grid-template-columns: none;
+  }
 }
 
 // Hero Section
@@ -107,6 +127,11 @@
 
   img {
     @include image-cover;
+    z-index: 1;
+  }
+
+  video {
+    @include video-cover;
     z-index: 1;
   }
 

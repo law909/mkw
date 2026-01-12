@@ -1,4 +1,51 @@
-{foreach $csapatlista as $_csapat}
+{extends "base.tpl"}
+
+{block "kozep"}  
+<div class="container whitebg teams">
+	<div class="container page-header teams__header">
+		<div class="row">
+			<div class="col" xmlns:v="http://rdf.data-vocabulary.org/#">
+                <span class="page-header__breadcrumb flex-lc" itemprop="breadcrumb ">
+                        
+                </span>
+			</div>
+		</div>
+			<div class="row">
+					<div class="col">
+						<h1 class="page-header__title" typeof="v:Breadcrumb">
+							<a href="#" rel="v:url" property="v:title">
+									{t('Csapatok')}
+							</a>
+							
+						</h1>
+					</div>
+			</div>
+	</div>
+
+	<div class="row teams__content">
+		<div class="col">
+			...
+		</div>
+	</div>
+</div>
+
+<div class="container teams__list">
+	<div class="row">
+		<div class="col teams__items">
+            {foreach $csapatlista as $_csapat}
+				<div class="kat teams__item" data-href="/teams/{$_csapat.slug}">
+					<div class="kattext teams__item-content">
+						{* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="teams__item-image"> *}
+						<img src="{$_csapat.kepurl}" alt="{$_csapat.kepleiras}" class="teams__item-image">
+						<img src="{$_csapat.logourl}" alt="{$_csapat.logoleiras}" class="teams__item-logo">
+						<h3 class="teams__item-title"><a href="/teams/{$_csapat.slug}">{$_csapat.nev}</a></h3>
+					</div>
+				</div>
+            {/foreach}
+		</div>
+	</div>
+</div>
+{* {foreach $csapatlista as $_csapat}
     <div>
         <h3>{$_csapat.nev}</h3>
         {$_csapat.id}
@@ -39,4 +86,5 @@
 
         {/foreach}
     </div>
-{/foreach}
+{/foreach} *}
+{/block}
