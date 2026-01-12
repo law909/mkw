@@ -127,11 +127,24 @@ class csapatController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    public function showList()
+    public function index()
     {
         $view = $this->createMainView('csapatlist.tpl');
         $view->setVar('csapatlista', $this->getListAsArray());
+        \mkw\store::fillTemplate($view);
         $view->printTemplateResult();
     }
 
+    public function view()
+    {
+        $com = $this->params->getStringParam('slug');
+        $csapat = $this->getRepo()->getWithJoins(['slug' => $com]);
+        if ($csapat) {
+            $csapat = $csapat[0];
+        }
+        $view = $this->createMainView('csapat.tpl');
+        $view->setVar('csapat', $this->loadVars($csapat));
+        \mkw\store::fillTemplate($view);
+        $view->printTemplateResult();
+    }
 }
