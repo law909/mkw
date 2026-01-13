@@ -13,7 +13,7 @@
                     {foreach $navigator as $_navi}
                         {if ($_navi.url|default)}
                             <span typeof="v:Breadcrumb">
-                                <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                                <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                     {$_navi.caption|lower|capitalize}
                                 </a>
                             </span>
@@ -31,7 +31,7 @@
             {foreach $navigator as $_navi}
                 {if ($_navi@last)}
                     <h1 class="page-header__title" typeof="v:Breadcrumb">
-                        <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                        <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                             {$_navi.caption|lower|capitalize}
                         </a>
                     </h1>
@@ -219,7 +219,7 @@
                         <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">
                             <div class="gtermekinner"><div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
-                                    <a href="/termek/{$_termek.slug}"><img class="product-list-item__image itemprop="image" src="{$imagepath}{$_termek.kepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop="image" src="{$imagepath}{$_termek.kepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 
                                     {* {$kcnt=count($_termek.kepek)}
                                     {if ($kcnt>0)}
@@ -241,10 +241,10 @@
                                     {/if} *}
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__title">
-                                    <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
+                                    <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__code">
-                                    <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                    <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content">
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}

@@ -2,7 +2,7 @@
 
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
-    <meta property="og:url" content="{$serverurl}/termek/{$termek.slug}"/>
+    <meta property="og:url" content="{$serverurl}/product/{$termek.slug}"/>
     <meta property="og:description" content="{$termek.rovidleiras}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
     <meta property="og:type" content="product"/>
@@ -213,7 +213,7 @@
                                     {foreach $navigator as $_navi}
                                         {if ($_navi.url|default)}
                                             <span typeof="v:Breadcrumb">
-                                                <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                                                <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                                     {$_navi.caption|lower|capitalize}
                                                 </a>
                                             </span>
@@ -553,7 +553,7 @@
                             {* style="width:{100/$step}%" *}
                             
                             <div class="termekSliderTermekInner">
-                                <a href="/termek/{$_termek.slug}">
+                                <a href="/product/{$_termek.slug}">
                                     <div class="termekSliderImageContainer  product-datasheet__list-item-image">
                                         <img src="{$imagepath}{$_termek.kozepeskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>

@@ -18,12 +18,6 @@
 					</div>
 			</div>
 	</div>
-
-	<div class="row sponsored-riders__content">
-		<div class="col">
-			...
-		</div>
-	</div>
 </div>
 
 <div class="container sponsored-riders__list">

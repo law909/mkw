@@ -23,7 +23,7 @@
 				<li><a href="/statlap/faq-frequently-asked-questions">{t('Gy.I.K. - Gyakori kérdések')}</a></li>
 				<li><a href="/statlap/shipping-policy">{t('Szállítási feltételek')}</a></li>
 				<li><a href="/statlap/payment-policy">{t('Fizetési feltételek')}</a></li>
-				<li><a href="/hirek">{t('Legfrissebb híreink')}</a></li>
+				<li><a href="/news">{t('Legfrissebb híreink')}</a></li>
 			</ul>
 		</nav>
 		<nav class="col">

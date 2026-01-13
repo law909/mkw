@@ -21,12 +21,6 @@
 					</div>
 			</div>
 	</div>
-
-	<div class="row teams__content">
-		<div class="col">
-			...
-		</div>
-	</div>
 </div>
 
 <div class="container teams__list">

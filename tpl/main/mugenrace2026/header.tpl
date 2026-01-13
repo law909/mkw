@@ -16,16 +16,16 @@
             <nav class="main-menu flex-cc">
                 <ul id="" class="flex-cc">
                     {foreach $menu1[0]['children'] as $_menupont}
-                        <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="{$_menupont.path}" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
+                        <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/categories/{$_menupont.slug}" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
                         {if (count($_menupont.children)>0)}
                             <i class="icon arrow-down white main-menu__arrow icon__click"></i>
                             <div class="sub">
                                 <div class="sub__wrapper">
                                     {foreach $_menupont.children as $_focsoport}
                                     <ul>
-                                        <li class="categorytitle"><a href="{$_focsoport.path}">{$_focsoport.nev}</a></li>
+                                        <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
                                         {foreach $_focsoport.children as $_alcsoport}
-                                            <li><a href="{$_alcsoport.path}">{$_alcsoport.nev}</a></li>
+                                            <li><a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a></li>
                                         {/foreach}
                                     </ul>
                                     {/foreach}
@@ -35,10 +35,10 @@
                         </li>
                     {/foreach}
                     
-                    <li><a href="/hirek" title="{t('Legfrissebb híreink')}">{t('Legfrissebb híreink')}</a></li>
+                    <li><a href="/news" title="{t('Legfrissebb híreink')}">{t('Legfrissebb híreink')}</a></li>
                     <li><a href="/statlap/about-us" title="{t('Rólunk')}">{t('Rólunk')}</a></li>
-                    <li><a href="/statlap/sponsored-riders" title="{t('Szponzorált versenyzők')}">{t('Szponzorált versenyzők')}</a></li>
-                    <li><a href="/statlap/csapatok" title="{t('Csapatok')}">{t('Csapatok')}</a></li>
+                    <li><a href="/riders" title="{t('Szponzorált versenyzők')}">{t('Szponzorált versenyzők')}</a></li>
+                    <li><a href="/teams" title="{t('Csapatok')}">{t('Csapatok')}</a></li>
                 </ul>
                 <i class="icon close white main-menu__close icon__click"></i>
             </nav>
@@ -59,7 +59,7 @@
                 </ul>
             </nav>
 
-            <form id="searchform" class="header__searchform flex-cc" name="searchbox" method="get" action="/kereses" autocomplete="off">
+            <form id="searchform" class="header__searchform flex-cc" name="searchbox" method="get" action="/search" autocomplete="off">
                 <div class="searchinputbox flex-cc">
                     <input id="searchinput" class="siteSearch span2" type="text" title="{t('Keressen a termékeink között!')}"
                            placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">

@@ -17,8 +17,8 @@
 				<div class="row">
 				{/if}
 					<div class="span4 textaligncenter">
-						<div class="miniItemPicture"><a href="/termek/{$_termek.slug}"><img src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a></div>
-						<div class="miniItemCaption"><a href="/termek/{$_termek.slug}"><h4>{$_termek.caption}</h4></a></div>
+						<div class="miniItemPicture"><a href="/product/{$_termek.slug}"><img src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a></div>
+						<div class="miniItemCaption"><a href="/product/{$_termek.slug}"><h4>{$_termek.caption}</h4></a></div>
 						<div class="miniItemJelzok">
 							{foreach $_termek.cimkelistaban as $_jelzo}
 								<img src="{$imagepath}{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">

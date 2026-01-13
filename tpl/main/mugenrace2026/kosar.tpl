@@ -27,7 +27,7 @@
                     {foreach $navigator as $_navi}
                         {if ($_navi.url|default)}
                             <span typeof="v:Breadcrumb">
-                                <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                                <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                     {$_navi.caption|lower|capitalize}
                                 </a>
                             </span>
@@ -90,7 +90,7 @@
                             {$_termek=$hozzavasarolttermekek[$i+$j]}
                             <div class="textaligncenter pull-left" style="width:{100/$step}%">
                                 <div class="termekSliderTermekInner">
-                                    <a href="/termek/{$_termek.slug}">
+                                    <a href="/product/{$_termek.slug}">
                                         <div class="termekSliderImageContainer">
                                             <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption|lower|capitalize}" alt="{$_termek.caption|lower|capitalize}">
                                         </div>

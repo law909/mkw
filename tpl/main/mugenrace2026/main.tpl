@@ -73,15 +73,15 @@
                         <div class="gtermekinner">
                             <div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
-                                    <a href="/termek/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
+                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
                                         title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__title">
-                                    <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption"
+                                    <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption"
                                                                                            itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__code">
-                                    <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                    <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content">
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
@@ -234,12 +234,12 @@
             <div class="carousel-container sponsored-riders__list">
                 <div class="carousel-wrapper sponsored-riders__items ">
                     {foreach $versenyzolista as $_versenyzo}
-                        <div class="kat sponsored-riders__item" data-href="/sponsored-riders/{$_versenyzo.slug}">
+                        <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
                             <div class="kattext sponsored-riders__item-content">
                                 {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
                                 <img src="{$_versenyzo.kepurl}" alt="{$_versenyzo.nev}" class="sponsored-riders__item-image">
                                 <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
-                                <div class="sponsored-riders__item-title"><a href="/sponsored-riders/{$_versenyzo.slug}">{$_versenyzo.nev}</a></div>
+                                <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}">{$_versenyzo.nev}</a></div>
                             </div>
                         </div>
                     {/foreach}
@@ -275,12 +275,13 @@
             <div class="carousel-container">
                 <div class="carousel-wrapper news-list__items">
                     {foreach $hirek as $_child}
-                        <div class="carousel-item kat news-list__item" data-href="/hir/{$_child.slug}">
+                        <div class="carousel-item kat news-list__item" data-href="/news/{$_child.slug}">
                             <div class="kattext news-list__item-content">
+                                <img src="{$_child.kepurl}" alt="{$_child.cim}" class="news-list__item-image">
                                 {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="news-list__item-image"> *}
-                                <img src="https://picsum.photos/500/400" alt="{$_child.cim}" class="news-list__item-image">
+                                {* <img src="https://picsum.photos/500/400" alt="{$_child.cim}" class="news-list__item-image"> *}
                                 <div class="hiralairas news-list__item-date">{$_child.datum}</div>
-                                <div class="kattitle news-list__item-title"><a href="/hir/{$_child.slug}">{$_child.cim}</a></div>
+                                <div class="kattitle news-list__item-title"><a href="/news/{$_child.slug}">{$_child.cim}</a></div>
                                 <div class="katcopy news-list__item-lead">{$_child.lead}</div>
                             </div>
                         </div>

@@ -25,7 +25,7 @@
 														{foreach $navigator as $_navi}
 																{if ($_navi.url|default)}
 																		<span typeof="v:Breadcrumb">
-																				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+																				<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
 																						{$_navi.caption|capitalize}
 																				</a>
 																		</span>
@@ -42,7 +42,7 @@
 								<div class="col">
 									<h1 class="page-header__title" typeof="v:Breadcrumb">
 											{if (isset($_navi.url))}
-												<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+												<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
 														{$statlap.oldalcim|capitalize}
 												</a>
 											{else}

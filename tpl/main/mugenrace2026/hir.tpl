@@ -16,7 +16,7 @@
 {foreach $navigator as $_navi}
                             {if ($_navi.url|default)}
                                 <span typeof="v:Breadcrumb">
-														<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+														<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
 																{$_navi.caption|capitalize}
 														</a>
 												</span>
@@ -32,13 +32,13 @@
         <div class="row">
             <div class="col">
                 <h1 class="page-header__title" typeof="v:Breadcrumb">
-                    <a href="/hirek/" rel="v:url" property="v:title">
+                    <a href="/news/" rel="v:url" property="v:title">
                         {t('Hírek')}
                     </a>
                 </h1>
             </div>
             <div class="col flex-cr">
-                <a href="/hirek/" class="button bordered">{t('Vissza a hírekhez')}</a>
+                <a href="/news/" class="button bordered">{t('Vissza a hírekhez')}</a>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="news-datasheet__content">
                         {if ($hir.kepurl)}
-                            <img src="{$hir.kepurl}" alt="{$hir.kepleiras}">
+                            <img src="{$hir.kepurl}" class="news-datasheet__image" alt="{$hir.kepleiras}">
                         {/if}
                         {$hir.szoveg}
                     </div>

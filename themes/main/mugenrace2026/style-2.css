@@ -2157,6 +2157,12 @@ a.underline {
   line-height: 1.6;
   color: var(--color-text);
 }
+.news-datasheet__image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto var(--spacing-lg);
+}
 .static-page__content {
   margin-bottom: 50px;
 }
