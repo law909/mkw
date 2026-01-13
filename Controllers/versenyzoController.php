@@ -128,4 +128,24 @@ class versenyzoController extends \mkwhelpers\MattableController
         return $versenyzok;
     }
 
+    public function index()
+    {
+        $view = $this->createMainView('versenyzolist.tpl');
+        $view->setVar('versenyzolista', $this->getListAsArray());
+        \mkw\store::fillTemplate($view);
+        $view->printTemplateResult();
+    }
+
+    public function view()
+    {
+        $slug = $this->params->getIntRequestParam('slug');
+        $record = $this->getRepo()->getWithJoins(['slug' => $slug], []);
+        if ($record) {
+            $record = $record[0];
+        }
+        $view = $this->createView('versenyzo.tpl');
+        $view->setVar('versenyzo', $this->loadVars($record, true));
+        \mkw\store::fillTemplate($view);
+        $view->printTemplateResult();
+    }
 }

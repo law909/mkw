@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Automattic\WooCommerce\Client;
+use Entities\Afa;
 use Entities\Arsav;
 use Entities\Partner;
 use Entities\Termek;
@@ -1420,7 +1421,7 @@ class termekController extends \mkwhelpers\MattableController
     {
         $id = $this->params->getIntRequestParam('id');
         $netto = $this->params->getFloatRequestParam('value');
-        $afa = $this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));
+        $afa = $this->getEm()->getRepository(Afa::class)->find($this->params->getIntRequestParam('afakod'));
         if (!$afa) {
             $termek = $this->getRepo()->find($id);
             if ($termek) {
@@ -1438,7 +1439,7 @@ class termekController extends \mkwhelpers\MattableController
     {
         $id = $this->params->getIntRequestParam('id');
         $brutto = $this->params->getFloatRequestParam('value');
-        $afa = $this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));
+        $afa = $this->getEm()->getRepository(Afa::class)->find($this->params->getIntRequestParam('afakod'));
         if (!$afa) {
             $termek = $this->getRepo()->find($id);
             if ($termek) {
@@ -1464,19 +1465,27 @@ class termekController extends \mkwhelpers\MattableController
         $ujtermekminid = $this->getRepo()->getUjTermekId();
         $top10min = $this->getRepo()->getTop10Mennyiseg();
 
-        $tfc = new termekfaController($this->params);
-
         $ret = [];
 
-        if ($termek->getTermekfa1()) {
-            $ret['navigator'] = $tfc->getNavigator($termek->getTermekfa1(), true);
+        if (\mkw\store::isMugenrace2026()) {
+            $tf = new termekmenuController($this->params);
+            if ($termek->getTermekmenu1()) {
+                $ret['navigator'] = $tf->getNavigator($termek->getTermekmenu1(), true);
+            } else {
+                $ret['navigator'] = [];
+            }
         } else {
-            $ret['navigator'] = [];
+            $tfc = new termekfaController($this->params);
+            if ($termek->getTermekfa1()) {
+                $ret['navigator'] = $tfc->getNavigator($termek->getTermekfa1(), true);
+            } else {
+                $ret['navigator'] = [];
+            }
         }
         $ret['termek'] = $termek->toTermekLap(null, $ujtermekminid, $top10min);
 
         $termek->incMegtekintesdb();
-        if (\mkw\store::getTheme() == 'mkwcansas') {
+        if (\mkw\store::isMindentkapni()) {
             $termek->incNepszeruseg();
         }
         $this->getEm()->persist($termek);

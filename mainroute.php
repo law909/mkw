@@ -40,7 +40,10 @@ if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
     $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
     $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
     $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
-    $router->map('GET', '/teams', 'csapatController#showList', 'csapatlist');
+    $router->map('GET', '/teams', 'csapatController#index', 'csapatindex');
+    $router->map('GET', '/teams/[:slug]', 'csapatController#show', 'csapat');
+    $router->map('GET', '/riders', 'versenyzoController#index', 'versenyzoindex');
+    $router->map('GET', '/riders/[:slug]', 'versenyzoController#show', 'versenyzo');
 }
 
 if (\mkw\store::isMugenrace2021()) {
@@ -93,6 +96,8 @@ $router->map('GET', '/statlap/[:lap]', 'statlapController#show', 'showstatlap');
 $router->map('GET', '/statlap/p/[:lap]', 'statlapController#showPopup', 'showstatlappopup');
 $router->map('GET', '/hir/[:hir]', 'hirController#show', 'showhir');
 $router->map('GET', '/hirek', 'hirController#showHirList', 'showhirlist');
+$router->map('GET', '/news', 'hirController#showHirList', 'newsindex');
+$router->map('GET', '/news/[:hir]', 'hirController#show', 'news');
 $router->map('GET', '/blogposzt/[:blogposzt]', 'blogposztController#show', 'showblogposzt');
 $router->map('GET', '/blog', 'blogposztController#showBlogposztList', 'showblogposztlist');
 $router->map('GET', '/feed/hir', 'hirController#feed', 'hirfeed');
@@ -103,11 +108,14 @@ $router->map('POST', '/kapcsolat/[ment:todo]', 'mainController#kapcsolat', 'save
 
 $router->map('GET', '/szuro', 'mainController#szuro', 'showszuro');
 $router->map('GET', '/termekfa/[:slug]', 'mainController#termekfa', 'showtermekfa');
+$router->map('GET', '/categories/[:slug]', 'mainController#termekmenu', 'showtermekmenu');
 $router->map('GET', '/termek/[:slug]', 'mainController#termek', 'showtermek');
+$router->map('GET', '/product/[:slug]', 'mainController#termek', 'showproduct');
 $router->map('GET', '/marka/[:slug]', 'mainController#marka', 'showmarka');
 $router->map('GET', '/valtozatar', 'mainController#valtozatar', 'valtozatar');
 $router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
 $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
+$router->map('GET', '/search', 'mainController#kereses', 'search');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
 $router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
 $router->map('GET', '/valtozatadatok', 'termekvaltozatController#getValtozatAdatok', 'getvaltozatadatok');

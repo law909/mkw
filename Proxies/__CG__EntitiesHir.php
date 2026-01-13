@@ -67,10 +67,10 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Hir' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Hir' . "\0" . 'kepleiras'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Hir' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Hir' . "\0" . 'kepleiras'];
     }
 
     /**
@@ -509,6 +509,94 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$adat]);
 
         return parent::setSorrend($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', [$pre]);
+
+        return parent::getKepurl($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurlMini($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMini', [$pre]);
+
+        return parent::getKepurlMini($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurlSmall($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', [$pre]);
+
+        return parent::getKepurlSmall($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurlMedium($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', [$pre]);
+
+        return parent::getKepurlMedium($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurlLarge($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', [$pre]);
+
+        return parent::getKepurlLarge($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKepurl($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', [$adat]);
+
+        return parent::setKepurl($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepleiras()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', []);
+
+        return parent::getKepleiras();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKepleiras($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', [$adat]);
+
+        return parent::setKepleiras($adat);
     }
 
 }
