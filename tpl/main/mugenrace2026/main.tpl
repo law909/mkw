@@ -73,7 +73,23 @@
                         <div class="gtermekinner">
                             <div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
-                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
+                                    <div class="flags">
+                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                            <div class="flag new-product">{t('Új')}</div>
+                                        {/if}
+
+                                        {if (isset($_termek.akcios) && $_termek.akcios)}
+                                            <div class="flag sale-product">{t('Akciós')}</div>
+                                        {/if}
+                                        
+                                        {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
+                                            <div class="flag featured">{t('Kiemelt')}</div>
+                                        {/if}
+                                        {* {if (isset($_termek.top10) && $_termek.top10)}
+                                            <div class="flag sale-product">{t('Top 10')}</div>
+                                        {/if} *}
+                                    </div>
+                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image" itemprop="image" src="{$imagepath}{$_termek.kepurl}"
                                         title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__title">

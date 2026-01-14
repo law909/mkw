@@ -307,4 +307,11 @@ return [
     'Gyerek' => 'Kids',
     'Válassz országot' => 'Choose your country',
     'A Mugen Race Shop prémium motoros ruházatot és felszerelést kínál, amely a legmagasabb szintű biztonságot és stílust ötvözi. Válogass minőségi bőrruhák, kabátok, kesztyűk, csizmák és kiegészítők széles kínálatából – minden termék a teljesítményre és tartósságra tervezve. Fedezd fel a Mugen Race világát, és találd meg a számodra tökéletes motoros felszerelést!' => 'A Mugen Race Shop offers premium motorcycle apparel and gear that combine the highest level of safety with style. Choose from a wide selection of quality leather suits, jackets, gloves, boots, and accessories — all products are designed for performance and durability. Discover the world of Mugen Race and find the perfect motorcycle gear for you!',
+    'Eredeti ár' => 'Original price',
+    'Nem kapható' => 'Out of stock',
+    'Kapható' => 'In stock',
+    'Új' => 'New',
+    'Akciós' => 'On sale',
+    'Kiemelt' => 'Featured',
+
 ];

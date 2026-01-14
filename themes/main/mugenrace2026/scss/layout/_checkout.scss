@@ -226,6 +226,26 @@
     margin-right: 0;
     margin-left: auto;
     margin-top: -15px;
+
+    display: flex;
+    flex-direction: column;
+    
+    &.akciosarszoveg {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--color-text-muted);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    &.akciosar {
+      text-decoration: line-through;
+      font-size: 1.1rem;
+      margin-left: 5px;
+      font-weight: 400;
+      color: var(--color-text-disabled);
+    }
   }
 
   &__quantity {

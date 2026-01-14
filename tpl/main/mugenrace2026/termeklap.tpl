@@ -64,10 +64,27 @@
 
 
                         <div class="product-carousel-container">
+                            <div class="flags">
+                                {if (isset($termek.ujtermek) && $termek.ujtermek)}
+                                    <div class="flag new-product">{t('Új')}</div>
+                                {/if}
+
+                                {if (isset($termek.akcios) && $termek.akcios)}
+                                    <div class="flag sale-product">{t('Akciós')}</div>
+                                {/if}
+                                
+                                {if (isset($termek.kiemelt) && $termek.kiemelt)}
+                                    <div class="flag featured">{t('Kiemelt')}</div>
+                                {/if}
+                                {* {if (isset($termek.top10) && $termek.top10)}
+                                    <div class="flag sale-product">{t('Top 10')}</div>
+                                {/if} *}
+                            </div>
+
                             <div class="thumbs" id="thumbs"></div>
 
-
                             <div class="main-image-wrapper">
+
                                 <img id="mainImage" class="main-image" src="" />
 
                                 <div class="nav-btn-container flex-cr">
@@ -76,10 +93,10 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <script>
                         const images = [
+                            "{$imagepath}{$termek.kepurl}",
+
                             {$kcnt=count($termek.kepek)}
                             {if ($kcnt>0)}
                                 {$step=4}
@@ -94,7 +111,6 @@
                             {/if}
                             
                         ];
-
                         // ########################
                         // Product profile carousel
                         // ########################                           
@@ -225,15 +241,17 @@
                                 {/if}
                             </span>
                             {* Breadcrumb *}
-
                             <div class="textaligncenter product-datasheet__title"><h1 itemprop="name" class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
                             {* Title  *}
 
                             <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                {if ($termek.akcios)}
+                                    <span class="akciosarszoveg">{t('Eredeti ár')}: <span class="akciosar">{number_format($termek.eredetibruttohuf,0,',',' ')} {$termek.valutanemnev}</span></span>
+                                {/if}
                                 {if ($termek.nemkaphato)}
-                                    <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                    <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
                                 {else}
-                                    <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                    <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
                                 {/if}
                                 <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                             </div>
@@ -361,11 +379,33 @@
                                                 <div class="textaligncenter pull-left product-datasheet__list-item">{* style="width:{100/$step}%" *}
                                                     <div class="kapcsolodoTermekInner">
                                                         <a href="{$_kapcsolodo.link}">
+                                                            <div class="flags">
+                                                                {if (isset($_kapcsolodo.ujtermek) && $_kapcsolodo.ujtermek)}
+                                                                    <div class="flag new-product">{t('Új')}</div>
+                                                                {/if}
+
+                                                                {if (isset($_kapcsolodo.akcios) && $_kapcsolodo.akcios)}
+                                                                    <div class="flag sale-product">{t('Akciós')}</div>
+                                                                {/if}
+                                                                
+                                                                {if (isset($_kapcsolodo.kiemelt) && $_kapcsolodo.kiemelt)}
+                                                                    <div class="flag featured">{t('Kiemelt')}</div>
+                                                                {/if}
+                                                                {* {if (isset($_kapcsolodo.top10) && $_kapcsolodo.top10)}
+                                                                    <div class="flag sale-product">{t('Top 10')}</div>
+                                                                {/if} *}
+                                                            </div>
+
                                                             <div class="kapcsolodoImageContainer product-datasheet__list-item-image">
                                                                 <img src="{$imagepath}{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
                                                             </div>
                                                             <div class="product-datasheet__list-item-caption">{$_kapcsolodo.caption|lower|capitalize}</div>
                                                             <div class="product-datasheet__list-item-sku">{$_kapcsolodo.cikkszam}</div>
+                                                            {if ($_kapcsolodo.akcios)}
+                                                                <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_kapcsolodo.eredetibruttohuf,0,',',' ')} {$_kapcsolodo.valutanemnev}</span></span>
+                                                                </div>
+                                                            {/if}
                                                             <h5>
                                                                 <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                                                             </h5>
@@ -395,11 +435,32 @@
                                                 <div class="textaligncenter pull-left product-datasheet__list-item">{* style="width:{100/$step}%" *}
                                                     <div class="kapcsolodoTermekInner">
                                                         <a href="{$_hasonlo.link}">
+                                                            <div class="flags">
+                                                                {if (isset($_hasonlo.ujtermek) && $_hasonlo.ujtermek)}
+                                                                    <div class="flag new-product">{t('Új')}</div>
+                                                                {/if}
+
+                                                                {if (isset($_hasonlo.akcios) && $_hasonlo.akcios)}
+                                                                    <div class="flag sale-product">{t('Akciós')}</div>
+                                                                {/if}
+                                                                
+                                                                {if (isset($_hasonlo.kiemelt) && $_hasonlo.kiemelt)}
+                                                                    <div class="flag featured">{t('Kiemelt')}</div>
+                                                                {/if}
+                                                                {* {if (isset($_hasonlo.top10) && $_hasonlo.top10)}
+                                                                    <div class="flag sale-product">{t('Top 10')}</div>
+                                                                {/if} *}
+                                                            </div>
                                                             <div class="kapcsolodoImageContainer product-datasheet__list-item-image">
                                                                 <img src="{$imagepath}{$_hasonlo.kozepeskepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
                                                             </div>
                                                             <div class="product-datasheet__list-item-caption">{$_hasonlo.caption|lower|capitalize}</div>
                                                             <div class="product-datasheet__list-item-sku">{$_hasonlo.cikkszam}</div>
+                                                            {if ($_hasonlo.akcios)}
+                                                                <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_hasonlo.eredetibruttohuf,0,',',' ')} {$_hasonlo.valutanemnev}</span></span>
+                                                                </div>
+                                                            {/if}
                                                             <h5>
                                                                 <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                                                             </h5>
@@ -554,11 +615,32 @@
                             
                             <div class="termekSliderTermekInner">
                                 <a href="/product/{$_termek.slug}">
+                                    <div class="flags">
+                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                            <div class="flag new-product">{t('Új')}</div>
+                                        {/if}
+
+                                        {if (isset($_termek.akcios) && $_termek.akcios)}
+                                            <div class="flag sale-product">{t('Akciós')}</div>
+                                        {/if}
+                                        
+                                        {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
+                                            <div class="flag featured">{t('Kiemelt')}</div>
+                                        {/if}
+                                        {* {if (isset($_termek.top10) && $_termek.top10)}
+                                            <div class="flag sale-product">{t('Top 10')}</div>
+                                        {/if} *}
+                                    </div>
                                     <div class="termekSliderImageContainer  product-datasheet__list-item-image">
                                         <img src="{$imagepath}{$_termek.kozepeskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div class="product-datasheet__list-item-caption">{$_termek.caption|lower|capitalize}</div>
                                     <div class="product-datasheet__list-item-sku">{$_termek.cikkszam}</div>
+                                    {if ($_termek.akcios)}
+                                        <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                            <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
+                                        </div>
+                                    {/if}
                                     <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
                                     <a href="{$_termek.link}" class="button bordered okbtn">{t('Részletek')}</a>
                                 </a>
@@ -581,11 +663,32 @@
                 <div class="textaligncenter product-datasheet__list-item">
                     <div class="kapcsolodoTermekInner">
                         <a href="{$_nepszeru.link}">
+                            <div class="flags">
+                                {if (isset($_nepszeru.ujtermek) && $_nepszeru.ujtermek)}
+                                    <div class="flag new-product">{t('Új')}</div>
+                                {/if}
+
+                                {if (isset($_nepszeru.akcios) && $_nepszeru.akcios)}
+                                    <div class="flag sale-product">{t('Akciós')}</div>
+                                {/if}
+                                
+                                {if (isset($_nepszeru.kiemelt) && $_nepszeru.kiemelt)}
+                                    <div class="flag featured">{t('Kiemelt')}</div>
+                                {/if}
+                                {* {if (isset($_nepszeru.top10) && $_nepszeru.top10)}
+                                    <div class="flag sale-product">{t('Top 10')}</div>
+                                {/if} *}
+                            </div>
                             <div class="kapcsolodoImageContainer  product-datasheet__list-item-image">
                                 <img src="{$imagepath}{$_nepszeru.kozepeskepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
                             </div>
                             <div class="product-datasheet__list-item-caption">{$_nepszeru.caption|lower|capitalize}</div>
                             <div class="product-datasheet__list-item-sku">{$_nepszeru.cikkszam}</div>
+                            {if ($_nepszeru.akcios)}
+                                <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_nepszeru.eredetibruttohuf,0,',',' ')} {$_nepszeru.valutanemnev}</span></span>
+                                </div>
+                            {/if}
                             <h5>
                                 <span>{number_format($_nepszeru.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                             </h5>

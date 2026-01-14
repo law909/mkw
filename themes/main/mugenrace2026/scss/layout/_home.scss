@@ -213,6 +213,13 @@
   padding: var(--spacing-section) var(--spacing-md);
   background: var(--color-background);
   padding-bottom: 0;
+  
+  .product-list-item {
+    .flags {
+      right: 5px;
+      top: 5px;
+    }
+  }
 
   &__dark {
     background: var(--color-background-inverse);
@@ -248,6 +255,25 @@
     .product-item {
       &__price {
         font-size: var(--font-size-base);
+        display: flex;
+        flex-direction: column;
+
+        &.akciosarszoveg {
+          font-size: 0.9rem;
+          font-weight: 400;
+          color: var(--color-text-muted);
+          margin-bottom: 5px;
+          display: flex;
+          align-items: center;
+        }
+
+        &.akciosar {
+          text-decoration: line-through;
+          font-size: 1.1rem;
+          margin-left: 5px;
+          font-weight: 400;
+          color: var(--color-text-disabled);
+        }
       }
     }
 

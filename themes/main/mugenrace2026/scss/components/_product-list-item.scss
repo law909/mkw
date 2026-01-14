@@ -42,6 +42,27 @@
       color: var(--color-secondary-text);
     }
   }
+  
+  .akciosarszoveg {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .akciosar {
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-disabled);
+  }
+
+  .flags {
+    right: 0px;
+    top: -5px;
+  }
 
   &__price {
     font-size: var(--font-size-base);

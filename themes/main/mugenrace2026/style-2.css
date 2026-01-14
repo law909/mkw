@@ -448,6 +448,12 @@ footer a:hover {
   padding: unset;
 }
 
+.termekprice {
+  font-size: unset;
+  text-align: unset;
+  color: unset;
+}
+
 i.icon {
   display: inline-flex;
   mask-position: center center;
@@ -1442,9 +1448,26 @@ a.underline {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 .product-datasheet__price span {
   font-size: 1.3rem;
+}
+.product-datasheet__price span.akciosarszoveg {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.product-datasheet__price span.akciosar {
+  text-decoration: line-through;
+  font-size: 1.1rem;
+  margin-left: 5px;
+  font-weight: 400;
+  color: var(--color-text-disabled);
 }
 .product-datasheet__image-column {
   width: calc(45% - var(--gap-large) / 2);
@@ -1564,12 +1587,46 @@ a.underline {
   color: var(--color-text-disabled);
   margin-bottom: 5px;
 }
+.product-datasheet__related-products .product-datasheet__list-item .akciosarszoveg, .product-datasheet__similar-products .product-datasheet__list-item .akciosarszoveg, .product-datasheet__popular-products .product-datasheet__list-item .akciosarszoveg, .product-datasheet__recommended-products .product-datasheet__list-item .akciosarszoveg {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.product-datasheet__related-products .product-datasheet__list-item .akciosar, .product-datasheet__similar-products .product-datasheet__list-item .akciosar, .product-datasheet__popular-products .product-datasheet__list-item .akciosar, .product-datasheet__recommended-products .product-datasheet__list-item .akciosar {
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-disabled);
+}
 .product-datasheet__related-products .product-datasheet__list-item h5, .product-datasheet__similar-products .product-datasheet__list-item h5, .product-datasheet__popular-products .product-datasheet__list-item h5, .product-datasheet__recommended-products .product-datasheet__list-item h5 {
   margin: 0.5rem 0 1rem 0;
 }
 .product-datasheet__related-products .product-datasheet__list-item .button, .product-datasheet__similar-products .product-datasheet__list-item .button, .product-datasheet__popular-products .product-datasheet__list-item .button, .product-datasheet__recommended-products .product-datasheet__list-item .button {
   margin-bottom: 0;
   margin-top: auto;
+}
+.product-datasheet .kapcsolodoTermekInner {
+  position: relative;
+}
+.product-datasheet .kapcsolodoTermekInner a {
+  position: relative;
+}
+.product-datasheet .kapcsolodoTermekInner .flags {
+  top: -5px;
+  right: -5px;
+}
+.product-datasheet .termekSliderTermekInner {
+  position: relative;
+}
+.product-datasheet .termekSliderTermekInner a {
+  position: relative;
+}
+.product-datasheet .termekSliderTermekInner .flags {
+  top: -5px;
+  right: -5px;
 }
 
 #MainContent {
@@ -1684,6 +1741,10 @@ a.underline {
   background: var(--color-background);
   padding-bottom: 0;
 }
+.featured-collection-slider .product-list-item .flags {
+  right: 5px;
+  top: 5px;
+}
 .featured-collection-slider__dark {
   background: var(--color-background-inverse);
   color: var(--color-text-inverse);
@@ -1709,6 +1770,23 @@ a.underline {
 }
 .featured-collection-slider__dark .product-item__price {
   font-size: var(--font-size-base);
+  display: flex;
+  flex-direction: column;
+}
+.featured-collection-slider__dark .product-item__price.akciosarszoveg {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.featured-collection-slider__dark .product-item__price.akciosar {
+  text-decoration: line-through;
+  font-size: 1.1rem;
+  margin-left: 5px;
+  font-weight: 400;
+  color: var(--color-text-disabled);
 }
 .featured-collection-slider__dark .news-list__item {
   background-color: var(--color-background-inverse);
@@ -2636,6 +2714,23 @@ a.underline {
   margin-right: 0;
   margin-left: auto;
   margin-top: -15px;
+  display: flex;
+  flex-direction: column;
+}
+.checkout-order-list-item__price.akciosarszoveg {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.checkout-order-list-item__price.akciosar {
+  text-decoration: line-through;
+  font-size: 1.1rem;
+  margin-left: 5px;
+  font-weight: 400;
+  color: var(--color-text-disabled);
 }
 .checkout-order-list-item__quantity {
   width: 30px;
@@ -3241,6 +3336,25 @@ a.underline {
   z-index: 1;
 }
 
+.flags {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-small);
+  align-items: flex-end;
+}
+.flags .flag {
+  font-size: var(--font-size-small);
+  color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+  padding: 4px 7px;
+  border-radius: 5px;
+  width: auto;
+}
+
 .footer {
   background-color: var(--color-background-inverse);
   padding-top: 40px;
@@ -3783,6 +3897,24 @@ nav ul li a {
 .product-list-item__code a {
   font-size: 12px;
   color: var(--color-secondary-text);
+}
+.product-list-item .akciosarszoveg {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.product-list-item .akciosar {
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-disabled);
+}
+.product-list-item .flags {
+  right: 0px;
+  top: -5px;
 }
 .product-list-item__price {
   font-size: var(--font-size-base);

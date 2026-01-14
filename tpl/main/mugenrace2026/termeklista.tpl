@@ -219,6 +219,22 @@
                         <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">
                             <div class="gtermekinner"><div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
+                                    <div class="flags">
+                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                            <div class="flag new-product">{t('Új')}</div>
+                                        {/if}
+
+                                        {if (isset($_termek.akcios) && $_termek.akcios)}
+                                            <div class="flag sale-product">{t('Akciós')}</div>
+                                        {/if}
+                                        
+                                        {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
+                                            <div class="flag featured">{t('Kiemelt')}</div>
+                                        {/if}
+                                        {* {if (isset($_termek.top10) && $_termek.top10)}
+                                            <div class="flag sale-product">{t('Top 10')}</div>
+                                        {/if} *}
+                                    </div>
                                     <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop="image" src="{$imagepath}{$_termek.kepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 
                                     {* {$kcnt=count($_termek.kepek)}
@@ -276,13 +292,13 @@
                                 </div>
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                        {if ($_termek.akcios)}
-                                            <span class="akciosarszoveg">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
-                                        {/if}
+                                        {* {if ($_termek.akcios)} *}
+                                            <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
+                                        {* {/if} *}
                                         {if ($_termek.nemkaphato)}
-                                            <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                            <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
                                         {else}
-                                            <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                            <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
                                         {/if}
                                         <span class="product-list-item__price" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')}
                                          {$_termek.valutanemnev}
