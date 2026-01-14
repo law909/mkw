@@ -3260,6 +3260,10 @@ a.underline {
 .footer__barion {
   max-width: 300px;
 }
+.footer__stripe {
+  max-width: 100px !important;
+  width: 100% !important;
+}
 .footer nav h5 {
   font-size: 16px;
 }

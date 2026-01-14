@@ -1973,7 +1973,7 @@ class Carousel {
         } else if (width >= 768) {
             this.itemsPerView = 3;
         } else {
-            this.itemsPerView = 1;
+            this.itemsPerView = 2;
         }
 
         this.items.forEach(item => {

@@ -194,7 +194,7 @@
             <div class="carousel-container teams__list">
                 <div class="carousel-wrapper teams__items ">
                     {foreach $csapatlista as $_csapat}
-                        <div class="kat teams__item" data-href="/teams/{$_csapat.slug}">
+                        <div class="kat carousel-item teams__item" data-href="/teams/{$_csapat.slug}">
                             <div class="kattext teams__item-content">
                                 {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="teams__item-image"> *}
                                 <img src="{$_csapat.kepurl}" alt="{$_csapat.kepleiras}" class="teams__item-image">
@@ -234,7 +234,7 @@
             <div class="carousel-container sponsored-riders__list">
                 <div class="carousel-wrapper sponsored-riders__items ">
                     {foreach $versenyzolista as $_versenyzo}
-                        <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
+                        <div class="kat carousel-item sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
                             <div class="kattext sponsored-riders__item-content">
                                 {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
                                 <img src="{$_versenyzo.kepurl}" alt="{$_versenyzo.nev}" class="sponsored-riders__item-image">
