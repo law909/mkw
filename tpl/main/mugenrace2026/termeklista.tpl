@@ -292,9 +292,9 @@
                                 </div>
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                        {* {if ($_termek.akcios)} *}
+                                        {if ($_termek.akcios)}
                                             <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
-                                        {* {/if} *}
+                                        {/if}
                                         {if ($_termek.nemkaphato)}
                                             <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
                                         {else}
