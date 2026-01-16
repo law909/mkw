@@ -135,7 +135,7 @@ class csapatController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
-    public function view()
+    public function show()
     {
         $com = $this->params->getStringParam('slug');
         $csapat = $this->getRepo()->getWithJoins(['slug' => $com]);

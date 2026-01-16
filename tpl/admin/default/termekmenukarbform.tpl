@@ -42,11 +42,7 @@
             </div>
         {/if}
         <div id="WebTab" class="mattkarb-page">
-            <input id="InaktivCheck" name="inaktiv" type="checkbox" {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}</input>
-            <input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox" {if ($egyed.menu1lathato)}checked="checked"{/if}>{at('Főmenü')}</input>
-            <input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox" {if ($egyed.menu2lathato)}checked="checked"{/if}>{at('Főmenü lenyíló')}</input>
-            <input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox" {if ($egyed.menu3lathato)}checked="checked"{/if}>{at('Top kategória')}</input>
-            <input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox" {if ($egyed.menu4lathato)}checked="checked"{/if}>{at('Kategória lista')}</input>
+            <input id="InaktivCheck" name="inaktiv" type="checkbox" {if ($egyed.inaktiv)}checked="checked"{/if}/>{at('Inaktív')}
             <table>
                 <tbody>
                 <tr>

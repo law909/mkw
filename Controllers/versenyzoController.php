@@ -136,7 +136,7 @@ class versenyzoController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
-    public function view()
+    public function show()
     {
         $slug = $this->params->getIntRequestParam('slug');
         $record = $this->getRepo()->getWithJoins(['slug' => $slug], []);
