@@ -29,7 +29,6 @@ nav {
 }
 
 .main-menu {
-  // position: relative;
   margin: 0;
   
   &>ul {
@@ -60,7 +59,8 @@ nav {
         font-weight: 700;
         font-size: 13px;
 
-        &:hover {
+        &:hover,
+        &:focus {
           color: var(--color-text-inverse);
         }
       }
@@ -110,14 +110,9 @@ nav {
   }
 
   .sub {
-    // display: none;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, auto));
-    // display: flex;
-    // flex-wrap: wrap;
-    // justify-content: flex-start;
-    // gap: var(--gap-small);
     column-gap: var(--gap-small);
     opacity: 0;
     visibility: hidden;
@@ -126,7 +121,6 @@ nav {
     left: 0;
     right: 0;
     margin: auto;
-    // margin-top: 7px;
     width: auto;
     background-color: var(--color-background-white);
     padding: var(--spacing-md);
@@ -142,19 +136,54 @@ nav {
 
     .sub__wrapper {
       max-width: 1200px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
 
       @include desktop {
         margin: auto;
-        flex-direction: row;
+      }
+
+      @include tablet {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @include mobile {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      ul {
+        flex-direction:column;
+        gap: 0;
+        margin-left: 5px;
+        margin-bottom: 10px;
+
+        li {
+          &:not(.categorytitle) {
+            padding: 0px 20px 0px 20px;
+
+            @include mobile {
+              padding: 0px 10px 0px 10px;
+            }
+            
+            a {
+              font-weight: 400;
+              font-size: var(--font-size-small)
+            }
+          }
+
+          &.categorytitle {
+            padding: 8px 20px 0 20px;
+
+            @include mobile {
+              padding: 8px 10px 0 10px;
+            }
+          }
+        }
       }
     }
 
     ul {
-      // flex-direction: column;
       gap: 0;
     }
 
@@ -193,12 +222,24 @@ nav {
   }
 
   &>ul>li:hover .sub {
-    opacity: 1;
-    visibility: visible;
-
+    @include desktop {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  
+  &>ul>li .sub {  
     @include mobile-tablet {
-      width: 80%;
+      width: 88%;
       right: auto;
+    }
+    
+  }
+
+  .main-menu__menu-item-open {
+    .sub {  
+      opacity: 1;
+      visibility: visible;
     }
   }
 }

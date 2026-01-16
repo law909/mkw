@@ -39,7 +39,9 @@ a {
   color: var(--color-link);
   text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus {
+    color: var(--color-link);
     opacity: var(--link-hover-opacity);
     text-decoration: none;
   }

@@ -16,7 +16,7 @@
             <nav class="main-menu flex-cc">
                 <ul id="" class="flex-cc">
                     {foreach $menu1[0]['children'] as $_menupont}
-                        <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/categories/{$_menupont.slug}" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
+                        <li class="main-menu-item {if ($_menupont@last)} last{/if}" {if ($_menupont@first)} class="first"{/if}><a href="#" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
                         {if (count($_menupont.children)>0)}
                             <i class="icon arrow-down white main-menu__arrow icon__click"></i>
                             <div class="sub">
