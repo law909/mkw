@@ -10,7 +10,7 @@
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}
                 {if ($_navi@last)}<h1 class="termeklista"{else}<span{/if} typeof="v:Breadcrumb">
-				<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
+				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
 					{$_navi.caption}
 				</a>
                 {if ($_navi@last)}</h1>{else}</span>{/if}
