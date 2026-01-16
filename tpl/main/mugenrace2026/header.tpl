@@ -25,7 +25,43 @@
                                     <ul>
                                         <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
                                         {foreach $_focsoport.children as $_alcsoport}
-                                            <li><a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a></li>
+                                            <li>
+                                                <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a>
+                                                {if (count($_alcsoport.children)>0)}
+                                                    <ul>
+                                                {/if}
+                                                {foreach $_alcsoport.children as $_alcsoport2}
+                                                    <li>
+                                                        <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev}</a>
+                                                        {if (count($_alcsoport2.children)>0)}
+                                                            <ul>
+                                                        {/if}
+                                                        {foreach $_alcsoport2.children as $_alcsoport3}
+                                                            <li>
+                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev}</a>
+                                                                {if (count($_alcsoport3.children)>0)}
+                                                                    <ul>
+                                                                {/if}
+                                                                {foreach $_alcsoport3.children as $_alcsoport4}
+                                                                    <li>
+                                                                        <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev}</a>
+                                                                        
+                                                                    </li>
+                                                                {/foreach}
+                                                                {if (count($_alcsoport3.children)>0)}
+                                                                    </ul>
+                                                                {/if}
+                                                            </li>
+                                                        {/foreach}
+                                                        {if (count($_alcsoport2.children)>0)}
+                                                            </ul>
+                                                        {/if}
+                                                    </li>
+                                                {/foreach}
+                                                {if (count($_alcsoport.children)>0)}
+                                                    </ul>
+                                                {/if}
+                                            </li>
                                         {/foreach}
                                     </ul>
                                     {/foreach}

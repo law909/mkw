@@ -163,7 +163,7 @@ nav {
             padding: 0px 20px 0px 20px;
 
             @include mobile {
-              padding: 0px 10px 0px 10px;
+              padding: 3px 10px 3px 10px;
             }
             
             a {
@@ -177,6 +177,14 @@ nav {
 
             @include mobile {
               padding: 8px 10px 0 10px;
+            }
+          }
+
+          ul {
+            margin-bottom: 0;
+
+            li {
+              padding-left: 5px !important;
             }
           }
         }

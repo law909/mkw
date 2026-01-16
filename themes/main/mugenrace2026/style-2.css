@@ -3594,7 +3594,7 @@ nav ul li a {
 }
 @media (max-width: 768px) {
   .main-menu .sub .sub__wrapper ul li:not(.categorytitle) {
-    padding: 0px 10px 0px 10px;
+    padding: 3px 10px 3px 10px;
   }
 }
 .main-menu .sub .sub__wrapper ul li:not(.categorytitle) a {
@@ -3608,6 +3608,12 @@ nav ul li a {
   .main-menu .sub .sub__wrapper ul li.categorytitle {
     padding: 8px 10px 0 10px;
   }
+}
+.main-menu .sub .sub__wrapper ul li ul {
+  margin-bottom: 0;
+}
+.main-menu .sub .sub__wrapper ul li ul li {
+  padding-left: 5px !important;
 }
 .main-menu .sub ul {
   gap: 0;
