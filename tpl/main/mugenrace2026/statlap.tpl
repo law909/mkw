@@ -1,15 +1,6 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-
-{if $smarty.server.REQUEST_URI|strpos:'sponsored-riders' !== false}
-		{include file="sponsored-riders.tpl"}
-
-{elseif $smarty.server.REQUEST_URI|strpos:'csapatok' !== false}
-		{include file="teams.tpl"}
-
-{else}
-			
 	<div class="container whitebg static-page">
 		<article itemtype="http://schema.org/Article" itemscope="">
 
@@ -62,7 +53,5 @@
 				</div>
 		</article>
 	</div>
-
-{/if}
 
 {/block}
