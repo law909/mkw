@@ -144,16 +144,21 @@
   }
 
   .js-szinvaltozatedit {
-    display: none;
+    // display: none;
+    
   }
 
-  .js-meretvaltozatedit {
-    display: none;
-  }
+  // .js-meretvaltozatedit {
+  //   display: none;
+  // }
 
   .js-kosarbaszinvaltozat,
   .js-kosarba {
-    max-width: 362px;
+    max-width: 250px;
+  }
+
+  .js-kosarbaszinvaltozat {
+    display: none;
   }
 
   .gvaltozatcontainer {

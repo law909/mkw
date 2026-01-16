@@ -297,7 +297,7 @@
                                                 {/foreach}
                                             </div>
 
-                                            <select class="js-szinvaltozatedit valtozatselect" data-termek="{$termek.id}">
+                                            <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$termek.id}">
                                                 <option value="">{t('Válasszon')}</option>
                                                 {foreach $termek.szinek as $_v}
                                                     <option value="{$_v}">{$_v}</option>

@@ -603,6 +603,21 @@ select {
     padding-right: 40px;
   }
 }
+.custom-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath fill='%23999' d='M7 8L0 0h14z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 8px;
+  padding-right: 36px;
+  padding-left: 15px !important;
+  font-weight: 900;
+  max-width: 250px;
+  border-radius: 50px;
+  text-align: center;
+  color: var(--color-text-inverse);
+  background-color: var(--color-background-inverse);
+}
+
 /* --------- modern checkbox & radio egyszerűsített (accent-color) --------- */
 /* ez a legegyszerűbb, működik a legtöbb modern böngészőben */
 input[type=checkbox],
@@ -1537,15 +1552,12 @@ a.underline {
   margin-top: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }
-.product-datasheet .js-szinvaltozatedit {
-  display: none;
-}
-.product-datasheet .js-meretvaltozatedit {
-  display: none;
-}
 .product-datasheet .js-kosarbaszinvaltozat,
 .product-datasheet .js-kosarba {
-  max-width: 362px;
+  max-width: 250px;
+}
+.product-datasheet .js-kosarbaszinvaltozat {
+  display: none;
 }
 .product-datasheet .gvaltozatcontainer {
   margin-bottom: var(--spacing-sm);
@@ -3317,6 +3329,7 @@ a.underline {
 
 .mini-cart {
   position: relative;
+  display: none;
   cursor: pointer;
 }
 .mini-cart__counter {
@@ -3777,6 +3790,9 @@ nav ul li a {
   pointer-events: none;
 }
 
+.color-selector {
+  display: none;
+}
 .color-selector .select-option {
   width: 32px;
   height: 32px;
@@ -3857,6 +3873,9 @@ nav ul li a {
   background: linear-gradient(45deg, black 33%, red 33%, red 66%, gray 66%);
 }
 
+.size-selector {
+  display: none;
+}
 .size-selector .select-option.active {
   color: var(--color-text-inverse);
   background-color: var(--color-background-inverse);
@@ -3916,6 +3935,15 @@ nav ul li a {
   right: 0px;
   top: -5px;
 }
+.product-list-item .custom-select {
+  font-size: var(--font-size-small);
+  max-width: 250px;
+  color: var(--color-text);
+  background-color: var(--color-white);
+}
+.product-list-item .js-kosarbaszinvaltozat {
+  display: none;
+}
 .product-list-item__price {
   font-size: var(--font-size-base);
   font-weight: 700;
@@ -3923,17 +3951,11 @@ nav ul li a {
 .product-list-item__variations-container {
   position: relative;
 }
-.product-list-item__variations-container .js-meretvaltozatedit {
-  display: none;
-}
 .product-list-item__variations {
   margin: auto;
   width: auto;
   background: var(--color-background);
   padding: 10px 0;
-}
-.product-list-item__variations .js-szinvaltozatedit {
-  display: none;
 }
 
 .gtermek {

@@ -83,6 +83,22 @@ select {
   }
 }
 
+.custom-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath fill='%23999' d='M7 8L0 0h14z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 8px;
+  padding-right: 36px; 
+  padding-left: 15px !important; 
+  font-weight: 900;
+  max-width: 250px;
+  border-radius: 50px;
+  text-align: center;
+  color: var(--color-text-inverse);
+  background-color: var(--color-background-inverse);
+}
+
+
 /* --------- modern checkbox & radio egyszerűsített (accent-color) --------- */
 /* ez a legegyszerűbb, működik a legtöbb modern böngészőben */
 input[type="checkbox"],

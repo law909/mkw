@@ -34,6 +34,8 @@
   }
 
   .color-selector {
+    display: none;
+
     .select-option {
       width: 32px;
       height: 32px;
@@ -120,6 +122,8 @@
   }
 
   .size-selector {
+    display: none;
+    
     .select-option {
       
       &.active {
