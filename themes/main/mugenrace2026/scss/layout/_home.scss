@@ -27,6 +27,11 @@
   object-fit: cover;
 }
 
+@mixin video-cover {
+  @include absolute-cover;
+  object-fit: cover;
+}
+
 @mixin text-uppercase {
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -93,6 +98,21 @@
 #MainContent {
   width: 100%;
   overflow-x: hidden;
+
+  .teams__item,
+  .sponsored-riders__item {
+    background-color: transparent;
+  }
+
+  .sponsored-riders__item-category {
+    color: var(--color-text) !important;
+  }
+
+  .sponsored-riders__items,
+  .teams__items {
+    display: flex;
+    grid-template-columns: none;
+  }
 }
 
 // Hero Section
@@ -109,6 +129,18 @@
     @include image-cover;
     z-index: 1;
   }
+
+  video {
+    @include video-cover;
+    z-index: 1;
+  }
+
+  &.video {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 200px;
+  }
+
 
   .hero-content {
     position: relative;
@@ -127,8 +159,11 @@
 
     p {
       font-size: clamp(16px, 2vw, 24px);
-      margin-bottom: var(--spacing-lg);
-      margin-top: var(--spacing-sm);
+      
+      @include desktop {
+        margin-top: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+      }
     }
 
     &__inverse {
@@ -178,6 +213,13 @@
   padding: var(--spacing-section) var(--spacing-md);
   background: var(--color-background);
   padding-bottom: 0;
+  
+  .product-list-item {
+    .flags {
+      right: 5px;
+      top: 5px;
+    }
+  }
 
   &__dark {
     background: var(--color-background-inverse);
@@ -213,6 +255,25 @@
     .product-item {
       &__price {
         font-size: var(--font-size-base);
+        display: flex;
+        flex-direction: column;
+
+        &.akciosarszoveg {
+          font-size: 0.9rem;
+          font-weight: 400;
+          color: var(--color-text-muted);
+          margin-bottom: 5px;
+          display: flex;
+          align-items: center;
+        }
+
+        &.akciosar {
+          text-decoration: line-through;
+          font-size: 1.1rem;
+          margin-left: 5px;
+          font-weight: 400;
+          color: var(--color-text-disabled);
+        }
       }
     }
 
@@ -523,6 +584,12 @@
 @include tablet {
   .hero-section {
     height: 70vh;
+
+    .hero-content {
+      h1 {
+        font-size: clamp(22px, 5vw, 40px);
+      }
+    }
   }
 
   .carousel-item {
@@ -546,6 +613,19 @@
   .featured-collection-slider {
     padding: var(--spacing-xxl) var(--spacing-md);
   }
+}
+
+@include mobile {
+  .hero-section {
+    height: 50vh;
+    
+    .hero-content {
+      h1 {
+        font-size: clamp(18px, 5vw, 30px);
+      }
+    }
+  }
+
 }
 
 .button {

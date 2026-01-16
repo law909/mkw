@@ -1268,7 +1268,7 @@ $(document).ready(function() {
         $('#searchinput').typeahead({
             source: function(query, process) {
                 return $.ajax({
-                    url: '/kereses',
+                    url: '/search',
                     type: 'GET',
                     data: {
                         term: query
@@ -1973,7 +1973,7 @@ class Carousel {
         } else if (width >= 768) {
             this.itemsPerView = 3;
         } else {
-            this.itemsPerView = 1;
+            this.itemsPerView = 2;
         }
 
         this.items.forEach(item => {

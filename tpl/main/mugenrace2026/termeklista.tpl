@@ -13,7 +13,7 @@
                     {foreach $navigator as $_navi}
                         {if ($_navi.url|default)}
                             <span typeof="v:Breadcrumb">
-                                <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                                <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                     {$_navi.caption|lower|capitalize}
                                 </a>
                             </span>
@@ -31,7 +31,7 @@
             {foreach $navigator as $_navi}
                 {if ($_navi@last)}
                     <h1 class="page-header__title" typeof="v:Breadcrumb">
-                        <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+                        <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                             {$_navi.caption|lower|capitalize}
                         </a>
                     </h1>
@@ -219,7 +219,23 @@
                         <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">
                             <div class="gtermekinner"><div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
-                                    <a href="/termek/{$_termek.slug}"><img class="product-list-item__image itemprop="image" src="{$imagepath}{$_termek.kepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                    <div class="flags">
+                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                            <div class="flag new-product">{t('Új')}</div>
+                                        {/if}
+
+                                        {if (isset($_termek.akcios) && $_termek.akcios)}
+                                            <div class="flag sale-product">{t('Akciós')}</div>
+                                        {/if}
+                                        
+                                        {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
+                                            <div class="flag featured">{t('Kiemelt')}</div>
+                                        {/if}
+                                        {* {if (isset($_termek.top10) && $_termek.top10)}
+                                            <div class="flag sale-product">{t('Top 10')}</div>
+                                        {/if} *}
+                                    </div>
+                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop="image" src="{$imagepath}{$_termek.kepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 
                                     {* {$kcnt=count($_termek.kepek)}
                                     {if ($kcnt>0)}
@@ -241,10 +257,10 @@
                                     {/if} *}
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__title">
-                                    <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
+                                    <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__code">
-                                    <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                    <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content">
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
@@ -263,7 +279,7 @@
                                                         {/foreach}
                                                     </div>
                                                 
-                                                    <select class="js-szinvaltozatedit valtozatselect" data-termek="{$_termek.id}">
+                                                    <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$_termek.id}">
                                                         <option value="">{t('Válasszon')}</option>
                                                         {foreach $_termek.szinek as $_v}
                                                             <option value="{$_v}">{$_v}</option>
@@ -277,12 +293,12 @@
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                         {if ($_termek.akcios)}
-                                            <span class="akciosarszoveg">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
+                                            <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
                                         {/if}
                                         {if ($_termek.nemkaphato)}
-                                            <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                            <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
                                         {else}
-                                            <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                            <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
                                         {/if}
                                         <span class="product-list-item__price" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')}
                                          {$_termek.valutanemnev}

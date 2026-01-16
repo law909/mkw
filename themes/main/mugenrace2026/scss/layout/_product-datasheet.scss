@@ -17,11 +17,32 @@
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
     // margin-bottom: var(--spacing-lg);
 
     span {
       font-size: 1.3rem;
+
+      &.akciosarszoveg {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--color-text-muted);
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+
+      &.akciosar {
+        text-decoration: line-through;
+        font-size: 1.1rem;
+        margin-left: 5px;
+        font-weight: 400;
+        color: var(--color-text-disabled);
+      }
     }
+
+
   }
 
   &__content {
@@ -70,15 +91,51 @@
   &__popular-products-list {
     display: grid;
     gap: var(--gap-base);
-    grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+    // grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+    // max-height: 450px;
 
+    grid-template-columns: repeat(6, 1fr);
+    
     @include tablet {
-      grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+      grid-template-columns: repeat(3, 1fr);
     }
 
     @include mobile {
-      grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+      grid-template-columns: repeat(2, 1fr);
     }
+
+    // @include tablet {
+    //   grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+    // }
+
+    // @include mobile {
+    //   grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+    // }
+  }
+
+  &__recommended-products-list {
+    display: grid;
+    gap: var(--gap-base);
+    grid-template-columns: repeat(6, 1fr);
+    
+    @include tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+   
+    // grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
+   
+    // @include tablet {
+    //   grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+    // }
+
+    // @include mobile {
+    //   grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+    // }
+
   }
 
   &__cart-container {
@@ -87,16 +144,21 @@
   }
 
   .js-szinvaltozatedit {
-    display: none;
+    // display: none;
+    
   }
 
-  .js-meretvaltozatedit {
-    display: none;
-  }
+  // .js-meretvaltozatedit {
+  //   display: none;
+  // }
 
   .js-kosarbaszinvaltozat,
   .js-kosarba {
-    max-width: 362px;
+    max-width: 250px;
+  }
+
+  .js-kosarbaszinvaltozat {
+    display: none;
   }
 
   .gvaltozatcontainer {
@@ -109,7 +171,8 @@
 
   &__related-products,
   &__similar-products,
-  &__popular-products {
+  &__popular-products,
+  &__recommended-products {
     .accordion-content {
       &>div {
         display: grid;
@@ -125,7 +188,7 @@
     
     .product-datasheet__list-item {
       // padding: 10px;
-      
+
       &>div {
         height: 100%;
         display: flex;
@@ -155,7 +218,23 @@
         margin-bottom: 5px;
       }
 
-      
+          
+      .akciosarszoveg {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--color-text-muted);
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+      }
+
+      .akciosar {
+        text-decoration: line-through;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--color-text-disabled);
+      }
+
 
       h5 {
         margin: 0.5rem 0 1rem 0;
@@ -168,4 +247,29 @@
     }
   }
 
+  .kapcsolodoTermekInner {
+    position: relative;
+
+    a {
+      position: relative;
+    }
+
+    .flags {
+      top: -5px;
+      right: -5px;
+    }
+  }
+
+  .termekSliderTermekInner {
+    position: relative;
+
+    a {
+      position: relative;
+    }
+
+    .flags {
+      top: -5px;
+      right: -5px;
+    }
+  }
 }

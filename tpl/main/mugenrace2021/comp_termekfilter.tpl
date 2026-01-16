@@ -2,7 +2,7 @@
     <div class="filter-header">{t('KATEGÓRIA')}</div>
     <div class="filter-filters">
         {foreach $categoryfilter as $cat}
-            <div><a href="/termekfa/{$cat.slug}">{$cat.caption}</a></div>
+            <div><a href="/categories/{$cat.slug}">{$cat.caption}</a></div>
         {/foreach}
     </div>
 </div>

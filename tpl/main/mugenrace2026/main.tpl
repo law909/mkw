@@ -22,11 +22,20 @@
 
 {block "kozep"}
     <div class="container-full whitebg">
-
-
+{* <pre>
+{var_dump($csapatlista)}
+<pre>
+</pre>
+{var_dump($versenyzolista)}
+</pre> *}
         <div id="MainContent">
-            <section class="hero-section">
-                <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero">
+            <section class="hero-section video">
+                {* <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero"> *}
+                <video autoplay muted loop class="hero-video">
+                    <source src="https://phpstack-333569-6090507.cloudwaysapps.com/mugenrace-main-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
                 <div class="hero-content hero-content__inverse flex-col flex-cc">
                     <h1>{t('Új kollekció 2025')}</h1>
                     <p>{t('Ismerd meg legújabb termékeinket')}</p>
@@ -64,15 +73,31 @@
                         <div class="gtermekinner">
                             <div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
-                                    <a href="/termek/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
+                                    <div class="flags">
+                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                            <div class="flag new-product">{t('Új')}</div>
+                                        {/if}
+
+                                        {if (isset($_termek.akcios) && $_termek.akcios)}
+                                            <div class="flag sale-product">{t('Akciós')}</div>
+                                        {/if}
+                                        
+                                        {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
+                                            <div class="flag featured">{t('Kiemelt')}</div>
+                                        {/if}
+                                        {* {if (isset($_termek.top10) && $_termek.top10)}
+                                            <div class="flag sale-product">{t('Top 10')}</div>
+                                        {/if} *}
+                                    </div>
+                                    <a href="/product/{$_termek.slug}"><img class="product-list-item__image" itemprop="image" src="{$imagepath}{$_termek.kepurl}"
                                         title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__title">
-                                    <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption"
+                                    <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption"
                                                                                            itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content product-list-item__code">
-                                    <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                    <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
                                 </div>
                                 <div class="textaligncenter product-list-item__content">
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
@@ -91,7 +116,7 @@
                                                         {/foreach}
                                                     </div>
 
-                                                    <select class="js-szinvaltozatedit valtozatselect" data-termek="{$_termek.id}">
+                                                    <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$_termek.id}">
                                                         <option value="">{t('Válasszon')}</option>
                                                         {foreach $_termek.szinek as $_v}
                                                             <option value="{$_v}">{$_v}</option>
@@ -168,6 +193,35 @@
             </div>
         </section>
 
+        <section class="featured-collection-slider featured-collection-slider__dark carousel-section">
+            <div class="container section-header small row flex-cb">
+                <div class="col flex-lc flex-col ta-l">
+                    <h2>{t('Csapatok')}</h2>
+                    <p></p>
+                </div>
+                <div class="col flex-cr">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn carousel-prev" aria-label="Preview">‹</button>
+                        <button class="carousel-btn carousel-next" aria-label="Next">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-container teams__list">
+                <div class="carousel-wrapper teams__items ">
+                    {foreach $csapatlista as $_csapat}
+                        <div class="kat carousel-item teams__item" data-href="/teams/{$_csapat.slug}">
+                            <div class="kattext teams__item-content">
+                                {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="teams__item-image"> *}
+                                <img src="{$_csapat.kepurl}" alt="{$_csapat.kepleiras}" class="teams__item-image">
+                                <img src="{$_csapat.logourl}" alt="{$_csapat.logoleiras}" class="teams__item-logo">
+                                <h3 class="teams__item-title"><a href="/teams/{$_csapat.slug}">{$_csapat.nev}</a></h3>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
+            </div>
+        </section>
 
         <section class="full-banner left inverse">
             <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-5.jpg" alt="Banner">
@@ -175,6 +229,37 @@
                 <h2>{t('Új Kollekció')}</h2>
                 <p>{t('Fedezd fel legújabb termékeinket')}</p>
                 <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a>
+            </div>
+        </section>
+
+
+        <section class="featured-collection-slider featured-collection-slider__dark carousel-section">
+            <div class="container section-header small row flex-cb">
+                <div class="col flex-lc flex-col ta-l">
+                    <h2>{t('Szponzorált versenyzők')}</h2>
+                    <p></p>
+                </div>
+                <div class="col flex-cr">
+                    <div class="carousel-controls">
+                        <button class="carousel-btn carousel-prev" aria-label="Preview">‹</button>
+                        <button class="carousel-btn carousel-next" aria-label="Next">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-container sponsored-riders__list">
+                <div class="carousel-wrapper sponsored-riders__items ">
+                    {foreach $versenyzolista as $_versenyzo}
+                        <div class="kat carousel-item sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
+                            <div class="kattext sponsored-riders__item-content">
+                                {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
+                                <img src="{$_versenyzo.kepurl}" alt="{$_versenyzo.nev}" class="sponsored-riders__item-image">
+                                <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
+                                <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}">{$_versenyzo.nev}</a></div>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
             </div>
         </section>
 
@@ -206,12 +291,13 @@
             <div class="carousel-container">
                 <div class="carousel-wrapper news-list__items">
                     {foreach $hirek as $_child}
-                        <div class="carousel-item kat news-list__item" data-href="/hir/{$_child.slug}">
+                        <div class="carousel-item kat news-list__item" data-href="/news/{$_child.slug}">
                             <div class="kattext news-list__item-content">
+                                <img src="{$_child.kepurl}" alt="{$_child.cim}" class="news-list__item-image">
                                 {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="news-list__item-image"> *}
-                                <img src="https://picsum.photos/500/400" alt="{$_child.cim}" class="news-list__item-image">
+                                {* <img src="https://picsum.photos/500/400" alt="{$_child.cim}" class="news-list__item-image"> *}
                                 <div class="hiralairas news-list__item-date">{$_child.datum}</div>
-                                <div class="kattitle news-list__item-title"><a href="/hir/{$_child.slug}">{$_child.cim}</a></div>
+                                <div class="kattitle news-list__item-title"><a href="/news/{$_child.slug}">{$_child.cim}</a></div>
                                 <div class="katcopy news-list__item-lead">{$_child.lead}</div>
                             </div>
                         </div>

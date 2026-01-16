@@ -13,7 +13,7 @@
 							{foreach $navigator as $_navi}
 									{if ($_navi.url|default)}
 											<span typeof="v:Breadcrumb">
-													<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
+													<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
 															{$_navi.caption|capitalize}
 													</a>
 											</span>
@@ -263,9 +263,9 @@
 					<div class="tab-pane" id="termekertesito">
 						{foreach $ertesitok as $ertesito}
 						<div class="row js-termekertesito">
-							<div class="span1"><a href="/termek/{$ertesito.termek.slug}"><img src="{$imagepath}{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
+							<div class="span1"><a href="/product/{$ertesito.termek.slug}"><img src="{$imagepath}{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
 							<div class="span4">
-								<a href="/termek/{$ertesito.termek.slug}">{$ertesito.termek.caption}</a>
+								<a href="/product/{$ertesito.termek.slug}">{$ertesito.termek.caption}</a>
 								<div>{t('Feliratkozás dátuma')}: {$ertesito.createdstr}</div>
 							</div>
 							<div class="span1"><a href="#" class="js-termekertesitodel" data-id="{$ertesito.id}">{t('Leiratkozás')}</a></div>

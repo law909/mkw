@@ -42,6 +42,39 @@
       color: var(--color-secondary-text);
     }
   }
+  
+  .akciosarszoveg {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .akciosar {
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-disabled);
+  }
+
+  .flags {
+    right: 0px;
+    top: -5px;
+  }
+
+    
+  .custom-select {
+    font-size: var(--font-size-small);
+    max-width: 250px;
+    color: var(--color-text);
+    background-color: var(--color-white);
+  }
+
+  .js-kosarbaszinvaltozat {
+    display: none;
+  }
 
   &__price {
     font-size: var(--font-size-base);
@@ -51,9 +84,9 @@
   &__variations-container {
     position: relative;
 
-    .js-meretvaltozatedit {
-      display: none;
-    }
+    // .js-meretvaltozatedit {
+    //   display: none;
+    // }
   }
 
   &__variations {
@@ -70,9 +103,9 @@
     padding: 10px 0;
 
 
-    .js-szinvaltozatedit {
-      display: none;
-    }
+    // .js-szinvaltozatedit {
+    //   display: none;
+    // }
   }
   
   // &:hover{

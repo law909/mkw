@@ -75,7 +75,7 @@ $(document).ready(function() {
         $('#searchinput').typeahead({
             source: function(query, process) {
                 return $.ajax({
-                    url: '/kereses',
+                    url: '/search',
                     type: 'GET',
                     data: {
                         term: query

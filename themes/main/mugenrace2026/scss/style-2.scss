@@ -23,9 +23,14 @@
 @use 'layout/cart';
 @use 'layout/checkout';
 @use 'layout/account';
+@use 'layout/sponsored-riders-list';
+@use 'layout/sponsored-riders-datasheet';
+@use 'layout/teams-list';
+@use 'layout/teams-datasheet';
 
 /* Components */
 @use 'components/header';
+@use 'components/flag';
 @use 'components/footer';
 @use 'components/navigation';
 @use 'components/accordion';
