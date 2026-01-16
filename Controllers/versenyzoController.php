@@ -143,7 +143,7 @@ class versenyzoController extends \mkwhelpers\MattableController
         if ($record) {
             $record = $record[0];
         }
-        $view = $this->createView('versenyzo.tpl');
+        $view = $this->createMainView('versenyzo.tpl');
         $view->setVar('versenyzo', $this->loadVars($record, true));
         \mkw\store::fillTemplate($view);
         $view->printTemplateResult();
