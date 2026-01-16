@@ -1901,6 +1901,29 @@ $(document).ready(function() {
         $('.main-menu').toggleClass('main-menu__open');
     });
 
+    function isMobileMenu() {
+        return window.matchMedia('(max-width: 1024px)').matches;
+    }
+
+    $('.main-menu-item>.main-menu__arrow, .main-menu-item>a').on('click', function (e) {
+        if (!isMobileMenu()) return;
+
+        e.preventDefault();
+
+        const $item = $(this).parent();
+        const isOpen = $item.hasClass('main-menu__menu-item-open');
+
+        $('.main-menu-item').removeClass('main-menu__menu-item-open');
+
+        if (!isOpen) {
+            $item.addClass('main-menu__menu-item-open');
+        }
+    });
+
+    
+
+    
+
     $('.main-menu__close').on('click', function(e) {
         e.preventDefault();
         $('.main-menu').toggleClass('main-menu__open');

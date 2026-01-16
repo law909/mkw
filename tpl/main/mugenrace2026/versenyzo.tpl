@@ -1,7 +1,49 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-    <div>
+    <div class="sponsored-riders-datasheet">
+        <article itemtype="http://schema.org/Article" itemscope="">
+                <div class="row">
+                        <div class="col ">
+                                {if ($versenyzo.kepurl2)}
+                                    <div class="sponsored-riders-datasheet__image-wrapper">
+                                        <img src="{$versenyzo.kepurl1}" alt="{$versenyzo.kepleiras1}" class="sponsored-riders-datasheet__image">
+                                    </div>
+                                {/if}
+                                <div class="sponsored-riders-datasheet__meta">
+                                    {if ($versenyzo.csapatnev)}
+                                        <div class="sponsored-riders-datasheet__category">
+                                            {$versenyzo.csapatnev}
+                                        </div>
+                                    {/if} 
+                                    <h2 class="sponsored-riders-datasheet__title">{$versenyzo.nev}</h2>
+                                    {if ($versenyzo.versenysorozat)}
+                                        <div class="sponsored-riders-datasheet__category">
+                                            {$versenyzo.versenysorozat}
+                                        </div>
+                                    {/if}   
+                                    {if ($versenyzo.rovidleiras)}
+                                        <div class="sponsored-riders-datasheet__lead">
+                                            {$versenyzo.rovidleiras}
+                                        </div>
+                                    {/if}
+                                </div>
+                                {if ($versenyzo.kepurl2)}
+                                    <img src="{$versenyzo.kepurl2}" alt="{$versenyzo.kepleiras2}" class="sponsored-riders-datasheet__image">
+                                {/if}
+                                {if ($versenyzo.leiras)}
+                                    <div class="sponsored-riders-datasheet__content">
+                                        {$versenyzo.leiras}
+                                    </div>
+                                {/if}
+                                {if ($versenyzo.kepurl3)}
+                                    <img src="{$versenyzo.kepurl3}" alt="{$versenyzo.kepleiras3}" class="sponsored-riders-datasheet__image">
+                                {/if}
+                        </div>
+                </div>
+        </article>
+    </div>
+    {* <div>
         <p>{$versenyzo.nev}</p>
         {$versenyzo.id}
         {$versenyzo.nev}
@@ -24,5 +66,5 @@
         {$versenyzo.kepleiras3}
         {$versenyzo.csapatid}
         {$versenyzo.csapatnev}
-    </div>
+    </div> *}
 {/block}

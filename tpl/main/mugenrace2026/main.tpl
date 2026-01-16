@@ -175,20 +175,16 @@
                 <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-2.jpg" alt="Kategória 1">
                 <div class="grid-content inverse flex-cc flex-col">
                     <h3>{t('Szponzorált versenyzők')}</h3>
-                    {foreach $versenyzolista as $rider}
-                        <div>{$rider.nev}</div>
-                    {/foreach}
-                    <a href="/statlap/sponsored-riders" class="button bordered inverse">{t('Tovább')}</a>
+                    <p>lorem ipsum dolor sit amet </p>
+                    <a href="/riders" class="button bordered inverse">{t('Tovább')}</a>
                 </div>
             </div>
             <div class="grid-item">
                 <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-3.jpg" alt="Kategória 2">
                 <div class="grid-content inverse flex-cc flex-col">
                     <h3>{t('Csapatok')}</h3>
-                    {foreach $csapatlista as $csapat}
-                        <div>{$csapat.nev}</div>
-                    {/foreach}
-                    <a href="#" class="button bordered inverse">{t('Tovább')}</a>
+                    <p>lorem ipsum dolor sit amet </p>
+                    <a href="/teams" class="button bordered inverse">{t('Tovább')}</a>
                 </div>
             </div>
         </section>

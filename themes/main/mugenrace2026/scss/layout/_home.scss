@@ -137,7 +137,7 @@
 
   &.video {
     aspect-ratio: 16 / 9;
-    height: auto;
+    height: calc(100vh - 70px);
     min-height: 200px;
   }
 

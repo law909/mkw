@@ -16,7 +16,7 @@
             <nav class="main-menu flex-cc">
                 <ul id="" class="flex-cc">
                     {foreach $menu1[0]['children'] as $_menupont}
-                        <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/categories/{$_menupont.slug}" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
+                        <li class="main-menu-item {if ($_menupont@last)} last{/if}" {if ($_menupont@first)} class="first"{/if}><a href="#" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
                         {if (count($_menupont.children)>0)}
                             <i class="icon arrow-down white main-menu__arrow icon__click"></i>
                             <div class="sub">
@@ -25,7 +25,43 @@
                                     <ul>
                                         <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
                                         {foreach $_focsoport.children as $_alcsoport}
-                                            <li><a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a></li>
+                                            <li>
+                                                <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a>
+                                                {if (count($_alcsoport.children)>0)}
+                                                    <ul>
+                                                {/if}
+                                                {foreach $_alcsoport.children as $_alcsoport2}
+                                                    <li>
+                                                        <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev}</a>
+                                                        {if (count($_alcsoport2.children)>0)}
+                                                            <ul>
+                                                        {/if}
+                                                        {foreach $_alcsoport2.children as $_alcsoport3}
+                                                            <li>
+                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev}</a>
+                                                                {if (count($_alcsoport3.children)>0)}
+                                                                    <ul>
+                                                                {/if}
+                                                                {foreach $_alcsoport3.children as $_alcsoport4}
+                                                                    <li>
+                                                                        <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev}</a>
+                                                                        
+                                                                    </li>
+                                                                {/foreach}
+                                                                {if (count($_alcsoport3.children)>0)}
+                                                                    </ul>
+                                                                {/if}
+                                                            </li>
+                                                        {/foreach}
+                                                        {if (count($_alcsoport2.children)>0)}
+                                                            </ul>
+                                                        {/if}
+                                                    </li>
+                                                {/foreach}
+                                                {if (count($_alcsoport.children)>0)}
+                                                    </ul>
+                                                {/if}
+                                            </li>
                                         {/foreach}
                                     </ul>
                                     {/foreach}
