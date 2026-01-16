@@ -14,7 +14,7 @@ class VersenyzoRepository extends \mkwhelpers\Repository
         ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0)
     {
         $q = $this->_em->createQuery(
             'SELECT _xx, cs FROM Entities\Versenyzo _xx '

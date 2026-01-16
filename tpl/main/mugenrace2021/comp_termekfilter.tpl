@@ -2,7 +2,7 @@
     <div class="filter-header">{t('KATEGÓRIA')}</div>
     <div class="filter-filters">
         {foreach $categoryfilter as $cat}
-            <div><a href="/categories/{$cat.slug}">{$cat.caption}</a></div>
+            <div><a href="/termekfa/{$cat.slug}">{$cat.caption}</a></div>
         {/foreach}
     </div>
 </div>
@@ -13,7 +13,8 @@
             {foreach $_szuro.cimkek as $_ertek}
                 <div>
                     <label for="SzuroEdit{$_ertek.id}">
-                        <input id="SzuroEdit{$_ertek.id}" name="szuro_{$_szuro.id}_{$_ertek.id}" type="checkbox"{if ($_ertek.selected)} checked="checked"{/if}>{$_ertek.caption}{if ($_ertek.termekdb|default)} ({$_ertek.termekdb}){/if}
+                        <input id="SzuroEdit{$_ertek.id}" name="szuro_{$_szuro.id}_{$_ertek.id}"
+                               type="checkbox"{if ($_ertek.selected)} checked="checked"{/if}>{$_ertek.caption}{if ($_ertek.termekdb|default)} ({$_ertek.termekdb}){/if}
                     </label>
                 </div>
             {/foreach}
