@@ -138,7 +138,9 @@ class csapatController extends \mkwhelpers\MattableController
     public function show()
     {
         $com = $this->params->getStringParam('slug');
-        $csapat = $this->getRepo()->getWithJoins(['slug' => $com]);
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('slug', '=', $com);
+        $csapat = $this->getRepo()->getWithJoins($filter);
         if ($csapat) {
             $csapat = $csapat[0];
         }
