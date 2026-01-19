@@ -302,9 +302,11 @@ class termekmenuController extends \mkwhelpers\MattableController
         $tree = [];
 
         foreach ($categories as $category) {
-            $categoryData = $this->loadVars($category);
-            $categoryData['children'] = $this->buildTreeBranch($category->getId());
-            $tree[] = $categoryData;
+            if ($category->getLathato()) {
+                $categoryData = $this->loadVars($category);
+                $categoryData['children'] = $this->buildTreeBranch($category->getId());
+                $tree[] = $categoryData;
+            }
         }
 
         return $tree;
