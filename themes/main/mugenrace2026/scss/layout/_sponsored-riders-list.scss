@@ -43,15 +43,15 @@
 
     &-image {
       width: calc(100% + var(--padding-base) * 2);
-      height: 250px;
+      // height: 250px;
       object-fit: cover;
       border-bottom: 1px solid var(--color-border);
       margin-left: -1rem;
       margin-top: -1rem;
-
-      @include mobile {
-        height: 200px;
-      }
+      aspect-ratio: 4 / 3;
+      // @include mobile {
+      //   height: 200px;
+      // }
     }
 
     &-title {
