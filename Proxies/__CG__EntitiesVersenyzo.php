@@ -360,6 +360,28 @@ class Versenyzo extends \Entities\Versenyzo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKepurl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl400', [$pre]);
+
+        return parent::getKepurl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl2000', [$pre]);
+
+        return parent::getKepurl2000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setKepurl($kep)
     {
 
@@ -443,6 +465,28 @@ class Versenyzo extends \Entities\Versenyzo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl1Large', [$pre]);
 
         return parent::getKepurl1Large($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl1400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl1400', [$pre]);
+
+        return parent::getKepurl1400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl12000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl12000', [$pre]);
+
+        return parent::getKepurl12000($pre);
     }
 
     /**
@@ -536,6 +580,28 @@ class Versenyzo extends \Entities\Versenyzo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKepurl2400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl2400', [$pre]);
+
+        return parent::getKepurl2400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl22000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl22000', [$pre]);
+
+        return parent::getKepurl22000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setKepurl2($kep)
     {
 
@@ -619,6 +685,28 @@ class Versenyzo extends \Entities\Versenyzo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl3Large', [$pre]);
 
         return parent::getKepurl3Large($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl3400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl3400', [$pre]);
+
+        return parent::getKepurl3400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl32000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl32000', [$pre]);
+
+        return parent::getKepurl32000($pre);
     }
 
     /**

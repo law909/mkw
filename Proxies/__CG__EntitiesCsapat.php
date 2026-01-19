@@ -294,6 +294,28 @@ class Csapat extends \Entities\Csapat implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getLogourl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLogourl400', [$pre]);
+
+        return parent::getLogourl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLogourl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLogourl2000', [$pre]);
+
+        return parent::getLogourl2000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setLogourl($logo)
     {
 
@@ -366,6 +388,28 @@ class Csapat extends \Entities\Csapat implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMini', [$pre]);
 
         return parent::getKepurlMini($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl400', [$pre]);
+
+        return parent::getKepurl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl2000', [$pre]);
+
+        return parent::getKepurl2000($pre);
     }
 
     /**
