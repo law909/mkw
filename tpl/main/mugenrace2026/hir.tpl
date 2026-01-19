@@ -58,8 +58,8 @@
                         {/if}
                     </div>
                     <div class="news-datasheet__content">
-                        {if ($hir.kepurl)}
-                            <img src="{$hir.kepurl}" class="news-datasheet__image" alt="{$hir.kepleiras}">
+                        {if ($hir.kepurllarge)}
+                            <img src="{$hir.kepurllarge}" class="news-datasheet__image" alt="{$hir.kepleiras}">
                         {/if}
                         {$hir.szoveg}
                     </div>

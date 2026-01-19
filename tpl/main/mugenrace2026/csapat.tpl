@@ -22,7 +22,7 @@
             </div>
         </article>
     </div>
-
+    {if ($csapat.versenyzok|@count gt 0)}
     <div class="container sponsored-riders__list">
         <div class="row">
             <div class="col">
@@ -46,6 +46,7 @@
             </div>
         </div>
     </div>
+    {/if}
 
     {* <div>
         <h3>{$csapat.nev}</h3>
