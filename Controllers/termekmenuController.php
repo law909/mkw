@@ -292,6 +292,7 @@ class termekmenuController extends \mkwhelpers\MattableController
     {
         $filter = new FilterDescriptor();
         $filter->addFilter('lathato', '=', 1);
+        $filter->addFilter('inaktiv', '=', 0);
         if (!$parentId) {
             $filter->addSql('(_xx.parent IS NULL)');
         } else {
@@ -302,7 +303,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         $tree = [];
 
         foreach ($categories as $category) {
-            if ($category->getLathato()) {
+            if ($category->getLathato() && !$category->getInaktiv()) {
                 $categoryData = $this->loadVars($category);
                 $categoryData['children'] = $this->buildTreeBranch($category->getId());
                 $tree[] = $categoryData;
@@ -321,9 +322,11 @@ class termekmenuController extends \mkwhelpers\MattableController
         $branch = [];
 
         foreach ($children as $child) {
-            $childData = $this->loadVars($child);
-            $childData['children'] = $this->buildTreeBranch($child->getId());
-            $branch[] = $childData;
+            if ($child->getLathato() && !$child->getInaktiv()) {
+                $childData = $this->loadVars($child);
+                $childData['children'] = $this->buildTreeBranch($child->getId());
+                $branch[] = $childData;
+            }
         }
 
         return $branch;
