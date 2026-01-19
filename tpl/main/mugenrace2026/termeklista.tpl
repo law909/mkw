@@ -204,7 +204,6 @@
 					</tr></tbody></table>
 				</form>
 			</div>
-
 			{if ($lapozo.elemcount>0)}
                 {$termekcnt=count($termekek)}
                 {$step=4}
@@ -214,6 +213,8 @@
                     {for $j=0 to $step-1}
                     {if (isset($termekek[$i+$j]))}
                         {$_termek=$termekek[$i+$j]}
+                    {else}
+                        {$_termek=null}
                     {/if}
                     {if ($_termek)}
                         <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">

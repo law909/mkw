@@ -5,9 +5,9 @@
         <article itemtype="http://schema.org/Article" itemscope="">
                 <div class="row">
                         <div class="col ">
-                                {if ($versenyzo.kepurl2)}
+                                {if ($versenyzo.kepurl12000)}
                                     <div class="sponsored-riders-datasheet__image-wrapper">
-                                        <img src="{$versenyzo.kepurl1}" alt="{$versenyzo.kepleiras1}" class="sponsored-riders-datasheet__image">
+                                        <img src="{$versenyzo.kepurl12000}" alt="{$versenyzo.kepleiras1}" class="sponsored-riders-datasheet__image">
                                     </div>
                                 {/if}
                                 <div class="sponsored-riders-datasheet__meta">
@@ -28,16 +28,16 @@
                                         </div>
                                     {/if}
                                 </div>
-                                {if ($versenyzo.kepurl2)}
-                                    <img src="{$versenyzo.kepurl2}" alt="{$versenyzo.kepleiras2}" class="sponsored-riders-datasheet__image">
+                                {if ($versenyzo.kepurl22000)}
+                                    <img src="{$versenyzo.kepurl22000}" alt="{$versenyzo.kepleiras2}" class="sponsored-riders-datasheet__image">
                                 {/if}
                                 {if ($versenyzo.leiras)}
                                     <div class="sponsored-riders-datasheet__content">
                                         {$versenyzo.leiras}
                                     </div>
                                 {/if}
-                                {if ($versenyzo.kepurl3)}
-                                    <img src="{$versenyzo.kepurl3}" alt="{$versenyzo.kepleiras3}" class="sponsored-riders-datasheet__image">
+                                {if ($versenyzo.kepurl32000)}
+                                    <img src="{$versenyzo.kepurl32000}" alt="{$versenyzo.kepleiras3}" class="sponsored-riders-datasheet__image">
                                 {/if}
                         </div>
                 </div>

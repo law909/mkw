@@ -7,24 +7,21 @@
 				<span class="page-header__breadcrumb flex-lc" itemprop="breadcrumb ">
 						{if ($navigator|default)}
                             <a href="/" rel="v:url" property="v:title">
-										{t('Home')}
-								</a>
+                                {t('Home')}
+                            </a>
                             <i class="icon arrow-right"></i>
-
-
-
-{foreach $navigator as $_navi}
-                            {if ($_navi.url|default)}
-                                <span typeof="v:Breadcrumb">
-														<a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
-																{$_navi.caption|capitalize}
-														</a>
-												</span>
-                                <i class="icon arrow-right"></i>
-                            {else}
-                                {$_navi.caption|capitalize}
-                            {/if}
-                        {/foreach}
+                            {foreach $navigator as $_navi}
+                                {if ($_navi.url|default)}
+                                    <span typeof="v:Breadcrumb">
+                                        <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
+                                            {$_navi.caption|capitalize}
+                                        </a>
+                                    </span>
+                                    <i class="icon arrow-right"></i>
+                                {else}
+                                    {$_navi.caption|capitalize}
+                                {/if}
+                            {/foreach}
                         {/if}
 				</span>
             </div>

@@ -30,7 +30,7 @@
                     <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
                         <div class="kattext sponsored-riders__item-content">
                             {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
-                            <img src="{$_versenyzo.kepurl}" alt="" class="sponsored-riders__item-image">
+                            <img src="{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
                             <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
                             <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}/">{$_versenyzo.nev}</a></div>
                         </div>

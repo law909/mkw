@@ -43,7 +43,6 @@
         <div class="row">
             <div class="col news-list__items">
                 {foreach $children as $_child}
-                    {* {var_dump($_child)} *}
                     <div class="kat news-list__item" data-href="/news/{$_child.slug}">
                         <div class="kattext news-list__item-content">
                             {if ($_child.kepurllarge)}
