@@ -31,11 +31,19 @@ class csapatController extends \mkwhelpers\MattableController
         $v['logourl'] = $t->getLogourl();
         $v['logourlsmall'] = $t->getLogourlSmall();
         $v['logourlmini'] = $t->getLogourlMini();
+        $v['logourlmedium'] = $t->getLogourlMedium();
+        $v['logourllarge'] = $t->getLogourlLarge();
+        $v['logourl400'] = $t->getLogourl400();
+        $v['logourl2000'] = $t->getLogourl2000();
         $v['logoleiras'] = $t->getLogoleiras();
         $v['leiras'] = $t->getLeiras();
         $v['kepurl'] = $t->getKepurl();
         $v['kepurlsmall'] = $t->getKepurlSmall();
         $v['kepurlmini'] = $t->getKepurlMini();
+        $v['kepurlmedium'] = $t->getKepurlMedium();
+        $v['kepurllarge'] = $t->getKepurlLarge();
+        $v['kepurl400'] = $t->getKepurl400();
+        $v['kepurl2000'] = $t->getKepurl2000();
         $v['kepleiras'] = $t->getKepleiras();
         if (!$forKarb) {
             $v['versenyzok'] = [];

@@ -569,6 +569,28 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getKepurl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl400', [$pre]);
+
+        return parent::getKepurl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepurl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl2000', [$pre]);
+
+        return parent::getKepurl2000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKepurlSmall($pre = '/')
     {
 

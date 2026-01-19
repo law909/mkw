@@ -586,6 +586,34 @@ class TermekValtozat
         return '';
     }
 
+    public function getKepurl400($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrl400($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurl400($pre);
+            }
+        }
+        return '';
+    }
+
+    public function getKepurl2000($pre = '/')
+    {
+        if (!$this->termekfokep) {
+            if ($this->getKep()) {
+                return $this->getKep()->getUrl2000($pre);
+            }
+        } else {
+            if ($this->getTermek()) {
+                return $this->getTermek()->getKepurl2000($pre);
+            }
+        }
+        return '';
+    }
+
     public function getKepurlSmall($pre = '/')
     {
         if (!$this->termekfokep) {

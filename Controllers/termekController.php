@@ -218,6 +218,8 @@ class termekController extends \mkwhelpers\MattableController
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
+        $x['kepurl400'] = $t->getKepurl400();
+        $x['kepurl2000'] = $t->getKepurl2000();
         $x['kepleiras'] = $t->getKepleiras();
         $x['regikepurl'] = $t->getRegikepurl();
         $x['szelesseg'] = $t->getSzelesseg();
@@ -332,9 +334,6 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setHosszusag($this->params->getFloatRequestParam('hosszusag'));
         $obj->setSuly($this->params->getFloatRequestParam('suly'));
         $obj->setOsszehajthato($this->params->getBoolRequestParam('osszehajthato'));
-        if ($obj->getKepurl() != $this->params->getStringRequestParam('kepurl', '')) {
-            $obj->setKepwcid(null);
-        }
         $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
         $obj->setRegikepurl($this->params->getStringRequestParam('regikepurl', ''));
@@ -1125,7 +1124,7 @@ class termekController extends \mkwhelpers\MattableController
         if (!\mkw\store::isTermekAutocomplete()) {
             $termekid = $this->params->getIntRequestParam('id');
             /** @var \Entities\Termek $termek */
-            $termek = \mkw\store::getEm()->getRepository('\Entities\Termek')->find($termekid);
+            $termek = \mkw\store::getEm()->getRepository(Termek::class)->find($termekid);
             if ($termek) {
                 $ret = [
                     'value' => $termek->getNev(),
@@ -1135,9 +1134,11 @@ class termekController extends \mkwhelpers\MattableController
                     'vtsz' => $termek->getVtszId(),
                     'afa' => $termek->getAfaId(),
                     'afakulcs' => $termek->getAfa()->getErtek(),
-                    'kozepeskepurl' => $termek->getKepUrlMedium(),
-                    'kiskepurl' => $termek->getKepUrlSmall(),
-                    'kepurl' => $termek->getKepUrlLarge(),
+                    'kozepeskepurl' => $termek->getKepurlMedium(),
+                    'kiskepurl' => $termek->getKepurlSmall(),
+                    'kepurl' => $termek->getKepurlLarge(),
+                    'kepurl400' => $termek->getKepurl400(),
+                    'kepurl2000' => $termek->getKepurl2000(),
                     'slug' => $termek->getSlug(),
                     'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $termek->getSlug()]),
                     'mainurl' => \mkw\store::getConfigValue('mainurl'),
@@ -1152,7 +1153,7 @@ class termekController extends \mkwhelpers\MattableController
         } else {
             $term = trim($this->params->getStringRequestParam('term'));
             if ($term) {
-                $r = \mkw\store::getEm()->getRepository('\Entities\Termek');
+                $r = \mkw\store::getEm()->getRepository(Termek::class);
                 $res = $r->getBizonylattetelLista($term);
                 switch (true) {
                     case \mkw\store::isMindentkapni():
@@ -1165,8 +1166,10 @@ class termekController extends \mkwhelpers\MattableController
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
                                 'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepUrlMedium(),
-                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kozepeskepurl' => $r->getKepurlMedium(),
+                                'kiskepurl' => $r->getKepurlSmall(),
+                                'kepurl400' => $r->getKepurl400(),
+                                'kepurl2000' => $r->getKepurl2000(),
                                 'kepurl' => $r->getKepUrlLarge(),
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
@@ -1192,8 +1195,10 @@ class termekController extends \mkwhelpers\MattableController
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
                                 'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepUrlMedium(),
-                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kozepeskepurl' => $r->getKepurlMedium(),
+                                'kiskepurl' => $r->getKepurlSmall(),
+                                'kepurl400' => $r->getKepurl400(),
+                                'kepurl2000' => $r->getKepurl2000(),
                                 'kepurl' => $r->getKepUrlLarge(),
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
@@ -1218,8 +1223,10 @@ class termekController extends \mkwhelpers\MattableController
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
                                 'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepUrlMedium(),
-                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kozepeskepurl' => $r->getKepurlMedium(),
+                                'kiskepurl' => $r->getKepurlSmall(),
+                                'kepurl400' => $r->getKepurl400(),
+                                'kepurl2000' => $r->getKepurl2000(),
                                 'kepurl' => $r->getKepUrlLarge(),
                                 'slug' => $r->getSlug(),
                                 'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),

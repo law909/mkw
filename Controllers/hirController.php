@@ -42,6 +42,8 @@ class hirController extends \mkwhelpers\MattableController
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
+        $x['kepurl400'] = $t->getKepurl400();
+        $x['kepurl2000'] = $t->getKepurl2000();
         $x['kepleiras'] = $t->getKepleiras();
         $x['link'] = $t->getLink();
         return $x;

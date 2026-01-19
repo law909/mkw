@@ -261,6 +261,28 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getUrl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl400', [$pre]);
+
+        return parent::getUrl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUrl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl2000', [$pre]);
+
+        return parent::getUrl2000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUrlSmall($pre = '/')
     {
 
