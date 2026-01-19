@@ -515,11 +515,17 @@
 .full-banner {
   position: relative;
   width: 100%;
-  // min-height: 600px;
-  aspect-ratio: 4 / 3;
+  // aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   @include flex-center-bottom;
   background: var(--color-primary);
   color: var(--color-secondary);
+  
+  @include desktop {
+    aspect-ratio: 16 / 6.4;
+    // min-height: 600px;
+    // aspect-ratio: unset;
+  }
 
   &.inverse {
     background: var(--color-secondary);

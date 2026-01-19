@@ -55,8 +55,9 @@
   &__image {
     width: 100%;
     height: auto;
-    // max-height: 800px;
+    max-height: 800px;
     object-fit: cover;
+    object-position: top;
     margin: 0 auto 30px auto;
     display: block;
     position: relative;

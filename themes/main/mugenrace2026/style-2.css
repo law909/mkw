@@ -2022,12 +2022,17 @@ a.underline {
 .full-banner {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/9;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   background: var(--color-primary);
   color: var(--color-secondary);
+}
+@media (min-width: 1025px) {
+  .full-banner {
+    aspect-ratio: 16/6.4;
+  }
 }
 .full-banner.inverse {
   background: var(--color-secondary);
@@ -2986,7 +2991,9 @@ a.underline {
 .sponsored-riders-datasheet__image {
   width: 100%;
   height: auto;
+  max-height: 800px;
   object-fit: cover;
+  object-position: top;
   margin: 0 auto 30px auto;
   display: block;
   position: relative;
@@ -3109,7 +3116,9 @@ a.underline {
 .teams-datasheet__image {
   width: 100%;
   height: auto;
+  max-height: 800px;
   object-fit: cover;
+  object-position: top;
   margin: 0px auto 30px auto;
   display: block;
   position: relative;
