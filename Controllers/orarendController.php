@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Orarendhelyettesites;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -322,17 +323,17 @@ class orarendController extends \mkwhelpers\MattableController
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
             $hf->addFilter('datum', '<=', \mkw\store::endOfWeek($startdatum));
             $hf->addFilter('orarend', '=', $item->getId());
-            $hrec = $this->getRepo('Entities\Orarendhelyettesites')->getAll($hf, []);
+            $hrec = $this->getRepo(Orarendhelyettesites::class)->getAll($hf, []);
             if ($hrec) {
-                if ($hrec[0]->getElmarad()) {
-                    $orak['elmarad'] = true;
-                    $orak['helyettesito'] = '';
-                    $orak['helyettesitourl'] = '';
-                } else {
-                    $orak['elmarad'] = false;
-                    $orak['helyettesito'] = $hrec[0]->getHelyettesitoNev();
-                    $orak['helyettesitourl'] = $hrec[0]->getHelyettesitoUrl();
+                $elmarad = false;
+                foreach ($hrec as $h) {
+                    if ($h->getElmarad()) {
+                        $elmarad = true;
+                    }
                 }
+                $orak['elmarad'] = $elmarad;
+                $orak['helyettesito'] = $hrec[0]->getHelyettesitoNev();
+                $orak['helyettesitourl'] = $hrec[0]->getHelyettesitoUrl();
             }
             $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
             $xdatum = clone $startdatum;

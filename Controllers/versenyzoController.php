@@ -138,8 +138,10 @@ class versenyzoController extends \mkwhelpers\MattableController
 
     public function show()
     {
-        $slug = $this->params->getIntRequestParam('slug');
-        $record = $this->getRepo()->getWithJoins(['slug' => $slug], []);
+        $slug = $this->params->getStringParam('slug');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('slug', '=', $slug);
+        $record = $this->getRepo()->getWithJoins($filter, []);
         if ($record) {
             $record = $record[0];
         }
