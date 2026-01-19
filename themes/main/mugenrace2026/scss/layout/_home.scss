@@ -432,6 +432,7 @@
 
   img {
     @include image-cover;
+    object-position: top;
     transition: transform var(--transition-slow) ease;
   }
 
@@ -555,6 +556,7 @@
 
   img {
     @include image-cover;
+    object-position: top;
     opacity: 0.6;
   }
 

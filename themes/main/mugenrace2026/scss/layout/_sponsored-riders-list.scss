@@ -45,6 +45,7 @@
       width: calc(100% + var(--padding-base) * 2);
       // height: 250px;
       object-fit: cover;
+      object-position: top;
       border-bottom: 1px solid var(--color-border);
       margin-left: -1rem;
       margin-top: -1rem;
