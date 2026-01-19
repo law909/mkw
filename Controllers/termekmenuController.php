@@ -291,7 +291,6 @@ class termekmenuController extends \mkwhelpers\MattableController
     public function getTreeAsArray($parentId = null)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('lathato', '=', 1);
         if (!$parentId) {
             $filter->addSql('(_xx.parent IS NULL)');
         } else {
@@ -302,9 +301,11 @@ class termekmenuController extends \mkwhelpers\MattableController
         $tree = [];
 
         foreach ($categories as $category) {
-            $categoryData = $this->loadVars($category);
-            $categoryData['children'] = $this->buildTreeBranch($category->getId());
-            $tree[] = $categoryData;
+            if ($category->getLathato() && !$category->getInaktiv()) {
+                $categoryData = $this->loadVars($category);
+                $categoryData['children'] = $this->buildTreeBranch($category->getId());
+                $tree[] = $categoryData;
+            }
         }
 
         return $tree;
@@ -319,9 +320,11 @@ class termekmenuController extends \mkwhelpers\MattableController
         $branch = [];
 
         foreach ($children as $child) {
-            $childData = $this->loadVars($child);
-            $childData['children'] = $this->buildTreeBranch($child->getId());
-            $branch[] = $childData;
+            if ($child->getLathato() && !$child->getInaktiv()) {
+                $childData = $this->loadVars($child);
+                $childData['children'] = $this->buildTreeBranch($child->getId());
+                $branch[] = $childData;
+            }
         }
 
         return $branch;

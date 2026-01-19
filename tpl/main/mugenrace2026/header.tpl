@@ -1,5 +1,5 @@
 {include "headerfirstrow.tpl"}
-{* {$mugenracetermekmenu} *}
+{* {$mugenracetermekmenu}  *}
 
 {* Demo content amíg nem sikerül lekérdezni a termékmenüt *}
 {* {$menu1[0]['childcount'] = 10 }
@@ -16,61 +16,62 @@
             <nav class="main-menu flex-cc">
                 <ul id="" class="flex-cc">
                     {foreach $menu1[0]['children'] as $_menupont}
-                        <li class="main-menu-item {if ($_menupont@last)} last{/if}" {if ($_menupont@first)} class="first"{/if}><a href="#" data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
-                        {if (count($_menupont.children)>0)}
-                            <i class="icon arrow-down white main-menu__arrow icon__click"></i>
-                            <div class="sub">
-                                <div class="sub__wrapper">
-                                    {foreach $_menupont.children as $_focsoport}
-                                    <ul>
-                                        <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
-                                        {foreach $_focsoport.children as $_alcsoport}
-                                            <li>
-                                                <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a>
-                                                {if (count($_alcsoport.children)>0)}
-                                                    <ul>
-                                                {/if}
-                                                {foreach $_alcsoport.children as $_alcsoport2}
+                        <li class="main-menu-item {if ($_menupont@last)} last{/if}" {if ($_menupont@first)} class="first"{/if}><a href="#"
+                                                                                                                                  data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
+                            {if (count($_menupont.children)>0)}
+                                <i class="icon arrow-down white main-menu__arrow icon__click"></i>
+                                <div class="sub">
+                                    <div class="sub__wrapper">
+                                        {foreach $_menupont.children as $_focsoport}
+                                            <ul>
+                                                <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
+                                                {foreach $_focsoport.children as $_alcsoport}
                                                     <li>
-                                                        <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev}</a>
-                                                        {if (count($_alcsoport2.children)>0)}
-                                                            <ul>
-                                                        {/if}
-                                                        {foreach $_alcsoport2.children as $_alcsoport3}
-                                                            <li>
-                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev}</a>
-                                                                {if (count($_alcsoport3.children)>0)}
+                                                        <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a>
+                                                        {if (count($_alcsoport.children)>0)}
+                                                        <ul>
+                                                            {/if}
+                                                            {foreach $_alcsoport.children as $_alcsoport2}
+                                                                <li>
+                                                                    <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev}</a>
+                                                                    {if (count($_alcsoport2.children)>0)}
                                                                     <ul>
-                                                                {/if}
-                                                                {foreach $_alcsoport3.children as $_alcsoport4}
-                                                                    <li>
-                                                                        <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev}</a>
-                                                                        
-                                                                    </li>
-                                                                {/foreach}
-                                                                {if (count($_alcsoport3.children)>0)}
+                                                                        {/if}
+                                                                        {foreach $_alcsoport2.children as $_alcsoport3}
+                                                                            <li>
+                                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev}</a>
+                                                                                {if (count($_alcsoport3.children)>0)}
+                                                                                <ul>
+                                                                                    {/if}
+                                                                                    {foreach $_alcsoport3.children as $_alcsoport4}
+                                                                                        <li>
+                                                                                            <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev}</a>
+
+                                                                                        </li>
+                                                                                    {/foreach}
+                                                                                    {if (count($_alcsoport3.children)>0)}
+                                                                                </ul>
+                                                                                {/if}
+                                                                            </li>
+                                                                        {/foreach}
+                                                                        {if (count($_alcsoport2.children)>0)}
                                                                     </ul>
-                                                                {/if}
-                                                            </li>
-                                                        {/foreach}
-                                                        {if (count($_alcsoport2.children)>0)}
-                                                            </ul>
+                                                                    {/if}
+                                                                </li>
+                                                            {/foreach}
+                                                            {if (count($_alcsoport.children)>0)}
+                                                        </ul>
                                                         {/if}
                                                     </li>
                                                 {/foreach}
-                                                {if (count($_alcsoport.children)>0)}
-                                                    </ul>
-                                                {/if}
-                                            </li>
+                                            </ul>
                                         {/foreach}
-                                    </ul>
-                                    {/foreach}
+                                    </div>
                                 </div>
-                            </div>
-                        {/if}
+                            {/if}
                         </li>
                     {/foreach}
-                    
+
                     <li><a href="/news" title="{t('Legfrissebb híreink')}">{t('Legfrissebb híreink')}</a></li>
                     <li><a href="/statlap/about-us" title="{t('Rólunk')}">{t('Rólunk')}</a></li>
                     <li><a href="/riders" title="{t('Szponzorált versenyzők')}">{t('Szponzorált versenyzők')}</a></li>
@@ -107,8 +108,8 @@
     </div>
 </div>
 {* <pre> *}
-    {* {json_encode($menu1, JSON_PRETTY_PRINT)} *}
-    {* {var_dump($menu1)} *}
+{* {json_encode($menu1, JSON_PRETTY_PRINT)} *}
+{* {var_dump($menu1)} *}
 {* </pre> *}
 
 {*

@@ -518,10 +518,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addFilter('ajanlott', '=', true);
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
 
         $ids = $this->getIdsWithJoins($filter, []);
@@ -551,10 +554,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addSQL($this->getAkciosFilterSQL());
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
 
         $ids = $this->getIdsWithJoins($filter, []);
@@ -584,10 +590,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter->addFilter('nemkaphato', '=', false);
         $kiemeltfilter->addFilter('kiemelt', '=', true);
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $kiemeltfilter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
         $kiemeltret = $this->getIdsWithJoins($kiemeltfilter->merge($filter), []);
         $r = [];
@@ -634,10 +643,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
         $order = ['_xx.nepszeruseg' => 'DESC', 'RAND()' => 'ASC'];
 
@@ -650,10 +662,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
         $order = ['_xx.id' => 'DESC'];
 
@@ -667,10 +682,13 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+            $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+            if ($webshopnum == 1) {
+                $mezonev = 'lathato';
+            } else {
+                $mezonev = 'lathato' . $webshopnum;
             }
+            $filter->addFilter($mezonev, '=', 1);
         }
         $a = [];
         if ($termek->getTermekfa1Id() > 1) {
@@ -731,10 +749,13 @@ class TermekRepository extends \mkwhelpers\Repository
             $this->addAktivLathatoFilter($filter);
             $filter->addFilter('nemkaphato', '=', 'false');
             if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-                $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-                if ($karkod) {
-                    $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
+                $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
+                if ($webshopnum == 1) {
+                    $mezonev = 'lathato';
+                } else {
+                    $mezonev = 'lathato' . $webshopnum;
                 }
+                $filter->addFilter($mezonev, '=', 1);
             }
 
             if ($rr) {
