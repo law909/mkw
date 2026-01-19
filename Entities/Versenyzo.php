@@ -176,6 +176,28 @@ class Versenyzo
         return '';
     }
 
+    public function getKepurl400($pre = '/')
+    {
+        $kepurl = $this->getKepurl($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl2000($pre = '/')
+    {
+        $kepurl = $this->getKepurl($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
     public function setKepurl($kep)
     {
         $this->kepurl = $kep;
@@ -246,6 +268,28 @@ class Versenyzo
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
             return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl1400($pre = '/')
+    {
+        $kepurl = $this->getKepurl1($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl12000($pre = '/')
+    {
+        $kepurl = $this->getKepurl1($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -324,6 +368,28 @@ class Versenyzo
         return '';
     }
 
+    public function getKepurl2400($pre = '/')
+    {
+        $kepurl = $this->getKepurl2($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl22000($pre = '/')
+    {
+        $kepurl = $this->getKepurl2($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
     public function setKepurl2($kep)
     {
         $this->kepurl2 = $kep;
@@ -394,6 +460,28 @@ class Versenyzo
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
             return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl3400($pre = '/')
+    {
+        $kepurl = $this->getKepurl3($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl32000($pre = '/')
+    {
+        $kepurl = $this->getKepurl3($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
         }
         return '';
     }

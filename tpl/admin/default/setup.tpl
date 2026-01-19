@@ -982,6 +982,12 @@
                             <td><label>{at('Nagy kép utótag')}:</label></td>
                             <td><input name="bigimgpost" type="text" value="{$bigimgpost}"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('400-as kép utótag')}:</label></td>
+                            <td><input name="i400imgpost" type="text" value="{$i400imgpost}"></td>
+                            <td><label>{at('2000-es kép utótag')}:</label></td>
+                            <td><input name="i2000imgpost" type="text" value="{$i2000imgpost}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

@@ -328,6 +328,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Mediumimgpost, ($p ? $p->getErtek() : '_m'));
         $p = $repo->find(\mkw\consts::Bigimgpost);
         $view->setVar(\mkw\consts::Bigimgpost, ($p ? $p->getErtek() : '_b'));
+        $p = $repo->find(\mkw\consts::I400imgpost);
+        $view->setVar(\mkw\consts::I400imgpost, ($p ? $p->getErtek() : '_4'));
+        $p = $repo->find(\mkw\consts::I2000imgpost);
+        $view->setVar(\mkw\consts::I2000imgpost, ($p ? $p->getErtek() : '_2'));
         $p = $repo->find(\mkw\consts::Fooldalajanlotttermekdb);
         $view->setVar(\mkw\consts::Fooldalajanlotttermekdb, ($p ? $p->getErtek() : 6));
         $p = $repo->find(\mkw\consts::Fooldalhirdb);
@@ -1132,6 +1136,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Smallimgpost, $this->params->getStringRequestParam('smallimgpost'));
         $this->setObj(\mkw\consts::Mediumimgpost, $this->params->getStringRequestParam('mediumimgpost'));
         $this->setObj(\mkw\consts::Bigimgpost, $this->params->getStringRequestParam('bigimgpost'));
+        $this->setObj(\mkw\consts::I400imgpost, $this->params->getStringRequestParam('i400imgpost'));
+        $this->setObj(\mkw\consts::I2000imgpost, $this->params->getStringRequestParam('i2000imgpost'));
         $this->setObj(\mkw\consts::Oldalcim, $this->params->getStringRequestParam('oldalcim'));
         $this->setObj(\mkw\consts::Seodescription, $this->params->getStringRequestParam('seodescription'));
         $this->setObj(\mkw\consts::Fooldalajanlotttermekdb, $this->params->getIntRequestParam('fooldalajanlotttermekdb', 6));

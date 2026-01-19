@@ -854,6 +854,8 @@ class Termek
         $x['kozepeskepurl'] = $this->getKepurlMedium();
         $x['kiskepurl'] = $this->getKepurlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
@@ -920,6 +922,8 @@ class Termek
                 $x['nagykepurl'] = $valtozat->getKepurlLarge();
                 $x['kozepeskepurl'] = $valtozat->getKepurlMedium();
                 $x['kiskepurl'] = $valtozat->getKepurlSmall();
+                $x['kepurl400'] = $valtozat->getKepurl400();
+                $x['kepurl2000'] = $valtozat->getKepurl2000();
                 $x['minikepurl'] = $valtozat->getKepurlMini();
                 $x['kepurl'] = $valtozat->getKepurlLarge();
             }
@@ -1006,6 +1010,8 @@ class Termek
         $x['kozepeskepurl'] = $this->getKepurlMedium();
         $x['kiskepurl'] = $this->getKepurlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
@@ -1058,6 +1064,8 @@ class Termek
         $x['fullkepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['rovidleiras'] = $this->getRovidleiras();
         $x['leiras'] = $this->getLeiras();
         $x['cikkszam'] = $this->getCikkszam();
@@ -1214,6 +1222,8 @@ class Termek
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['kiskepurl'] = $this->getKepUrlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
@@ -1248,6 +1258,8 @@ class Termek
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['kiskepurl'] = $this->getKepUrlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
@@ -1273,6 +1285,8 @@ class Termek
         $x['kozepeskepurl'] = $this->getKepurlMedium();
         $x['kiskepurl'] = $this->getKepurlSmall();
         $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl400'] = $this->getKepurl400();
+        $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
@@ -2042,6 +2056,28 @@ class Termek
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
             return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl400($pre = '/')
+    {
+        $kepurl = $this->getKepurl($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getKepurl2000($pre = '/')
+    {
+        $kepurl = $this->getKepurl($pre);
+        if ($kepurl) {
+            $t = explode('.', $kepurl);
+            $ext = array_pop($t);
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
         }
         return '';
     }

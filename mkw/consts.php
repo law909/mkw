@@ -87,6 +87,8 @@ class consts
     const Smallimgpost = 'smallimgpost';
     const Mediumimgpost = 'mediumimgpost';
     const Bigimgpost = 'bigimgpost';
+    const I2000imgpost = 'i2000imgpost';
+    const I400imgpost = 'i400imgpost';
     const Miniimagesize = 'miniimagesize';
     const Smallimagesize = 'smallimagesize';
     const Mediumimagesize = 'mediumimagesize';

@@ -104,6 +104,28 @@ class TermekKep
         return '';
     }
 
+    public function getUrl400($pre = '/')
+    {
+        $url = $this->getUrl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getUrl2000($pre = '/')
+    {
+        $url = $this->getUrl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
     public function getUrlSmall($pre = '/')
     {
         $url = $this->getUrl($pre);
