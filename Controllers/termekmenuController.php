@@ -291,8 +291,6 @@ class termekmenuController extends \mkwhelpers\MattableController
     public function getTreeAsArray($parentId = null)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('lathato', '=', 1);
-        $filter->addFilter('inaktiv', '=', 0);
         if (!$parentId) {
             $filter->addSql('(_xx.parent IS NULL)');
         } else {
