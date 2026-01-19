@@ -55,7 +55,7 @@
   &__image {
     width: 100%;
     height: auto;
-    max-height: 800px;
+    // max-height: 800px;
     object-fit: cover;
     margin: 0 auto 30px auto;
     display: block;
@@ -76,7 +76,8 @@
       content: '';
       width: 100%;
       height: 100px;
-      background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+      // background: linear-gradient(to top, rgba(248, 249, 250, 1), rgba(248, 249, 250, 0));
+      background: linear-gradient(0deg, rgb(248, 249, 250) 10%, rgba(248, 249, 250, 0) 100%);
       position: absolute;
       bottom: 0px;
       left: 50%;

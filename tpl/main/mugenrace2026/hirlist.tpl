@@ -43,10 +43,11 @@
         <div class="row">
             <div class="col news-list__items">
                 {foreach $children as $_child}
+                    {* {var_dump($_child)} *}
                     <div class="kat news-list__item" data-href="/news/{$_child.slug}">
                         <div class="kattext news-list__item-content">
-                            {if ($_child.kepurl)}
-                                <img src="{$_child.kepurl}" alt="{$_child.kepleiras}" class="news-list__item-image">
+                            {if ($_child.kepurllarge)}
+                                <img src="{$_child.kepurllarge}" alt="{$_child.kepleiras}" class="news-list__item-image">
                             {/if}
                             <div class="hiralairas news-list__item-date">{$_child.datum}</div>
                             <div class="kattitle news-list__item-title"><a href="/news/{$_child.slug}">{$_child.cim}</a></div>
