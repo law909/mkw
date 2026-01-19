@@ -1650,9 +1650,22 @@ a.underline {
   width: 100%;
   overflow-x: hidden;
 }
+#MainContent .product-list-item .custom-select {
+  color: var(--color-text) !important;
+}
+@media (max-width: 768px) {
+  #MainContent .gvaltozatselect {
+    width: 100% !important;
+  }
+}
 #MainContent .teams__item,
 #MainContent .sponsored-riders__item {
   background-color: transparent;
+}
+#MainContent .teams__item-title a,
+#MainContent .sponsored-riders__item-title a {
+  margin-left: -13px;
+  font-weight: 700;
 }
 #MainContent .sponsored-riders__item-category {
   color: var(--color-text) !important;
@@ -1742,6 +1755,11 @@ a.underline {
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: var(--spacing-sm);
+}
+@media (max-width: 1024px) {
+  .section-header h2 {
+    font-size: clamp(22px, 4vw, 32px);
+  }
 }
 .section-header p {
   font-size: 16px;
@@ -1835,6 +1853,12 @@ a.underline {
 .carousel-wrapper.news-list__items {
   display: flex !important;
   flex-wrap: nowrap !important;
+}
+@media (max-width: 768px) {
+  .carousel-wrapper.news-list__items .news-list__item-title a {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
 }
 
 .carousel-item {
@@ -2022,7 +2046,7 @@ a.underline {
 .full-banner {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 4/3;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -2031,7 +2055,7 @@ a.underline {
 }
 @media (min-width: 1025px) {
   .full-banner {
-    aspect-ratio: 16/6.4;
+    aspect-ratio: 16/7;
   }
 }
 .full-banner.inverse {
@@ -2250,6 +2274,11 @@ a.underline {
   margin-bottom: 0;
   text-align: center;
 }
+@media (max-width: 1024px) {
+  .news-datasheet__title {
+    font-size: 2rem;
+  }
+}
 .news-datasheet__date {
   font-size: 0.9rem;
   color: var(--color-text-muted);
@@ -2259,6 +2288,9 @@ a.underline {
   font-size: 1rem;
   line-height: 1.6;
   color: var(--color-text);
+}
+.news-datasheet__content img {
+  max-width: 100%;
 }
 .news-datasheet__image {
   display: block;
@@ -2927,10 +2959,20 @@ a.underline {
   margin-top: var(--spacing-md);
   margin-bottom: 0;
 }
+@media (max-width: 1024px) {
+  .sponsored-riders__item-title {
+    margin-top: var(--spacing-sm);
+  }
+}
 .sponsored-riders__item-title a {
   font-weight: 900;
   font-size: 1.5rem;
   color: var(--color-text);
+}
+@media (max-width: 1024px) {
+  .sponsored-riders__item-title a {
+    font-size: 1rem;
+  }
 }
 .sponsored-riders__item-category {
   margin-top: var(--spacing-md);
@@ -3062,10 +3104,20 @@ a.underline {
   margin-top: var(--spacing-md);
   margin-bottom: 0;
 }
+@media (max-width: 1024px) {
+  .teams__item-title {
+    margin-top: var(--spacing-sm);
+  }
+}
 .teams__item-title a {
   font-weight: 900;
   font-size: 1.5rem;
   color: var(--color-text);
+}
+@media (max-width: 1024px) {
+  .teams__item-title a {
+    font-size: 1rem;
+  }
 }
 .teams__item-logo {
   max-width: 50px;

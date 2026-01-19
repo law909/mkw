@@ -59,10 +59,18 @@
       margin-top: var(--spacing-md);
       margin-bottom: 0;
       
+      @include mobile-tablet {
+        margin-top: var(--spacing-sm);
+      }
+
       a {
         font-weight: 900;
         font-size: 1.5rem;
         color: var(--color-text);
+
+        @include mobile-tablet {
+          font-size: 1rem;
+        }
       }
     }
 

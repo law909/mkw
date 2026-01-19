@@ -30,8 +30,8 @@
 				<div class="kat teams__item" data-href="/teams/{$_csapat.slug}">
 					<div class="kattext teams__item-content">
 						{* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="teams__item-image"> *}
-						<img src="{$_csapat.kepurl}" alt="{$_csapat.kepleiras}" class="teams__item-image">
-						<img src="{$_csapat.logourl}" alt="{$_csapat.logoleiras}" class="teams__item-logo">
+						<img src="{$_csapat.kepurl400}" alt="{$_csapat.kepleiras}" class="teams__item-image">
+						<img src="{$_csapat.logourlmini}" alt="{$_csapat.logoleiras}" class="teams__item-logo">
 						<h3 class="teams__item-title"><a href="/teams/{$_csapat.slug}">{$_csapat.nev}</a></h3>
 					</div>
 				</div>
