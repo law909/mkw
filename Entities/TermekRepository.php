@@ -713,6 +713,7 @@ class TermekRepository extends \mkwhelpers\Repository
 
     public function getHozzavasaroltTermekek($termek)
     {
+        $db = \mkw\store::getParameter(\mkw\consts::Hozzavasarolttermekdb, 6);
         if ($termek) {
             if (is_array($termek)) {
                 $x = [];
@@ -764,7 +765,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 $filter->addFilter('id', '=', -1);
             }
 
-            return $this->getWithJoins($filter, []);
+            return $this->getWithJoins($filter, [], 0, $db);
         }
         return false;
     }

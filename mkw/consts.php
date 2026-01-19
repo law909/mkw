@@ -110,6 +110,7 @@ class consts
     const Termeklapnepszerutermekdb = 'termeklapnepszerutermekdb';
     const Kiemelttermekdb = 'kiemelttermekdb';
     const Hasonlotermekdb = 'hasonlotermekdb';
+    const Hozzavasarolttermekdb = 'hozzavasarolttermekdb';
     const Hasonlotermekarkulonbseg = 'hasonlotermekarkulonbseg';
 
     const ErtekelesKeroSablon = 'ertekeleskerosablon';
