@@ -142,6 +142,10 @@
                        class="js-flagcheckbox{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a></td>
             </tr>
             <tr>
+                <td><a href="#" data-id="{$_termek.id}" data-flag="uj"
+                       class="js-flagcheckbox{if ($_termek.uj)} ui-state-hover{/if}">{at('Új')}</a></td>
+            </tr>
+            <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="hozzaszolas"
                        class="js-flagcheckbox{if ($_termek.hozzaszolas)} ui-state-hover{/if}">{at('Hozzá lehet szólni')}</a></td>
             </tr>

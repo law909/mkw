@@ -669,6 +669,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 $mezonev = 'lathato' . $webshopnum;
             }
             $filter->addFilter($mezonev, '=', 1);
+            $filter->addFilter('uj', '=', true);
         }
         $order = ['_xx.id' => 'DESC'];
 

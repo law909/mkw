@@ -661,6 +661,7 @@ $(document).ready(function () {
                                 $('input[name^="valtozatelerheto_"]').prop('checked', false);
                                 $('input[name="ajanlott"]').prop('checked', false);
                                 $('input[name="kiemelt"]').prop('checked', false);
+                                $('input[name="uj"]').prop('checked', false);
                                 $(this).dialog('close');
                             },
                             'Nem': function () {
@@ -1039,6 +1040,7 @@ $(document).ready(function () {
                         if (kibe && (flag == 'nemkaphato')) {
                             $('a[data-id="' + id + '"][data-flag="kiemelt"]').removeClass('ui-state-hover');
                             $('a[data-id="' + id + '"][data-flag="ajanlott"]').removeClass('ui-state-hover');
+                            $('a[data-id="' + id + '"][data-flag="uj"]').removeClass('ui-state-hover');
                         }
                     }
                 });

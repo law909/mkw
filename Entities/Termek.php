@@ -478,6 +478,9 @@ class Termek
     /** @ORM\Column(type="boolean", nullable=false) */
     private $prestatiltva = 0;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $uj = 0;
+
     public function __toString()
     {
         return (string)$this->id . ' - ' . $this->nev;
@@ -870,17 +873,22 @@ class Termek
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
+        $x['kiemelt'] = $this->getKiemelt();
+        $x['ajanlott'] = $this->getAjanlott();
+        $x['uj'] = $this->getUj();
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['bruttohuf'] = $this->getBruttoAr(
+                $x['brutto'] = $this->getBruttoAr(
                     $valtozat,
                     \mkw\store::getLoggedInUser(),
                     \mkw\store::getMainValutanemId(),
                     \mkw\store::getParameter(\mkw\consts::Webshop2Price)
                 );
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+                $x['bruttohuf'] = $x['brutto'];
+                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+                $x['eredetibruttohuf'] = $x['eredetibrutto'];
                 break;
             case \mkw\store::isMugenrace2021():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -1025,13 +1033,15 @@ class Termek
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['bruttohuf'] = $this->getBruttoAr(
+            $x['brutto'] = $this->getBruttoAr(
                 $valtozat,
                 \mkw\store::getLoggedInUser(),
                 \mkw\store::getMainSession()->valutanem,
                 \mkw\store::getParameter(\mkw\consts::Webshop2Price)
             );
-            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+            $x['bruttohuf'] = $x['brutto'];
+            $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+            $x['eredetibruttohuf'] = $x['eredetibrutto'];
         } else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
             $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
@@ -1079,6 +1089,9 @@ class Termek
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
+        $x['kiemelt'] = $this->getKiemelt();
+        $x['ajanlott'] = $this->getAjanlott();
+        $x['uj'] = $this->getUj();
         $erts = [];
         /** @var TermekErtekeles $ertekeles */
         foreach ($this->getTermekErtekelesek() as $ertekeles) {
@@ -1091,13 +1104,15 @@ class Termek
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['bruttohuf'] = $this->getBruttoAr(
+                $x['brutto'] = $this->getBruttoAr(
                     $valtozat,
                     \mkw\store::getLoggedInUser(),
                     \mkw\store::getMainValutanemId(),
                     \mkw\store::getParameter(\mkw\consts::Webshop2Price)
                 );
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+                $x['bruttohuf'] = $x['brutto'];
+                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+                $x['eredetibruttohuf'] = $x['eredetibrutto'];
                 break;
             case \mkw\store::isMugenrace2021():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -1131,6 +1146,8 @@ class Termek
             $egyed['kozepeskepurl'] = $kep->getUrlMedium();
             $egyed['kiskepurl'] = $kep->getUrlSmall();
             $egyed['minikepurl'] = $kep->getUrlMini();
+            $egyed['kepurl400'] = $kep->getUrl400();
+            $egyed['kepurl2000'] = $kep->getUrl2000();
             $egyed['leiras'] = $kep->getLeiras();
             $altomb[] = $egyed;
         }
@@ -1235,13 +1252,15 @@ class Termek
         $x['ertekelesdb'] = $ert['ertekelesdb'];
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['bruttohuf'] = $this->getBruttoAr(
+            $x['brutto'] = $this->getBruttoAr(
                 $valtozat,
                 \mkw\store::getLoggedInUser(),
                 \mkw\store::getMainSession()->valutanem,
                 \mkw\store::getParameter(\mkw\consts::Webshop2Price)
             );
-            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+            $x['bruttohuf'] = $x['brutto'];
+            $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+            $x['eredetibruttohuf'] = $x['eredetibrutto'];
         } else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
             $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
@@ -4508,5 +4527,22 @@ class Termek
     {
         return $this->prestatiltva ?? false;
     }
+
+    /**
+     * @return int
+     */
+    public function getUj()
+    {
+        return $this->uj;
+    }
+
+    /**
+     * @param int $uj
+     */
+    public function setUj($uj): void
+    {
+        $this->uj = $uj;
+    }
+
 
 }
