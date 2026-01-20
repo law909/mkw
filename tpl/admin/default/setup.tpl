@@ -949,6 +949,10 @@
                             <td><input name="hasonlotermekarkulonbseg" type="number" value="{$hasonlotermekarkulonbseg}"></td>
                         </tr>
                         <tr>
+                            <td><label>{at('Hozzá vásárolt termékek száma a terméklapon')}:</label></td>
+                            <td><input name="hozzavasarolttermekdb" type="number" value="{$hozzavasarolttermekdb}"></td>
+                        </tr>
+                        <tr>
                             <td><label>{at('Ár szűrő lépésköze')}:</label></td>
                             <td><input name="arfilterstep" type="number" value="{$arfilterstep}"></td>
                             <td><label>{at('Automatikus kiléptetés ideje (perc)')}:</label></td>

@@ -104,6 +104,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['hozzaszolas'] = $t->getHozzaszolas();
         $x['ajanlott'] = $t->getAjanlott();
         $x['kiemelt'] = $t->getKiemelt();
+        $x['uj'] = $t->getUj();
         $x['inaktiv'] = $t->getInaktiv();
         $x['eladhato'] = $t->getEladhato();
         $x['emagtiltva'] = $t->getEmagtiltva();
@@ -324,6 +325,7 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas'));
         $obj->setAjanlott($this->params->getBoolRequestParam('ajanlott'));
         $obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
+        $obj->setUj($this->params->getBoolRequestParam('uj'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setEladhato($this->params->getBoolRequestParam('eladhato'));
         $obj->setEmagtiltva($this->params->getBoolRequestParam('emagtiltva'));
@@ -1386,6 +1388,9 @@ class termekController extends \mkwhelpers\MattableController
                     break;
                 case 'kiemelt':
                     $obj->setKiemelt($kibe);
+                    break;
+                case 'uj':
+                    $obj->setUj($kibe);
                     break;
                 case 'nemkaphato':
                     $oldnemkaphato = $obj->getNemkaphato();

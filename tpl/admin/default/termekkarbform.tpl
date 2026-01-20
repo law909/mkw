@@ -465,6 +465,8 @@
                    {if ($egyed.ajanlott)}checked="checked"{/if}>{at('Ajánlott')}
             <input id="KiemeltCheck" name="kiemelt" type="checkbox"
                    {if ($egyed.kiemelt)}checked="checked"{/if}>{at('Kiemelt')}
+            <input id="UjCheck" name="uj" type="checkbox"
+                   {if ($egyed.uj)}checked="checked"{/if}>{at('Új')}
             <input id="HozzaszolasCheck" name="hozzaszolas" type="checkbox"
                    {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
