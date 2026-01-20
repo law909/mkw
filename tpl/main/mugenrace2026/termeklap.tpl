@@ -117,6 +117,7 @@
                         const thumbsContainer = document.getElementById("thumbs");
                         const mainImage = document.getElementById("mainImage");
 
+                        
 
                         let currentIndex = 0;
 
@@ -131,6 +132,11 @@
                         thumbsContainer.appendChild(img);
                         });
 
+                        const preloaded = images.map(src => {
+                            const img = new Image();
+                            img.src = src;
+                            return img;
+                        });
 
                         function setActiveThumb(index) {
                         const all = thumbsContainer.querySelectorAll("img");
@@ -140,6 +146,8 @@
 
 
                         function changeImage(newIndex) {
+                            if (newIndex === currentIndex) return;
+
                             const wrapper = document.querySelector(".main-image-wrapper");
                             const oldImage = wrapper.querySelector(".main-image");
 
@@ -149,29 +157,39 @@
                             newImg.src = images[newIndex];
                             newImg.className = "main-image";
                             newImg.style.position = "absolute";
-                            newImg.style.left = direction > 0 ? "100%" : "-100%";
-                            newImg.style.top = 0;
+                            // newImg.style.top = "0";
+                            // newImg.style.left = "0"; // fix pozíció, NEM animáljuk
+                            newImg.style.transform =
+                                "translateX(" + (direction > 0 ? "100%" : "-100%") + ")";
+                            newImg.style.transition = "transform 0.4s ease";
 
                             wrapper.appendChild(newImg);
 
-                            requestAnimationFrame(() => {
+                            newImg.onload = () => {
+                                // kényszerített reflow
+                                newImg.getBoundingClientRect();
+
                                 oldImage.style.transition = "transform 0.4s ease";
-                                newImg.style.transition = "left 0.4s ease";
+                                oldImage.style.transform =
+                                "translateX(" + (direction > 0 ? "-100%" : "100%") + ")";
 
-                                oldImage.style.transform = "translateX(" + (direction > 0 ? "-100%" : "100%") + ")";
-                                newImg.style.left = "0";
-                            });
+                                newImg.style.transform = "translateX(0)";
 
-                            setTimeout(() => {
+                                setTimeout(() => {
                                 oldImage.remove();
                                 newImg.style.position = "";
-                                newImg.style.left = "";
+                                newImg.style.transform = "";
+                                newImg.style.transition = "";
+                                // left maradhat 0-n, vagy ezt is törölheted ha akarod
+                                // newImg.style.left = "";
                                 newImg.style.top = "";
-                            }, 400);
+                                }, 400);
+                            };
 
                             currentIndex = newIndex;
                             setActiveThumb(newIndex);
-                        }
+                            }
+
 
 
                         document.getElementById("prevBtn").onclick = () => {
@@ -653,7 +671,7 @@
             </div>
         </div>
         {/if}
-
+        <hr>
         <div class="row product-datasheet__popular-products flex-col">
             <div class="col">
                 <h4 class="textaligncenter">{t('Legnépszerűbb termékeink')}</h4>

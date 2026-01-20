@@ -1570,6 +1570,9 @@ a.underline {
 .product-datasheet .gvaltozatcontainer:last-child {
   margin-bottom: 0;
 }
+.product-datasheet__recommended-products {
+  flex-wrap: unset;
+}
 .product-datasheet__related-products .accordion-content > div, .product-datasheet__similar-products .accordion-content > div, .product-datasheet__popular-products .accordion-content > div, .product-datasheet__recommended-products .accordion-content > div {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(22%, 1fr));

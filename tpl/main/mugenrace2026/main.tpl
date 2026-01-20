@@ -175,7 +175,7 @@
                 <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-2.jpg" alt="Kategória 1">
                 <div class="grid-content inverse flex-cc flex-col">
                     <h3>{t('Szponzorált versenyzők')}</h3>
-                    <p>lorem ipsum dolor sit amet </p>
+                    <p></p>
                     <a href="/riders" class="button bordered inverse">{t('Tovább')}</a>
                 </div>
             </div>
@@ -183,7 +183,7 @@
                 <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-3.jpg" alt="Kategória 2">
                 <div class="grid-content inverse flex-cc flex-col">
                     <h3>{t('Csapatok')}</h3>
-                    <p>lorem ipsum dolor sit amet </p>
+                    <p></p>
                     <a href="/teams" class="button bordered inverse">{t('Tovább')}</a>
                 </div>
             </div>
