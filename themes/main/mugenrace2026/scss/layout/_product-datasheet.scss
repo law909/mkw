@@ -64,7 +64,7 @@
       @include mobile {
         padding-left: 0;
         padding-right: 0;
-        height: 350px;
+        height: 390px;
       }  
     }
   }
@@ -276,4 +276,46 @@
       right: -5px;
     }
   }
+}
+
+// ########
+// Lightbox
+// ########
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.hidden {
+  display: none;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-image {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  z-index: 1;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 2;
+  font-size: 36px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
 }

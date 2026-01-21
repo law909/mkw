@@ -12,12 +12,12 @@
                             <i class="icon arrow-right"></i>
                             {foreach $navigator as $_navi}
                                 {if ($_navi.url|default)}
-                                    <span typeof="v:Breadcrumb">
+                                    <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
                                         <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                             {$_navi.caption|capitalize}
                                         </a>
                                     </span>
-                                    <i class="icon arrow-right"></i>
+                                    <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
                                 {else}
                                     {$_navi.caption|capitalize}
                                 {/if}

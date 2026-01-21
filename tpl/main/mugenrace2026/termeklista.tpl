@@ -12,12 +12,12 @@
                     <i class="icon arrow-right"></i>
                     {foreach $navigator as $_navi}
                         {if ($_navi.url|default)}
-                            <span typeof="v:Breadcrumb">
+                            <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
                                 <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                     {$_navi.caption|lower|capitalize}
                                 </a>
                             </span>
-                            <i class="icon arrow-right"></i>
+                            <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
                         {else}
                             {$_navi.caption|lower|capitalize}
                         {/if}
@@ -136,7 +136,7 @@
         {$lntcnt=count($kiemelttermekek)}
         {if ($lntcnt>0)}
             <div class="lapozo">
-                <span class="bold">{t('Kiemelt termékeink')}</span>
+                <h2 class="bold category-title">{t('Kiemelt termékeink')}</h2>
             </div>
             {$step=min(3, $lntcnt)}
             {if ($step==0)}
@@ -264,6 +264,7 @@
                     {/for}
                 {/for}
             </div>
+            <div class="product-list__divider divider"></div>
         {/if}
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
@@ -298,6 +299,9 @@
 					</tr></tbody></table>
 				</form>
 			</div>
+            
+            
+
 			{if ($lapozo.elemcount>0)}
                 {$termekcnt=count($termekek)}
                 {$step=4}

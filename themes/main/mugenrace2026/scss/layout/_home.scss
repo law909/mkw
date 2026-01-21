@@ -309,7 +309,8 @@
 
       &__item {
         background-color: var(--color-background-inverse);
-
+        width: -webkit-fill-available;
+        
         &-title {
           a {
             color: var(--color-text-inverse);

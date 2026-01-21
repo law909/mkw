@@ -29,8 +29,15 @@
         margin-bottom: -3px;
       }
   
+      &:first-child,
       &:last-child {
-        display: none;
+        display: none !important;
+      }
+    }
+
+    span {
+      &:first-child {
+        display: none !important;
       }
     }
   }
@@ -55,6 +62,12 @@
     }
   }
 
+}
+
+.breadcrumb {
+  &-termekmenu {
+    display: none !important;
+  }
 }
 
 .title-header {
