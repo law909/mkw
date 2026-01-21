@@ -372,3 +372,13 @@ footer a:hover {
   text-align: unset;
   color:  unset;
 }
+
+@media (min-width: 1200px) {
+    .controls-row [class*="span"]+[class*="span"] {
+      margin-left: unset;
+    }
+}
+
+.controls-row [class*="span"]+[class*="span"] {
+    margin-left: unset;
+}

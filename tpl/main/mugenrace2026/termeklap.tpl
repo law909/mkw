@@ -92,6 +92,12 @@
                                     <div class="nav-btn nav-right" id="nextBtn">⟩</div>
                                 </div>
                             </div>
+
+                            <div id="lightbox" class="lightbox hidden">
+                                <div class="lightbox-backdrop"></div>
+                                <img id="lightboxImage" class="lightbox-image" src="" alt="">
+                                <div class="lightbox-close">×</div>
+                            </div>
                         </div>
                         <script>
                         const images = [
@@ -116,7 +122,9 @@
                         // ########################                           
                         const thumbsContainer = document.getElementById("thumbs");
                         const mainImage = document.getElementById("mainImage");
-
+                        mainImage.addEventListener("click", () => {
+                        openLightbox(mainImage.src);
+                        });
                         
 
                         let currentIndex = 0;
@@ -139,56 +147,86 @@
                         });
 
                         function setActiveThumb(index) {
-                        const all = thumbsContainer.querySelectorAll("img");
-                        all.forEach(t => t.classList.remove("active"));
-                        all[index].classList.add("active");
+                            const all = thumbsContainer.querySelectorAll("img");
+                            all.forEach(t => t.classList.remove("active"));
+
+                            const activeThumb = all[index];
+                            activeThumb.classList.add("active");
+
+                            const containerTop = thumbsContainer.scrollTop;
+                            const containerBottom = containerTop + thumbsContainer.clientHeight;
+
+                            const thumbTop = activeThumb.offsetTop;
+                            const thumbBottom = thumbTop + activeThumb.offsetHeight;
+
+                            if (thumbTop < containerTop) {
+                                // kilóg felül
+                                thumbsContainer.scrollTo({
+                                top: thumbTop - 20, //  
+                                behavior: "smooth"
+                                });
+                            } else if (thumbBottom > containerBottom) {
+                                // kilóg alul
+                                thumbsContainer.scrollTo({
+                                top: thumbBottom - thumbsContainer.clientHeight - 10, //  
+                                behavior: "smooth"
+                                });
+                            }
                         }
 
 
+                        let isAnimating = false;
+
                         function changeImage(newIndex) {
                             if (newIndex === currentIndex) return;
+                            if (isAnimating) return;
+
+                            isAnimating = true;
 
                             const wrapper = document.querySelector(".main-image-wrapper");
                             const oldImage = wrapper.querySelector(".main-image");
 
                             const direction = newIndex > currentIndex ? 1 : -1;
+                            const wrapperWidth = wrapper.clientWidth;
 
                             const newImg = document.createElement("img");
                             newImg.src = images[newIndex];
                             newImg.className = "main-image";
                             newImg.style.position = "absolute";
-                            // newImg.style.top = "0";
-                            // newImg.style.left = "0"; // fix pozíció, NEM animáljuk
                             newImg.style.transform =
-                                "translateX(" + (direction > 0 ? "100%" : "-100%") + ")";
-                            newImg.style.transition = "transform 0.4s ease";
+                                "translateX(" + (direction > 0 ? wrapperWidth : -wrapperWidth) + "px)";
+                            newImg.style.transition = "transform 0.15s ease";
 
                             wrapper.appendChild(newImg);
 
+                            // 👉 lightbox click
+                            newImg.addEventListener("click", () => {
+                                openLightbox(newImg.src);
+                            });
+
                             newImg.onload = () => {
-                                // kényszerített reflow
                                 newImg.getBoundingClientRect();
 
-                                oldImage.style.transition = "transform 0.4s ease";
+                                oldImage.style.transition = "transform 0.15s ease";
                                 oldImage.style.transform =
-                                "translateX(" + (direction > 0 ? "-100%" : "100%") + ")";
+                                "translateX(" + (direction > 0 ? -wrapperWidth : wrapperWidth) + "px)";
 
                                 newImg.style.transform = "translateX(0)";
 
                                 setTimeout(() => {
-                                oldImage.remove();
-                                newImg.style.position = "";
-                                newImg.style.transform = "";
-                                newImg.style.transition = "";
-                                // left maradhat 0-n, vagy ezt is törölheted ha akarod
-                                // newImg.style.left = "";
-                                newImg.style.top = "";
-                                }, 400);
+                                    oldImage.remove();
+                                    newImg.style.position = "";
+                                    newImg.style.transform = "";
+                                    newImg.style.transition = "";
+                                    newImg.style.top = "";
+
+                                    isAnimating = false; // 🔓 unlock
+                                }, 170);
                             };
 
                             currentIndex = newIndex;
                             setActiveThumb(newIndex);
-                            }
+                        }
 
 
 
@@ -206,6 +244,35 @@
 
                         // Init
                         mainImage.src = images[0];
+
+                        // ########
+                        // Lightbox
+                        // ########
+                        const lightbox = document.getElementById("lightbox");
+                        const lightboxImage = document.getElementById("lightboxImage");
+                        const lightboxClose = document.querySelector(".lightbox-close");
+                        const lightboxBackdrop = document.querySelector(".lightbox-backdrop");
+
+                        function openLightbox(src) {
+                        lightboxImage.src = src;
+                        lightbox.classList.remove("hidden");
+                        document.body.style.overflow = "hidden"; // scroll lock
+                        }
+
+                        function closeLightbox() {
+                        lightbox.classList.add("hidden");
+                        lightboxImage.src = "";
+                        document.body.style.overflow = "";
+                        }
+
+                        lightboxClose.addEventListener("click", closeLightbox);
+                        lightboxBackdrop.addEventListener("click", closeLightbox);
+
+                        document.addEventListener("keydown", (e) => {
+                        if (e.key === "Escape" && !lightbox.classList.contains("hidden")) {
+                            closeLightbox();
+                        }
+                        });
 
                         </script>
 
@@ -246,12 +313,12 @@
                                     <i class="icon arrow-right"></i>
                                     {foreach $navigator as $_navi}
                                         {if ($_navi.url|default)}
-                                            <span typeof="v:Breadcrumb">
+                                            <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
                                                 <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                                     {$_navi.caption|lower|capitalize}
                                                 </a>
                                             </span>
-                                            <i class="icon arrow-right"></i>
+                                            <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
                                         {else}
                                             {$_navi.caption|lower|capitalize}
                                         {/if}
@@ -345,11 +412,11 @@
                                     </div>
                                 {else}
                                     {if ($termek.brutto > 0)}
-                                    <div class="textalignright">
+                                    {* <div class="textalignright">
                                         <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}" data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
                                             {t('Kosárba')}
                                         </a>
-                                    </div>
+                                    </div> *}
                                     {/if}
                                 {/if}
                             </div>

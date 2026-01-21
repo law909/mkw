@@ -5,6 +5,11 @@
   grid-template-columns: repeat(4, 1fr);
   gap: var(--gap-base);
 
+  &__divider {
+    margin-bottom: 30px;
+    margin-top: -10px;
+  }
+
   @include tablet {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -85,6 +90,10 @@
     
   // }
   
+}
+
+.category-title {
+  font-size: var(--font-size-header);
 }
 
 .category-description {

@@ -37,9 +37,9 @@
                 </video>
 
                 <div class="hero-content hero-content__inverse flex-col flex-cc">
-                    <h1>{t('Új kollekció 2025')}</h1>
+                    {* <h1>{t('Új kollekció 2025')}</h1>
                     <p>{t('Ismerd meg legújabb termékeinket')}</p>
-                    <a href="#" class="button bordered inverse">{t('Részletek')}</a>
+                    <a href="#" class="button bordered inverse">{t('Részletek')}</a> *}
                 </div>
             </section>
 
@@ -47,7 +47,7 @@
             <section class="featured-collection-slider featured-collection-slider__dark carousel-section">
                 <div class="container section-header small row flex-cb">
                     <div class="col flex-lc flex-col ta-l">
-                        <h2>{t('Akciós termékeink')}</h2>
+                        <h2>{t('Ajánlott')}</h2>
                         {* <p>{t('Válogatás a legújabb kollekciónkból')}</p> *}
                         <p></p>
                     </div>
@@ -135,7 +135,7 @@
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                         {if ((isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0))}
-                                            <span class="akciosarszoveg">Eredeti ár: <span
+                                            <span class="akciosarszoveg">{t('Eredeti ár:')} <span
                                                     class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
                                         {/if}
                                         {if ($_termek.nemkaphato)}
@@ -227,9 +227,9 @@
         <section class="full-banner left inverse">
             <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-5.jpg" alt="Banner">
             <div class="banner-content flex-cc flex-col">
-                <h2>{t('Új Kollekció')}</h2>
+                {* <h2>{t('Új Kollekció')}</h2>
                 <p>{t('Fedezd fel legújabb termékeinket')}</p>
-                <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a>
+                <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a> *}
             </div>
         </section>
 
@@ -265,11 +265,11 @@
         </section>
 
         <section class="full-banner right inverse">
-            <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-4.jpg" alt="Banner">
+            <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-4.jpg" alt="Banner" style="object-position: center;">
             <div class="banner-content flex-cc flex-col">
-                <h2>{t('Új Kollekció')}</h2>
+                {* <h2>{t('Új Kollekció')}</h2>
                 <p>{t('Fedezd fel legújabb termékeinket')}</p>
-                <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a>
+                <a href="#" class="button bordered inverse">{t('Tudj Meg Többet')}</a> *}
             </div>
         </section>
 
