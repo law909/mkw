@@ -356,6 +356,28 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function calcRegularPrice($valutanem, $valtozat = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcRegularPrice', [$valutanem, $valtozat]);
+
+        return parent::calcRegularPrice($valutanem, $valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcSalePrice($valutanem, $valtozat = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSalePrice', [$valutanem, $valtozat]);
+
+        return parent::calcSalePrice($valutanem, $valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

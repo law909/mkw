@@ -1581,23 +1581,23 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function calcRegularPriceForWC($valutanem)
+    public function calcRegularPrice($valutanem)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcRegularPriceForWC', [$valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcRegularPrice', [$valutanem]);
 
-        return parent::calcRegularPriceForWC($valutanem);
+        return parent::calcRegularPrice($valutanem);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function calcSalePriceForWC($valutanem)
+    public function calcSalePrice($valutanem)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSalePriceForWC', [$valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSalePrice', [$valutanem]);
 
-        return parent::calcSalePriceForWC($valutanem);
+        return parent::calcSalePrice($valutanem);
     }
 
     /**

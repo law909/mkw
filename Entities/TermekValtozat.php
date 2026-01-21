@@ -1405,23 +1405,23 @@ class TermekValtozat
         return $variation;
     }
 
-    public function calcRegularPriceForWC($valutanem)
+    public function calcRegularPrice($valutanem)
     {
-        return (string)$this->getTermek()->getNettoAr(
+        return (string)$this->getTermek()->getBruttoAr(
             $this,
             null,
             $valutanem,
-            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()))
+            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWebshopNum()))
         );
     }
 
-    public function calcSalePriceForWC($valutanem)
+    public function calcSalePrice($valutanem)
     {
-        return (string)$this->getTermek()->getNettoAr(
+        return (string)$this->getTermek()->getBruttoAr(
             $this,
             null,
             $valutanem,
-            \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()))
+            \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWebshopNum()))
         );
     }
 
@@ -1448,8 +1448,8 @@ class TermekValtozat
             $variation['id'] = $this->getWcid();
         }
         if ($this->getTermek()) {
-            $variation['regular_price'] = $this->calcRegularPriceForWC($eur);
-            $variation['sale_price'] = $this->calcSalePriceForWC($eur);
+            $variation['regular_price'] = $this->calcRegularPrice($eur);
+            $variation['sale_price'] = $this->calcSalePrice($eur);
         }
         if ($this->getKepwcid()) {
             $variation['image'] = [
@@ -1569,8 +1569,8 @@ class TermekValtozat
         }
         $eur = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'EUR']);
         $variation = [
-            'regular_price' => $this->calcRegularPriceForWC($eur),
-            'sale_price' => $this->calcSalePriceForWC($eur),
+            'regular_price' => $this->calcRegularPrice($eur),
+            'sale_price' => $this->calcSalePrice($eur),
         ];
 
         $wc = store::getWcClient();
