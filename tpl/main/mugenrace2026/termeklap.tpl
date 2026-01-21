@@ -162,13 +162,13 @@
                             if (thumbTop < containerTop) {
                                 // kilóg felül
                                 thumbsContainer.scrollTo({
-                                top: thumbTop - 10,
+                                top: thumbTop - 20, //  
                                 behavior: "smooth"
                                 });
                             } else if (thumbBottom > containerBottom) {
                                 // kilóg alul
                                 thumbsContainer.scrollTo({
-                                top: thumbBottom - thumbsContainer.clientHeight + 10,
+                                top: thumbBottom - thumbsContainer.clientHeight - 10, //  
                                 behavior: "smooth"
                                 });
                             }
@@ -221,7 +221,7 @@
                                     newImg.style.top = "";
 
                                     isAnimating = false; // 🔓 unlock
-                                }, 10);
+                                }, 170);
                             };
 
                             currentIndex = newIndex;
