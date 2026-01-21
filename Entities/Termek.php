@@ -7,11 +7,8 @@ use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\GuzzleException;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
-use PSWebServiceLibrary;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
@@ -880,15 +877,14 @@ class Termek
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->getBruttoAr(
-                    $valtozat,
-                    \mkw\store::getLoggedInUser(),
+                $x['brutto'] = $this->calcSalePrice(
                     \mkw\store::getMainValutanemId(),
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                    $valtozat
                 );
                 $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+                $x['eredetibrutto'] = $this->calcRegularPrice(\mkw\store::getMainValutanemId(), $valtozat);
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
+                $x['akcios'] = (boolean)$x['eredetibrutto'];
                 break;
             case \mkw\store::isMugenrace2021():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -1033,15 +1029,14 @@ class Termek
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['brutto'] = $this->getBruttoAr(
-                $valtozat,
-                \mkw\store::getLoggedInUser(),
+            $x['brutto'] = $this->calcSalePrice(
                 \mkw\store::getMainSession()->valutanem,
-                \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                $valtozat
             );
             $x['bruttohuf'] = $x['brutto'];
-            $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+            $x['eredetibrutto'] = $this->calcRegularPrice(\mkw\store::getMainSession()->valutanem, $valtozat);
             $x['eredetibruttohuf'] = $x['eredetibrutto'];
+            $x['akcios'] = (boolean)$x['eredetibrutto'];
         } else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
             $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
@@ -1104,15 +1099,17 @@ class Termek
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->getBruttoAr(
-                    $valtozat,
-                    \mkw\store::getLoggedInUser(),
+                $x['brutto'] = $this->calcSalePrice(
                     \mkw\store::getMainValutanemId(),
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                    $valtozat
                 );
                 $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+                $x['eredetibrutto'] = $this->calcRegularPrice(
+                    \mkw\store::getMainValutanemId(),
+                    $valtozat
+                );
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
+                $x['akcios'] = (boolean)$x['eredetibrutto'];
                 break;
             case \mkw\store::isMugenrace2021():
                 $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
@@ -1252,15 +1249,17 @@ class Termek
         $x['ertekelesdb'] = $ert['ertekelesdb'];
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['brutto'] = $this->getBruttoAr(
-                $valtozat,
-                \mkw\store::getLoggedInUser(),
+            $x['brutto'] = $this->calcSalePrice(
                 \mkw\store::getMainSession()->valutanem,
-                \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                $valtozat
             );
             $x['bruttohuf'] = $x['brutto'];
-            $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
+            $x['eredetibrutto'] = $this->calcRegularPrice(
+                \mkw\store::getMainSession()->valutanem,
+                $valtozat
+            );
             $x['eredetibruttohuf'] = $x['eredetibrutto'];
+            $x['akcios'] = (boolean)$x['eredetibrutto'];
         } else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
             $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
@@ -1332,6 +1331,26 @@ class Termek
             $x['valtozatnev'] = '';
         }
         return $x;
+    }
+
+    public function calcRegularPrice($valutanem, $valtozat = null)
+    {
+        return $this->getBruttoAr(
+            $valtozat,
+            null,
+            $valutanem,
+            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWebshopNum()))
+        );
+    }
+
+    public function calcSalePrice($valutanem, $valtozat = null)
+    {
+        return $this->getBruttoAr(
+            $valtozat,
+            null,
+            $valutanem,
+            \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWebshopNum()))
+        );
     }
 
     public function getId()
@@ -4081,8 +4100,8 @@ class Termek
         foreach ($this->getValtozatok() as $index => $valtozat) {
             $variations['update'][] = [
                 'id' => $valtozat->getWcid(),
-                'regular_price' => $valtozat->calcRegularPriceForWC($eur),
-                'sale_price' => $valtozat->calcSalePriceForWC($eur),
+                'regular_price' => $valtozat->calcRegularPrice($eur),
+                'sale_price' => $valtozat->calcSalePrice($eur),
             ];
             if (($index + 1) % 100 == 0 || $index + 1 == count($this->getValtozatok())) {
                 \mkw\store::writelog($this->getId() . ':SendArToWC:változat BATCH POST start: ' . json_encode($variations));
@@ -4456,11 +4475,7 @@ class Termek
      */
     private function getPrestaClient()
     {
-        return new PSWebServiceLibrary(
-            \mkw\store::getPrestaUrl(),
-            \mkw\store::getPrestaKey(),
-            false // Debug mode off
-        );
+        return false;
     }
 
     /**
