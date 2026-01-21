@@ -169,6 +169,10 @@
     }
   }
 
+&__recommended-products {
+  flex-wrap: unset;
+}
+
   &__related-products,
   &__similar-products,
   &__popular-products,

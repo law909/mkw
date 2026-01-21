@@ -313,5 +313,7 @@ return [
     'Új' => 'New',
     'Akciós' => 'On sale',
     'Kiemelt' => 'Featured',
+    'Ajánlott' => 'Recommended',
+    'Kiemelt termékeink' => 'Featured products',
 
 ];
