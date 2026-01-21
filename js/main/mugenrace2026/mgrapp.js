@@ -1951,8 +1951,8 @@ $(document).ready(function() {
     const content = $(this).next(".accordion-content");
 
     // Csak egy legyen nyitva
-    $(".accordion-content").not(content).slideUp();
-    $(".accordion-header").not(this).removeClass("active");
+    // $(".accordion-content").not(content).slideUp();
+    // $(".accordion-header").not(this).removeClass("active");
 
     // Nyit/zár + aktív osztály
     content.slideToggle();
