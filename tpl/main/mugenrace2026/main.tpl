@@ -135,7 +135,7 @@
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                         {if ((isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0))}
-                                            <span class="akciosarszoveg">Eredeti ár: <span
+                                            <span class="akciosarszoveg">{t('Eredeti ár:')} <span
                                                     class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
                                         {/if}
                                         {if ($_termek.nemkaphato)}
