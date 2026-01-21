@@ -65,7 +65,7 @@
 
                         <div class="product-carousel-container">
                             <div class="flags">
-                                {if (isset($termek.ujtermek) && $termek.ujtermek)}
+                                {if (isset($termek.uj) && $termek.uj)}
                                     <div class="flag new-product">{t('Új')}</div>
                                 {/if}
 
@@ -263,15 +263,15 @@
                             {* Title  *}
 
                             <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                {if ($termek.akcios)}
-                                    <span class="akciosarszoveg">{t('Eredeti ár')}: <span class="akciosar">{number_format($termek.eredetibruttohuf,0,',',' ')} {$termek.valutanemnev}</span></span>
+                                 {if (isset($termek.eredetibrutto) && $termek.eredetibrutto>0)}
+                                    <span class="akciosarszoveg">{t('Eredeti ár')}: <span class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>
                                 {/if}
                                 {if ($termek.nemkaphato)}
                                     <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
                                 {else}
                                     <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
                                 {/if}
-                                <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} {$valutanemnev}</span>
+                                <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$valutanemnev}</span>
                             </div>
                             {* Price  *}
 
@@ -344,7 +344,7 @@
                                         </a>
                                     </div>
                                 {else}
-                                    {if ($termek.bruttohuf > 0)}
+                                    {if ($termek.brutto > 0)}
                                     <div class="textalignright">
                                         <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}" data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
                                             {t('Kosárba')}
@@ -398,7 +398,7 @@
                                                     <div class="kapcsolodoTermekInner">
                                                         <a href="{$_kapcsolodo.link}">
                                                             <div class="flags">
-                                                                {if (isset($_kapcsolodo.ujtermek) && $_kapcsolodo.ujtermek)}
+                                                                {if (isset($_kapcsolodo.uj) && $_kapcsolodo.uj)}
                                                                     <div class="flag new-product">{t('Új')}</div>
                                                                 {/if}
 
@@ -419,13 +419,13 @@
                                                             </div>
                                                             <div class="product-datasheet__list-item-caption">{$_kapcsolodo.caption|lower|capitalize}</div>
                                                             <div class="product-datasheet__list-item-sku">{$_kapcsolodo.cikkszam}</div>
-                                                            {if ($_kapcsolodo.akcios)}
+                                                            {if ((isset($_kapcsolodo.eredetibrutto) && $_kapcsolodo.eredetibrutto>0))}
                                                                 <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_kapcsolodo.eredetibruttohuf,0,',',' ')} {$_kapcsolodo.valutanemnev}</span></span>
+                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_kapcsolodo.eredetibrutto,0,',',' ')} {$_kapcsolodo.valutanemnev}</span></span>
                                                                 </div>
                                                             {/if}
                                                             <h5>
-                                                                <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
+                                                                <span>{number_format($_kapcsolodo.brutto,0,',',' ')} {$valutanemnev}</span>
                                                             </h5>
                                                             <a href="{$_kapcsolodo.link}" class="button bordered okbtn">{t('Részletek')}</a>
                                                         </a>
@@ -454,7 +454,7 @@
                                                     <div class="kapcsolodoTermekInner">
                                                         <a href="{$_hasonlo.link}">
                                                             <div class="flags">
-                                                                {if (isset($_hasonlo.ujtermek) && $_hasonlo.ujtermek)}
+                                                                {if (isset($_hasonlo.uj) && $_hasonlo.uj)}
                                                                     <div class="flag new-product">{t('Új')}</div>
                                                                 {/if}
 
@@ -474,13 +474,13 @@
                                                             </div>
                                                             <div class="product-datasheet__list-item-caption">{$_hasonlo.caption|lower|capitalize}</div>
                                                             <div class="product-datasheet__list-item-sku">{$_hasonlo.cikkszam}</div>
-                                                            {if ($_hasonlo.akcios)}
+                                                            {if ((isset($_hasonlo.eredetibrutto) && $_hasonlo.eredetibrutto>0))}
                                                                 <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_hasonlo.eredetibruttohuf,0,',',' ')} {$_hasonlo.valutanemnev}</span></span>
+                                                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_hasonlo.eredetibrutto,0,',',' ')} {$_hasonlo.valutanemnev}</span></span>
                                                                 </div>
                                                             {/if}
                                                             <h5>
-                                                                <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
+                                                                <span>{number_format($_hasonlo.brutto,0,',',' ')} {$valutanemnev}</span>
                                                             </h5>
                                                             <a href="{$_hasonlo.link}" class="button bordered okbtn">{t('Részletek')}</a>
                                                         </a>
@@ -634,7 +634,7 @@
                             <div class="termekSliderTermekInner">
                                 <a href="/product/{$_termek.slug}">
                                     <div class="flags">
-                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                        {if (isset($_termek.uj) && $_termek.uj)}
                                             <div class="flag new-product">{t('Új')}</div>
                                         {/if}
 
@@ -654,12 +654,12 @@
                                     </div>
                                     <div class="product-datasheet__list-item-caption">{$_termek.caption|lower|capitalize}</div>
                                     <div class="product-datasheet__list-item-sku">{$_termek.cikkszam}</div>
-                                    {if ($_termek.akcios)}
+                                    {if ((isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0))}
                                         <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                            <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
+                                            <span class="akciosarszoveg"><span class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
                                         </div>
                                     {/if}
-                                    <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
+                                    <h5 class="main"><span>{number_format($_termek.brutto,0,',',' ')} {$valutanemnev}</span></h5>
                                     <a href="{$_termek.link}" class="button bordered okbtn">{t('Részletek')}</a>
                                 </a>
                             </div>
@@ -682,7 +682,7 @@
                     <div class="kapcsolodoTermekInner">
                         <a href="{$_nepszeru.link}">
                             <div class="flags">
-                                {if (isset($_nepszeru.ujtermek) && $_nepszeru.ujtermek)}
+                                {if (isset($_nepszeru.uj) && $_nepszeru.uj)}
                                     <div class="flag new-product">{t('Új')}</div>
                                 {/if}
 
@@ -693,6 +693,10 @@
                                 {if (isset($_nepszeru.kiemelt) && $_nepszeru.kiemelt)}
                                     <div class="flag featured">{t('Kiemelt')}</div>
                                 {/if}
+
+                                {if (isset($_termek.ajanlott) && $_termek.ajanlott)}
+                                    <div class="flag featured">{t('Ajánlott')}</div>
+                                {/if}
                                 {* {if (isset($_nepszeru.top10) && $_nepszeru.top10)}
                                     <div class="flag sale-product">{t('Top 10')}</div>
                                 {/if} *}
@@ -702,13 +706,13 @@
                             </div>
                             <div class="product-datasheet__list-item-caption">{$_nepszeru.caption|lower|capitalize}</div>
                             <div class="product-datasheet__list-item-sku">{$_nepszeru.cikkszam}</div>
-                            {if ($_nepszeru.akcios)}
+                            {if ((isset($_nepszeru.eredetibrutto) && $_nepszeru.eredetibrutto>0))}
                                 <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_nepszeru.eredetibruttohuf,0,',',' ')} {$_nepszeru.valutanemnev}</span></span>
+                                    <span class="akciosarszoveg"><span class="akciosar">{number_format($_nepszeru.eredetibrutto,0,',',' ')} {$_nepszeru.valutanemnev}</span></span>
                                 </div>
                             {/if}
                             <h5>
-                                <span>{number_format($_nepszeru.bruttohuf,0,',',' ')} {$valutanemnev}</span>
+                                <span>{number_format($_nepszeru.brutto,0,',',' ')} {$valutanemnev}</span>
                             </h5>
                             <a href="{$_nepszeru.link}" class="button bordered okbtn">{t('Részletek')}</a>
                         </a>

@@ -74,7 +74,7 @@
                             <div class="gtermekinnest product-list-item__inner">
                                 <div class="textaligncenter product-list-item__image-container">
                                     <div class="flags">
-                                        {if (isset($_termek.ujtermek) && $_termek.ujtermek)}
+                                        {if (isset($_termek.uj) && $_termek.uj)}
                                             <div class="flag new-product">{t('Új')}</div>
                                         {/if}
 
@@ -85,6 +85,11 @@
                                         {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
                                             <div class="flag featured">{t('Kiemelt')}</div>
                                         {/if}
+
+                                        {if (isset($_termek.ajanlott) && $_termek.ajanlott)}
+                                            <div class="flag featured">{t('Ajánlott')}</div>
+                                        {/if}
+
                                         {* {if (isset($_termek.top10) && $_termek.top10)}
                                             <div class="flag sale-product">{t('Top 10')}</div>
                                         {/if} *}
@@ -129,16 +134,16 @@
                                 </div>
                                 <div class="flex-tb ">
                                     <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                        {if ($_termek.akcios)}
+                                        {if ((isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0))}
                                             <span class="akciosarszoveg">Eredeti ár: <span
-                                                    class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} {$_termek.valutanemnev}</span></span>
+                                                    class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
                                         {/if}
                                         {if ($_termek.nemkaphato)}
                                             <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
                                         {else}
                                             <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
                                         {/if}
-                                        <span class="product-list-item__price" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')}
+                                        <span class="product-list-item__price" itemprop="price">{number_format($_termek.brutto,0,',',' ')}
                                             {$_termek.valutanemnev}
                                             </span>
                                     </div>
@@ -148,7 +153,7 @@
                                                 {t('Elfogyott')}
                                             </a>
                                         {else}
-                                            {if ($_termek.bruttohuf > 0)}
+                                            {if ($_termek.brutto > 0)}
                                                 <a href="/kosar/add?id={$_termek.id}" rel="nofollow"
                                                    class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$_termek.id}">
                                                     {t('Kosárba')}
