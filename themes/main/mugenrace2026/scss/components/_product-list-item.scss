@@ -19,6 +19,8 @@
     background-color: var(--color-background-white);
     margin-bottom: 10px;
     transition: box-shadow 0.3s ease;
+    width: 100%;
+    height: 100%;
   }
 
   &__image {
@@ -114,6 +116,10 @@
   //     visibility: visible;
   //   }
   // }
+
+  .gtermekinner {
+    width: 100%;
+  }
 }
 
 .gtermek {

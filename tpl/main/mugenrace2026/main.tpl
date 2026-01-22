@@ -32,7 +32,7 @@
             <section class="hero-section video">
                 {* <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero"> *}
                 <video autoplay muted loop class="hero-video">
-                    <source src="https://phpstack-333569-6090507.cloudwaysapps.com/mugenrace-main-video.mp4" type="video/mp4">
+                    <source src="http://teszt.mugenrace.com/kepek/0110.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
 

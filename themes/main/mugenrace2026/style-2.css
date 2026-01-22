@@ -7,7 +7,7 @@
   --color-primary-transparent: #d0112bcb;
   --color-secondary: #6c757d;
   --color-gray: #6c757d78;
-  --color-dark: #212529;
+  --color-dark: #000000;
   --color-light: #f8f9fa;
   --color-white: #ffffff;
   --breakpoint-mobile-max: 768px;
@@ -1282,6 +1282,8 @@ a.underline {
 .page-header__breadcrumb i.icon {
   width: 16px;
   height: 16px;
+  position: relative;
+  z-index: -1;
 }
 @media (max-width: 768px) {
   .page-header__breadcrumb i.icon {
@@ -1690,14 +1692,16 @@ a.underline {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.8);
+  z-index: 11;
 }
 
 .lightbox-image {
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
-  z-index: 1;
+  z-index: 12;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  background-color: var(--color-background-white);
 }
 
 .lightbox-close {
@@ -1706,7 +1710,7 @@ a.underline {
   right: 24px;
   z-index: 2;
   font-size: 36px;
-  color: #fff;
+  color: var(--color-text-inverse);
   cursor: pointer;
   user-select: none;
 }
@@ -3264,7 +3268,7 @@ a.underline {
 
 /* Components */
 .top-header {
-  background-color: rgba(33, 37, 41, 0.9803921569);
+  background-color: rgba(14, 14, 14, 0.9921568627);
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -4070,6 +4074,8 @@ nav ul li a {
   background-color: var(--color-background-white);
   margin-bottom: 10px;
   transition: box-shadow 0.3s ease;
+  width: 100%;
+  height: 100%;
 }
 .product-list-item__image {
   width: 100%;
@@ -4128,6 +4134,9 @@ nav ul li a {
   width: auto;
   background: var(--color-background);
   padding: 10px 0;
+}
+.product-list-item .gtermekinner {
+  width: 100%;
 }
 
 .gtermek {

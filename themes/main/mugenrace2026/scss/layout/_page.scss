@@ -24,6 +24,8 @@
     i.icon {
       width: 16px;
       height: 16px;
+      position: relative;
+      z-index:-1;
 
       @include mobile {
         margin-bottom: -3px;
