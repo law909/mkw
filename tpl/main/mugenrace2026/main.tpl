@@ -31,7 +31,7 @@
         <div id="MainContent">
             <section class="hero-section video">
                 {* <img src="/themes/main/mugenrace2026/img/pages/mugenrace-home-1.jpg" alt="Hero"> *}
-                <video autoplay muted loop class="hero-video">
+                <video autoplay muted loop playsinline webkit-playsinline class="hero-video">
                     <source src="http://teszt.mugenrace.com/kepek/0110.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>

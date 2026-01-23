@@ -10,12 +10,38 @@
 
   &__items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--gap-base);
     padding: 10px 0 50px 0;
 
+     @include tablet {
+      // grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+    }
+
     @include mobile {
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      // grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    &.gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+
+      @include tablet {
+        // grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mobile {
+        // grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sponsored-riders__item-content {
+        padding: 0;
+      }
     }
   }
 

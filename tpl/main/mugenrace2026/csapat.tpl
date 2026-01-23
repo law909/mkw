@@ -22,6 +22,55 @@
             </div>
         </article>
     </div>
+
+    <div class="container sponsored-riders__list">
+        <div class="row">
+            <div class="col">
+                <h2 class="sponsored-riders__list-title">{t('Képgaléria')}</h2>
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sponsored-riders__items gallery-grid">
+                {* {foreach $csapat.versenyzok as $_versenyzo} *}
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class=" gallery-image sponsored-riders__item-image"></div>
+                    </div>
+
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class=" gallery-image sponsored-riders__item-image"></div>
+                    </div>
+
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/700/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image"></div>
+                    </div>
+
+                    <div class=" sponsored-riders__item gallery"><div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/350" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image"></div></div>
+
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content">
+                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
+                        </div>
+                    </div>
+
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content">
+                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
+                        </div>
+                    </div>
+
+                    <div class=" sponsored-riders__item gallery">
+                        <div class=" sponsored-riders__item-content">
+                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
+                        </div>
+                    </div>
+                    
+                {* {/foreach} *}
+            </div>
+        </div>
+    </div>
+
+
     {if ($csapat.versenyzok|@count gt 0)}
     <div class="container sponsored-riders__list">
         <div class="row">
@@ -47,6 +96,14 @@
         </div>
     </div>
     {/if}
+
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-backdrop"></div>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        <div class="lightbox-close">×</div>
+    </div>
+
+
 
     {* <div>
         <h3>{$csapat.nev}</h3>
