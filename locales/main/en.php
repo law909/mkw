@@ -315,5 +315,5 @@ return [
     'Kiemelt' => 'Featured',
     'Ajánlott' => 'Recommended',
     'Kiemelt termékeink' => 'Featured products',
-
+    'Képgaléria' => 'Gallery',
 ];

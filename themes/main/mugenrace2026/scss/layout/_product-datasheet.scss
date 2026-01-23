@@ -299,23 +299,25 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.8);
+  z-index: 11;
 }
 
 .lightbox-image {
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
-  z-index: 1;
+  z-index: 12;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  background-color: var(--color-background-white);
 }
 
 .lightbox-close {
   position: absolute;
   top: 20px;
   right: 24px;
-  z-index: 2;
+  z-index: 11;
   font-size: 36px;
-  color: #fff;
+  color: var(--color-text-inverse);
   cursor: pointer;
   user-select: none;
 }
