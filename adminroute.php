@@ -1004,6 +1004,15 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/csapat/save', 'csapatController#save', 'admincsapatsave');
 }
 
+$router->map('GET', '/admin/blokk/viewlist', 'blokkController#viewlist', 'adminblokkviewlist');
+$router->map('GET', '/admin/blokk/getlistbody', 'blokkController#getlistbody', 'adminblokkgetlistbody');
+$router->map('GET', '/admin/blokk/getkarb', 'blokkController#getkarb', 'adminblokkgetkarb');
+$router->map('GET', '/admin/blokk/viewkarb', 'blokkController#viewkarb', 'adminblokkviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/blokk/save', 'blokkController#save', 'adminblokksave');
+    $router->map('POST', '/admin/blokk/setflag', 'blokkController#setflag', 'adminblokksetflag');
+}
+
 $router->map('GET', '/admin/csapatkep/getemptyrow', 'csapatkepController#getemptyrow', 'admincsapatkepgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/csapatkep/del', 'csapatkepController#del', 'admincsapatkepdel');

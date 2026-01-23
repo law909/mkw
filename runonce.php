@@ -484,6 +484,16 @@ if ($DBVersion < '0061') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0061');
 }
 
+if ($DBVersion < '0062') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Blokkok","/admin/blokk/viewlist","adminblokkviewlist",20,0,455, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0062');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
