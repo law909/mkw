@@ -9,7 +9,7 @@
         {at($_blokk.tipusnev)}
     </td>
     <td class="cell">
-        {at($_blokk.blokkmagassagnev)}{if ($_blokk.tipus == 2)} / {at($_blokk.blokkmagassag2nev)}{/if}
+        {at($_blokk.blokkmagassagnev)}
     </td>
     <td class="cell"><a href="#" data-id="{$_blokk.id}" data-flag="lathato"
                         class="js-flagcheckbox{if ($_blokk.lathato)} ui-state-hover{/if}">{at('Látható')}</a></td>

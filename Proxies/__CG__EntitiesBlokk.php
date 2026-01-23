@@ -67,10 +67,10 @@ class Blokk extends \Entities\Blokk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag2'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag2'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2'];
     }
 
     /**
@@ -652,28 +652,6 @@ class Blokk extends \Entities\Blokk implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzovegigazitas2', [$szovegigazitas2]);
 
         return parent::setSzovegigazitas2($szovegigazitas2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBlokkmagassag2()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBlokkmagassag2', []);
-
-        return parent::getBlokkmagassag2();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setBlokkmagassag2($blokkmagassag2)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBlokkmagassag2', [$blokkmagassag2]);
-
-        return parent::setBlokkmagassag2($blokkmagassag2);
     }
 
 }

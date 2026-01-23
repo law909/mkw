@@ -40,6 +40,14 @@
                     <td><label for="StyleEdit">{at('CSS style')}:</label></td>
                     <td><input id="StyleEdit" name="cssstyle" type="text" size="80" maxlength="255" value="{$blokk.cssstyle}"></td>
                 </tr>
+                <tr>
+                    <td><label for="BlokkmagassagEdit">{at('Blokk magasság')}:</label></td>
+                    <td><select id="BlokkmagassagEdit" name="blokkmagassag">
+                            {foreach $blokkmagassaglist as $key => $val}
+                                <option value="{$key}"{if ($blokk.blokkmagassag == $key)} selected="selected"{/if}>{at($val)}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -86,14 +94,6 @@
                             {/foreach}
                         </select></td>
                 </tr>
-                <tr>
-                    <td><label for="BlokkmagassagEdit">{at('Blokk magasság')}:</label></td>
-                    <td><select id="BlokkmagassagEdit" name="blokkmagassag">
-                            {foreach $blokkmagassaglist as $key => $val}
-                                <option value="{$key}"{if ($blokk.blokkmagassag == $key)} selected="selected"{/if}>{at($val)}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -137,14 +137,6 @@
                     <td><select id="Szovegigazitas2Edit" name="szovegigazitas2">
                             {foreach $szovegigazitaslist as $key => $val}
                                 <option value="{$key}"{if ($blokk.szovegigazitas2 == $key)} selected="selected"{/if}>{at($val)}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="Blokkmagassag2Edit">{at('Blokk magasság 2')}:</label></td>
-                    <td><select id="Blokkmagassag2Edit" name="blokkmagassag2">
-                            {foreach $blokkmagassaglist as $key => $val}
-                                <option value="{$key}"{if ($blokk.blokkmagassag2 == $key)} selected="selected"{/if}>{at($val)}</option>
                             {/foreach}
                         </select></td>
                 </tr>

@@ -54,8 +54,6 @@ class blokkController extends \mkwhelpers\MattableController
         $v['gomburl2'] = $t->getGomburl2();
         $v['szovegigazitas2'] = $t->getSzovegigazitas2();
         $v['szovegigazitas2nev'] = $sziglist[$t->getSzovegigazitas2()];
-        $v['blokkmagassag2'] = $t->getBlokkmagassag2();
-        $v['blokkmagassag2nev'] = $bmlist[$t->getBlokkmagassag2()];
         return $v;
     }
 
@@ -82,7 +80,6 @@ class blokkController extends \mkwhelpers\MattableController
         $obj->setGombfelirat2($this->params->getStringRequestParam('gombfelirat2'));
         $obj->setGomburl2($this->params->getStringRequestParam('gomburl2'));
         $obj->setSzovegigazitas2($this->params->getIntRequestParam('szovegigazitas2'));
-        $obj->setBlokkmagassag2($this->params->getIntRequestParam('blokkmagassag2'));
         return $obj;
     }
 
