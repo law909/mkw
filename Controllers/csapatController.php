@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Csapat;
+use Entities\CsapatKep;
 use mkw\store;
 
 class csapatController extends \mkwhelpers\MattableController
@@ -20,6 +21,8 @@ class csapatController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
+        $kepCtrl = new csapatkepController($this->params);
+        $kep = [];
         $v = [];
         if (!$t) {
             $t = new Csapat();
@@ -45,6 +48,10 @@ class csapatController extends \mkwhelpers\MattableController
         $v['kepurl400'] = $t->getKepurl400();
         $v['kepurl2000'] = $t->getKepurl2000();
         $v['kepleiras'] = $t->getKepleiras();
+        foreach ($t->getCsapatKepek() as $kepje) {
+            $kep[] = $kepCtrl->loadVars($kepje);
+        }
+        $v['kepek'] = $kep;
         if (!$forKarb) {
             $v['versenyzok'] = [];
             $vctrl = new versenyzoController($this->params);
@@ -63,6 +70,29 @@ class csapatController extends \mkwhelpers\MattableController
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
+        $kepids = $this->params->getArrayRequestParam('kepid');
+        foreach ($kepids as $kepid) {
+            if ($this->params->getStringRequestParam('kepurl_' . $kepid, '') !== '') {
+                $oper = $this->params->getStringRequestParam('kepoper_' . $kepid);
+                if ($oper == 'add') {
+                    $kep = new \Entities\CsapatKep();
+                    $obj->addCsapatKep($kep);
+                    $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
+                    $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
+                    $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
+                    $this->getEm()->persist($kep);
+                } elseif ($oper == 'edit') {
+                    /** @var CsapatKep $kep */
+                    $kep = \mkw\store::getEm()->getRepository(CsapatKep::class)->find($kepid);
+                    if ($kep) {
+                        $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
+                        $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
+                        $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
+                        $this->getEm()->persist($kep);
+                    }
+                }
+            }
+        }
         return $obj;
     }
 

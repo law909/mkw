@@ -67,10 +67,10 @@ class Csapat extends \Entities\Csapat implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Csapat' . "\0" . 'id', '' . "\0" . 'Entities\\Csapat' . "\0" . 'nev', '' . "\0" . 'Entities\\Csapat' . "\0" . 'slug', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logourl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'leiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logoleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'versenyzok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Csapat' . "\0" . 'id', '' . "\0" . 'Entities\\Csapat' . "\0" . 'nev', '' . "\0" . 'Entities\\Csapat' . "\0" . 'slug', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logourl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'leiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logoleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'versenyzok', '' . "\0" . 'Entities\\Csapat' . "\0" . 'csapatkepek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Csapat' . "\0" . 'id', '' . "\0" . 'Entities\\Csapat' . "\0" . 'nev', '' . "\0" . 'Entities\\Csapat' . "\0" . 'slug', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logourl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'leiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logoleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'versenyzok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Csapat' . "\0" . 'id', '' . "\0" . 'Entities\\Csapat' . "\0" . 'nev', '' . "\0" . 'Entities\\Csapat' . "\0" . 'slug', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logourl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'leiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Csapat' . "\0" . 'logoleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Csapat' . "\0" . 'versenyzok', '' . "\0" . 'Entities\\Csapat' . "\0" . 'csapatkepek'];
     }
 
     /**
@@ -487,6 +487,39 @@ class Csapat extends \Entities\Csapat implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVersenyzok', []);
 
         return parent::getVersenyzok();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCsapatKepek($csaklathato = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsapatKepek', [$csaklathato]);
+
+        return parent::getCsapatKepek($csaklathato);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addCsapatKep(\Entities\CsapatKep $kep)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCsapatKep', [$kep]);
+
+        return parent::addCsapatKep($kep);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeCsapatKep(\Entities\CsapatKep $kep)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCsapatKep', [$kep]);
+
+        return parent::removeCsapatKep($kep);
     }
 
 }

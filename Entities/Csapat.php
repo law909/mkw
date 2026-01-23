@@ -45,10 +45,13 @@ class Csapat
      * @ORM\OneToMany(targetEntity="Versenyzo", mappedBy="csapat")
      */
     private $versenyzok;
+    /** @ORM\OneToMany(targetEntity="CsapatKep", mappedBy="csapat", cascade={"persist"}) */
+    private $csapatkepek;
 
     public function __construct()
     {
         $this->versenyzok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->csapatkepek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId()
@@ -281,5 +284,36 @@ class Csapat
     public function getVersenyzok()
     {
         return $this->versenyzok;
+    }
+
+    public function getCsapatKepek($csaklathato = false)
+    {
+        if ($csaklathato) {
+            $r = [];
+            foreach ($this->csapatkepek as $kep) {
+                if (!$kep->getRejtett()) {
+                    $r[] = $kep;
+                }
+            }
+            return $r;
+        }
+        return $this->csapatkepek;
+    }
+
+    public function addCsapatKep(CsapatKep $kep)
+    {
+//		if (!$this->termekkepek->contains($kep)) {
+        $this->csapatkepek->add($kep);
+        $kep->setCsapat($this);
+//		}
+    }
+
+    public function removeCsapatKep(CsapatKep $kep)
+    {
+        if ($this->csapatkepek->removeElement($kep)) {
+            $kep->removeCsapat($this);
+            return true;
+        }
+        return false;
     }
 }

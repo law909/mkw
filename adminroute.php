@@ -1004,6 +1004,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/csapat/save', 'csapatController#save', 'admincsapatsave');
 }
 
+$router->map('GET', '/admin/csapatkep/getemptyrow', 'csapatkepController#getemptyrow', 'admincsapatkepgetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/csapatkep/del', 'csapatkepController#del', 'admincsapatkepdel');
+}
+
 $router->map('GET', '/admin/versenyzo/viewlist', 'versenyzoController#viewlist', 'adminversenyzoviewlist');
 $router->map('GET', '/admin/versenyzo/getlistbody', 'versenyzoController#getlistbody', 'adminversenyzogetlistbody');
 $router->map('GET', '/admin/versenyzo/getkarb', 'versenyzoController#getkarb', 'adminversenyzogetkarb');

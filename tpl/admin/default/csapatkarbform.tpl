@@ -6,6 +6,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#KepTab">{at('Képek')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -28,13 +29,13 @@
                                         <tr>
                                             <td><label for="LogoUrlEdit">{at('Logo')}:</label></td>
                                             <td><input id="LogoUrlEdit" name="logourl" type="text" size="70" maxlength="255" value="{$csapat.logourl}"></td>
-                                            <td><a id="LogoKepBrowseButton" class="js-kepbrowsebutton" href="#" data-id="{$csapat.id}"
+                                            <td><a id="LogoKepBrowseButton" href="#" data-id="{$csapat.id}"
                                                    title="{at('Browse')}">{at('...')}</a></td>
                                         </tr>
                                         <tr>
                                             <td><label for="LogoLeirasEdit">{at('Logo leírása')}:</label></td>
                                             <td><input id="LogoLeirasEdit" name="logoleiras" type="text" size="70" value="{$csapat.logoleiras}"></td>
-                                            <td><a id="LogoKepDelButton" class="js-kepdelbutton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
+                                            <td><a id="LogoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
                                                         class="ui-icon ui-icon-circle-minus"></span></a></td>
                                         </tr>
                                         </tbody>
@@ -59,13 +60,13 @@
                                         <tr>
                                             <td><label for="KepUrlEdit">{at('Kép')}:</label></td>
                                             <td><input id="KepUrlEdit" name="kepurl" type="text" size="70" maxlength="255" value="{$csapat.kepurl}"></td>
-                                            <td><a id="FoKepBrowseButton" class="js-kepbrowsebutton" href="#" data-id="{$csapat.id}"
+                                            <td><a id="FoKepBrowseButton" href="#" data-id="{$csapat.id}"
                                                    title="{at('Browse')}">{at('...')}</a></td>
                                         </tr>
                                         <tr>
                                             <td><label for="KepLeirasEdit">{at('Kép leírása')}:</label></td>
                                             <td><input id="KepLeirasEdit" name="kepleiras" type="text" size="70" value="{$csapat.kepleiras}"></td>
-                                            <td><a id="FoKepDelButton" class="js-kepdelbutton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
+                                            <td><a id="FoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
                                                         class="ui-icon ui-icon-circle-minus"></span></a></td>
                                         </tr>
                                         </tbody>
@@ -82,6 +83,12 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div id="KepTab" class="mattkarb-page" data-visible="visible">
+            {foreach $csapat.kepek as $kep}
+                {include 'csapatcsapatkepkarb.tpl'}
+            {/foreach}
+            <a class="js-kepnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

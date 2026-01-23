@@ -1,0 +1,87 @@
+<?php
+
+namespace Controllers;
+
+use Entities\CsapatKep;
+
+class csapatkepController extends \mkwhelpers\MattableController
+{
+
+    public function __construct($params)
+    {
+        $this->setEntityName(CsapatKep::class);
+        parent::__construct($params);
+    }
+
+    public function loadVars($t)
+    {
+        $x = [];
+        if (!$t) {
+            $t = new \Entities\CsapatKep();
+            $this->getEm()->detach($t);
+            $x['oper'] = 'add';
+            $x['id'] = \mkw\store::createUID();
+        } else {
+            $x['oper'] = 'edit';
+            $x['id'] = $t->getId();
+        }
+        $x['url'] = $t->getUrl();
+        $x['urlsmall'] = $t->getUrlSmall();
+        $x['urlmedium'] = $t->getUrlMedium();
+        $x['urllarge'] = $t->getUrlLarge();
+        $x['urlmini'] = $t->getUrlMini();
+        $x['url400'] = $t->getUrl400();
+        $x['url2000'] = $t->getUrl2000();
+        $x['leiras'] = $t->getLeiras();
+        $x['rejtett'] = $t->getRejtett();
+        return $x;
+    }
+
+    protected function setFields($obj)
+    {
+        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
+        $obj->setUrl($this->params->getStringRequestParam('url'));
+        $obj->setRejtett($this->params->getBoolRequestParam('rejtett'));
+        return $obj;
+    }
+
+    public function getemptyrow()
+    {
+        $view = $this->createView('csapatcsapatkepkarb.tpl');
+        $view->setVar('kep', $this->loadVars(null));
+        echo $view->getTemplateResult();
+    }
+
+    public function getSelectList($csapat, $selid)
+    {
+        $kepek = $this->getRepo()->getByCsapat($csapat);
+        $keplista = [];
+        foreach ($kepek as $kep) {
+            $keplista[] = ['id' => $kep->getId(), 'caption' => $kep->getUrl(), 'selected' => $kep->getId() == $selid, 'url' => $kep->getUrlMini()];
+        }
+        return $keplista;
+    }
+
+    public function del()
+    {
+        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
+        /** @var CsapatKep $kep */
+        $kep = $this->getRepo()->find($this->params->getNumRequestParam('id'));
+        if ($kep) {
+            /* 			unlink($mainpath . $kep->getUrl(''));
+              unlink($mainpath . $kep->getUrlMini(''));
+              unlink($mainpath . $kep->getUrlSmall(''));
+              unlink($mainpath . $kep->getUrlMedium(''));
+              unlink($mainpath . $kep->getUrlLarge(''));
+             */
+            $this->getEm()->remove($kep);
+            $this->getEm()->flush();
+        }
+        echo $this->params->getNumRequestParam('id');
+    }
+
+
+}
