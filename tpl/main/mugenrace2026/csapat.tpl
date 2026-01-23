@@ -1,7 +1,6 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-
     <div class="teams-datasheet">
         <article itemtype="http://schema.org/Article" itemscope="">
             <div class="row">
@@ -22,7 +21,6 @@
             </div>
         </article>
     </div>
-
     <div class="container sponsored-riders__list">
         <div class="row">
             <div class="col">
@@ -32,79 +30,45 @@
         </div>
         <div class="row">
             <div class="col sponsored-riders__items gallery-grid">
-                {* {foreach $csapat.versenyzok as $_versenyzo} *}
+                {foreach $csapat.kepek as $_kep}
                     <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class=" gallery-image sponsored-riders__item-image"></div>
-                    </div>
-
-                    <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class=" gallery-image sponsored-riders__item-image"></div>
-                    </div>
-
-                    <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/700/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image"></div>
-                    </div>
-
-                    <div class=" sponsored-riders__item gallery"><div class=" sponsored-riders__item-content"><img src="https://picsum.photos/id/237/800/350" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image"></div></div>
-
-                    <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content">
-                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
-                        </div>
-                    </div>
-
-                    <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content">
-                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
-                        </div>
-                    </div>
-
-                    <div class=" sponsored-riders__item gallery">
-                        <div class=" sponsored-riders__item-content">
-                            <img src="https://picsum.photos/id/237/800/600" data-image-large="https://picsum.photos/id/237/1200/800" alt="" class="gallery-image sponsored-riders__item-image">
-                        </div>
-                    </div>
-                    
-                {* {/foreach} *}
-            </div>
-        </div>
-    </div>
-
-
-    {if ($csapat.versenyzok|@count gt 0)}
-    <div class="container sponsored-riders__list">
-        <div class="row">
-            <div class="col">
-                <h2 class="sponsored-riders__list-title">{t('Szponzorált versenyzők')}</h2>
-                <div class="divider"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col sponsored-riders__items">
-                {foreach $csapat.versenyzok as $_versenyzo}
-                    <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}/">
-                        <div class="kattext sponsored-riders__item-content">
-                            <img src="{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
-                            {if ($_versenyzo.versenysorozat)}
-                                <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
-                            {/if}
-                            <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}/">{$_versenyzo.nev}</a></div>
-                        </div>
+                        <div class="sponsored-riders__item-content"><img src="{$_kep.urlmedium}" data-image-large="{$_kep.url2000}" alt="{$_kep.leiras}"
+                                                                         class=" gallery-image sponsored-riders__item-image"></div>
                     </div>
                 {/foreach}
             </div>
         </div>
     </div>
+    {if ($csapat.versenyzok|@count gt 0)}
+        <div class="container sponsored-riders__list">
+            <div class="row">
+                <div class="col">
+                    <h2 class="sponsored-riders__list-title">{t('Szponzorált versenyzők')}</h2>
+                    <div class="divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col sponsored-riders__items">
+                    {foreach $csapat.versenyzok as $_versenyzo}
+                        <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}/">
+                            <div class="kattext sponsored-riders__item-content">
+                                <img src="{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
+                                {if ($_versenyzo.versenysorozat)}
+                                    <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
+                                {/if}
+                                <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}/">{$_versenyzo.nev}</a></div>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
     {/if}
-
     <div id="lightbox" class="lightbox hidden">
         <div class="lightbox-backdrop"></div>
         <img id="lightboxImage" class="lightbox-image" src="" alt="">
         <div class="lightbox-close">×</div>
     </div>
-
-
-
     {* <div>
         <h3>{$csapat.nev}</h3>
         {$csapat.id}
