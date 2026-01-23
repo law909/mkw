@@ -164,4 +164,16 @@ class blokkController extends \mkwhelpers\MattableController
             $this->getEm()->flush();
         }
     }
+
+    public function getListAsArray()
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('lathato', '=', true);
+        $res = [];
+        $blokkok = $this->getRepo()->getAll($filter, ['sorrend' => 'ASC']);
+        foreach ($blokkok as $blokk) {
+            $res[] = $this->loadVars($blokk);
+        }
+        return $res;
+    }
 }

@@ -107,10 +107,9 @@
         </div>
     </div>
 </div>
-{* <pre> *}
-{* {json_encode($menu1, JSON_PRETTY_PRINT)} *}
-{* {var_dump($menu1)} *}
-{* </pre> *}
+<pre>
+{json_encode($blokklista, JSON_PRETTY_PRINT)}
+</pre>
 
 {*
 <div class="headertop">

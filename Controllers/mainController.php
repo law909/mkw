@@ -83,6 +83,7 @@ class mainController extends \mkwhelpers\Controller
             case \mkw\store::isMugenrace():
                 $csapatc = new csapatController($this->params);
                 $riderc = new versenyzoController($this->params);
+                $blokkc = new blokkController($this->params);
                 $this->view->setVar('hirek', $hc->gethirlist());
                 $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
                 $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
@@ -93,6 +94,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
                 $this->view->setVar('csapatlista', $csapatc->getListAsArray());
                 $this->view->setVar('versenyzolista', $riderc->getListAsArray());
+                $this->view->setVar('blokklista', $blokkc->getListAsArray());
                 break;
 
             case \mkw\store::isMugenrace2021():
