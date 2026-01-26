@@ -2343,8 +2343,12 @@ $( document ).ready(function() {
         document.body.style.overflow = "";
     }
 
-    lightboxClose.addEventListener("click", closeLightbox);
-    lightboxBackdrop.addEventListener("click", closeLightbox);
+    if(lightboxClose) {
+        lightboxClose.addEventListener("click", closeLightbox);
+    }
+    if(lightboxBackdrop) {
+        lightboxBackdrop.addEventListener("click", closeLightbox);
+    }
 
     document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !lightbox.classList.contains("hidden")) {
