@@ -56,6 +56,9 @@ class Partner
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $keresztnev = '';
 
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $nevelotag = '';
+
     /** @ORM\Column(type="string",length=13,nullable=true) */
     private $adoszam = '';
 
@@ -604,6 +607,22 @@ class Partner
     private $wcid;
     /** @ORM\Column(type="datetime", nullable=true) */
     private $wcdate;
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYEgyetem")
+     * @ORM\JoinColumn(name="mptngyegyetem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mptngyegyetem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MPTNGYKar")
+     * @ORM\JoinColumn(name="mptngykar_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mptngykar;
+
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $mptngyegyetemegyeb;
 
 
     public function __construct()
@@ -3700,6 +3719,112 @@ class Partner
     public function setMptngyphd($mptngyphd): void
     {
         $this->mptngyphd = $mptngyphd;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNevelotag()
+    {
+        return $this->nevelotag;
+    }
+
+    /**
+     * @param string $nevelotag
+     */
+    public function setNevelotag($nevelotag): void
+    {
+        $this->nevelotag = $nevelotag;
+    }
+
+    /**
+     * @return MPTNGYEgyetem
+     */
+    public function getMPTNGYEgyetem()
+    {
+        return $this->mptngyegyetem;
+    }
+
+    public function getMPTNGYEgyetemId()
+    {
+        return $this->mptngyegyetem?->getId();
+    }
+
+    public function getMPTNGYEgyetemNev()
+    {
+        return $this->mptngyegyetem?->getNev();
+    }
+
+    /**
+     * @param \Entities\MPTNGYEgyetem $val
+     */
+    public function setMPTNGYEgyetem($val)
+    {
+        if (!$val) {
+            $this->removeMPTNGYEgyetem();
+        } else {
+            $this->mptngyegyetem = $val;
+        }
+    }
+
+    public function removeMPTNGYEgyetem()
+    {
+        if ($this->mptngyegyetem !== null) {
+            $this->mptngyegyetem = null;
+        }
+    }
+
+    /**
+     * @return MPTNGYKar
+     */
+    public function getMPTNGYKar()
+    {
+        return $this->mptngykar;
+    }
+
+    public function getMPTNGYKarId()
+    {
+        return $this->mptngykar?->getId();
+    }
+
+    public function getMPTNGYKarNev()
+    {
+        return $this->mptngykar?->getNev();
+    }
+
+    /**
+     * @param \Entities\MPTNGYKar $val
+     */
+    public function setMPTNGYKar($val)
+    {
+        if (!$val) {
+            $this->removeMPTNGYKar();
+        } else {
+            $this->mptngykar = $val;
+        }
+    }
+
+    public function removeMPTNGYKar()
+    {
+        if ($this->mptngykar !== null) {
+            $this->mptngykar = null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMPTNGYEgyetemegyeb()
+    {
+        return $this->mptngyegyetemegyeb;
+    }
+
+    /**
+     * @param mixed $egyetemegyeb
+     */
+    public function setMPTNGYEgyetemegyeb($egyetemegyeb): void
+    {
+        $this->mptngyegyetemegyeb = $egyetemegyeb;
     }
 
 }

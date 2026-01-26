@@ -1,11 +1,11 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/adataim.js?v=7"></script>
+    <script src="/js/main/mptngy/adataim.js?v=8"></script>
 {/block}
 
 {block "body"}
-    <div class="co-container" x-data="adataim" x-init="getLists" data-show-adataim-egyebadatok="{if ($setup.show_adataim_egyebadatok)}true{else}false{/if}">
+    <div class="co-container" x-data="adataim" data-show-adataim-egyebadatok="{if ($setup.show_adataim_egyebadatok)}true{else}false{/if}">
         <div class="co-data-container">
             <div class="co-row co-flex-dir-column">
                 <h4>{t('Számlázási adatok')}</h4>
@@ -34,6 +34,10 @@
                         </label>
                     </div>
                     <div class="co-error" x-text="validation.invmaganszemely && validation.invmaganszemely.error"></div>
+                </div>
+                <div class="co-control-row">
+                    <label for="regNevelotagEdit" class="co-label">{t('Név előtag')}</label>
+                    <input id="regNevelotagEdit" class="co-input" type="text" x-model="reg.nevelotag" size="10">
                 </div>
                 <div class="co-control-row">
                     <label for="regNevEdit" class="co-label">{t('Név')}*</label>
@@ -120,10 +124,58 @@
                     <label for="regKapcsolatEdit" class="co-label">{t('Kapcsolat név')}</label>
                     <input id="regKapcsolatEdit" class="co-input" type="text" x-model="reg.mptngykapcsolatnev">
                 </div>
-                <div class="co-control-row">
-                    <label for="regMunkahelyEdit" class="co-label redtext">{t('Munkahely')}</label>
-                    <input id="regMunkahelyEdit" class="co-input" type="text" x-model="reg.mpt_munkahelynev">
+                <div class="co-control-row co-col-container">
+                    <div class="co-col co-col-50">
+                        <label for="egyetemEdit" class="co-label">{t('Egyetem')}</label>
+                        <select
+                            id="egyetemEdit"
+                            class="co-input"
+                            :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                            x-model="reg.mptngyegyetem"
+                        >
+                            <option value="">{t('válasszon')}</option>
+                            <template x-for="egyetem in egyetemlist" :key="egyetem.id">
+                                <option
+                                    :value="egyetem.id"
+                                    x-text="egyetem.caption"
+                                ></option>
+                            </template>
+
+                        </select>
+                        <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
+                    </div>
+                    <div class="co-col co-col-50">
+                        <label for="karEdit" class="co-label">{t('Kar')}</label>
+                        <select
+                            id="karEdit"
+                            class="co-input"
+                            :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                            x-model="reg.mptngykar"
+                        >
+                            <option value="">{t('válasszon')}</option>
+                            <template x-for="kar in karlist" :key="kar.id">
+                                <option
+                                    :value="kar.id"
+                                    x-text="kar.caption"
+                                ></option>
+                            </template>
+                        </select>
+                        <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
+                    </div>
                 </div>
+                <div class="co-control-row">
+                    <label for="egyetemegyebEdit"
+                           class="co-label">{t('Egyetemi Intézet/Tanszék/Csoport neve ill. ha a munkahely nem egyetem, hanem más szervezet')}</label>
+                    <input
+                        id="egyetemegyebEdit"
+                        class="co-input"
+                        :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                        type="text"
+                        x-model="reg.mptngyegyetemegyeb"
+                    >
+                    <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
+                </div>
+
             </div>
             {if ($setup.show_adataim_egyebadatok)}
                 <div class="co-row co-flex-dir-column">

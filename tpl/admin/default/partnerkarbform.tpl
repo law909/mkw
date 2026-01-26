@@ -33,6 +33,13 @@
                    {if ($partner.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <table>
                 <tbody>
+                {if ($setup.mptngy)}
+                    <tr>
+                        <td><label for="NevelotagEdit">{at('Név előtag')}:</label></td>
+                        <td colspan="3"><input id="NevelotagEdit" name="nevelotag" type="text" size="10" maxlength="20" value="{$partner.nevelotag|escape}">
+                        </td>
+                    </tr>
+                {/if}
                 <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
                     <td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev|escape}" required="required"
@@ -510,6 +517,15 @@
                     <tr>
                         <td><label for="MPTMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
                         <td><input id="MPTMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
+                    </tr>
+                    <tr>
+                        <td>Egyetem:</td>
+                        <td>{$partner.mptngyegyetemnev} - {$partner.mptngykarnev}</td>
+                    </tr>
+                    <tr style="height: 1em;"></tr>
+                    <tr>
+                        <td>Egyetem egyéb:</td>
+                        <td>{$partner.mptngyegyetemegyeb}</td>
                     </tr>
                     </tbody>
                 </table>

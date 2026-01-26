@@ -3,6 +3,8 @@
 namespace Controllers;
 
 use Entities\Emailtemplate;
+use Entities\MPTNGYEgyetem;
+use Entities\MPTNGYKar;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
@@ -69,6 +71,7 @@ class mptngypartnerController extends partnerController
         $p = $this->getRepo()->getLoggedInUser();
         if ($p) {
             $p->setNev($this->params->getStringRequestParam('nev'));
+            $p->setNevelotag($this->params->getStringRequestParam('nevelotag'));
             $p->setSzlanev($this->params->getStringRequestParam('szlanev'));
             $p->setIrszam($this->params->getStringRequestParam('irszam'));
             $p->setVaros($this->params->getStringRequestParam('varos'));
@@ -90,6 +93,21 @@ class mptngypartnerController extends partnerController
             $p->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
             $p->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
             $p->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
+            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
+            if ($egyetem) {
+                $p->setMPTNGYEgyetem($egyetem);
+            } else {
+                $p->removeMPTNGYEgyetem();
+            }
+
+            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
+            if ($kar) {
+                $p->setMPTNGYKar($kar);
+            } else {
+                $p->removeMPTNGYKar();
+            }
+
+            $p->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
             if ($this->params->getStringRequestParam('jelszo1')) {
                 $p->setJelszo($this->params->getStringRequestParam('jelszo1'));
             }

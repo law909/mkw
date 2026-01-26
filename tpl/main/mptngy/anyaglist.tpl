@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/mptngy/anyaglist.js?v=24"></script>
+    <script src="/js/main/mptngy/anyaglist.js?v=25"></script>
 {/block}
 
 {block "body"}
@@ -97,57 +97,6 @@
                             >
                             <div class="co-error" x-text="validation.tulajdonosnev && validation.tulajdonosnev.error"></div>
                         </div>
-                        <div class="co-control-row co-col-container">
-                            <div class="co-col co-col-50">
-                                <label for="egyetemEdit" class="co-label">{t('Egyetem')}</label>
-                                <select
-                                    id="egyetemEdit"
-                                    class="co-input"
-                                    :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
-                                    x-model="anyag.egyetem"
-                                >
-                                    <option value="">{t('válasszon')}</option>
-                                    <template x-for="egyetem in egyetemlist" :key="egyetem.id">
-                                        <option
-                                            :value="egyetem.id"
-                                            x-text="egyetem.caption"
-                                        ></option>
-                                    </template>
-
-                                </select>
-                                <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
-                            </div>
-                            <div class="co-col co-col-50">
-                                <label for="karEdit" class="co-label">{t('Kar')}</label>
-                                <select
-                                    id="karEdit"
-                                    class="co-input"
-                                    :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
-                                    x-model="anyag.kar"
-                                >
-                                    <option value="">{t('válasszon')}</option>
-                                    <template x-for="kar in karlist" :key="kar.id">
-                                        <option
-                                            :value="kar.id"
-                                            x-text="kar.caption"
-                                        ></option>
-                                    </template>
-                                </select>
-                                <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
-                            </div>
-                        </div>
-                        <div class="co-control-row">
-                            <label for="egyetemegyebEdit"
-                                   class="co-label">{t('Egyetemi Intézet/Tanszék/Csoport neve ill. ha a munkahely nem egyetem, hanem más szervezet')}</label>
-                            <input
-                                id="egyetemegyebEdit"
-                                class="co-input"
-                                :class="validation.egyetem && !validation.egyetem.valid ? 'error' : ''"
-                                type="text"
-                                x-model="anyag.egyetemegyeb"
-                            >
-                            <div class="co-error" x-text="validation.egyetem && validation.egyetem.error"></div>
-                        </div>
                         <div class="co-control-row">
                             <label for="tipusEdit" class="co-label">{t('Típus')}</label>
                             <select
@@ -168,6 +117,7 @@
                         </div>
 
                         <div class="co-row co-flex-dir-column">
+                            <div class="red">FONTOS! Kérjük azt az emailcímet írja ide, amivel a szerző regisztrált az oldalon!</div>
                             <div class="co-control-row">
                                 <label for="szerzo1Edit" class="co-label">{t('Első szerző')} email</label>
                                 <input
@@ -547,6 +497,7 @@
                                     </div>
                                 </div>
                                 <div class="co-control-row">
+                                    <div class="red">Kérjük az absztraktok szövegébe ne írják bele a szerzők nevét, elérhetőségét, affiliációit.</div>
                                     <label for="tartalomEdit" class="co-label">{t('Tartalom')} 1500 - 3000 {t('karakter')} (<span
                                             x-text="anyag.tartalom.length"></span> karakter)</label>
                                     <textarea

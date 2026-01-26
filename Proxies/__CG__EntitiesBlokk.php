@@ -67,10 +67,10 @@ class Blokk extends \Entities\Blokk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas2'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Blokk' . "\0" . 'id', '' . "\0" . 'Entities\\Blokk' . "\0" . 'nev', '' . "\0" . 'Entities\\Blokk' . "\0" . 'tipus', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssclass', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cssstyle', '' . "\0" . 'Entities\\Blokk' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Blokk' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas', '' . "\0" . 'Entities\\Blokk' . "\0" . 'blokkmagassag', '' . "\0" . 'Entities\\Blokk' . "\0" . 'hatterkepurl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'videourl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'cim2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'leiras2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gombfelirat2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'gomburl2', '' . "\0" . 'Entities\\Blokk' . "\0" . 'szovegigazitas2'];
     }
 
     /**
@@ -327,12 +327,78 @@ class Blokk extends \Entities\Blokk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getHatterkepurl()
+    public function getHatterkepurl($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl', [$pre]);
 
-        return parent::getHatterkepurl();
+        return parent::getHatterkepurl($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurlMini($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurlMini', [$pre]);
+
+        return parent::getHatterkepurlMini($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl400', [$pre]);
+
+        return parent::getHatterkepurl400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2000', [$pre]);
+
+        return parent::getHatterkepurl2000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurlSmall($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurlSmall', [$pre]);
+
+        return parent::getHatterkepurlSmall($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurlMedium($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurlMedium', [$pre]);
+
+        return parent::getHatterkepurlMedium($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurlLarge($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurlLarge', [$pre]);
+
+        return parent::getHatterkepurlLarge($pre);
     }
 
     /**
@@ -503,12 +569,78 @@ class Blokk extends \Entities\Blokk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getHatterkepurl2()
+    public function getHatterkepurl2($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2', [$pre]);
 
-        return parent::getHatterkepurl2();
+        return parent::getHatterkepurl2($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2Mini($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2Mini', [$pre]);
+
+        return parent::getHatterkepurl2Mini($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2400($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2400', [$pre]);
+
+        return parent::getHatterkepurl2400($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl22000($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl22000', [$pre]);
+
+        return parent::getHatterkepurl22000($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2Small($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2Small', [$pre]);
+
+        return parent::getHatterkepurl2Small($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2Medium($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2Medium', [$pre]);
+
+        return parent::getHatterkepurl2Medium($pre);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHatterkepurl2Large($pre = '/')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatterkepurl2Large', [$pre]);
+
+        return parent::getHatterkepurl2Large($pre);
     }
 
     /**

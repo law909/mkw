@@ -128,6 +128,7 @@ return [
     'Termékértesítők' => 'Advice notes',
     'Jelszó módosítása' => 'Change password',
     'Név' => 'Name',
+    'Név előtag' => 'Name prefix',
     'Adatok módosítása' => 'Save',
     'Számlázási cím' => 'Billing address',
     'Számlázási adatok másolása' => 'Copy billing data',

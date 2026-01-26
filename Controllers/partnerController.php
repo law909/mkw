@@ -2,9 +2,12 @@
 
 namespace Controllers;
 
+use Entities\Afa;
 use Entities\Arsav;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
+use Entities\MPTNGYEgyetem;
+use Entities\MPTNGYKar;
 use Entities\MPTNGYSzerepkor;
 use Entities\MPTSzekcio;
 use Entities\MPTTagozat;
@@ -58,6 +61,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x['nev'] = $t->getNev();
         $x['vezeteknev'] = $t->getVezeteknev();
         $x['keresztnev'] = $t->getKeresztnev();
+        $x['nevelotag'] = $t->getNevelotag();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         $x['adoszam'] = $t->getAdoszam();
@@ -206,6 +210,11 @@ class partnerController extends \mkwhelpers\MattableController
         $x['mptngybefizetesmodnev'] = $t->getMptngybefizetesmod()?->getNev();
         $x['mptngynemveszreszt'] = $t->isMptngynemveszreszt();
         $x['mptngyphd'] = $t->isMptngyphd();
+        $x['mptngyegyetem'] = $t->getMPTNGYEgyetemId();
+        $x['mptngyegyetemnev'] = $t->getMPTNGYEgyetemNev();
+        $x['mptngykar'] = $t->getMPTNGYKarId();
+        $x['mptngykarnev'] = $t->getMPTNGYKarNev();
+        $x['mptngyegyetemegyeb'] = $t->getMPTNGYEgyetemegyeb();
         $x['xnemrendelhet'] = $t->isXNemrendelhet();
         $x['nemrendelhet'] = $t->isNemrendelhet();
         $x['nemrendelhet2'] = $t->isNemrendelhet2();
@@ -323,6 +332,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setVatstatus($this->params->getIntRequestParam('vatstatus'));
             $obj->setSzamlaegyeb($this->params->getStringRequestParam('szamlaegyeb'));
             $obj->setSzlanev($this->params->getStringRequestParam('szlanev'));
+            $obj->setNevelotag($this->params->getStringRequestParam('nevelotag'));
             if ($this->params->getIntRequestParam('minicrmprojectid')) {
                 $obj->setMinicrmprojectid($this->params->getIntRequestParam('minicrmprojectid'));
             }
@@ -367,6 +377,23 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setMptngybefizetesdatum($this->params->getStringRequestParam('mptngybefizetesdatum'));
             $obj->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
             $obj->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
+            /*
+            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
+            if ($egyetem) {
+                $obj->setMPTNGYEgyetem($egyetem);
+            } else {
+                $obj->removeMPTNGYEgyetem();
+            }
+
+            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
+            if ($kar) {
+                $obj->setMPTNGYKar($kar);
+            } else {
+                $obj->removeMPTNGYKar();
+            }
+
+            $obj->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
+            */
             $obj->setNemrendelhet($this->params->getBoolRequestParam('nemrendelhet'));
             $obj->setNemrendelhet2($this->params->getBoolRequestParam('nemrendelhet2'));
             $obj->setNemrendelhet3($this->params->getBoolRequestParam('nemrendelhet3'));
@@ -875,6 +902,11 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
         $emailtpl = new emailtemplateController($this->params);
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
+        $ec = new mptngyegyetemController($this->params);
+        $view->setVar('egyetemlist', $ec->getSelectList());
+        $kc = new mptngykarController($this->params);
+        $view->setVar('karlist', $kc->getSelectList());
+
         $view->printTemplateResult();
     }
 
@@ -929,6 +961,11 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('mptngyszerepkorlist', $mptngyszkc->getSelectList($partner?->getMptngyszerepkorId()));
         $fizmod = new fizmodController($this->params);
         $view->setVar('mptngybefizetesmodlist', $fizmod->getSelectList($partner?->getMptngybefizetesmod()?->getId()));
+
+        $ec = new mptngyegyetemController($this->params);
+        $view->setVar('egyetemlist', $ec->getSelectList($partner?->getMPTNGYEgyetemId()));
+        $kc = new mptngykarController($this->params);
+        $view->setVar('karlist', $kc->getSelectList($partner?->getMPTNGYKarId()));
 
         $view->setVar('partner', $this->loadVars($partner, true));
         $view->printTemplateResult();
@@ -1012,6 +1049,7 @@ class partnerController extends \mkwhelpers\MattableController
                 'fizmod' => $partner->getFizmodId(),
                 'fizhatido' => $partner->getFizhatido(),
                 'nev' => $partner->getNev(),
+                'nevelotag' => $partner->getNevelotag(),
                 'vezeteknev' => $partner->getVezeteknev(),
                 'keresztnev' => $partner->getKeresztnev(),
                 'szlanev' => $partner->getSzlanev(),
@@ -1038,6 +1076,11 @@ class partnerController extends \mkwhelpers\MattableController
                 'vatstatus' => $partner->getVatstatus(),
                 'szamlatipus' => $partner->getSzamlatipus(),
                 'szamlaegyeb' => $partner->getSzamlaegyeb(),
+                'mptngyegyetem' => $partner->getMPTNGYEgyetemId(),
+                'mptngyegyetemnev' => $partner->getMPTNGYEgyetemNev(),
+                'mptngykar' => $partner->getMPTNGYKarId(),
+                'mptngykarnev' => $partner->getMPTNGYKarNev(),
+                'mptngyegyetemegyeb' => $partner->getMPTNGYEgyetemegyeb(),
                 'mptngybankszamlaszam' => $partner->getMptngybankszamlaszam(),
                 'mptngycsoportosfizetes' => $partner->getMptngycsoportosfizetes(),
                 'mptngykapcsolatnev' => $partner->getMptngykapcsolatnev(),
@@ -1059,7 +1102,7 @@ class partnerController extends \mkwhelpers\MattableController
                 'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),
             ];
             if ($partner->getSzamlatipus() > 0) {
-                $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 $ret['afa'] = $afa->getId();
                 $ret['afakulcs'] = $afa->getErtek();
             }

@@ -4,8 +4,8 @@
     </td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.cim}</a>
-        <span class="jobbra"><!--a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a--></span>
+        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                    class="ui-icon ui-icon-circle-minus"></span></a></span>
         <div>Azonosító: {$_egyed.id}</div>
         <div>Kezdés: {$_egyed.kezdodatumstr}, {$_egyed.kezdoido} - {$_egyed.vegido}</div>
         <div>Terem: {$_egyed.teremnev}</div>

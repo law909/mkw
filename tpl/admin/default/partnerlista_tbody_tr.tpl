@@ -83,7 +83,8 @@
     </td>
     <td class="cell">
         {if ($setup.mptngy)}
-            <div>Munkahely: {$_partner.mpt_munkahelynev}</div>
+            <div>Egyetem: {$_partner.mptngyegyetemnev} - {$_partner.mptngykarnev}</div>
+            <div>Egyetem egyéb: {$_partner.mptngyegyetemegyeb}</div>
             {if ($_partner.mptngyphd)}
                 <div>Phd hallgató</div>
             {/if}

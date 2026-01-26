@@ -31,16 +31,6 @@
                 </tr>
                 <tr style="height: 1em;"></tr>
                 <tr>
-                    <td>Egyetem:</td>
-                    <td>{$egyed.egyetemnev} - {$egyed.karnev}</td>
-                </tr>
-                <tr style="height: 1em;"></tr>
-                <tr>
-                    <td>Egyetem egyéb:</td>
-                    <td>{$egyed.egyetemegyeb}</td>
-                </tr>
-                <tr style="height: 1em;"></tr>
-                <tr>
                     <td><label for="kezdodatumEdit">{at('Kezdés')}:</label></td>
                     <td>
                         <select id="kezdodatumEdit" name="kezdodatum">
