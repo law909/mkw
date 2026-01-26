@@ -37,6 +37,12 @@ class blokkController extends \mkwhelpers\MattableController
         $v['sorrend'] = $t->getSorrend();
         $v['lathato'] = $t->isLathato();
         $v['hatterkepurl'] = $t->getHatterkepurl();
+        $v['hatterkepurlmedium'] = $t->getHatterkepurlMedium();
+        $v['hatterkepurlsmall'] = $t->getHatterkepurlSmall();
+        $v['hatterkepurlmini'] = $t->getHatterkepurlMini();
+        $v['hatterkepurllarge'] = $t->getHatterkepurlLarge();
+        $v['hatterkepurl400'] = $t->getHatterkepurl400();
+        $v['hatterkepurl2000'] = $t->getHatterkepurl2000();
         $v['videourl'] = $t->getVideourl();
         $v['cim'] = $t->getCim();
         $v['leiras'] = $t->getLeiras();
@@ -47,6 +53,12 @@ class blokkController extends \mkwhelpers\MattableController
         $v['blokkmagassag'] = $t->getBlokkmagassag();
         $v['blokkmagassagnev'] = $bmlist[$t->getBlokkmagassag()];
         $v['hatterkepurl2'] = $t->getHatterkepurl2();
+        $v['hatterkepurl2medium'] = $t->getHatterkepurl2Medium();
+        $v['hatterkepurl2small'] = $t->getHatterkepurl2Small();
+        $v['hatterkepurl2mini'] = $t->getHatterkepurl2Mini();
+        $v['hatterkepurl2large'] = $t->getHatterkepurl2Large();
+        $v['hatterkepurl2400'] = $t->getHatterkepurl2400();
+        $v['hatterkepurl22000'] = $t->getHatterkepurl22000();
         $v['videourl2'] = $t->getVideourl2();
         $v['cim2'] = $t->getCim2();
         $v['leiras2'] = $t->getLeiras2();

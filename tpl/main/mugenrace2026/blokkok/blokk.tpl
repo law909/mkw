@@ -1,16 +1,19 @@
 {if isset($blokk.lathato) && $blokk.lathato}
-<section id="{$blokk.id}" 
+<section id="{$blokk.id}"
   class="
     {if (isset($blokk.videourl) && $blokk.videourl)} video {/if}
     {if (isset($blokk.hatterkepurl) && $blokk.hatterkepurl)} full-banner inverse {/if}
-    {if (isset($blokk.szovegigazitas) && $blokk.szovegigazitas==1)} left {/if}
-    {if (isset($blokk.szovegigazitas) && $blokk.szovegigazitas==2)} centeer {/if}
-    {if (isset($blokk.szovegigazitas) && $blokk.szovegigazitas==3)} right {/if}
+    {if (isset($blokk.szovegigazitas)}
+     {if $blokk.szovegigazitas==1} left
+    {elseif $blokk.szovegigazitas==2} center
+    {elseif $blokk.szovegigazitas==3} right
+    {/if}
+    {/if}
 
     {if (isset($blokk.blokkmagassag) && $blokk.blokkmagassag==1)} {/if}
     {if (isset($blokk.blokkmagassag) && $blokk.blokkmagassag==2)} full-banner inverse {/if}
     {if (isset($blokk.blokkmagassag) && $blokk.blokkmagassag==3)} hero-section {/if}
-    
+
     {$blokk.cssclass}
   " {if (isset($blokk.cssstyle) && $blokk.cssstyle)} style="{$blokk.cssstyle}" {/if}>
     {if (isset($blokk.videourl) && $blokk.videourl)}
@@ -22,13 +25,13 @@
     {if (isset($blokk.hatterkepurl) && $blokk.hatterkepurl)}
       <img src="{$blokk.hatterkepurl}" alt="{$blokk.cim}">
     {/if}
-    <div 
+    <div
       class="
         {if (isset($blokk.blokkmagassag) && $blokk.blokkmagassag==2)}  banner-content {/if}
         {if (isset($blokk.blokkmagassag) && $blokk.blokkmagassag==3)}  hero-content hero-content__inverse {/if}
         flex-col flex-cc
       ">
-      {if (isset($blokk.cim) && $blokk.cim)}  
+      {if (isset($blokk.cim) && $blokk.cim)}
         <h1>{$blokk.cim}</h1>
       {/if}
       {if (isset($blokk.leiras) && $blokk.leiras)}

@@ -3,6 +3,7 @@
 namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\BlokkRepository")
@@ -144,10 +145,84 @@ class Blokk
         $this->sorrend = $sorrend;
     }
 
-    public function getHatterkepurl()
+    public function getHatterkepurl($pre = '/')
     {
-        return $this->hatterkepurl;
+        if ($this->hatterkepurl) {
+            if ($this->hatterkepurl[0] !== $pre) {
+                return $pre . $this->hatterkepurl;
+            } else {
+                return $this->hatterkepurl;
+            }
+        }
+        return '';
     }
+
+    public function getHatterkepurlMini($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl400($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2000($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurlSmall($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurlMedium($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurlLarge($pre = '/')
+    {
+        $url = $this->getHatterkepurl($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
 
     public function setHatterkepurl($hatterkepurl)
     {
@@ -224,9 +299,82 @@ class Blokk
         $this->blokkmagassag = $blokkmagassag;
     }
 
-    public function getHatterkepurl2()
+    public function getHatterkepurl2($pre = '/')
     {
-        return $this->hatterkepurl2;
+        if ($this->hatterkepurl2) {
+            if ($this->hatterkepurl2[0] !== $pre) {
+                return $pre . $this->hatterkepurl2;
+            } else {
+                return $this->hatterkepurl2;
+            }
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2Mini($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2400($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I400imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl22000($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::I2000imgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2Small($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2Medium($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
+        }
+        return '';
+    }
+
+    public function getHatterkepurl2Large($pre = '/')
+    {
+        $url = $this->getHatterkepurl2($pre);
+        if ($url) {
+            $t = explode('.', $url);
+            $ext = array_pop($t);
+            return implode('.', $t) . store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+        }
+        return '';
     }
 
     public function setHatterkepurl2($hatterkepurl2)
