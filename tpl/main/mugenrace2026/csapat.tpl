@@ -32,7 +32,7 @@
             <div class="col sponsored-riders__items gallery-grid">
                 {foreach $csapat.kepek as $_kep}
                     <div class=" sponsored-riders__item gallery">
-                        <div class="sponsored-riders__item-content"><img src="{$_kep.urlmedium}" data-image-large="{$_kep.url2000}" alt="{$_kep.leiras}"
+                        <div class="sponsored-riders__item-content"><img src="{$_kep.kepurllarge}" data-image-large="{$_kep.url2000}" alt="{$_kep.leiras}"
                                                                          class=" gallery-image sponsored-riders__item-image"></div>
                     </div>
                 {/foreach}

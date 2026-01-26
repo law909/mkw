@@ -107,9 +107,6 @@
         </div>
     </div>
 </div>
-<pre>
-{json_encode($blokklista, JSON_PRETTY_PRINT)}
-</pre>
 
 {*
 <div class="headertop">
