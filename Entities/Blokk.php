@@ -61,6 +61,24 @@ class Blokk
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $hatterkepurl2;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $videourl2;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $cim2;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras2;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $gombfelirat2;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $gomburl2;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $szovegigazitas2;
+
     public function getId()
     {
         return $this->id;
