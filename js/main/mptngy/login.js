@@ -4,6 +4,10 @@ document.addEventListener("alpine:init", () => {
         postaleqinv: false,
         emailFoglalt: false,
         validation: [],
+        firstLoad: true,
+        loaded: false,
+        egyetemlist: [],
+        karlist: [],
         login: {
             email: null,
             jelszo: null,
@@ -40,8 +44,10 @@ document.addEventListener("alpine:init", () => {
             mptngyphd: false,
             mptngynyugdijas: false,
             mptngympttag: false,
-            mpt_munkahelynev: null,
             mptngynemveszreszt: false,
+            mptngyegyetem: null,
+            mptngykar: null,
+            mptngyegyetemegyeb: null,
         },
         rules: {
             nev: ['required'],
@@ -56,6 +62,7 @@ document.addEventListener("alpine:init", () => {
             utca: ['required'],
             invcsoportos: ['required'],
             invmaganszemely: ['requiredIfCsoportos'],
+            mptngyegyetem: ['egyetem'],
         },
         szerepkorlist: [],
         selectedSzerepkorIndex: null,
@@ -64,8 +71,12 @@ document.addEventListener("alpine:init", () => {
         clearErrors() {
             this.validation = {};
         },
-        getLists() {
-            this.show_adataim_egyebadatok = this.$el.dataset.showAdataimEgyebadatok === 'true';
+        init() {
+            this.setRules();
+            this.setWatchers();
+            this.getLists();
+        },
+        setRules() {
             Iodine.setErrorMessage('required', 'Kötelező kitölteni');
             Iodine.setErrorMessage('email', 'Hibás email cím');
             Iodine.setErrorMessage('minLength', 'Legalább [PARAM] karakter hosszú legyen');
@@ -107,12 +118,33 @@ document.addEventListener("alpine:init", () => {
                 });
                 Iodine.setErrorMessage('reszvetel', 'Jelölje meg, hogyan vesz részt');
             }
-
-            fetch(new URL('/szerepkorlist', location.origin))
-                .then((response) => response.json())
-                .then((data) => {
-                    this.szerepkorlist = data;
-                });
+            Iodine.rule('egyetem', () => {
+                return !((!this.reg.mptngyegyetem || !this.reg.mptngykar) && !this.reg.mptngyegyetemegyeb);
+            });
+            Iodine.setErrorMessage('egyetem', 'Egyetemet és kart vagy "Egyetem egyéb"-t meg kell adni');
+        },
+        setWatchers() {
+            this.$watch('reg.mptngyegyetem', (value, oldvalue) => {
+                if (value) {
+                    let url = new URL('/karlist', location.origin);
+                    url.searchParams.append('egyetem', value);
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            this.karlist = data;
+                            if (!this.firstLoad) {
+                                this.reg.mptngykar = null;
+                            }
+                            let kar = this.reg.mptngykar;
+                            this.reg.mptngykar = null;
+                            this.reg.mptngykar = kar;
+                            this.firstLoad = false;
+                        });
+                } else {
+                    this.karlist = [];
+                    this.reg.mptngykar = null;
+                }
+            });
             this.$watch('reg.nev', (value) => {
                 this.reg.szlanev = value;
             });
@@ -189,6 +221,23 @@ document.addEventListener("alpine:init", () => {
                     }
                 });
             }
+        },
+        getLists() {
+            this.show_adataim_egyebadatok = this.$el.dataset.showAdataimEgyebadatok === 'true';
+
+            const szerepkorlistfetch = fetch(new URL('/szerepkorlist', location.origin))
+                .then((response) => response.json());
+            const egyetemlistfetch = fetch(new URL('/egyetemlist', location.origin)).then((response) => response.json());
+
+            Promise.all([szerepkorlistfetch, egyetemlistfetch])
+                .then(([szerepkorlistdata, egyetemlistdata]) => {
+                    this.egyetemlist = egyetemlistdata;
+                    this.szerepkorlist = szerepkorlistdata;
+                    this.loaded = true;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
         checkEmail() {
             let url = new URL('/checkemail', location.origin);

@@ -5,7 +5,7 @@
 {/block}
 
 {block "body"}
-    <div class="co-container" x-data="login" x-init="getLists" data-show-adataim-egyebadatok="{if ($setup.show_adataim_egyebadatok)}true{else}false{/if}">
+    <div class="co-container" x-data="login" data-show-adataim-egyebadatok="{if ($setup.show_adataim_egyebadatok)}true{else}false{/if}">
         <div class="co-data-container">
             <div class="co-row co-flex-dir-row" x-show="!regNeeded">
                 <div class="co-col-100 padding">
@@ -203,10 +203,58 @@
                                 <label for="regKapcsolatEdit" class="co-label">{t('Kapcsolat név')}</label>
                                 <input id="regKapcsolatEdit" class="co-input" type="text" x-model="reg.mptngykapcsolatnev">
                             </div>
-                            <div class="co-control-row">
-                                <label for="regMunkahelyEdit" class="co-label redtext">{t('Munkahely')}</label>
-                                <input id="regMunkahelyEdit" class="co-input" type="text" x-model="reg.mpt_munkahelynev">
+                        </div>
+
+                        <div class="co-control-row co-col-container">
+                            <div class="co-col co-col-50">
+                                <label for="egyetemEdit" class="co-label">{t('Egyetem')}</label>
+                                <select
+                                    id="egyetemEdit"
+                                    class="co-input"
+                                    :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                                    x-model="reg.mptngyegyetem"
+                                >
+                                    <option value="">{t('válasszon')}</option>
+                                    <template x-for="egyetem in egyetemlist" :key="egyetem.id">
+                                        <option
+                                            :value="egyetem.id"
+                                            x-text="egyetem.caption"
+                                        ></option>
+                                    </template>
+
+                                </select>
+                                <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
                             </div>
+                            <div class="co-col co-col-50">
+                                <label for="karEdit" class="co-label">{t('Kar')}</label>
+                                <select
+                                    id="karEdit"
+                                    class="co-input"
+                                    :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                                    x-model="reg.mptngykar"
+                                >
+                                    <option value="">{t('válasszon')}</option>
+                                    <template x-for="kar in karlist" :key="kar.id">
+                                        <option
+                                            :value="kar.id"
+                                            x-text="kar.caption"
+                                        ></option>
+                                    </template>
+                                </select>
+                                <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
+                            </div>
+                        </div>
+                        <div class="co-control-row">
+                            <label for="egyetemegyebEdit"
+                                   class="co-label">{t('Egyetemi Intézet/Tanszék/Csoport neve ill. ha a munkahely nem egyetem, hanem más szervezet')}</label>
+                            <input
+                                id="egyetemegyebEdit"
+                                class="co-input"
+                                :class="validation.mptngyegyetem && !validation.mptngyegyetem.valid ? 'error' : ''"
+                                type="text"
+                                x-model="reg.mptngyegyetemegyeb"
+                            >
+                            <div class="co-error" x-text="validation.mptngyegyetem && validation.mptngyegyetem.error"></div>
                         </div>
 
                         <div class="co-row co-flex-dir-column">
