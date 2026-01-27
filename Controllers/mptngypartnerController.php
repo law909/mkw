@@ -177,7 +177,11 @@ class mptngypartnerController extends partnerController
     {
         if ($email) {
             $filter = new FilterDescriptor();
-            $filter->addSql("(_xx.szerzo2email='$email') OR (_xx.szerzo3email='$email') OR (_xx.szerzo4email='$email')");
+            $filter->addSql(
+                "(_xx.szerzo2email='$email') OR (_xx.szerzo3email='$email') OR (_xx.szerzo4email='$email')"
+                . " OR (_xx.szerzo5email='$email') OR (_xx.szerzo6email='$email') OR (_xx.szerzo7email='$email')"
+                . " OR (_xx.szerzo8email='$email') OR (_xx.szerzo9email='$email') OR (_xx.szerzo10email='$email')"
+            );
             if ($anyag) {
                 $filter->addFilter('id', '<>', $anyag);
             }
