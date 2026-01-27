@@ -95,6 +95,8 @@
 
                             <div id="lightbox" class="lightbox hidden">
                                 <div class="lightbox-backdrop"></div>
+                                <button class="lightbox-nav lightbox-prev">‹</button>
+                                <button class="lightbox-nav lightbox-next">›</button>
                                 <img id="lightboxImage" class="lightbox-image" src="" alt="">
                                 <div class="lightbox-close">×</div>
                             </div>
