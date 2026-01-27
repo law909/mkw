@@ -33,7 +33,7 @@ document.addEventListener("alpine:init", () => {
         rules: {
             cim: ['required'],
             tipus: ['required'],
-            szerzo1email: ['optional', 'email'],
+            szerzo1email: ['required', 'email'],
             szerzo2email: ['optional', 'email'],
             szerzo3email: ['optional', 'email'],
             szerzo4email: ['optional', 'email'],
