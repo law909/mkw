@@ -10,6 +10,7 @@ document.addEventListener("alpine:init", () => {
         },
         reg: {
             nev: null,
+            nevelotag: null,
             telefon: null,
             email: null,
             jelszo1: null,

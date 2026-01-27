@@ -38,6 +38,10 @@
                         <div class="co-row co-flex-dir-column">
                             <h3>{t('Regisztráció')}</h3>
                             <div class="co-control-row">
+                                <label for="regNevelotagEdit" class="co-label">{t('Név előtag')}</label>
+                                <input id="regNevelotagEdit" class="co-input" type="text" x-model="reg.nevelotag" size="10">
+                            </div>
+                            <div class="co-control-row">
                                 <label for="regNevEdit" class="co-label">{t('Név')}*</label>
                                 <input
                                     id="regNevEdit"
