@@ -74,38 +74,38 @@ class MPTNGYSzakmaianyag
 
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="szerzo6_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $szerzo6;
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="szerzo7_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $szerzo7;
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="szerzo8_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $szerzo8;
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="szerzo9_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $szerzo9;
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="szerzo10_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $szerzo10;
 
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="szerzo5_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="opponens_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
     private $opponens;
