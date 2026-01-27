@@ -32,6 +32,22 @@ class mptngypartnerController extends partnerController
                 $t = new \Entities\Partner();
             }
             $t = $this->setFields($t, 'add', 'minden');
+            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
+            if ($egyetem) {
+                $t->setMPTNGYEgyetem($egyetem);
+            } else {
+                $t->removeMPTNGYEgyetem();
+            }
+
+            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
+            if ($kar) {
+                $t->setMPTNGYKar($kar);
+            } else {
+                $t->removeMPTNGYKar();
+            }
+
+            $t->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
+            
             $this->getEm()->persist($t);
             $this->getEm()->flush();
             $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::MPTNGYRegVisszaigSablon));

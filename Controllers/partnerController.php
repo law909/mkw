@@ -1371,7 +1371,7 @@ class partnerController extends \mkwhelpers\MattableController
                 header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
             }
         } else {
-            $view = $this->getTemplateFactory()->createMainView('login.tpl');
+            $view = $this->createMainView('login.tpl');
             \mkw\store::fillTemplate($view, (!\mkw\store::isSuperzoneB2B()));
             $view->setVar('pagetitle', t('Bejelentkezés') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('sikertelen', \mkw\store::getMainSession()->loginerror);
