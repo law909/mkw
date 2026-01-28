@@ -1656,6 +1656,7 @@ a.underline {
 }
 .product-datasheet .kapcsolodoTermekInner {
   position: relative;
+  z-index: -1;
 }
 .product-datasheet .kapcsolodoTermekInner a {
   position: relative;
