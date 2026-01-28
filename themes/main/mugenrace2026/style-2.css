@@ -1656,6 +1656,7 @@ a.underline {
 }
 .product-datasheet .kapcsolodoTermekInner {
   position: relative;
+  z-index: -1;
 }
 .product-datasheet .kapcsolodoTermekInner a {
   position: relative;
@@ -1684,6 +1685,32 @@ a.underline {
   justify-content: center;
 }
 
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--color-text-inverse);
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.lightbox-prev {
+  left: 20px;
+}
+
+.lightbox-next {
+  right: 20px;
+}
+
+.lightbox-nav:hover {
+  color: var(--color-secondary);
+}
+
 .lightbox.hidden {
   display: none;
 }
@@ -1702,6 +1729,12 @@ a.underline {
   z-index: 12;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   background-color: var(--color-background-white);
+  transition: opacity 0.15s ease;
+  opacity: 1;
+}
+
+.lightbox-image.is-fading {
+  opacity: 0;
 }
 
 .lightbox-close {
@@ -1756,6 +1789,18 @@ a.underline {
   justify-content: center;
   overflow: hidden;
 }
+.hero-section.left .hero-content {
+  align-items: flex-start;
+}
+.hero-section.left .hero-content p, .hero-section.left .hero-content h2 {
+  text-align: left;
+}
+.hero-section.right .hero-content {
+  align-items: flex-end;
+}
+.hero-section.right .hero-content p, .hero-section.right .hero-content h2 {
+  text-align: right;
+}
 .hero-section img {
   position: absolute;
   top: 0;
@@ -1787,9 +1832,14 @@ a.underline {
 .hero-section .hero-content {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   color: var(--color-text);
   padding: var(--spacing-md);
+  max-width: var(--breakpoint-desktop-max);
+  width: 100%;
 }
 .hero-section .hero-content h1 {
   font-size: clamp(28px, 5vw, 60px);

@@ -142,6 +142,30 @@
   @include flex-center-bottom;
   overflow: hidden;
 
+  &.left {
+    // justify-content: flex-start;
+
+    .hero-content {
+      align-items: flex-start;
+
+      p, h2 {
+        text-align: left;
+      }
+    }
+  }
+
+  &.right {
+    // justify-content: flex-end;
+
+    .hero-content {
+      align-items: flex-end;
+
+      p, h2 {
+        text-align: right;
+      }
+    }
+  }
+
   img {
     @include image-cover;
     z-index: 1;
@@ -166,9 +190,14 @@
   .hero-content {
     position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
     color: var(--color-text);
     padding: var(--spacing-md);
+    max-width: var(--breakpoint-desktop-max);
+    width: 100%;
 
     h1 {
       font-size: clamp(28px, 5vw, 60px);

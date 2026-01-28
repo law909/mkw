@@ -2188,17 +2188,26 @@ $( document ).ready(function() {
     
     const thumbsContainer = document.getElementById("thumbs");
     const mainImage = document.getElementById("mainImage");
+    const carouselImages = Array.from(document.querySelectorAll("#thumbs img")).map(img => img.src);
+    let currentIndex = 0;
     if (mainImage) {
-        mainImage.addEventListener("click", () => {
-            openLightbox(mainImage.src);
+       mainImage.addEventListener("click", () => {
+            openLightboxByIndex(getCarouselImages(), currentIndex);
         });
     }
 
+    function getCarouselImages() {
+    return Array.from(document.querySelectorAll("#thumbs img")).map(img => img.src);
+}
 
-    let currentIndex = 0;
+    document.querySelectorAll("#thumbs img").forEach((thumb, i) => {
+        thumb.addEventListener("click", () => {
+            openLightboxByIndex(carouselImages, i);
+        });
+    });
 
+    
 
-    // Render thumbs only once
     if (typeof images !== "undefined" && images) {
 
         images.forEach((src, index) => {
@@ -2245,7 +2254,6 @@ $( document ).ready(function() {
         }
     }
 
-
     let isAnimating = false;
 
     function changeImage(newIndex) {
@@ -2272,7 +2280,7 @@ $( document ).ready(function() {
 
         // 👉 lightbox click
         newImg.addEventListener("click", () => {
-            openLightbox(newImg.src);
+            openLightboxByIndex(getCarouselImages(), newIndex);
         });
 
         newImg.onload = () => {
@@ -2317,7 +2325,6 @@ $( document ).ready(function() {
         };
     }
 
-
     // Init
     if (typeof images !== "undefined" && images) {
         mainImage.src = images[0];
@@ -2330,11 +2337,62 @@ $( document ).ready(function() {
     const lightboxImage = document.getElementById("lightboxImage");
     const lightboxClose = document.querySelector(".lightbox-close");
     const lightboxBackdrop = document.querySelector(".lightbox-backdrop");
+    const prevBtnLightbox = document.querySelector(".lightbox-prev");
+    const nextBtnLightbox = document.querySelector(".lightbox-next");
+    let activeLightboxImages = [];
+    let currentIndexLightbox = 0;
 
-    function openLightbox(src) {
-        lightboxImage.src = src;
+    // galéria képek tömbje
+    const galleryImages = $('.gallery-image').map(function () {
+        return $(this).data('image-large');
+    }).get();
+
+    $('.gallery-image').on('click', function () {
+        const index = $('.gallery-image').index(this);
+        openLightboxByIndex(galleryImages, index);
+    });
+
+    function openLightboxByIndex(galleryImages, index) {
+        if (!galleryImages || !galleryImages.length) return;
+
+        activeLightboxImages = galleryImages;
+        currentIndexLightbox = index;
+
+        lightboxImage.classList.add("is-fading");
+        lightboxImage.src = activeLightboxImages[currentIndexLightbox];
+
         lightbox.classList.remove("hidden");
-        document.body.style.overflow = "hidden"; // scroll lock
+        document.body.style.overflow = "hidden";
+
+        requestAnimationFrame(() => {
+            lightboxImage.classList.remove("is-fading");
+        });
+    }
+
+    function changeLightboxImage(newIndex) {
+        lightboxImage.classList.add("is-fading");
+
+        setTimeout(() => {
+            currentIndexLightbox = newIndex;
+            lightboxImage.src = activeLightboxImages[currentIndexLightbox];
+        }, 150);
+
+        setTimeout(() => {
+            lightboxImage.classList.remove("is-fading");
+        }, 300);
+    }
+
+    function showPrev() {
+        const newIndex =
+            (currentIndexLightbox - 1 + activeLightboxImages.length) %
+            activeLightboxImages.length;
+        changeLightboxImage(newIndex);
+    }
+
+    function showNext() {
+        const newIndex =
+            (currentIndexLightbox + 1) % activeLightboxImages.length;
+        changeLightboxImage(newIndex);
     }
 
     function closeLightbox() {
@@ -2343,25 +2401,49 @@ $( document ).ready(function() {
         document.body.style.overflow = "";
     }
 
-    if(lightboxClose) {
-        lightboxClose.addEventListener("click", closeLightbox);
-    }
-    if(lightboxBackdrop) {
-        lightboxBackdrop.addEventListener("click", closeLightbox);
-    }
+    // function changeImageWithFade(newIndex) {
+    //     lightboxImage.classList.add('is-fading');
+
+    //     setTimeout(() => {
+    //         currentIndexLightbox = newIndex;
+    //         lightboxImage.src = lightboxImages[currentIndexLightbox];
+    //     }, 150); // félidőn váltjuk a képet
+
+    //     setTimeout(() => {
+    //         lightboxImage.classList.remove('is-fading');
+    //     }, 300); // teljes fade idő
+    // }
+
+    // function showPrev() {
+    //     const newIndex = (currentIndexLightbox - 1 + lightboxImages.length) % lightboxImages.length;
+    //     changeImageWithFade(newIndex);
+    // }
+
+    // function showNext() {
+    //     const newIndex = (currentIndexLightbox + 1) % lightboxImages.length;
+    //     changeImageWithFade(newIndex);
+    // }
+
+    
+
+    if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener("click", closeLightbox);
+    // if (prevBtnLightbox) prevBtnLightbox.addEventListener("click", showPrev);
+    // if (nextBtnLightbox) nextBtnLightbox.addEventListener("click", showNext);
+    if (prevBtnLightbox) prevBtnLightbox.onclick = showPrev;
+    if (nextBtnLightbox) nextBtnLightbox.onclick = showNext;
 
     document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !lightbox.classList.contains("hidden")) {
-        closeLightbox();
-    }
+        if (lightbox.classList.contains("hidden")) return;
+
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") showPrev();
+        if (e.key === "ArrowRight") showNext();
     });
 
-
-    // Lightbox teams
     $('.gallery-image').on('click', function() {
-        const src = $(this).data('image-large');
-        console.log(src);
-        openLightbox(src);
+        const index = $('.gallery-image').index(this);
+        openLightboxByIndex(index);
     });
 
 });

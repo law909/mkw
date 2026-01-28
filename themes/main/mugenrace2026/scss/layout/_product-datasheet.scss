@@ -253,6 +253,7 @@
 
   .kapcsolodoTermekInner {
     position: relative;
+    z-index:-1;
 
     a {
       position: relative;
@@ -291,6 +292,27 @@
   justify-content: center;
 }
 
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--color-text-inverse);
+    background: transparent;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
+.lightbox-nav:hover {
+  color: var(--color-secondary);
+}
+
 .lightbox.hidden {
   display: none;
 }
@@ -309,6 +331,12 @@
   z-index: 12;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   background-color: var(--color-background-white);
+  transition: opacity 0.15s ease;
+  opacity: 1;
+}
+
+.lightbox-image.is-fading {
+  opacity: 0;
 }
 
 .lightbox-close {
