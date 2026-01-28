@@ -29,7 +29,7 @@
 		<nav class="col">
 			<h5>{t('Egyéb információk')}</h5>
 			<ul>
-				<li><a href="kapcsolat">{t('Kapcsolat')}</a></li>
+				<li><a href="/kapcsolat">{t('Kapcsolat')}</a></li>
 				<li><a href="/fiok">{t('Fiókom')}</a></li>
 				<li><a href="/statlap/swapping-size">{t('Méretcsere')}</a></li>
 				<li><a href="/statlap/privacy-policy">{t('Vásárlói adatok védelme')}</a></li>
