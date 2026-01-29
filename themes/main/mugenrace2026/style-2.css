@@ -1667,6 +1667,7 @@ a.underline {
 }
 .product-datasheet .termekSliderTermekInner {
   position: relative;
+  z-index: -1;
 }
 .product-datasheet .termekSliderTermekInner a {
   position: relative;
