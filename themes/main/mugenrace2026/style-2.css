@@ -1527,6 +1527,7 @@ a.underline {
 .product-datasheet__image-column .product-carousel-container {
   top: 0;
   position: sticky;
+  z-index: 1;
 }
 @media (max-width: 768px) {
   .product-datasheet__image-column .product-carousel-container {
@@ -1656,7 +1657,7 @@ a.underline {
 }
 .product-datasheet .kapcsolodoTermekInner {
   position: relative;
-  z-index: -1;
+  z-index: 0;
 }
 .product-datasheet .kapcsolodoTermekInner a {
   position: relative;
@@ -1667,6 +1668,7 @@ a.underline {
 }
 .product-datasheet .termekSliderTermekInner {
   position: relative;
+  z-index: 0;
 }
 .product-datasheet .termekSliderTermekInner a {
   position: relative;

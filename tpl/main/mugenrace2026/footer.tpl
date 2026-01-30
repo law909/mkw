@@ -6,6 +6,12 @@
 			<a href="https://www.stripe.com" target="_blank" class="pull-right stripe-logo">
 				<img class="footer__stripe" src="/themes/main/mugenrace2026/img/stripe-logo-white.svg" title="Secure and comfortable online payment is provided by Barion Payment Inc, license number: H-EN-I-1064/2013 Your card details are not disclosed to our shop.">
 			</a>
+			<ul>
+				<li>
+					<a href="https://www.facebook.com/MugenRaceOfficial" target="_blank"><i class="icon white facebook"></i> 
+					<a href="https://instagram.com/mugenraceofficial/" target="_blank"><i class="icon white instagram"></i>
+				<li>
+			</ul>
 			<p>
 				{t('A Mugen Race Shop prémium motoros ruházatot és felszerelést kínál, amely a legmagasabb szintű biztonságot és stílust ötvözi. Válogass minőségi bőrruhák, kabátok, kesztyűk, csizmák és kiegészítők széles kínálatából – minden termék a teljesítményre és tartósságra tervezve. Fedezd fel a Mugen Race világát, és találd meg a számodra tökéletes motoros felszerelést!')}
 			</p>

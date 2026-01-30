@@ -60,6 +60,7 @@
     .product-carousel-container {
       top: 0;
       position: sticky;
+      z-index: 1;
 
       @include mobile {
         padding-left: 0;
@@ -253,7 +254,7 @@
 
   .kapcsolodoTermekInner {
     position: relative;
-    z-index:-1;
+    z-index:0;
 
     a {
       position: relative;
@@ -267,6 +268,7 @@
 
   .termekSliderTermekInner {
     position: relative;
+    z-index:0;
 
     a {
       position: relative;
