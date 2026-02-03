@@ -26,7 +26,7 @@
                 Your browser does not support the video tag.
             </video>
         {elseif (isset($blokk.hatterkepurl) && $blokk.hatterkepurl)}
-            <img src="{$blokk.hatterkepurl2000}" alt="{$blokk.cim}">
+            <img src="{$imagepath}{$blokk.hatterkepurl2000}" alt="{$blokk.cim}">
         {/if}
         <div
             class="

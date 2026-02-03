@@ -6,11 +6,11 @@
             <div class="row">
                 <div class="col ">
                     <div class="teams-datasheet__image-wrapper">
-                        <img src="{$csapat.kepurl2000}" alt="{$csapat.kepleiras}" class="teams-datasheet__image">
+                        <img src="{$imagepath}{$csapat.kepurl2000}" alt="{$csapat.kepleiras}" class="teams-datasheet__image">
                     </div>
                     <div class="teams-datasheet__meta">
                         {if ($csapat.logourlmini)}
-                            <img src="{$csapat.logourlmini}" alt="" class="teams-datasheet__logo">
+                            <img src="{$imagepath}{$csapat.logourlmini}" alt="" class="teams-datasheet__logo">
                         {/if}
                         <h2 class="teams-datasheet__title">{$csapat.nev}</h2>
                         <div class="teams-datasheet__lead">
@@ -32,7 +32,8 @@
             <div class="col sponsored-riders__items gallery-grid">
                 {foreach $csapat.kepek as $_kep}
                     <div class=" sponsored-riders__item gallery">
-                        <div class="sponsored-riders__item-content"><img src="{$_kep.urllarge}" data-image-large="{$_kep.url2000}" alt="{$_kep.leiras}"
+                        <div class="sponsored-riders__item-content"><img src="{$imagepath}{$_kep.urllarge}" data-image-large="{$imagepath}{$_kep.url2000}"
+                                                                         alt="{$_kep.leiras}"
                                                                          class=" gallery-image sponsored-riders__item-image"></div>
                     </div>
                 {/foreach}
@@ -52,7 +53,7 @@
                     {foreach $csapat.versenyzok as $_versenyzo}
                         <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}/">
                             <div class="kattext sponsored-riders__item-content">
-                                <img src="{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
+                                <img src="{$imagepath}{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
                                 {if ($_versenyzo.versenysorozat)}
                                     <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
                                 {/if}

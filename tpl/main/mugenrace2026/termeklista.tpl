@@ -12,6 +12,9 @@
                     <i class="icon arrow-right"></i>
 
 
+
+
+
 {foreach $navigator as $_navi}
                     {if ($_navi.url|default)}
                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -183,8 +186,8 @@
                                         <div class="flag sale-product">{t('Top 10')}</div>
                                     {/if} *}
                                 </div>
-                                <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
-                                    title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=image" src="{$imagepath}{$_termek.kepurl}"
+                                                                        title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 
                                 {* {$kcnt=count($_termek.kepek)}
                                 {if ($kcnt>0)}
@@ -359,8 +362,8 @@
                                     <div class="flag sale-product">{t('Top 10')}</div>
                                 {/if} *}
                             </div>
-                            <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=" image" src="{$imagepath}{$_termek.kepurl}"
-                                title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                            <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=image" src="{$imagepath}{$_termek.kepurl}"
+                                                                    title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 
                             {* {$kcnt=count($_termek.kepek)}
                             {if ($kcnt>0)}

@@ -19,7 +19,7 @@
                 {foreach $hirek as $_child}
                     <div class="carousel-item kat news-list__item" data-href="/news/{$_child.slug}">
                         <div class="kattext news-list__item-content">
-                            <img src="{$_child.kepurllarge}" alt="{$_child.cim}" class="news-list__item-image">
+                            <img src="{$imagepath}{$_child.kepurllarge}" alt="{$_child.cim}" class="news-list__item-image">
                             <div class="hiralairas news-list__item-date">{$_child.datum}</div>
                             <div class="kattitle news-list__item-title"><a href="/news/{$_child.slug}">{$_child.cim}</a></div>
                             <div class="katcopy news-list__item-lead">{$_child.lead}</div>

@@ -10,19 +10,20 @@
                                     {t('Home')}
                             </a>
                         <i class="icon arrow-right"></i>
-                        
-                        {foreach $navigator as $_navi}
-                            {if ($_navi.url|default)}
-                                <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
+
+
+{foreach $navigator as $_navi}
+                        {if ($_navi.url|default)}
+                            <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
                                     <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
                                         {$_navi.caption|capitalize}
                                     </a>
                                 </span>
-                                <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                            {else}
-                                {$_navi.caption|capitalize}
-                            {/if}
-                        {/foreach}
+                            <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
+                        {else}
+                            {$_navi.caption|capitalize}
+                        {/if}
+                    {/foreach}
                     {/if}
 				</span>
             </div>
@@ -46,7 +47,7 @@
                     <div class="kat news-list__item" data-href="/news/{$_child.slug}">
                         <div class="kattext news-list__item-content">
                             {if ($_child.kepurllarge)}
-                                <img src="{$_child.kepurllarge}" alt="{$_child.kepleiras}" class="news-list__item-image">
+                                <img src="{$imagepath}{$_child.kepurllarge}" alt="{$_child.kepleiras}" class="news-list__item-image">
                             {/if}
                             <div class="hiralairas news-list__item-date">{$_child.datum}</div>
                             <div class="kattitle news-list__item-title"><a href="/news/{$_child.slug}">{$_child.cim}</a></div>
