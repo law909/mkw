@@ -329,9 +329,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::Bigimgpost);
         $view->setVar(\mkw\consts::Bigimgpost, ($p ? $p->getErtek() : '_b'));
         $p = $repo->find(\mkw\consts::I400imgpost);
-        $view->setVar(\mkw\consts::I400imgpost, ($p ? $p->getErtek() : '_4'));
+        $view->setVar(\mkw\consts::I400imgpost, ($p ? $p->getErtek() : '_400'));
         $p = $repo->find(\mkw\consts::I2000imgpost);
-        $view->setVar(\mkw\consts::I2000imgpost, ($p ? $p->getErtek() : '_2'));
+        $view->setVar(\mkw\consts::I2000imgpost, ($p ? $p->getErtek() : '_2000'));
         $p = $repo->find(\mkw\consts::Fooldalajanlotttermekdb);
         $view->setVar(\mkw\consts::Fooldalajanlotttermekdb, ($p ? $p->getErtek() : 6));
         $p = $repo->find(\mkw\consts::Fooldalhirdb);
