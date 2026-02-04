@@ -22,7 +22,7 @@
   " {if (isset($blokk.cssstyle) && $blokk.cssstyle)} style="{$blokk.cssstyle}" {/if}>
         {if (isset($blokk.videourl) && $blokk.videourl)}
             <video autoplay muted loop playsinline webkit-playsinline class="hero-video">
-                <source src="{$blokk.videourl}" type="video/mp4">
+                <source src="{$imagepath}{$blokk.videourl}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         {elseif (isset($blokk.hatterkepurl) && $blokk.hatterkepurl)}
