@@ -3,12 +3,15 @@
 namespace Controllers;
 
 use Entities\Arsav;
+use Entities\Bankszamla;
+use Entities\Bizonylattipus;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\JogaBerlet;
 use Entities\Jogaoratipus;
 use Entities\JogaReszvetel;
 use Entities\Jogaterem;
+use Entities\Jogcim;
 use Entities\Partner;
 use Entities\Penztar;
 use Entities\Termek;
@@ -456,9 +459,13 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                             if ($partneremail) {
                                 /** @var \Entities\Partner $partnerobj */
                                 $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
+                                if (!$partnerobj->getVatstatus() && !$partnerobj->getAdoszam()) {
+                                    $partnerobj->setVatstatus(2);
+                                }
                             }
                             if (!$partnerobj) {
                                 $partnerobj = new \Entities\Partner();
+                                $partnerobj->setVatstatus(2);
                             }
                             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail_' . $jrid));
                             $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon_' . $jrid));
@@ -515,10 +522,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         /** @var \Entities\RendezvenyJelentkezes $r */
         $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         /** @var \Entities\Fizmod $fizmod */
-        $fizmod = $this->getRepo('\Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
-        $bankszamla = $this->getRepo('\Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
-        $penztar = $this->getRepo('\Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
-        $jogcim = $this->getRepo('\Entities\Jogcim')->find($this->params->getIntRequestParam('jogcim'));
+        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $bankszamla = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
+        $penztar = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
+        $jogcim = $this->getRepo(Jogcim::class)->find($this->params->getIntRequestParam('jogcim'));
         $osszeg = $this->params->getNumRequestParam('osszeg');
 
         if ($r && $fizmod && $jogcim
@@ -530,7 +537,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                 $bt = new \Entities\Bankbizonylattetel();
                 $biz->addBizonylattetel($bt);
 
-                $biz->setBizonylattipus($this->getRepo('\Entities\Bizonylattipus')->find('bank'));
+                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
                 $biz->setMegjegyzes(at('Automatikus bizonylat'));
                 $biz->setBankszamla($bankszamla);
                 $biz->setPartner($r->getPartner());
@@ -558,7 +565,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                 $bt = new \Entities\Penztarbizonylattetel();
                 $biz->addBizonylattetel($bt);
 
-                $biz->setBizonylattipus($this->getRepo('\Entities\Bizonylattipus')->find('penztar'));
+                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('penztar'));
                 $biz->setMegjegyzes(at('Automatikus bizonylat'));
                 $biz->setIrany(1);
                 $biz->setKelt('');

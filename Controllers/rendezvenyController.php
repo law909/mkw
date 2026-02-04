@@ -2,8 +2,16 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
+use Entities\Emailtemplate;
+use Entities\Helyszin;
+use Entities\Jogaterem;
+use Entities\Partner;
 use Entities\Rendezveny;
+use Entities\Rendezvenyallapot;
+use Entities\RendezvenyDok;
 use Entities\RendezvenyJelentkezes;
+use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 
 class rendezvenyController extends \mkwhelpers\MattableController
@@ -91,23 +99,23 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $obj->setCsomag($this->params->getBoolRequestParam('csomag'));
         $obj->setEarlybirdvege($this->params->getStringRequestParam('earlybirdvege'));
         $obj->setEarlybirdar($this->params->getFloatRequestParam('earlybirdar'));
-        $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
+        $ck = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('tanar', 0));
+        $ck = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('tanar', 0));
         if ($ck) {
             $obj->setTanar($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Rendezvenyallapot')->find($this->params->getIntRequestParam('rendezvenyallapot', 0));
+        $ck = \mkw\store::getEm()->getRepository(Rendezvenyallapot::class)->find($this->params->getIntRequestParam('rendezvenyallapot', 0));
         if ($ck) {
             $obj->setRendezvenyallapot($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem', 0));
+        $ck = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem', 0));
         if ($ck) {
             $obj->setJogaterem($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Helyszin')->find($this->params->getIntRequestParam('helyszin', 0));
+        $ck = \mkw\store::getEm()->getRepository(Helyszin::class)->find($this->params->getIntRequestParam('helyszin', 0));
         if ($ck) {
             $obj->setHelyszin($ck);
         }
@@ -124,7 +132,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                     $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
                     $this->getEm()->persist($dok);
                 } elseif ($dokoper === 'edit') {
-                    $dok = \mkw\store::getEm()->getRepository('Entities\RendezvenyDok')->find($dokid);
+                    $dok = \mkw\store::getEm()->getRepository(RendezvenyDok::class)->find($dokid);
                     if ($dok) {
                         $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
                         $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
@@ -328,9 +336,10 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $szabadhely = $rendezveny->calcSzabadhely();
 
             if (!$jel) {
-                $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
+                $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
                 if (!$partner) {
                     $partner = new \Entities\Partner();
+                    $partner->setVatstatus(2);
                 }
                 $partnerctrl = new \Controllers\partnerController($this->params);
                 $partner = $partnerctrl->setFields($partner, null, 'pubreg');
@@ -361,7 +370,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
             }
 
             if ($sendemails) {
-                $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
+                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
                 if ($emailtpl) {
                     $tpldata = $jel->toLista();
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -385,7 +394,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                     }
                 }
 
-                $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegErtesito));
+                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegErtesito));
                 if ($emailtpl) {
                     $tpldata = $jel->toLista();
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -431,7 +440,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
             $jel->setLemondasdatum();
             $this->getEm()->persist($jel);
             $this->getEm()->flush();
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
             if ($emailtpl) {
                 $tpldata = $jel->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -457,7 +466,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                 }
             }
 
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegErtesito));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegErtesito));
             if ($emailtpl) {
                 $tpldata = $jel->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());

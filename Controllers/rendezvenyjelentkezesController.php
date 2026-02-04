@@ -2,11 +2,24 @@
 
 namespace Controllers;
 
+use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
+use Entities\Bankszamla;
+use Entities\Bizonylattipus;
+use Entities\Emailtemplate;
+use Entities\Fizmod;
+use Entities\Jogcim;
+use Entities\Partner;
+use Entities\Penztar;
+use Entities\Penztarbizonylattetel;
+use Entities\Rendezveny;
 use Entities\RendezvenyJelentkezes;
 
-class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
+class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\RendezvenyJelentkezes');
         $this->setKarbFormTplName('rendezvenyjelentkezeskarbform.tpl');
         $this->setKarbTplName('rendezvenyjelentkezeskarb.tpl');
@@ -15,8 +28,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\RendezvenyJelentkezes();
             $this->getEm()->detach($t);
@@ -80,24 +94,27 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
     /**
      * @param \Entities\RendezvenyJelentkezes $obj
      * @param $oper
+     *
      * @return mixed
      */
-    protected function setFields($obj, $oper) {
+    protected function setFields($obj, $oper)
+    {
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
                 if (!$partnerobj) {
                     $partnerobj = new \Entities\Partner();
                 }
-            }
-            else {
+            } else {
                 $partnerobj = new \Entities\Partner();
             }
             $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
-            $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+            if (!$partnerobj->getAdoszam()) {
+                $partnerobj->setVatstatus(2);
+            }
             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
             $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
             $partnerobj->setNev($this->params->getStringRequestParam('partnernev'));
@@ -110,22 +127,21 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($partnerobj);
         }
         if ($partnerkod > 0) {
-            $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($partnerkod);
             if ($ck) {
                 $obj->setPartner($ck);
             }
-        }
-        else {
+        } else {
             $obj->setPartner($partnerobj);
         }
 
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setDatum($this->params->getStringRequestParam('datum'));
-        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
         if ($ck) {
             $obj->setFizmod($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Rendezveny')->find($this->params->getIntRequestParam('rendezveny', 0));
+        $ck = \mkw\store::getEm()->getRepository(Rendezveny::class)->find($this->params->getIntRequestParam('rendezveny', 0));
         if ($ck) {
             $obj->setRendezveny($ck);
         }
@@ -133,7 +149,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('rendezvenyjelentkezeslista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -155,7 +172,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
 
         $f = $this->params->getIntRequestParam('fizmodfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
+            $bs = $this->getRepo(Fizmod::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('fizmod', '=', $bs);
             }
@@ -163,7 +180,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
 
         $f = $this->params->getIntRequestParam('rendezvenyfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Rendezveny')->findOneById($f);
+            $bs = $this->getRepo(Rendezveny::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('rendezveny', '=', $bs);
             }
@@ -186,21 +203,27 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAllForSelectList([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid));
+            $res[] = ['id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid)];
         }
         return $res;
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('rendezvenyjelentkezeslista.tpl');
 
         $view->setVar('pagetitle', t('Rendezvény jelentkezések'));
@@ -215,7 +238,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $bankszamla = new bankszamlaController($this->params);
         $view->setVar('bankszamlalist', $bankszamla->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist',
+        $view->setVar(
+            'rendezvenylist',
             $rendezveny->getSelectList(
                 null,
                 [
@@ -227,7 +251,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('rendezvenyjelentkezeslista.tpl');
 
         $view->setVar('pagetitle', t('Rendezvény jelentkezések'));
@@ -246,7 +271,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $jogcim = new jogcimController($this->params);
         $view->setVar('jogcimlist', $jogcim->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist',
+        $view->setVar(
+            'rendezvenylist',
             $rendezveny->getSelectList(
                 null,
                 [
@@ -258,7 +284,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -278,7 +305,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $jogcim = new jogcimController($this->params);
         $view->setVar('jogcimlist', $jogcim->getSelectList());
         $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist',
+        $view->setVar(
+            'rendezvenylist',
             $rendezveny->getSelectList(
                 $record?->getRendezvenyId(),
                 [
@@ -291,7 +319,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getar() {
+    public function getar()
+    {
         $id = $this->params->getIntRequestParam('id');
         /** @var \Entities\RendezvenyJelentkezes $rj */
         $rj = $this->getRepo()->find($id);
@@ -299,63 +328,59 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             /** @var \Entities\Rendezveny $r */
             $r = $rj->getRendezveny();
             if ($r->getAr()) {
-                echo json_encode(array('result' => 'ok', 'price' => $r->getAr()));
-            }
-            else {
+                echo json_encode(['result' => 'ok', 'price' => $r->getAr()]);
+            } else {
                 if ($r) {
                     $t = $r->getTermek();
                     $p = $rj->getPartner();
                     if ($t && $p) {
                         $price = $t->getBruttoAr(null, $p);
-                        echo json_encode(array('result' => 'ok', 'price' => $price));
+                        echo json_encode(['result' => 'ok', 'price' => $price]);
+                    } else {
+                        echo json_encode(['result' => 'error', 'msg' => at('Nincs termék vagy partner!')]);
                     }
-                    else {
-                        echo json_encode(array('result' => 'error', 'msg' => at('Nincs termék vagy partner!')));
-                    }
-                }
-                else {
-                    echo json_encode(array('result' => 'error', 'msg' => at('Nincs rendezvény!')));
+                } else {
+                    echo json_encode(['result' => 'error', 'msg' => at('Nincs rendezvény!')]);
                 }
             }
-        }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nincs ilyen jelentkezés!')));
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nincs ilyen jelentkezés!')]);
         }
     }
 
-    public function getfizetettosszeg() {
+    public function getfizetettosszeg()
+    {
         $id = $this->params->getIntRequestParam('id');
         /** @var \Entities\RendezvenyJelentkezes $rj */
         $rj = $this->getRepo()->find($id);
         if ($rj) {
-            echo json_encode(array('result' => 'ok', 'price' => $rj->getFizetveosszeghuf()));
-        }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nincs ilyen jelentkezés!')));
+            echo json_encode(['result' => 'ok', 'price' => $rj->getFizetveosszeghuf()]);
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nincs ilyen jelentkezés!')]);
         }
     }
 
-    public function fizet() {
+    public function fizet()
+    {
         /** @var \Entities\RendezvenyJelentkezes $r */
         $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         /** @var \Entities\Fizmod $fizmod */
-        $fizmod = $this->getRepo('\Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
-        $bankszamla = $this->getRepo('\Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
-        $penztar = $this->getRepo('\Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
-        $jogcim = $this->getRepo('\Entities\Jogcim')->find($this->params->getIntRequestParam('jogcim'));
+        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $bankszamla = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
+        $penztar = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
+        $jogcim = $this->getRepo(Jogcim::class)->find($this->params->getIntRequestParam('jogcim'));
         $osszeg = $this->params->getNumRequestParam('osszeg');
 
         if ($r && $fizmod && $jogcim
             && (($this->params->getIntRequestParam('bankszamla') && $bankszamla) || ($this->params->getIntRequestParam('penztar') && $penztar))
             && $osszeg) {
-
             $tipus = $fizmod->getTipus();
             if ($tipus === 'B' && $bankszamla) {
                 $biz = new \Entities\Bankbizonylatfej();
                 $bt = new \Entities\Bankbizonylattetel();
                 $biz->addBizonylattetel($bt);
 
-                $biz->setBizonylattipus($this->getRepo('\Entities\Bizonylattipus')->find('bank'));
+                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
                 $biz->setMegjegyzes(at('Automatikus bizonylat'));
                 $biz->setBankszamla($bankszamla);
                 $biz->setPartner($r->getPartner());
@@ -378,13 +403,12 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $r->setFizetvebankszamla($bankszamla);
                 $r->setFizetvebankbizonylatszam($biz->getId());
                 $r->setFizetvebanktetelid($bt->getId());
-            }
-            elseif ($tipus === 'P' && $penztar) {
+            } elseif ($tipus === 'P' && $penztar) {
                 $biz = new \Entities\Penztarbizonylatfej();
                 $bt = new \Entities\Penztarbizonylattetel();
                 $biz->addBizonylattetel($bt);
 
-                $biz->setBizonylattipus($this->getRepo('\Entities\Bizonylattipus')->find('penztar'));
+                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('penztar'));
                 $biz->setMegjegyzes(at('Automatikus bizonylat'));
                 $biz->setIrany(1);
                 $biz->setKelt('');
@@ -414,12 +438,14 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($r);
             $this->getEm()->flush();
 
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFizetesKoszono));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFizetesKoszono));
             if ($emailtpl) {
                 $tpldata = $r->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('jelentkezes', $tpldata);
-                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
                 $body->setVar('jelentkezes', $tpldata);
                 if ($r->getRendezveny() && $r->getRendezveny()->getHelyszin()) {
                     $body->setVar('helyszin', $r->getRendezveny()->getHelyszin()->getEmailsablon());
@@ -428,8 +454,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
-                }
-                else {
+                } else {
                     $mailer = \mkw\store::getMailer();
                     $mailer->addTo($r->getPartneremail());
                     $mailer->setSubject($subject->getTemplateResult());
@@ -438,14 +463,14 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 }
             }
 
-            echo json_encode(array('result' => 'ok'));
-        }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nem adott meg minden adatot!')));
+            echo json_encode(['result' => 'ok']);
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
         }
     }
 
-    public function szamlaz() {
+    public function szamlaz()
+    {
         /** @var \Entities\Rendezvenyjelentkezes $rj */
         $rj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
 
@@ -456,31 +481,29 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $biztipusstr = $this->params->getStringRequestParam('biztipus');
         switch ($biztipusstr) {
             case 'szamla':
-                $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+                $biztipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
                 break;
             case 'egyeb':
-                $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
+                $biztipus = $this->getRepo(Bizonylattipus::class)->find('egyeb');
                 break;
             default:
                 $biztipusstr = null;
                 $biztipus = null;
         }
         if ($rj && $biztipus && $kelt && $teljesites && $osszeg) {
-
             $r = $rj->getRendezveny();
 
             if ($rj->getFizetvebanktetelid()) {
                 /** @var \Entities\Bankbizonylatfej $bankfej */
-                $bankfej = $this->getRepo('\Entities\Bankbizonylatfej')->find($rj->getFizetvebankbizonylatszam());
+                $bankfej = $this->getRepo(Bankbizonylatfej::class)->find($rj->getFizetvebankbizonylatszam());
                 /** @var \Entities\Bankbizonylattetel $banktetel */
-                $banktetel = $this->getRepo('\Entities\Bankbizonylattetel')->find($rj->getFizetvebanktetelid());
+                $banktetel = $this->getRepo(Bankbizonylattetel::class)->find($rj->getFizetvebanktetelid());
                 $penztartetel = null;
-            }
-            else {
+            } else {
                 $bankfej = null;
                 $banktetel = null;
                 /** @var \Entities\Penztarbizonylattetel $penztartetel */
-                $penztartetel = $this->getRepo('\Entities\Penztarbizonylattetel')->find($rj->getFizetvepenztartetelid());
+                $penztartetel = $this->getRepo(Penztarbizonylattetel::class)->find($rj->getFizetvepenztartetelid());
             }
             $biz = new \Entities\Bizonylatfej();
             $bt = new \Entities\Bizonylattetel();
@@ -491,6 +514,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $biz->addBizonylattetel($bt);
 
             $biz->setPartner($rj->getPartner());
+            if (!$biz->getPartnervatstatus() && !$biz->getPartneradoszam()) {
+                $biz->setPartnervatstatus(2);
+            }
             $biz->setFizmod($rj->getFizmod());
             $biz->setKelt($kelt);
             $biz->setTeljesites($teljesites);
@@ -525,8 +551,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             if ($banktetel) {
                 $banktetel->setHivatkozottbizonylat($biz->getId());
                 $this->getEm()->persist($banktetel);
-            }
-            elseif ($penztartetel) {
+            } elseif ($penztartetel) {
                 $penztartetel->setHivatkozottbizonylat($biz->getId());
                 $this->getEm()->persist($penztartetel);
             }
@@ -534,21 +559,20 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($rj);
             $this->getEm()->flush();
 
-            echo json_encode(array('result' => 'ok'));
-        }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nem adott meg minden adatot!')));
+            echo json_encode(['result' => 'ok']);
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
         }
     }
 
-    public function lemond() {
+    public function lemond()
+    {
         /** @var \Entities\RendezvenyJelentkezes $rj */
         $rj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         $datum = $this->params->getStringRequestParam('datum');
         $ok = $this->params->getStringRequestParam('ok');
 
         if ($rj && $datum) {
-
             $rj->setLemondva(true);
             $rj->setLemondasdatum($datum);
             $rj->setLemondasoka($ok);
@@ -559,7 +583,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
 
             $rendezveny = $rj->getRendezveny();
 
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
             if ($emailtpl) {
                 $tpldata = $rj->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -596,31 +620,32 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $rjc->sendFelszabadultHelyEmail($jel->getId());
             }
 
-            echo json_encode(array('result' => 'ok'));
+            echo json_encode(['result' => 'ok']);
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
         }
-        else {
-            echo json_encode(array('result' => 'error', 'msg' => at('Nem adott meg minden adatot!')));
-        }
-
     }
 
-    public function visszautal() {
+    public function visszautal()
+    {
         /** @var \Entities\RendezvenyJelentkezes $rj */
         $rj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
-
     }
 
-    public function sendDijbekeroEmail() {
-        $ret = array('msg' => at('A díjbekérő levél kiküldve.'));
+    public function sendDijbekeroEmail()
+    {
+        $ret = ['msg' => at('A díjbekérő levél kiküldve.')];
         /** @var \Entities\RendezvenyJelentkezes $jel */
         $jel = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         if ($jel) {
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonDijbekero));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonDijbekero));
             if ($emailtpl) {
                 $tpldata = $jel->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('jelentkezes', $tpldata);
-                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
                 $body->setVar('jelentkezes', $tpldata);
                 if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
                     $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
@@ -628,8 +653,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenydijbekeroemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenydijbekeroemail.html');
-                }
-                else {
+                } else {
                     $mailer = \mkw\store::getMailer();
                     $mailer->addTo($jel->getPartneremail());
                     $mailer->setSubject($subject->getTemplateResult());
@@ -640,19 +664,18 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $jel->setEmaildijbekerodatum('');
                 $this->getEm()->persist($jel);
                 $this->getEm()->flush();
-            }
-            else {
+            } else {
                 $ret['msg'] = at('Díjbekérő levél sablon nem található.');
             }
-        }
-        else {
+        } else {
             $ret['msg'] = at('A jelentkezés nem található.');
         }
         echo json_encode($ret);
     }
 
-    public function sendKezdesEmail($id = null) {
-        $ret = array('msg' => at('A kezdés emlékeztető levél kiküldve.'));
+    public function sendKezdesEmail($id = null)
+    {
+        $ret = ['msg' => at('A kezdés emlékeztető levél kiküldve.')];
         $kellecho = false;
         if (!$id) {
             $kellecho = true;
@@ -661,12 +684,14 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         /** @var \Entities\RendezvenyJelentkezes $jel */
         $jel = $this->getRepo()->find($id);
         if ($jel) {
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonKezdesEmlekezteto));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonKezdesEmlekezteto));
             if ($emailtpl) {
                 $tpldata = $jel->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('jelentkezes', $tpldata);
-                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
                 $body->setVar('jelentkezes', $tpldata);
                 if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
                     $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
@@ -674,8 +699,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenykezdesemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenykezdesemail.html');
-                }
-                else {
+                } else {
                     $mailer = \mkw\store::getMailer();
                     $mailer->addTo($jel->getPartneremail());
                     $mailer->setSubject($subject->getTemplateResult());
@@ -686,12 +710,10 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $jel->setEmailrendezvenykezdes(true);
                 $this->getEm()->persist($jel);
                 $this->getEm()->flush();
-            }
-            else {
+            } else {
                 $ret['msg'] = at('Kezdés emlékeztető levél sablon nem található.');
             }
-        }
-        else {
+        } else {
             $ret['msg'] = at('A jelentkezés nem található.');
         }
         if ($kellecho) {
@@ -699,8 +721,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function sendFelszabadultHelyEmail($id = null) {
-        $ret = array('msg' => at('A kezdés emlékeztető levél kiküldve.'));
+    public function sendFelszabadultHelyEmail($id = null)
+    {
+        $ret = ['msg' => at('A kezdés emlékeztető levél kiküldve.')];
         $kellecho = false;
         if (!$id) {
             $kellecho = true;
@@ -709,12 +732,14 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         /** @var \Entities\RendezvenyJelentkezes $jel */
         $jel = $this->getRepo()->find($id);
         if ($jel) {
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito));
             if ($emailtpl) {
                 $tpldata = $jel->toLista();
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('jelentkezes', $tpldata);
-                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body = \mkw\store::getTemplateFactory()->createMainView(
+                    'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                );
                 $body->setVar('jelentkezes', $tpldata);
                 if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
                     $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
@@ -722,20 +747,17 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyfelszabadulthelyemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyfelszabadulthelyemail.html');
-                }
-                else {
+                } else {
                     $mailer = \mkw\store::getMailer();
                     $mailer->addTo($jel->getPartneremail());
                     $mailer->setSubject($subject->getTemplateResult());
                     $mailer->setMessage($body->getTemplateResult());
                     $mailer->send();
                 }
-            }
-            else {
+            } else {
                 $ret['msg'] = at('Kezdés emlékeztető levél sablon nem található.');
             }
-        }
-        else {
+        } else {
             $ret['msg'] = at('A jelentkezés nem található.');
         }
         if ($kellecho) {

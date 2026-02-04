@@ -7,7 +7,17 @@ use Entities\Arsav;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
+use Entities\Dolgozo;
+use Entities\Emailtemplate;
+use Entities\Fizmod;
+use Entities\JogaBejelentkezes;
+use Entities\JogaBerlet;
+use Entities\Orarend;
+use Entities\Orarendhelyettesites;
 use Entities\Partner;
+use Entities\Raktar;
+use Entities\Szallitasimod;
+use Entities\Termek;
 use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers, Entities;
@@ -28,7 +38,7 @@ class pubadminController extends mkwhelpers\Controller
     {
         $view = $this->createPubAdminView('oralist.tpl');
 
-        $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find(\mkw\store::getPubAdminSession()->pk);
+        $dolgozo = $this->getRepo(Dolgozo::class)->find(\mkw\store::getPubAdminSession()->pk);
         if ($dolgozo) {
             $datum = $this->params->getStringRequestParam('datum');
             $napszam = new \DateTime($datum);
@@ -36,9 +46,9 @@ class pubadminController extends mkwhelpers\Controller
             $filter->addFilter('dolgozo', '=', $dolgozo);
             $filter->addFilter('nap', '=', $napszam->format('N'));
             $filter->addFilter('inaktiv', '=', false);
-            $orak = $this->getRepo(Entities\Orarend::class)->getAll($filter);
+            $orak = $this->getRepo(Orarend::class)->getAll($filter);
             $oralista = [];
-            /** @var Entities\Orarend $ora */
+            /** @var Orarend $ora */
             foreach ($orak as $ora) {
                 $oralista[] = [
                     'id' => $ora->getId(),
@@ -49,8 +59,8 @@ class pubadminController extends mkwhelpers\Controller
             $filter->addFilter('helyettesito', '=', $dolgozo);
             $filter->addFilter('datum', '=', $datum);
             $filter->addFilter('inaktiv', '=', false);
-            $helyettek = $this->getRepo(Entities\Orarendhelyettesites::class)->getAll($filter);
-            /** @var Entities\Orarendhelyettesites $helyett */
+            $helyettek = $this->getRepo(Orarendhelyettesites::class)->getAll($filter);
+            /** @var Orarendhelyettesites $helyett */
             foreach ($helyettek as $helyett) {
                 $oralista[] = [
                     'id' => $helyett->getOrarendId(),
@@ -69,27 +79,27 @@ class pubadminController extends mkwhelpers\Controller
         $datum = $this->params->getStringRequestParam('datum');
         $ma = new Carbon();
         $datumdate = Carbon::createFromFormat(\mkw\store::$SQLDateFormat, $datum);
-        $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
+        $ora = $this->getRepo(Orarend::class)->find($oraid);
 
         if ($oraid) {
-            /** @var \Entities\Termek $orajegytermek */
-            $orajegytermek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
-            /** @var \Entities\Termek $berlet4termek */
-            $berlet4termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
-            /** @var \Entities\Termek $berlet10termek */
-            $berlet10termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+            /** @var Termek $orajegytermek */
+            $orajegytermek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+            /** @var Termek $berlet4termek */
+            $berlet4termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+            /** @var Termek $berlet10termek */
+            $berlet10termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
 
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('orarend', '=', $oraid);
             $filter->addFilter('datum', '=', $datum);
-            $resztvevok = $this->getRepo(Entities\JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
+            $resztvevok = $this->getRepo(JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
 
-            /** @var \Entities\JogaBejelentkezes $resztvevo */
+            /** @var JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
                 $rvtomb = [];
                 $rvtomb['tipus'] = false;
-                $rvpartner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $resztvevo->getPartneremail()]);
+                $rvpartner = $this->getRepo(Partner::class)->findOneBy(['email' => $resztvevo->getPartneremail()]);
                 if ($rvpartner) {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
                     $rvtomb['email'] = $resztvevo->getPartneremail();
@@ -98,10 +108,10 @@ class pubadminController extends mkwhelpers\Controller
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
                     $filter->addSql('(_xx.lejaratdatum>=CURDATE())');
-                    $berletek = $this->getRepo(Entities\JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
+                    $berletek = $this->getRepo(JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
                     \mkw\store::writelog(count($berletek));
                     if (count($berletek)) {
-                        /** @var \Entities\JogaBerlet $berlet */
+                        /** @var JogaBerlet $berlet */
                         $berlet = $berletek[0];
                         $rvtomb['tipus'] = 'berlet';
                         $rvtomb['alkalom'] = $berlet->getAlkalom();
@@ -124,19 +134,19 @@ class pubadminController extends mkwhelpers\Controller
                 $rvtomb['mustbuy'] = !$rvtomb['tipus'];
                 $rvtomb['online'] = $resztvevo->getOnline();
                 $rvtomb['lemondva'] = $resztvevo->isLemondva();
-                /** @var Entities\Termek $termek */
-                $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                /** @var Termek $termek */
+                $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 $arsav = $this->getEm()->getRepository(Arsav::class)->findOneBy(['nev' => 'normál']);
                 if ($termek) {
                     $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type1name'] = $termek->getNev();
                 }
-                $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+                $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
                 if ($termek) {
                     $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type2name'] = $termek->getNev();
                 }
-                $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+                $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
                 if ($termek) {
                     $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, $arsav);
                     $rvtomb['type3name'] = $termek->getNev();
@@ -157,9 +167,9 @@ class pubadminController extends mkwhelpers\Controller
 
     public function setResztvevoMegjelent()
     {
-        /** @var \Entities\JogaBejelentkezes $rv */
+        /** @var JogaBejelentkezes $rv */
         $online = $this->params->getIntRequestParam('online');
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
         if ($rv) {
             $megje = $rv->isMegjelent();
             $rv->setMegjelent(!$rv->isMegjelent());
@@ -183,8 +193,8 @@ class pubadminController extends mkwhelpers\Controller
         $type = $this->params->getIntRequestParam('type');
         $price = $this->params->getNumRequestParam('price');
         $later = $this->params->getBoolRequestParam('later');
-        /** @var \Entities\JogaBejelentkezes $rv */
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
+        /** @var JogaBejelentkezes $rv */
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
         if ($rv) {
             $rv->setTipus($type);
             $rv->setAr($price);
@@ -192,7 +202,7 @@ class pubadminController extends mkwhelpers\Controller
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
 
-            $rvpartner = \mkw\store::getEm()->getRepository(Entities\Partner::class)->findOneBy(['email' => $rv->getPartneremail()]);
+            $rvpartner = $this->getRepo(Partner::class)->findOneBy(['email' => $rv->getPartneremail()]);
             if (!$rvpartner) {
                 $rvpartner = new Partner();
                 $rvpartner->setEmail($rv->getPartneremail());
@@ -207,15 +217,15 @@ class pubadminController extends mkwhelpers\Controller
 
             $tipusnev = 'órajegy';
             if ($type === 2 || $type === 3) {
-                $berlet = new Entities\JogaBerlet();
+                $berlet = new JogaBerlet();
                 $berlet->setPartner($rvpartner);
                 switch ($type) {
                     case 2:
-                        /** @var \Entities\Termek $termek */
-                        $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+                        /** @var Termek $termek */
+                        $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
                         break;
                     case 3:
-                        $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+                        $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
                         break;
                 }
                 $tipusnev = $termek->getNev();
@@ -226,7 +236,7 @@ class pubadminController extends mkwhelpers\Controller
                 $this->getEm()->persist($berlet);
                 $this->getEm()->flush();
             } elseif ($type === 1) {
-                $termek = $this->getRepo(Entities\Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             }
             if ($rv->getOrarend()->getDolgozo()->isAutoszamla()) {
                 /** @var Bizonylattipus $biztipus */
@@ -243,7 +253,7 @@ class pubadminController extends mkwhelpers\Controller
                 if ($rvpartner->getSzallitasimod()) {
                     $szamlafej->setSzallitasimod($rvpartner->getSzallitasimod());
                 } else {
-                    $szamlafej->setSzallitasimod($this->getRepo(Entities\Szallitasimod::class)->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod)));;
+                    $szamlafej->setSzallitasimod($this->getRepo(Szallitasimod::class)->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod)));;
                 }
                 if (!$szamlafej->getPartnervatstatus()) {
                     $szamlafej->setPartnervatstatus(2);
@@ -252,14 +262,14 @@ class pubadminController extends mkwhelpers\Controller
                     $szamlafej->setPartnerSzamlatipus(0);
                 }
 
-                $szamlafej->setRaktar($this->getRepo(Entities\Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
+                $szamlafej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
                 $szamlafej->setValutanem($valutanem);
                 $szamlafej->setBankszamla($valutanem->getBankszamla());
                 $szamlafej->setArfolyam(1);
                 if ($later) {
-                    $szamlafej->setFizmod($this->getRepo(Entities\Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::Fizmod)));
+                    $szamlafej->setFizmod($this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::Fizmod)));
                 } else {
-                    $szamlafej->setFizmod($this->getRepo(Entities\Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod)));
+                    $szamlafej->setFizmod($this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod)));
                 }
                 $szamlafej->setKelt();
                 $szamlafej->setTeljesites();
@@ -289,7 +299,7 @@ class pubadminController extends mkwhelpers\Controller
 
                 $email = $szamlafej->getPartneremail();
                 if (\mkw\store::isSendableEmail($email)) {
-                    $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletSzamlazvaSablon));
+                    $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletSzamlazvaSablon));
 
                     $bfcontroller = new bizonylatfejController($this->params);
                     $html = $bfcontroller->getBizonylatHTML($szamlafej->getId());
@@ -330,7 +340,7 @@ class pubadminController extends mkwhelpers\Controller
                 if ($berlet) {
                     $berlet->sendEmail($sablon);
                 } elseif (\mkw\store::isSendableEmail($rv->getPartneremail())) {
-                    $emailtpl = $this->getRepo(Entities\Emailtemplate::class)->find($sablon);
+                    $emailtpl = $this->getRepo(Emailtemplate::class)->find($sablon);
                     if ($emailtpl) {
                         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                         $body = \mkw\store::getTemplateFactory()->createMainView(
@@ -359,8 +369,8 @@ class pubadminController extends mkwhelpers\Controller
         $q = $this->params->getStringRequestParam('q');
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter(['nev', 'keresztnev', 'vezeteknev'], 'like', '%' . $q . '%');
-        $partnerek = $this->getRepo(Entities\Partner::class)->getAll($filter, ['nev' => 'ASC']);
-        /** @var \Entities\Partner $partner */
+        $partnerek = $this->getRepo(Partner::class)->getAll($filter, ['nev' => 'ASC']);
+        /** @var Partner $partner */
         foreach ($partnerek as $partner) {
             $result[] = [
                 'id' => $partner->getId(),
@@ -374,13 +384,13 @@ class pubadminController extends mkwhelpers\Controller
     public function newBejelentkezes()
     {
         $oraid = $this->params->getIntRequestParam('oraid');
-        $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
+        $ora = $this->getRepo(Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
         $partnerid = $this->params->getIntRequestParam('partnerid');
-        /** @var Entities\Partner $partner */
-        $partner = $this->getRepo(Entities\Partner::class)->find($partnerid);
+        /** @var Partner $partner */
+        $partner = $this->getRepo(Partner::class)->find($partnerid);
         if ($partner && $ora) {
-            $obj = new \Entities\JogaBejelentkezes();
+            $obj = new JogaBejelentkezes();
             $obj->setDatum($datum);
             $obj->setPartnernev($partner->getNev());
             $obj->setPartneremail($partner->getEmail());
@@ -393,12 +403,12 @@ class pubadminController extends mkwhelpers\Controller
     public function newBejelentkezesWNewPartner()
     {
         $oraid = $this->params->getIntRequestParam('oraid');
-        $ora = $this->getRepo(Entities\Orarend::class)->find($oraid);
+        $ora = $this->getRepo(Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
         $nev = $this->params->getStringRequestParam('nev');
         $email = $this->params->getStringRequestParam('email');
         if ($ora && $nev && $email) {
-            $obj = new \Entities\JogaBejelentkezes();
+            $obj = new JogaBejelentkezes();
             $obj->setDatum($datum);
             $obj->setPartnernev($nev);
             $obj->setPartneremail($email);
@@ -411,8 +421,8 @@ class pubadminController extends mkwhelpers\Controller
     public function getMegjegyzes()
     {
         $id = $this->params->getIntRequestParam('id');
-        /** @var \Entities\JogaBejelentkezes $rv */
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($id);
+        /** @var JogaBejelentkezes $rv */
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
         if ($rv) {
             echo $rv->getMegjegyzes();
         }
@@ -422,8 +432,8 @@ class pubadminController extends mkwhelpers\Controller
     {
         $id = $this->params->getIntRequestParam('id');
         $m = $this->params->getStringRequestParam('megjegyzes');
-        /** @var \Entities\JogaBejelentkezes $rv */
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($id);
+        /** @var JogaBejelentkezes $rv */
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
         if ($rv) {
             $rv->setMegjegyzes($m);
             $this->getEm()->persist($rv);
@@ -438,8 +448,8 @@ class pubadminController extends mkwhelpers\Controller
             'nev' => '',
             'email' => ''
         ];
-        /** @var \Entities\JogaBejelentkezes $rv */
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($id);
+        /** @var JogaBejelentkezes $rv */
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
         if ($rv) {
             $r['nev'] = $rv->getPartnernev();
             $r['email'] = $rv->getPartneremail();
@@ -453,8 +463,8 @@ class pubadminController extends mkwhelpers\Controller
         $id = $this->params->getIntRequestParam('id');
         $nev = $this->params->getStringRequestParam('nev');
         $email = $this->params->getStringRequestParam('email');
-        /** @var \Entities\JogaBejelentkezes $rv */
-        $rv = $this->getRepo(Entities\JogaBejelentkezes::class)->find($id);
+        /** @var JogaBejelentkezes $rv */
+        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
         if ($rv) {
             $rv->setPartnernev($nev);
             $rv->setPartneremail($email);
@@ -467,9 +477,9 @@ class pubadminController extends mkwhelpers\Controller
     {
         $id = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
-        $ora = $this->getRepo(Entities\Orarend::class)->find($id);
+        $ora = $this->getRepo(Orarend::class)->find($id);
         if ($ora) {
-            $helyett = new Entities\Orarendhelyettesites();
+            $helyett = new Orarendhelyettesites();
             $helyett->setOrarend($ora);
             $helyett->setDatum($datum);
             $helyett->setElmarad(true);
@@ -479,12 +489,12 @@ class pubadminController extends mkwhelpers\Controller
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('orarend', '=', $id);
             $filter->addFilter('datum', '=', $datum);
-            $resztvevok = $this->getRepo(Entities\JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
+            $resztvevok = $this->getRepo(JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
 
-            /** @var \Entities\JogaBejelentkezes $resztvevo */
+            /** @var JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
                 $email = $resztvevo->getPartneremail();
-                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasErtesitoSablon));
+                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasErtesitoSablon));
                 if ($email && $emailtpl) {
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $body = \mkw\store::getTemplateFactory()->createMainView(
