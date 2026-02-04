@@ -16,6 +16,7 @@
 
 
 
+
 {foreach $navigator as $_navi}
                     {if ($_navi.url|default)}
                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -397,7 +398,7 @@
                             {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                 <div class="textaligncenter"><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
                             {/if}
-                            {if ($_termek.szinek|default)}
+                            {if false}{*if ($_termek.szinek|default)*}
                                 <div class="js-valtozatbox product-list-item__variations-container">
                                     {* {$_termek.szinek|@count} {t('szín')} *}
                                     <div class="pull-left gvaltozatcontainer product-list-item__variations">
