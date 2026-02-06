@@ -1844,6 +1844,7 @@ class partnerController extends \mkwhelpers\MattableController
         $o = 0;
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'Név')
             ->setCellValue(x($o++, 1), 'Vezetéknév')
             ->setCellValue(x($o++, 1), 'Keresztnév')
             ->setCellValue(x($o++, 1), 'Nyelv')
@@ -1857,6 +1858,7 @@ class partnerController extends \mkwhelpers\MattableController
             foreach ($partnerek as $partner) {
                 $o = 0;
                 $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $partner->getNev())
                     ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
                     ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
                     ->setCellValue(x($o++, $sor), $partner->getBizonylatnyelv())
