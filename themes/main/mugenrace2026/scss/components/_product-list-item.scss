@@ -34,21 +34,25 @@
 
   &__title { 
     font-weight: 700;
+
+    .gtermekcaption {
+      font-size: var(--font-size-base);
+    }
   }
 
   &__code {
     margin-top: -5px;
 
     a {
-      font-size: 12px;
+      font-size: var(--font-size-small);
       color: var(--color-secondary-text);
     }
   }
   
   .akciosarszoveg {
-    font-size: 0.9rem;
+    font-size: var(--font-size-small);
     font-weight: 400;
-    color: var(--color-text-muted);
+    color: var(--color-text-disabled);
     margin-bottom: 5px;
     display: flex;
     align-items: center;

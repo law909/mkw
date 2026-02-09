@@ -67,9 +67,9 @@
                                         <div class="flag new-product">{t('Új')}</div>
                                     {/if}
 
-                                    {if (isset($termek.akcios) && $termek.akcios)}
+                                    {* {if (isset($termek.akcios) && $termek.akcios)}
                                         <div class="flag sale-product">{t('Akciós')}</div>
-                                    {/if}
+                                    {/if} *}
 
                                     {if (isset($termek.kiemelt) && $termek.kiemelt)}
                                         <div class="flag featured">{t('Kiemelt')}</div>
@@ -151,10 +151,27 @@
                                                                                           class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
                                 {* Title  *}
 
+                                
+                                <div>
+                                <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
+                                </div>
+                                {* SKU  *}
+                                
+                                {if ($termek.me)}
+                                    <div><span class="bold">{t('Kiszerelés')}:</span> {$termek.me}</div>
+                                {/if}
+                                {* Packaging  *}
+                                
+                                {if ($termek.szallitasiido && (!$termek.nemkaphato))}
+                                    <div><span class="bold">{t('Szállítási idő')}:</span> max. <span
+                                            id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
+                                {/if}
+                                {* Delivery time  *}
+
                                 <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright" itemprop="offers" itemscope
                                      itemtype="http://schema.org/Offer">
                                     {if (isset($termek.eredetibrutto) && $termek.eredetibrutto>0)}
-                                        <span class="akciosarszoveg">{t('Eredeti ár')}:&nbsp;<span
+                                        <span class="akciosarszoveg"><strong>{t('Eredeti ár')}:</strong>&nbsp;<span
                                                 class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>
                                     {/if}
                                     {if ($termek.nemkaphato)}
@@ -166,21 +183,7 @@
                                 </div>
                                 {* Price  *}
 
-                                <div>
-                                    <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
-                                </div>
-                                {* SKU  *}
-
-                                {if ($termek.me)}
-                                    <div><span class="bold">{t('Kiszerelés')}:</span> {$termek.me}</div>
-                                {/if}
-                                {* Packaging  *}
-
-                                {if ($termek.szallitasiido && (!$termek.nemkaphato))}
-                                    <div><span class="bold">{t('Szállítási idő')}:</span> max. <span
-                                            id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
-                                {/if}
-                                {* Delivery time  *}
+                                
 
                                 <div>
                                     <ul class="simalista">
@@ -291,108 +294,7 @@
                                                         {for $j=0 to $step-1}
                                                             {if ($i+$j<$lntcnt)}
                                                                 {$_kapcsolodo=$termek.kapcsolodok[$i+$j]}
-                                                                <div
-                                                                    class="textaligncenter pull-left product-datasheet__list-item">{* style="width:{100/$step}%" *}
-                                                                    <div class="kapcsolodoTermekInner">
-                                                                        <a href="{$_kapcsolodo.link}">
-                                                                            <div class="flags">
-                                                                                {if (isset($_kapcsolodo.uj) && $_kapcsolodo.uj)}
-                                                                                    <div class="flag new-product">{t('Új')}</div>
-                                                                                {/if}
-
-                                                                                {if (isset($_kapcsolodo.akcios) && $_kapcsolodo.akcios)}
-                                                                                    <div class="flag sale-product">{t('Akciós')}</div>
-                                                                                {/if}
-
-                                                                                {if (isset($_kapcsolodo.kiemelt) && $_kapcsolodo.kiemelt)}
-                                                                                    <div class="flag featured">{t('Kiemelt')}</div>
-                                                                                {/if}
-                                                                                {* {if (isset($_kapcsolodo.top10) && $_kapcsolodo.top10)}
-                                                                                    <div class="flag sale-product">{t('Top 10')}</div>
-                                                                                {/if} *}
-                                                                            </div>
-
-                                                                            <div class="kapcsolodoImageContainer product-datasheet__list-item-image">
-                                                                                <img src="{$imagepath}{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}"
-                                                                                     alt="{$_kapcsolodo.caption}">
-                                                                            </div>
-                                                                            <div
-                                                                                class="product-datasheet__list-item-caption">{$_kapcsolodo.caption|lower|capitalize}</div>
-                                                                            <div class="product-datasheet__list-item-sku">{$_kapcsolodo.cikkszam}</div>
-                                                                            {if ((isset($_kapcsolodo.eredetibrutto) && $_kapcsolodo.eredetibrutto>0))}
-                                                                                <div class="termekprice" itemprop="offers" itemscope
-                                                                                     itemtype="http://schema.org/Offer">
-                                                                                    <span class="akciosarszoveg"><span
-                                                                                            class="akciosar">{number_format($_kapcsolodo.eredetibrutto,0,',',' ')} {$_kapcsolodo.valutanemnev}</span></span>
-                                                                                </div>
-                                                                            {/if}
-                                                                            <h5>
-                                                                                <span>{number_format($_kapcsolodo.brutto,0,',',' ')} {$valutanemnev}</span>
-                                                                            </h5>
-                                                                            <a href="{$_kapcsolodo.link}" class="button bordered okbtn">{t('Részletek')}</a>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            {/if}
-                                                        {/for}
-                                                    </div>
-                                                {/for}
-                                            </div>
-                                        </div>
-                                    {/if}
-
-                                    {if (count($termek.hasonlotermekek)!=0)}
-                                        <div class="accordion-item product-datasheet__similar-products">
-                                            <div class="accordion-header">{t('Hasonló termékek')}<span class="arrow"></span></div>
-                                            <div class="accordion-content">
-                                                {$lntcnt=count($termek.hasonlotermekek)}
-                                                {$step=4}
-                                                {for $i=0 to $lntcnt-1 step $step}
-                                                    <div>
-                                                        {for $j=0 to $step-1}
-                                                            {if ($i+$j<$lntcnt)}
-                                                                {$_hasonlo=$termek.hasonlotermekek[$i+$j]}
-                                                                <div
-                                                                    class="textaligncenter pull-left product-datasheet__list-item">{* style="width:{100/$step}%" *}
-                                                                    <div class="kapcsolodoTermekInner">
-                                                                        <a href="{$_hasonlo.link}">
-                                                                            <div class="flags">
-                                                                                {if (isset($_hasonlo.uj) && $_hasonlo.uj)}
-                                                                                    <div class="flag new-product">{t('Új')}</div>
-                                                                                {/if}
-
-                                                                                {if (isset($_hasonlo.akcios) && $_hasonlo.akcios)}
-                                                                                    <div class="flag sale-product">{t('Akciós')}</div>
-                                                                                {/if}
-
-                                                                                {if (isset($_hasonlo.kiemelt) && $_hasonlo.kiemelt)}
-                                                                                    <div class="flag featured">{t('Kiemelt')}</div>
-                                                                                {/if}
-                                                                                {* {if (isset($_hasonlo.top10) && $_hasonlo.top10)}
-                                                                                    <div class="flag sale-product">{t('Top 10')}</div>
-                                                                                {/if} *}
-                                                                            </div>
-                                                                            <div class="kapcsolodoImageContainer product-datasheet__list-item-image">
-                                                                                <img src="{$imagepath}{$_hasonlo.kozepeskepurl}" title="{$_hasonlo.caption}"
-                                                                                     alt="{$_hasonlo.caption}">
-                                                                            </div>
-                                                                            <div
-                                                                                class="product-datasheet__list-item-caption">{$_hasonlo.caption|lower|capitalize}</div>
-                                                                            <div class="product-datasheet__list-item-sku">{$_hasonlo.cikkszam}</div>
-                                                                            {if ((isset($_hasonlo.eredetibrutto) && $_hasonlo.eredetibrutto>0))}
-                                                                                <div class="termekprice" itemprop="offers" itemscope
-                                                                                     itemtype="http://schema.org/Offer">
-                                                                                    <span class="akciosarszoveg"><span
-                                                                                            class="akciosar">{number_format($_hasonlo.eredetibrutto,0,',',' ')} {$_hasonlo.valutanemnev}</span></span>
-                                                                                </div>
-                                                                            {/if}
-                                                                            <h5>
-                                                                                <span>{number_format($_hasonlo.brutto,0,',',' ')} {$valutanemnev}</span>
-                                                                            </h5>
-                                                                            <a href="{$_hasonlo.link}" class="button bordered okbtn">{t('Részletek')}</a>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
+                                                                {include 'blokkok/termek.tpl' termek=$_kapcsolodo detailsbutton=true}
                                                             {/if}
                                                         {/for}
                                                     </div>
@@ -417,219 +319,70 @@
 
                     <div class="row">
                         <div class="span9">
-                            {* <div id="termekTabbable" class="tabbable">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
-                                    {if (count($termek.cimkelapon)!=0)}<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>{/if}
-                                    {if (count($termek.kapcsolodok)!=0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
-                                    {if (count($termek.hasonlotermekek)!=0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
-                                    {if ($szallitasifeltetelsablon)}
-                                    <li><a href="#szallitasTab" data-toggle="tab">{t('Szállítás és fizetés')}</a></li>
-                                    {/if}
-                                </ul>
-                                <div class="tab-content keret">
-                                    <div id="leirasTab" class="tab-pane active">
-                                        <span itemprop="description">{$termek.leiras}</span>
-                                    </div>
-                                    {if (count($termek.cimkelapon)!=0)}
-                                    <div id="tulajdonsagTab" class="tab-pane">
-                                        <div class="span6 nincsbalmargo">
-                                        <table class="table table-striped table-condensed"><tbody>
-                                            {foreach $termek.cimkelapon as $_cimke}
-                                                <tr>
-                                                    <td>{$_cimke.kategorianev}</td>
-                                                    <td>{if ($_cimke.ismarka)}<a href="{$_cimke.termeklisturl}">{/if}
-                                                        {if ($_cimke.kiskepurl!='')}<img src="{$imagepath}{$_cimke.kiskepurl}" alt="{$_cimke.caption}" title="{$_cimke.caption}"> {/if}
-                                                        {if (!$_cimke.dontshowcaption || $_cimke.kiskepurl=='')}{$_cimke.caption}{/if}
-                                                        {if ($_cimke.ismarka)}</a>{/if}
-                                                        {if ($_cimke.leiras)}<i class="icon-question-sign tooltipbtn hidden-phone js-tooltipbtn" title="{$_cimke.leiras}"></i>{/if}
-                                                    </td>
-                                                </tr>
-                                            {/foreach}
-                                        </tbody></table>
-                                        </div>
-                                    </div>
-                                    {/if}
-                                    {if (count($termek.kapcsolodok)!=0)}
-                                    <div id="kapcsolodoTab" class="tab-pane">
-                                    {$lntcnt=count($termek.kapcsolodok)}
-                                    {$step=4}
-                                    {for $i=0 to $lntcnt-1 step $step}
-                                        <div>
-                                        {for $j=0 to $step-1}
-                                            {if ($i+$j<$lntcnt)}
-                                            {$_kapcsolodo=$termek.kapcsolodok[$i+$j]}
-                                            <div class="textaligncenter pull-left" style="width:{100/$step}%">
-                                                <div class="kapcsolodoTermekInner">
-                                                    <a href="{$_kapcsolodo.link}">
-                                                        <div class="kapcsolodoImageContainer">
-                                                            <img src="{$imagepath}{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
-                                                        </div>
-                                                        <div>{$_kapcsolodo.caption}</div>
-                                                        <h5>
-                                                            <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
-                                                        </h5>
-                                                        <a href="{$_kapcsolodo.link}" class="btn okbtn">{t('Részletek')}</a>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            {/if}
-                                        {/for}
-                                        </div>
-                                    {/for}
-                                    </div>
-                                    {/if}
-                                    {if (count($termek.hasonlotermekek)!=0)}
-                                    <div id="hasonloTermekTab" class="tab-pane">
-                                    {$lntcnt=count($termek.hasonlotermekek)}
-                                    {$step=4}
-                                    {for $i=0 to $lntcnt-1 step $step}
-                                        <div>
-                                        {for $j=0 to $step-1}
-                                            {if ($i+$j<$lntcnt)}
-                                            {$_hasonlo=$termek.hasonlotermekek[$i+$j]}
-                                            <div class="textaligncenter pull-left" style="width:{100/$step}%">
-                                                <div class="kapcsolodoTermekInner">
-                                                    <a href="{$_hasonlo.link}">
-                                                        <div class="kapcsolodoImageContainer">
-                                                            <img src="{$imagepath}{$_hasonlo.minikepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
-                                                        </div>
-                                                        <div>{$_hasonlo.caption}</div>
-                                                        <h5>
-                                                            <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
-                                                        </h5>
-                                                        <a href="{$_hasonlo.link}" class="btn okbtn">{t('Részletek')}</a>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            {/if}
-                                        {/for}
-                                        </div>
-                                    {/for}
-                                    </div>
-                                    {/if}
-                                    {if ($szallitasifeltetelsablon)}
-                                    <div id="szallitasTab" class="tab-pane">
-                                        {$szallitasifeltetelsablon}
-                                    </div>
-                                    {/if}
-                                </div>
-                            </div> *}
                         </div>
                     </div>
                 </div>
             </div>
 
+
+
+            {if (count($termek.hasonlotermekek)!=0)}
+                {include 'blokkok/termekcarousel.tpl' termeklista=$termek.hasonlotermekek fejlecszoveg={t('Hasonló termékek..')} hatterszin="light"} {* Carousel *}
+                {* <div class="accordion-item product-datasheet__similar-products flex-col">
+                    <div class="col">
+                        <h2 class="main">{t('Hasonló termékek')}</h2>
+                    </div>
+                    <div class=" col product-datasheet__recommended-products-list">
+                        {$lntcnt=count($termek.hasonlotermekek)}
+                        {$step=4}
+                        {for $i=0 to $lntcnt-1 step $step}
+                            {for $j=0 to $step-1}
+                                {if ($i+$j<$lntcnt)}
+                                    {$_hasonlo=$termek.hasonlotermekek[$i+$j]}
+                                    {include 'blokkok/termek.tpl' termek=$_hasonlo detailsbutton=true}
+                                {/if}
+                            {/for}
+                        {/for}
+                    </div>
+                </div> *}
+            {/if}
+
+
             {if (count($hozzavasarolttermekek)>0)}
-                <div class="row product-datasheet__recommended-products flex-col">
+                {include 'blokkok/termekcarousel.tpl' termeklista=$hozzavasarolttermekek fejlecszoveg={t('Ehhez a termékhez vásárolták még')} hatterszin="light"} {* Carousel *}
+                {* <div class="row product-datasheet__recommended-products flex-col">
                     <div class="col">
                         <h2 class="main">{t('Ehhez a termékhez vásárolták még')}</h2>
                     </div>
                     <div class=" col product-datasheet__recommended-products-list">
-                        {* royalSlider contentSlider rsDefaultInv termekSlider *}
-                        {* id="hozzavasarolttermekslider" *}
                         {$lntcnt=count($hozzavasarolttermekek)}
                         {$step=3}
                         {for $i=0 to $lntcnt-1 step $step}
-                            {* <div> *}
                             {for $j=0 to $step-1}
                                 {if ($i+$j<$lntcnt)}
                                     {$_termek=$hozzavasarolttermekek[$i+$j]}
-                                    <div class="textaligncenter pull-left product-datasheet__list-item">
-                                        {* style="width:{100/$step}%" *}
-
-                                        <div class="termekSliderTermekInner">
-                                            <a href="/product/{$_termek.slug}">
-                                                <div class="flags">
-                                                    {if (isset($_termek.uj) && $_termek.uj)}
-                                                        <div class="flag new-product">{t('Új')}</div>
-                                                    {/if}
-
-                                                    {if (isset($_termek.akcios) && $_termek.akcios)}
-                                                        <div class="flag sale-product">{t('Akciós')}</div>
-                                                    {/if}
-
-                                                    {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
-                                                        <div class="flag featured">{t('Kiemelt')}</div>
-                                                    {/if}
-                                                    {* {if (isset($_termek.top10) && $_termek.top10)}
-                                                        <div class="flag sale-product">{t('Top 10')}</div>
-                                                    {/if} *}
-                                                </div>
-                                                <div class="termekSliderImageContainer  product-datasheet__list-item-image">
-                                                    <img src="{$imagepath}{$_termek.kozepeskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
-                                                </div>
-                                                <div class="product-datasheet__list-item-caption">{$_termek.caption|lower|capitalize}</div>
-                                                <div class="product-datasheet__list-item-sku">{$_termek.cikkszam}</div>
-                                                {if ((isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0))}
-                                                    <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                                        <span class="akciosarszoveg"><span
-                                                                class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
-                                                    </div>
-                                                {/if}
-                                                <h5 class="main"><span>{number_format($_termek.brutto,0,',',' ')} {$valutanemnev}</span></h5>
-                                                <a href="{$_termek.link}" class="button bordered okbtn">{t('Részletek')}</a>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    {include 'blokkok/termek.tpl' termek=$_termek detailsbutton=true}
                                 {/if}
                             {/for}
-                            {* </div> *}
                         {/for}
                     </div>
-                </div>
+                </div> *}
             {/if}
             <hr>
-            <div class="row product-datasheet__popular-products flex-col">
+
+            {if (count($legnepszerubbtermekek)>0)}  
+            {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg={t('Legnépszerűbb termékeink  ')} hatterszin="light"} {* Carousel *}
+            {/if}
+            {* <div class="row product-datasheet__popular-products flex-col">
                 <div class="col">
                     <h4 class="textaligncenter">{t('Legnépszerűbb termékeink')}</h4>
                 </div>
                 <div class="col product-datasheet__popular-products-list">
                     {foreach $legnepszerubbtermekek as $_nepszeru}
-                        <div class="textaligncenter product-datasheet__list-item">
-                            <div class="kapcsolodoTermekInner">
-                                <a href="{$_nepszeru.link}">
-                                    <div class="flags">
-                                        {if (isset($_nepszeru.uj) && $_nepszeru.uj)}
-                                            <div class="flag new-product">{t('Új')}</div>
-                                        {/if}
-
-                                        {if (isset($_nepszeru.akcios) && $_nepszeru.akcios)}
-                                            <div class="flag sale-product">{t('Akciós')}</div>
-                                        {/if}
-
-                                        {if (isset($_nepszeru.kiemelt) && $_nepszeru.kiemelt)}
-                                            <div class="flag featured">{t('Kiemelt')}</div>
-                                        {/if}
-
-                                        {if (isset($_termek.ajanlott) && $_termek.ajanlott)}
-                                            <div class="flag featured">{t('Ajánlott')}</div>
-                                        {/if}
-                                        {* {if (isset($_nepszeru.top10) && $_nepszeru.top10)}
-                                            <div class="flag sale-product">{t('Top 10')}</div>
-                                        {/if} *}
-                                    </div>
-                                    <div class="kapcsolodoImageContainer  product-datasheet__list-item-image">
-                                        <img src="{$imagepath}{$_nepszeru.kozepeskepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
-                                    </div>
-                                    <div class="product-datasheet__list-item-caption">{$_nepszeru.caption|lower|capitalize}</div>
-                                    <div class="product-datasheet__list-item-sku">{$_nepszeru.cikkszam}</div>
-                                    {if ((isset($_nepszeru.eredetibrutto) && $_nepszeru.eredetibrutto>0))}
-                                        <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                            <span class="akciosarszoveg"><span
-                                                    class="akciosar">{number_format($_nepszeru.eredetibrutto,0,',',' ')} {$_nepszeru.valutanemnev}</span></span>
-                                        </div>
-                                    {/if}
-                                    <h5>
-                                        <span>{number_format($_nepszeru.brutto,0,',',' ')} {$valutanemnev}</span>
-                                    </h5>
-                                    <a href="{$_nepszeru.link}" class="button bordered okbtn">{t('Részletek')}</a>
-                                </a>
-                            </div>
-                        </div>
+                        {include 'blokkok/termek.tpl' termek=$_nepszeru detailsbutton=true}
                     {/foreach}
                 </div>
-            </div>
+            </div> *}
         </article>
     </div>
     {include 'termekertesitomodal.tpl'}
