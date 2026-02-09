@@ -327,7 +327,7 @@
 
 
             {if (count($termek.hasonlotermekek)!=0)}
-                {include 'blokkok/termekcarousel.tpl' termeklista=$termek.hasonlotermekek fejlecszoveg={t('Hasonló termékek..')} hatterszin="light"} {* Carousel *}
+                {include 'blokkok/termekcarousel.tpl' termeklista=$termek.hasonlotermekek fejlecszoveg={t('Hasonló termékek')} hatterszin="light"} {* Carousel *}
                 {* <div class="accordion-item product-datasheet__similar-products flex-col">
                     <div class="col">
                         <h2 class="main">{t('Hasonló termékek')}</h2>
@@ -371,7 +371,7 @@
             <hr>
 
             {if (count($legnepszerubbtermekek)>0)}  
-            {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg={t('Legnépszerűbb termékeink  ')} hatterszin="light"} {* Carousel *}
+            {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg={t('Legnépszerűbb termékeink')} hatterszin="light"} {* Carousel *}
             {/if}
             {* <div class="row product-datasheet__popular-products flex-col">
                 <div class="col">
