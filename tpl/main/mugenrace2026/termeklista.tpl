@@ -141,7 +141,6 @@
                 <div class="category-description">
                     {$kategoria.leiras2}
                 </div>
-
                 {$lntcnt=0}
                 {if is_array($kiemelttermekek)}
                     {$lntcnt=count($kiemelttermekek)}
@@ -156,133 +155,18 @@
                 {/if}
                 <div class="product-list">
                     {for $i=0 to $lntcnt-1 step $step}
-                    {for $j=0 to $step-1}
-                    {if ($i+$j<$lntcnt)}
-                    {if (isset($kiemelttermekek[$i+$j]))}
-                        {$_termek=$kiemelttermekek[$i+$j]}
-                    {else}
-                        {$_termek=null}
-                    {/if}
-                    <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$lntcnt))} gtermekszelso{/if} itemscope itemtype=" http:
-                    //schema.org/Product">
-                    <div class="gtermekinner">
-                        <div class="gtermekinnest product-list-item__inner">
-                            <div class="textaligncenter product-list-item__image-container">
-                                <div class="flags">
-                                    {if (isset($_termek.uj) && $_termek.uj)}
-                                        <div class="flag new-product">{t('Új')}</div>
-                                    {/if}
-
-                                    {if (isset($_termek.akcios) && $_termek.akcios)}
-                                        <div class="flag sale-product">{t('Akciós')}</div>
-                                    {/if}
-
-                                    {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
-                                        <div class="flag featured">{t('Kiemelt')}</div>
-                                    {/if}
-
-                                    {if (isset($_termek.ajanlott) && $_termek.ajanlott)}
-                                        <div class="flag featured">{t('Ajánlott')}</div>
-                                    {/if}
-                                    {* {if (isset($_termek.top10) && $_termek.top10)}
-                                        <div class="flag sale-product">{t('Top 10')}</div>
-                                    {/if} *}
-                                </div>
-                                <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=image" src="{$imagepath}{$_termek.kepurl}"
-                                                                        title="{$_termek.caption}" alt="{$_termek.caption}"></a>
-
-                                {* {$kcnt=count($_termek.kepek)}
-                                {if ($kcnt>0)}
-                                <div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
-                                    {$step=4}
-                                    {for $i=0 to $kcnt-1 step $step}
-                                        <div>
-                                        {for $j=0 to $step-1}
-                                            {if ($i+$j<$kcnt)}
-                                                {$_kep=$_termek.kepek[$i+$j]}
-                                                <a href="{$imagepath}{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-                                                    <img class="termeksmallimage" src="{$imagepath}{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
-                                                </a>
-                                            {/if}
-                                        {/for}
-                                        </div>
-                                    {/for}
-                                </div>
-                                {/if} *}
-                            </div>
-                            <div class="textaligncenter product-list-item__content product-list-item__title">
-                                <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption"
-                                                                                        itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
-                            </div>
-                            <div class="textaligncenter product-list-item__content product-list-item__code">
-                                <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
-                            </div>
-                            <div class="textaligncenter product-list-item__content">
-                                {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
-                                    <div class="textaligncenter"><span class="bold">{t('Szállítási idő')}:&nbsp;</span>{$_termek.szallitasiido} {t('munkanap')}
-                                    </div>
+                        {for $j=0 to $step-1}
+                            {if ($i+$j<$lntcnt)}
+                                {if (isset($kiemelttermekek[$i+$j]))}
+                                    {$_termek=$kiemelttermekek[$i+$j]}
+                                {else}
+                                    {$_termek=null}
                                 {/if}
-                                {if false} {*if ($_termek.szinek|default)*}
-                                    <div class="js-valtozatbox product-list-item__variations-container">
-                                        {* {$_termek.szinek|@count} {t('szín')} *}
-                                        <div class="pull-left gvaltozatcontainer product-list-item__variations">
-                                            <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>
-                                            <div class="pull-left gvaltozatselect">
-
-                                                <div class="option-selector color-selector" data-termek="{$_termek.id}">
-                                                    {foreach $_termek.szinek as $_v}
-                                                        <div class="select-option {$_v|lower|replace:'/':'-'}" data-value="{$_v}" title="{$_v}"></div>
-                                                    {/foreach}
-                                                </div>
-
-                                                <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$_termek.id}">
-                                                    <option value="">{t('Válasszon')}</option>
-                                                    {foreach $_termek.szinek as $_v}
-                                                        <option value="{$_v}">{$_v}</option>
-                                                    {/foreach}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {/if}
-                            </div>
-                            <div class="flex-tb ">
-                                <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                    {if (isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0)}
-                                        <span class="akciosarszoveg"><span
-                                                class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
-                                    {/if}
-                                    {if ($_termek.nemkaphato)}
-                                        <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
-                                    {else}
-                                        <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
-                                    {/if}
-                                    <span class="product-list-item__price" itemprop="price">{number_format($_termek.brutto,0,',',' ')}
-                                        {$_termek.valutanemnev}
-                                            </span>
-                                </div>
-                                <div class="pull-right">
-                                    {if ($_termek.nemkaphato)}
-                                        <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
-                                            {t('Elfogyott')}
-                                        </a>
-                                    {else}
-                                        {if ($_termek.brutto > 0)}
-                                            <a href="/kosar/add?id={$_termek.id}" rel="nofollow"
-                                               class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$_termek.id}">
-                                                {t('Kosárba')}
-                                            </a>
-                                        {/if}
-                                    {/if}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                {include 'blokkok/termek.tpl' termek=$_termek detailsbutton=false}
+                            {/if}
+                        {/for}
+                    {/for}
                 </div>
-                {/if}
-                {/for}
-                {/for}
-            </div>
             <div class="product-list__divider divider"></div>
             {/if}
             <div class="lapozo">
@@ -332,134 +216,18 @@
             {$step=4}
             <div class="product-list">
                 {for $i=0 to $termekcnt-1 step $step}
-                {* <div> *}
-                {for $j=0 to $step-1}
-                {if (isset($termekek[$i+$j]))}
-                    {$_termek=$termekek[$i+$j]}
-                {else}
-                    {$_termek=null}
-                {/if}
-                {if ($_termek)}
-                <div class=" product-list-item spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype=" http:
-                //schema.org/Product">
-                <div class="gtermekinner">
-                    <div class="gtermekinnest product-list-item__inner">
-                        <div class="textaligncenter product-list-item__image-container">
-                            <div class="flags">
-                                {if (isset($_termek.uj) && $_termek.uj)}
-                                    <div class="flag new-product">{t('Új')}</div>
-                                {/if}
-
-                                {if (isset($_termek.akcios) && $_termek.akcios)}
-                                    <div class="flag sale-product">{t('Akciós')}</div>
-                                {/if}
-
-                                {if (isset($_termek.kiemelt) && $_termek.kiemelt)}
-                                    <div class="flag featured">{t('Kiemelt')}</div>
-                                {/if}
-
-                                {if (isset($_termek.ajanlott) && $_termek.ajanlott)}
-                                    <div class="flag featured">{t('Ajánlott')}</div>
-                                {/if}
-                                {* {if (isset($_termek.top10) && $_termek.top10)}
-                                    <div class="flag sale-product">{t('Top 10')}</div>
-                                {/if} *}
-                            </div>
-                            <a href="/product/{$_termek.slug}"><img class="product-list-item__image itemprop=image" src="{$imagepath}{$_termek.kepurl}"
-                                                                    title="{$_termek.caption}" alt="{$_termek.caption}"></a>
-
-                            {* {$kcnt=count($_termek.kepek)}
-                            {if ($kcnt>0)}
-                            <div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
-                                {$step=4}
-                                {for $i=0 to $kcnt-1 step $step}
-                                    <div>
-                                    {for $j=0 to $step-1}
-                                        {if ($i+$j<$kcnt)}
-                                            {$_kep=$_termek.kepek[$i+$j]}
-                                            <a href="{$imagepath}{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-                                                <img class="termeksmallimage" src="{$imagepath}{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
-                                            </a>
-                                        {/if}
-                                    {/for}
-                                    </div>
-                                {/for}
-                            </div>
-                            {/if} *}
-                        </div>
-                        <div class="textaligncenter product-list-item__content product-list-item__title">
-                            <a itemprop="url" href="/product/{$_termek.slug}"><span class="gtermekcaption"
-                                                                                    itemprop="name">{$_termek.caption|lower|capitalize}</span></a>
-                        </div>
-                        <div class="textaligncenter product-list-item__content product-list-item__code">
-                            <a href="/product/{$_termek.slug}">{$_termek.cikkszam}</a>
-                        </div>
-                        <div class="textaligncenter product-list-item__content">
-                            {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
-                                <div class="textaligncenter"><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
-                            {/if}
-                            {if false}{*if ($_termek.szinek|default)*}
-                                <div class="js-valtozatbox product-list-item__variations-container">
-                                    {* {$_termek.szinek|@count} {t('szín')} *}
-                                    <div class="pull-left gvaltozatcontainer product-list-item__variations">
-                                        <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>
-                                        <div class="pull-left gvaltozatselect">
-
-                                            <div class="option-selector color-selector" data-termek="{$_termek.id}">
-                                                {foreach $_termek.szinek as $_v}
-                                                    <div class="select-option {$_v|lower|replace:'/':'-'}" data-value="{$_v}" title="{$_v}"></div>
-                                                {/foreach}
-                                            </div>
-
-                                            <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$_termek.id}">
-                                                <option value="">{t('Válasszon')}</option>
-                                                {foreach $_termek.szinek as $_v}
-                                                    <option value="{$_v}">{$_v}</option>
-                                                {/foreach}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            {/if}
-                        </div>
-                        <div class="flex-tb ">
-                            <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                {if (isset($_termek.eredetibrutto) && $_termek.eredetibrutto>0)}
-                                    <span class="akciosarszoveg"><span
-                                            class="akciosar">{number_format($_termek.eredetibrutto,0,',',' ')} {$_termek.valutanemnev}</span></span>
-                                {/if}
-                                {if ($_termek.nemkaphato)}
-                                    <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
-                                {else}
-                                    <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
-                                {/if}
-                                <span class="product-list-item__price" itemprop="price">{number_format($_termek.brutto,0,',',' ')}
-                                    {$_termek.valutanemnev}
-                                        </span>
-                            </div>
-                            <div class="pull-right">
-                                {if ($_termek.nemkaphato)}
-                                    <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
-                                        {t('Elfogyott')}
-                                    </a>
-                                {else}
-                                    {if ($_termek.brutto > 0)}
-                                        <a href="/kosar/add?id={$_termek.id}" rel="nofollow"
-                                           class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$_termek.id}">
-                                            {t('Kosárba')}
-                                        </a>
-                                    {/if}
-                                {/if}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {for $j=0 to $step-1}
+                        {if (isset($termekek[$i+$j]))}
+                            {$_termek=$termekek[$i+$j]}
+                        {else}
+                            {$_termek=null}
+                        {/if}
+                        {if ($_termek)}
+                            {include 'blokkok/termek.tpl' termek=$_termek detailsbutton=false}
+                        {/if}
+                    {/for}
+                {/for}
             </div>
-            {/if}
-            {/for}
-            {* </div> *}
-            {/for}
-        </div>
         {else}
         {t('Nincs ilyen termék')}
         {/if}

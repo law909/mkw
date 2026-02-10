@@ -3,6 +3,20 @@
 .product-datasheet {
   margin-bottom: 180px;
 
+  .section-header {
+    h2 {
+      text-transform:none;
+      font-size: 18px !important;
+      letter-spacing: 0 !important;
+    }
+  }
+
+  .featured-collection-slider {
+    padding: 0;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
   &__title {
     font-size: 1rem;
     font-weight: 700;
@@ -22,15 +36,19 @@
     // margin-bottom: var(--spacing-lg);
 
     span {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
 
       &.akciosarszoveg {
         font-size: 0.9rem;
         font-weight: 400;
-        color: var(--color-text-muted);
+        color: var(--color-text-disabled);
         margin-bottom: 5px;
         display: flex;
         align-items: center;
+
+        strong {
+          color: var(--color-text-disabled);
+        }
       }
 
       &.akciosar {

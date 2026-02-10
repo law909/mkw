@@ -5,20 +5,21 @@
   border-radius: 8px;
 }
 
-.accordion-item + .accordion-item {
-  border-top: 1px solid #ccc;
-}
+// .accordion-item + .accordion-item {
+//   border-top: 1px solid #ccc;
+// }
 
 .accordion-header {
   // background: #f7f7f7;
   padding: 15px 0;
+  border-bottom: 1px solid #ccc;
   cursor: pointer;
   font-weight: bold;
   user-select: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .accordion-content {

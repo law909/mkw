@@ -7,9 +7,9 @@
                     <div class="flag new-product">{t('Új')}</div>
                 {/if}
 
-                {if (isset($termek.akcios) && $termek.akcios)}
+                {* {if (isset($termek.akcios) && $termek.akcios)}
                     <div class="flag sale-product">{t('Akciós')}</div>
-                {/if}
+                {/if} *}
 
                 {if (isset($termek.kiemelt) && $termek.kiemelt)}
                     <div class="flag featured">{t('Kiemelt')}</div>
@@ -34,7 +34,7 @@
             <a href="/product/{$termek.slug}">{$termek.cikkszam}</a>
         </div>
         <div class="textaligncenter product-list-item__content">
-            {if ($termek.szallitasiido && (!$termek.nemkaphato))}
+            {if ( isset($termek.szallitasiido) && $termek.szallitasiido && isset($termek.nemkaphato) && !$termek.nemkaphato)}
                 <div class="textaligncenter"><span class="bold">{t('Szállítási idő')}: </span>{$termek.szallitasiido} {t('munkanap')}</div>
             {/if}
             {if false} {*if ($termek.szinek|default)*}
@@ -66,7 +66,7 @@
                     <span class="akciosarszoveg">{t('Eredeti ár')}:&nbsp;<span
                             class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>
                 {/if}
-                {if ($termek.nemkaphato)}
+                {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
                     <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
                 {else}
                     <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
@@ -76,20 +76,23 @@
                         </span>
             </div>
             <div class="pull-right">
-                {if ($termek.nemkaphato)}
+                {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
                     <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$termek.id}">
                         {t('Elfogyott')}
                     </a>
                 {else}
                     {if ($termek.brutto > 0)}
                         <a href="/kosar/add?id={$termek.id}" rel="nofollow"
-                           class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$termek.id}">
+                        class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$termek.id}">
                             {t('Kosárba')}
                         </a>
                     {/if}
                 {/if}
             </div>
         </div>
+        {if ($detailsbutton)}
+            <a href="{$termek.link}" class="button bordered okbtn">{t('Részletek')}</a>
+        {/if}
     </div>
 </div>
 </div>

@@ -1483,6 +1483,16 @@ a.underline {
 .product-datasheet {
   margin-bottom: 180px;
 }
+.product-datasheet .section-header h2 {
+  text-transform: none;
+  font-size: 18px !important;
+  letter-spacing: 0 !important;
+}
+.product-datasheet .featured-collection-slider {
+  padding: 0;
+  margin-left: -10px;
+  margin-right: -10px;
+}
 .product-datasheet__title {
   font-size: 1rem;
   font-weight: 700;
@@ -1498,15 +1508,18 @@ a.underline {
   flex-direction: column;
 }
 .product-datasheet__price span {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }
 .product-datasheet__price span.akciosarszoveg {
   font-size: 0.9rem;
   font-weight: 400;
-  color: var(--color-text-muted);
+  color: var(--color-text-disabled);
   margin-bottom: 5px;
   display: flex;
   align-items: center;
+}
+.product-datasheet__price span.akciosarszoveg strong {
+  color: var(--color-text-disabled);
 }
 .product-datasheet__price span.akciosar {
   text-decoration: line-through;
@@ -3870,19 +3883,16 @@ nav ul li a {
   border-radius: 8px;
 }
 
-.accordion-item + .accordion-item {
-  border-top: 1px solid #ccc;
-}
-
 .accordion-header {
   padding: 15px 0;
+  border-bottom: 1px solid #ccc;
   cursor: pointer;
   font-weight: bold;
   user-select: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .accordion-content {
@@ -4162,17 +4172,20 @@ nav ul li a {
 .product-list-item__title {
   font-weight: 700;
 }
+.product-list-item__title .gtermekcaption {
+  font-size: var(--font-size-base);
+}
 .product-list-item__code {
   margin-top: -5px;
 }
 .product-list-item__code a {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: var(--color-secondary-text);
 }
 .product-list-item .akciosarszoveg {
-  font-size: 0.9rem;
+  font-size: var(--font-size-small);
   font-weight: 400;
-  color: var(--color-text-muted);
+  color: var(--color-text-disabled);
   margin-bottom: 5px;
   display: flex;
   align-items: center;
