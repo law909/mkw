@@ -124,7 +124,7 @@ class meretController extends MattableController
         $view->printTemplateResult();
     }
 
-    public function excelExport()
+    public function exportExcel()
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -156,7 +156,7 @@ class meretController extends MattableController
         exit;
     }
 
-    public function excelImport()
+    public function importExcel()
     {
         $this->getEm()->getConnection()->beginTransaction();
 
