@@ -542,6 +542,16 @@ class store
         return self::getSetupValue('pdfmode');
     }
 
+    public static function getSzinMode()
+    {
+        return self::getSetupValue('szinmode', 'valtozo');
+    }
+
+    public static function isFixSzinMode()
+    {
+        return self::getSzinMode() === 'fix';
+    }
+
     /**
      *
      * @return \mkwhelpers\TemplateFactory

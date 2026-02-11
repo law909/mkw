@@ -28,6 +28,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     {
         $tvatc = new termekvaltozatadattipusController($this->params);
         $tkepc = new termekkepController($this->params);
+        $szinc = new szinController($this->params);
+        $meretc = new meretController($this->params);
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekValtozat();
@@ -94,6 +96,14 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         $x['minboltikeszlet'] = $t->getMinboltikeszlet();
         $x['wcid'] = $t->getWcid();
+        if (\mkw\store::isFixSzinMode()) {
+            $x['szinid'] = $t->getSzinId();
+            $x['meretid'] = $t->getMeretId();
+            if ($forKarb) {
+                $x['szinlista'] = $szinc->getSelectList($t->getSzinId());
+                $x['meretlista'] = $meretc->getSelectList($t->getMeretId());
+            }
+        }
         return $x;
     }
 

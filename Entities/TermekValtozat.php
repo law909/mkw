@@ -191,6 +191,18 @@ class TermekValtozat
     private $prestadate;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Szin")
+     * @ORM\JoinColumn(name="szin_id",referencedColumnName="id",onDelete="set null",nullable=true)
+     */
+    private $szin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Meret")
+     * @ORM\JoinColumn(name="meret_id",referencedColumnName="id",onDelete="set null", nullable=true)
+     */
+    private $meret;
+
+    /**
      * @ORM\PrePersist
      */
     public function generateVonalkod()
@@ -714,6 +726,9 @@ class TermekValtozat
 
     public function getNev()
     {
+        if (\mkw\store::isFixSzinMode()) {
+            return implode(' - ', [$this->getSzinNev(), $this->getMeretNev()]);
+        }
         return implode(' - ', [$this->getErtek1(), $this->getErtek2()]);
     }
 
@@ -755,6 +770,7 @@ class TermekValtozat
 
     public function getSzin()
     {
+        // TODO: szin
         if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
             return $this->getErtek1();
         }
@@ -766,6 +782,7 @@ class TermekValtozat
 
     public function getMeret()
     {
+        // TODO: meret
         if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
             return $this->getErtek1();
         }
@@ -1810,6 +1827,60 @@ class TermekValtozat
         } else {
             $this->prestadate = new \DateTime();
         }
+    }
+
+    public function getSzinObject()
+    {
+        return $this->szin;
+    }
+
+    public function getSzinId()
+    {
+        if ($this->szin) {
+            return $this->szin->getId();
+        }
+        return 0;
+    }
+
+    public function getSzinNev()
+    {
+        if ($this->szin) {
+            return $this->szin->getNev();
+        }
+        return '';
+    }
+
+    public function setSzin($at)
+    {
+        $this->szin = $at;
+//		$at->addValtozat($this);
+    }
+
+    public function getMeretObject()
+    {
+        return $this->meret;
+    }
+
+    public function getMeretId()
+    {
+        if ($this->meret) {
+            return $this->meret->getId();
+        }
+        return 0;
+    }
+
+    public function getMeretNev()
+    {
+        if ($this->meret) {
+            return $this->meret->getNev();
+        }
+        return '';
+    }
+
+    public function setMeret($at)
+    {
+        $this->meret = $at;
+//		$at->addValtozat($this);
     }
 
 }

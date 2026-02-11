@@ -5,7 +5,9 @@ namespace Controllers;
 use Automattic\WooCommerce\Client;
 use Entities\Afa;
 use Entities\Arsav;
+use Entities\Meret;
 use Entities\Partner;
+use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\TermekFa;
@@ -13,6 +15,7 @@ use Entities\TermekKep;
 use Entities\TermekMenu;
 use Entities\TermekValtozat,
     Entities\TermekRecept;
+use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
 use mkw\store;
@@ -186,7 +189,7 @@ class termekController extends \mkwhelpers\MattableController
             }
             if (\mkw\store::getSetupValue('termekvaltozat')) {
                 foreach ($t->getValtozatok() as $tvaltozat) {
-                    $valtozat[] = $valtozatCtrl->loadVars($tvaltozat, $t);
+                    $valtozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
                 }
                 //$valtozat[]=$valtozatCtrl->loadVars(null);
                 $x['valtozatok'] = $valtozat;
@@ -242,7 +245,7 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();
                 if ($mozgasdb) {
-                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t);
+                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
                 }
             }
             $x['valtozatkeszlet'] = $lvaltozat;
@@ -635,7 +638,22 @@ class termekController extends \mkwhelpers\MattableController
                     $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
                     $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
-                    $at = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find(
+                    if (\mkw\store::isFixSzinMode()) {
+                        $szin = $this->getEm()->getRepository(Szin::class)->find(
+                            $this->params->getIntRequestParam('valtozatszin_' . $valtozatid)
+                        );
+                        if ($szin) {
+                            $valtozat->setSzin($szin);
+                        }
+                        $meret = $this->getEm()->getRepository(Meret::class)->find(
+                            $this->params->getIntRequestParam('valtozatmeret_' . $valtozatid)
+                        );
+                        if ($meret) {
+                            $valtozat->setMeret($meret);
+                        }
+                    }
+
+                    $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
                         $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
                     );
                     $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
@@ -645,7 +663,7 @@ class termekController extends \mkwhelpers\MattableController
                         $valtdb++;
                     }
 
-                    $at = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find(
+                    $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
                         $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
                     );
                     $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
@@ -655,7 +673,7 @@ class termekController extends \mkwhelpers\MattableController
                         $valtdb++;
                     }
 
-                    $at = $this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
+                    $at = $this->getEm()->getRepository(TermekKep::class)->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
                     if ($at) {
                         $valtozat->setKep($at);
                     }
@@ -666,7 +684,7 @@ class termekController extends \mkwhelpers\MattableController
                         $obj->removeValtozat($valtozat);
                     }
                 } elseif ($oper == 'edit') {
-                    $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
+                    $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($valtozatid);
                     if ($valtozat) {
                         $valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_' . $valtozatid));
                         $valtozat->setLathato2($this->params->getBoolRequestParam('valtozatlathato2_' . $valtozatid));
@@ -707,7 +725,22 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
                         $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
-                        $at = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find(
+                        if (\mkw\store::isFixSzinMode()) {
+                            $szin = $this->getEm()->getRepository(Szin::class)->find(
+                                $this->params->getIntRequestParam('valtozatszin_' . $valtozatid)
+                            );
+                            if ($szin) {
+                                $valtozat->setSzin($szin);
+                            }
+                            $meret = $this->getEm()->getRepository(Meret::class)->find(
+                                $this->params->getIntRequestParam('valtozatmeret_' . $valtozatid)
+                            );
+                            if ($meret) {
+                                $valtozat->setMeret($meret);
+                            }
+                        }
+
+                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
                             $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
                         );
                         $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
@@ -719,7 +752,7 @@ class termekController extends \mkwhelpers\MattableController
                             $valtozat->setErtek1(null);
                         }
 
-                        $at = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find(
+                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
                             $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
                         );
                         $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
@@ -734,7 +767,7 @@ class termekController extends \mkwhelpers\MattableController
                         if ($valtozat->getTermekfokep()) {
                             $valtozat->setKep(null);
                         } else {
-                            $at = $this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
+                            $at = $this->getEm()->getRepository(TermekKep::class)->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
                             if ($at) {
                                 $valtozat->setKep($at);
                             } else {

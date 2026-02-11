@@ -53,6 +53,19 @@
                                          class="js-valtozatbeerkezesdatumedit" type="text" size="12" data-datum="{$valtozat.beerkezesdatumstr}"></td>
     </tr>
     <tr>
+        {if ($setup.szinmode === 'fix')}
+            <td class="mattable-cell">
+                <label for="">Szín</label>
+            </td>
+            <td class="mattable-cell">
+                <select name="valtozatszin_{$valtozat.id}">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.szinlista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+        {/if}
         <td class="mattable-cell">
             <select name="valtozatadattipus1_{$valtozat.id}" required="required">
                 <option value="">{at('válasszon')}</option>
@@ -73,6 +86,19 @@
         </td>
     </tr>
     <tr>
+        {if ($setup.szinmode === 'fix')}
+            <td class="mattable-cell">
+                <label for="">Méret</label>
+            </td>
+            <td class="mattable-cell">
+                <select name="valtozatmeret_{$valtozat.id}">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $valtozat.meretlista as $at}
+                        <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
+        {/if}
         <td class="mattable-cell">
             <select name="valtozatadattipus2_{$valtozat.id}">
                 <option value="">{at('válasszon')}</option>

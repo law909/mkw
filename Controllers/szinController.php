@@ -199,4 +199,137 @@ class szinController extends \mkwhelpers\MattableController
         }
     }
 
+    public function exportExcel()
+    {
+        try {
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('A1', 'ID');
+            $sheet->setCellValue('B1', 'Név');
+            $sheet->setCellValue('C1', 'Sorrend');
+            $sheet->setCellValue('D1', 'Új név');
+            $sheet->setCellValue('E1', 'Csere szín kód');
+
+            $headerStyle = [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => 'CCCCCC']
+                ]
+            ];
+            $sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
+
+            $szinek = $this->getRepo()->getAll([], ['sorrend' => 'ASC', 'nev' => 'ASC']);
+
+            $row = 2;
+            foreach ($szinek as $szin) {
+                $sheet->setCellValue('A' . $row, $szin->getId());
+                $sheet->setCellValue('B' . $row, $szin->getNev());
+                $sheet->setCellValue('C' . $row, $szin->getSorrend());
+                $sheet->setCellValue('D' . $row, '');
+                $sheet->setCellValue('E' . $row, '');
+                $row++;
+            }
+
+            foreach (range('A', 'E') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $filename = 'szinek_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"');
+            header('Cache-Control: max-age=0');
+
+            $writer->save('php://output');
+            exit;
+        } catch (\Exception $e) {
+            \mkw\store::writelog('Excel export error: ' . $e->getMessage());
+            echo 'Hiba történt az Excel exportálás során: ' . $e->getMessage();
+        }
+    }
+
+    public function importExcel()
+    {
+        $this->getEm()->getConnection()->beginTransaction();
+
+        try {
+            if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+                throw new \Exception('Nincs feltöltött fájl vagy hiba történt a feltöltés során.');
+            }
+
+            $tmpFilePath = $_FILES['file']['tmp_name'];
+
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            $spreadsheet = $reader->load($tmpFilePath);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $highestRow = $sheet->getHighestRow();
+
+            for ($row = 2; $row <= $highestRow; $row++) {
+                $szinId = $sheet->getCell('A' . $row)->getValue();
+                $ujSorrend = $sheet->getCell('C' . $row)->getValue();
+                $ujNev = $sheet->getCell('D' . $row)->getValue();
+                $csereSzinId = $sheet->getCell('E' . $row)->getValue();
+
+                if (empty($szinId)) {
+                    continue;
+                }
+
+                $szin = $this->getRepo()->find($szinId);
+
+                if (!$szin) {
+                    continue;
+                }
+
+                if (!empty($csereSzinId)) {
+                    $csereSzin = $this->getRepo()->find($csereSzinId);
+
+                    if ($csereSzin) {
+                        $regiNev = $szin->getNev();
+                        $ujSzinNev = $csereSzin->getNev();
+
+                        $updateSql = 'UPDATE termekvaltozat 
+                                    SET ertek1 = :ujSzinNev, szin_id = :csereSzinId 
+                                    WHERE ertek1 = :regiNev AND adattipus1_id = 1';
+                        $stmt = $this->getEm()->getConnection()->prepare($updateSql);
+                        $stmt->executeQuery([
+                            'ujSzinNev' => $ujSzinNev,
+                            'csereSzinId' => $csereSzinId,
+                            'regiNev' => $regiNev
+                        ]);
+
+                        $this->getEm()->remove($szin);
+                    }
+                } else {
+                    if (!empty($ujSorrend)) {
+                        $szin->setSorrend((int)$ujSorrend);
+                    }
+
+                    if (!empty($ujNev)) {
+                        $regiNev = $szin->getNev();
+                        $szin->setNev($ujNev);
+
+                        $updateSql = 'UPDATE termekvaltozat SET ertek1 = :ujNev WHERE ertek1 = :regiNev AND adattipus1_id = 1';
+                        $stmt = $this->getEm()->getConnection()->prepare($updateSql);
+                        $stmt->executeQuery(['ujNev' => $ujNev, 'regiNev' => $regiNev]);
+                    }
+
+                    $this->getEm()->persist($szin);
+                }
+            }
+
+            $this->getEm()->flush();
+            $this->getEm()->getConnection()->commit();
+
+            echo 'Excel importálás sikeres.';
+        } catch (\Exception $e) {
+            \mkw\store::writelog('Excel import error: ' . $e->getMessage());
+            $this->getEm()->getConnection()->rollBack();
+            echo 'Hiba történt az Excel importálás során: ' . $e->getMessage();
+        }
+    }
+
 }
