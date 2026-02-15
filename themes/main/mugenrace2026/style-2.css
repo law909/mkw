@@ -43,7 +43,7 @@
   --space-xl: 40px;
   --link-hover-opacity: 0.8;
   /* Typography */
-  --font-base: "Inter", sans-serif;
+  --font-base: 'Inter', sans-serif;
   --font-size-base: 14px;
   --font-size-small: 12px;
   --font-size-large: 18px;
@@ -476,13 +476,15 @@ i.icon {
   background-color: var(--color-icon);
   width: 20px;
   height: 20px;
-  /* Colors */
 }
 i.icon__click {
   cursor: pointer;
 }
 i.icon__click:hover {
   opacity: var(--link-hover-opacity);
+}
+i.icon {
+  /* Colors */
 }
 i.icon.primary {
   background-color: var(--color-primary);
@@ -1221,12 +1223,14 @@ a.underline {
   padding-left: var(--space-md);
   padding-right: var(--space-md);
   /* Tablet */
-  /* Desktop */
 }
 @media (min-width: 769px) and (max-width: 1024px) {
   .container, .container-lg, .container-sm {
     max-width: 900px;
   }
+}
+.container, .container-lg, .container-sm {
+  /* Desktop */
 }
 @media (min-width: 1025px) {
   .container, .container-lg, .container-sm {
@@ -1601,9 +1605,6 @@ a.underline {
 .product-datasheet .js-kosarba {
   max-width: 250px;
 }
-.product-datasheet .js-kosarbaszinvaltozat {
-  display: none;
-}
 .product-datasheet .gvaltozatcontainer {
   margin-bottom: var(--spacing-sm);
 }
@@ -1769,6 +1770,13 @@ a.underline {
 }
 #MainContent .product-list-item .custom-select {
   color: var(--color-text) !important;
+}
+#MainContent .featured-collection-slider__dark .product-list-item .custom-select {
+  color: var(--color-text-inverse) !important;
+  background-color: var(--color-background-inverse) !important;
+  border-color: var(--border-color-inverse) !important;
+  font-size: 10px !important;
+  padding: 4px !important;
 }
 @media (max-width: 768px) {
   #MainContent .gvaltozatselect {
@@ -3544,7 +3552,6 @@ a.underline {
 
 .mini-cart {
   position: relative;
-  display: none;
   cursor: pointer;
 }
 .mini-cart__counter {
@@ -4154,6 +4161,14 @@ nav ul li a {
   flex-direction: column;
   gap: var(--gap-small);
 }
+@media (max-width: 768px) {
+  .product-list-item__inner .flex-tb {
+    flex-direction: column;
+  }
+  .product-list-item__inner .flex-tb .js-kosarbaszinvaltozat {
+    margin-top: 10px;
+  }
+}
 .product-list-item__image-container {
   background-color: var(--color-background-white);
   margin-bottom: 10px;
@@ -4206,9 +4221,6 @@ nav ul li a {
   color: var(--color-text);
   background-color: var(--color-white);
 }
-.product-list-item .js-kosarbaszinvaltozat {
-  display: none;
-}
 .product-list-item__price {
   font-size: var(--font-size-base);
   font-weight: 700;
@@ -4216,11 +4228,19 @@ nav ul li a {
 .product-list-item__variations-container {
   position: relative;
 }
+.product-list-item__variations-container .gvaltozatcontainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .product-list-item__variations {
   margin: auto;
   width: auto;
   background: var(--color-background);
   padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .product-list-item .gtermekinner {
   width: 100%;

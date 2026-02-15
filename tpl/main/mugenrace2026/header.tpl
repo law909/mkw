@@ -1,4 +1,5 @@
 {include "headerfirstrow.tpl"}
+{$hidecart = mkw\store::getConfigValue('hidecart')}
 {* {$mugenracetermekmenu}  *}
 
 {* Demo content amíg nem sikerül lekérdezni a termékmenüt *}
@@ -87,7 +88,11 @@
                     <li><i class="icon search white icon__click"></i></li>
                     <li>
                         {* <a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow"> *}
-                        {include "minikosar.tpl"}
+                        {if $hidecart == 0}
+                            <div id="minikosar">
+                                {include "minikosar.tpl"}
+                            </div>
+                        {/if}
                         {* </a> *}
                     </li>
                     <li>

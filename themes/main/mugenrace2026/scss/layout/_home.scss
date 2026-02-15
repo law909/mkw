@@ -103,6 +103,17 @@
     color : var(--color-text) !important;
   }
 
+  .featured-collection-slider__dark {
+    .product-list-item .custom-select {
+      color : var(--color-text-inverse) !important;
+      background-color: var(--color-background-inverse) !important;
+      border-color: var(--border-color-inverse) !important;
+      font-size: 10px !important;
+      padding: 4px !important;
+    }
+
+  }
+
   .gvaltozatselect {
     @include mobile {
       width: 100% !important;

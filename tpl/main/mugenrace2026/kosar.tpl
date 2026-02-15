@@ -74,7 +74,7 @@
 				<h3>{t('Az Ön kosara üres')}.</h3>
                 <a href="{$prevuri}" class="button bordered okbtn">{t('Folytatom a vásárlást')}</a>
 			{/if}
-            {if (count($hozzavasarolttermekek)>0)}
+            {* {if (count($hozzavasarolttermekek)>0)}
             <div class="row">
                 <div class="span10">
                 <div class="blockHeader">
@@ -107,7 +107,7 @@
                 </div>
                 </div>
             </div>
-            {/if}
+            {/if} *}
 		</div>
 	</div>
 </div>
