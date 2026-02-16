@@ -920,7 +920,6 @@ class Termek
             }
         }
         $x['cimkelistaban'] = $listaban;
-        \mkw\store::writelog(is_null($valtozat) ? 'NOR' : $valtozat->getId());
         if (!is_null($valtozat)) {
             if ($valtozat->getKepurlSmall()) {
                 $x['nagykepurl'] = $valtozat->getKepurlLarge();
@@ -970,6 +969,7 @@ class Termek
                         }
                     }
                 }
+                \mkw\store::writelog(print_r($vtt, true));
                 $x['szinek'] = $vtt;
             } else {
                 $vtt = [];
