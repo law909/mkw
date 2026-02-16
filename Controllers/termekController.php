@@ -644,35 +644,50 @@ class termekController extends \mkwhelpers\MattableController
                         );
                         if ($szin) {
                             $valtozat->setSzin($szin);
+                            $valtdb++;
+                            $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)
+                            );
+                            if ($at) {
+                                $valtozat->setAdatTipus1($at);
+                                $valtozat->setErtek1($szin->getNev());
+                            }
                         }
                         $meret = $this->getEm()->getRepository(Meret::class)->find(
                             $this->params->getIntRequestParam('valtozatmeret_' . $valtozatid)
                         );
                         if ($meret) {
                             $valtozat->setMeret($meret);
+                            $valtdb++;
+                            $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)
+                            );
+                            if ($at) {
+                                $valtozat->setAdatTipus2($at);
+                                $valtozat->setErtek2($meret->getNev());
+                            }
+                        }
+                    } else {
+                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                            $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
+                        );
+                        $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
+                        if ($at && $valtert) {
+                            $valtozat->setAdatTipus1($at);
+                            $valtozat->setErtek1($valtert);
+                            $valtdb++;
+                        }
+
+                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                            $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
+                        );
+                        $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
+                        if ($at && $valtert) {
+                            $valtozat->setAdatTipus2($at);
+                            $valtozat->setErtek2($valtert);
+                            $valtdb++;
                         }
                     }
-
-                    $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
-                        $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
-                    );
-                    $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
-                    if ($at && $valtert) {
-                        $valtozat->setAdatTipus1($at);
-                        $valtozat->setErtek1($valtert);
-                        $valtdb++;
-                    }
-
-                    $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
-                        $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
-                    );
-                    $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
-                    if ($at && $valtert) {
-                        $valtozat->setAdatTipus2($at);
-                        $valtozat->setErtek2($valtert);
-                        $valtdb++;
-                    }
-
                     $at = $this->getEm()->getRepository(TermekKep::class)->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
                     if ($at) {
                         $valtozat->setKep($at);
@@ -731,37 +746,51 @@ class termekController extends \mkwhelpers\MattableController
                             );
                             if ($szin) {
                                 $valtozat->setSzin($szin);
+                                $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                    \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)
+                                );
+                                if ($at) {
+                                    $valtozat->setAdatTipus1($at);
+                                    $valtozat->setErtek1($szin->getNev());
+                                }
                             }
                             $meret = $this->getEm()->getRepository(Meret::class)->find(
                                 $this->params->getIntRequestParam('valtozatmeret_' . $valtozatid)
                             );
                             if ($meret) {
                                 $valtozat->setMeret($meret);
+                                $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                    \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)
+                                );
+                                if ($at) {
+                                    $valtozat->setAdatTipus2($at);
+                                    $valtozat->setErtek2($meret->getNev());
+                                }
                             }
-                        }
-
-                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
-                            $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
-                        );
-                        $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
-                        if ($at && $valtert) {
-                            $valtozat->setAdatTipus1($at);
-                            $valtozat->setErtek1($valtert);
                         } else {
-                            $valtozat->setAdatTipus1(null);
-                            $valtozat->setErtek1(null);
-                        }
+                            $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                $this->params->getIntRequestParam('valtozatadattipus1_' . $valtozatid)
+                            );
+                            $valtert = $this->params->getStringRequestParam('valtozatertek1_' . $valtozatid);
+                            if ($at && $valtert) {
+                                $valtozat->setAdatTipus1($at);
+                                $valtozat->setErtek1($valtert);
+                            } else {
+                                $valtozat->setAdatTipus1(null);
+                                $valtozat->setErtek1(null);
+                            }
 
-                        $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
-                            $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
-                        );
-                        $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
-                        if ($at && $valtert) {
-                            $valtozat->setAdatTipus2($at);
-                            $valtozat->setErtek2($valtert);
-                        } else {
-                            $valtozat->setAdatTipus2(null);
-                            $valtozat->setErtek2(null);
+                            $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                                $this->params->getIntRequestParam('valtozatadattipus2_' . $valtozatid)
+                            );
+                            $valtert = $this->params->getStringRequestParam('valtozatertek2_' . $valtozatid);
+                            if ($at && $valtert) {
+                                $valtozat->setAdatTipus2($at);
+                                $valtozat->setErtek2($valtert);
+                            } else {
+                                $valtozat->setAdatTipus2(null);
+                                $valtozat->setErtek2(null);
+                            }
                         }
 
                         if ($valtozat->getTermekfokep()) {
