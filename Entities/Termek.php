@@ -961,7 +961,8 @@ class Termek
                 $vtt = [];
                 $valtozatok = $this->getValtozatok();
                 foreach ($valtozatok as $valt) {
-                    \mkw\store::writelog(print_r($valt->getXElerheto(), true));
+                    \mkw\store::writelog(print_r($valt->getAdatTipus1Id(), true));
+                    \mkw\store::writelog(print_r($valt->getAdatTipus2Id(), true));
                     if ($valt->getXElerheto()) {
                         if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
                             $vtt[$valt->getErtek1()] = $valt->getErtek1();
