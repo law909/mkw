@@ -99,6 +99,7 @@ return [
     'utca' => 'address',
     'házszám' => 'street number',
     'Szállítási és számlázási adatok' => 'Delivery and billing',
+    'Szállítási ország' => 'Delivery country',
     'Módosít' => 'Modify',
     'Számlázási adatok' => 'Billing details',
     'Megegyezik a szállítási adatokkal' => 'Same as delivery details',

@@ -1,3 +1,5 @@
+@use '../mixins/breakpoints' as *;
+
 .product-list-item {
   width: 100%;
   margin-bottom: 1rem;
@@ -13,6 +15,16 @@
     display: flex;
     flex-direction: column;
     gap: var(--gap-small);
+
+    .flex-tb {
+      @include mobile {
+        flex-direction: column;
+
+        .js-kosarbaszinvaltozat {
+          margin-top: 10px;
+        }
+      }
+    }
   }
 
   &__image-container {
@@ -78,9 +90,9 @@
     background-color: var(--color-white);
   }
 
-  .js-kosarbaszinvaltozat {
-    display: none;
-  }
+  // .js-kosarbaszinvaltozat {
+  //   display: none;
+  // }
 
   &__price {
     font-size: var(--font-size-base);
@@ -93,6 +105,12 @@
     // .js-meretvaltozatedit {
     //   display: none;
     // }
+
+    .gvaltozatcontainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;  
+    }
   }
 
   &__variations {
@@ -107,6 +125,9 @@
     width: auto;
     background: var(--color-background);
     padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
 
     // .js-szinvaltozatedit {

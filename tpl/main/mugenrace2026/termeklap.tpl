@@ -1,5 +1,5 @@
 {extends "base.tpl"}
-
+{$hidecart = mkw\store::getConfigValue('hidecart')}
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
     <meta property="og:url" content="{$serverurl}/product/{$termek.slug}"/>
@@ -197,7 +197,7 @@
                                 {$_kosarbaclass="js-kosarba"}
 
                                 {* Colors  *}
-                                {if false} {*if ($termek.szinek)*}
+                                {if $hidecart == 0} {*if ($termek.szinek)*}
                                     {$_kosarbaclass="js-kosarbaszinvaltozat"}
                                     <div class="row  product-datasheet__cart-container flex-col">
                                         <div class="js-valtozatbox kosarbacontainer ">
@@ -241,11 +241,13 @@
                                         </div>
                                     {else}
                                         {if ($termek.brutto > 0)}
-                                            {* <div class="textalignright">
-                                                <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}" data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
-                                                    {t('Kosárba')}
-                                                </a>
-                                            </div> *}
+                                            {if $hidecart == 0}
+                                                <div class="textalignright">
+                                                    <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}" data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
+                                                        {t('Kosárba')}
+                                                    </a>
+                                                </div>
+                                            {/if}
                                         {/if}
                                     {/if}
                                 </div>
