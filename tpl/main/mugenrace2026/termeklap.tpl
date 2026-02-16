@@ -132,6 +132,7 @@
 
 
 
+
 {foreach $navigator as $_navi}
                                     {if ($_navi.url|default)}
                                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -242,7 +243,7 @@
                                         {if ($hidecart != 1) && ($termek.brutto > 0)}
                                             <div class="textalignright">
                                                 <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn"
-                                                   data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}"
+                                                   data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.brutto,0,',',' ')}"
                                                    data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
                                                     {t('Kosárba')}
                                                 </a>
