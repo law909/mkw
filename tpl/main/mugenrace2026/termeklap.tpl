@@ -1,5 +1,4 @@
 {extends "base.tpl"}
-{$hidecart = mkw\store::getConfigValue('hidecart')}
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
     <meta property="og:url" content="{$serverurl}/product/{$termek.slug}"/>
@@ -151,17 +150,17 @@
                                                                                           class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
                                 {* Title  *}
 
-                                
+
                                 <div>
                                 <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
                                 </div>
                                 {* SKU  *}
-                                
+
                                 {if ($termek.me)}
                                     <div><span class="bold">{t('Kiszerelés')}:</span> {$termek.me}</div>
                                 {/if}
                                 {* Packaging  *}
-                                
+
                                 {if ($termek.szallitasiido && (!$termek.nemkaphato))}
                                     <div><span class="bold">{t('Szállítási idő')}:</span> max. <span
                                             id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
@@ -183,7 +182,7 @@
                                 </div>
                                 {* Price  *}
 
-                                
+
 
                                 <div>
                                     <ul class="simalista">
@@ -372,7 +371,7 @@
             {/if}
             <hr>
 
-            {if (count($legnepszerubbtermekek)>0)}  
+            {if (count($legnepszerubbtermekek)>0)}
             {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg={t('Legnépszerűbb termékeink')} hatterszin="light"} {* Carousel *}
             {/if}
             {* <div class="row product-datasheet__popular-products flex-col">

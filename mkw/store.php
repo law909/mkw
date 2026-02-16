@@ -612,6 +612,7 @@ class store
             $v->setVar('mugenracefejleckep', self::getParameter(\mkw\consts::MugenraceFejlecKep));
             $v->setVar('mugenracefooterlogo', self::getParameter(\mkw\consts::MugenraceFooterLogo));
         }
+        $v->setVar('hidecart', self::getSetupValue('hidecart'));
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
