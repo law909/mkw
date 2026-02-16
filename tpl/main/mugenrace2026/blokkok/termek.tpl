@@ -37,7 +37,7 @@
             {if ( isset($termek.szallitasiido) && $termek.szallitasiido && isset($termek.nemkaphato) && !$termek.nemkaphato)}
                 <div class="textaligncenter"><span class="bold">{t('Szállítási idő')}: </span>{$termek.szallitasiido} {t('munkanap')}</div>
             {/if}
-            {if $hidecart != 1} {*if ($termek.szinek|default)*}
+            {if ($hidecart) != 1 && ($termek.szinek|default)}
                 <div class="js-valtozatbox product-list-item__variations-container">
                     <div class="pull-left gvaltozatcontainer product-list-item__variations">
                         <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>

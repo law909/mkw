@@ -920,7 +920,7 @@ class Termek
             }
         }
         $x['cimkelistaban'] = $listaban;
-
+        \mkw\store::writelog('X' . is_null($valtozat) ? 'NOR' : $valtozat->getId());
         if (!is_null($valtozat)) {
             if ($valtozat->getKepurlSmall()) {
                 $x['nagykepurl'] = $valtozat->getKepurlLarge();
