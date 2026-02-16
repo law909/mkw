@@ -131,6 +131,7 @@
 
 
 
+
 {foreach $navigator as $_navi}
                                     {if ($_navi.url|default)}
                                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -152,7 +153,7 @@
 
 
                                 <div>
-                                <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
+                                    <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
                                 </div>
                                 {* SKU  *}
 
@@ -183,7 +184,6 @@
                                 {* Price  *}
 
 
-
                                 <div>
                                     <ul class="simalista">
                                         {foreach $termek.cimkeakciodobozban as $_jelzo}
@@ -196,7 +196,7 @@
                                 {$_kosarbaclass="js-kosarba"}
 
                                 {* Colors  *}
-                                {if $hidecart == 0} {*if ($termek.szinek)*}
+                                {if ($hidecart != 1)} {*if ($termek.szinek)*}
                                     {$_kosarbaclass="js-kosarbaszinvaltozat"}
                                     <div class="row  product-datasheet__cart-container flex-col">
                                         <div class="js-valtozatbox kosarbacontainer ">
@@ -239,14 +239,14 @@
                                             </a>
                                         </div>
                                     {else}
-                                        {if ($termek.brutto > 0)}
-                                            {if $hidecart == 0}
-                                                <div class="textalignright">
-                                                    <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}" data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
-                                                        {t('Kosárba')}
-                                                    </a>
-                                                </div>
-                                            {/if}
+                                        {if ($hidecart != 1) && ($termek.brutto > 0)}
+                                            <div class="textalignright">
+                                                <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} button primary full-width cartbtn"
+                                                   data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.bruttohuf,0,',',' ')}"
+                                                   data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
+                                                    {t('Kosárba')}
+                                                </a>
+                                            </div>
                                         {/if}
                                     {/if}
                                 </div>
@@ -326,9 +326,8 @@
             </div>
 
 
-
             {if (count($termek.hasonlotermekek)!=0)}
-                {include 'blokkok/termekcarousel.tpl' termeklista=$termek.hasonlotermekek fejlecszoveg={t('Hasonló termékek')} hatterszin="light"} {* Carousel *}
+                {include 'blokkok/termekcarousel.tpl' termeklista=$termek.hasonlotermekek fejlecszoveg=t('Hasonló termékek') hatterszin="light"} {* Carousel *}
                 {* <div class="accordion-item product-datasheet__similar-products flex-col">
                     <div class="col">
                         <h2 class="main">{t('Hasonló termékek')}</h2>
@@ -350,7 +349,7 @@
 
 
             {if (count($hozzavasarolttermekek)>0)}
-                {include 'blokkok/termekcarousel.tpl' termeklista=$hozzavasarolttermekek fejlecszoveg={t('Ehhez a termékhez vásárolták még')} hatterszin="light"} {* Carousel *}
+                {include 'blokkok/termekcarousel.tpl' termeklista=$hozzavasarolttermekek fejlecszoveg=t('Ehhez a termékhez vásárolták még') hatterszin="light"} {* Carousel *}
                 {* <div class="row product-datasheet__recommended-products flex-col">
                     <div class="col">
                         <h2 class="main">{t('Ehhez a termékhez vásárolták még')}</h2>
@@ -372,7 +371,7 @@
             <hr>
 
             {if (count($legnepszerubbtermekek)>0)}
-            {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg={t('Legnépszerűbb termékeink')} hatterszin="light"} {* Carousel *}
+                {include 'blokkok/termekcarousel.tpl' termeklista=$legnepszerubbtermekek fejlecszoveg=t('Legnépszerűbb termékeink') hatterszin="light"} {* Carousel *}
             {/if}
             {* <div class="row product-datasheet__popular-products flex-col">
                 <div class="col">
