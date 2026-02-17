@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+    const sass = require('sass');
+    
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-less');
 
@@ -151,6 +154,20 @@ module.exports = function(grunt) {
                     'themes/main/mijsz/style.css': 'themes/main/mijsz/style.less'
                 }
             }
+        },
+        sass: {
+            options: {
+                implementation: sass
+            },
+            mugenrace: {
+                options: {
+                    sourceMap: false
+                },
+                files: {
+                    'themes/main/mugenrace2026/style-2.css': 'themes/main/mugenrace2026/scss/style-2.scss'
+                }
+            }
         }
     });
+    grunt.registerTask('default', ['sass', 'less', 'concat']);
 }
