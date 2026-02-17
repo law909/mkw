@@ -337,19 +337,64 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
             $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo1'));
             if ($biralo) {
-                $obj->setBiralo1($biralo);
+                if (
+                    ($biralo->getEmail() != $obj->getSzerzo1email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo2email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo3email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo4email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo5email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo6email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo7email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo8email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo9email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo10email()) &&
+                    ($biralo->getEmail() != $obj->getOpponensemail()) &&
+                    ($biralo->getEmail() != $obj->getBeszelgetopartneremail())
+                ) {
+                    $obj->setBiralo1($biralo);
+                }
             } else {
                 $obj->removeBiralo1();
             }
             $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo2'));
             if ($biralo) {
-                $obj->setBiralo2($biralo);
+                if (
+                    ($biralo->getEmail() != $obj->getSzerzo1email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo2email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo3email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo4email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo5email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo6email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo7email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo8email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo9email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo10email()) &&
+                    ($biralo->getEmail() != $obj->getOpponensemail()) &&
+                    ($biralo->getEmail() != $obj->getBeszelgetopartneremail())
+                ) {
+                    $obj->setBiralo2($biralo);
+                }
             } else {
                 $obj->removeBiralo2();
             }
             $biralo = \mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('biralo3'));
             if ($biralo) {
-                $obj->setBiralo3($biralo);
+                if (
+                    ($biralo->getEmail() != $obj->getSzerzo1email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo2email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo3email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo4email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo5email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo6email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo7email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo8email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo9email()) &&
+                    ($biralo->getEmail() != $obj->getSzerzo10email()) &&
+                    ($biralo->getEmail() != $obj->getOpponensemail()) &&
+                    ($biralo->getEmail() != $obj->getBeszelgetopartneremail())
+                ) {
+                    $obj->setBiralo3($biralo);
+                }
             } else {
                 $obj->removeBiralo3();
             }

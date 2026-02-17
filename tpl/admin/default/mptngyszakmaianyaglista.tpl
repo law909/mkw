@@ -170,6 +170,7 @@
                 <th>{at('Tartalom')}</th>
                 <th>{at('Bírálók')}</th>
                 <th>{at('Témakörök')}</th>
+                <th>{at('Kulcsszavak')}</th>
                 <th></th>
             </tr>
             </thead>

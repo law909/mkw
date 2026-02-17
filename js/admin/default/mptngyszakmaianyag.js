@@ -31,14 +31,22 @@ $(document).ready(function () {
             let b1 = $('#biralo1Edit option:selected').data('email'),
                 b2 = $('#biralo2Edit option:selected').data('email'),
                 b3 = $('#biralo3Edit option:selected').data('email'),
-                szerzo1 = $('#szerzo1emailEdit').val(),
+                tulaj = $('#tulajdonosEdit option:selected').data('email'),
                 szerzok = [
+                    $('#szerzo1emailEdit').val(),
                     $('#szerzo2emailEdit').val(),
                     $('#szerzo3emailEdit').val(),
-                    $('#szerzo4emailEdit').val()
+                    $('#szerzo4emailEdit').val(),
+                    $('#szerzo5emailEdit').val(),
+                    $('#szerzo6emailEdit').val(),
+                    $('#szerzo7emailEdit').val(),
+                    $('#szerzo8emailEdit').val(),
+                    $('#szerzo9emailEdit').val(),
+                    $('#szerzo10emailEdit').val(),
                 ],
-                szerzo5 = $('#szerzo5emailEdit').val(),
-                egyebszerzok = $('#egyebszerzokEdit').val();
+                egyebszerzok = $('#egyebszerzokEdit').val(),
+                opponens = $('#opponensemailEdit').val()
+            ;
 
             if (b1) {
                 b1 = b1.toLowerCase();
@@ -49,8 +57,8 @@ $(document).ready(function () {
             if (b3) {
                 b3 = b3.toLowerCase();
             }
-            if ((b1 && szerzo1 === b1) || (b2 && szerzo1 === b2) || (b3 && szerzo1 === b3)) {
-                dialogcenter.html('A bíráló nem lehet első szerző').dialog({
+            if ((b1 && tulaj === b1) || (b2 && tulaj === b2) || (b3 && tulaj === b3)) {
+                dialogcenter.html('A bíráló nem lehet tulajdonos').dialog({
                     resizable: false,
                     height: 140,
                     modal: true,
@@ -62,7 +70,7 @@ $(document).ready(function () {
                 });
                 return false;
             }
-            if ((b1 && szerzo5 === b1) || (b2 && szerzo5 === b2) || (b3 && szerzo5 === b3)) {
+            if ((b1 && opponens === b1) || (b2 && opponens === b2) || (b3 && opponens === b3)) {
                 dialogcenter.html('A bíráló nem lehet opponens').dialog({
                     resizable: false,
                     height: 140,

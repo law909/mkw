@@ -13,7 +13,7 @@
         <div>Típus: {$_egyed.tipusnev}</div>
         <div>Tulajdonos: {$_egyed.tulajdonosnev}</div>
     </td>
-    <td class="cell" style="width: 30%">
+    <td class="cell" style="width: 25%">
         <div>Első szerző: {$_egyed.szerzo1nev} ({$_egyed.szerzo1email})</div>
         <div>Szerző 2: {$_egyed.szerzo2nev} ({$_egyed.szerzo2email})</div>
         <div>Szerző 3: {$_egyed.szerzo3nev} ({$_egyed.szerzo3email})</div>
@@ -38,7 +38,7 @@
             </div>
         </div>
     </td>
-    <td class="cell" style="width: 30%">
+    <td class="cell" style="width: 25%">
         <span>{$_egyed.tartalom}</span>
     </td>
     <td class="cell">
@@ -54,6 +54,13 @@
         <div>{$_egyed.temakor1nev}</div>
         <div>{$_egyed.temakor2nev}</div>
         <div>{$_egyed.temakor3nev}</div>
+    </td>
+    <td class="cell">
+        <div>{$_egyed.kulcsszo1}</div>
+        <div>{$_egyed.kulcsszo2}</div>
+        <div>{$_egyed.kulcsszo3}</div>
+        <div>{$_egyed.kulcsszo4}</div>
+        <div>{$_egyed.kulcsszo5}</div>
     </td>
     <td class="cell">
         {if ($_egyed.vegleges)}
