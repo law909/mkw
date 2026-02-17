@@ -61,7 +61,6 @@ var mkw = (function($) {
     }
 
     function showDialog(msg, options) {
-        console.log('show dialog', msg, options);
         var dlgcenter = $('#dialogcenter'),
                 dlgheader = $('.modal-header', dlgcenter),
                 dlgbody = $('.modal-body', dlgcenter).empty(),
@@ -1038,7 +1037,6 @@ var checkout = (function($, guid) {
 	};
 
 })(jQuery, guid);
-
 var cart = (function($) {
 
 	function submitMennyEdit(f) {
@@ -1103,7 +1101,6 @@ var cart = (function($) {
 	};
 
 })(jQuery);
-
 var fiok = (function($) {
 
 	function initUI() {
@@ -2462,5 +2459,3 @@ $( document ).ready(function() {
     });
 
 });
-
-

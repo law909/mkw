@@ -82,6 +82,18 @@ module.exports = function(grunt) {
                 ],
                 dest: 'js/main/mugenrace/mgrapp.js'
             },
+            mugenrace2026code: {
+                src: [
+                    'js/main/mugenrace2026/mgrmsg.js',
+                    'js/main/mugenrace2026/mgr.js',
+                    'js/main/mugenrace2026/checks.js',
+                    'js/main/mugenrace2026/checkout.js',
+                    'js/main/mugenrace2026/cart.js',
+                    'js/main/mugenrace2026/fiok.js',
+                    'js/main/mugenrace2026/mugenrace.js'
+                ],
+                dest: 'js/main/mugenrace2026/mgrapp.js'
+            },
             mugenracecss: {
                 src: [
                     'themes/main/mugenrace/bootstrap.min.css',
