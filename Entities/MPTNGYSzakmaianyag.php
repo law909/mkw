@@ -469,14 +469,19 @@ class MPTNGYSzakmaianyag
 
     public function calcPont()
     {
-        return $this->calcB1pont() + $this->calcB2pont() + $this->calcB3pont();
+        if ($this->getBiralo3()) {
+            if ($this->isB1biralatkesz() && $this->isB2biralatkesz() && $this->isB3biralatkesz()) {
+                return intdiv($this->calcB1pont() + $this->calcB2pont(), 2) + $this->calcB3pont();
+            }
+            return 0;
+        }
+        return $this->calcB1pont() + $this->calcB2pont();
     }
 
     public function calcPluszBiraloKell()
     {
         if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
-            return ((abs($this->calcB1pont() - $this->calcB2pont()) >= 10)
-                || ($this->calcB1pont() + $this->calcB2pont() < 25));
+            return ((abs($this->calcB1pont() - $this->calcB2pont()) >= 10));
         }
         return false;
     }
@@ -484,12 +489,7 @@ class MPTNGYSzakmaianyag
     public function calcKonferencianszerepelhet()
     {
         if ($this->getBiralo3()) {
-            if ($this->isB1biralatkesz() && $this->isB2biralatkesz() && $this->isB3biralatkesz()) {
-                if (!$this->calcB3pont()) {
-                    return false;
-                }
-                return $this->calcPont() >= 25;
-            }
+            return $this->calcPont() >= 25;
         } else {
             if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
                 return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
