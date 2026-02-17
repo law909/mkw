@@ -31,6 +31,7 @@ $(document).ready(function () {
             let b1 = $('#biralo1Edit option:selected').data('email'),
                 b2 = $('#biralo2Edit option:selected').data('email'),
                 b3 = $('#biralo3Edit option:selected').data('email'),
+                tulaj = $('#tulajdonosEdit option:selected').data('email'),
                 szerzok = [
                     $('#szerzo1emailEdit').val(),
                     $('#szerzo2emailEdit').val(),
@@ -55,6 +56,19 @@ $(document).ready(function () {
             }
             if (b3) {
                 b3 = b3.toLowerCase();
+            }
+            if ((b1 && tulaj === b1) || (b2 && tulaj === b2) || (b3 && tulaj === b3)) {
+                dialogcenter.html('A bíráló nem lehet tulajdonos').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'Ok': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+                return false;
             }
             if ((b1 && opponens === b1) || (b2 && opponens === b2) || (b3 && opponens === b3)) {
                 dialogcenter.html('A bíráló nem lehet opponens').dialog({

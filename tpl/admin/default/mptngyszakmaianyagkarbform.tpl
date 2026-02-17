@@ -85,7 +85,7 @@
                         <select id="tulajdonosEdit" name="tulajdonos">
                             <option value="">{at('válasszon')}</option>
                             {foreach $tulajdonoslist as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-email="{$_mk.email}">{$_mk.caption}</option>
                             {/foreach}
                         </select>
                     </td>
