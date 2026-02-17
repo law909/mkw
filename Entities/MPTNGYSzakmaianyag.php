@@ -513,6 +513,8 @@ class MPTNGYSzakmaianyag
         }
         if ($this->getBiralo3()) {
             $ret = $ret && $this->isB3biralatkesz();
+        } elseif ($this->isPluszbiralokell()) {
+            $ret = false;
         }
         return $ret;
     }
