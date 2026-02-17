@@ -33,6 +33,7 @@
                                 <th>{t('Tulajdonos')}</th>
                                 <th>{t('Típus')}</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,6 +56,11 @@
                                             <span x-show="any.konferencianszerepelhet" class="greentext">Elfogadva, a konferencián szerepelhet.</span>
                                             <span x-show="!any.konferencianszerepelhet" class="redtext">Elutasítva, nem szerepelhet a konferencián.</span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <div x-show="any.biralatkesz" x-text="any.b1szovegesertekeles"></div>
+                                        <div x-show="any.biralatkesz" x-text="any.b2szovegesertekeles"></div>
+                                        <div x-show="any.biralatkesz" x-text="any.b3szovegesertekeles"></div>
                                     </td>
                                 </tr>
                             </template>
