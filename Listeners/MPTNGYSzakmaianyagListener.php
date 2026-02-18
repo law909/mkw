@@ -29,8 +29,8 @@ class MPTNGYSzakmaianyagListener
         foreach ($entities as $entity) {
             if ($entity instanceof MPTNGYSzakmaianyag) {
                 $entity->setKonferencianszerepelhet($entity->calcKonferencianszerepelhet());
-                $entity->setBiralatkesz($entity->calcBiralatkesz());
                 $entity->setPluszbiralokell($entity->calcPluszBiraloKell());
+                $entity->setBiralatkesz($entity->calcBiralatkesz());
                 $this->uow->recomputeSingleEntityChangeSet($this->md, $entity);
             }
         }

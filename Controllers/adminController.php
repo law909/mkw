@@ -1172,19 +1172,7 @@ class adminController extends mkwhelpers\Controller
         }
         echo 'Ready.';
     }
-
-    public function recalcKonferencianszerepelhet()
-    {
-        $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();
-        /** @var Entities\MPTNGYSzakmaianyag $anyag */
-        foreach ($anyagok as $anyag) {
-            $anyag->setKonferencianszerepelhet($anyag->calcKonferencianszerepelhet());
-            \mkw\store::getEm()->persist($anyag);
-            \mkw\store::getEm()->flush();
-        }
-        echo 'Ready.';
-    }
-
+    
     public function setSzerzoByEmail()
     {
         $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();
