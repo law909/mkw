@@ -318,4 +318,5 @@ return [
     'Ajánlott' => 'Recommended',
     'Kiemelt termékeink' => 'Featured products',
     'Képgaléria' => 'Gallery',
+    'Bírálat szöveges értékelései' => 'Testimonials',
 ];
