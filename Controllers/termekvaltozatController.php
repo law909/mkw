@@ -45,11 +45,15 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         }
         $x['adattipus1id'] = $t->getAdatTipus1Id();
         $x['adattipus1nev'] = $t->getAdatTipus1Nev();
-        $x['adattipus1lista'] = $tvatc->getSelectList($t->getAdatTipus1Id());
+        $x['adattipus1lista'] = $tvatc->getSelectList(
+            \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin) : $t->getAdatTipus1Id()
+        );
         $x['ertek1'] = $t->getErtek1();
         $x['adattipus2id'] = $t->getAdatTipus2Id();
         $x['adattipus2nev'] = $t->getAdatTipus2Nev();
-        $x['adattipus2lista'] = $tvatc->getSelectList($t->getAdatTipus2Id());
+        $x['adattipus2lista'] = $tvatc->getSelectList(
+            \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret) : $t->getAdatTipus2Id()
+        );
         $x['ertek2'] = $t->getErtek2();
         $x['lathato'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();

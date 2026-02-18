@@ -75,7 +75,7 @@
             </select>
         </td>
         <td class="mattable-cell">
-            <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" required="required">
+            <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" {if ($setup.szinmode != 'fix')}required="required"{/if}>
         </td>
         <td class="mattable-cell">
             <label for="NettoEdit_{$valtozat.id}">{at('Nettó')}:</label>
