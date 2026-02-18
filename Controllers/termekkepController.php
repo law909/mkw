@@ -60,8 +60,14 @@ class termekkepController extends \mkwhelpers\MattableController
     {
         $kepek = $this->getRepo()->getByTermek($termek);
         $keplista = [];
+        $selids = is_array($selid) ? $selid : [$selid];
         foreach ($kepek as $kep) {
-            $keplista[] = ['id' => $kep->getId(), 'caption' => $kep->getUrl(), 'selected' => $kep->getId() == $selid, 'url' => $kep->getUrlMini()];
+            $keplista[] = [
+                'id' => $kep->getId(),
+                'caption' => $kep->getUrl(),
+                'selected' => in_array($kep->getId(), $selids, true),
+                'url' => $kep->getUrlMini()
+            ];
         }
         return $keplista;
     }
@@ -88,6 +94,6 @@ class termekkepController extends \mkwhelpers\MattableController
         }
         echo $this->params->getNumRequestParam('id');
     }
-    
+
 
 }

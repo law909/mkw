@@ -35,6 +35,34 @@ $(document).ready(function () {
         });
     }
 
+    function updateMultiImageInputs($list) {
+        var $wrapper = $list.closest('.ui-widget').find('.js-szinkepinput');
+        var inputName = $wrapper.data('inputname');
+        $wrapper.empty();
+        $('.ui-selected', $list).each(function () {
+            var $item = $(this);
+            $item.addClass('ui-state-highlight');
+            $('<input>').attr({
+                type: 'hidden',
+                name: inputName,
+                value: $item.attr('data-value')
+            }).appendTo($wrapper);
+        });
+        $('.ui-state-highlight', $list).not('.ui-selected').removeClass('ui-state-highlight');
+    }
+
+    function createMultiImageSelectable(n) {
+        $(n).each(function () {
+            var $list = $(this);
+            $list.on('click', 'li', function (e) {
+                e.preventDefault();
+                $(this).toggleClass('ui-selected ui-state-highlight');
+                updateMultiImageInputs($list);
+            });
+            updateMultiImageInputs($list);
+        });
+    }
+
     function getSorNetto(o, n) {
         var id = $('#mattkarb-form').attr('data-id');
         var sorid = o.attr('name').split('_')[1] || '';
@@ -535,6 +563,7 @@ $(document).ready(function () {
                         tbody.append(data);
                         $('.js-valtozatnewbutton,.js-valtozatdelbutton').button();
                         createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
+                        createMultiImageSelectable('.js-szinkepedit');
                         $this.remove();
                     }
                 });
@@ -631,6 +660,7 @@ $(document).ready(function () {
             $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
 
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
+            createMultiImageSelectable('.js-szinkepedit');
             $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
 
             $('#NettoEdit').on('blur', function (e) {

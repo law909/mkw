@@ -193,6 +193,40 @@ class termekController extends \mkwhelpers\MattableController
                 }
                 //$valtozat[]=$valtozatCtrl->loadVars(null);
                 $x['valtozatok'] = $valtozat;
+
+                $szinlista = [];
+                $szinmap = [];
+                /** @var TermekValtozat $tvaltozat */
+                foreach ($t->getValtozatok() as $tvaltozat) {
+                    $szin = $tvaltozat->getSzinObject();
+                    if ($szin) {
+                        $szinmap[$szin->getId()] = $szin;
+                    }
+                }
+                foreach ($t->getTermekSzinKepek() as $szinkep) {
+                    $szin = $szinkep->getSzin();
+                    if ($szin) {
+                        $szinmap[$szin->getId()] = $szin;
+                    }
+                }
+                $szinkepmap = [];
+                foreach ($t->getTermekSzinKepek() as $szinkep) {
+                    $szinid = $szinkep->getSzinId();
+                    $kepid = $szinkep->getKepId();
+                    if ($szinid && $kepid) {
+                        $szinkepmap[$szinid][] = $kepid;
+                    }
+                }
+                foreach ($szinmap as $szin) {
+                    $selids = $szinkepmap[$szin->getId()] ?? [];
+                    $szinlista[] = [
+                        'id' => $szin->getId(),
+                        'nev' => $szin->getNev(),
+                        'kepids' => $selids,
+                        'kepek' => $kepCtrl->getSelectList($t, $selids)
+                    ];
+                }
+                $x['szinkepek'] = $szinlista;
             }
             if (\mkw\store::isArsavok()) {
                 foreach ($t->getTermekArak() as $tar) {
@@ -420,6 +454,65 @@ class termekController extends \mkwhelpers\MattableController
                         $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
                         $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
                         $this->getEm()->persist($kep);
+                    }
+                }
+            }
+        }
+
+        $szinids = $this->params->getArrayRequestParam('szinkepid');
+        if ($szinids) {
+            $szinrepo = $this->getEm()->getRepository(Szin::class);
+            $keprepo = $this->getEm()->getRepository(TermekKep::class);
+            $szinkepmap = [];
+            foreach ($obj->getTermekSzinKepek() as $szinkep) {
+                $szinid = $szinkep->getSzinId();
+                $kepid = $szinkep->getKepId();
+                if ($szinid && $kepid) {
+                    $szinkepmap[$szinid][$kepid] = $szinkep;
+                }
+            }
+            $szinidset = array_flip($szinids);
+            foreach ($szinkepmap as $szinid => $kepmap) {
+                if (!isset($szinidset[$szinid])) {
+                    foreach ($kepmap as $szinkep) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
+                    }
+                }
+            }
+            foreach ($szinids as $szinid) {
+                $szinid = (int)$szinid;
+                $kepids = $this->params->getArrayRequestParam('szinkepimg_' . $szinid);
+                $kepids = array_values(array_unique(array_filter(array_map('intval', $kepids))));
+                $existing = $szinkepmap[$szinid] ?? [];
+
+                foreach ($existing as $existingKepid => $szinkep) {
+                    if (!in_array($existingKepid, $kepids, true)) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
+                    }
+                }
+
+                if ($kepids) {
+                    $szin = $szinrepo->find($szinid);
+                    if ($szin) {
+                        foreach ($kepids as $kepid) {
+                            if (!isset($existing[$kepid])) {
+                                $kep = $keprepo->find($kepid);
+                                if ($kep) {
+                                    $szinkep = new \Entities\TermekSzinKep();
+                                    $szinkep->setSzin($szin);
+                                    $szinkep->setKep($kep);
+                                    $obj->addTermekSzinKep($szinkep);
+                                    $this->getEm()->persist($szinkep);
+                                }
+                            }
+                        }
+                    }
+                } elseif ($existing) {
+                    foreach ($existing as $szinkep) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
                     }
                 }
             }

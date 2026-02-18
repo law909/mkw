@@ -26,6 +26,7 @@
             {if ($setup.termekvaltozat)}
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
                 <li><a href="#ValtozatMinBoltiKeszletTab">{at('Változat min.bolti készlet')}</a></li>
+                <li><a href="#SzinKepTab">{at('Szín képek')}</a></li>
             {/if}
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
@@ -510,6 +511,33 @@
             {/foreach}
             <a class="js-kepnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
+        {if ($setup.termekvaltozat)}
+            <div id="SzinKepTab" class="mattkarb-page" data-visible="visible">
+                {if ($egyed.szinkepek|@count)}
+                    {foreach $egyed.szinkepek as $szinkep}
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <span>{$szinkep.nev}</span>
+                            <input name="szinkepid[]" type="hidden" value="{$szinkep.id}">
+                            <ul id="SzinKepEdit_{$szinkep.id}" class="valtozatkepedit js-szinkepedit">
+                                {foreach $szinkep.kepek as $kep}
+                                    <li data-value="{$kep.id}" data-valtozatid="{$szinkep.id}"
+                                        class="ui-state-default{if ($kep.id|in_array:$szinkep.kepids)} ui-selected ui-state-highlight{/if}">
+                                        {if ($kep.url)}<img src="{$mainurl}{$kep.url}"/>{/if}
+                                    </li>
+                                {/foreach}
+                            </ul>
+                            <div class="js-szinkepinput" data-inputname="szinkepimg_{$szinkep.id}[]">
+                                {foreach $szinkep.kepids as $kepid}
+                                    <input name="szinkepimg_{$szinkep.id}[]" type="hidden" value="{$kepid}">
+                                {/foreach}
+                            </div>
+                        </div>
+                    {/foreach}
+                {else}
+                    <p>{at('Nincs szín a termék változataiban.')}</p>
+                {/if}
+            </div>
+        {/if}
         <div id="CsomagolasTab" class="mattkarb-page">
             <table>
                 <tbody>
