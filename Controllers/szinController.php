@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Szin;
+use mkwhelpers\FilterDescriptor;
 
 class szinController extends \mkwhelpers\MattableController
 {
@@ -86,6 +87,24 @@ class szinController extends \mkwhelpers\MattableController
             ];
         }
         return $res;
+    }
+
+    public function getAutocompleteList()
+    {
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if ($term) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter(['nev'], 'LIKE', '%' . $term . '%');
+            $rec = $this->getRepo()->getAll($filter);
+            foreach ($rec as $sor) {
+                $ret[] = [
+                    'id' => $sor->getId(),
+                    'value' => $sor->getNev()
+                ];
+            }
+        }
+        echo json_encode($ret);
     }
 
     public function htmllist()

@@ -1458,6 +1458,9 @@ class termekController extends \mkwhelpers\MattableController
         $valtozatadattipus = new termekvaltozatadattipusController($this->params);
         $view->setVar('valtozatadattipuslist', $valtozatadattipus->getSelectList(($termek ? $termek->getValtozatadattipusId() : 0)));
 
+        $meretsor = new meretsorController($this->params);
+        $view->setVar('meretsorlist', $meretsor->getSelectList());
+
         $kep = new termekkepController($this->params);
         $view->setVar('keplist', $kep->getSelectList($termek, null));
 

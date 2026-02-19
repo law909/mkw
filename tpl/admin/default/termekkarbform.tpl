@@ -326,46 +326,87 @@
                             </tr>
                         {/for}
                     {/if}
-                    <tr>
-                        <td class="mattable-cell">
-                            <select name="valtozatadattipus1" form="valtozatgeneratorform">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $valtozatadattipuslist as $at}
-                                    <option value="{$at.id}">{$at.caption}</option>
-                                {/foreach}
-                            </select>
-                        </td>
-                        <td class="mattable-cell">
-                            <input name="valtozatertek1" form="valtozatgeneratorform" type="text">
-                        </td>
-                        <td class="mattable-cell">
-                            <label for="NettoEdit">{at('Nettó')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
-                                   name="valtozatnettogen">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="mattable-cell">
-                            <select name="valtozatadattipus2" form="valtozatgeneratorform">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $valtozatadattipuslist as $at}
-                                    <option value="{$at.id}">{$at.caption}</option>
-                                {/foreach}
-                            </select>
-                        </td>
-                        <td class="mattable-cell">
-                            <input name="valtozatertek2" form="valtozatgeneratorform" type="text">
-                        </td>
-                        <td class="mattable-cell">
-                            <label for="VBruttoEdit">{at('Bruttó')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
-                                   name="valtozatbruttogen">
-                        </td>
-                    </tr>
+                    {if ($setup.szinmode === 'fix')}
+                        <tr>
+                            <td class="mattable-cell">
+                                <label for="ValtozatSzinEdit">{at('Szín')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input id="ValtozatSzinEdit" type="text" name="valtozatszinautocomplete"
+                                       class="js-szinautocomplete" form="valtozatgeneratorform">
+                                <input class="js-szinid" name="valtozatszinid" type="hidden"
+                                       form="valtozatgeneratorform">
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="ValtozatMeretsorEdit">{at('Méret sor')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <select id="ValtozatMeretsorEdit" name="valtozatmeretsorid" form="valtozatgeneratorform">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $meretsorlist as $meretsor}
+                                        <option value="{$meretsor.id}">{$meretsor.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-cell">
+                                <label for="NettoEdit">{at('Nettó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
+                                       name="valtozatnettogen">
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="VBruttoEdit">{at('Bruttó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
+                                       name="valtozatbruttogen">
+                            </td>
+                        </tr>
+                    {else}
+                        <tr>
+                            <td class="mattable-cell">
+                                <select name="valtozatadattipus1" form="valtozatgeneratorform">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $valtozatadattipuslist as $at}
+                                        <option value="{$at.id}">{$at.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                            <td class="mattable-cell">
+                                <input name="valtozatertek1" form="valtozatgeneratorform" type="text">
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="NettoEdit">{at('Nettó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
+                                       name="valtozatnettogen">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-cell">
+                                <select name="valtozatadattipus2" form="valtozatgeneratorform">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $valtozatadattipuslist as $at}
+                                        <option value="{$at.id}">{$at.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                            <td class="mattable-cell">
+                                <input name="valtozatertek2" form="valtozatgeneratorform" type="text">
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="VBruttoEdit">{at('Bruttó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
+                                       name="valtozatbruttogen">
+                            </td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td class="mattable-cell">
                             <label for="VCikkszamEdit">{at('Cikkszám')}:</label>

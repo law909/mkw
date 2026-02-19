@@ -16,6 +16,21 @@ $(document).ready(function () {
         };
     }
 
+    function szinAutocompleteConfig() {
+        return {
+            minLength: 2,
+            autoFocus: true,
+            source: '/admin/szin/getautocomplete',
+            select: function (event, ui) {
+                let szin = ui.item;
+                if (szin) {
+                    let $this = $(this);
+                    $this.siblings('.js-szinid').val(szin.id);
+                }
+            }
+        };
+    }
+
     function createImageSelectable(n, m) {
         $(n).selectable({
             unselected: function () {
@@ -658,6 +673,7 @@ $(document).ready(function () {
                 return false;
             });
             $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
+            $('.js-szinautocomplete').autocomplete(szinAutocompleteConfig());
 
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
             createMultiImageSelectable('.js-szinkepedit');

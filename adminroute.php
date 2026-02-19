@@ -609,6 +609,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/szin/viewlist', 'szinController#viewlist', 'adminszinviewlist');
 $router->map('GET', '/admin/szin/htmllist', 'szinController#htmllist', 'adminszinhtmllist');
 $router->map('GET', '/admin/szin/getlistbody', 'szinController#getlistbody', 'adminszingetlistbody');
+$router->map('GET', '/admin/szin/getautocomplete', 'szinController#getAutocompleteList', 'adminszingetautocomplete');
 $router->map('GET', '/admin/szin/getkarb', 'szinController#getkarb', 'adminszingetkarb');
 $router->map('GET', '/admin/szin/viewkarb', 'szinController#viewkarb', 'adminszinviewkarb');
 if (!\mkw\store::isClosed()) {

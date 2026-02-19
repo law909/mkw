@@ -38,6 +38,20 @@ class meretsorController extends MattableController
         return $x;
     }
 
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid)
+            ];
+        }
+        return $res;
+    }
+
     /**
      * @param Meretsor $obj
      *
