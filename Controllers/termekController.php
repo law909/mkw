@@ -461,6 +461,20 @@ class termekController extends \mkwhelpers\MattableController
 
         $szinids = $this->params->getArrayRequestParam('szinkepid');
         if ($szinids) {
+            $validSzinIds = [];
+            foreach ($obj->getValtozatok() as $valtozat) {
+                $valtozatSzinId = $valtozat->getSzinId();
+                if ($valtozatSzinId) {
+                    $validSzinIds[$valtozatSzinId] = true;
+                }
+            }
+            if ($validSzinIds) {
+                $szinids = array_values(array_filter($szinids, function ($szinId) use ($validSzinIds) {
+                    return isset($validSzinIds[(int)$szinId]);
+                }));
+            } else {
+                $szinids = [];
+            }
             $szinrepo = $this->getEm()->getRepository(Szin::class);
             $keprepo = $this->getEm()->getRepository(TermekKep::class);
             $szinkepmap = [];

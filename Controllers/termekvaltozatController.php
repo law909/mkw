@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Raktar;
+use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
@@ -140,19 +141,18 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     protected function afterSave($o, $parancs = null)
     {
         switch ($parancs) {
-            case $this->addOperation:
-            case $this->editOperation:
-                $tvec = new termekvaltozatertekController(null);
-                $tvec->uploadToWc();
-                $termek = $o->getTermek();
-                if ($termek) {
-                    $termek->clearWcdate();
-                    $termek->uploadToWC();
-                }
             case $this->delOperation:
-                $o->deleteFromWC();
-                $o->getTermek()?->clearWcdate();
-                $o->getTermek()?->uploadToWC();
+                $termek = $o->getTermek();
+                $szinId = $o->getSzinId();
+                if ($termek && $szinId) {
+                    foreach ($termek->getTermekSzinKepek() as $szinkep) {
+                        if ($szinkep->getSzinId() === $szinId) {
+                            $termek->removeTermekSzinKep($szinkep);
+                            $this->getEm()->remove($szinkep);
+                        }
+                    }
+                    $this->getEm()->flush();
+                }
         }
     }
 
