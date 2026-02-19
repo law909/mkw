@@ -505,6 +505,16 @@ if ($DBVersion < '0063') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0063');
 }
 
+if ($DBVersion < '0064') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Méret sorok","/admin/meretsor/viewlist","/admin/meretsor",40,0,240, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0064');
+}
+
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

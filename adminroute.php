@@ -624,6 +624,14 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/meret/save', 'meretController#save', 'adminmeretsave');
 }
 
+$router->map('GET', '/admin/meretsor/viewlist', 'meretsorController#viewlist', 'adminmeretsorviewlist');
+$router->map('GET', '/admin/meretsor/getlistbody', 'meretsorController#getlistbody', 'adminmeretsorgetlistbody');
+$router->map('GET', '/admin/meretsor/getkarb', 'meretsorController#getkarb', 'adminmeretsorgetkarb');
+$router->map('GET', '/admin/meretsor/viewkarb', 'meretsorController#viewkarb', 'adminmeretsorviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/meretsor/save', 'meretsorController#save', 'adminmeretsorsave');
+}
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
