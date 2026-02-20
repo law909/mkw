@@ -161,11 +161,10 @@ class meretController extends MattableController
         $this->getEm()->getConnection()->beginTransaction();
 
         try {
-            $file = $_FILES['file']['tmp_name'] ?? null;
-            if (!$file) {
-                echo json_encode(['success' => false, 'message' => 'Nincs fájl feltöltve']);
-                return;
+            if (!isset($_FILES['toimport'])) {
+                throw new \Exception('Nincs feltöltött fájl vagy hiba történt a feltöltés során.');
             }
+            $file = $_FILES['toimport']['tmp_name'] ?? null;
 
             $reader = new Xlsx();
             $spreadsheet = $reader->load($file);
@@ -228,11 +227,11 @@ class meretController extends MattableController
             $this->getEm()->flush();
             $this->getEm()->getConnection()->commit();
 
-            echo json_encode(['success' => true, 'message' => 'Import sikeres']);
+            echo json_encode(['msg' => 'Import sikeres']);
         } catch (\Exception $e) {
             \mkw\store::writelog('Excel import error: ' . $e->getMessage());
             $this->getEm()->getConnection()->rollBack();
-            echo 'Hiba történt az Excel importálás során: ' . $e->getMessage();
+            echo json_encode(['msg' => 'Hiba történt az Excel importálás során: ' . $e->getMessage()]);
         }
     }
 

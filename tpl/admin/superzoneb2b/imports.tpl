@@ -61,6 +61,14 @@
                     <div>
                         <a href="/admin/import/fcmotoorderimport" class="js-fcmotoorderimport">FCMoto rendelés</a>
                     </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/szin" class="js-szinimport">Színek</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/meret" class="js-meretimport">Méretek</a>
+                    </div>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
                         <li>kod - termék kódja</li>
