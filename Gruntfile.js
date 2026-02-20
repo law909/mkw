@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+    const sass = require('sass');
+    
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-less');
 
@@ -79,6 +82,18 @@ module.exports = function(grunt) {
                 ],
                 dest: 'js/main/mugenrace/mgrapp.js'
             },
+            mugenrace2026code: {
+                src: [
+                    'js/main/mugenrace2026/mgrmsg.js',
+                    'js/main/mugenrace2026/mgr.js',
+                    'js/main/mugenrace2026/checks.js',
+                    'js/main/mugenrace2026/checkout.js',
+                    'js/main/mugenrace2026/cart.js',
+                    'js/main/mugenrace2026/fiok.js',
+                    'js/main/mugenrace2026/mugenrace.js'
+                ],
+                dest: 'js/main/mugenrace2026/mgrapp.js'
+            },
             mugenracecss: {
                 src: [
                     'themes/main/mugenrace/bootstrap.min.css',
@@ -151,6 +166,20 @@ module.exports = function(grunt) {
                     'themes/main/mijsz/style.css': 'themes/main/mijsz/style.less'
                 }
             }
+        },
+        sass: {
+            options: {
+                implementation: sass
+            },
+            mugenrace: {
+                options: {
+                    sourceMap: false
+                },
+                files: {
+                    'themes/main/mugenrace2026/style-2.css': 'themes/main/mugenrace2026/scss/style-2.scss'
+                }
+            }
         }
     });
+    grunt.registerTask('default', ['sass', 'less', 'concat']);
 }

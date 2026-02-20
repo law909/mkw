@@ -83,7 +83,7 @@ body {
 }
 a {
   text-decoration: none;
-  color: #333333;
+  color: #333;
 }
 a:hover {
   text-decoration: none;
@@ -361,7 +361,7 @@ footer a:hover {
   text-decoration: none;
   font-weight: bold;
   font-size: 14px;
-  color: #ffffff;
+  color: #fff;
   -webkit-transition: background-color 0.2s linear;
   -moz-transition: background-color 0.2s linear;
   -o-transition: background-color 0.2s linear;
@@ -418,15 +418,15 @@ footer a:hover {
   border-radius: 2px;
 }
 #navmain .sub ul li a:hover {
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
 }
 #navmain .sub ul li.categorytitle {
   margin: 0 0 0 4px;
   padding: 4px 3px 6px;
   font-size: 14px;
   font-weight: bold;
-  color: #ffffff;
+  color: #fff;
 }
 footer {
   margin-top: 20px;
@@ -528,12 +528,12 @@ footer nav {
 .termekprice {
   font-size: 14px;
   font-weight: bold;
-  color: #333333;
+  color: #333;
 }
 .termekprice {
   font-size: 18px;
   text-align: right;
-  color: #333333;
+  color: #333;
 }
 .termekvaltozat {
   font-size: 13px;

@@ -87,7 +87,7 @@ body {
 }
 a {
   text-decoration: none;
-  color: #333333;
+  color: #333;
 }
 a:hover {
   text-decoration: none;
@@ -445,7 +445,7 @@ footer a:hover {
 }
 #navmain .sub ul li a:hover {
   background: #f7f7f7;
-  color: #333333;
+  color: #333;
 }
 #navmain .sub ul li.categorytitle {
   margin: 0 0 0 4px;
@@ -567,12 +567,12 @@ footer nav {
 .termekprice {
   font-size: 15px;
   font-weight: bold;
-  color: #333333;
+  color: #333;
 }
 .termekprice {
   font-size: 18px;
   text-align: right;
-  color: #333333;
+  color: #333;
 }
 .termekvaltozat {
   font-size: 13px;

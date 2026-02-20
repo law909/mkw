@@ -1,10 +1,10 @@
 /* Base */
 @use 'base/variables';
 @use 'base/normalize';
+@use 'base/global';
 @use 'base/icons';
 @use 'base/inputs';
 @use 'base/buttons';
-@use 'base/global';
 
 /* Mixins */
 @use 'mixins/breakpoints';

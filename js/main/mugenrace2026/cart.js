@@ -29,32 +29,32 @@ var cart = (function($) {
 	}
 
 	function initUI() {
-		var $cart = $('.js-cart');
-
-		if ($cart.length > 0) {
-			$cart
-			.on('input', 'input[name="mennyiseg"]', $.debounce(300, function() {
+		// Event delegation: document-re kötjük, .js-cart a szűrő
+		$(document)
+			.on('input', '.js-cart input[name="mennyiseg"]', $.debounce(300, function() {
+                console.log('cart input 1');
 				var $this = $(this);
 				if ((Math.round($this.val()) != 0)) {
-					submitMennyEdit($(this).parents('form.kosarform'));
+					submitMennyEdit($this.parents('form.kosarform'));
 				}
 			}))
-            .on('blur', 'input[name="mennyiseg"]', function() {
+            .on('blur', '.js-cart input[name="mennyiseg"]', function() {
 				var $this = $(this);
+                console.log('cart input blur 1');
                 if (Math.round($this.val()) == 0) {
                     $this.val($this.data('org'));
                     submitMennyEdit($this.parents('form.kosarform'));
                     mkw.showDialog(mkwmsg.KosarMennyisegNulla);
                 }
                 else {
-					submitMennyEdit($(this).parents('form.kosarform'));
+					submitMennyEdit($this.parents('form.kosarform'));
                 }
             })
-			.on('submit', '.kosarform', function() {
+			.on('submit', '.js-cart .kosarform', function() {
+                console.log('cart input submit 1');
 				submitMennyEdit($(this));
 				return false;
 			});
-		}
 	}
 
 	return {
