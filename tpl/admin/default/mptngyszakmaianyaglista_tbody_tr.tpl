@@ -12,6 +12,26 @@
         <div>Téma: {$_egyed.temanev}</div>
         <div>Típus: {$_egyed.tipusnev}</div>
         <div>Tulajdonos: {$_egyed.tulajdonosnev}</div>
+        {if ($_egyed.eloadas1)}
+            <div class="matt-hseparator"></div>
+            <div>{$_egyed.eloadas1} - {$_egyed.eloadas1cim}</div>
+        {/if}
+        {if ($_egyed.eloadas2)}
+            <div class="matt-hseparator"></div>
+            <div>{$_egyed.eloadas2} - {$_egyed.eloadas2cim}</div>
+        {/if}
+        {if ($_egyed.eloadas3)}
+            <div class="matt-hseparator"></div>
+            <div>{$_egyed.eloadas3} - {$_egyed.eloadas3cim}</div>
+        {/if}
+        {if ($_egyed.eloadas4)}
+            <div class="matt-hseparator"></div>
+            <div>{$_egyed.eloadas4} - {$_egyed.eloadas4cim}</div>
+        {/if}
+        {if ($_egyed.eloadas5)}
+            <div class="matt-hseparator"></div>
+            <div>{$_egyed.eloadas5} - {$_egyed.eloadas5cim}</div>
+        {/if}
     </td>
     <td class="cell" style="width: 25%">
         <div>Első szerző: {$_egyed.szerzo1nev} ({$_egyed.szerzo1email})</div>
@@ -41,13 +61,16 @@
     <td class="cell" style="width: 25%">
         <span>{$_egyed.tartalom}</span>
     </td>
-    <td class="cell">
+    <td class="cell" style="width: 15%">
         <div>Összes pont: {$_egyed.osszespont}</div>
         {if ($_egyed.pluszbiralokell && !$_egyed.biralo3)}
             <div class="redtext">HARMADIK BÍRÁLÓ KELL</div>
         {/if}
+        <div class="matt-hseparator"></div>
         <div>Bíráló 1: {$_egyed.biralo1nev} - {$_egyed.biralo1pont} pont{if ($_egyed.b1biralatkesz)} - KÉSZ{/if}</div>
+        <div class="matt-hseparator"></div>
         <div>Bíráló 2: {$_egyed.biralo2nev} - {$_egyed.biralo2pont} pont{if ($_egyed.b2biralatkesz)} - KÉSZ{/if}</div>
+        <div class="matt-hseparator"></div>
         <div>Bíráló 3: {$_egyed.biralo3nev} - {$_egyed.biralo3pont} pont{if ($_egyed.b3biralatkesz)} - KÉSZ{/if}</div>
     </td>
     <td class="cell">

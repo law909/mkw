@@ -164,7 +164,7 @@ if (\mkw\store::isMPTNGY()) {
     }
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
 
-    $router->map('GET', '/admin/recalcksz', 'adminController#recalcKonferencianszerepelhet', 'adminmptngyrecalckonferencianszerepelhet');
+    $router->map('GET', '/admin/recalcbiralat', 'mptngyszakmaianyagController#recalcBiralat', 'adminmptngyrecalcbiralat');
     $router->map('GET', '/admin/setszerzobyemail', 'adminController#setSzerzoByEmail', 'adminmptngysetszerzobyemail');
 
     $router->map('POST', '/admin/import/mptngybiraloimport', 'importController#mptngybiraloimport', 'adminmptngybiraloimport');
@@ -609,6 +609,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/szin/viewlist', 'szinController#viewlist', 'adminszinviewlist');
 $router->map('GET', '/admin/szin/htmllist', 'szinController#htmllist', 'adminszinhtmllist');
 $router->map('GET', '/admin/szin/getlistbody', 'szinController#getlistbody', 'adminszingetlistbody');
+$router->map('GET', '/admin/szin/getautocomplete', 'szinController#getAutocompleteList', 'adminszingetautocomplete');
 $router->map('GET', '/admin/szin/getkarb', 'szinController#getkarb', 'adminszingetkarb');
 $router->map('GET', '/admin/szin/viewkarb', 'szinController#viewkarb', 'adminszinviewkarb');
 if (!\mkw\store::isClosed()) {
@@ -622,6 +623,14 @@ $router->map('GET', '/admin/meret/getkarb', 'meretController#getkarb', 'adminmer
 $router->map('GET', '/admin/meret/viewkarb', 'meretController#viewkarb', 'adminmeretviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/meret/save', 'meretController#save', 'adminmeretsave');
+}
+
+$router->map('GET', '/admin/meretsor/viewlist', 'meretsorController#viewlist', 'adminmeretsorviewlist');
+$router->map('GET', '/admin/meretsor/getlistbody', 'meretsorController#getlistbody', 'adminmeretsorgetlistbody');
+$router->map('GET', '/admin/meretsor/getkarb', 'meretsorController#getkarb', 'adminmeretsorgetkarb');
+$router->map('GET', '/admin/meretsor/viewkarb', 'meretsorController#viewkarb', 'adminmeretsorviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/meretsor/save', 'meretsorController#save', 'adminmeretsorsave');
 }
 
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
@@ -1090,6 +1099,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
     $router->map('POST', '/admin/import/aszfdownload', 'importController#aszfdownload', 'adminaszfdownload');
     $router->map('GET', '/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
+    $router->map('POST', '/admin/import/szin', 'szinController#importExcel', 'adminszinimport');
+    $router->map('POST', '/admin/import/meret', 'meretController#importExcel', 'adminmeretimport');
 }
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');

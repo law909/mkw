@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Szin;
+use mkwhelpers\FilterDescriptor;
 
 class szinController extends \mkwhelpers\MattableController
 {
@@ -86,6 +87,24 @@ class szinController extends \mkwhelpers\MattableController
             ];
         }
         return $res;
+    }
+
+    public function getAutocompleteList()
+    {
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if ($term) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter(['nev'], 'LIKE', '%' . $term . '%');
+            $rec = $this->getRepo()->getAll($filter);
+            foreach ($rec as $sor) {
+                $ret[] = [
+                    'id' => $sor->getId(),
+                    'value' => $sor->getNev()
+                ];
+            }
+        }
+        echo json_encode($ret);
     }
 
     public function htmllist()
@@ -251,16 +270,30 @@ class szinController extends \mkwhelpers\MattableController
         }
     }
 
+    protected function convertToUppercase()
+    {
+        $updateSql = 'UPDATE szin SET nev = UPPER(nev)';
+        $updateStmt = $this->getEm()->getConnection()->prepare($updateSql);
+        $updateStmt->executeQuery();
+
+        $updateSql = 'UPDATE termekvaltozat 
+                      SET ertek1 = UPPER(ertek1) 
+                      WHERE adattipus1_id = 1';
+        $updateStmt = $this->getEm()->getConnection()->prepare($updateSql);
+        $updateStmt->executeQuery();
+    }
+
     public function importExcel()
     {
         $this->getEm()->getConnection()->beginTransaction();
 
         try {
-            if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+            if (!isset($_FILES['toimport'])) {
                 throw new \Exception('Nincs feltöltött fájl vagy hiba történt a feltöltés során.');
             }
 
-            $tmpFilePath = $_FILES['file']['tmp_name'];
+            $this->convertToUppercase();
+            $tmpFilePath = $_FILES['toimport']['tmp_name'];
 
             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             $spreadsheet = $reader->load($tmpFilePath);
@@ -272,6 +305,36 @@ class szinController extends \mkwhelpers\MattableController
                 $szinId = $sheet->getCell('A' . $row)->getValue();
                 $ujSorrend = $sheet->getCell('C' . $row)->getValue();
                 $ujNev = $sheet->getCell('D' . $row)->getValue();
+
+                if (empty($szinId)) {
+                    continue;
+                }
+
+                $szin = $this->getRepo()->find($szinId);
+
+                if (!$szin) {
+                    continue;
+                }
+
+                if (!empty($ujSorrend)) {
+                    $szin->setSorrend((int)$ujSorrend);
+                }
+
+                if (!empty($ujNev)) {
+                    $szin->setNev($ujNev);
+
+                    $updateSql = 'UPDATE termekvaltozat SET ertek1 = :ujNev WHERE szin_id = :regiSzinId';
+                    $stmt = $this->getEm()->getConnection()->prepare($updateSql);
+                    $stmt->executeQuery(['ujNev' => $ujNev, 'regiSzinId' => $szinId]);
+                }
+
+                $this->getEm()->persist($szin);
+            }
+
+            $this->getEm()->flush();
+
+            for ($row = 2; $row <= $highestRow; $row++) {
+                $szinId = $sheet->getCell('A' . $row)->getValue();
                 $csereSzinId = $sheet->getCell('E' . $row)->getValue();
 
                 if (empty($szinId)) {
@@ -288,47 +351,31 @@ class szinController extends \mkwhelpers\MattableController
                     $csereSzin = $this->getRepo()->find($csereSzinId);
 
                     if ($csereSzin) {
-                        $regiNev = $szin->getNev();
                         $ujSzinNev = $csereSzin->getNev();
 
                         $updateSql = 'UPDATE termekvaltozat 
                                     SET ertek1 = :ujSzinNev, szin_id = :csereSzinId 
-                                    WHERE ertek1 = :regiNev AND adattipus1_id = 1';
+                                    WHERE szin_id = :regiSzinId';
                         $stmt = $this->getEm()->getConnection()->prepare($updateSql);
                         $stmt->executeQuery([
                             'ujSzinNev' => $ujSzinNev,
                             'csereSzinId' => $csereSzinId,
-                            'regiNev' => $regiNev
+                            'regiSzinId' => $szinId
                         ]);
 
                         $this->getEm()->remove($szin);
                     }
-                } else {
-                    if (!empty($ujSorrend)) {
-                        $szin->setSorrend((int)$ujSorrend);
-                    }
-
-                    if (!empty($ujNev)) {
-                        $regiNev = $szin->getNev();
-                        $szin->setNev($ujNev);
-
-                        $updateSql = 'UPDATE termekvaltozat SET ertek1 = :ujNev WHERE ertek1 = :regiNev AND adattipus1_id = 1';
-                        $stmt = $this->getEm()->getConnection()->prepare($updateSql);
-                        $stmt->executeQuery(['ujNev' => $ujNev, 'regiNev' => $regiNev]);
-                    }
-
-                    $this->getEm()->persist($szin);
                 }
             }
 
             $this->getEm()->flush();
             $this->getEm()->getConnection()->commit();
 
-            echo 'Excel importálás sikeres.';
+            echo json_encode(['msg' => 'Excel importálás sikeres.']);
         } catch (\Exception $e) {
             \mkw\store::writelog('Excel import error: ' . $e->getMessage());
             $this->getEm()->getConnection()->rollBack();
-            echo 'Hiba történt az Excel importálás során: ' . $e->getMessage();
+            echo json_encode(['msg' => 'Hiba történt az Excel importálás során: ' . $e->getMessage()]);
         }
     }
 

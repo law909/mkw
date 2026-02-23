@@ -28,12 +28,12 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="th-w-10"></th>
+                                <th class="th-w-10">{t('Sorszám')}</th>
                                 <th>{t('Cím')}</th>
                                 <th>{t('Tulajdonos')}</th>
                                 <th>{t('Típus')}</th>
-                                <th></th>
-                                <th></th>
+                                <th>{t('Állapot')}</th>
+                                <th>{t('Bírálat szöveges értékelései')}</th>
                             </tr>
                             </thead>
                             <tbody>

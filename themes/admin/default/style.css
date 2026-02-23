@@ -105,6 +105,12 @@ img {
     max-width: 650px;
 }
 
+.valtozatkepedit::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
 .valtozatkepedit li {
     margin: 3px;
     padding: 1px;

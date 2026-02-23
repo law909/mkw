@@ -323,6 +323,9 @@ class Termek
     /** @ORM\OneToMany(targetEntity="TermekKep", mappedBy="termek", cascade={"persist"}) */
     private $termekkepek;
 
+    /** @ORM\OneToMany(targetEntity="TermekSzinKep", mappedBy="termek", cascade={"persist"}) */
+    private $termekszinkepek;
+
     /** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="termek",cascade={"persist"}) */
     private $valtozatok;
 
@@ -531,6 +534,7 @@ class Termek
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekkepek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekszinkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->valtozatok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->altermekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -2022,6 +2026,26 @@ class Termek
             return $r;
         }
         return $this->termekkepek;
+    }
+
+    public function getTermekSzinKepek()
+    {
+        return $this->termekszinkepek;
+    }
+
+    public function addTermekSzinKep(TermekSzinKep $kep)
+    {
+        $this->termekszinkepek->add($kep);
+        $kep->setTermek($this);
+    }
+
+    public function removeTermekSzinKep(TermekSzinKep $kep)
+    {
+        if ($this->termekszinkepek->removeElement($kep)) {
+            $kep->removeTermek();
+            return true;
+        }
+        return false;
     }
 
     public function addTermekKep(TermekKep $kep)

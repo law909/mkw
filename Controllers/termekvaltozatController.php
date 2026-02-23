@@ -3,7 +3,9 @@
 namespace Controllers;
 
 use Automattic\WooCommerce\HttpClient\HttpClientException;
+use Entities\Meretsor;
 use Entities\Raktar;
+use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
@@ -45,11 +47,15 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         }
         $x['adattipus1id'] = $t->getAdatTipus1Id();
         $x['adattipus1nev'] = $t->getAdatTipus1Nev();
-        $x['adattipus1lista'] = $tvatc->getSelectList($t->getAdatTipus1Id());
+        $x['adattipus1lista'] = $tvatc->getSelectList(
+            \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin) : $t->getAdatTipus1Id()
+        );
         $x['ertek1'] = $t->getErtek1();
         $x['adattipus2id'] = $t->getAdatTipus2Id();
         $x['adattipus2nev'] = $t->getAdatTipus2Nev();
-        $x['adattipus2lista'] = $tvatc->getSelectList($t->getAdatTipus2Id());
+        $x['adattipus2lista'] = $tvatc->getSelectList(
+            \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret) : $t->getAdatTipus2Id()
+        );
         $x['ertek2'] = $t->getErtek2();
         $x['lathato'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();
@@ -136,19 +142,18 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     protected function afterSave($o, $parancs = null)
     {
         switch ($parancs) {
-            case $this->addOperation:
-            case $this->editOperation:
-                $tvec = new termekvaltozatertekController(null);
-                $tvec->uploadToWc();
-                $termek = $o->getTermek();
-                if ($termek) {
-                    $termek->clearWcdate();
-                    $termek->uploadToWC();
-                }
             case $this->delOperation:
-                $o->deleteFromWC();
-                $o->getTermek()?->clearWcdate();
-                $o->getTermek()?->uploadToWC();
+                $termek = $o->getTermek();
+                $szinId = $o->getSzinId();
+                if ($termek && $szinId) {
+                    foreach ($termek->getTermekSzinKepek() as $szinkep) {
+                        if ($szinkep->getSzinId() === $szinId) {
+                            $termek->removeTermekSzinKep($szinkep);
+                            $this->getEm()->remove($szinkep);
+                        }
+                    }
+                    $this->getEm()->flush();
+                }
         }
     }
 
@@ -226,7 +231,125 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $termekfokep = $this->params->getBoolRequestParam('valtozattermekfokep', false);
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
-        if (($adattipus1 && $ertek1) || ($adattipus2 && $ertek2)) {
+        if (store::isFixSzinMode()) {
+            $szinid = $this->params->getIntRequestParam('valtozatszinid');
+            $meretsorid = $this->params->getIntRequestParam('valtozatmeretsorid');
+            if ($szinid && $meretsorid) {
+                $szin = $this->getEm()->getRepository(Szin::class)->find($szinid);
+                $meretsor = $this->getEm()->getRepository(Meretsor::class)->find($meretsorid);
+                if ($szin && $meretsor) {
+                    $meretek = $meretsor->getMeretek();
+                    $cikkszamok = explode(';', $cikkszam);
+                    $idegencikkszamok = explode(';', $idegencikkszam);
+                    $cikl = 0;
+                    $atSzin = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                        \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)
+                    );
+                    $atMeret = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
+                        \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)
+                    );
+                    foreach ($meretek as $meret) {
+                        $valtdb = 0;
+                        $valtozat = new \Entities\TermekValtozat();
+                        $termek->addValtozat($valtozat);
+                        $valtozat->setTermek($termek);
+                        $valtozat->setLathato($lathato);
+                        $valtozat->setLathato2($lathato2);
+                        $valtozat->setLathato3($lathato3);
+                        $valtozat->setLathato4($lathato4);
+                        $valtozat->setLathato5($lathato5);
+                        $valtozat->setLathato6($lathato6);
+                        $valtozat->setLathato7($lathato7);
+                        $valtozat->setLathato8($lathato8);
+                        $valtozat->setLathato9($lathato9);
+                        $valtozat->setLathato10($lathato10);
+                        $valtozat->setLathato11($lathato11);
+                        $valtozat->setLathato12($lathato12);
+                        $valtozat->setLathato13($lathato13);
+                        $valtozat->setLathato14($lathato14);
+                        $valtozat->setLathato15($lathato15);
+                        if ($termek->getNemkaphato()) {
+                            $valtozat->setElerheto(false);
+                            $valtozat->setElerheto2(false);
+                            $valtozat->setElerheto3(false);
+                            $valtozat->setElerheto4(false);
+                            $valtozat->setElerheto5(false);
+                            $valtozat->setElerheto6(false);
+                            $valtozat->setElerheto7(false);
+                            $valtozat->setElerheto8(false);
+                            $valtozat->setElerheto9(false);
+                            $valtozat->setElerheto10(false);
+                            $valtozat->setElerheto11(false);
+                            $valtozat->setElerheto12(false);
+                            $valtozat->setElerheto13(false);
+                            $valtozat->setElerheto14(false);
+                            $valtozat->setElerheto15(false);
+                        } else {
+                            $valtozat->setElerheto($elerheto);
+                            $valtozat->setElerheto2($elerheto2);
+                            $valtozat->setElerheto3($elerheto3);
+                            $valtozat->setElerheto4($elerheto4);
+                            $valtozat->setElerheto5($elerheto5);
+                            $valtozat->setElerheto6($elerheto6);
+                            $valtozat->setElerheto7($elerheto7);
+                            $valtozat->setElerheto8($elerheto8);
+                            $valtozat->setElerheto9($elerheto9);
+                            $valtozat->setElerheto10($elerheto10);
+                            $valtozat->setElerheto11($elerheto11);
+                            $valtozat->setElerheto12($elerheto12);
+                            $valtozat->setElerheto13($elerheto13);
+                            $valtozat->setElerheto14($elerheto14);
+                            $valtozat->setElerheto15($elerheto15);
+                        }
+                        $valtozat->setNetto($netto);
+                        $valtozat->setTermekfokep($termekfokep);
+                        if (count($cikkszamok) > 0) {
+                            if (count($cikkszamok) == 1) {
+                                $valtozat->setCikkszam($cikkszamok[0]);
+                            } elseif (array_key_exists($cikl, $cikkszamok)) {
+                                $valtozat->setCikkszam($cikkszamok[$cikl]);
+                            }
+                        }
+                        if (count($idegencikkszamok) > 0) {
+                            if (count($idegencikkszamok) == 1) {
+                                $valtozat->setIdegencikkszam($idegencikkszamok[0]);
+                            } elseif (array_key_exists($cikl, $idegencikkszamok)) {
+                                $valtozat->setIdegencikkszam($idegencikkszamok[$cikl]);
+                            }
+                        }
+                        if ($szin) {
+                            $valtozat->setSzin($szin);
+                            if ($atSzin) {
+                                $valtozat->setAdatTipus1($atSzin);
+                                $valtozat->setErtek1($szin->getNev());
+                            }
+                            $valtdb++;
+                        }
+                        if ($meret) {
+                            $valtozat->setMeret($meret);
+                            if ($atMeret) {
+                                $valtozat->setAdatTipus2($atMeret);
+                                $valtozat->setErtek2($meret->getNev());
+                            }
+                            $valtdb++;
+                        }
+
+                        $kep = $this->getEm()->getRepository(TermekKep::class)->find($kepid);
+                        if ($kep) {
+                            $valtozat->setKep($kep);
+                        }
+
+                        if ($valtdb > 0) {
+                            $this->getEm()->persist($valtozat);
+                        } else {
+                            $termek->removeValtozat($valtozat);
+                        }
+                        $cikl++;
+                    }
+                    $this->getEm()->flush();
+                }
+            }
+        } elseif (($adattipus1 && $ertek1) || ($adattipus2 && $ertek2)) {
             $ertekek1 = explode(';', $ertek1);
             $ertekek2 = explode(';', $ertek2);
             $cikkszamok = explode(';', $cikkszam);
@@ -332,10 +455,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 }
             }
             $this->getEm()->flush();
-            $tvec = new termekvaltozatertekController(null);
-            $tvec->uploadToWc();
-            $termek->clearWcdate();
-            $termek->uploadToWC();
         }
 
         $view = $this->createView('termektermekvaltozatkarb.tpl');

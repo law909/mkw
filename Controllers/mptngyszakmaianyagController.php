@@ -1020,4 +1020,19 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
         echo json_encode($ret);
     }
+
+    public function recalcBiralat()
+    {
+        $anyagok = $this->getRepo(MPTNGYSzakmaianyag::class)->getAll();
+        /** @var MPTNGYSzakmaianyag $anyag */
+        foreach ($anyagok as $anyag) {
+            $anyag->setKonferencianszerepelhet($anyag->calcKonferencianszerepelhet());
+            $anyag->setPluszbiralokell($anyag->calcPluszBiraloKell());
+            $anyag->setBiralatkesz($anyag->calcBiralatkesz());
+            \mkw\store::getEm()->persist($anyag);
+            \mkw\store::getEm()->flush();
+        }
+        echo 'Ready.';
+    }
+
 }

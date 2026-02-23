@@ -106,6 +106,11 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <a href="/admin/import/szin" class="js-szinimport">Színek</a>
+                        <a href="/admin/import/meret" class="js-meretimport">Méretek</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/import/aszfdownload" class="js-aszfdownload">ÁSZF letöltés</a>
                     </div>
                     <div class="matt-hseparator"></div>
