@@ -98,6 +98,126 @@ select {
   background-color: var(--color-background-inverse);
 }
 
+// Custom dropdown (option selector)
+.cs-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.cs-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 36px 0 15px;
+  height: 36px;
+  border-radius: 50px;
+  background-color: var(--color-background-white, #fff);
+  border: 1px solid var(--color-border, #ccc) !important;
+  color: var(--color-text, #000);
+  font-weight: 900;
+  font-size: var(--font-size-small, 13px);
+  line-height: 12px;
+  font-family: var(--font-base, inherit);
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  max-width: 250px;
+  box-sizing: border-box;
+  position: relative;
+  transition: opacity 0.15s;
+}
+
+.cs-trigger::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: transform 0.2s;
+}
+
+.cs-wrapper.cs-open .cs-trigger::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.cs-trigger:hover {
+  opacity: 0.85;
+}
+
+.cs-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  max-width: 250px;
+  background-color: var(--color-white, #fff);
+  border: 1px solid var(--field-border, #ccc);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  z-index: 9999;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.cs-wrapper.cs-open .cs-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cs-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: var(--font-size-small, 13px);
+  font-family: var(--font-base, inherit);
+  color: var(--color-text, #333);
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+}
+
+.cs-option.cs-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.cs-option:hover {
+  background-color: var(--color-light, #f8f9fa);
+}
+
+.cs-option.cs-selected {
+  font-weight: 700;
+}
+
+.cs-option.cs-selected::before {
+  content: '✓';
+  font-size: 11px;
+  color: var(--color-primary, #d0112b);
+  min-width: 12px;
+}
+
+.cs-option:not(.cs-selected)::before {
+  content: '';
+  min-width: 12px;
+  display: inline-block;
+}
+// Custom dropdown (option selector)
+
 
 /* --------- modern checkbox & radio egyszerűsített (accent-color) --------- */
 /* ez a legegyszerűbb, működik a legtöbb modern böngészőben */

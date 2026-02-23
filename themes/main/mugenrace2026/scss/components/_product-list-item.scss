@@ -60,6 +60,23 @@
       color: var(--color-secondary-text);
     }
   }
+
+  &__price-block {
+    gap: var(--gap-base);
+  }
+
+  &__button-block {
+    padding: 0 10px;
+    width: 100%;
+
+    @include mobile {
+      padding: 0;
+    }
+
+    .button {
+      max-width: 100%;
+    }
+  }
   
   .akciosarszoveg {
     font-size: var(--font-size-small);

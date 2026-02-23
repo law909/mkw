@@ -60,7 +60,7 @@
                 </div>
             {/if}
         </div>
-        <div class="flex-tb ">
+        <div class="flex-tb flex-col product-list-item__price-block">
             <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 {if ((isset($termek.eredetibrutto) && $termek.eredetibrutto>0))}
                     <span class="akciosarszoveg">{t('Eredeti ár')}:&nbsp;<span
@@ -75,7 +75,7 @@
                     {$termek.valutanemnev}
                         </span>
             </div>
-            <div class="pull-right">
+            <div class="product-list-item__button-block">
                 {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
                     <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$termek.id}">
                         {t('Elfogyott')}
@@ -83,12 +83,13 @@
                 {else}
                     {if ($hidecart != 1) && ($termek.brutto > 0)}
                         <a href="/kosar/add?id={$termek.id}" rel="nofollow"
-                           class="js-kosarbaszinvaltozat button bordered small cartbtn pull-right" data-termek="{$termek.id}">
+                            class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
                             {t('Kosárba')}
                         </a>
                     {/if}
                 {/if}
             </div>
+            
         </div>
         {if ($detailsbutton)}
             <a href="{$termek.link}" class="button bordered okbtn">{t('Részletek')}</a>

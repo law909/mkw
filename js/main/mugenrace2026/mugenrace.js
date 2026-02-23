@@ -1267,3 +1267,145 @@ $( document ).ready(function() {
     });
 
 });
+
+
+
+/**
+ * Custom Select Dropdown
+ * Replaces native <select class="custom-select"> elements with styled dropdowns.
+ * Usage: initCustomSelects(); — hívd meg DOM ready után, vagy új elemek beillesztésekor.
+ */
+
+(function () {
+  'use strict';
+
+  function buildCustomSelect(originalSelect) {
+    // Ne dolgozzuk fel kétszer
+    if (originalSelect.dataset.csInit) return;
+    originalSelect.dataset.csInit = '1';
+
+    // Elrejtjük az eredetit, de megtartjuk (form submit, JS események miatt)
+    originalSelect.style.display = 'none';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'cs-wrapper';
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'cs-trigger';
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'cs-dropdown';
+    dropdown.setAttribute('role', 'listbox');
+
+    // Szinkronizálja a trigger feliratát és a dropdown állapotát
+    function sync() {
+      const selected = originalSelect.options[originalSelect.selectedIndex];
+      trigger.textContent = selected ? selected.text : '';
+      dropdown.querySelectorAll('.cs-option').forEach(opt => {
+        opt.classList.toggle('cs-selected', opt.dataset.value === (selected ? selected.value : null));
+      });
+    }
+
+    // Opciók feltöltése
+    Array.from(originalSelect.options).forEach(opt => {
+      const item = document.createElement('div');
+      item.className = 'cs-option';
+      item.setAttribute('role', 'option');
+      item.dataset.value = opt.value;
+      item.textContent = opt.text;
+
+      if (opt.disabled) {
+        item.classList.add('cs-disabled');
+        item.setAttribute('aria-disabled', 'true');
+      } else {
+        item.addEventListener('click', () => {
+          originalSelect.value = opt.value;
+          originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          sync();
+          close();
+        });
+      }
+
+      dropdown.appendChild(item);
+    });
+
+    function open() {
+      wrapper.classList.add('cs-open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function close() {
+      wrapper.classList.remove('cs-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggle() {
+      wrapper.classList.contains('cs-open') ? close() : open();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Zárjuk be az összes többi nyitott custom selectet
+      document.querySelectorAll('.cs-wrapper.cs-open').forEach(w => {
+        if (w !== wrapper) w.classList.remove('cs-open');
+      });
+      toggle();
+    });
+
+    // Kattintás a dropdownon kívülre → zárás
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target)) close();
+    });
+
+    // Ha az eredeti select értéke JS-ből változik
+    originalSelect.addEventListener('change', sync);
+
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(dropdown);
+    originalSelect.parentNode.insertBefore(wrapper, originalSelect);
+    wrapper.appendChild(originalSelect); // selectet a wrapperbe tesszük
+
+    sync();
+  }
+
+  window.initCustomSelects = function (context) {
+    const root = context || document;
+    root.querySelectorAll('select.custom-select').forEach(buildCustomSelect);
+  };
+
+  // MutationObserver – automatikusan figyeli az AJAX-ból érkező új elemeket
+  function startObserver() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== 1) return; // csak elemcsomópontok
+
+          // Ha maga a hozzáadott elem egy custom-select
+          if (node.matches('select.custom-select')) {
+            buildCustomSelect(node);
+          }
+
+          // Ha a hozzáadott elem gyermekei között van custom-select
+          node.querySelectorAll?.('select.custom-select').forEach(buildCustomSelect);
+        });
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,  // közvetlen gyermekek figyelése
+      subtree: true,    // teljes részfa figyelése
+    });
+  }
+
+  // Auto-init DOM ready után + observer indítása
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initCustomSelects();
+      startObserver();
+    });
+  } else {
+    window.initCustomSelects();
+    startObserver();
+  }
+})();
