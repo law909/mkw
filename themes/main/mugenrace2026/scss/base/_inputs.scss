@@ -103,6 +103,11 @@ select {
   position: relative;
   display: inline-block;
   width: 100%;
+
+  @include mobile {
+    max-width: 120px;
+    
+  }
 }
 
 .cs-trigger {
@@ -129,6 +134,9 @@ select {
   box-sizing: border-box;
   position: relative;
   transition: opacity 0.15s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .cs-trigger::after {
@@ -143,6 +151,13 @@ select {
   background-repeat: no-repeat;
   background-size: contain;
   transition: transform 0.2s;
+}
+
+.cs-trigger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #ffffff00 50%, var(--color-background-white) 95%);
 }
 
 .cs-wrapper.cs-open .cs-trigger::after {

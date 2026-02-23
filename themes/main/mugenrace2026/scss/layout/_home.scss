@@ -377,6 +377,10 @@
       color: var(--color-text-inverse);
       border: 1px solid var(--color-border-light) !important;
 
+      &::before {
+        background: linear-gradient(90deg, #00000000 50%, var(--color-background-inverse) 95%);
+      }
+
       &::after {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23fff' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
       }
@@ -424,12 +428,14 @@
     position: absolute;
     top: 0;
     right: 100%;
-    width: 100%;
     height: 100%;
     width: calc((100vw - 1500px) / 2);
     background: var(--color-background);
     pointer-events: none;
     z-index: 2;
+    @include mobile-tablet {
+      width: 100%;
+    }
   }
 
   &::after {
@@ -437,12 +443,14 @@
     position: absolute;
     top: 0;
     left: 100%;
-    width: 100%;
     height: 100%;
-    width: calc((100vw - 1500px) / 2);
     background: var(--color-background);
     pointer-events: none;
     z-index: 2;
+    width: calc((100vw - 1500px) / 2);
+    @include mobile-tablet {
+      width: 100%;
+    }
   }
 }
 
