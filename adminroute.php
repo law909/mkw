@@ -1101,6 +1101,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
     $router->map('POST', '/admin/import/szin', 'szinController#importExcel', 'adminszinimport');
     $router->map('POST', '/admin/import/meret', 'meretController#importExcel', 'adminmeretimport');
+    $router->map('POST', '/admin/import/orszag', 'orszagController#importExcel', 'adminorszagimport');
 }
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');

@@ -2,6 +2,10 @@
 
 namespace Controllers;
 
+use Entities\Orszag;
+use Entities\Valutanem;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 class orszagController extends \mkwhelpers\JQGridController
 {
 
@@ -104,6 +108,61 @@ class orszagController extends \mkwhelpers\JQGridController
         }
         $ret .= '</select>';
         echo $ret;
+    }
+
+    public function importExcel()
+    {
+        $this->getEm()->getConnection()->beginTransaction();
+
+        try {
+            if (!isset($_FILES['toimport'])) {
+                throw new \Exception('Nincs feltöltött fájl vagy hiba történt a feltöltés során.');
+            }
+
+            $file = $_FILES['toimport']['tmp_name'] ?? null;
+            $reader = new Xlsx();
+            $spreadsheet = $reader->load($file);
+            $sheet = $spreadsheet->getSheet(0);
+
+            $valutanem = $this->getRepo(Valutanem::class)->find(2);
+            $highestRow = $sheet->getHighestRow();
+
+            for ($row = 2; $row <= $highestRow; $row++) {
+                $iso3166 = trim((string)$sheet->getCell('C' . $row)->getValue());
+                if ($iso3166 === '') {
+                    continue;
+                }
+                $iso3166 = mb_strtoupper($iso3166, 'UTF-8');
+
+                $nev = trim((string)$sheet->getCell('K' . $row)->getValue());
+                if ($nev === '') {
+                    continue;
+                }
+                $nev = mb_strtoupper($nev, 'UTF-8');
+
+                $orszag = $this->getRepo()->findOneBy(['iso3166' => $iso3166]);
+                if ($orszag) {
+                    continue;
+                }
+
+                $orszag = new Orszag();
+                $orszag->setIso3166($iso3166);
+                $orszag->setNev($nev);
+                $orszag->setValutanem($valutanem);
+                $orszag->setLathato4(1);
+
+                $this->getEm()->persist($orszag);
+            }
+
+            $this->getEm()->flush();
+            $this->getEm()->getConnection()->commit();
+
+            echo json_encode(['msg' => 'Import sikeres']);
+        } catch (\Exception $e) {
+            \mkw\store::writelog('Excel import error: ' . $e->getMessage());
+            $this->getEm()->getConnection()->rollBack();
+            echo json_encode(['msg' => 'Hiba történt az Excel importálás során: ' . $e->getMessage()]);
+        }
     }
 
 }

@@ -108,6 +108,7 @@
                     <div>
                         <a href="/admin/import/szin" class="js-szinimport">Színek</a>
                         <a href="/admin/import/meret" class="js-meretimport">Méretek</a>
+                        <a href="/admin/import/orszag" class="js-orszagimport">Országok</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
