@@ -11,6 +11,7 @@ class SzinRepository extends \mkwhelpers\Repository
         $this->setEntityname(Szin::class);
         $this->setOrders([
             '1' => ['caption' => 'sorrend és név szerint', 'order' => ['sorrend' => 'ASC', 'nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint', 'order' => ['nev' => 'ASC']],
         ]);
     }
 
