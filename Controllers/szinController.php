@@ -142,8 +142,30 @@ class szinController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    public function afterSave($o, $parancs = null)
+    {
+        if (\mkw\store::isFixSzinMode()) {
+            if ($parancs === 'edit') {
+                $this->getEm()->getConnection()->beginTransaction();
+                try {
+                    $sql = 'UPDATE termekvaltozat SET ertek1 = :ertek1 WHERE szin_id = :id';
+                    $stmt = $this->getEm()->getConnection()->prepare($sql);
+                    $stmt->executeQuery([':ertek1' => $o->nev, ':id' => $o->id]);
+                    $this->getEm()->getConnection()->commit();
+                } catch (\Exception $e) {
+                    $this->getEm()->getConnection()->rollBack();
+                    throw $e;
+                }
+            }
+        }
+    }
+
     public function fillValues()
     {
+        if (!\mkw\store::isFixSzinMode()) {
+            return;
+        }
+
         $this->getEm()->getConnection()->beginTransaction();
 
         try {
@@ -272,6 +294,9 @@ class szinController extends \mkwhelpers\MattableController
 
     protected function convertToUppercase()
     {
+        if (!\mkw\store::isFixSzinMode()) {
+            return;
+        }
         $updateSql = 'UPDATE szin SET nev = UPPER(nev)';
         $updateStmt = $this->getEm()->getConnection()->prepare($updateSql);
         $updateStmt->executeQuery();
@@ -285,6 +310,10 @@ class szinController extends \mkwhelpers\MattableController
 
     public function importExcel()
     {
+        if (!\mkw\store::isFixSzinMode()) {
+            return;
+        }
+        
         $this->getEm()->getConnection()->beginTransaction();
 
         try {

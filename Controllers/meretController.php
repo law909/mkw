@@ -124,6 +124,24 @@ class meretController extends MattableController
         $view->printTemplateResult();
     }
 
+    public function afterSave($o, $parancs = null)
+    {
+        if (\mkw\store::isFixSzinMode()) {
+            if ($parancs === 'edit') {
+                $this->getEm()->getConnection()->beginTransaction();
+                try {
+                    $sql = 'UPDATE termekvaltozat SET ertek2 = :ertek WHERE meret_id = :id';
+                    $stmt = $this->getEm()->getConnection()->prepare($sql);
+                    $stmt->executeQuery([':ertek' => $o->nev, ':id' => $o->id]);
+                    $this->getEm()->getConnection()->commit();
+                } catch (\Exception $e) {
+                    $this->getEm()->getConnection()->rollBack();
+                    throw $e;
+                }
+            }
+        }
+    }
+
     public function exportExcel()
     {
         $spreadsheet = new Spreadsheet();
@@ -158,6 +176,10 @@ class meretController extends MattableController
 
     public function importExcel()
     {
+        if (!\mkw\store::isFixSzinMode()) {
+            return;
+        }
+
         $this->getEm()->getConnection()->beginTransaction();
 
         try {
