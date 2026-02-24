@@ -2,7 +2,8 @@
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
-
+error_reporting(E_ALL & ~E_WARNING);
+ini_set('display_errors', '0');
 date_default_timezone_set('Europe/Budapest');
 
 require_once('bootstrap.php');

@@ -1,5 +1,4 @@
 {* <a id="minikosar" class="side-cart__open pull-right" href="{$kosargetlink}" rel="nofollow"> *}
-
     <div class="side-cart__open pull-right" rel="nofollow">
         {if ($kosar.termekdb)}
             <div class="mini-cart" data-empty="0">
@@ -40,7 +39,7 @@
             <div class="side-cart__footer">
                 <div class="megrendelemcontainer flex-cb">
                     <a href="{$prevuri}" class="button bordered okbtn">{t('Folytatom a vásárlást')}</a>
-                    <a href="{$showcheckoutlink}" rel="nofollow" class="button primary cartbtn pull-right">
+                    <a href="/checkout" rel="nofollow" class="button primary cartbtn pull-right">
                         <i class="icon cart icon__click"></i>
                         {t('Megrendelem')}
                     </a>
