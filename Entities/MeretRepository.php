@@ -14,10 +14,4 @@ class MeretRepository extends \mkwhelpers\Repository
             '2' => ['caption' => 'név szerint', 'order' => ['nev' => 'ASC']],
         ]);
     }
-
-    public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)
-    {
-        $order = ['sorrend' => 'ASC', 'nev' => 'ASC'];
-        return parent::getAll($filter, $order, $offset, $elemcount);
-    }
 }
