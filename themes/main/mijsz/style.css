@@ -83,7 +83,7 @@ body {
 }
 a {
   text-decoration: none;
-  color: #333333;
+  color: #333;
 }
 a:hover {
   text-decoration: none;
@@ -250,12 +250,12 @@ footer a:hover {
 }
 .headertop {
   color: #f7f7f7;
-  background-color: #ff9000;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9000), to(#ff9000));
-  background-image: -webkit-linear-gradient(top, #ff9000, #ff9000);
-  background-image: -moz-linear-gradient(top, #ff9000, #ff9000);
-  background-image: -o-linear-gradient(top, #ff9000, #ff9000);
-  background-image: linear-gradient(to bottom, #ff9000, #ff9000);
+  background-color: #FF9000;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FF9000), to(#FF9000));
+  background-image: -webkit-linear-gradient(top, #FF9000, #FF9000);
+  background-image: -moz-linear-gradient(top, #FF9000, #FF9000);
+  background-image: -o-linear-gradient(top, #FF9000, #FF9000);
+  background-image: linear-gradient(to bottom, #FF9000, #FF9000);
 }
 .header-ingyenes {
   height: 20px;
@@ -357,7 +357,7 @@ footer a:hover {
   text-decoration: none;
   font-weight: bold;
   font-size: 14px;
-  color: #ffffff;
+  color: #fff;
   -webkit-transition: background-color 0.2s linear;
   -moz-transition: background-color 0.2s linear;
   -o-transition: background-color 0.2s linear;
@@ -414,15 +414,15 @@ footer a:hover {
   border-radius: 2px;
 }
 #navmain .sub ul li a:hover {
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
 }
 #navmain .sub ul li.categorytitle {
   margin: 0 0 0 4px;
   padding: 4px 3px 6px;
   font-size: 14px;
   font-weight: bold;
-  color: #ffffff;
+  color: #fff;
 }
 footer {
   margin-top: 20px;
@@ -524,12 +524,12 @@ footer nav {
 .termekprice {
   font-size: 14px;
   font-weight: bold;
-  color: #333333;
+  color: #333;
 }
 .termekprice {
   font-size: 18px;
   text-align: right;
-  color: #333333;
+  color: #333;
 }
 .termekvaltozat {
   font-size: 13px;

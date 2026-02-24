@@ -135,6 +135,11 @@ var checkout = (function($, guid) {
 			$('.js-chkszamlairszam').text(szallirszaminput.val());
 			$('.js-chkszamlavaros').text(szallvarosinput.val());
 			$('.js-chkszamlautca').text(szallutcainput.val());
+            $('input[name="szamlanev"]').val(szallnevinput.val());
+            $('input[name="szamlairszam"]').val(szallirszaminput.val());
+            $('input[name="szamlavaros"]').val(szallvarosinput.val());
+            $('input[name="szamlautca"]').val(szallutcainput.val());
+
 		}
 		else {
             $('.js-chkszamlanev').text(szamlanevinput.val());
