@@ -300,7 +300,6 @@ class szinController extends \mkwhelpers\MattableController
             $sheet = $spreadsheet->getActiveSheet();
 
             $highestRow = $sheet->getHighestRow();
-
             for ($row = 2; $row <= $highestRow; $row++) {
                 $szinId = $sheet->getCell('A' . $row)->getValue();
                 $ujSorrend = $sheet->getCell('C' . $row)->getValue();
