@@ -4439,6 +4439,7 @@ nav ul li a {
 }
 .product-list-item__variations-container {
   position: relative;
+  min-height: 95px;
 }
 .product-list-item__variations-container .gvaltozatcontainer {
   display: flex;
@@ -4460,4 +4461,4 @@ nav ul li a {
 
 .gtermek {
   border: 0;
-}
+}/*# sourceMappingURL=style-2.css.map */
