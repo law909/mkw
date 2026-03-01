@@ -1266,6 +1266,26 @@ $( document ).ready(function() {
         openLightboxByIndex(index);
     });
 
+    function frissitAdoszamLathato() {
+        var kivalasztott = $('input[name="vasarlo_tipus"]:checked').val();
+
+        if (kivalasztott === 'maganszemely') {
+            $('.controls-row-adoszam').hide();
+            $('input[name="adoszam"]').val(''); // törli az értéket, hogy ne kerüljön be elküldéskor
+        } else {
+            $('.controls-row-adoszam').show();
+        }
+    }
+
+    // Oldalbetöltéskor azonnal fusson le (alapértelmezett állapot beállítása)
+    frissitAdoszamLathato();
+
+    // Változáskor frissítés
+    $('input[name="vasarlo_tipus"]').on('change', function () {
+        frissitAdoszamLathato();
+    });
+
+
 });
 
 

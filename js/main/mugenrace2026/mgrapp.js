@@ -696,7 +696,6 @@ var checkout = (function($, guid) {
 			$('.js-chkszamlairszam').text(szallirszaminput.val());
 			$('.js-chkszamlavaros').text(szallvarosinput.val());
 			$('.js-chkszamlautca').text(szallutcainput.val());
-            console.log('refresh: szamlaeqszall', szallnevinput.val());
             $('input[name="szamlanev"]').val(szallnevinput.val());
             $('input[name="szamlairszam"]').val(szallirszaminput.val());
             $('input[name="szamlavaros"]').val(szallvarosinput.val());
@@ -2463,6 +2462,26 @@ $( document ).ready(function() {
         const index = $('.gallery-image').index(this);
         openLightboxByIndex(index);
     });
+
+    function frissitAdoszamLathato() {
+        var kivalasztott = $('input[name="vasarlo_tipus"]:checked').val();
+
+        if (kivalasztott === 'maganszemely') {
+            $('.controls-row-adoszam').hide();
+            $('input[name="adoszam"]').val(''); // törli az értéket, hogy ne kerüljön be elküldéskor
+        } else {
+            $('.controls-row-adoszam').show();
+        }
+    }
+
+    // Oldalbetöltéskor azonnal fusson le (alapértelmezett állapot beállítása)
+    frissitAdoszamLathato();
+
+    // Változáskor frissítés
+    $('input[name="vasarlo_tipus"]').on('change', function () {
+        frissitAdoszamLathato();
+    });
+
 
 });
 
