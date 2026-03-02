@@ -559,77 +559,76 @@ var mkwcheck = {
         }
     }
 };
-var guid = (function() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-               .toString(16)
-               .substring(1);
-  }
-  return function() {
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-           s4() + '-' + s4() + s4() + s4();
-  };
+var guid = (function () {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return function () {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    };
 })();
 
-var checkout = (function($, guid) {
+var checkout = (function ($, guid) {
 
-	var checkoutpasswordrow,
-			checkoutpasswordcontainer,
-			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
-			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
-			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
-			checkoutform,
-			webshopmessageinput, couriermessageinput,
-			szamlaeqszall,
-			kosarhash,
-            egyediid = guid();
+    let checkoutpasswordrow,
+        checkoutpasswordcontainer,
+        vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput, vasarlo_tipusinput,
+        szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
+        szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
+        checkoutform,
+        webshopmessageinput, couriermessageinput,
+        szamlaeqszall,
+        kosarhash,
+        egyediid = guid();
 
     function getSessid() {
         var x = document.cookie.match(/PHPSESSID=[^;]+/);
         if (!x) {
             return egyediid;
         }
-        if (typeof(x) == 'object') {
+        if (typeof (x) == 'object') {
             x = x[0];
         }
-        if (typeof(x) == 'string') {
+        if (typeof (x) == 'string') {
             return x.substring(10);
         }
         return egyediid;
     }
 
-	function loadFizmodList() {
-		$.ajax({
-			url: '/checkout/getfizmodlist',
-			data: {
-				szallitasimod: $('input[name="szallitasimod"]:checked').val()
-			},
-			success: function(data) {
+    function loadFizmodList() {
+        $.ajax({
+            url: '/checkout/getfizmodlist',
+            data: {
+                szallitasimod: $('input[name="szallitasimod"]:checked').val()
+            },
+            success: function (data) {
                 var d = JSON.parse(data);
-				$('.js-chkfizmodlist').html(d.html);
-				refreshAttekintes();
-			}
-		});
+                $('.js-chkfizmodlist').html(d.html);
+                refreshAttekintes();
+            }
+        });
         loadTetelList();
-	}
+    }
 
     function loadFoxpostCsoportData(termis) {
         if ($('input[name="szallitasimod"]:checked').hasClass('js-foxpostchk')) {
             $.ajax({
                 url: '/checkout/getfoxpostcsoportlist',
-                success: function(data) {
+                success: function (data) {
                     var d = JSON.parse(data);
                     $('.js-foxpostterminalcontainer').html(d.html).show();
                     if (termis) {
                         loadFoxpostTerminalData();
-                    }
-                    else {
+                    } else {
                         refreshAttekintes();
                     }
                 }
             })
-        }
-        else {
+        } else {
             $('.js-foxpostterminalcontainer').empty().hide();
             refreshAttekintes();
         }
@@ -642,7 +641,7 @@ var checkout = (function($, guid) {
             data: {
                 cs: cs
             },
-            success: function(data) {
+            success: function (data) {
                 var d = JSON.parse(data);
                 $('select[name="foxpostterminal"]').remove();
                 $('.js-foxpostterminalcontainer').append(d.html);
@@ -654,7 +653,7 @@ var checkout = (function($, guid) {
     function loadKosarHash() {
         $.ajax({
             url: '/kosar/gethash',
-            success: function(data) {
+            success: function (data) {
                 var d = JSON.parse(data);
                 kosarhash = d.value;
             }
@@ -664,11 +663,11 @@ var checkout = (function($, guid) {
     function loadTetelList() {
         $.ajax({
             url: '/checkout/gettetellist',
-			data: {
-				szallitasimod: $('input[name="szallitasimod"]:checked').val(),
+            data: {
+                szallitasimod: $('input[name="szallitasimod"]:checked').val(),
                 kupon: $('input[name="kupon"]').val()
-			},
-            success: function(data) {
+            },
+            success: function (data) {
                 var d = JSON.parse(data);
                 $('.js-chktetellist').html(d.html);
                 kosarhash = d.hash.value;
@@ -679,161 +678,160 @@ var checkout = (function($, guid) {
         });
     }
 
-	function refreshAttekintes() {
-		$('.js-chkvezeteknev').text(vezeteknevinput.val());
-		$('.js-chkkeresztnev').text(keresztnevinput.val());
-		$('.js-chktelefon').text(telefoninput.val());
-		$('.js-chkkapcsemail').text(kapcsemailinput.val());
-		$('.js-chkorszag').text(orszagselect.text());
+    function refreshAttekintes() {
+        $('.js-chkvezeteknev').text(vezeteknevinput.val());
+        $('.js-chkkeresztnev').text(keresztnevinput.val());
+        $('.js-chktelefon').text(telefoninput.val());
+        $('.js-chkkapcsemail').text(kapcsemailinput.val());
+        $('.js-chkorszag').text(orszagselect.text());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
         $('.js-chkszallvaros').text(szallvarosinput.val());
         $('.js-chkszallutca').text(szallutcainput.val());
 
-		$('.js-chkadoszam').text(adoszaminput.val());
-		if (szamlaeqszall.prop('checked')) {
-			$('.js-chkszamlanev').text(szallnevinput.val());
-			$('.js-chkszamlairszam').text(szallirszaminput.val());
-			$('.js-chkszamlavaros').text(szallvarosinput.val());
-			$('.js-chkszamlautca').text(szallutcainput.val());
+        $('.js-chkadoszam').text(adoszaminput.val());
+        if (szamlaeqszall.prop('checked')) {
+            $('.js-chkszamlanev').text(szallnevinput.val());
+            $('.js-chkszamlairszam').text(szallirszaminput.val());
+            $('.js-chkszamlavaros').text(szallvarosinput.val());
+            $('.js-chkszamlautca').text(szallutcainput.val());
             $('input[name="szamlanev"]').val(szallnevinput.val());
             $('input[name="szamlairszam"]').val(szallirszaminput.val());
             $('input[name="szamlavaros"]').val(szallvarosinput.val());
             $('input[name="szamlautca"]').val(szallutcainput.val());
 
-		}
-		else {
+        } else {
             $('.js-chkszamlanev').text(szamlanevinput.val());
             $('.js-chkszamlairszam').text(szamlairszaminput.val());
             $('.js-chkszamlavaros').text(szamlavarosinput.val());
             $('.js-chkszamlautca').text(szamlautcainput.val());
-		}
-		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
+        }
+        $('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
         $('.js-chkfoxpostterminal').text($('select[name="foxpostterminal"] option:selected').text());
-		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
-		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
-		$('.js-chkcouriermessage').text(couriermessageinput.val());
-	}
+        $('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
+        $('.js-chkwebshopmessage').text(webshopmessageinput.val());
+        $('.js-chkcouriermessage').text(couriermessageinput.val());
+    }
 
-	function openDataContainer(obj) {
-/*		var $this = $(obj),
-				mycontainer = $($this.data('container'));
-		if (mycontainer.hasClass('js-chkclosed')) {
-			$('.js-chkdatacontainer').slideUp(0).addClass('js-chkclosed');
-			mycontainer.slideDown(0).removeClass('js-chkclosed');
-		}
-*/
-	}
+    function openDataContainer(obj) {
+        /*		var $this = $(obj),
+                        mycontainer = $($this.data('container'));
+                if (mycontainer.hasClass('js-chkclosed')) {
+                    $('.js-chkdatacontainer').slideUp(0).addClass('js-chkclosed');
+                    mycontainer.slideDown(0).removeClass('js-chkclosed');
+                }
+        */
+    }
 
     function checkEmail(email) {
         var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
         return re.test(email);
     }
 
-	function initUI() {
-		var $checkout = $('.js-checkout');
+    function initUI() {
+        var $checkout = $('.js-checkout');
 
-		if ($checkout.length) {
+        if ($checkout.length) {
 
-			$('.js-chktooltipbtn').tooltip({
-				html: false,
-				placement: 'right',
-				container: 'body'
-			});
+            $('.js-chktooltipbtn').tooltip({
+                html: false,
+                placement: 'right',
+                container: 'body'
+            });
 
-			checkoutform = $('#CheckoutForm');
-			checkoutpasswordcontainer = $('.js-checkoutpasswordcontainer');
+            checkoutform = $('#CheckoutForm');
+            checkoutpasswordcontainer = $('.js-checkoutpasswordcontainer');
             checkoutpasswordrow = $('.js-checkoutpasswordrow').remove();
 
-			vezeteknevinput = $('input[name="vezeteknev"]');
-			keresztnevinput = $('input[name="keresztnev"]');
-			telefoninput = $('input[name="telefon"]');
-			kapcsemailinput = $('input[name="kapcsemail"]');
-			szamlanevinput = $('input[name="szamlanev"]');
-			szamlairszaminput = $('input[name="szamlairszam"]');
-			szamlavarosinput = $('input[name="szamlavaros"]');
-			szamlautcainput = $('input[name="szamlautca"]');
-			adoszaminput = $('input[name="adoszam"]');
-			orszagselect = $('select[name="orszag"] option:selected');
-			szallnevinput = $('input[name="szallnev"]');
-			szallirszaminput = $('input[name="szallirszam"]');
-			szallvarosinput = $('input[name="szallvaros"]');
-			szallutcainput = $('input[name="szallutca"]');
-			szamlaeqszall = $('input[name="szamlaeqszall"]');
-			webshopmessageinput = $('textarea[name="webshopmessage"]');
-			couriermessageinput = $('textarea[name="couriermessage"]');
+            vezeteknevinput = $('input[name="vezeteknev"]');
+            keresztnevinput = $('input[name="keresztnev"]');
+            telefoninput = $('input[name="telefon"]');
+            kapcsemailinput = $('input[name="kapcsemail"]');
+            szamlanevinput = $('input[name="szamlanev"]');
+            szamlairszaminput = $('input[name="szamlairszam"]');
+            szamlavarosinput = $('input[name="szamlavaros"]');
+            szamlautcainput = $('input[name="szamlautca"]');
+            adoszaminput = $('input[name="adoszam"]');
+            vasarlo_tipusinput = $('input[name="vasarlo_tipus"]');
+            orszagselect = $('select[name="orszag"] option:selected');
+            szallnevinput = $('input[name="szallnev"]');
+            szallirszaminput = $('input[name="szallirszam"]');
+            szallvarosinput = $('input[name="szallvaros"]');
+            szallutcainput = $('input[name="szallutca"]');
+            szamlaeqszall = $('input[name="szamlaeqszall"]');
+            webshopmessageinput = $('textarea[name="webshopmessage"]');
+            couriermessageinput = $('textarea[name="couriermessage"]');
 
-			loadFizmodList();
+            loadFizmodList();
             loadFoxpostCsoportData(true);
 
-			$checkout
-            .on('change', 'select[name="foxpostcsoport"]', function() {
-                loadFoxpostTerminalData();
-            })
-			.on('change', 'input[name="szallitasimod"]', function() {
-				loadFizmodList();
-                loadFoxpostCsoportData(true);
-			})
-            .on('blur', 'input[name="kupon"]', function() {
-                loadTetelList();
-            })
-			.on('change', 'input[name="regkell"]', function() {
-				checkoutpasswordcontainer.empty();
-				if ($('input[name="regkell"]:checked').val() * 1 === 2) {
-					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
-					$('.js-chktooltipbtn').tooltip({
-						html: false,
-						placement: 'right',
-						container: 'body'
-					});
-				}
-			})
-			.on('change', '.js-chkrefresh', function() {
-				refreshAttekintes();
-			})
-			.on('blur', 'input[name="vezeteknev"],input[name="keresztnev"]', function() {
-				if (!szallnevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
-					szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
-				}
-			})
-            .on('change', 'select[name="orszag"]', function() {
-                $.ajax({
-                    url: '/setorszag',
-                    type: 'POST',
-                    data: {
-                        orszag: $('select[name="orszag"] option:selected').val()
-                    },
-                    success: function() {
-                        loadTetelList();
+            $checkout
+                .on('change', 'select[name="foxpostcsoport"]', function () {
+                    loadFoxpostTerminalData();
+                })
+                .on('change', 'input[name="szallitasimod"]', function () {
+                    loadFizmodList();
+                    loadFoxpostCsoportData(true);
+                })
+                .on('blur', 'input[name="kupon"]', function () {
+                    loadTetelList();
+                })
+                .on('change', 'input[name="regkell"]', function () {
+                    checkoutpasswordcontainer.empty();
+                    if ($('input[name="regkell"]:checked').val() * 1 === 2) {
+                        checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
+                        $('.js-chktooltipbtn').tooltip({
+                            html: false,
+                            placement: 'right',
+                            container: 'body'
+                        });
                     }
+                })
+                .on('change', '.js-chkrefresh', function () {
+                    refreshAttekintes();
+                })
+                .on('blur', 'input[name="vezeteknev"],input[name="keresztnev"]', function () {
+                    if (!szallnevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
+                        szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
+                    }
+                })
+                .on('change', 'select[name="orszag"]', function () {
+                    $.ajax({
+                        url: '/setorszag',
+                        type: 'POST',
+                        data: {
+                            orszag: $('select[name="orszag"] option:selected').val()
+                        },
+                        success: function () {
+                            loadTetelList();
+                        }
+                    });
                 });
-            });
 
             $('input[name="regkell"]').change();
 
-			szamlaeqszall.on('change', function(e) {
-				var obj = $('.js-chkszamlaadatok');
-				obj.toggleClass('notvisible');
-				if (obj.hasClass('notvisible')) {
-					$('input', obj).attr('disabled', 'disabled');
-				}
-				else {
-					$('input', obj).attr('disabled', null);
-				}
-				refreshAttekintes();
-			});
+            szamlaeqszall.on('change', function (e) {
+                var obj = $('.js-chkszamlaadatok');
+                obj.toggleClass('notvisible');
+                if (obj.hasClass('notvisible')) {
+                    $('input', obj).attr('disabled', 'disabled');
+                } else {
+                    $('input', obj).attr('disabled', null);
+                }
+                refreshAttekintes();
+            });
 
-			mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-			mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
+            mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
+            mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
+            mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
+            mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
-			$('.js-chkaszf, .js-chkhelp').magnificPopup({
-				type: 'ajax',
+            $('.js-chkaszf, .js-chkhelp').magnificPopup({
+                type: 'ajax',
                 closeBtnInside: false
-			});
+            });
 
-            checkoutform.on('submit', function(e) {
+            checkoutform.on('submit', function (e) {
                 var hibas = false, tofocus = false, hibauzenet;
 
                 hibauzenet = mkwmsg.ChkHiba;
@@ -852,8 +850,7 @@ var checkout = (function($, guid) {
                         tofocus = vezeteknevinput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     vezeteknevinput.removeClass('hibas');
                 }
 
@@ -864,8 +861,7 @@ var checkout = (function($, guid) {
                         tofocus = keresztnevinput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     keresztnevinput.removeClass('hibas');
                 }
 
@@ -876,8 +872,7 @@ var checkout = (function($, guid) {
                         tofocus = telefoninput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     telefoninput.removeClass('hibas');
                 }
 
@@ -888,8 +883,7 @@ var checkout = (function($, guid) {
                         tofocus = kapcsemailinput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     kapcsemailinput.removeClass('hibas');
                 }
 
@@ -904,8 +898,7 @@ var checkout = (function($, guid) {
                             tofocus = jelszo1input;
                         }
                         hibas = true;
-                    }
-                    else {
+                    } else {
                         jelszo1input.removeClass('hibas');
                         jelszo2input.removeClass('hibas');
                     }
@@ -918,8 +911,7 @@ var checkout = (function($, guid) {
                         tofocus = szallnevinput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     szallnevinput.removeClass('hibas');
                 }
 
@@ -930,8 +922,7 @@ var checkout = (function($, guid) {
                         tofocus = szallirszaminput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     szallirszaminput.removeClass('hibas');
                 }
 
@@ -942,8 +933,7 @@ var checkout = (function($, guid) {
                         tofocus = szallvarosinput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     szallvarosinput.removeClass('hibas');
                 }
 
@@ -954,8 +944,7 @@ var checkout = (function($, guid) {
                         tofocus = szallutcainput;
                     }
                     hibas = true;
-                }
-                else {
+                } else {
                     szallutcainput.removeClass('hibas');
                 }
 
@@ -967,8 +956,7 @@ var checkout = (function($, guid) {
                             tofocus = szamlanevinput;
                         }
                         hibas = true;
-                    }
-                    else {
+                    } else {
                         szamlanevinput.removeClass('hibas');
                     }
 
@@ -979,8 +967,7 @@ var checkout = (function($, guid) {
                             tofocus = szamlairszaminput;
                         }
                         hibas = true;
-                    }
-                    else {
+                    } else {
                         szamlairszaminput.removeClass('hibas');
                     }
 
@@ -991,8 +978,7 @@ var checkout = (function($, guid) {
                             tofocus = szamlavarosinput;
                         }
                         hibas = true;
-                    }
-                    else {
+                    } else {
                         szamlavarosinput.removeClass('hibas');
                     }
 
@@ -1003,15 +989,27 @@ var checkout = (function($, guid) {
                             tofocus = szamlautcainput;
                         }
                         hibas = true;
-                    }
-                    else {
+                    } else {
                         szamlautcainput.removeClass('hibas');
+                    }
+
+                    if (vasarlo_tipusinput.val() === 'ceg') {
+                        if (!adoszaminput.val()) {
+                            adoszaminput.addClass('hibas');
+                            if (!hibas) {
+                                openDataContainer(adoszaminput);
+                                tofocus = adoszaminput;
+                            }
+                            hibas = true;
+                        } else {
+                            adoszaminput.removeClass('hibas');
+                        }
                     }
                 }
 
                 if (hibas) {
                     $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
-                    $('#dialogcenter').on('hidden', function() {
+                    $('#dialogcenter').on('hidden', function () {
                         $('#dialogcenter').off('hidden');
                         if (tofocus) {
                             tofocus.focus();
@@ -1020,26 +1018,24 @@ var checkout = (function($, guid) {
                     mkw.showDialog(hibauzenet);
                     e.preventDefault();
                     return false;
-                }
-                else {
+                } else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
                         $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                         return false;
-                    }
-                    else {
+                    } else {
                         mkw.showMessage(mkwmsg.ChkSave);
                         return true;
                     }
                 }
             });
-		}
-	}
+        }
+    }
 
-	return {
-		initUI: initUI
-	};
+    return {
+        initUI: initUI
+    };
 
 })(jQuery, guid);
 var cart = (function($) {

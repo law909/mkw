@@ -71,7 +71,12 @@ class checkoutController extends \mkwhelpers\MattableController
             $user['irszam'] = $u->getIrszam();
             $user['varos'] = $u->getVaros();
             $user['utca'] = $u->getUtca();
-            $user['adoszam'] = $u->getAdoszam();
+            $user['adoszam'] = $u->getAdoszam() ?? $u->getEuadoszam();
+            if ($user['adoszam']) {
+                $user['vasarlo_tipus'] = 'ceg';
+            } else {
+                $user['vasarlo_tipus'] = 'maganszemely';
+            }
             $user['orszag'] = $u->getOrszagId();
             $user['szallnev'] = $u->getSzallnev();
             $user['szallirszam'] = $u->getSzallirszam();
@@ -100,6 +105,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $user['varos'] = '';
             $user['utca'] = '';
             $user['adoszam'] = '';
+            $user['vasarlo_tipus'] = '';
             $user['szallnev'] = '';
             $user['szallirszam'] = '';
             $user['szallvaros'] = '';
@@ -129,6 +135,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $view->setVar('szamlavaros', $this->vv($p->getStringRequestParam('szamlavaros'), $user['varos']));
         $view->setVar('szamlautca', $this->vv($p->getStringRequestParam('szamlautca'), $user['utca']));
         $view->setVar('adoszam', $this->vv($p->getStringRequestParam('adoszam'), $user['adoszam']));
+        $view->setVar('vasarlo_tipus', $this->vv($p->getStringRequestParam('vasarlo_tipus'), $user['vasarlo_tipus']));
         $view->setVar('szamlaeqszall', $this->vv($p->getBoolRequestParam('szamlaeqszall'), $user['szalladategyezik']));
         $view->setVar('orszag', $this->vv($p->getIntRequestParam('orszag'), $user['orszag']));
         $view->setVar('szallnev', $this->vv($p->getStringRequestParam('szallnev'), $user['szallnev']));
