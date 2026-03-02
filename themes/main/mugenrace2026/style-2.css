@@ -2050,6 +2050,8 @@ input.bordered[type=submit].inverse,
   padding: var(--spacing-section) var(--spacing-md);
   background: var(--color-background);
   padding-bottom: 0;
+  position: relative;
+  z-index: 1;
 }
 .featured-collection-slider .product-list-item .flags {
   right: 5px;
@@ -4437,6 +4439,7 @@ nav ul li a {
 }
 .product-list-item__variations-container {
   position: relative;
+  min-height: 95px;
 }
 .product-list-item__variations-container .gvaltozatcontainer {
   display: flex;

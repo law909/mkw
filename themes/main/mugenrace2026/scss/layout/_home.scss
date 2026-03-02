@@ -278,6 +278,8 @@
   padding: var(--spacing-section) var(--spacing-md);
   background: var(--color-background);
   padding-bottom: 0;
+  position: relative;
+  z-index: 1;
   
   .product-list-item {
     .flags {

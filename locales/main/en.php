@@ -319,4 +319,7 @@ return [
     'Kiemelt termékeink' => 'Featured products',
     'Képgaléria' => 'Gallery',
     'Bírálat szöveges értékelései' => 'Testimonials',
+    'Vásárló típusa' => 'Customer type',
+    'Cégként vásárolok' => 'I am buying as a company',
+    'Magánszemélyként vásárolok' => 'I am buying as an individual',
 ];

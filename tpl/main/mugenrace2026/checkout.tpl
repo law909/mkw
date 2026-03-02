@@ -197,6 +197,20 @@
                                                                 {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                                                         </div>
                                                     </div>
+                                                    <!-- Radio gombok -->
+                                                    <div class="controls controls-row chk-controloffset controls-row-vasarlo-tipus">
+                                                        <div class="nomargin chk-relative">
+                                                            <label class="nomargin">{t('Vásárló típusa')}</label>
+                                                            <div class="vasarlo-tipus-wrapper">
+                                                                <label>
+                                                                    <input type="radio" name="vasarlo_tipus" value="ceg" {if (!isset($vasarlotipus) || $vasarlotipus == 'ceg')}checked {/if}> {t('Cégként vásárolok')}
+                                                                </label>
+                                                                <label>
+                                                                    <input type="radio" name="vasarlo_tipus" value="maganszemely" {if (isset($vasarlotipus) && $vasarlotipus == 'maganszemely')}checked {/if}> {t('Magánszemélyként vásárolok')}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="controls controls-row chk-controloffset">
                                                         <div class=" nomargin">
                                                             <label class=" nomargin">{t('Ir.szám')} *</label>
@@ -214,7 +228,7 @@
                                                         <input name="szamlautca" type="text" class=" nomargin js-chkrefresh" value="{$szamlautca|default}"
                                                             {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                                                     </div>
-                                                    <div class="controls controls-row chk-controloffset">
+                                                    <div class="controls controls-row chk-controloffset controls-row-adoszam">
                                                         <div class=" nomargin chk-relative">
                                                             <label class=" nomargin">{t('Adószám')}</label>
                                                             <input name="adoszam" type="text" class=" nomargin js-chkrefresh" value="{$adoszam|default}">
