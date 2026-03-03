@@ -6566,10 +6566,10 @@ class importController extends \mkwhelpers\Controller
         $maxrow = (int)$sheet->getHighestRow();
         $biralo = $this->getRepo(Munkakor::class)->find(2);
 
-        for ($row = 2; $row <= $maxrow; ++$row) {
+        for ($row = 1; $row <= $maxrow; ++$row) {
             $bir = new Dolgozo();
-            $bir->setNev($sheet->getCell('B' . $row)->getValue());
-            $bir->setEmail($sheet->getCell('C' . $row)->getValue());
+            $bir->setNev($sheet->getCell('A' . $row)->getValue());
+            $bir->setEmail($sheet->getCell('B' . $row)->getValue());
             $p = \mkw\store::generatePassword(10);
             $bir->setJelszo($p);
             $bir->setJelszotext($p);
