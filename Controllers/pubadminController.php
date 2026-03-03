@@ -239,6 +239,20 @@ class pubadminController extends mkwhelpers\Controller
                 $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             }
             if ($rv->getOrarend()->getDolgozo()->isAutoszamla()) {
+                $tulajkontaktemail = \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail);
+                if (!\mkw\store::csinalhatUjSzamlat() && $tulajkontaktemail) {
+                    $subject = 'Beküldetlen számla miatt nem készül új számla a pubadminból';
+                    $body = 'A pubadminban valaki épp órajegyet vagy bérletet vett, de nem készül automatikusan számla, mert van beküldetlen számla. Küldd be minél előbb, utána számlázd ki ami elmaradt!';
+
+                    $mailer = \mkw\store::getMailer();
+
+                    $mailer->addTo($tulajkontaktemail);
+                    $mailer->setSubject($subject);
+                    $mailer->setMessage($body);
+                    $mailer->send();
+
+                    return;
+                }
                 /** @var Bizonylattipus $biztipus */
                 $biztipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
                 /** @var Valutanem $valutanem */

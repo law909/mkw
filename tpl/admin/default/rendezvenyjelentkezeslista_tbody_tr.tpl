@@ -141,7 +141,7 @@
                     </td>
                 </tr>
             {/if}
-            {if (!$_egyed.szamlazva && $_egyed.fizetve && haveJog(20))}
+            {if (!$_egyed.szamlazva && $_egyed.fizetve && haveJog(20) && $csinalhatujszamlat)}
                 <tr>
                     <td>
                         <a class="js-szamlazva" href="#" data-id="{$_egyed.id}">{at('Számláz')}</a>

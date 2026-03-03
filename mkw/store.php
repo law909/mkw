@@ -3,6 +3,7 @@
 namespace mkw;
 
 use Automattic\WooCommerce\Client;
+use Controllers\bizonylatfejController;
 use Controllers\mnrnavigationController;
 use Controllers\popupController;
 use Controllers\termekfaController;
@@ -1498,6 +1499,22 @@ class store
     public static function isDarshan()
     {
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
+    }
+
+    public static function isSzigoru()
+    {
+        return self::getSetupValue('szigoru', false);
+    }
+
+    public static function csinalhatUjSzamlat($bekuldetlencnt = null)
+    {
+        $x = $bekuldetlencnt;
+        if ($bekuldetlencnt === null) {
+            $bizc = new bizonylatfejController(null);
+            $bizcnt = $bizc->calcNavEredmenyRiasztas();
+            $x = $bizcnt['null'];
+        }
+        return !self::isSzigoru() || (self::isSzigoru() && !$x);
     }
 
     public static function isMPT()

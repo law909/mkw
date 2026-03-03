@@ -1125,17 +1125,19 @@ var bizonylathelper = function ($) {
 
     function createMattable(bizonylattipus) {
         if ($.fn.mattable) {
-            var dialogcenter = $('#dialogcenter'),
+            let dialogcenter = $('#dialogcenter'),
                 datumtolfilter = $('#datumtolfilter'),
-                datumigfilter = $('#datumigfilter');
+                datumigfilter = $('#datumigfilter'),
+                mattableselect = $('#mattable-select');
 
             datumtolfilter.datepicker($.datepicker.regional['hu']);
             datumtolfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
             datumtolfilter.datepicker('setDate', datumtolfilter.attr('data-datum'));
             datumigfilter.datepicker($.datepicker.regional['hu']);
             datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            $('#mattable-select').mattable({
-                quickAddVisible: true,
+            mattableselect.mattable({
+                quickAddVisible: mattableselect.data('szamlazhat'),
+                addVisible: mattableselect.data('szamlazhat'),
                 filter: {
                     fields: [
                         '#idfilter',

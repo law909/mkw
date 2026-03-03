@@ -471,6 +471,10 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
 
     public function szamlaz()
     {
+        if (!\mkw\store::csinalhatUjSzamlat()) {
+            echo json_encode(['result' => 'error', 'msg' => at('Amíg van beküldetlen számla, nem állíthat ki újat!')]);
+            return;
+        }
         /** @var \Entities\Rendezvenyjelentkezes $rj */
         $rj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
 
