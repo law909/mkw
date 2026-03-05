@@ -10,6 +10,8 @@ use Entities\MPTNGYTema;
 use Entities\MPTNGYTemakor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 {
@@ -1033,6 +1035,254 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             \mkw\store::getEm()->flush();
         }
         echo 'Ready.';
+    }
+
+    public function exportKivonatkotet()
+    {
+        function x($o, $sor)
+        {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $sql = "(SELECT
+            t.nev AS tipus,
+            a.id,
+            a.cim,
+            a.tartalom,
+            p.nev AS szerzonev,
+            a.szerzo1email,
+            p.mpt_munkahelynev,
+            '' AS szimpocim, '' AS elnok, '' AS elnok_munkahely, '' AS opponens, '' AS opponens_munkahely,'' AS szimpotartalom, NULL AS szimpoid,
+            p2.nev AS szerzo2nev, a.szerzo2email, p2.mpt_munkahelynev AS szerzo2munkahely,
+            p3.nev AS szerzo3nev, a.szerzo3email, p3.mpt_munkahelynev AS szerzo3munkahely,
+            p4.nev AS szerzo4nev, a.szerzo4email, p4.mpt_munkahelynev AS szerzo4munkahely,
+            p5.nev AS szerzo5nev, a.szerzo5email, p5.mpt_munkahelynev AS szerzo5munkahely,
+            p6.nev AS szerzo6nev, a.szerzo6email, p6.mpt_munkahelynev AS szerzo6munkahely,
+            p7.nev AS szerzo7nev, a.szerzo7email, p7.mpt_munkahelynev AS szerzo7munkahely,
+            p8.nev AS szerzo8nev, a.szerzo8email, p8.mpt_munkahelynev AS szerzo8munkahely,
+            p9.nev AS szerzo9nev, a.szerzo9email, p9.mpt_munkahelynev AS szerzo9munkahely,
+            p10.nev AS szerzo10nev, a.szerzo10email, p10.mpt_munkahelynev AS szerzo10munkahely,
+            a.egyebszerzok
+            FROM mptngyszakmaianyag a
+            JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
+            JOIN partner p                      ON a.szerzo1_id = p.id
+            LEFT JOIN partner p2                ON a.szerzo2_id = p2.id
+            LEFT JOIN partner p3                ON a.szerzo3_id = p3.id
+            LEFT JOIN partner p4                ON a.szerzo4_id = p4.id
+            LEFT JOIN partner p5                ON a.szerzo5_id = p5.id
+            LEFT JOIN partner p6                ON a.szerzo6_id = p6.id
+            LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
+            LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
+            LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            WHERE a.konferencianszerepelhet = 1
+              AND a.biralatkesz = 1
+              AND a.vegleges = 1
+              AND a.tipus_id IN (1, 2, 6)
+            ORDER BY t.nev, a.id
+            ) UNION (
+            SELECT
+                t.nev AS tipus,
+                a.id,
+                a.cim,
+                a.tartalom,
+                p.nev AS szerzonev,
+                a.szerzo1email,
+                p.mpt_munkahelynev,
+                sz.cim AS szimpocim,
+                tulaj.nev AS elnok,tulaj.mpt_munkahelynev AS elnok_munkahely,
+                oppo.nev AS opponens,oppo.mpt_munkahelynev AS opponens_munkahely,
+                sz.tartalom AS szimpotartalom,
+                sz.id AS szimpoid,
+                p2.nev AS szerzo2nev, a.szerzo2email, p2.mpt_munkahelynev AS szerzo2munkahely,
+                p3.nev AS szerzo3nev, a.szerzo3email, p3.mpt_munkahelynev AS szerzo3munkahely,
+                p4.nev AS szerzo4nev, a.szerzo4email, p4.mpt_munkahelynev AS szerzo4munkahely,
+                p5.nev AS szerzo5nev, a.szerzo5email, p5.mpt_munkahelynev AS szerzo5munkahely,
+                p6.nev AS szerzo6nev, a.szerzo6email, p6.mpt_munkahelynev AS szerzo6munkahely,
+                p7.nev AS szerzo7nev, a.szerzo7email, p7.mpt_munkahelynev AS szerzo7munkahely,
+                p8.nev AS szerzo8nev, a.szerzo8email, p8.mpt_munkahelynev AS szerzo8munkahely,
+                p9.nev AS szerzo9nev, a.szerzo9email, p9.mpt_munkahelynev AS szerzo9munkahely,
+                p10.nev AS szerzo10nev, a.szerzo10email, p10.mpt_munkahelynev AS szerzo10munkahely,
+                a.egyebszerzok
+            FROM mptngyszakmaianyag a
+            JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
+            JOIN partner p                      ON a.szerzo1_id = p.id
+            JOIN mptngyszakmaianyag sz          ON (
+                sz.eloadas1_id = a.id OR
+                sz.eloadas2_id = a.id OR
+                sz.eloadas3_id = a.id OR
+                sz.eloadas4_id = a.id OR
+                sz.eloadas5_id = a.id
+            )
+            JOIN partner oppo                   ON sz.opponensemail = oppo.email
+            JOIN partner tulaj                  ON sz.tulajdonos_id = tulaj.id
+            LEFT JOIN partner p2                ON a.szerzo2_id = p2.id
+            LEFT JOIN partner p3                ON a.szerzo3_id = p3.id
+            LEFT JOIN partner p4                ON a.szerzo4_id = p4.id
+            LEFT JOIN partner p5                ON a.szerzo5_id = p5.id
+            LEFT JOIN partner p6                ON a.szerzo6_id = p6.id
+            LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
+            LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
+            LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            WHERE a.konferencianszerepelhet = 1
+              AND a.biralatkesz = 1
+              AND a.vegleges = 1
+              AND a.tipus_id = 5
+            ORDER BY sz.cim, a.id
+            );";
+
+        $conn = $this->getEm()->getConnection();
+        $res = $conn->fetchAllAssociative($sql);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0);
+        $sheet = $excel->getActiveSheet();
+
+        if ($res) {
+            $o = 0;
+            foreach (array_keys($res[0]) as $header) {
+                $sheet->setCellValue(x($o++, 1), $header);
+            }
+
+            $sor = 2;
+            foreach ($res as $item) {
+                $o = 0;
+                foreach ($item as $val) {
+                    $sheet->setCellValue(x($o++, $sor), $val);
+                }
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+        $filepath = \mkw\store::storagePath(uniqid('kivonatkotet') . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=kivonatkotet.xlsx");
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function exportProgramfuzethez()
+    {
+        function x($o, $sor)
+        {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $sql = "(
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 1' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo1_id=p.id) AND (a.konferencianszerepelhet=1)
+            union 
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 2' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo2_id=p.id) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 3' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo3_id=p.id) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 4' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo4_id=p.id) AND (a.konferencianszerepelhet=1)
+            UNION
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 5' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo5_id=p.id) AND (a.konferencianszerepelhet=1)
+            UNION
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 6' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo6_id=p.id) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 7' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo7_id=p.id) AND (a.konferencianszerepelhet=1)
+            UNION
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 8' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo8_id=p.id) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 9' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo9_id=p.id) AND (a.konferencianszerepelhet=1)
+            UNION
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 10' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.szerzo10_id=p.id) AND (a.konferencianszerepelhet=1)
+            UNION
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'beszélgető partner' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.beszelgetopartner_id=p.id) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'elnök' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.tulajdonos_id=p.id) AND (a.tipus_id=4) AND (a.konferencianszerepelhet=1)
+            union
+            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'opponens' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p,mptngyszakmaianyag a
+            LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
+            WHERE (a.opponens_id=p.id) AND (a.tipus_id=4) AND (a.konferencianszerepelhet=1)
+            ) 
+            order by id;";
+
+        $conn = $this->getEm()->getConnection();
+        $res = $conn->fetchAllAssociative($sql);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0);
+        $sheet = $excel->getActiveSheet();
+
+        if ($res) {
+            $o = 0;
+            foreach (array_keys($res[0]) as $header) {
+                $sheet->setCellValue(x($o++, 1), $header);
+            }
+
+            $sor = 2;
+            foreach ($res as $item) {
+                $o = 0;
+                foreach ($item as $val) {
+                    $sheet->setCellValue(x($o++, $sor), $val);
+                }
+                $sor++;
+            }
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+        $filepath = \mkw\store::storagePath(uniqid('programfuzet') . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=programfuzet.xlsx");
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 
 }

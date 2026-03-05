@@ -160,6 +160,9 @@
                     <option value="{$_batch.id}">{$_batch.caption}</option>
                 {/foreach}
             </select>
+            <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
+            <a href="/admin/mptngyszakmaianyag/exportkivonatkotet" class="mattable-batchbtn" target="_blank">{at('Export kivonatkötethez')}</a>
+            <a href="/admin/mptngyszakmaianyag/exportprogramfuzethez" class="mattable-batchbtn" target="_blank">{at('Export programfüzethez')}</a>
         </div>
         <table id="mattable-table">
             <thead>
@@ -183,6 +186,7 @@
                     <option value="{$_batch.id}">{$_batch.caption}</option>
                 {/foreach}
             </select>
+            <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
         </div>
         <div class="mattable-pagerwrapper ui-corner-bottom">
             <div class="mattable-order">

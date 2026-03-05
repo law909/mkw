@@ -165,6 +165,18 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
 
     $router->map('GET', '/admin/recalcbiralat', 'mptngyszakmaianyagController#recalcBiralat', 'adminmptngyrecalcbiralat');
+    $router->map(
+        'GET',
+        '/admin/mptngyszakmaianyag/exportkivonatkotet',
+        'mptngyszakmaianyagController#exportKivonatkotet',
+        'adminmptngyszakmaianyagexportkivonatkotet'
+    );
+    $router->map(
+        'GET',
+        '/admin/mptngyszakmaianyag/exportprogramfuzethez',
+        'mptngyszakmaianyagController#exportProgramfuzethez',
+        'adminmptngyszakmaianyagexportprogramfuzethez'
+    );
     $router->map('GET', '/admin/setszerzobyemail', 'adminController#setSzerzoByEmail', 'adminmptngysetszerzobyemail');
 
     $router->map('POST', '/admin/import/mptngybiraloimport', 'importController#mptngybiraloimport', 'adminmptngybiraloimport');
