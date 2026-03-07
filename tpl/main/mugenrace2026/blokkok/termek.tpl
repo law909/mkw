@@ -23,12 +23,13 @@
                     <div class="flag sale-product">{t('Top 10')}</div>
                 {/if} *}
             </div>
-            <a href="/product/{$termek.slug}"><img class="product-list-item__image" itemprop="image" src="{$imagepath}{$termek.kepurl}"
+            <a href="/product/{$termek.slug}"><img class="product-list-item__image" itemprop="image"
+                                                   src="{$imagepath}{if (is_array($termek.szinkepek))}{$termek.szinkepek[0].kepurl}{else}{$termek.kepurl}{/if}"
                                                    title="{$termek.caption}" alt="{$termek.caption}"></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__title">
             <a itemprop="url" href="/product/{$termek.slug}"><span class="gtermekcaption"
-                                                                   itemprop="name">{$termek.caption|lower|capitalize}</span></a>
+                                                                   itemprop="name">{$termek.caption|lower|capitalize}{if ($termek.szin)} ({$termek.szin}){/if}</span></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__code">
             <a href="/product/{$termek.slug}">{$termek.cikkszam}</a>
@@ -83,13 +84,13 @@
                 {else}
                     {if ($hidecart != 1) && ($termek.brutto > 0)}
                         <a href="/kosar/add?id={$termek.id}" rel="nofollow"
-                            class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
+                           class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
                             {t('Kosárba')}
                         </a>
                     {/if}
                 {/if}
             </div>
-            
+
         </div>
         {if ($detailsbutton)}
             <a href="{$termek.link}" class="button bordered okbtn">{t('Részletek')}</a>

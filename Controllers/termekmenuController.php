@@ -5,6 +5,7 @@ namespace Controllers;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Szin;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekMenu;
@@ -440,8 +441,11 @@ class termekmenuController extends \mkwhelpers\MattableController
                 $arfilterstring = '((' . $arfilterstring . ') OR (_xx.brutto IS NULL))';
                 $arfilter->addSql($arfilterstring);
 
+                $listVariations = true;
+
                 $termekdb = $termekrepo->getTermekListaCount(
-                    $keresofilter->merge($kategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter)
+                    $keresofilter->merge($kategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
+                    $listVariations
                 );
                 if ($termekdb > 0) {
                     // termekdarabszam kategoriaval es cimkevel es arral szurve
@@ -504,15 +508,14 @@ class termekmenuController extends \mkwhelpers\MattableController
                     $ret['kiemelttermekek'] = $kiemelt;
                     // termekek kategoriaval es cimkevel es arral szurve, lapozva
                     // ez a konkret termeklista
-                    $osszestermekid = [];
                     $termekek = $termekrepo->getTermekLista(
                         $keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
                         $order,
                         $pager->getOffset(),
-                        $elemperpage
+                        $elemperpage,
+                        $listVariations
                     );
                     foreach ($termekek as $termek) {
-                        $osszestermekid[] = $termek['id'];
                         /** @var \Entities\Termek $term */
                         $_termekidfilter = new FilterDescriptor();
                         $_termekidfilter->addFilter('id', '=', $termek['id']);
@@ -521,13 +524,15 @@ class termekmenuController extends \mkwhelpers\MattableController
                             $term = $term[0];
                         }
                         // $term = $termekrepo->find($termek['id']);
+                        $szin = null;
+                        $valt = null;
                         if ($termek['valtozatid']) {
                             /** @var \Entities\TermekValtozat $valt */
                             $valt = $this->getEm()->getRepository(TermekValtozat::class)->find($termek['valtozatid']);
-                        } else {
-                            $valt = null;
+                        } elseif ($termek['szin_id']) {
+                            $szin = $this->getEm()->getRepository(Szin::class)->find($termek['szin_id']);
                         }
-                        $tete = $term->toTermekLista($valt, $ujtermekminid, $top10min);
+                        $tete = $term->toSzinesTermekLista($valt, $ujtermekminid, $top10min, $szin);
                         $tete['kiemelt'] = false;
                         $t[] = $tete;
                     }
@@ -535,7 +540,10 @@ class termekmenuController extends \mkwhelpers\MattableController
                         $osszeslapozatlantermekid = [];
                         $termekek = $termekrepo->getTermekLista(
                             $keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
-                            $order
+                            $order,
+                            null,
+                            null,
+                            $listVariations
                         );
                         foreach ($termekek as $termek) {
                             $osszeslapozatlantermekid[] = $termek['id'];

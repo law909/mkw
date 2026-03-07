@@ -840,6 +840,33 @@ class Termek
         return $x;
     }
 
+    public function toSzinesTermekLista($valtozat = null, $ujtermekid = null, $top10min = null, $szin = null)
+    {
+        $result = $this->toTermekLista($valtozat, $ujtermekid, $top10min);
+        if ($szin) {
+            $result['szin'] = $szin->getNev();
+            $result['szin_id'] = $szin->getId();
+        }
+        /** @var TermekSzinKep $szinkep */
+        foreach ($this->getTermekSzinKepek() as $szinkep) {
+            \mkw\store::writelog($szinkep->getId());
+            if ($szinkep->getSzinId() == $szin->getId()) {
+                $kep = $szinkep->getKep();
+                $result['szinkepek'][] = [
+                    'id' => $kep->getId(),
+                    'kepurl' => $kep->getUrl(),
+                    'kepurllarge' => $kep->getUrlLarge(),
+                    'kepurlmedium' => $kep->getUrlMedium(),
+                    'kepurlsmall' => $kep->getUrlSmall(),
+                    'kepurlmini' => $kep->getUrlMini(),
+                    'kepurl400' => $kep->getUrl400(),
+                    'kepurl2000' => $kep->getUrl2000(),
+                ];
+            }
+        }
+        return $result;
+    }
+
     /**
      * @param TermekValtozat|null $valtozat
      * @param null $ujtermekid
@@ -4329,7 +4356,7 @@ class Termek
     /**
      * Create product in PrestaShop
      */
-    private function createProductInPresta($prestaClient, $doFlush)
+    private function createProductInPresta($prestaClient, $productData, $doFlush)
     {
         \mkw\store::writelog($this->getId() . ': PrestaShop termék POST start');
 
@@ -4351,11 +4378,10 @@ class Termek
             $product->name->language = $this->getNev();
             $product->description = $this->getLeiras();
             $product->description_short = $this->getRovidleiras();
-            $product->new = $productData['new'];
             $product->reference = $productData['reference'];
             $product->ean13 = $this->getVonalkod() ?: '';
-            $product->active = $this->getInaktiv();
-            $product->visibility = $this->getLathato();
+            $product->active = $this->getInaktiv() ? '0' : '1';
+            $product->visibility = $this->getLathato() ? 'both' : 'none';
 
 
             $product->price = $productData['price'];
@@ -4367,8 +4393,12 @@ class Termek
             $product->available_for_order = $productData['available_for_order'];
             $product->show_condition = $productData['show_condition'];
             $product->condition = $productData['condition'];
-            $product->id_category_default = $productData['id_category_default'];
-            $product->associations = $productData['associations'];
+            if (isset($productData['id_category_default'])) {
+                $product->id_category_default = $productData['id_category_default'];
+            }
+            if (isset($productData['associations'])) {
+                $product->associations = $productData['associations'];
+            }
 
             $xml = $this->arrayToPrestaXml($productData, 'product');
             $response = $prestaClient->add([

@@ -279,6 +279,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toSzinesTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL, $szin = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toSzinesTermekLista', [$valtozat, $ujtermekid, $top10min, $szin]);
+
+        return parent::toSzinesTermekLista($valtozat, $ujtermekid, $top10min, $szin);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
 

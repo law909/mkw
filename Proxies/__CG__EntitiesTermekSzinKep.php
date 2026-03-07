@@ -261,7 +261,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getKep()
+    public function getKep(): ?\Entities\TermekKep
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKep', []);

@@ -82,7 +82,7 @@ class TermekSzinKep
         $this->szin = $szin;
     }
 
-    public function getKep()
+    public function getKep(): TermekKep|null
     {
         return $this->kep;
     }

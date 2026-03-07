@@ -329,7 +329,7 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult();
     }
 
-    public function getTermekLista($filter, $order, $offset = null, $elemcount = null)
+    public function getTermekLista($filter, $order, $offset = null, $elemcount = null, $listVariations = false)
     {
         switch (true) {
             case \mkw\store::isMindentkapni():
@@ -362,20 +362,33 @@ class TermekRepository extends \mkwhelpers\Repository
             case \mkw\store::isMugenrace2021():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
-                $rsm->addScalarResult('valtozatid', 'valtozatid');
+                $rsm->addScalarResult('szin_id', 'szin_id');
                 $rsm->addScalarResult('o1', 'o1');
 
                 $order = array_merge_recursive(['.o1' => 'ASC'], $order);
                 $this->addAktivLathatoFilter($filter);
-                $sql = 'SELECT _xx.id,null AS valtozatid,'
-                    . ' IF(_xx.nemkaphato,9,0) AS o1'
-                    . ' FROM termek _xx'
-                    . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
-                    . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
-                    . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
-                    . $this->getFilterString($filter)
-                    . $this->getOrderString($order)
-                    . $this->getLimitString($offset, $elemcount);
+                if ($listVariations) {
+                    $sql = 'SELECT _xx.id,v.szin_id,_xx.nev,_xx.brutto,'
+                        . ' IF(_xx.nemkaphato,9,0) AS o1'
+                        . ' FROM termek _xx'
+                        . ' INNER JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND '
+                        . '(' . \mkw\store::getWebshopFieldName('v.lathato') . '=1) AND '
+                        . '(' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1) '
+                        . $this->getFilterString($filter)
+                        . ' GROUP BY _xx.id, v.szin_id, _xx.nev, _xx.brutto '
+                        . $this->getOrderString($order)
+                        . $this->getLimitString($offset, $elemcount);
+                } else {
+                    $sql = 'SELECT _xx.id,null AS szin_id,'
+                        . ' IF(_xx.nemkaphato,9,0) AS o1'
+                        . ' FROM termek _xx'
+                        . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
+                        . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
+                        . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
+                        . $this->getFilterString($filter)
+                        . $this->getOrderString($order)
+                        . $this->getLimitString($offset, $elemcount);
+                }
                 $q = $this->_em->createNativeQuery($sql, $rsm);
                 $params = $this->getQueryParameters($filter);
                 $q->setParameters($params);
@@ -387,20 +400,35 @@ class TermekRepository extends \mkwhelpers\Repository
         }
     }
 
-    public function getTermekListaCount($filter)
+    public function getTermekListaCount($filter, $listVariations = false)
     {
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $this->addAktivLathatoFilter($filter);
-                $q = $this->_em->createQuery(
-                    'SELECT COUNT(_xx)'
-                    . ' FROM Entities\Termek _xx'
-                    . ' LEFT JOIN _xx.termekfa1 fa1'
-                    . ' LEFT JOIN _xx.termekfa2 fa2'
-                    . ' LEFT JOIN _xx.termekfa3 fa3'
-                    . $this->getFilterString($filter)
-                );
+                if ($listVariations) {
+                    $q = $this->_em->createQuery(
+                        'SELECT COUNT(DISTINCT CONCAT(_xx.id, CONCAT(\'-\', COALESCE(IDENTITY(v.szin), 0))))'
+                        . ' FROM Entities\TermekValtozat v'
+                        . ' JOIN v.termek _xx'
+                        . ' LEFT JOIN _xx.termekfa1 fa1'
+                        . ' LEFT JOIN _xx.termekfa2 fa2'
+                        . ' LEFT JOIN _xx.termekfa3 fa3'
+                        . ' WHERE (1=1) '
+                        . str_replace('WHERE', 'AND', $this->getFilterString($filter))
+                        . ' AND (' . \mkw\store::getWebshopFieldName('v.lathato') . '=1) '
+                        . ' AND (' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1) '
+                    );
+                } else {
+                    $q = $this->_em->createQuery(
+                        'SELECT COUNT(_xx)'
+                        . ' FROM Entities\Termek _xx'
+                        . ' LEFT JOIN _xx.termekfa1 fa1'
+                        . ' LEFT JOIN _xx.termekfa2 fa2'
+                        . ' LEFT JOIN _xx.termekfa3 fa3'
+                        . $this->getFilterString($filter)
+                    );
+                }
                 $q->setParameters($this->getQueryParameters($filter));
                 if (\mkw\store::isMainMode()) {
                     \mkw\store::setTranslationHint($q, \mkw\store::getLocale());
