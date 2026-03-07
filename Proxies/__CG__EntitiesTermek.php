@@ -3660,61 +3660,6 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function uploadToPresta($doFlush = true)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'uploadToPresta', [$doFlush]);
-
-        return parent::uploadToPresta($doFlush);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPrestaId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrestaId', []);
-
-        return parent::getPrestaId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setPrestaId($prestaid): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrestaId', [$prestaid]);
-
-        parent::setPrestaId($prestaid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPrestaDate()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrestaDate', []);
-
-        return parent::getPrestaDate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setPrestaDate($prestadate): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrestaDate', [$prestadate]);
-
-        parent::setPrestaDate($prestadate);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getUj()
     {
 
