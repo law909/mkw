@@ -6,19 +6,22 @@ use Carbon\Carbon;
 use Entities\Partner;
 use mkw\store;
 
-class adategyeztetoController extends \mkwhelpers\Controller {
+class adategyeztetoController extends \mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->getTemplateFactory()->createMainView('adategyezteto.tpl');
         $view->printTemplateResult();
     }
 
-    public function check() {
+    public function check()
+    {
         $view = $this->getTemplateFactory()->createMainView('adategyeztetoadatlap.tpl');
         $email = $this->params->getStringRequestParam('email');
         if ($email) {
             /** @var Partner $partner */
-            $partner = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $email));
+            $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
             if ($partner) {
                 $view->setVar('vezeteknev', $partner->getVezeteknev());
                 $view->setVar('keresztnev', $partner->getKeresztnev());
@@ -28,15 +31,15 @@ class adategyeztetoController extends \mkwhelpers\Controller {
                 $view->setVar('hazszam', $partner->getHazszam());
                 $view->setVar('hirlevelkell', $partner->getUjdonsaghirlevelkell());
                 $view->setVar('msg', 'Kérjük ellenőrizd az adataidat és nyomd meg a "Mentés" gombot!');
-            }
-            else {
+            } else {
                 $view->setVar('msg', 'Sajnos nem ismerünk az emailcímed alapján. Kérjük add meg az adataidat és nyomd meg a "Mentés" gombot!');
             }
             $view->printTemplateResult();
         }
     }
 
-    public function save() {
+    public function save()
+    {
         $email = $this->params->getStringRequestParam('email');
         $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
         $keresztnev = $this->params->getStringRequestParam('keresztnev');
@@ -47,14 +50,14 @@ class adategyeztetoController extends \mkwhelpers\Controller {
         $hirlevelkell = $this->params->getBoolRequestParam('hirlevelkell');
         if ($email) {
             /** @var Partner $partner */
-            $partner = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $email));
+            $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
             if (!$partner) {
                 $partner = new Partner();
                 $partner->setEmail($email);
             }
             $partner->setVezeteknev($vezeteknev);
             $partner->setKeresztnev($keresztnev);
-            $partner->setNev(implode(' ', array($vezeteknev, $keresztnev)));
+            $partner->setNev(implode(' ', [$vezeteknev, $keresztnev]));
             $partner->setIrszam($irszam);
             $partner->setVaros($varos);
             $partner->setUtca($utca);
@@ -63,8 +66,6 @@ class adategyeztetoController extends \mkwhelpers\Controller {
 
             $this->getEm()->persist($partner);
             $this->getEm()->flush();
-
-            \mkw\store::writelog($email . ':' . $vezeteknev . ':' . $keresztnev, 'adategy.log');
         }
     }
 

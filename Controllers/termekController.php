@@ -942,19 +942,6 @@ class termekController extends \mkwhelpers\MattableController
             $tec = new termekertesitoController($this->params);
             $tec->sendErtesito($o);
         }
-        switch ($parancs) {
-            case $this->addOperation:
-            case $this->editOperation:
-                $tvec = new termekvaltozatertekController(null);
-                $tvec->uploadToWc();
-                //$tcc = new termekcimkeController(null);
-                //$tcc->uploadToWc();
-                $o->clearWcdate();
-                $o->uploadToWc();
-        }
-        if ($parancs == $this->delOperation) {
-            $o->deleteFromWc();
-        }
         parent::afterSave($o, $parancs);
     }
 
@@ -1593,7 +1580,6 @@ class termekController extends \mkwhelpers\MattableController
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
-            $obj->uploadToWC();
             if ($kaphatolett) {
                 $tec = new termekertesitoController($this->params);
                 $tec->sendErtesito($obj);
@@ -2251,7 +2237,6 @@ class termekController extends \mkwhelpers\MattableController
                     $termek->setTermekcsoport(null);
                 }
                 $this->getEm()->persist($termek);
-                $termek->uploadToWC();
                 if (($termekdb % $batchsize) === 0) {
                     $this->getEm()->flush();
                 }
@@ -2260,36 +2245,4 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->clear();
         }
     }
-
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            /** @var Client $wc */
-            $wc = store::getWcClient();
-            $eur = $this->getRepo(Valutanem::class)->findOneBy(['nev' => 'EUR']);
-
-            $filter = new FilterDescriptor();
-            $filter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
-            $categories = $this->getRepo(TermekMenu::class)->getAll($filter);
-
-            $termekdone = [];
-
-            /** @var TermekFa $category */
-            foreach ($categories as $category) {
-                $tfilter = new FilterDescriptor();
-                $tfilter->addFilter(['_xx.termekmenu1'], '=', $category->getId());
-                $tfilter->addFilter('wctiltva', '<>', 1);
-                $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
-                /** @var Termek $termek */
-                foreach ($termekek as $termek) {
-                    if (!in_array($termek->getId(), $termekdone)) {
-                        $termekdone[] = $termek->getId();
-                        $termek->uploadToWC(true);
-                    }
-                }
-            }
-            echo 'OK';
-        }
-    }
-
 }

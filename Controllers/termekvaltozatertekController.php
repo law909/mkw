@@ -18,7 +18,6 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
 
     public function fill()
     {
-        \mkw\store::writelog('termekvaltozatertekController fill START');
         $tipusertekek = $this->getRepo(TermekValtozat::class)->getTipusErtek();
         foreach ($tipusertekek as $tipusertek) {
             $tve = $this->getRepo(TermekValtozatErtek::class)->findOneBy(['adattipus' => $tipusertek['adattipus'], 'ertek' => $tipusertek['ertek']]);
@@ -30,39 +29,5 @@ class termekvaltozatertekController extends \mkwhelpers\JQGridController
                 \mkw\store::getEm()->flush();
             }
         }
-        \mkw\store::writelog('termekvaltozatertekController fill STOP');
     }
-
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            $this->fill();
-            \mkw\store::writelog('termekvaltozatertekController uploadtowc START');
-            $tvatarr = [];
-            $tvats = $this->getRepo(TermekValtozatAdatTipus::class)->getAll();
-            /** @var TermekValtozatAdatTipus $tvat */
-            foreach ($tvats as $tvat) {
-                $tvatarr[$tvat->getId()] = $tvat->getWcid();
-            }
-
-            $wc = \mkw\store::getWcClient();
-            $ertekek = $this->getRepo()->getAll();
-            /** @var TermekValtozatErtek $ertek */
-            foreach ($ertekek as $ertek) {
-                if (!$ertek->getWcid()) {
-                    $data = [
-                        'name' => $ertek->getErtek()
-                    ];
-                    $result = $wc->post('products/attributes/' . $tvatarr[$ertek->getAdatTipusId()] . '/terms', $data);
-
-                    $ertek->setWcid($result->id);
-                    $ertek->setWcdate('');
-                    \mkw\store::getEm()->persist($ertek);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-            \mkw\store::writelog('termekvaltozatertekController uploadtowc STOP');
-        }
-    }
-
 }

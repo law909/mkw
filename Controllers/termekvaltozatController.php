@@ -164,23 +164,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $ids = [];
         foreach ($valtozatok as $valt) {
             //$termek->removeValtozat($valt);
-            if ($valt->getWcid()) {
-                $ids[] = $valt->getId();
-            }
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();
-        if ($ids && \mkw\store::isWoocommerceOn()) {
-            $wc = store::getWcClient();
-            try {
-                \mkw\store::writelog('BATCH DELETE TermekValtozat: ' . json_encode($ids));
-                $result = $wc->post('products/' . $termek->getWcid() . '/variations/batch', ['delete' => $ids]);
-                $termek->clearWcdate();
-                $termek->uploadToWC();
-            } catch (HttpClientException $e) {
-                \mkw\store::writelog('BATCH DELETE TermekValtozat:HIBA: ' . $e->getResponse()->getBody());
-            }
-        }
     }
 
     public function generate()

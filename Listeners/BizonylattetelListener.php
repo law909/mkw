@@ -71,7 +71,6 @@ class BizonylattetelListener
 
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
 
-        $termekek = [];
         $tids = [];
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
@@ -79,11 +78,9 @@ class BizonylattetelListener
                     \mkw\store::writelog($entity->getBizonylatfejId() . ' BizonylattetelListener postFlush');
                     if (!$tids[$entity->getTermek()->getId()] && $entity->getTermek()->getWcid()) {
                         $tids[$entity->getTermek()->getId()] = true;
-                        $termekek[] = $entity->getTermek()->getStockInfoForWC(true);
                     }
                     if ($entity->getTermekvaltozat() && $entity->getTermekvaltozat()->getWcid()) {
                         \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
-                        $entity->getTermekvaltozat()->sendKeszletToWC();
                         \mkw\store::writelog('STOP');
                     }
                 }
@@ -91,24 +88,6 @@ class BizonylattetelListener
         }
 
         $this->willmodify = [];
-
-        if ($termekek && \mkw\store::isWoocommerceOn()) {
-            $wc = store::getWcClient();
-            $tosend = [];
-            foreach ($termekek as $index => $termek) {
-                $tosend['update'][] = $termek;
-                if (($index + 1) % 100 == 0 || $index + 1 == count($termekek)) {
-                    try {
-                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek START: ' . json_encode($tosend));
-                        $result = $wc->post('products/batch', $tosend);
-                        \mkw\store::writelog('STOP');
-                        $tosend = [];
-                    } catch (HttpClientException $e) {
-                        \mkw\store::writelog('BizonylattetelListener sendKeszlet->termekek: :HIBA: ' . $e->getResponse()->getBody() . ':' . $e->getCode());
-                    }
-                }
-            }
-        }
     }
 
 }

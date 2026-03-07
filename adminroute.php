@@ -1320,13 +1320,6 @@ if (\mkw\store::isDarshan()) {
     $router->map('POST', '/admin/darshanstat', 'adminController#darshanStatisztika', 'admindarshanstat');
 }
 
-$router->map('GET', '/admin/wc/termekmenu', 'termekmenuController#uploadToWc', 'admintermekmenuuploadtowc');
-$router->map('GET', '/admin/wc/termekvaltozatadattipus', 'termekvaltozatadattipusController#uploadToWc', 'admintermekvaltozatadattipusuploadtowc');
-$router->map('GET', '/admin/wc/termekvaltozatertek', 'termekvaltozatertekController#uploadToWc', 'admintermekvaltozatertekuploadtowc');
-$router->map('GET', '/admin/wc/termekcimke', 'termekcimkeController#uploadToWc', 'admintermekcimkeuploadtowc');
-$router->map('GET', '/admin/wc/termek', 'termekController#uploadToWc', 'admintermekuploadtowc');
-$router->map('GET', '/admin/wc/termekar', 'termekarController#uploadToWc', 'admintermekaruploadtowc');
-
 $router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');
 
 if (\mkw\store::isMailerGmail()) {

@@ -484,7 +484,6 @@ class adminController extends mkwhelpers\Controller
 
     public function replier()
     {
-        \mkw\store::writelog(print_r($this->params, true), 'replier.txt');
         header('HTTP/1.1 200 OK');
     }
 
@@ -578,8 +577,6 @@ class adminController extends mkwhelpers\Controller
 
             $conn = \mkw\store::getEm()->getConnection();
             if ($kedv > 0) {
-                \mkw\store::writelog(print_r($partnerid, true));
-                \mkw\store::writelog(print_r($kedv, true));
                 $st = new Statement(
                     'DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (8,9,12))', $conn
                 );
@@ -607,8 +604,6 @@ class adminController extends mkwhelpers\Controller
             $res2 = $q2->getScalarResult();
             $kedv = $res2[0]['kedvezmeny'] * 1;
             if ($kedv > 0) {
-                \mkw\store::writelog(print_r($partnerid, true));
-                \mkw\store::writelog(print_r($kedv, true));
                 $st = new Statement(
                     'DELETE FROM partnertermekcsoportkedvezmeny WHERE (partner_id=' . $partnerid . ') AND (termekcsoport_id IN (13,14,16))',
                     $conn
@@ -1172,7 +1167,7 @@ class adminController extends mkwhelpers\Controller
         }
         echo 'Ready.';
     }
-    
+
     public function setSzerzoByEmail()
     {
         $anyagok = $this->getRepo(Entities\MPTNGYSzakmaianyag::class)->getAll();

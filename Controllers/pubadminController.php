@@ -109,7 +109,6 @@ class pubadminController extends mkwhelpers\Controller
                     $filter->addFilter('lejart', '=', false);
                     $filter->addSql('(_xx.lejaratdatum>=CURDATE())');
                     $berletek = $this->getRepo(JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
-                    \mkw\store::writelog(count($berletek));
                     if (count($berletek)) {
                         /** @var JogaBerlet $berlet */
                         $berlet = $berletek[0];

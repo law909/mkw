@@ -70,14 +70,4 @@ class termekreceptController extends \mkwhelpers\MattableController
         $view->setVar('recept', $this->loadVars(null, true));
         echo $view->getTemplateResult();
     }
-
-    protected function afterSave($o, $parancs = null)
-    {
-        switch ($parancs) {
-            case $this->delOperation:
-                $o->getTermek()?->clearWcdate();
-                $o->getTermek()?->uploadToWC();
-        }
-        parent::afterSave($o, $parancs);
-    }
 }

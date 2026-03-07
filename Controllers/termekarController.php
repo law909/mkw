@@ -76,34 +76,4 @@ class termekarController extends \mkwhelpers\MattableController
         }
         return $res;
     }
-
-    protected function afterSave($o, $parancs = null)
-    {
-        switch ($parancs) {
-            case $this->delOperation:
-                $o->getTermek()?->clearWcdate();
-                $o->getTermek()?->uploadToWC();
-        }
-        parent::afterSave($o, $parancs);
-    }
-
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            /** @var Client $wc */
-            $wc = store::getWcClient();
-            $eur = $this->getRepo(Valutanem::class)->findOneBy(['nev' => 'EUR']);
-
-            $tfilter = new FilterDescriptor();
-            $tfilter->addSql('(_xx.wcid<>0) AND (_xx.wcid IS NOT NULL)');
-            $tfilter->addFilter('wctiltva', '<>', 1);
-            $termekek = $this->getRepo(Termek::class)->getAll($tfilter);
-            /** @var Termek $termek */
-            foreach ($termekek as $termek) {
-                $termek->sendArToWC($wc, $eur);
-            }
-            echo 'OK';
-        }
-    }
-
 }

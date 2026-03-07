@@ -89,8 +89,6 @@ class termekkepController extends \mkwhelpers\MattableController
              */
             $this->getEm()->remove($kep);
             $this->getEm()->flush();
-            $kep->getTermek()->clearWcdate();
-            $kep->getTermek()->uploadToWC();
         }
         echo $this->params->getNumRequestParam('id');
     }

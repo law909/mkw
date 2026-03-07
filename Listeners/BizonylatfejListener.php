@@ -543,17 +543,6 @@ class BizonylatfejListener
             $updatedentities,
         );
 
-        foreach ($updatedentities as $entity) {
-            if ($entity instanceof \Entities\Bizonylatfej && $entity->getWcid() && !$entity->dontUploadToWC) {
-                $changeSet = $this->uow->getEntityChangeSet($entity);
-                if (isset($changeSet['bizonylatstatusz'])) {
-                    [$oldValue, $newValue] = $changeSet['bizonylatstatusz'];
-                    if ($oldValue->getId() !== $newValue->getId()) {
-                        $entity->sendStatusChangeToWc();
-                    }
-                }
-            }
-        }
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
                 /** @var \Entities\Bizonylattetel $tetel */

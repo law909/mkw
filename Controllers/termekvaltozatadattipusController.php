@@ -46,45 +46,4 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
         }
         return $res;
     }
-
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            $wc = \mkw\store::getWcClient();
-            $attributes = $this->getRepo()->getAll();
-            /** @var TermekValtozatAdatTipus $attr */
-            foreach ($attributes as $attr) {
-                if ($attr->getId() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                    $attrnev = 'Color';
-                } elseif ($attr->getId() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
-                    $attrnev = 'Size';
-                } else {
-                    $attrnev = $attr->getNev();
-                }
-                if (!$attr->getWcid()) {
-                    $data = [
-                        'name' => $attrnev,
-                        'type' => 'select'
-                    ];
-                    $result = $wc->post('products/attributes', $data);
-
-                    $attr->setWcid($result->id);
-                    $attr->setWcdate('');
-                    \mkw\store::getEm()->persist($attr);
-                    \mkw\store::getEm()->flush();
-                } else {
-                    $data = [
-                        'name' => $attrnev,
-                        'type' => 'select'
-                    ];
-                    $wc->put('products/attributes/' . $attr->getWcid(), $data);
-
-                    $attr->setWcdate('');
-                    \mkw\store::getEm()->persist($attr);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-        }
-    }
-
 }

@@ -142,27 +142,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($record ? $record->getGyartoId() : 0)));
         return $view->getTemplateResult();
     }
-
-    /**
-     * @param Termekcimketorzs $o
-     * @param $parancs
-     *
-     * @return void
-     */
-    protected function afterSave($o, $parancs = null)
-    {
-        switch ($parancs) {
-            case $this->addOperation:
-                $o->deleteFromWC();
-                break;
-            case $this->editOperation:
-            case $this->addOperation:
-                $this->uploadToWc();
-                break;
-        }
-        parent::afterSave($o, $parancs);
-    }
-
+    
     public function setmenulathato()
     {
         $id = $this->params->getIntRequestParam('id');
@@ -268,63 +248,5 @@ class termekcimkeController extends \mkwhelpers\MattableController
         }
         $view->setVar('markalista', $m);
         $view->printTemplateResult();
-    }
-
-    public function uploadToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            $wc = \mkw\store::getWcClient();
-            $cimkek = $this->getRepo()->getAll();
-            $toupdate['update'] = [];
-            $toupdatecnt = 0;
-            \mkw\store::writelog('termekcimkeController uploadtowc START');
-            /** @var Termekcimketorzs $cimke */
-            foreach ($cimkek as $cimke) {
-                if (!$cimke->getWcid()) {
-                    $data = [
-                        'name' => $cimke->getNev()
-                    ];
-                    \mkw\store::writelog('POST: ' . json_encode($data));
-                    $result = $wc->post('products/tags', $data);
-
-                    $cimke->setWcid($result->id);
-                    $cimke->setWcdate('');
-                    \mkw\store::getEm()->persist($cimke);
-                    \mkw\store::getEm()->flush();
-                } else {
-                    $toupdatecnt++;
-                    $toupdate['update'][] = [
-                        'id' => $cimke->getWcid(),
-                        'name' => $cimke->getNev()
-                    ];
-
-                    if ($toupdatecnt >= 100) {
-                        \mkw\store::writelog('BATCH POST start: ' . json_encode($toupdate));
-                        $toupdatecnt = 0;
-                        try {
-                            $wc->post('products/tags/batch', $toupdate);
-                            \mkw\store::writelog('BATCH POST stop:');
-                        } catch (HttpClientException $e) {
-                            \mkw\store::writelog('BATCH POST:HIBA: ' . $e->getMessage());
-                        }
-                        $toupdate['update'] = [];
-                    }
-
-                    $cimke->setWcdate('');
-                    \mkw\store::getEm()->persist($cimke);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-            if (count($toupdate['update']) > 0) {
-                \mkw\store::writelog('BATCH POST start: ' . json_encode($toupdate));
-                try {
-                    $wc->post('products/tags/batch', $toupdate);
-                    \mkw\store::writelog('BATCH POST stop:');
-                } catch (HttpClientException $e) {
-                    \mkw\store::writelog('BATCH POST:HIBA: ' . $e->getMessage() . ':' . json_encode($toupdate));
-                }
-            }
-            \mkw\store::writelog('termekcimkeController uploadtowc STOP');
-        }
     }
 }

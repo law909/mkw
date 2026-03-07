@@ -73,8 +73,6 @@ class termekdokController extends \mkwhelpers\MattableController
         if ($dok) {
             $this->getEm()->remove($dok);
             $this->getEm()->flush();
-            $dok->getTermek()->clearWcdate();
-            $dok->getTermek()->uploadToWC();
         }
         echo $this->params->getNumRequestParam('id');
     }
