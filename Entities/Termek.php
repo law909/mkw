@@ -845,8 +845,9 @@ class Termek
             $result['szin'] = $szin->getNev();
             $result['szin_id'] = $szin->getId();
         }
+        $szinkepek = \mkw\store::getEm()->getRepository(TermekSzinKep::class)->getByTermekAndSzin($this, $szin);
         /** @var TermekSzinKep $szinkep */
-        foreach ($this->getTermekSzinKepek() as $szinkep) {
+        foreach ($szinkepek as $szinkep) {
             if ($szinkep->getSzinId() == $szin->getId()) {
                 $kep = $szinkep->getKep();
                 $result['szinkepek'][] = [
