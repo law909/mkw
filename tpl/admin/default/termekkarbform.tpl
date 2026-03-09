@@ -552,7 +552,7 @@
             {/foreach}
             <a class="js-kepnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
-        {if ($setup.termekvaltozat)}
+        {if ($setup.szinmode === 'fix')}
             <div id="SzinKepTab" class="mattkarb-page" data-visible="visible">
                 {if ($egyed.szinkepek|@count)}
                     {foreach $egyed.szinkepek as $szinkep}
