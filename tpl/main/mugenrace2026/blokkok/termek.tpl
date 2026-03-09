@@ -77,16 +77,18 @@
                         </span>
             </div>
             <div class="product-list-item__button-block">
-                {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
-                    <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$termek.id}">
-                        {t('Elfogyott')}
-                    </a>
-                {else}
-                    {if ($hidecart != 1) && ($termek.brutto > 0)}
-                        <a href="/kosar/add?id={$termek.id}" rel="nofollow"
-                           class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
-                            {t('Kosárba')}
+                {if (!$hidecart)}
+                    {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
+                        <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$termek.id}">
+                            {t('Elfogyott')}
                         </a>
+                    {else}
+                        {if ($termek.brutto > 0)}
+                            <a href="/kosar/add?id={$termek.id}" rel="nofollow"
+                               class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
+                                {t('Kosárba')}
+                            </a>
+                        {/if}
                     {/if}
                 {/if}
             </div>

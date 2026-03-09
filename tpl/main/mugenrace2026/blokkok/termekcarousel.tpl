@@ -36,7 +36,7 @@
                     {for $j=0 to $step-1}
                         {if ($i+$j<$lntcnt)}
                             {$_termek=$termeklista[$i+$j]}
-                            {include 'blokkok/termek.tpl' termek=$_termek  detailsbutton=false}
+                            {include 'blokkok/termek.tpl' termek=$_termek  detailsbutton=false hidecart=true}
                         {/if}
                     {/for}
                 {/for}
