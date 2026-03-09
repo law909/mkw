@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\Client;
 use Entities\Afa;
 use Entities\Arsav;
 use Entities\Meret;
