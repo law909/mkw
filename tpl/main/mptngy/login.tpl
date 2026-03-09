@@ -21,14 +21,12 @@
                     <div class="co-control-row">
                         <button class="btn btn-primary" @click="dologin()">{t('Belépés')}</button>
                     </div>
-                    {if (!$setup.ngyclosed)}
-                        <div class="co-control-row">
-                            <span> - {t('vagy')} - </span>
-                        </div>
-                        <div class="co-control-row">
-                            <button class="btn btn-secondary" @click="regNeeded = true">{t('Regisztráció')}</button>
-                        </div>
-                    {/if}
+                    <div class="co-control-row">
+                        <span> - {t('vagy')} - </span>
+                    </div>
+                    <div class="co-control-row">
+                        <button class="btn btn-secondary" @click="regNeeded = true">{t('Regisztráció')}</button>
+                    </div>
                 </div>
             </div>
             {if (!$setup.ngyclosed)}
