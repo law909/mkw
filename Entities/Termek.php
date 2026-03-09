@@ -847,7 +847,6 @@ class Termek
         }
         /** @var TermekSzinKep $szinkep */
         foreach ($this->getTermekSzinKepek() as $szinkep) {
-            \mkw\store::writelog($szinkep->getId());
             if ($szinkep->getSzinId() == $szin->getId()) {
                 $kep = $szinkep->getKep();
                 $result['szinkepek'][] = [

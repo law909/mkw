@@ -202,12 +202,14 @@ class termekController extends \mkwhelpers\MattableController
                         $szinmap[$szin->getId()] = $szin;
                     }
                 }
+                /*
                 foreach ($t->getTermekSzinKepek() as $szinkep) {
                     $szin = $szinkep->getSzin();
                     if ($szin) {
                         $szinmap[$szin->getId()] = $szin;
                     }
                 }
+                */
                 $szinkepmap = [];
                 foreach ($t->getTermekSzinKepek() as $szinkep) {
                     $szinid = $szinkep->getSzinId();
@@ -2243,5 +2245,29 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->flush();
             $this->getEm()->clear();
         }
+    }
+
+    public function createTermekKepekFromFields()
+    {
+        $termekek = $this->getRepo()->getAll();
+        $batchsize = 20;
+        $i = 0;
+        /** @var Termek $termek */
+        foreach ($termekek as $termek) {
+            if ($termek->getKepurl()) {
+                \mkw\store::writelog('Termek kep url: ' . $termek->getId());
+                $termekkep = new TermekKep();
+                $termekkep->setTermek($termek);
+                $termekkep->setUrl($termek->getKepurl());
+                $termekkep->setLeiras($termek->getKepleiras());
+                $this->getEm()->persist($termekkep);
+                $i++;
+                if (($i % $batchsize) === 0) {
+                    $this->getEm()->flush();
+                }
+            }
+        }
+        $this->getEm()->flush();
+        echo 'Done';
     }
 }

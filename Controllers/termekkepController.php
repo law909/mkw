@@ -59,7 +59,6 @@ class termekkepController extends \mkwhelpers\MattableController
     public function getSelectList($termek, $selid)
     {
         $kepek = $this->getRepo()->getByTermek($termek);
-        \mkw\store::writelog(print_r($kepek, true));
         $keplista = [];
         $selids = is_array($selid) ? $selid : [$selid];
         foreach ($kepek as $kep) {

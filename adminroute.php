@@ -1329,6 +1329,7 @@ if (\mkw\store::isMailerGmail()) {
 $router->map('GET', '/admin/fillszinvalues', 'szinController#fillValues', 'adminfillvalues');
 $router->map('GET', '/admin/szinexport', 'szinController#exportExcel', 'adminszinexcelexport');
 $router->map('GET', '/admin/meretexport', 'meretController#exportExcel', 'adminmeretexcelexport');
+$router->map('GET', '/admin/createtermekkep', 'termekController#createTermekKepekFromFields', 'admintermekcreatetermekkepekfromfields');
 
 //$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
