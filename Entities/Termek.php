@@ -2,8 +2,6 @@
 
 namespace Entities;
 
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
@@ -3905,7 +3903,7 @@ class Termek
     {
         $this->feltoltheto5 = $feltoltheto5;
     }
-    
+
     /**
      * @return int
      */
