@@ -562,14 +562,18 @@
                             <ul id="SzinKepEdit_{$szinkep.id}" class="valtozatkepedit js-szinkepedit">
                                 {foreach $szinkep.kepek as $kep}
                                     <li data-value="{$kep.id}" data-valtozatid="{$szinkep.id}"
-                                        class="ui-state-default{if ($kep.id|in_array:$szinkep.kepids)} ui-selected ui-state-highlight{/if}">
-                                        {if ($kep.url)}<img src="{$mainurl}{$kep.url}"/>{/if}
+                                        class="ui-state-default{if ($kep.selected)} ui-selected ui-state-highlight{/if}" style="height: 120px">
+                                        {if ($kep.url)}<img src="{$mainurl}{$kep.url}" style="display: block; margin: 0 auto;" alt="{$kep.url}"/>{/if}
+                                        <input class="js-szinkepsorrend" name="szinkepsorrend_{$szinkep.id}[]" type="number" value="{$kep.sorrend}"
+                                               title="{at('Sorrend')}" style="width : 30px">
                                     </li>
                                 {/foreach}
                             </ul>
-                            <div class="js-szinkepinput" data-inputname="szinkepimg_{$szinkep.id}[]">
-                                {foreach $szinkep.kepids as $kepid}
-                                    <input name="szinkepimg_{$szinkep.id}[]" type="hidden" value="{$kepid}">
+                            <div class="js-szinkepinput" data-inputname="szinkepimg_{$szinkep.id}[]" data-sorrendinputname="szinkepsorrend_{$szinkep.id}[]">
+                                {foreach $szinkep.kepek as $kep}
+                                    {if ($kep.selected)}
+                                        <input name="szinkepimg_{$szinkep.id}[]" type="hidden" value="{$kep.id}">
+                                    {/if}
                                 {/foreach}
                             </div>
                         </div>

@@ -47,6 +47,11 @@ class TermekSzinKep
      */
     private $kep;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sorrend;
+
     public function getId()
     {
         return $this->id;
@@ -95,5 +100,15 @@ class TermekSzinKep
     public function setKep(TermekKep $kep = null)
     {
         $this->kep = $kep;
+    }
+
+    public function getSorrend()
+    {
+        return $this->sorrend;
+    }
+
+    public function setSorrend($sorrend)
+    {
+        $this->sorrend = $sorrend;
     }
 }

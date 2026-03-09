@@ -70,6 +70,9 @@ $(document).ready(function () {
         $(n).each(function () {
             var $list = $(this);
             $list.on('click', 'li', function (e) {
+                if ($(e.target).hasClass('js-szinkepsorrend')) {
+                    return;
+                }
                 e.preventDefault();
                 $(this).toggleClass('ui-selected ui-state-highlight');
                 updateMultiImageInputs($list);

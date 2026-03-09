@@ -215,7 +215,7 @@ class termekController extends \mkwhelpers\MattableController
                     $szinid = $szinkep->getSzinId();
                     $kepid = $szinkep->getKepId();
                     if ($szinid && $kepid) {
-                        $szinkepmap[$szinid][] = $kepid;
+                        $szinkepmap[$szinid][$kepid] = $szinkep->getSorrend();
                     }
                 }
                 foreach ($szinmap as $szin) {
@@ -223,7 +223,7 @@ class termekController extends \mkwhelpers\MattableController
                     $szinlista[] = [
                         'id' => $szin->getId(),
                         'nev' => $szin->getNev(),
-                        'kepids' => $selids,
+                        //'kepids' => $selids,
                         'kepek' => $kepCtrl->getSelectList($t, $selids)
                     ];
                 }
@@ -498,6 +498,7 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($szinids as $szinid) {
                 $szinid = (int)$szinid;
                 $kepids = $this->params->getArrayRequestParam('szinkepimg_' . $szinid);
+                $sorrendek = $this->params->getArrayRequestParam('szinkepsorrend_' . $szinid);
                 $kepids = array_values(array_unique(array_filter(array_map('intval', $kepids))));
                 $existing = $szinkepmap[$szinid] ?? [];
 
@@ -505,19 +506,29 @@ class termekController extends \mkwhelpers\MattableController
                     if (!in_array($existingKepid, $kepids, true)) {
                         $obj->removeTermekSzinKep($szinkep);
                         $this->getEm()->remove($szinkep);
+                    } else {
+                        // Update sorrend for existing
+                        $kepidIndex = array_search($existingKepid, $kepids);
+                        if ($kepidIndex !== false && isset($sorrendek[$kepidIndex])) {
+                            $szinkep->setSorrend((int)$sorrendek[$kepidIndex]);
+                            $this->getEm()->persist($szinkep);
+                        }
                     }
                 }
 
                 if ($kepids) {
                     $szin = $szinrepo->find($szinid);
                     if ($szin) {
-                        foreach ($kepids as $kepid) {
+                        foreach ($kepids as $index => $kepid) {
                             if (!isset($existing[$kepid])) {
                                 $kep = $keprepo->find($kepid);
                                 if ($kep) {
                                     $szinkep = new \Entities\TermekSzinKep();
                                     $szinkep->setSzin($szin);
                                     $szinkep->setKep($kep);
+                                    if (isset($sorrendek[$index])) {
+                                        $szinkep->setSorrend((int)$sorrendek[$index]);
+                                    }
                                     $obj->addTermekSzinKep($szinkep);
                                     $this->getEm()->persist($szinkep);
                                 }
