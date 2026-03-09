@@ -2255,7 +2255,6 @@ class termekController extends \mkwhelpers\MattableController
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
             if ($termek->getKepurl()) {
-                \mkw\store::writelog('Termek kep url: ' . $termek->getId());
                 $termekkep = new TermekKep();
                 $termekkep->setTermek($termek);
                 $termekkep->setUrl($termek->getKepurl());
