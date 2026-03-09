@@ -66,6 +66,7 @@ class termekkepController extends \mkwhelpers\MattableController
                 'id' => $kep->getId(),
                 'caption' => $kep->getUrl(),
                 'selected' => array_key_exists($kep->getId(), $selids),
+                'sorrend' => $selids[$kep->getId()] ?? null,
                 'url' => $kep->getUrlMini()
             ];
         }

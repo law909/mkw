@@ -564,7 +564,7 @@
                                     <li data-value="{$kep.id}" data-valtozatid="{$szinkep.id}"
                                         class="ui-state-default{if ($kep.selected)} ui-selected ui-state-highlight{/if}" style="height: 120px">
                                         {if ($kep.url)}<img src="{$mainurl}{$kep.url}" style="display: block; margin: 0 auto;" alt="{$kep.url}"/>{/if}
-                                        <input class="js-szinkepsorrend" name="szinkepsorrend_{$szinkep.id}[]" type="number" value="{$kep.sorrend}"
+                                        <input class="js-szinkepsorrend" type="number" value="{$kep.sorrend}"
                                                title="{at('Sorrend')}" style="width : 30px">
                                     </li>
                                 {/foreach}
@@ -573,6 +573,7 @@
                                 {foreach $szinkep.kepek as $kep}
                                     {if ($kep.selected)}
                                         <input name="szinkepimg_{$szinkep.id}[]" type="hidden" value="{$kep.id}">
+                                        <input name="szinkepsorrend_{$szinkep.id}[]" type="hidden" value="{$kep.sorrend}">
                                     {/if}
                                 {/foreach}
                             </div>

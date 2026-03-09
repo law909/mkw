@@ -53,6 +53,7 @@ $(document).ready(function () {
     function updateMultiImageInputs($list) {
         var $wrapper = $list.closest('.ui-widget').find('.js-szinkepinput');
         var inputName = $wrapper.data('inputname');
+        var sorrendInputName = $wrapper.data('sorrendinputname');
         $wrapper.empty();
         $('.ui-selected', $list).each(function () {
             var $item = $(this);
@@ -62,6 +63,13 @@ $(document).ready(function () {
                 name: inputName,
                 value: $item.attr('data-value')
             }).appendTo($wrapper);
+            if (sorrendInputName) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: sorrendInputName,
+                    value: $item.find('.js-szinkepsorrend').val()
+                }).appendTo($wrapper);
+            }
         });
         $('.ui-state-highlight', $list).not('.ui-selected').removeClass('ui-state-highlight');
     }
@@ -75,6 +83,9 @@ $(document).ready(function () {
                 }
                 e.preventDefault();
                 $(this).toggleClass('ui-selected ui-state-highlight');
+                updateMultiImageInputs($list);
+            });
+            $list.on('change', '.js-szinkepsorrend', function (e) {
                 updateMultiImageInputs($list);
             });
             updateMultiImageInputs($list);
