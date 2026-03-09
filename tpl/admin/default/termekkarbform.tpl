@@ -565,7 +565,7 @@
                                         class="ui-state-default{if ($kep.selected)} ui-selected ui-state-highlight{/if}" style="height: 120px">
                                         {if ($kep.url)}<img src="{$mainurl}{$kep.url}" style="display: block; margin: 0 auto;" alt="{$kep.url}"/>{/if}
                                         <input class="js-szinkepsorrend" type="number" value="{$kep.sorrend}"
-                                               title="{at('Sorrend')}" style="width : 30px">
+                                               title="{at('Sorrend')}" style="width : 60px">
                                     </li>
                                 {/foreach}
                             </ul>
