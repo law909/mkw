@@ -161,8 +161,8 @@
                 {/foreach}
             </select>
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
-            <a href="/admin/mptngyszakmaianyag/exportkivonatkotet" class="mattable-batchbtn" target="_blank">{at('Export kivonatkötethez')}</a>
             <a href="/admin/mptngyszakmaianyag/exportkivonatkotetall" class="mattable-batchbtn" target="_blank">{at('Végleges anyag export')}</a>
+            <a href="/admin/mptngyszakmaianyag/exportkivonatkotet" class="mattable-batchbtn" target="_blank">{at('Export kivonatkötethez')}</a>
             <a href="/admin/mptngyszakmaianyag/exportprogramfuzethez" class="mattable-batchbtn" target="_blank">{at('Export programfüzethez')}</a>
         </div>
         <table id="mattable-table">

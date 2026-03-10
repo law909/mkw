@@ -1175,8 +1175,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             }
         }
 
+        if ($all) {
+            $fname = 'veglegesanyag';
+        } else {
+            $fname = 'kivonatkotet';
+        }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
-        $filepath = \mkw\store::storagePath(uniqid('kivonatkotet') . '.xlsx');
+        $filepath = \mkw\store::storagePath(uniqid($fname) . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1184,7 +1189,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=kivonatkotet.xlsx");
+        header("Content-Disposition: attachment; filename=" . $fname . ".xlsx");
 
         readfile($filepath);
 
