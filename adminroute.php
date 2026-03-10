@@ -173,6 +173,12 @@ if (\mkw\store::isMPTNGY()) {
     );
     $router->map(
         'GET',
+        '/admin/mptngyszakmaianyag/exportkivonatkotetall',
+        'mptngyszakmaianyagController#exportKivonatkotetAll',
+        'adminmptngyszakmaianyagexportkivonatkotetall'
+    );
+    $router->map(
+        'GET',
         '/admin/mptngyszakmaianyag/exportprogramfuzethez',
         'mptngyszakmaianyagController#exportProgramfuzethez',
         'adminmptngyszakmaianyagexportprogramfuzethez'

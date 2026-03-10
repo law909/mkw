@@ -1039,6 +1039,16 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 
     public function exportKivonatkotet()
     {
+        $this->doExportKivonatkotet(false);
+    }
+
+    public function exportKivonatkotetAll()
+    {
+        $this->doExportKivonatkotet(true);
+    }
+
+    protected function doExportKivonatkotet($all = false)
+    {
         function x($o, $sor)
         {
             return \mkw\store::getExcelCoordinate($o, $sor);
@@ -1074,12 +1084,18 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
             LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
             LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
-            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
-            WHERE a.konferencianszerepelhet = 1
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id";
+        if ($all) {
+            $sql .= " WHERE a.vegleges = 1
+              AND a.tipus_id IN (1, 2, 6)";
+        } else {
+            $sql .= " WHERE a.konferencianszerepelhet = 1
               AND a.biralatkesz = 1
               AND a.vegleges = 1
-              AND a.tipus_id IN (1, 2, 6)
-            ORDER BY t.nev, a.id
+              AND a.tipus_id IN (1, 2, 6)";
+        }
+
+        $sql .= " ORDER BY t.nev, a.id
             ) UNION (
             SELECT
                 t.nev AS tipus,
@@ -1124,13 +1140,17 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
             LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
             LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
-            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
-            WHERE a.konferencianszerepelhet = 1
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id";
+        if ($all) {
+            $sql .= " WHERE a.vegleges = 1
+              AND a.tipus_id = 5";
+        } else {
+            $sql .= " WHERE a.konferencianszerepelhet = 1
               AND a.biralatkesz = 1
               AND a.vegleges = 1
-              AND a.tipus_id = 5
-            ORDER BY sz.cim, a.id
-            );";
+              AND a.tipus_id = 5";
+        }
+        $sql .= " ORDER BY sz.cim, a.id);";
 
         $conn = $this->getEm()->getConnection();
         $res = $conn->fetchAllAssociative($sql);
