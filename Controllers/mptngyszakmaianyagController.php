@@ -1092,7 +1092,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $sql .= " WHERE a.konferencianszerepelhet = 1
               AND a.biralatkesz = 1
               AND a.vegleges = 1
-              AND a.tipus_id IN (1, 2, 6)";
+              AND a.tipus_id IN (1, 2, 4, 6)";
         }
 
         $sql .= " ORDER BY t.nev, a.id
