@@ -1087,7 +1087,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             LEFT JOIN partner p10               ON a.szerzo10_id = p10.id";
         if ($all) {
             $sql .= " WHERE a.vegleges = 1
-              AND a.tipus_id IN (1, 2, 6)";
+              AND a.tipus_id IN (1, 2, 4, 6)";
         } else {
             $sql .= " WHERE a.konferencianszerepelhet = 1
               AND a.biralatkesz = 1
