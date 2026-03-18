@@ -19,6 +19,7 @@
 
 
 
+
 {foreach $navigator as $_navi}
                     {if ($_navi.url|default)}
                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -73,6 +74,7 @@
             </select>
 
             <select name="order" class="orderedit">
+                <option value="featuredasc"{if ($order=='featuredasc')} selected="selected"{/if}>{t('Ajánlott')}</option>
                 <option value="nevasc"{if ($order=='nevasc')} selected="selected"{/if}>{t('Név szerint növekvő')}</option>
                 <option value="nevdesc"{if ($order=='nevdesc')} selected="selected"{/if}>{t('Név szerint csökkenő')}</option>
                 <option value="arasc"{if ($order=='arasc')} selected="selected"{/if}>{t('Legolcsóbb elől')}</option>

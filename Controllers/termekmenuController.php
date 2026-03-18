@@ -459,6 +459,9 @@ class termekmenuController extends \mkwhelpers\MattableController
                     $elemperpage = $pager->getElemPerPage();
 
                     switch ($ord) {
+                        case 'featuredasc':
+                            $order = [];
+                            break;
                         case 'nevasc':
                             $order = ['_xx.nev' => 'ASC'];
                             break;
@@ -596,6 +599,9 @@ class termekmenuController extends \mkwhelpers\MattableController
                     $ret['keresett'] = $keresoszo;
                     $ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
                     $ret['csakakcios'] = $this->params->getBoolRequestParam('csakakcios', false);
+                    if ($ord == 'featuredasc') {
+                        shuffle($t);
+                    }
                     $ret['termekek'] = $t;
                     $ret['lapozo'] = $pager->loadValues();
                     $ret['order'] = $ord;
