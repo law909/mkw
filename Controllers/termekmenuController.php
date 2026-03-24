@@ -361,7 +361,7 @@ class termekmenuController extends \mkwhelpers\MattableController
                 $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
 
                 $pageno = $this->params->getIntRequestParam('pageno', 1);
-                $ord = $this->params->getStringRequestParam('order');
+                $ord = $this->params->getStringRequestParam('order') ?? 'featuredasc';
                 $szurostr = $this->params->getStringRequestParam('filter');
 
                 if ($caller === 'marka') {
