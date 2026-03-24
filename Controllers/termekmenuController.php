@@ -481,7 +481,7 @@ class termekmenuController extends \mkwhelpers\MattableController
                             $order = ['_xx.id' => 'DESC'];
                             break;
                         default:
-                            $order = ['_xx.nev' => 'ASC'];
+                            $order = [];
                             break;
                     }
 
