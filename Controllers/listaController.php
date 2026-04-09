@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Bizonylattipus;
+use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekFa;
 use mkwhelpers\FilterDescriptor;
@@ -111,6 +112,7 @@ class listaController extends \mkwhelpers\Controller
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
 
         $ret = [];
+        $ret['raktarnev'] = $this->getRepo(Raktar::class)->find($raktarid)->getNev();
 
         $napijelentes = [];
         foreach ($focsoportok as $csoport) {

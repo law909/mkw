@@ -1,5 +1,6 @@
 <div class="js-napijelentes2body">
     {$sumsum = 0}
+    <div>{$napijelentes['raktarnev']}</div>
     <div>Kisker KP forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
         <thead>
