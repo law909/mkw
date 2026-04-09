@@ -95,8 +95,11 @@ class listaController extends \mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
-    public function napiJelentes($datum = null, $ig = null, $raktarid = 3)
+    public function napiJelentes($datum = null, $ig = null, $raktarid = null)
     {
+        if (!$raktarid) {
+            $raktarid = 3;
+        }
         if (!$datum) {
             $datum = date(\mkw\store::$SQLDateFormat);
         }
