@@ -1093,6 +1093,8 @@ class Bizonylatfej
         $ppr->FundingSources = [\FundingSourceType::All];
         $ppr->PaymentRequestId = $this->getId();
         $ppr->PayerHint = $this->getPartneremail();
+        $ppr->RedirectUrl = \mkw\store::getParameter(\mkw\consts::BarionRedirectUrl);
+        $ppr->CallbackUrl = \mkw\store::getParameter(\mkw\consts::BarionCallbackUrl);
         switch ($this->getBizonylatnyelv()) {
             case 'en_us':
                 $ppr->Locale = \UILocale::EN;

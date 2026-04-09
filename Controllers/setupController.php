@@ -446,6 +446,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::BarionPayeeEmail, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::BarionEnvironment);
         $view->setVar('barionenvironmentlist', \mkw\store::getBarionEnvironmentSelectList($p ? (int)$p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::BarionRedirectUrl);
+        $view->setVar(\mkw\consts::BarionRedirectUrl, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::BarionCallbackUrl);
+        $view->setVar(\mkw\consts::BarionCallbackUrl, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
@@ -1447,6 +1451,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::BarionPayeeEmail, $this->params->getStringRequestParam(\mkw\consts::BarionPayeeEmail));
         $this->setObj(\mkw\consts::BarionPOSKey, $this->params->getStringRequestParam(\mkw\consts::BarionPOSKey));
         $this->setObj(\mkw\consts::BarionAPIVersion, $this->params->getStringRequestParam(\mkw\consts::BarionAPIVersion));
+        $this->setObj(\mkw\consts::BarionRedirectUrl, $this->params->getStringRequestParam(\mkw\consts::BarionRedirectUrl));
+        $this->setObj(\mkw\consts::BarionCallbackUrl, $this->params->getStringRequestParam(\mkw\consts::BarionCallbackUrl));
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));

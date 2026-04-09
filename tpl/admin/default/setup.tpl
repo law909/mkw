@@ -1763,6 +1763,14 @@
                                 <input id="BarionPayeeEmailEdit" name="barionpayeeemail" value="{$barionpayeeemail}">
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionRedirectUrlEdit">{at('Redirect URL')}:</label></span>
+                                <input id="BarionRedirectUrlEdit" name="barionredirecturl" value="{$barionredirecturl}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="BarionCallbackUrlEdit">{at('Callback URL')}:</label></span>
+                                <input id="BarionCallbackUrlEdit" name="barioncallbackurl" value="{$barioncallbackurl}">
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="BarionEnvironmentEdit">{at('Barion környezet')}:</label></span>
                                 <select id="BarionEnvironmentEdit" name="barionenvironment">
                                     <option value="">{at('válasszon')}</option>

@@ -371,6 +371,8 @@ class consts
     const BarionFizetveStatusz = 'barionfizetvestatusz';
     const BarionFizetesrevarStatusz = 'barionfizetesrevarstatusz';
     const BarionRefundedStatusz = 'barionrefundedstatusz';
+    const BarionRedirectUrl = 'barionredirecturl';
+    const BarionCallbackUrl = 'barioncallbackurl';
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
