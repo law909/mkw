@@ -1,6 +1,6 @@
 <div class="js-napijelentes2body">
     {$sumsum = 0}
-    <div>{$napijelentes['raktarnev']}</div>
+    <div>{$napijelentes2['raktarnev']}</div>
     <div>Kisker KP forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
         <thead>
@@ -15,7 +15,7 @@
         {$summenny = 0}
         {$sumnetto = 0}
         {$sumbrutto = 0}
-        {foreach $napijelentes['napijelentes'] as $elem}
+        {foreach $napijelentes2['napijelentes'] as $elem}
             {$summenny = $summenny + $elem.mennyiseg}
             {$sumnetto = $sumnetto + $elem.netto}
             {$sumbrutto = $sumbrutto + $elem.brutto}
@@ -51,7 +51,7 @@
         {$summenny = 0}
         {$sumnetto = 0}
         {$sumbrutto = 0}
-        {foreach $napijelentes['napijelentesnemkp'] as $elem}
+        {foreach $napijelentes2['napijelentesnemkp'] as $elem}
             {$summenny = $summenny + $elem.mennyiseg}
             {$sumnetto = $sumnetto + $elem.netto}
             {$sumbrutto = $sumbrutto + $elem.brutto}
