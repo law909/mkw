@@ -80,6 +80,7 @@ class adminController extends mkwhelpers\Controller
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
+                $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, 15));
                 $apierrorlog = new apierrorlogController($this->params);
                 $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
@@ -342,6 +343,19 @@ class adminController extends mkwhelpers\Controller
         $igdatum = \mkw\store::convDate($igdatumstr);
         $view = $this->createView('napijelentesbody.tpl');
         $view->setVar('napijelentes', $lista->napiJelentes($datum, $igdatum));
+
+        $view->printTemplateResult();
+    }
+
+    public function printNapijelentes2()
+    {
+        $lista = new listaController($this->params);
+        $datumstr = $this->params->getStringRequestParam('datum');
+        $datum = \mkw\store::convDate($datumstr);
+        $igdatumstr = $this->params->getStringRequestParam('datumig');
+        $igdatum = \mkw\store::convDate($igdatumstr);
+        $view = $this->createView('napijelentes2body.tpl');
+        $view->setVar('napijelentes', $lista->napiJelentes($datum, $igdatum, 15));
 
         $view->printTemplateResult();
     }

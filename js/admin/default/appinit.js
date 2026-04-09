@@ -99,7 +99,7 @@ $(document).ready(
             });
         }
 
-        var $napijelentesdatumedit = $('#NapijelentesDatumEdit'),
+        const $napijelentesdatumedit = $('#NapijelentesDatumEdit'),
             $napijelentesdatumigedit = $('#NapijelentesDatumigEdit');
         if ($napijelentesdatumedit && $napijelentesdatumigedit) {
             mkwcomp.datumEdit.init($napijelentesdatumedit);
@@ -119,6 +119,31 @@ $(document).ready(
                     },
                     success: function (data) {
                         $('.js-napijelentesbody').replaceWith(data);
+                    }
+                })
+            });
+        }
+
+        const $napijelentes2datumedit = $('#Napijelentes2DatumEdit'),
+            $napijelentes2datumigedit = $('#Napijelentes2DatumigEdit');
+        if ($napijelentes2datumedit && $napijelentes2datumigedit) {
+            mkwcomp.datumEdit.init($napijelentes2datumedit);
+            mkwcomp.datumEdit.init($napijelentes2datumigedit);
+            $('.js-napijelentes2').on('click', function (e) {
+                e.preventDefault();
+                var datum = $napijelentes2datumedit.datepicker('getDate'),
+                    datumig = $napijelentes2datumigedit.datepicker('getDate');
+                datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
+                datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
+                $.ajax({
+                    url: '/admin/napijelentes2',
+                    type: 'POST',
+                    data: {
+                        datum: datum,
+                        datumig: datumig
+                    },
+                    success: function (data) {
+                        $('.js-napijelentes2body').replaceWith(data);
                     }
                 })
             });

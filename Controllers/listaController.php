@@ -3,6 +3,9 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Bizonylattipus;
+use Entities\Termek;
+use Entities\TermekFa;
 use mkwhelpers\FilterDescriptor;
 
 class listaController extends \mkwhelpers\Controller
@@ -91,7 +94,7 @@ class listaController extends \mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
-    public function napiJelentes($datum = null, $ig = null)
+    public function napiJelentes($datum = null, $ig = null, $raktarid = 3)
     {
         if (!$datum) {
             $datum = date(\mkw\store::$SQLDateFormat);
@@ -101,9 +104,9 @@ class listaController extends \mkwhelpers\Controller
             $ig = date(\mkw\store::$SQLDateFormat);
         }
         $ig = \mkw\store::convDate($ig);
-        $btrepo = $this->getRepo('Entities\Bizonylattipus');
-        $termekrepo = $this->getRepo('Entities\Termek');
-        $farepo = $this->getRepo('Entities\TermekFa');
+        $btrepo = $this->getRepo(Bizonylattipus::class);
+        $termekrepo = $this->getRepo(Termek::class);
+        $farepo = $this->getRepo(TermekFa::class);
         $focsoportok = $farepo->getForParent(1);
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
 
@@ -118,7 +121,7 @@ class listaController extends \mkwhelpers\Controller
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'P')
                 ->addFilter('bf.mese', '=', false)
-                ->addFilter('bf.raktar_id', '=', 3)
+                ->addFilter('bf.raktar_id', '=', $raktarid)
                 ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
                 ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
 
@@ -147,7 +150,7 @@ class listaController extends \mkwhelpers\Controller
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'B')
                 ->addFilter('bf.mese', '=', false)
-                ->addFilter('bf.raktar_id', '=', 3)
+                ->addFilter('bf.raktar_id', '=', $raktarid)
                 ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
                 ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
 

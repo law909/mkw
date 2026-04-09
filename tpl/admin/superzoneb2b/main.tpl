@@ -74,6 +74,26 @@
             </div>
         </div>
     </div>
+    {if (haveJog(90))}
+        <div class="component-container">
+            <div class="ui-widget ui-widget-content ui-corner-all">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Napi jelentés 2</div>
+                </div>
+                <div class="mainboxinner">
+                    <div class="mainboxinner">
+                        <label for="Napijelentes2DatumEdit">Dátum:</label>
+                        <input id="Napijelentes2DatumEdit" name="datumtol2" type="text" data-datum="{$today}"{if (!haveJog(90))} disabled="disabled"{/if}> -
+                        <input
+                            id="Napijelentes2DatumigEdit" name="datumig2" type="text" data-datum="{$today}"{if (!haveJog(90))} disabled="disabled"{/if}>
+                        <button class="js-napijelentes2 ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
+                                class="ui-button-text">Frissít</span></button>
+                    </div>
+                    {include "napijelentes2body.tpl"}
+                </div>
+            </div>
+        </div>
+    {/if}
     {if (haveJog(20))}
         <div class="component-container">
             <div class="ui-widget ui-widget-content ui-corner-all">
