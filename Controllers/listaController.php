@@ -95,7 +95,7 @@ class listaController extends \mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
-    public function napiJelentes($datum = null, $ig = null, $raktarid = null)
+    public function napiJelentes($datum = null, $ig = null, $raktarid = null, $letrehozoid = null)
     {
         if (!$raktarid) {
             $raktarid = 3;
@@ -138,6 +138,9 @@ class listaController extends \mkwhelpers\Controller
             if ($kiskercimke) {
                 $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
             }
+            if ($letrehozoid) {
+                $filter->addFilter('bf.createdby', '=', $letrehozoid);
+            }
 
             $k = $termekrepo->calcNapijelentes($filter);
             $k = $k[0];
@@ -167,6 +170,9 @@ class listaController extends \mkwhelpers\Controller
             if ($kiskercimke) {
                 $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
             }
+            if ($letrehozoid) {
+                $filter->addFilter('bf.createdby', '=', $letrehozoid);
+            }
 
             $k = $termekrepo->calcNapijelentes($filter);
             $k = $k[0];
@@ -187,6 +193,10 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.mese', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'kivet', 'szallito', 'garancialevel']);
+
+        if ($letrehozoid) {
+            $filter->addFilter('bf.createdby', '=', $letrehozoid);
+        }
 
         $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
         $ret['nagykerforgalom'] = $nagykerforg;
@@ -211,6 +221,10 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.mese', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'keziszamla']);
+
+        if ($letrehozoid) {
+            $filter->addFilter('bf.createdby', '=', $letrehozoid);
+        }
 
         $nemhufforg = $this->getRepo('Entities\Bizonylatfej')->calcNemHUFForgalom($filter);
         $ret['nemhufforgalom'] = $nemhufforg;

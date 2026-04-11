@@ -83,6 +83,8 @@ class adminController extends mkwhelpers\Controller
                 $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
                 $view->setVar('napijelentes2defaultraktar', $raktarid2);
                 $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
+                $felh = new dolgozoController($this->params);
+                $view->setVar('felhasznalolist', $felh->getSelectList());
                 $apierrorlog = new apierrorlogController($this->params);
                 $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
@@ -357,8 +359,9 @@ class adminController extends mkwhelpers\Controller
         $igdatumstr = $this->params->getStringRequestParam('datumig');
         $igdatum = \mkw\store::convDate($igdatumstr);
         $raktarid = $this->params->getIntRequestParam('raktar', \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15));
+        $letrehozoid = $this->params->getIntRequestParam('letrehozo');
         $view = $this->createView('napijelentes2body.tpl');
-        $view->setVar('napijelentes2', $lista->napiJelentes($datum, $igdatum, $raktarid));
+        $view->setVar('napijelentes2', $lista->napiJelentes($datum, $igdatum, $raktarid, $letrehozoid));
 
         $view->printTemplateResult();
     }

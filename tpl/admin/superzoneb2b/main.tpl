@@ -88,6 +88,13 @@
                                 <option value="{$_mk.id}"{if ($_mk.id == $napijelentes2defaultraktar)} selected="selected"{/if}>{$_mk.caption}</option>
                             {/foreach}
                         </select>
+                        <label for="Napijelentes2LetrehozoEdit">Létrehozó:</label>
+                        <select id="Napijelentes2LetrehozoEdit" name="letrehozo2">
+                            <option value="">{at('mindenki')}</option>
+                            {foreach $felhasznalolist as $_felh}
+                                <option value="{$_felh.id}">{$_felh.caption}</option>
+                            {/foreach}
+                        </select>
                         <label for="Napijelentes2DatumEdit">Dátum:</label>
                         <input id="Napijelentes2DatumEdit" name="datumtol2" type="text" data-datum="{$today}"{if (!haveJog(90))} disabled="disabled"{/if}> -
                         <input
