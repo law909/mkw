@@ -419,6 +419,8 @@ class consts
     const GS1Datasource = 'gs1datasource';
     const GS1DatasourceName = 'gs1datasourcename';
 
+    const Napijelentes2DefaultRaktar = 'napijelentes2defaultraktar';
+
     const FCMoto = 'fcmoto';
     const MaximoMoto = 'maximomoto';
 

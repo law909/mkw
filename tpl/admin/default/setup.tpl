@@ -1743,6 +1743,16 @@
                                 <span class="js-mugenracekatid">{$mugenracekat.caption|default:'nincs megadva'}</span>
                                 <input name="mugenracekatid" type="hidden" value="{$mugenracekat.id}">
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="Napijelentes2DefaultRaktarEdit">{at('Napi jelentés 2 alapértelmezett raktár')}:</label></span>
+                                <select id="Napijelentes2DefaultRaktarEdit" name="napijelentes2defaultraktar">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $napijelentes2defaultraktarlist as $_raktar}
+                                        <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
 
                         </div>
                     </div>

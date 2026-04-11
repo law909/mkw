@@ -80,7 +80,9 @@ class adminController extends mkwhelpers\Controller
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
-                $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, 15));
+                $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
+                $view->setVar('napijelentes2defaultraktar', $raktarid2);
+                $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
                 $apierrorlog = new apierrorlogController($this->params);
                 $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
@@ -354,7 +356,7 @@ class adminController extends mkwhelpers\Controller
         $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('datumig');
         $igdatum = \mkw\store::convDate($igdatumstr);
-        $raktarid = $this->params->getIntRequestParam('raktar', 15);
+        $raktarid = $this->params->getIntRequestParam('raktar', \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15));
         $view = $this->createView('napijelentes2body.tpl');
         $view->setVar('napijelentes2', $lista->napiJelentes($datum, $igdatum, $raktarid));
 

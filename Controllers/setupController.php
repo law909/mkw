@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Afa;
 use Entities\Arsav;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
@@ -10,6 +11,7 @@ use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\Parameterek;
 use Entities\Partner;
 use Entities\Partnertipus;
+use Entities\Raktar;
 use Entities\Statlap;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -510,6 +512,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::Raktar);
         $raktar = new raktarController($this->params);
         $view->setVar('raktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::Napijelentes2DefaultRaktar);
+        $view->setVar('napijelentes2defaultraktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Valutanem);
         $valutanem = new valutanemController($this->params);
@@ -1554,13 +1559,19 @@ class setupController extends \mkwhelpers\Controller
                 $this->setObj(\mkw\consts::MasterPassFizmod, '');
             }
         }
-        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('nullasafa', 0));
+        $afa = \mkw\store::getEm()->getRepository(Afa::class)->find($this->params->getIntRequestParam('nullasafa', 0));
         if ($afa) {
             $this->setObj(\mkw\consts::NullasAfa, $afa->getId());
         }
-        $raktar = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
+        $raktar = \mkw\store::getEm()->getRepository(Raktar::class)->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {
             $this->setObj(\mkw\consts::Raktar, $raktar->getId());
+        }
+        $raktar = \mkw\store::getEm()->getRepository(Raktar::class)->find($this->params->getIntRequestParam('napijelentes2defaultraktar', 0));
+        if ($raktar) {
+            $this->setObj(\mkw\consts::Napijelentes2DefaultRaktar, $raktar->getId());
+        } else {
+            $this->setObj(\mkw\consts::Napijelentes2DefaultRaktar, '');
         }
         $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
