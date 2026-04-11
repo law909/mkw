@@ -115,7 +115,12 @@ class listaController extends \mkwhelpers\Controller
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
 
         $ret = [];
-        $ret['raktarnev'] = $this->getRepo(Raktar::class)->find($raktarid)->getNev();
+        $raktar = $this->getRepo(Raktar::class)->find($raktarid);
+        if ($raktar) {
+            $ret['raktarnev'] = $raktar->getNev();
+        } else {
+            $ret['raktarnev'] = '';
+        }
 
         $napijelentes = [];
         foreach ($focsoportok as $csoport) {

@@ -82,6 +82,12 @@
                 </div>
                 <div class="mainboxinner">
                     <div class="mainboxinner">
+                        <label for="Napijelentes2RaktarEdit">Raktár:</label>
+                        <select id="Napijelentes2RaktarEdit" name="raktar2">
+                            {foreach $raktarlist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.id == 15)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
                         <label for="Napijelentes2DatumEdit">Dátum:</label>
                         <input id="Napijelentes2DatumEdit" name="datumtol2" type="text" data-datum="{$today}"{if (!haveJog(90))} disabled="disabled"{/if}> -
                         <input

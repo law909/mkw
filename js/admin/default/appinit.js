@@ -132,7 +132,8 @@ $(document).ready(
             $('.js-napijelentes2').on('click', function (e) {
                 e.preventDefault();
                 var datum = $napijelentes2datumedit.datepicker('getDate'),
-                    datumig = $napijelentes2datumigedit.datepicker('getDate');
+                    datumig = $napijelentes2datumigedit.datepicker('getDate'),
+                    raktar = $('#Napijelentes2RaktarEdit').val();
                 datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
                 datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
                 $.ajax({
@@ -140,7 +141,8 @@ $(document).ready(
                     type: 'POST',
                     data: {
                         datum: datum,
-                        datumig: datumig
+                        datumig: datumig,
+                        raktar: raktar
                     },
                     success: function (data) {
                         $('.js-napijelentes2body').replaceWith(data);

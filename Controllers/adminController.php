@@ -354,8 +354,9 @@ class adminController extends mkwhelpers\Controller
         $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('datumig');
         $igdatum = \mkw\store::convDate($igdatumstr);
+        $raktarid = $this->params->getIntRequestParam('raktar', 15);
         $view = $this->createView('napijelentes2body.tpl');
-        $view->setVar('napijelentes2', $lista->napiJelentes($datum, $igdatum, 15));
+        $view->setVar('napijelentes2', $lista->napiJelentes($datum, $igdatum, $raktarid));
 
         $view->printTemplateResult();
     }
