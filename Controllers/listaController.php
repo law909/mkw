@@ -130,7 +130,6 @@ class listaController extends \mkwhelpers\Controller
                 ->addFilter('bf.teljesites', '<=', $ig)
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'P')
-                ->addFilter('bf.mese', '=', false)
                 ->addFilter('bf.raktar_id', '=', $raktarid)
                 ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
                 ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
@@ -162,7 +161,6 @@ class listaController extends \mkwhelpers\Controller
                 ->addFilter('bf.teljesites', '<=', $ig)
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'B')
-                ->addFilter('bf.mese', '=', false)
                 ->addFilter('bf.raktar_id', '=', $raktarid)
                 ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
                 ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
@@ -191,9 +189,7 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.teljesites', '>=', $datum)
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
-            ->addFilter('bf.mese', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'kivet', 'szallito', 'garancialevel']);
-
         if ($letrehozoid) {
             $filter->addFilter('bf.createdby', '=', $letrehozoid);
         }
@@ -207,7 +203,6 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.teljesites', '>=', $datum)
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
-            ->addFilter('bf.mese', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet', 'garancialevel'));
 
         $utanvetesforg = $this->getRepo('Entities\Bizonylatfej')->calcUtanvetesForgalom($filter);
@@ -219,7 +214,6 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.teljesites', '>=', $datum)
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
-            ->addFilter('bf.mese', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'keziszamla']);
 
         if ($letrehozoid) {
