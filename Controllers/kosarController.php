@@ -277,6 +277,18 @@ class kosarController extends \mkwhelpers\MattableController
                 $v->setVar('szallitasiido', $szallido);
                 $v->setVar('tetellista', $s);
                 $v->setVar('valutanem', $valutanem);
+
+                $res = \mkw\store::checkMinKosarErtek();
+                if (!$res['success']) {
+                    $kosarsum = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+                    $mker = 'A rendelés összege (' . \mkw\store::bizformat(
+                            $kosarsum['sum']
+                        ) . ' Ft) nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat(
+                            $res['minvalue']
+                        ) . ' Ft).';
+                    $v->setVar('minkosarertekerror', $mker);
+                }
+
                 $tc = new termekController($this->params);
                 $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
                 $v->printTemplateResult(false);
@@ -314,6 +326,18 @@ class kosarController extends \mkwhelpers\MattableController
                 $v->setVar('szallitasiido', $szallido);
                 $v->setVar('tetellista', $s);
                 $v->setVar('valutanem', $valutanem);
+
+                $res = \mkw\store::checkMinKosarErtek();
+                if (!$res['success']) {
+                    $kosarsum = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+                    $mker = 'A rendelés összege (' . \mkw\store::bizformat(
+                            $kosarsum['sum']
+                        ) . ' Ft) nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat(
+                            $res['minvalue']
+                        ) . ' Ft).';
+                    $v->setVar('minkosarertekerror', $mker);
+                }
+
                 $tc = new termekController($this->params);
                 $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
                 $v->printTemplateResult(false);

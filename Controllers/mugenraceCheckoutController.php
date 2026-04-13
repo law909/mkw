@@ -74,6 +74,13 @@ class mugenraceCheckoutController extends checkoutController
             $errors[] = 'Üres a kosara.';
         }
 
+        $res = \mkw\store::checkMinKosarErtek();
+        if (!$res['success']) {
+            $ok = false;
+            $errorlogtext[] = '5minkosarertek';
+            $errors[] = 'A rendelés összege nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat($res['minvalue']) . ' Ft).';
+        }
+
         if ($ok) {
             switch ($regkell) {
                 case 1: // vendég

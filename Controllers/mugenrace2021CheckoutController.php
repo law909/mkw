@@ -120,7 +120,13 @@ class mugenrace2021CheckoutController extends checkoutController
         $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
         if (!count($kosartetelek)) {
             $ret['success'] = false;
-            $ret['fields'][''] = 'Üres a kosara.';
+            $ret['error'] = t('Üres a kosara.');
+        } else {
+            $res = \mkw\store::checkMinKosarErtek();
+            if (!$res['success']) {
+                $ret['success'] = false;
+                $ret['error'] = t('A rendelés összege nem éri el a minimális vásárlási limitet') . \mkw\store::bizformat($res['minvalue']) . ' Ft).';
+            }
         }
 
         if ($ret['success']) {

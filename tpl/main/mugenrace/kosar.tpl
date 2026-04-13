@@ -5,22 +5,31 @@
 	<div class="row">
 		<div class="span10 offset1 js-cart">
 			{if (count($tetellista)>0)}
+                {if ($minkosarertekerror)}
+                    <div class="alert alert-error">
+                        {$minkosarertekerror}
+                    </div>
+                {/if}
 			<div class="megrendelemcontainer">
 				<a href="{$prevuri}" class="btn okbtn">{t('Folytatom a vásárlást')}</a>
-				<a href="{$showcheckoutlink}" rel="nofollow" class="btn cartbtn pull-right">
+				{if (!$minkosarertekerror)}
+                <a href="{$showcheckoutlink}" rel="nofollow" class="btn cartbtn pull-right">
 					<i class="icon-ok icon-white"></i>
 					{t('Megrendelem')}
 				</a>
+                {/if}
 			</div>
 			<table class="table table-bordered">
 				{include 'kosartetellist.tpl'}
 			</table>
 			<div class="megrendelemcontainer">
 				<a href="{$prevuri}" class="btn okbtn">{t('Folytatom a vásárlást')}</a>
+                {if (!$minkosarertekerror)}
 				<a href="{$showcheckoutlink}" rel="nofollow" class="btn cartbtn pull-right">
 					<i class="icon-ok icon-white"></i>
 					{t('Megrendelem')}
 				</a>
+                {/if}
 			</div>
 			{else}
 				<h3>{t('Az Ön kosara üres')}.</h3>

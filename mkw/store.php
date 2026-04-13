@@ -73,6 +73,31 @@ class store
     public static $FullTimeFormat = 'H:i:s';
     private static $blameableListener;
 
+    public static function bizformat($mit, $mire = false)
+    {
+        if ($mire === false) {
+            $mire = 2;
+        }
+        return number_format($mit, $mire, ',', ' ');
+    }
+
+    public static function checkMinKosarErtek()
+    {
+        $minertek = (float)\mkw\store::getParameter(\mkw\consts::MinKosarErtek, 0);
+        $kosarsum = \mkw\store::getEm()->getRepository(\Entities\Kosar::class)->calcSumBySessionId(\Zend_Session::getId());
+        $res = [
+            'success' => true,
+            'minvalue' => $minertek,
+            'kosarsum' => $kosarsum['sum']
+        ];
+        if ($minertek > 0) {
+            if ($kosarsum['sum'] < $minertek) {
+                $res['success'] = false;
+            }
+        }
+        return $res;
+    }
+
     public static function getJSVersion()
     {
         switch (self::getTheme()) {

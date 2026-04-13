@@ -133,6 +133,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::AkcioJelolo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::IngyenszallitasJelolo);
         $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MinKosarErtek);
+        $view->setVar(\mkw\consts::MinKosarErtek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Watermark);
         $view->setVar(\mkw\consts::Watermark, ($p ? $p->getErtek() : ''));
 
@@ -1015,6 +1017,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Top10Jelolo, $this->params->getStringRequestParam('top10jelolo'));
         $this->setObj(\mkw\consts::AkcioJelolo, $this->params->getStringRequestParam('akciojelolo'));
         $this->setObj(\mkw\consts::IngyenszallitasJelolo, $this->params->getStringRequestParam('ingyenszallitasjelolo'));
+        $this->setObj(\mkw\consts::MinKosarErtek, $this->params->getFloatRequestParam('minkosarertek'));
         $this->setObj(\mkw\consts::Watermark, $this->params->getStringRequestParam('watermark'));
 
         $this->setObj(\mkw\consts::ASZFUrl, $this->params->getStringRequestParam(\mkw\consts::ASZFUrl));

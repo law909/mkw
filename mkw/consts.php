@@ -413,6 +413,7 @@ class consts
 
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
+    const MinKosarErtek = 'minkosarertek';
 
     const WCPartnerTipus = 'wcpartnertipus';
 

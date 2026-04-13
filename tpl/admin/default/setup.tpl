@@ -915,6 +915,10 @@
                             <td><input name="ingyenszallitasjelolo" type="text" value="{$ingyenszallitasjelolo}"></td>
                             <td><a class="js-kepbrowsebutton" data-name="ingyenszallitasjelolo" href="#" title="{at('Browse')}">{at('...')}</a></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('Minimum kosárérték')}:</label></td>
+                            <td><input name="minkosarertek" type="number" step="any" value="{$minkosarertek}"></td>
+                        </tr>
                         </tbody>
                     </table>
 

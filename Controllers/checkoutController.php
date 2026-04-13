@@ -121,6 +121,14 @@ class checkoutController extends \mkwhelpers\MattableController
         $view->setVar('szallitasimodlist', $szlist);
         $view->setVar('showerror', \mkw\store::getMainSession()->loginerror);
         $view->setVar('checkouterrors', \mkw\store::getMainSession()->checkoutErrors);
+
+        $kosarcheck = \mkw\store::checkMinKosarErtek();
+        $view->setVar('minkosarertekerror', !$kosarcheck['success']);
+        if (!$kosarcheck['success']) {
+            $view->setVar('minkosarertek', $kosarcheck['minvalue']);
+            $view->setVar('kosarsum', $kosarcheck['kosarsum']);
+        }
+
         $view->setVar('showaszflink', \mkw\store::getRouter()->generate('showstatlappopup', false, ['lap' => 'aszf']));
         $view->setVar('regkell', $p->getIntRequestParam('regkell', 2));
         $view->setVar('vezeteknev', $this->vv($p->getStringRequestParam('vezeteknev'), $user['vezeteknev']));
@@ -324,6 +332,12 @@ class checkoutController extends \mkwhelpers\MattableController
         $ret['szallitasiido'] = $szallido;
         $ret['tetellista'] = $s;
         $ret['kuponszoveg'] = $kuponszoveg;
+
+        $kosarcheck = \mkw\store::checkMinKosarErtek();
+        $ret['minkosarertekerror'] = !$kosarcheck['success'];
+        if (!$kosarcheck['success']) {
+            $ret['minkosarertekvalue'] = $kosarcheck['minvalue'];
+        }
 
         return $ret;
     }

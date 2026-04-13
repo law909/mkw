@@ -26,6 +26,15 @@
                         </div>
                     </div>
                 {/if}
+                {if ($minkosarertekerror)}
+                    <div class="row">
+                        <div class="span10 checkouterrorblock">
+                            <div class="checkouterrorblockinner">
+                                <div class="checkouterror">{$minkosarertekerror}</div>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
                 <form id="LoginForm" method="post" action="/login/ment"></form>
                 <form id="CheckoutForm" class="" action="/checkout/ment" method="post">
                     <fieldset>

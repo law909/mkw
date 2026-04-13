@@ -164,6 +164,13 @@ class mindentkapniCheckoutController extends checkoutController
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';
             $errors[] = 'Üres a kosara.';
+        } else {
+            $res = \mkw\store::checkMinKosarErtek();
+            if (!$res['success']) {
+                $ok = false;
+                $errorlogtext[] = '5minkosarertek';
+                $errors[] = 'A rendelés összege nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat($res['minvalue']) . ' Ft).';
+            }
         }
 
         if ($ok) {
