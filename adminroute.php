@@ -186,6 +186,9 @@ if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/admin/setszerzobyemail', 'adminController#setSzerzoByEmail', 'adminmptngysetszerzobyemail');
 
     $router->map('POST', '/admin/import/mptngybiraloimport', 'importController#mptngybiraloimport', 'adminmptngybiraloimport');
+
+    $router->map('GET', '/admin/partner/exportelte', 'mptngypartnerController#exportElte', 'adminmptngyexporteltes');
+    $router->map('GET', '/admin/partner/exportkaroli', 'mptngypartnerController#exportKaroli', 'adminmptngyexportkaroli');
 }
 
 if (\mkw\store::isBankpenztar()) {

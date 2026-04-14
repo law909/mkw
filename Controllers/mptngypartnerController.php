@@ -9,6 +9,8 @@ use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class mptngypartnerController extends partnerController
 {
@@ -47,7 +49,7 @@ class mptngypartnerController extends partnerController
             }
 
             $t->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
-            
+
             $this->getEm()->persist($t);
             $this->getEm()->flush();
             $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::MPTNGYRegVisszaigSablon));
@@ -318,5 +320,128 @@ class mptngypartnerController extends partnerController
             $v = $this->createMainView('adataim.tpl');
             $v->printTemplateResult();
         }
+    }
+
+    public function exportElte()
+    {
+        function x($o, $sor)
+        {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $sql = "";
+
+        $conn = $this->getEm()->getConnection();
+        $res = $conn->fetchAllAssociative($sql);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0);
+        $sheet = $excel->getActiveSheet();
+
+        if ($res) {
+            $o = 0;
+            foreach (array_keys($res[0]) as $header) {
+                $sheet->setCellValue(x($o++, 1), $header);
+            }
+
+            $sor = 2;
+            foreach ($res as $item) {
+                $o = 0;
+                foreach ($item as $val) {
+                    $sheet->setCellValue(x($o++, $sor), $val);
+                }
+                $sor++;
+            }
+        }
+
+        $fname = 'eltesek';
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+        $filepath = \mkw\store::storagePath(uniqid($fname) . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $fname . ".xlsx");
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function exportKaroli()
+    {
+        function x($o, $sor)
+        {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $sql = "SELECT p.id,p.email,p.nev,e.nev AS egyetem,mptngyegyetemegyeb,mptngympttag,mptngydiak,mptngyphd
+            FROM partner p
+            LEFT OUTER JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            where ((email like '%@kre%') or (mptngyegyetem_id=11)) AND
+            (
+            (p.id IN (SELECT szerzo1_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo2_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo3_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo4_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo5_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo6_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo7_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo8_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo9_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo10_id from mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo1email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo2email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo3email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo4email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo5email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo6email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo7email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo8email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo9email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo10email FROM mptngyszakmaianyag where vegleges=1))
+            )";
+
+        $conn = $this->getEm()->getConnection();
+        $res = $conn->fetchAllAssociative($sql);
+
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0);
+        $sheet = $excel->getActiveSheet();
+
+        if ($res) {
+            $o = 0;
+            foreach (array_keys($res[0]) as $header) {
+                $sheet->setCellValue(x($o++, 1), $header);
+            }
+
+            $sor = 2;
+            foreach ($res as $item) {
+                $o = 0;
+                foreach ($item as $val) {
+                    $sheet->setCellValue(x($o++, $sor), $val);
+                }
+                $sor++;
+            }
+        }
+
+        $fname = 'karolisok';
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+        $filepath = \mkw\store::storagePath(uniqid($fname) . '.xlsx');
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $fname . ".xlsx");
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 }
