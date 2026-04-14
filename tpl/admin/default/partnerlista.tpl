@@ -153,8 +153,8 @@
             </select>
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
             {if ($setup.mptngy)}
-                <a href="/admin/partner/exportelte" class="mattable-batchbtn" target="_blank">{at('Elte expot')}</a>
-                <a href="/admin/partner/exportkaroli" class="mattable-batchbtn" target="_blank">{at('Károli export')}</a>
+                <a href="/admin/partner/exportelte" target="_blank">{at('Elte export')}</a>
+                <a href="/admin/partner/exportkaroli" target="_blank">{at('Károli export')}</a>
             {/if}
         </div>
         <table id="mattable-table">
