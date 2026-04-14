@@ -329,7 +329,32 @@ class mptngypartnerController extends partnerController
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
-        $sql = "";
+        $sql = "SELECT p.id,p.email,p.nev,e.nev AS egyetem,mptngyegyetemegyeb,mptngympttag,mptngydiak,mptngyphd
+            FROM partner p
+            LEFT OUTER JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            where ((email like '%elte%') or (mptngyegyetem_id=1)) AND
+            (
+            (p.id IN (SELECT szerzo1_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo2_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo3_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo4_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo5_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo6_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo7_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo8_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo9_id from mptngyszakmaianyag where vegleges=1)) or
+            (p.id IN (SELECT szerzo10_id from mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo1email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo2email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo3email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo4email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo5email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo6email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo7email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo8email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo9email FROM mptngyszakmaianyag where vegleges=1)) or
+            (email IN (SELECT szerzo10email FROM mptngyszakmaianyag where vegleges=1))
+            )";
 
         $conn = $this->getEm()->getConnection();
         $res = $conn->fetchAllAssociative($sql);
