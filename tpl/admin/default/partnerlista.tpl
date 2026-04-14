@@ -154,9 +154,9 @@
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
             {if ($setup.mptngy)}
                 <a href="/admin/partner/exportelte" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                   target="_blank">{at('Elte export')}</a>
+                   target="_blank"><span class="ui-button-text">{at('Elte export')}</span></a>
                 <a href="/admin/partner/exportkaroli" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                   target="_blank">{at('Károli export')}</a>
+                   target="_blank"><span class="ui-button-text">{at('Károli export')}</span></a>
             {/if}
         </div>
         <table id="mattable-table">
