@@ -329,33 +329,39 @@ class mptngypartnerController extends partnerController
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
-        $sql = "SELECT p.id,p.email,p.nev,e.nev AS egyetem,mptngyegyetemegyeb,mptngympttag,mptngydiak,mptngyphd
-            FROM partner p
-            LEFT OUTER JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
-            where ((email like '%elte%') or (mptngyegyetem_id=1)) AND
-            (
-            (p.id IN (SELECT szerzo1_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo2_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo3_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo4_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo5_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo6_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo7_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo8_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo9_id from mptngyszakmaianyag where vegleges=1)) or
-            (p.id IN (SELECT szerzo10_id from mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo1email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo2email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo3email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo4email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo5email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo6email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo7email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo8email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo9email FROM mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo10email FROM mptngyszakmaianyag where vegleges=1))
-            )";
+        $sql = "SELECT
+                t.nev AS tipus,
+                a.id,
+                a.cim,
+                p.nev AS szerzo1nev,
+                a.szerzo1email,
+                tulaj.nev AS tulaj,
+                tulaj.email AS tulajemail,
+                p2.nev AS szerzo2nev, a.szerzo2email,
+                p3.nev AS szerzo3nev, a.szerzo3email,
+                p4.nev AS szerzo4nev, a.szerzo4email,
+                p5.nev AS szerzo5nev, a.szerzo5email,
+                p6.nev AS szerzo6nev, a.szerzo6email,
+                p7.nev AS szerzo7nev, a.szerzo7email,
+                p8.nev AS szerzo8nev, a.szerzo8email,
+                p9.nev AS szerzo9nev, a.szerzo9email,
+                p10.nev AS szerzo10nev, a.szerzo10email
+            FROM mptngyszakmaianyag a
+            JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
+            JOIN partner p                      ON a.szerzo1_id = p.id
+            JOIN partner tulaj					ON a.tulajdonos_id = tulaj.id
+            LEFT JOIN partner p2                ON a.szerzo2_id = p2.id
+            LEFT JOIN partner p3                ON a.szerzo3_id = p3.id
+            LEFT JOIN partner p4                ON a.szerzo4_id = p4.id
+            LEFT JOIN partner p5                ON a.szerzo5_id = p5.id
+            LEFT JOIN partner p6                ON a.szerzo6_id = p6.id
+            LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
+            LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
+            LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            WHERE (a.vegleges = 1) AND (a.konferencianszerepelhet = 1) AND (a.biralatkesz = 1) AND ((p.email like '%elte%') or (p.email like '%eötvös%') or (p.mptngyegyetem_id=1));";
 
+        
         $conn = $this->getEm()->getConnection();
         $res = $conn->fetchAllAssociative($sql);
 
@@ -403,14 +409,37 @@ class mptngypartnerController extends partnerController
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
-        $sql = "SELECT p.id,p.email,p.nev,e.nev AS egyetem,mptngyegyetemegyeb,mptngympttag,mptngydiak,mptngyphd
-            FROM partner p
-            LEFT OUTER JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
-            where ((email like '%@kre%') or (mptngyegyetem_id=11)) AND
-            (
-            (p.id IN (SELECT szerzo1_id from mptngyszakmaianyag where vegleges=1)) or
-            (email IN (SELECT szerzo1email FROM mptngyszakmaianyag where vegleges=1))
-            )";
+        $sql = "SELECT
+                t.nev AS tipus,
+                a.id,
+                a.cim,
+                p.nev AS szerzo1nev,
+                a.szerzo1email,
+                tulaj.nev AS tulaj,
+                tulaj.email AS tulajemail,
+                p2.nev AS szerzo2nev, a.szerzo2email,
+                p3.nev AS szerzo3nev, a.szerzo3email,
+                p4.nev AS szerzo4nev, a.szerzo4email,
+                p5.nev AS szerzo5nev, a.szerzo5email,
+                p6.nev AS szerzo6nev, a.szerzo6email,
+                p7.nev AS szerzo7nev, a.szerzo7email,
+                p8.nev AS szerzo8nev, a.szerzo8email,
+                p9.nev AS szerzo9nev, a.szerzo9email,
+                p10.nev AS szerzo10nev, a.szerzo10email
+            FROM mptngyszakmaianyag a
+            JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
+            JOIN partner p                      ON a.szerzo1_id = p.id
+            JOIN partner tulaj					ON a.tulajdonos_id = tulaj.id
+            LEFT JOIN partner p2                ON a.szerzo2_id = p2.id
+            LEFT JOIN partner p3                ON a.szerzo3_id = p3.id
+            LEFT JOIN partner p4                ON a.szerzo4_id = p4.id
+            LEFT JOIN partner p5                ON a.szerzo5_id = p5.id
+            LEFT JOIN partner p6                ON a.szerzo6_id = p6.id
+            LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
+            LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
+            LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            WHERE (a.vegleges = 1) AND (a.konferencianszerepelhet = 1) AND (a.biralatkesz = 1) AND ((p.email like '%@kre%') or (p.mptngyegyetem_id=11));";
 
         $conn = $this->getEm()->getConnection();
         $res = $conn->fetchAllAssociative($sql);
