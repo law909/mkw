@@ -359,9 +359,9 @@ class mptngypartnerController extends partnerController
             LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
             LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
             LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
-            WHERE (a.vegleges = 1) AND (a.konferencianszerepelhet = 1) AND (a.biralatkesz = 1) AND ((p.email like '%elte%') or (p.email like '%eötvös%') or (p.mptngyegyetem_id=1));";
+            WHERE (a.vegleges = 1) AND (a.konferencianszerepelhet = 1) AND (a.biralatkesz = 1) AND ((p.email like '%elte%') or (p.mptngyegyetem_id=1));";
 
-        
+
         $conn = $this->getEm()->getConnection();
         $res = $conn->fetchAllAssociative($sql);
 
