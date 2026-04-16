@@ -96,6 +96,15 @@
                         </select></td>
                 </tr>
                 <tr>
+                    <td><label for="AlapertelmezettRaktarEdit">{at('Alapértelmezett raktár')}:</label></td>
+                    <td><select id="AlapertelmezettRaktarEdit" name="alapertelmezettraktar">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $raktarlist as $_raktar}
+                                <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
+                <tr>
                     <td><label for="AutoSzamlaEdit">{at('Bérlet eladáskor automatikusan készüljön számla')}</label></td>
                     <td><input id="AutoSzamlaEdit" name="autoszamla" type="checkbox"{if ($egyed.autoszamla)} checked="checked"{/if}></td>
                 </tr>

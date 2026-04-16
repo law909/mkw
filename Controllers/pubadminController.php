@@ -275,7 +275,7 @@ class pubadminController extends mkwhelpers\Controller
                     $szamlafej->setPartnerSzamlatipus(0);
                 }
 
-                $szamlafej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
+                $szamlafej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getDefaultRaktarId()));
                 $szamlafej->setValutanem($valutanem);
                 $szamlafej->setBankszamla($valutanem->getBankszamla());
                 $szamlafej->setArfolyam(1);

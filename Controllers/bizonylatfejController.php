@@ -6,10 +6,12 @@ use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
+use Entities\Dolgozo;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Raktar;
 use Entities\Szallitasimod;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -1377,7 +1379,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
             $raktar = new raktarController($this->params);
             if (!$record || !$record->getRaktarId()) {
-                $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
+                $raktarid = \mkw\store::getDefaultRaktarId();
             } else {
                 $raktarid = $record->getRaktarId();
             }
@@ -1860,16 +1862,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->setPartner($partnerobj);
         }
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+        $ck = \mkw\store::getEm()->getRepository(Raktar::class)->find(\mkw\store::getDefaultRaktarId());
         if ($ck) {
             $obj->setRaktar($ck);
         }
         /** @var \Entities\Fizmod $fizmod */
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
+        $ck = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
         if ($ck) {
             $obj->setSzallitasimod($ck);
         }
@@ -1878,7 +1880,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
             $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
             $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
-            $dolgozo = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('felhasznalo'));
+            $dolgozo = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('felhasznalo'));
             if ($dolgozo) {
                 $obj->setFelhasznalo($dolgozo);
             }

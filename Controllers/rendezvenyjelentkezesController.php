@@ -531,7 +531,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
                 $biz->setBankszamla($bankfej->getBankszamla());
             }
             $biz->setBelsomegjegyzes(at('Automatikus bizonylat'));
-            $biz->setRaktar(\mkw\store::getParameter(\mkw\consts::Raktar));
+            $biz->setRaktar(\mkw\store::getDefaultRaktarId());
             $biz->setSzallitasimod(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
 
             $bt->setPersistentData();

@@ -83,6 +83,13 @@ class Dolgozo
     private $oraelmaradaskonyvelonek = false;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Raktar")
+     * @ORM\JoinColumn(name="alapertelmezett_raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Raktar
+     */
+    private $alapertelmezettRaktar;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Fizmod")
      * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Fizmod
@@ -512,6 +519,56 @@ class Dolgozo
     {
         if ($this->fizmod !== null) {
             $this->fizmod = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Raktar
+     */
+    public function getAlapertelmezettRaktar()
+    {
+        return $this->alapertelmezettRaktar;
+    }
+
+    public function getAlapertelmezettRaktarNev()
+    {
+        $raktar = $this->getAlapertelmezettRaktar();
+        if ($raktar) {
+            return $raktar->getNev();
+        }
+        return '';
+    }
+
+    public function getAlapertelmezettRaktarId()
+    {
+        $raktar = $this->getAlapertelmezettRaktar();
+        if ($raktar) {
+            return $raktar->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Raktar $val
+     */
+    public function setAlapertelmezettRaktar($val)
+    {
+        if (!($val instanceof \Entities\Raktar)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
+        }
+        if ($this->alapertelmezettRaktar !== $val) {
+            if (!$val) {
+                $this->removeAlapertelmezettRaktar();
+            } else {
+                $this->alapertelmezettRaktar = $val;
+            }
+        }
+    }
+
+    public function removeAlapertelmezettRaktar()
+    {
+        if ($this->alapertelmezettRaktar !== null) {
+            $this->alapertelmezettRaktar = null;
         }
     }
 

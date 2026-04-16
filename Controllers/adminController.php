@@ -69,7 +69,7 @@ class adminController extends mkwhelpers\Controller
         $view->setVar('nohibalista', $nohibasbeallitas);
 
         $raktar = new raktarController($this->params);
-        $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
+        $raktarid = \mkw\store::getDefaultRaktarId();
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
         $lista = new listaController($this->params);

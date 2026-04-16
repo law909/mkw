@@ -4,7 +4,10 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
+use Entities\Fizmod;
 use Entities\MPTNGYTemakor;
+use Entities\Munkakor;
+use Entities\Raktar;
 use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
@@ -48,6 +51,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['szamlatad'] = $t->getSzamlatad();
         $x['inaktiv'] = $t->isInaktiv();
         $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
+        $x['alapertelmezettraktarnev'] = $t->getAlapertelmezettRaktarNev();
         $x['fizmodnev'] = $t->getFizmodNev();
         $x['mptngymaxdb'] = $t->getMptngymaxdb();
         $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
@@ -97,13 +101,21 @@ class dolgozoController extends \mkwhelpers\MattableController
                 $obj->setJelszo($pass1);
             }
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Munkakor')->find($this->params->getIntRequestParam('munkakor', 0));
+        $ck = \mkw\store::getEm()->getRepository(Munkakor::class)->find($this->params->getIntRequestParam('munkakor', 0));
         if ($ck) {
             $obj->setMunkakor($ck);
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
+        } else {
+            $obj->removeFizmod();
+        }
+        $raktar = \mkw\store::getEm()->getRepository(Raktar::class)->find($this->params->getIntRequestParam('alapertelmezettraktar', 0));
+        if ($raktar) {
+            $obj->setAlapertelmezettRaktar($raktar);
+        } else {
+            $obj->removeAlapertelmezettRaktar();
         }
         return $obj;
     }
@@ -196,6 +208,8 @@ class dolgozoController extends \mkwhelpers\MattableController
         $view->setVar('munkakorlist', $munkakor->getSelectList(($record ? $record->getMunkakorId() : 0)));
         $fizmod = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $raktar = new raktarController($this->params);
+        $view->setVar('raktarlist', $raktar->getSelectList(($record ? $record->getAlapertelmezettRaktarId() : 0)));
         return $view->getTemplateResult();
     }
 

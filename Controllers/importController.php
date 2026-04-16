@@ -11,6 +11,7 @@ use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Dolgozo;
 use Entities\Felhasznalo;
+use Entities\Fizmod;
 use Entities\ME;
 use Entities\Munkakor;
 use Entities\Partner;
@@ -3723,11 +3724,11 @@ class importController extends \mkwhelpers\Controller
                 $fej->setPartner($partner);
                 $szallmod = $this->createVateraSzallitasimod($r['szallmod']);
                 $fej->setSzallitasimod($szallmod);
-                $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+                $ck = \mkw\store::getEm()->getRepository(Raktar::class)->find(\mkw\store::getDefaultRaktarId());
                 if ($ck) {
                     $fej->setRaktar($ck);
                 }
-                $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
+                $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
                 if ($ck) {
                     $fej->setFizmod($ck);
                 }
@@ -3735,7 +3736,7 @@ class importController extends \mkwhelpers\Controller
                 $fej->setTeljesites();
                 $fej->setEsedekesseg();
                 $fej->setHatarido($r['datum']);
-                $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                $ck = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 if ($ck) {
                     $fej->setValutanem($ck);
                     $fej->setBankszamla($ck->getBankszamla());
@@ -6120,7 +6121,7 @@ class importController extends \mkwhelpers\Controller
         $sheet = $excel->getActiveSheet();
         $maxrow = (int)$sheet->getHighestRow();
 
-        $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+        $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getDefaultRaktarId());
         $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(12); // függőben
         $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
         $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));

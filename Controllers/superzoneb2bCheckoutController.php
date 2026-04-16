@@ -2,8 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Afa;
+use Entities\Arfolyam;
+use Entities\Bizonylatstatusz;
+use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\Raktar;
 use mkw\store;
 
 
@@ -63,11 +68,11 @@ class superzoneb2bCheckoutController extends checkoutController
 
         if ($ok) {
             $partner = \mkw\store::getLoggedInUser();
-            $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            $nullasafa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             $biztetelcontroller = new bizonylattetelController($this->params);
             $valutanem = $partner->getValutanem();
 
-            $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
             $megrendfej = new \Entities\Bizonylatfej();
             $megrendfej->setPersistentData();
             $megrendfej->setIp($_SERVER['REMOTE_ADDR']);
@@ -93,14 +98,14 @@ class superzoneb2bCheckoutController extends checkoutController
             $megrendfej->setSzallitasimod($partner->getSzallitasimod());
             $megrendfej->setValutanem($valutanem);
             $megrendfej->setWebshopmessage($webshopmessage);
-            $arf = $this->getEm()->getRepository('Entities\Arfolyam')->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
+            $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
             $megrendfej->setArfolyam($arf->getArfolyam());
             $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
-            $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+            $megrendfej->setRaktar($this->getRepo(Raktar::class)->find($raktarid));
             if ($valutanem) {
                 $megrendfej->setBankszamla($valutanem->getBankszamla());
             }
-            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             $megrendfej->setBizonylatstatusz($bizstatusz);
 
             $lasttermeknevek = [];

@@ -1219,6 +1219,21 @@ class store
         return self::$pubadminloggedinuser;
     }
 
+    public static function getLoggedInDolgozo()
+    {
+        return self::getEm()->getRepository(Dolgozo::class)->find(\mkw\store::getAdminSession()->pk);
+    }
+
+    public static function getDefaultRaktarId()
+    {
+        $raktarid = self::getParameter(\mkw\consts::Raktar);
+        $felhasznalo = self::getLoggedInDolgozo();
+        if ($felhasznalo && $felhasznalo->getAlapertelmezettRaktarId()) {
+            $raktarid = $felhasznalo->getAlapertelmezettRaktarId();
+        }
+        return $raktarid;
+    }
+
     public static function clearPubadminLoggedInUser()
     {
         self::$pubadminloggedinuser = null;
