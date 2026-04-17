@@ -5,6 +5,8 @@ $router->map('GET', '/admin/cron', 'cronController#run', 'admincron');
 $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
 $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'adminegyebtorzsview');
+$router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
+$router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
 $router->map('GET', '/admin/afa/jsonlist', 'afaController#jsonlist', 'adminafajsonlist');
 $router->map('GET', '/admin/afa/htmllist', 'afaController#htmllist', 'adminafahtmllist');
 $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');

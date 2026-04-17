@@ -515,6 +515,16 @@ if ($DBVersion < '0064') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0064');
 }
 
+if ($DBVersion < '0065') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Raktár készlet nullázás","/admin/raktarkeszletnullazo/view","adminraktarkeszletnullazoview",90,0,250, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0065');
+}
+
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
