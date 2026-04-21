@@ -33,6 +33,11 @@ class a2aController extends \mkwhelpers\Controller
         return $r;
     }
 
+    protected function fixInvalidJsonEscapes(string $json): string
+    {
+        return preg_replace("/\\\\'/", "'", $json);
+    }
+
     protected function writelog($consumer, $q, $r)
     {
         $log = new \Entities\Apiconsumelog();
@@ -402,6 +407,7 @@ class a2aController extends \mkwhelpers\Controller
                 $rawdata = file_get_contents('php://input');
             }
         }
+        $rawdata = $this->fixInvalidJsonEscapes($rawdata);
         $jsondata = json_decode($rawdata, true);
 
         // nem lahtato, nem elerheto, nem kaphato, inaktiv termek eseten visszadobni a rendelest
