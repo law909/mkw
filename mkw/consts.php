@@ -374,6 +374,8 @@ class consts
     const BarionRedirectUrl = 'barionredirecturl';
     const BarionCallbackUrl = 'barioncallbackurl';
 
+    const StripeAPIKey = 'stripeapikey';
+
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
 

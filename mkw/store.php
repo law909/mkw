@@ -275,6 +275,12 @@ class store
         if (!array_key_exists('ngyclosed', self::$setup)) {
             self::$setup['ngyclosed'] = false;
         }
+        if (!array_key_exists('stripe', self::$setup)) {
+            self::$setup['stripe'] = false;
+        }
+        if (self::$setup['barion'] && self::$setup['stripe']) {
+            self::$setup['stripe'] = false;
+        }
     }
 
     public static function getIntParameter($par, $default = null)

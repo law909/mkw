@@ -455,6 +455,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::BarionCallbackUrl);
         $view->setVar(\mkw\consts::BarionCallbackUrl, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::StripeAPIKey);
+        $view->setVar(\mkw\consts::StripeAPIKey, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::SzamlaOrzesEv);
@@ -1461,6 +1464,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::BarionAPIVersion, $this->params->getStringRequestParam(\mkw\consts::BarionAPIVersion));
         $this->setObj(\mkw\consts::BarionRedirectUrl, $this->params->getStringRequestParam(\mkw\consts::BarionRedirectUrl));
         $this->setObj(\mkw\consts::BarionCallbackUrl, $this->params->getStringRequestParam(\mkw\consts::BarionCallbackUrl));
+
+        $this->setObj(\mkw\consts::StripeAPIKey, $this->params->getStringRequestParam(\mkw\consts::StripeAPIKey));
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));

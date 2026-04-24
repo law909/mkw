@@ -44,6 +44,9 @@
                     {if ($setup.barion)}
                         <li><a href="#BarionTab">{at('Barion')}</a></li>
                     {/if}
+                    {if ($setup.stripe)}
+                        <li><a href="#StripeTab">{at('Stripe')}</a></li>
+                    {/if}
                     <li><a href="#RendezvenyTab">{at('Rendezvények')}</a></li>
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#MiniCRMTab">{at('MiniCRM')}</a></li>
@@ -1828,6 +1831,16 @@
                                         <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
                                     {/foreach}
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
+                {if ($setup.stripe)}
+                    <div id="StripeTab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripeAPIKeyEdit">{at('Stripe API kulcs')}:</label></span>
+                                <input id="StripeAPIKeyEdit" name="stripeapikey" value="{$stripeapikey}">
                             </div>
                         </div>
                     </div>
