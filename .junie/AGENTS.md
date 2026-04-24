@@ -150,6 +150,12 @@ $test->run();
 - `getlistbody()` - Generate list view data
 - `_getKarb($tplname)` - Generate add/edit form variables and the form itself
 
+#### Template Structure
+
+- **Location**: `tpl/main/{theme}/` for frontend, `tpl/admin/default/` or `tpl/admin/{theme}/` for admin
+- **Naming**: `{entity}lista.tpl`, `{entity}lista_tbody.tpl` `{entity}lista_tbody_tr.tpl` for entity listings,
+  `{entity}karb.tpl`, `{entity}karbform.tpl` for entity forms
+
 ### Database Management
 
 #### Schema Updates
@@ -220,8 +226,6 @@ cache = file
 
 - **Templates**: `tpl/admin/default/` for admin, `tpl/main/{theme}/` for frontend
 - **JavaScript**: `js/admin/default/` and `js/main/{theme}/`
-- **Images**: Organized by type (`kepek/termek/`, `kepek/kategoria/`)
-- **Exports**: Various export templates in `exporttemplates/`
 
 ### Development Workflow
 
@@ -230,7 +234,6 @@ cache = file
 3. **Update Database Schema** using `./updateschema.sh`
 4. **Create Templates** in appropriate theme directory
 5. **Add Routes** in routing configuration
-6. **Test Functionality** using custom test scripts
 
 ### Debugging Tools
 
