@@ -375,6 +375,11 @@ class consts
     const BarionCallbackUrl = 'barioncallbackurl';
 
     const StripeAPIKey = 'stripeapikey';
+    const StripePublishableKey = 'stripepublishablekey';
+    const StripeFizmod = 'stripefizmod';
+    const StripeFizetveStatusz = 'stripefizetvestatusz';
+    const StripeFizetesrevarStatusz = 'stripefizetesrevarstatusz';
+    const StripeWebhookSecret = 'stripewebhooksecret';
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';

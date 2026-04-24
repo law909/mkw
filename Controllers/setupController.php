@@ -457,6 +457,10 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::StripeAPIKey);
         $view->setVar(\mkw\consts::StripeAPIKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::StripePublishableKey);
+        $view->setVar(\mkw\consts::StripePublishableKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::StripeWebhookSecret);
+        $view->setVar(\mkw\consts::StripeWebhookSecret, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
@@ -495,6 +499,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('aycmfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::BarionFizmod);
         $view->setVar('barionfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::StripeFizmod);
+        $view->setVar('stripefizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
         $c = new jelenlettipusController($this->params);
@@ -644,6 +650,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('barionfizetvestatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::BarionRefundedStatusz);
         $view->setVar('barionrefundedstatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::StripeFizetveStatusz);
+        $view->setVar('stripefizetvestatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::StripeFizetesrevarStatusz);
+        $view->setVar('stripefizetesrevarstatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
@@ -1466,6 +1476,26 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::BarionCallbackUrl, $this->params->getStringRequestParam(\mkw\consts::BarionCallbackUrl));
 
         $this->setObj(\mkw\consts::StripeAPIKey, $this->params->getStringRequestParam(\mkw\consts::StripeAPIKey));
+        $this->setObj(\mkw\consts::StripePublishableKey, $this->params->getStringRequestParam(\mkw\consts::StripePublishableKey));
+        $this->setObj(\mkw\consts::StripeWebhookSecret, $this->params->getStringRequestParam(\mkw\consts::StripeWebhookSecret));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('stripefizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::StripeFizmod, $fizmod->getId());
+        } else {
+            $this->setObj(\mkw\consts::StripeFizmod, '');
+        }
+        $bizstatusz = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('stripefizetvestatusz', 0));
+        if ($bizstatusz) {
+            $this->setObj(\mkw\consts::StripeFizetveStatusz, $bizstatusz->getId());
+        } else {
+            $this->setObj(\mkw\consts::StripeFizetveStatusz, '');
+        }
+        $bizstatusz = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('stripefizetesrevarstatusz', 0));
+        if ($bizstatusz) {
+            $this->setObj(\mkw\consts::StripeFizetesrevarStatusz, $bizstatusz->getId());
+        } else {
+            $this->setObj(\mkw\consts::StripeFizetesrevarStatusz, '');
+        }
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));

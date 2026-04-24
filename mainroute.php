@@ -212,6 +212,9 @@ $router->map('GET', '/t/copydepokeszletdownload', 'toolController#copydepokeszle
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 
+$router->map('POST', '/stripe/webhook', 'stripeController#webhook', 'stripewebhook');
+$router->map('GET', '/stripe/success', 'stripeController#paymentSuccess', 'stripesuccess');
+
 $router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');
 
 $router->map('POST', '/wcwh/ordercr', 'wcwebhookController#orderCreated', 'wcwhordercr');

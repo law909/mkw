@@ -197,6 +197,8 @@ class mugenraceCheckoutController extends checkoutController
             }
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
                 $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
+            } elseif (\mkw\store::isStripeFizmod($fizetesimod)) {
+                $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::StripeFizetesrevarStatusz));
             } else {
                 $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             }
@@ -246,8 +248,8 @@ class mugenraceCheckoutController extends checkoutController
             //\mkw\store::getMainSession()->lastemail = $kapcsemail;
             \mkw\store::getMainSession()->lasttermeknevek = $lasttermeknevek;
             \mkw\store::getMainSession()->lasttermekids = $lasttermekids;
-            //\mkw\store::getMainSession()->lastszallmod = $szallitasimod;
-            //\mkw\store::getMainSession()->lastfizmod = $fizetesimod;
+            \mkw\store::getMainSession()->lastszallmod = $szallitasimod;
+            \mkw\store::getMainSession()->lastfizmod = $fizetesimod;
             $kc = new kosarController($this->params);
             $kc->clear();
 
@@ -259,6 +261,8 @@ class mugenraceCheckoutController extends checkoutController
                 } else {
                     Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, [], ['mr' => $megrendfej->getId()]));
                 }
+            } elseif (\mkw\store::isStripeFizmod($fizetesimod)) {
+                Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
             } else {
                 if ($bizstatusz) {
                     $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());

@@ -354,9 +354,11 @@ class checkoutController extends \mkwhelpers\MattableController
         }
 
         $fizetendo = 0;
+        $valutanemnev = '';
         $mr = $this->getRepo(Bizonylatfej::class)->find($mrszam);
         if ($mr) {
             $fizetendo = $mr->getFizetendo();
+            $valutanemnev = $mr->getValutanemnev();
         }
 
         $excfm = [];
@@ -375,12 +377,28 @@ class checkoutController extends \mkwhelpers\MattableController
         $view->setVar('fizmodlist', $szlist);
         $fml = $view->getTemplateResult();
 
+        $isStripe = \mkw\store::isStripeFizmod($fizmod);
+        $stripeClientSecret = '';
+        $stripePublishableKey = '';
+        if ($isStripe && $mr) {
+            $sc = new stripeController($this->params);
+            $paymentRes = $sc->createPaymentIntent($mr);
+            if ($paymentRes['result']) {
+                $stripeClientSecret = $paymentRes['clientSecret'];
+            }
+            $stripePublishableKey = \mkw\store::getParameter(\mkw\consts::StripePublishableKey);
+        }
+
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizetes.tpl');
         \mkw\store::fillTemplate($view);
         $view->setVar('fizetendo', $fizetendo);
+        $view->setVar('valutanemnev', $valutanemnev);
         $view->setVar('megrendelesszam', $mrszam);
         $view->setVar('fizmodlist', $fml);
         $view->setVar('fizmodnev', $fizmodnev);
+        $view->setVar('isStripe', $isStripe);
+        $view->setVar('stripeClientSecret', $stripeClientSecret);
+        $view->setVar('stripePublishableKey', $stripePublishableKey);
         $view->setVar('checkouterrors', \mkw\store::getMainSession()->checkoutfizeteserrors);
         $view->printTemplateResult(false);
         \mkw\store::getMainSession()->checkoutfizeteserrors = false;

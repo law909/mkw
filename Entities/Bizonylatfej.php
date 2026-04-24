@@ -647,6 +647,9 @@ class Bizonylatfej
     /** @ORM\Column(type="string", length=100,nullable=true) */
     private $barionpaymentstatus;
 
+    /** @ORM\Column(type="string", length=255,nullable=true) */
+    private $stripepaymentintentid;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $navbekuldendo = false;
 
@@ -4984,6 +4987,22 @@ class Bizonylatfej
     public function setBarionpaymentstatus($barionpaymentstatus)
     {
         $this->barionpaymentstatus = $barionpaymentstatus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStripepaymentintentid()
+    {
+        return $this->stripepaymentintentid;
+    }
+
+    /**
+     * @param mixed $stripepaymentintentid
+     */
+    public function setStripepaymentintentid($stripepaymentintentid)
+    {
+        $this->stripepaymentintentid = $stripepaymentintentid;
     }
 
     /**

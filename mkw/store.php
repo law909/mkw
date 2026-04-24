@@ -12,6 +12,7 @@ use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\MNRNavigation;
 use Entities\Partner;
+use Entities\Szallitasimod;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\Uzletkoto;
@@ -1436,7 +1437,7 @@ class store
             return false;
         }
         $i = $szm;
-        if (is_a($szm, 'Entities\Szallitasimod')) {
+        if (is_a($szm, Szallitasimod::class)) {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::GLSFutarSzallitasmod);
@@ -1448,7 +1449,7 @@ class store
             return false;
         }
         $i = $fm;
-        if (is_a($fm, 'Entities\Fizmod')) {
+        if (is_a($fm, Fizmod::class)) {
             $i = $fm->getId();
         }
         return $i == self::getParameter(\mkw\consts::UtanvetFizmod);
@@ -1460,7 +1461,7 @@ class store
             return false;
         }
         $i = $fm;
-        if (is_a($fm, 'Entities\Fizmod')) {
+        if (is_a($fm, Fizmod::class)) {
             $i = $fm->getId();
         }
         return $i == self::getParameter(\mkw\consts::AYCMFizmod);
@@ -1472,10 +1473,22 @@ class store
             return false;
         }
         $i = $fm;
-        if (is_a($fm, 'Entities\Fizmod')) {
+        if (is_a($fm, Fizmod::class)) {
             $i = $fm->getId();
         }
         return $i == self::getParameter(\mkw\consts::BarionFizmod);
+    }
+
+    public static function isStripeFizmod($fm)
+    {
+        if (!self::getParameter(\mkw\consts::StripeFizmod)) {
+            return false;
+        }
+        $i = $fm;
+        if (is_a($fm, Fizmod::class)) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::StripeFizmod);
     }
 
     public static function isSZEPFizmod($fm)
@@ -1484,7 +1497,7 @@ class store
             return false;
         }
         $i = $fm;
-        if (is_a($fm, 'Entities\Fizmod')) {
+        if (is_a($fm, Fizmod::class)) {
             $i = $fm->getId();
         }
         return $i == self::getParameter(\mkw\consts::SZEPFizmod);
@@ -1496,7 +1509,7 @@ class store
             return false;
         }
         $i = $fm;
-        if (is_a($fm, 'Entities\Fizmod')) {
+        if (is_a($fm, Fizmod::class)) {
             $i = $fm->getId();
         }
         return $i == self::getParameter(\mkw\consts::SportkartyaFizmod);

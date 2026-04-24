@@ -1839,8 +1839,43 @@
                     <div id="StripeTab" class="mattkarb-page" data-visible="visible">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="StripeAPIKeyEdit">{at('Stripe API kulcs')}:</label></span>
+                                <span class="setuplabel"><label for="StripeAPIKeyEdit">{at('Stripe API kulcs (secret)')}:</label></span>
                                 <input id="StripeAPIKeyEdit" name="stripeapikey" value="{$stripeapikey}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripePublishableKeyEdit">{at('Stripe publishable kulcs')}:</label></span>
+                                <input id="StripePublishableKeyEdit" name="stripepublishablekey" value="{$stripepublishablekey}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripeWebhookSecretEdit">{at('Stripe webhook secret')}:</label></span>
+                                <input id="StripeWebhookSecretEdit" name="stripewebhooksecret" value="{$stripewebhooksecret}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripeFizmodEdit">{at('Stripe fizetési mód')}:</label></span>
+                                <select id="StripeFizmodEdit" name="stripefizmod">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $stripefizmodlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripeFizetveStatuszEdit">{at('Stripe "Fizetve" biz.státusz')}:</label></span>
+                                <select id="StripeFizetveStatuszEdit" name="stripefizetvestatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $stripefizetvestatuszlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="StripeFizetesrevarStatuszEdit">{at('Stripe "Fizetésre vár" biz.státusz')}:</label></span>
+                                <select id="StripeFizetesrevarStatuszEdit" name="stripefizetesrevarstatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $stripefizetesrevarstatuszlist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
                             </div>
                         </div>
                     </div>
