@@ -1141,23 +1141,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setCimkeNevek($cimkenevek)
+    public function setCimkenevek($cimkenevek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCimkeNevek', [$cimkenevek]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCimkenevek', [$cimkenevek]);
 
-        return parent::setCimkeNevek($cimkenevek);
+        return parent::setCimkenevek($cimkenevek);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getCimkeNevek()
+    public function getCimkenevek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeNevek', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkenevek', []);
 
-        return parent::getCimkeNevek();
+        return parent::getCimkenevek();
     }
 
     /**

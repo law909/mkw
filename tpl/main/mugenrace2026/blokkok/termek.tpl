@@ -23,16 +23,16 @@
                     <div class="flag sale-product">{t('Top 10')}</div>
                 {/if} *}
             </div>
-            <a href="/product/{$termek.slug}"><img class="product-list-item__image" itemprop="image"
-                                                   src="{$imagepath}{if (is_array($termek.szinkepek))}{$termek.szinkepek[0].kepurl}{else}{$termek.kepurl}{/if}"
-                                                   title="{$termek.caption}" alt="{$termek.caption}"></a>
+            <a href="/product/{$termek.slug}/{$termek.szin_id}"><img class="product-list-item__image" itemprop="image"
+                                                                     src="{$imagepath}{if (is_array($termek.szinkepek))}{$termek.szinkepek[0].kepurl}{else}{$termek.kepurl}{/if}"
+                                                                     title="{$termek.caption}" alt="{$termek.caption}"></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__title">
-            <a itemprop="url" href="/product/{$termek.slug}"><span class="gtermekcaption"
-                                                                   itemprop="name">{$termek.caption|lower|capitalize}{if ($termek.szin)} ({$termek.szin}){/if}</span></a>
+            <a itemprop="url" href="/product/{$termek.slug}/{$termek.szin_id}"><span class="gtermekcaption"
+                                                                                     itemprop="name">{$termek.caption|lower|capitalize}{if ($termek.szin)} ({$termek.szin}){/if}</span></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__code">
-            <a href="/product/{$termek.slug}">{$termek.cikkszam}</a>
+            <a href="/product/{$termek.slug}/{$termek.szin_id}">{$termek.cikkszam}</a>
         </div>
         <div class="textaligncenter product-list-item__content">
             {if ( isset($termek.szallitasiido) && $termek.szallitasiido && isset($termek.nemkaphato) && !$termek.nemkaphato)}

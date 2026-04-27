@@ -9,11 +9,14 @@ use Entities\Partner;
 use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
+use Entities\Termekcimketorzs;
+use Entities\TermekDok;
 use Entities\TermekFa;
+use Entities\TermekKapcsolodo;
 use Entities\TermekKep;
 use Entities\TermekMenu;
-use Entities\TermekValtozat,
-    Entities\TermekRecept;
+use Entities\TermekTranslation;
+use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
@@ -43,88 +46,26 @@ class termekController extends \mkwhelpers\MattableController
     {
         $termekarCtrl = new termekarController($this->params);
         $kepCtrl = new termekkepController($this->params);
-        $receptCtrl = new termekreceptController($this->params);
         $valtozatCtrl = new termekvaltozatController($this->params);
         $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
         $translationsCtrl = new termektranslationController($this->params);
         $dokCtrl = new termekdokController($this->params);
         $ar = [];
         $kep = [];
-        $recept = [];
         $valtozat = [];
         $lvaltozat = [];
         $kapcsolodo = [];
         $translations = [];
         $dok = [];
-        $x = [];
         if (!$t) {
             $t = new \Entities\Termek();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['wcid'] = $t->getWcid();
+        $x = $this->getEntityFieldsArray($t);
         $x['vtsznev'] = $t->getVtszNev();
         $x['afanev'] = $t->getAfaNev();
-        $x['nev'] = $t->getNev();
-        $x['nev2'] = $t->getNev2();
-        $x['nev3'] = $t->getNev3();
-        $x['nev4'] = $t->getNev4();
-        $x['nev5'] = $t->getNev5();
-        $x['kiirtnev'] = $t->getKiirtnev();
-        $x['slug'] = $t->getSlug();
-        $x['me'] = $t->getMe();
-        $x['cikkszam'] = $t->getCikkszam();
-        $x['idegencikkszam'] = $t->getIdegencikkszam();
-        $x['vonalkod'] = $t->getVonalkod();
-        $x['idegenkod'] = $t->getIdegenkod();
-        $x['oldalcim'] = $t->getOldalcim();
-        $x['rovidleiras'] = $t->getRovidleiras();
-        $x['leiras'] = $t->getLeiras();
-        $x['seodescription'] = $t->getSeodescription();
-        $x['feltoltheto'] = $t->getFeltoltheto();
-        $x['feltoltheto1'] = $t->getFeltoltheto();
-        $x['feltoltheto2'] = $t->getFeltoltheto2();
-        $x['feltoltheto3'] = $t->getFeltoltheto3();
-        $x['feltoltheto4'] = $t->getFeltoltheto4();
-        $x['feltoltheto5'] = $t->getFeltoltheto5();
-        $x['lathato'] = $t->getLathato();
-        $x['lathato1'] = $t->getLathato();
-        $x['lathato2'] = $t->getLathato2();
-        $x['lathato3'] = $t->getLathato3();
-        $x['lathato4'] = $t->getLathato4();
-        $x['lathato5'] = $t->getLathato5();
-        $x['lathato6'] = $t->getLathato6();
-        $x['lathato7'] = $t->getLathato7();
-        $x['lathato8'] = $t->getLathato8();
-        $x['lathato9'] = $t->getLathato9();
-        $x['lathato10'] = $t->getLathato10();
-        $x['lathato11'] = $t->getLathato11();
-        $x['lathato12'] = $t->getLathato12();
-        $x['lathato13'] = $t->getLathato13();
-        $x['lathato14'] = $t->getLathato14();
-        $x['lathato15'] = $t->getLathato15();
-        $x['hozzaszolas'] = $t->getHozzaszolas();
-        $x['ajanlott'] = $t->getAjanlott();
-        $x['kiemelt'] = $t->getKiemelt();
-        $x['uj'] = $t->getUj();
-        $x['inaktiv'] = $t->getInaktiv();
-        $x['eladhato'] = $t->getEladhato();
-        $x['emagtiltva'] = $t->getEmagtiltva();
-        $x['mozgat'] = $t->getMozgat();
-        $x['kozvetitett'] = $t->getKozvetitett();
-        $x['hparany'] = $t->getHparany();
-        $x['cimkek'] = $t->getCimkeNevek();
-        $x['minboltikeszlet'] = $t->getMinboltikeszlet();
-        $x['garancia'] = $t->getGarancia();
-        $x['arukeresofanev'] = $t->getArukeresofanev();
         if (!\mkw\store::isArsavok()) {
-            $x['netto'] = $t->getNetto();
-            $x['brutto'] = $t->getBrutto();
-            $x['akciosnetto'] = $t->getAkciosnetto();
-            $x['akciosbrutto'] = $t->getAkciosbrutto();
-            $x['akciostart'] = $t->getAkciostart();
             $x['akciostartstr'] = $t->getAkciostartStr();
-            $x['akciostop'] = $t->getAkciostop();
             $x['akciostopstr'] = $t->getAkciostopStr();
         } else {
             $x['netto'] = 0;
@@ -137,28 +78,35 @@ class termekController extends \mkwhelpers\MattableController
                     $x['brutto'] = $arsav->getBrutto();
                 }
             }
-            /*            $x['netto'] = 0;
-                        $x['brutto'] = 0;
-                        if (!$this->showarsav) {
-                            $this->showarsav = \mkw\store::getParameter(\mkw\consts::ShowTermekArsav);
-                        }
-                        if (!$this->showarsavvalutanem) {
-                            $this->showarsavvalutanem = \mkw\store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
-                        }
-                        if ($this->showarsav && $this->showarsavvalutanem) {
-                            $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($t, $this->showarsavvalutanem, $this->showarsav);
-                            if ($arsav) {
-                                $x['netto'] = $arsav->getNetto();
-                                $x['brutto'] = $arsav->getBrutto();
-                            }
-                        }
-             *
-             */
         }
-        $x['termekexportbanszerepel'] = $t->getTermekexportbanszerepel();
-        $x['nemkaphato'] = $t->getNemkaphato();
-        $x['fuggoben'] = $t->getFuggoben();
-        $x['szallitasiido'] = $t->getSzallitasiido();
+        $x['termekfa1nev'] = $t->getTermekfa1Nev();
+        $x['termekfa2nev'] = $t->getTermekfa2Nev();
+        $x['termekfa3nev'] = $t->getTermekfa3Nev();
+        $x['termekfa1'] = $t->getTermekfa1Id();
+        $x['termekfa2'] = $t->getTermekfa2Id();
+        $x['termekfa3'] = $t->getTermekfa3Id();
+        $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
+        $x['termekmenu1'] = $t->getTermekmenu1Id();
+        $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
+
+        $x['kepurlsmall'] = $t->getKepurlSmall();
+        $x['kepurlmedium'] = $t->getKepurlMedium();
+        $x['kepurllarge'] = $t->getKepurlLarge();
+        $x['kepurl400'] = $t->getKepurl400();
+        $x['kepurl2000'] = $t->getKepurl2000();
+
+        $x['gyartonev'] = $t->getGyartoNev();
+        $x['keszlet'] = $t->getKeszlet();
+        $x['termekcsoportnev'] = $t->getTermekcsoportNev();
+        if (\mkw\store::getSetupValue('termekvaltozat')) {
+            foreach ($t->getValtozatok() as $tvaltozat) {
+                $mozgasdb = $tvaltozat->getMozgasDb();
+                if ($mozgasdb) {
+                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
+                }
+            }
+            $x['valtozatkeszlet'] = $lvaltozat;
+        }
         if ($forKarb) {
             foreach ($t->getTermekKepek() as $kepje) {
                 $kep[] = $kepCtrl->loadVars($kepje);
@@ -179,13 +127,6 @@ class termekController extends \mkwhelpers\MattableController
                 $x['kapcsolodok'] = $kapcsolodo;
             }
 
-            if (\mkw\store::getSetupValue('receptura')) {
-                foreach ($t->getTermekReceptek() as $trecept) {
-                    $recept[] = $receptCtrl->loadVars($trecept, true);
-                }
-                //$recept[]=$receptCtrl->loadVars(null,true);
-                $x['receptek'] = $recept;
-            }
             if (\mkw\store::getSetupValue('termekvaltozat')) {
                 foreach ($t->getValtozatok() as $tvaltozat) {
                     $valtozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
@@ -241,49 +182,6 @@ class termekController extends \mkwhelpers\MattableController
                 }
                 $x['translations'] = $translations;
             }
-        }
-        $x['termekfa1nev'] = $t->getTermekfa1Nev();
-        $x['termekfa2nev'] = $t->getTermekfa2Nev();
-        $x['termekfa3nev'] = $t->getTermekfa3Nev();
-        $x['termekfa1'] = $t->getTermekfa1Id();
-        $x['termekfa2'] = $t->getTermekfa2Id();
-        $x['termekfa3'] = $t->getTermekfa3Id();
-        $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
-        $x['termekmenu1'] = $t->getTermekmenu1Id();
-
-        $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
-
-        $x['kepurl'] = $t->getKepurl();
-        $x['kepurlsmall'] = $t->getKepurlSmall();
-        $x['kepurlmedium'] = $t->getKepurlMedium();
-        $x['kepurllarge'] = $t->getKepurlLarge();
-        $x['kepurl400'] = $t->getKepurl400();
-        $x['kepurl2000'] = $t->getKepurl2000();
-        $x['kepleiras'] = $t->getKepleiras();
-        $x['regikepurl'] = $t->getRegikepurl();
-        $x['szelesseg'] = $t->getSzelesseg();
-        $x['magassag'] = $t->getMagassag();
-        $x['hosszusag'] = $t->getHosszusag();
-        $x['suly'] = $t->getSuly();
-        $x['osszehajthato'] = $t->getOsszehajthato();
-        $x['megtekintesdb'] = $t->getMegtekintesdb();
-        $x['megvasarlasdb'] = $t->getMegvasarlasdb();
-        $x['nepszeruseg'] = $t->getNepszeruseg();
-        $x['gyartonev'] = $t->getGyartoNev();
-        $x['keszlet'] = $t->getKeszlet();
-        $x['termekcsoportnev'] = $t->getTermekcsoportNev();
-        $x['jogaalkalom'] = $t->getJogaalkalom();
-        $x['jogaervenyesseg'] = $t->getJogaervenyesseg();
-        $x['jogaelszamolasalap'] = $t->getJogaelszamolasalap();
-        $x['jogaervenyessegnap'] = $t->getJogaervenyessegnap();
-        if (\mkw\store::getSetupValue('termekvaltozat')) {
-            foreach ($t->getValtozatok() as $tvaltozat) {
-                $mozgasdb = $tvaltozat->getMozgasDb();
-                if ($mozgasdb) {
-                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
-                }
-            }
-            $x['valtozatkeszlet'] = $lvaltozat;
         }
         return $x;
     }
@@ -422,7 +320,7 @@ class termekController extends \mkwhelpers\MattableController
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
         foreach ($cimkekpar as $cimkekod) {
-            $cimke = $this->getEm()->getRepository('Entities\Termekcimketorzs')->find($cimkekod);
+            $cimke = $this->getEm()->getRepository(Termekcimketorzs::class)->find($cimkekod);
             if ($cimke) {
                 $obj->addCimke($cimke);
             }
@@ -446,7 +344,7 @@ class termekController extends \mkwhelpers\MattableController
                     $this->getEm()->persist($kep);
                 } elseif ($oper == 'edit') {
                     /** @var TermekKep $kep */
-                    $kep = \mkw\store::getEm()->getRepository('Entities\TermekKep')->find($kepid);
+                    $kep = \mkw\store::getEm()->getRepository(TermekKep::class)->find($kepid);
                     if ($kep) {
                         if ($kep->getUrl() !== $this->params->getStringRequestParam('kepurl_' . $kepid)) {
                             $kep->setWcid(null);
@@ -557,7 +455,7 @@ class termekController extends \mkwhelpers\MattableController
                     $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
                     $this->getEm()->persist($dok);
                 } elseif ($dokoper === 'edit') {
-                    $dok = \mkw\store::getEm()->getRepository('Entities\TermekDok')->find($dokid);
+                    $dok = \mkw\store::getEm()->getRepository(TermekDok::class)->find($dokid);
                     if ($dok) {
                         $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
                         $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
@@ -591,7 +489,7 @@ class termekController extends \mkwhelpers\MattableController
                     }
                     $this->getEm()->persist($ar);
                 } elseif ($oper == 'edit') {
-                    $ar = $this->getEm()->getRepository('Entities\TermekAr')->find($arid);
+                    $ar = $this->getEm()->getRepository(TermekAr::class)->find($arid);
                     if ($ar) {
                         $ar->setArsav($arsav);
                         $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
@@ -635,7 +533,7 @@ class termekController extends \mkwhelpers\MattableController
                     $obj->addTranslation($translation);
                     $this->getEm()->persist($translation);
                 } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository('Entities\TermekTranslation')->find($translationid);
+                    $translation = $this->getEm()->getRepository(TermekTranslation::class)->find($translationid);
                     if ($translation) {
                         $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
                         $translation->setField($mezo);
@@ -650,7 +548,7 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($kapcsolodoids as $kapcsolodoid) {
                 if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
                     $oper = $this->params->getStringRequestParam('kapcsolodooper_' . $kapcsolodoid);
-                    $altermek = $this->getEm()->getRepository('Entities\Termek')->find(
+                    $altermek = $this->getEm()->getRepository(Termek::class)->find(
                         $this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid)
                     );
                     if ($oper == 'add') {
@@ -661,50 +559,12 @@ class termekController extends \mkwhelpers\MattableController
                         }
                         $this->getEm()->persist($kapcsolodo);
                     } elseif ($oper == 'edit') {
-                        $kapcsolodo = $this->getEm()->getRepository('Entities\TermekKapcsolodo')->find($kapcsolodoid);
+                        $kapcsolodo = $this->getEm()->getRepository(TermekKapcsolodo::class)->find($kapcsolodoid);
                         if ($kapcsolodo) {
                             if ($altermek) {
                                 $kapcsolodo->setAlTermek($altermek);
                             }
                             $this->getEm()->persist($kapcsolodo);
-                        }
-                    }
-                }
-            }
-        }
-        if (\mkw\store::getSetupValue('receptura')) {
-            $receptids = $this->params->getArrayRequestParam('receptid');
-            foreach ($receptids as $receptid) {
-                if (($this->params->getIntRequestParam('receptaltermek_' . $receptid) > 0)) {
-                    $oper = $this->params->getStringRequestParam('receptoper_' . $receptid);
-                    $altermek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('receptaltermek_' . $receptid));
-                    $recepttipus = $this->getEm()->getRepository('Entities\TermekReceptTipus')->find(
-                        $this->params->getIntRequestParam('recepttipus_' . $receptid)
-                    );
-                    if ($oper == 'add') {
-                        $recept = new TermekRecept();
-                        $obj->addTermekRecept($recept);
-                        if ($altermek) {
-                            $recept->setAlTermek($altermek);
-                        }
-                        if ($recepttipus) {
-                            $recept->setTipus($recepttipus);
-                        }
-                        $recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_' . $receptid));
-                        $recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_' . $receptid));
-                        $this->getEm()->persist($recept);
-                    } elseif ($oper == 'edit') {
-                        $recept = $this->getEm()->getRepository('Entities\TermekRecept')->find($receptid);
-                        if ($recept) {
-                            if ($altermek) {
-                                $recept->setAlTermek($altermek);
-                            }
-                            if ($recepttipus) {
-                                $recept->setTipus($recepttipus);
-                            }
-                            $recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_' . $receptid));
-                            $recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_' . $receptid));
-                            $this->getEm()->persist($recept);
                         }
                     }
                 }
@@ -1210,14 +1070,14 @@ class termekController extends \mkwhelpers\MattableController
         return $ret;
     }
 
-    public function getMeretSzinhez()
+    protected function _getMeretSzinhez()
     {
         $ret = [];
         $merettip = \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret);
         $termekid = $this->params->getIntRequestParam('t');
         $szin = $this->params->getStringRequestParam('sz');
         if ($termekid) {
-            $valtozatok = $this->getRepo('Entities\TermekValtozat')->getOtherProperties(
+            $valtozatok = $this->getRepo(TermekValtozat::class)->getOtherProperties(
                 $termekid,
                 [\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)],
                 [$szin]
@@ -1269,6 +1129,39 @@ class termekController extends \mkwhelpers\MattableController
         echo $v->getTemplateResult();
     }
 
+    protected function _getMeretSzinhezFix()
+    {
+        $ret = [];
+        $termekid = $this->params->getIntRequestParam('t');
+        $szinid = $this->params->getIntRequestParam('sz');
+        if ($termekid) {
+            $valtozatok = $this->getRepo(TermekValtozat::class)->getSizesByColor($termekid, $szinid);
+            /** @var \Entities\TermekValtozat $valt */
+            foreach ($valtozatok as $valt) {
+                $ret[] = [
+                    'id' => $valt->getId(),
+                    'caption' => $valt->getMeretNev(),
+                    'selected' => false,
+                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet()
+                ];
+            }
+        }
+        $v = $this->getTemplateFactory()->createMainView('meretselect.tpl');
+        $v->setVar('sizes', $ret);
+        $v->setVar('meretek', $ret);
+        $v->setVar('termekid', $termekid);
+        echo $v->getTemplateResult();
+    }
+
+    public function getMeretSzinhez()
+    {
+        if (\mkw\store::isFixSzinMode()) {
+            $this->_getMeretSzinhezFix();
+        } else {
+            $this->_getMeretSzinhez();
+        }
+    }
+
     public function getKapcsolodoSelectList()
     {
         $term = trim($this->params->getStringRequestParam('term'));
@@ -1276,8 +1169,7 @@ class termekController extends \mkwhelpers\MattableController
         if ($term) {
             $filter = new FilterDescriptor();
             $filter->addFilter(['_xx.nev', '_xx.cikkszam', '_xx.vonalkod'], 'LIKE', '%' . $term . '%');
-            $r = \mkw\store::getEm()->getRepository('\Entities\Termek');
-            $res = $r->getAllForSelectList($filter);
+            $res = \mkw\store::getEm()->getRepository(Termek::class)->getAllForSelectList($filter);
             foreach ($res as $r) {
                 $ret[] = [
                     'id' => $r['id'],

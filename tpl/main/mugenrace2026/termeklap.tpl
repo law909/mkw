@@ -132,6 +132,13 @@
 
 
 
+
+
+
+
+
+
+
 {foreach $navigator as $_navi}
                                         {if ($_navi.url|default)}
                                             <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -196,7 +203,7 @@
                                 {$_kosarbaclass="js-kosarba"}
 
                                 {* Colors  *}
-                                {if ($hidecart != 1)} {*if ($termek.szinek)*}
+                                {if ($hidecart != 1)}
                                     {$_kosarbaclass="js-kosarbaszinvaltozat"}
                                     <div class="row  product-datasheet__cart-container flex-col">
                                         <div class="js-valtozatbox kosarbacontainer ">
@@ -204,15 +211,15 @@
                                                 <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>
                                                 <div class="pull-left gvaltozatselect">
                                                     <div class="option-selector color-selector" data-termek="{$termek.id}">
-                                                        {foreach $termek.szinek as $_v}
-                                                            <div class="select-option {$_v|lower|replace:'/':'-'}" data-value="{$_v}" title="{$_v}"></div>
+                                                        {foreach from=$termek.szinek item=$_v key=$_k}
+                                                            <div class="select-option {$_v|lower|replace:'/':'-'}" data-value="{$_k}" title="{$_v}"></div>
                                                         {/foreach}
                                                     </div>
 
                                                     <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$termek.id}">
                                                         <option value="">{t('Válasszon')}</option>
-                                                        {foreach $termek.szinek as $_v}
-                                                            <option value="{$_v}">{$_v}</option>
+                                                        {foreach from=$termek.szinek item=$_v key=$_k}
+                                                            <option value="{$_k}"{if ($_k===$szin_id)} selected="selected"{/if}>{$_v}</option>
                                                         {/foreach}
                                                     </select>
                                                 </div>

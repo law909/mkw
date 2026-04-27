@@ -11,15 +11,6 @@
                     </a>
                     <i class="icon arrow-right"></i>
 
-
-
-
-
-
-
-
-
-
 {foreach $navigator as $_navi}
                     {if ($_navi.url|default)}
                         <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">

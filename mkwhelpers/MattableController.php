@@ -188,6 +188,21 @@ class MattableController extends Controller
         return $ide;
     }
 
+    protected function getEntityFieldsArray($entity)
+    {
+        $result = [];
+        if ($entity && is_object($entity)) {
+            $meta = $this->getEm()->getClassMetadata(get_class($entity));
+            foreach ($meta->getFieldNames() as $fieldName) {
+                $getter = 'get' . ucfirst($fieldName);
+                if (method_exists($entity, $getter)) {
+                    $result[$fieldName] = $entity->$getter();
+                }
+            }
+        }
+        return $result;
+    }
+
     protected function loadDataToView($data, $datavarname = '', $view = null)
     {
         $vl = [];

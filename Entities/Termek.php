@@ -989,12 +989,12 @@ class Termek
             if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
                 $vtt = [];
                 $valtozatok = $this->getValtozatok();
+                /** @var TermekValtozat $valt */
                 foreach ($valtozatok as $valt) {
                     if ($valt->getXElerheto()) {
-                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                            $vtt[$valt->getErtek1()] = $valt->getErtek1();
-                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                            $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                        $szinnev = $valt->getSzinNev();
+                        if ($szinnev) {
+                            $vtt[$valt->getSzinId()] = $szinnev;
                         }
                     }
                 }
@@ -1222,12 +1222,12 @@ class Termek
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
             $vtt = [];
             $valtozatok = $this->getValtozatok();
+            /** @var TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto()) {
-                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $vtt[$valt->getErtek1()] = $valt->getErtek1();
-                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                    $szinnev = $valt->getSzinNev();
+                    if ($szinnev) {
+                        $vtt[$valt->getSzinId()] = $szinnev;
                     }
                 }
             }
@@ -1235,7 +1235,7 @@ class Termek
         }
 
         $hasontomb = [];
-        $r = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $r = \mkw\store::getEm()->getRepository(Termek::class);
         $hason = $r->getHasonloTermekek(
             $this,
             \mkw\store::getParameter(\mkw\consts::Hasonlotermekdb, 3),
@@ -1821,12 +1821,12 @@ class Termek
         return $res;
     }
 
-    public function setCimkeNevek($cimkenevek)
+    public function setCimkenevek($cimkenevek)
     {
         $this->cimkenevek = $cimkenevek;
     }
 
-    public function getCimkeNevek()
+    public function getCimkenevek()
     {
         return $this->cimkenevek;
     }
@@ -1836,7 +1836,7 @@ class Termek
         if (!$this->cimkek->contains($cimke)) {
             $this->cimkek->add($cimke);
             $cimke->addTermek($this);
-            $this->setCimkeNevek('');
+            $this->setCimkenevek('');
         }
     }
 
@@ -2489,7 +2489,7 @@ class Termek
         if ($partner) {
             $tcs = $this->getTermekcsoport();
             if ($tcs) {
-                $kdv = \mkw\store::getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->getByPartnerTermekcsoport($partner, $tcs);
+                $kdv = \mkw\store::getEm()->getRepository(PartnerTermekcsoportKedvezmeny::class)->getByPartnerTermekcsoport($partner, $tcs);
                 if ($kdv) {
                     $kedvezmeny = $kdv->getKedvezmeny();
                 }
@@ -2505,7 +2505,7 @@ class Termek
     {
         $kedvezmeny = 0;
         if ($partner) {
-            $kdv = \mkw\store::getEm()->getRepository('Entities\PartnerTermekKedvezmeny')->getByPartnerTermek($partner, $this);
+            $kdv = \mkw\store::getEm()->getRepository(PartnerTermekKedvezmeny::class)->getByPartnerTermek($partner, $this);
             if ($kdv) {
                 $kedvezmeny = $kdv->getKedvezmeny();
             }

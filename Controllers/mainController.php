@@ -269,6 +269,7 @@ class mainController extends \mkwhelpers\Controller
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
                 $com = $this->params->getStringParam('slug');
+                $szin_id = $this->params->getIntParam('szin_id');
                 $tc = new termekController($this->params);
                 $filter = new FilterDescriptor();
                 $filter->addFilter('slug', '=', $com);
@@ -299,6 +300,7 @@ class mainController extends \mkwhelpers\Controller
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
                     }
+                    $this->view->setVar('szin_id', $szin_id);
                     $statlap = $this->getRepo(Statlap::class)->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
                     if ($statlap) {
                         $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());

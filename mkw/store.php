@@ -251,6 +251,11 @@ class store
         self::$config = $config;
     }
 
+    public static function setConfigValue($key, $val)
+    {
+        self::$config[$key] = $val;
+    }
+
     public static function getSetup()
     {
         return self::$setup;
@@ -262,6 +267,11 @@ class store
             return self::$setup[$key];
         }
         return $def;
+    }
+
+    public static function setSetupValue($key, $val)
+    {
+        self::$setup[$key] = $val;
     }
 
     public static function setSetup($setup)
@@ -646,6 +656,7 @@ class store
             $v->setVar('mugenracefooterlogo', self::getParameter(\mkw\consts::MugenraceFooterLogo));
         }
         $v->setVar('hidecart', self::getSetupValue('hidecart'));
+        $v->setVar('fixszinmode', self::isFixSzinMode());
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
