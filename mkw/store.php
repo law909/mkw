@@ -104,6 +104,8 @@ class store
         switch (self::getTheme()) {
             case 'mkwcansas':
                 return 36;
+            case 'mugenrace2026':
+                return 1;
         }
     }
 
