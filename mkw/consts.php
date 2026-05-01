@@ -283,13 +283,6 @@ class consts
     const RunningCopydepoTermekImport = 'runningcopydepotermekimport';
     const RunningCopydepoKeszletImport = 'runningcopydepokeszletimport';
 
-    const MiniCRMHasznalatban = 'minicrmhasznalatban';
-    const MiniCRMSystemId = 'minicrmsystemid';
-    const MiniCRMAPIKey = 'minicrmapikey';
-    const MiniCRMPartnertorzs = 'minicrmpartnertorzs';
-    const MiniCRMRendezvenyJelentkezes = 'minicrmrendezvenyjelentkezes';
-    const MiniCRMLastPartnerImport = 'minicrmlastpartnerimport';
-
     const MugenraceFooldalKep = 'mugenracefooldalkep';
     const MugenraceFejlecKep = 'mugenracefejleckep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';

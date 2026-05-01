@@ -66,7 +66,6 @@ class store
     public static $DBFDateFormat = 'Ymd';
     public static $JavascriptDateFormat = 'Y.n.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
-    public static $MiniCRMDateTimeFormat = 'Y-m-d+H:i:s';
     public static $TimeFormat = 'H:i';
     public static $FullTimeFormat = 'H:i:s';
     private static $blameableListener;
@@ -1555,11 +1554,6 @@ class store
     public static function isMPTNGY()
     {
         return self::getTheme() === 'mptngy' || self::getSetupValue('mptngy', false);
-    }
-
-    public static function isMiniCRMOn()
-    {
-        return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
     }
 
     public static function getSzallitasiKoltsegMode()

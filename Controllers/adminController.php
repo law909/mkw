@@ -470,37 +470,7 @@ class adminController extends mkwhelpers\Controller
         */
         echo 'kesz';
     }
-
-    public function minicrm()
-    {
-        require 'busvendor/MiniCRM/minicrm-api.phar';
-        $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
-
-        $res = \MiniCRM_Project::FieldSearch(
-            $minicrm,
-            [
-                'UpdatedSince' => '2015-01-01+12:00:00',
-                'CategoryId' => 19,
-                'Page' => 0
-            ]
-        );
-
-        echo '<pre>';
-        print_r($res);
-        echo '</pre>';
-        /**        $adatlap = new \MiniCRM_Project($minicrm, 800);
-         * $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
-         * $addrlist = \MiniCRM_Address::AddressList($minicrm, $adatlap->ContactId);
-         * $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
-         *
-         * echo '<pre>';
-         * print_r($adatlap);
-         * print_r($kontakt);
-         * print_r($addr);
-         * echo '</pre>';
-         */
-    }
-
+    
     public function replier()
     {
         header('HTTP/1.1 200 OK');

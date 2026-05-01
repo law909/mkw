@@ -171,7 +171,6 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'adminshowlogin',
                             'adminlogin',
                             'adminrlbexport',
-                            'adminminicrmmail'
                         ]
                     )) {
                         $linuser = store::getAdminSession()->pk;
