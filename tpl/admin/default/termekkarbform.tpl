@@ -20,9 +20,6 @@
             {/if}
             <li><a href="#CimkeTab">{at('Címkék')}</a></li>
             <li><a href="#KepTab">{at('Képek')}</a></li>
-            {if ($setup.receptura)}
-                <li><a href="#RecepturaTab">{at('Receptúra')}</a></li>
-            {/if}
             {if ($setup.termekvaltozat)}
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
                 <li><a href="#ValtozatMinBoltiKeszletTab">{at('Változat min.bolti készlet')}</a></li>
@@ -269,15 +266,6 @@
                 {/foreach}
             </div>
         </div>
-        {if ($setup.receptura)}
-            <div id="RecepturaTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.receptek as $recept}
-                    {include 'termektermekreceptkarb.tpl'}
-                {/foreach}
-                <a class="js-receptnewbutton" href="#" title="{at('Új')}"><span
-                        class="ui-icon ui-icon-circle-plus"></span></a>
-            </div>
-        {/if}
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
                 <div>
@@ -513,10 +501,6 @@
                    {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
                    {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
-            {if ($setup.emag)}
-                <input id="EmagtiltvaCheck" name="emagtiltva" type="checkbox"
-                       {if ($egyed.emagtiltva)}checked="checked"{/if}>{at('eMAG tiltva')}
-            {/if}
             <table>
                 <tbody>
                 <tr>

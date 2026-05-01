@@ -28,7 +28,6 @@
       db.dbname = your_database
       ```
     - Set up paths for templates and uploads
-    - Configure WooCommerce integration if needed (wc.key, wc.secret, wc.url)
     - Set up email configuration for SMTP
 
 3. **Database Schema Setup**
@@ -193,12 +192,6 @@ cache = file
 - Translation listener handles locale switching
 
 ### Integration Points
-
-#### WooCommerce Integration
-
-- Uses Automattic WooCommerce REST API client
-- Product synchronization via `uploadToWc()` methods
-- Configuration in `config.ini` under `wc.*` keys
 
 #### Email System
 

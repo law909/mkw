@@ -4,7 +4,9 @@ namespace Controllers;
 
 use Entities\Orszag;
 use Entities\Szallitasimod;
+use Entities\SzallitasimodFizmodNovelo;
 use Entities\SzallitasimodHatar;
+use Entities\SzallitasimodOrszag;
 use Entities\Termek;
 use Entities\Valutanem;
 
@@ -40,7 +42,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $x['webes4'] = $t->getWebes4();
         $x['leiras'] = $t->getLeiras();
         $x['fizmodok'] = $t->getFizmodok();
-        $x['wcid'] = $t->getWcid();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
         $x['terminaltipus'] = $t->getTerminaltipus();
@@ -50,7 +51,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         if ($forKarb) {
             if ($letezik) {
                 $fhc = new szallitasimodhatarController($this->params);
-                $h = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimod($t);
+                $h = $this->getRepo(SzallitasimodHatar::class)->getBySzallitasimod($t);
                 $hatararr = [];
                 foreach ($h as $hat) {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
@@ -58,7 +59,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 $x['hatarok'] = $hatararr;
 
                 $fhc = new szallitasimodorszagController($this->params);
-                $h = $this->getRepo('Entities\SzallitasimodOrszag')->getBySzallitasimod($t);
+                $h = $this->getRepo(SzallitasimodOrszag::class)->getBySzallitasimod($t);
                 $orszagarr = [];
                 foreach ($h as $hat) {
                     $orszagarr[] = $fhc->loadVars($hat, $forKarb);
@@ -66,7 +67,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 $x['orszagok'] = $orszagarr;
 
                 $fhc = new szallitasimodfizmodnoveloController($this->params);
-                $h = $this->getRepo('Entities\SzallitasimodFizmodNovelo')->getBySzallitasimod($t);
+                $h = $this->getRepo(SzallitasimodFizmodNovelo::class)->getBySzallitasimod($t);
                 $orszagarr = [];
                 foreach ($h as $hat) {
                     $orszagarr[] = $fhc->loadVars($hat, $forKarb);
@@ -97,7 +98,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
-        $obj->setWcid($this->params->getStringRequestParam('wcid'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
         $obj->setTerminaltipus($this->params->getStringRequestParam('terminaltipus'));
@@ -316,16 +316,15 @@ class szallitasimodController extends \mkwhelpers\MattableController
             ];
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
-            } else {
-                if (!$mind) {
-                    if (!$vanvalasztott) {
-                        $r['selected'] = true;
-                        $vanvalasztott = true;
-                    } else {
-                        $r['selected'] = false;
-                    }
+            } elseif (!$mind) {
+                if (!$vanvalasztott) {
+                    $r['selected'] = true;
+                    $vanvalasztott = true;
+                } else {
+                    $r['selected'] = false;
                 }
             }
+
             $res[] = $r;
         }
         return $res;

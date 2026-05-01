@@ -1405,16 +1405,6 @@
                         </table>
                     </div>
                     <div id="WebshopSetupTab" class="mattkarb-page" data-visible="visible">
-                        <div>
-                            <label for="WCPartnerTipusEdit">Woocommerce partner típus:</label>
-                            <select id="WCPartnerTipusEdit" name="wcpartnertipus">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $wcpartnertipuslist as $_wcpartnertipus}
-                                    <option
-                                        value="{$_wcpartnertipus.id}"{if ($_wcpartnertipus.selected)} selected="selected"{/if}>{$_wcpartnertipus.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
                         <div class="matt-hseparator"></div>
                         {for $cikl = 1 to $enabledwebshops}
                             <div>
@@ -2005,16 +1995,6 @@
                         <tr>
                             <td><label>{at('GLS PDF mappa')}:</label></td>
                             <td><input name="glsparcellabeldir" type="text" value="{$glsparcellabeldir}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('eMAG API URL')}:</label></td>
-                            <td><input name="emagapiurl" type="text" value="{$emagapiurl}"></td>
-                            <td><label>{at('Username')}:</label></td>
-                            <td><input name="emagusername" type="text" value="{$emagusername}" autocomplete="off"></td>
-                            <td><label>{at('Usercode')}:</label></td>
-                            <td><input name="emagusercode" type="text" value="{$emagusercode}" autocomplete="off"></td>
-                            <td><label>{at('Password')}:</label></td>
-                            <td><input name="emagpassword" type="password" value="{$emagpassword}" autocomplete="off"></td>
                         </tr>
                         <tr>
                             <td><label>{at('GLS csomagpont URL')}:</label></td>

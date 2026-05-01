@@ -93,7 +93,6 @@ $(document).ready(function () {
                 termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                 doktab = $('#DokTab'),
-                mijszokleveltab = $('#MIJSZOklevelTab'),
                 mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
 
             mkwcomp.datumEdit.init(mpt_tagsagdateedit);
@@ -326,55 +325,6 @@ $(document).ready(function () {
             $('.js-termekkedvezmenytermekselect').autocomplete(termekAutocompleteConfig())
                 .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
 
-            mijszokleveltab.on('click', '.js-mijszoklevelnewbutton', function (e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/partnermijszoklevel/getemptyrow',
-                    type: 'GET',
-                    success: function (data) {
-                        var tbody = $('#MIJSZOklevelTab');
-                        tbody.append(data);
-                        $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
-                        $this.remove();
-                    }
-                });
-            })
-                .on('click', '.js-mijszokleveldelbutton', function (e) {
-                    e.preventDefault();
-                    var argomb = $(this),
-                        arid = argomb.attr('data-id');
-                    if (argomb.attr('data-source') === 'client') {
-                        $('#mijszokleveltable_' + arid).remove();
-                    } else {
-                        dialogcenter.html('Biztos, hogy törli az oklevelet?').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'Igen': function () {
-                                    $.ajax({
-                                        url: '/admin/partnermijszoklevel/save',
-                                        type: 'POST',
-                                        data: {
-                                            id: arid,
-                                            oper: 'del'
-                                        },
-                                        success: function (data) {
-                                            $('#mijszokleveltable_' + data).remove();
-                                        }
-                                    });
-                                    $(this).dialog('close');
-                                },
-                                'Nem': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                });
-            $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
-
             mptfolyoszamlatab.on('click', '.js-eloirasbutton', function (e) {
                 e.preventDefault();
                 $.ajax({
@@ -573,7 +523,6 @@ $(document).ready(function () {
                                             id: $this.data('partnerid')
                                         },
                                         success: function (data) {
-                                            $('#mijszokleveltable_' + data).remove();
                                         }
                                     });
                                     $(this).dialog('close');
@@ -625,20 +574,6 @@ $(document).ready(function () {
                     tomb.push($(elem).data('egyedid'));
                 });
                 switch ($('.mattable-batchselect').val()) {
-                    case 'mijszexportin':
-                        $exportform = $('#exportform');
-                        $exportform.attr('action', '/admin/partner/mijszexport');
-                        $('input[name="ids"]', $exportform).val(tomb);
-                        $('input[name="country"]', $exportform).val('in');
-                        $exportform.submit();
-                        break;
-                    case 'mijszexportus':
-                        $exportform = $('#exportform');
-                        $exportform.attr('action', '/admin/partner/mijszexport');
-                        $('input[name="ids"]', $exportform).val(tomb);
-                        $('input[name="country"]', $exportform).val('us');
-                        $exportform.submit();
-                        break;
                     case 'megjegyzesexport':
                         $exportform = $('#exportform');
                         $exportform.attr('action', '/admin/partner/megjegyzesexport');

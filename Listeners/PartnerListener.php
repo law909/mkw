@@ -66,8 +66,7 @@ class PartnerListener
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Partner) {
                 if (!$entity->shouldSkipListener()) {
-                    if (\mkw\store::isWoocommerceOn() && $entity->getLastmod() > $entity->getWcdate()) {
-                        $entity->sendToWc(); // $entity->setWcdate() called in this method
+                    if (false) {
                         $this->uow->recomputeSingleEntityChangeSet($this->partnermd, $entity);
                     }
                 }

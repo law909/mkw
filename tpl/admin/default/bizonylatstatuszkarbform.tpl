@@ -32,20 +32,6 @@
                     <td><input id="MozgatEdit" name="mozgat" type="checkbox"{if ($egyed.mozgat)} checked="checked"{/if}"></td>
                 </tr>
                 <tr>
-                    <td><label for="WcidEdit">{at('WooCommerce ID')}:</label></td>
-                    <td><select id="WcidEdit" name="wcid">
-                            <option value=""{if ($egyed.wcid=='')} selected="selected"{/if}>válasszon</option>
-                            <option value="pending"{if ($egyed.wcid=='pending')} selected="selected"{/if}>pending</option>
-                            <option value="processing"{if ($egyed.wcid=='processing')} selected="selected"{/if}>processing</option>
-                            <option value="on-hold"{if ($egyed.wcid=='on-hold')} selected="selected"{/if}>on-hold</option>
-                            <option value="completed"{if ($egyed.wcid=='completed')} selected="selected"{/if}>completed</option>
-                            <option value="cancelled"{if ($egyed.wcid=='cancelled')} selected="selected"{/if}>cancelled</option>
-                            <option value="refunded"{if ($egyed.wcid=='refunded')} selected="selected"{/if}>refunded</option>
-                            <option value="failed"{if ($egyed.wcid=='failed')} selected="selected"{/if}>failed</option>
-                            <option value="trash"{if ($egyed.wcid=='trash')} selected="selected"{/if}>trash</option>
-                        </select></td>
-                </tr>
-                <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td><input id="SorrendEdit" name="sorrend" type="text" size="80" maxlength="255" value="{$egyed.sorrend}"></td>
                 </tr>

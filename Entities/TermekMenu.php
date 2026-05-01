@@ -132,9 +132,6 @@ class TermekMenu
     /** @ORM\Column(type="text",nullable=true) */
     private $kepleiras;
 
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $kepwcid;
-
     /**
      * @ORM\OneToMany(targetEntity="Termek",mappedBy="termekmenu1")
      */
@@ -148,9 +145,6 @@ class TermekMenu
 
     /** @ORM\OneToMany(targetEntity="TermekMenuTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
-
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $emagid;
 
     /**
      * @Gedmo\Locale
@@ -204,12 +198,6 @@ class TermekMenu
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $arukeresoid;
-
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
 
     public function __toString()
     {
@@ -723,22 +711,6 @@ class TermekMenu
     }
 
     /**
-     * @return mixed
-     */
-    public function getEmagid()
-    {
-        return $this->emagid;
-    }
-
-    /**
-     * @param mixed $emagid
-     */
-    public function setEmagid($emagid)
-    {
-        $this->emagid = $emagid;
-    }
-
-    /**
      * @return int
      */
     public function getLathato()
@@ -1035,66 +1007,6 @@ class TermekMenu
     public function setArukeresoid($arukeresoid)
     {
         $this->arukeresoid = $arukeresoid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getKepwcid()
-    {
-        return $this->kepwcid;
-    }
-
-    /**
-     * @param mixed $kepwcid
-     */
-    public function setKepwcid($kepwcid): void
-    {
-        $this->kepwcid = $kepwcid;
     }
 
     public function getNevForditas($ford, $locale)

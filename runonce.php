@@ -525,6 +525,26 @@ if ($DBVersion < '0065') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0065');
 }
 
+if ($DBVersion < '0066') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `termekrecept`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `termekrecepttipus`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `partnermijszoklevel`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `partnermijszoralatogatas`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `partnermijszpune`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `partnermijsztanitas`'
+    );
+}
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

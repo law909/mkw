@@ -70,9 +70,6 @@ class Szallitasimod
      * @var \Entities\Termek
      */
     private $termek;
-    /** @ORM\Column(type="string",length=255,nullable=false) */
-    private $wcid;
-
 
     public static function getTranslatedFields()
     {
@@ -296,20 +293,4 @@ class Szallitasimod
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-    
 }

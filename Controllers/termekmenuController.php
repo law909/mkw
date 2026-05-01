@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Szin;
 use Entities\Termek;
@@ -62,7 +60,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         $x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
-        $x['emagid'] = $t->getEmagid();
         $x['arukeresoid'] = $t->getArukeresoid();
         $x['lathato'] = $t->getLathato();
         $x['path'] = implode('/', $t->getPath($t));
@@ -104,7 +101,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         if (\mkw\store::isMultilang()) {

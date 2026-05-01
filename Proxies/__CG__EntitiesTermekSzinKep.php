@@ -67,10 +67,10 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'szin', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'kep'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'szin', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'sorrend'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'szin', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'kep'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'szin', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekSzinKep' . "\0" . 'sorrend'];
     }
 
     /**
@@ -289,6 +289,28 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKep', [$kep]);
 
         return parent::setKep($kep);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSorrend()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
+
+        return parent::getSorrend();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSorrend($sorrend)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
+
+        return parent::setSorrend($sorrend);
     }
 
 }

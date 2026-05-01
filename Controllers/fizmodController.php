@@ -3,13 +3,16 @@
 namespace Controllers;
 
 use Entities\Fizmod;
+use Entities\FizmodHatar;
+use Entities\FizmodTranslation;
+use Entities\Valutanem;
 
 class fizmodController extends \mkwhelpers\MattableController
 {
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Fizmod');
+        $this->setEntityName(Fizmod::class);
         $this->setKarbFormTplName('fizetesimodkarbform.tpl');
         $this->setKarbTplName('fizetesimodkarb.tpl');
         $this->setListBodyRowTplName('fizetesimodlista_tbody_tr.tpl');
@@ -32,7 +35,6 @@ class fizmodController extends \mkwhelpers\MattableController
         $x['nev'] = $t->getNev();
         $x['tipus'] = $t->getTipus();
         $x['navtipus'] = $t->getNavtipus();
-        $x['wcid'] = $t->getWcid();
         $x['haladek'] = $t->getHaladek();
         $x['webes'] = $t->getWebes();
         $x['leiras'] = $t->getLeiras();
@@ -49,12 +51,11 @@ class fizmodController extends \mkwhelpers\MattableController
         $x['osztottszazalek5'] = $t->getOsztottszazalek5();
         $x['rugalmas'] = $t->getRugalmas();
         $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
-        $x['emagid'] = $t->getEmagid();
 
         if ($forKarb) {
             if ($letezik) {
                 $fhc = new fizmodhatarController($this->params);
-                $h = $this->getRepo('Entities\FizmodHatar')->getByFizmod($t);
+                $h = $this->getRepo(FizmodHatar::class)->getByFizmod($t);
                 $hatararr = [];
                 foreach ($h as $hat) {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
@@ -81,7 +82,6 @@ class fizmodController extends \mkwhelpers\MattableController
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
         $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
-        $obj->setWcid($this->params->getStringRequestParam('wcid'));
         $obj->setHaladek($this->params->getIntRequestParam('haladek'));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
@@ -98,13 +98,12 @@ class fizmodController extends \mkwhelpers\MattableController
         $obj->setOsztottszazalek5($this->params->getNumRequestParam('osztottszazalek5'));
         $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
         $obj->setNincspenzmozgas($this->params->getBoolRequestParam('nincspenzmozgas'));
-        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
             if (!$valutanem) {
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             }
             if ($oper == 'add') {
                 $hatar = new \Entities\FizmodHatar();
@@ -115,7 +114,7 @@ class fizmodController extends \mkwhelpers\MattableController
                 }
                 $this->getEm()->persist($hatar);
             } elseif ($oper == 'edit') {
-                $hatar = $this->getEm()->getRepository('Entities\FizmodHatar')->find($hatarid);
+                $hatar = $this->getEm()->getRepository(FizmodHatar::class)->find($hatarid);
                 if ($hatar) {
                     $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
                     if ($valutanem) {
@@ -153,7 +152,7 @@ class fizmodController extends \mkwhelpers\MattableController
                     $obj->addTranslation($translation);
                     $this->getEm()->persist($translation);
                 } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository('Entities\FizmodTranslation')->find($translationid);
+                    $translation = $this->getEm()->getRepository(FizmodTranslation::class)->find($translationid);
                     if ($translation) {
                         $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
                         $translation->setField($mezo);

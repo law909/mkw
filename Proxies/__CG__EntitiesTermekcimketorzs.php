@@ -191,17 +191,6 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
-    public function deleteFromWC()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'deleteFromWC', []);
-
-        return parent::deleteFromWC();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getTermekFilter()
     {
 
@@ -674,61 +663,6 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
 
         return parent::setSorrend($sorrend);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcid()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
-
-        return parent::getWcid();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setWcid($wcid): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
-
-        parent::setWcid($wcid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcdate()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
-
-        return parent::getWcdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcdateStr($wcdate)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdateStr', [$wcdate]);
-
-        return parent::getWcdateStr($wcdate);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setWcdate($adat = NULL): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
-
-        parent::setWcdate($adat);
     }
 
 }

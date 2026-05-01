@@ -70,13 +70,6 @@ $().ready(
                     editoptions: {size: 2},
                     editrules: {integer: true, required: false},
                     formoptions: {rowpos: 4, label: 'RLB kód:'}
-                },
-                {
-                    name: 'emagid', index: 'emagid', label: 'eMAG id', width: 25, align: 'right',
-                    editable: true,
-                    editoptions: {size: 2},
-                    editrules: {integer: true, required: false},
-                    formoptions: {rowpos: 5, label: 'eMAG id:'}
                 }],
             rowNum: 100000,
             rowList: [10, 20, 30],
@@ -354,13 +347,6 @@ $().ready(
                     editoptions: {},
                     editrules: {integer: true},
                     formoptions: {rowpos: 2, label: 'Sorrend:'}
-                },
-                {
-                    name: 'emagid', index: 'emagid', label: 'EMAG id', width: 25, align: 'right',
-                    editable: true,
-                    editoptions: {},
-                    editrules: {integer: true},
-                    formoptions: {rowpos: 3, label: 'EMAG id:'}
                 },
                 {
                     name: 'termeklaponlathato', index: 'termeklaponlathato', label: 'Terméklapon látható', width: 25, align: 'center',
@@ -1470,70 +1456,6 @@ $().ready(
         });
         createNav(_orszag, orszaggrid);
 
-        // mijszoklevelkibocsajto grid
-        var _mijszoklevelkibocsajto = {
-            grid: '#mijszoklevelkibocsajtogrid',
-            pager: '#mijszoklevelkibocsajtogridpager'
-        };
-        var mijszoklevelkibocsajtogrid = $(_mijszoklevelkibocsajto.grid).jqGrid({
-            url: '/admin/mijszoklevelkibocsajto/jsonlist',
-            editurl: '/admin/mijszoklevelkibocsajto/save',
-            datatype: 'json',
-            colModel: [
-                {
-                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
-                    editable: true,
-                    editoptions: {size: 25, maxlength: 255},
-                    editrules: {required: true},
-                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
-                }],
-            rowNum: 100000,
-            rowList: [10, 20, 30],
-            pager: _mijszoklevelkibocsajto.pager,
-            sortname: 'nev',
-            sortorder: 'asc',
-            viewrecords: true,
-            loadonce: false,
-            gridview: true,
-            height: 100,
-            width: 320,
-            hiddengrid: true,
-            caption: 'Oklevél kibocsájtók'
-        });
-        createNav(_mijszoklevelkibocsajto, mijszoklevelkibocsajtogrid);
-
-        // mijszoklevelszint grid
-        var _mijszoklevelszint = {
-            grid: '#mijszoklevelszintgrid',
-            pager: '#mijszoklevelszintgridpager'
-        };
-        var mijszoklevelszintgrid = $(_mijszoklevelszint.grid).jqGrid({
-            url: '/admin/mijszoklevelszint/jsonlist',
-            editurl: '/admin/mijszoklevelszint/save',
-            datatype: 'json',
-            colModel: [
-                {
-                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
-                    editable: true,
-                    editoptions: {size: 25, maxlength: 255},
-                    editrules: {required: true},
-                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
-                }],
-            rowNum: 100000,
-            rowList: [10, 20, 30],
-            pager: _mijszoklevelszint.pager,
-            sortname: 'nev',
-            sortorder: 'asc',
-            viewrecords: true,
-            loadonce: false,
-            gridview: true,
-            height: 100,
-            width: 320,
-            hiddengrid: true,
-            caption: 'Oklevél szintek'
-        });
-        createNav(_mijszoklevelszint, mijszoklevelszintgrid);
-
         // Szotar grid
         var _szotar = {
             grid: '#szotargrid',
@@ -1612,38 +1534,6 @@ $().ready(
             caption: 'CSK kódok'
         });
         createNav(_csk, cskgrid);
-
-        // TermekReceptTipus grid
-        var _trt = {
-            grid: '#termekrecepttipusgrid',
-            pager: '#termekrecepttipusgridpager'
-        };
-        var trtgrid = $(_trt.grid).jqGrid({
-            url: '/admin/termekrecepttipus/jsonlist',
-            editurl: '/admin/termekrecepttipus/save',
-            datatype: 'json',
-            colModel: [
-                {
-                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
-                    editable: true,
-                    editoptions: {size: 25, maxlength: 255},
-                    editrules: {required: true},
-                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
-                }],
-            rowNum: 100000,
-            rowList: [10, 20, 30],
-            pager: _trt.pager,
-            sortname: 'nev',
-            sortorder: 'asc',
-            viewrecords: true,
-            loadonce: false,
-            gridview: true,
-            height: 100,
-            width: 320,
-            hiddengrid: true,
-            caption: 'Termékrecept típusok'
-        });
-        createNav(_trt, trtgrid);
 
         // Penztar grid
         var _penztar = {
@@ -1932,38 +1822,6 @@ $().ready(
             caption: 'Körzetszámok'
         });
         createNav(_korzetszam, korzetszamgrid);
-
-        // mijszgyakorlasszint grid
-        var _mijszgyakorlasszint = {
-            grid: '#mijszgyakorlasszintgrid',
-            pager: '#mijszgyakorlasszintgridpager'
-        };
-        var mijszgyakorlasszintgrid = $(_mijszgyakorlasszint.grid).jqGrid({
-            url: '/admin/mijszgyakorlasszint/jsonlist',
-            editurl: '/admin/mijszgyakorlasszint/save',
-            datatype: 'json',
-            colModel: [
-                {
-                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
-                    editable: true,
-                    editoptions: {size: 25, maxlength: 255},
-                    editrules: {required: true},
-                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
-                }],
-            rowNum: 100000,
-            rowList: [10, 20, 30],
-            pager: _mijszgyakorlasszint.pager,
-            sortname: 'nev',
-            sortorder: 'asc',
-            viewrecords: true,
-            loadonce: false,
-            gridview: true,
-            height: 100,
-            width: 320,
-            hiddengrid: true,
-            caption: 'Gyakorlás szintek'
-        });
-        createNav(_mijszgyakorlasszint, mijszgyakorlasszintgrid);
 
         // Unnepnap grid
         var _unn = {

@@ -28,8 +28,6 @@ use mkwhelpers\FilterDescriptor;
 class Termek
 {
 
-    public $dontUploadToWC = false;
-
     private static $translatedFields = [
         'nev' => ['caption' => 'Név', 'type' => 1],
         'leiras' => ['caption' => 'Leírás', 'type' => 2],
@@ -327,12 +325,6 @@ class Termek
     /** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="termek",cascade={"persist"}) */
     private $valtozatok;
 
-    /** @ORM\OneToMany(targetEntity="TermekRecept", mappedBy="termek", cascade={"persist"}) */
-    private $termekreceptek;
-
-    /** @ORM\OneToMany(targetEntity="TermekRecept", mappedBy="altermek", cascade={"persist"}) */
-    private $altermekreceptek;
-
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termek",cascade={"persist"}) */
     private $bizonylattetelek;
 
@@ -424,9 +416,6 @@ class Termek
     /** @ORM\Column(type="boolean",nullable=false) */
     private $eladhato = 1;
 
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $emagtiltva = 0;
-
     /** @ORM\OneToMany(targetEntity="TermekDok", mappedBy="termek", cascade={"persist", "remove"}) */
     private $termekdokok;
 
@@ -444,14 +433,6 @@ class Termek
      * @ORM\OrderBy({"created" = "DESC"})
      */
     private $termekertekelesek;
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $kepwcid;
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $wctiltva = 0;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $feltoltheto = 0;
 
@@ -466,15 +447,6 @@ class Termek
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $feltoltheto5 = 0;
-
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $prestaid;
-
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $prestadate;
-
-    /** @ORM\Column(type="boolean", nullable=false) */
-    private $prestatiltva = 0;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $uj = 0;
@@ -534,8 +506,6 @@ class Termek
         $this->termekkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekszinkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->valtozatok = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->altermekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
@@ -547,8 +517,6 @@ class Termek
         $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->blogposztok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertekelesek = new \Doctrine\Common\Collections\ArrayCollection();
-
-        $this->dontUploadToWC = false;
     }
 
     public function getUjTermek($min)
@@ -696,92 +664,6 @@ class Termek
             */
         }
         return 0;
-    }
-
-
-    public function toEmag()
-    {
-        $x = [];
-        $x['id'] = $this->getId();
-        $x['category_id'] = $this->getTermekfa1()->getEmagid();
-        // $x['part_number_key'] = ??
-        $x['name'] = $this->getNev();
-        $x['part_number'] = 'MKWT' . $this->getId();
-        $x['description'] = $this->getLeiras();
-
-        /** @var Termekcimketorzs $marka */
-        $marka = $this->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
-        if ($marka) {
-            $x['brand'] = $marka->getNev();
-        } else {
-            $x['brand'] = 'Noname';
-        }
-
-        $images = [];
-        $disptype = 1;
-        if ($this->getKepurl()) {
-            $images[] = [
-                'display_type' => $disptype,
-                'url' => \mkw\store::getFullUrl($this->getKepurl())
-            ];
-            $disptype = 2;
-        }
-        /** @var TermekKep $kep */
-        foreach ($this->getTermekKepek(true) as $kep) {
-            $images[] = [
-                'display_type' => $disptype,
-                'url' => \mkw\store::getFullUrl($kep->getUrl())
-            ];
-            if ($disptype == 1) {
-                $disptype = 2;
-            } else {
-                $disptype = 0;
-            }
-        }
-        $x['images'] = $images;
-
-        $charac = [];
-        /** @var Termekcimketorzs $item */
-        foreach ($this->getCimkek() as $item) {
-            $kat = $item->getKategoria();
-            if ($kat->getEmagid()) {
-                $charac[] = [
-                    'id' => $kat->getEmagid(),
-                    'value' => $item->getNev()
-                ];
-            }
-        }
-        $x['characteristics'] = $charac;
-        if ($this->getGarancia()) {
-            $x['warranty'] = $this->getGarancia();
-        } else {
-            $x['warranty'] = 12;
-        }
-        $x['ean'] = $this->getVonalkod();
-        if ($this->getInaktiv()) {
-            $x['status'] = 0;
-        } else {
-            $x['status'] = 1;
-        }
-        $x['sale_price'] = $this->getNettoAr() * 110 / 100;
-        $x['min_sale_price'] = $x['sale_price'];
-        $x['max_sale_price'] = $x['min_sale_price'] * 120 / 100;
-        $x['stock'] = [
-            [
-                'warehouse_id' => 1,
-                'value' => $this->getKeszlet()
-            ]
-        ];
-        $x['handling_time'] = [
-            [
-                'warehouse_id' => 1,
-                'value' => 1
-            ]
-        ];
-        $x['supply_lead_time'] = 7;
-        $x['vat_id'] = $this->getAfa()->getEmagid();
-
-        return $x;
     }
 
     public function toA2a($partner = null)
@@ -2314,50 +2196,6 @@ class Termek
         return false;
     }
 
-    public function getTermekReceptek()
-    {
-        return $this->termekreceptek;
-    }
-
-    public function addTermekRecept(TermekRecept $recept)
-    {
-//		if (!$this->termekreceptek->contains($recept)) {
-        $this->termekreceptek->add($recept);
-        $recept->setTermek($this);
-//		}
-    }
-
-    public function removeTermekRecept(TermekRecept $recept)
-    {
-        if ($this->termekreceptek->removeElement($recept)) {
-            $recept->removeTermek($this);
-            return true;
-        }
-        return false;
-    }
-
-    public function getAlTermekReceptek()
-    {
-        return $this->altermekreceptek;
-    }
-
-    public function addAlTermekRecept(TermekRecept $recept)
-    {
-//		if (!$this->altermekreceptek->contains($recept)) {
-        $this->altermekreceptek->add($recept);
-        $recept->setAlTermek($this);
-//		}
-    }
-
-    public function removeAlTermekRecept(TermekRecept $recept)
-    {
-        if ($this->altermekreceptek->removeElement($recept)) {
-            $recept->removeAlTermek($this);
-            return true;
-        }
-        return false;
-    }
-
     public function getMegtekintesdb()
     {
         return $this->megtekintesdb;
@@ -2405,10 +2243,8 @@ class Termek
 
     public function addTermekKapcsolodo(TermekKapcsolodo $adat)
     {
-//		if (!$this->termekreceptek->contains($adat)) {
         $this->termekkapcsolodok->add($adat);
         $adat->setTermek($this);
-//		}
     }
 
     public function removeTermekKapcsolodo(TermekKapcsolodo $adat)
@@ -2427,10 +2263,8 @@ class Termek
 
     public function addAlTermekKapcsolodo(TermekKapcsolodo $adat)
     {
-//		if (!$this->altermekkapcsolodok->contains($adat)) {
         $this->altermekkapcsolodok->add($adat);
         $adat->setAlTermek($this);
-//		}
     }
 
     public function removeAlTermekKapcsolodo(TermekKapcsolodo $adat)
@@ -3283,22 +3117,6 @@ class Termek
     /**
      * @return mixed
      */
-    public function getEmagtiltva()
-    {
-        return $this->emagtiltva;
-    }
-
-    /**
-     * @param mixed $emagtiltva
-     */
-    public function setEmagtiltva($emagtiltva)
-    {
-        $this->emagtiltva = $emagtiltva;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getKiirtnev()
     {
         return $this->kiirtnev;
@@ -3687,55 +3505,6 @@ class Termek
         $this->jogaervenyessegnap = $jogaervenyessegnap;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
-    public function clearWcdate()
-    {
-        $this->wcdate = null;
-    }
-
     public function getNevForditas($ford, $locale)
     {
         if ($ford[$locale]['nev']) {
@@ -3750,22 +3519,6 @@ class Termek
             return $ford[$locale]['leiras'];
         }
         return $this->getLeiras();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getKepwcid()
-    {
-        return $this->kepwcid;
-    }
-
-    /**
-     * @param mixed $kepwcid
-     */
-    public function setKepwcid($kepwcid): void
-    {
-        $this->kepwcid = $kepwcid;
     }
 
     public function findTermekKepBy($vmi)
@@ -3783,27 +3536,6 @@ class Termek
             }
         }
         return $result;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWctiltva()
-    {
-        return $this->wctiltva;
-    }
-
-    /**
-     * @param int $wctiltva
-     */
-    public function setWctiltva($wctiltva): void
-    {
-        $this->wctiltva = $wctiltva;
-    }
-
-    public function shouldUploadToWc()
-    {
-        return false;
     }
 
     public function getNFeltoltheto($n)

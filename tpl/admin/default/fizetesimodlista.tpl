@@ -37,7 +37,6 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
-                <th>{at('WooCommerce ID')}</th>
                 <th>{at('Sorrend')}</th>
             </tr>
             </thead>

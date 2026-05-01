@@ -398,14 +398,6 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::GLSSM2);
         $view->setVar(\mkw\consts::GLSSM2, ($p ? $p->getErtek() : ''));
 
-        $p = $repo->find(\mkw\consts::EmagAPIUrl);
-        $view->setVar(\mkw\consts::EmagAPIUrl, ($p ? $p->getErtek() : ''));
-        $p = $repo->find(\mkw\consts::EmagUsername);
-        $view->setVar(\mkw\consts::EmagUsername, ($p ? $p->getErtek() : ''));
-        $p = $repo->find(\mkw\consts::EmagUsercode);
-        $view->setVar(\mkw\consts::EmagUsercode, ($p ? $p->getErtek() : ''));
-        $p = $repo->find(\mkw\consts::EmagPassword);
-        $view->setVar(\mkw\consts::EmagPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSTerminalURL);
         $view->setVar(\mkw\consts::GLSTerminalURL, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KuponElotag);
@@ -626,8 +618,6 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::FelvetelAlattTipus);
         $partnertipusc = new partnertipusController($this->params);
         $view->setVar('felvetelalattpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
-        $p = $repo->find(\mkw\consts::WCPartnerTipus);
-        $view->setVar('wcpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -1213,10 +1203,6 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::GLSParcelLabelDir, $this->params->getStringRequestParam('glsparcellabeldir'));
         $this->setObj(\mkw\consts::GLSSM2, $this->params->getBoolRequestParam('glssm2'));
         \mkw\store::createDirectoryRecursively($this->params->getStringRequestParam('glsparcellabeldir'));
-        $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'), true);
-        $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
-        $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));
-        $this->setObj(\mkw\consts::EmagPassword, $this->params->getStringRequestParam('emagpassword'));
         $this->setObj(\mkw\consts::GLSTerminalURL, $this->params->getStringRequestParam('glsterminalurl'), true);
         $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
@@ -1764,15 +1750,6 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::FelvetelAlattTipus, $felvetelalattpartnertipus->getId());
         } else {
             $this->setObj(\mkw\consts::FelvetelAlattTipus, '');
-        }
-
-        $wcpartnertipus = \mkw\store::getEm()->getRepository(Partnertipus::class)->find(
-            $this->params->getIntRequestParam('wcpartnertipus', 0)
-        );
-        if ($wcpartnertipus) {
-            $this->setObj(\mkw\consts::WCPartnerTipus, $wcpartnertipus->getId());
-        } else {
-            $this->setObj(\mkw\consts::WCPartnerTipus, '');
         }
 
         $spanyolcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));

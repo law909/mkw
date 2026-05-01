@@ -2,7 +2,6 @@
 
 namespace mkw;
 
-use Automattic\WooCommerce\Client;
 use Controllers\bizonylatfejController;
 use Controllers\mnrnavigationController;
 use Controllers\popupController;
@@ -1369,11 +1368,6 @@ class store
         return self::getSetupValue('multishop');
     }
 
-    public static function isEmag()
-    {
-        return self::getSetupValue('emag');
-    }
-
     public static function isPDF()
     {
         return self::getSetupValue('pdf');
@@ -1602,88 +1596,6 @@ class store
     public static function isMiniCRMOn()
     {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
-    }
-
-    public static function isWoocommerceOn()
-    {
-        return self::getSetupValue('woocommerce', false) == 1;
-    }
-
-    public static function getWcKey()
-    {
-        return self::getConfigValue('wc.key');
-    }
-
-    public static function getWcSecret()
-    {
-        return self::getConfigValue('wc.secret');
-    }
-
-    public static function getWcUrl()
-    {
-        return self::getConfigValue('wc.url');
-    }
-
-    public static function getWcWebshopNum()
-    {
-        return self::getConfigValue('wc.webshopnum');
-    }
-
-    public static function getWcParcelLabelUrl()
-    {
-        return self::getConfigValue('wc.parcellabelurl');
-    }
-
-    public static function getWcImageUrlPrefix()
-    {
-        return self::getConfigValue('wc.imageurlprefix');
-    }
-
-    public static function getWcClient($options = [])
-    {
-        return new Client(
-            self::getWcUrl(),
-            self::getWcKey(),
-            self::getWcSecret(),
-            array_merge(
-                [
-                    'wp_api' => true,
-                    'version' => 'wc/v3',
-                    'timeout' => 360000
-                ],
-                $options
-            )
-        );
-    }
-
-    public static function getWpAppName()
-    {
-        return self::getConfigValue('wp.appname');
-    }
-
-    public static function getWpAppPassword()
-    {
-        return self::getConfigValue('wp.apppassword');
-    }
-
-    public static function getPrestaKey()
-    {
-        return self::getConfigValue('presta.key');
-    }
-
-    public static function getPrestaUrl()
-    {
-        return self::getConfigValue('presta.url');
-    }
-
-    public static function getPrestaWebshopNum()
-    {
-        return self::getConfigValue('presta.webshopnum');
-    }
-
-    public static function getPrestaImageUrlPrefix()
-    {
-        return self::getConfigValue('presta.imageurlprefix');
     }
 
     public static function getSzallitasiKoltsegMode()

@@ -269,30 +269,9 @@ class Bizonylattetel
     protected $locale;
 
     /**
-     * @ORM\Column(type="boolean",nullable=false)
-     */
-    protected $mese = false;
-
-    /**
      * @ORM\Column(type="string",length=6,nullable=true)
      */
     protected $elolegtipus;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="mijszpartner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
-     * @var \Entities\Partner
-     */
-    private $mijszpartner;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $mijszpartnernev;
-
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $mijszev;
-
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $emagid;
 
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes;
@@ -302,10 +281,6 @@ class Bizonylattetel
 
     /** @ORM\Column(type="date",nullable=true) */
     private $vasarlasdatum;
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
     /**
      * @ORM\ManyToOne(targetEntity="JogaBerlet")
      * @ORM\JoinColumn(name="jogaberlet_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -1643,22 +1618,6 @@ class Bizonylattetel
         $this->kedvezmeny = $kedvezmeny;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMese()
-    {
-        return $this->mese;
-    }
-
-    /**
-     * @param mixed $mese
-     */
-    public function setMese($mese)
-    {
-        $this->mese = $mese;
-    }
-
     public function getKozvetitett()
     {
         return $this->kozvetitett;
@@ -1696,91 +1655,6 @@ class Bizonylattetel
                 $this->elolegtipus = 'veg';
                 break;
         }
-    }
-
-    /**
-     * @return \Entities\Partner
-     */
-    public function getMIJSZPartner()
-    {
-        return $this->mijszpartner;
-    }
-
-    public function getMIJSZPartnerId()
-    {
-        if ($this->mijszpartner) {
-            return $this->mijszpartner->getId();
-        }
-        return 0;
-    }
-
-    /**
-     * @param \Entities\Partner $val
-     */
-    public function setMIJSZPartner($val)
-    {
-        if ($this->mijszpartner !== $val) {
-            if (!$val) {
-                $this->removeMIJSZPartner();
-            } else {
-                $this->mijszpartner = $val;
-                if (!$this->duplication) {
-                    $this->setMIJSZPartnernev($val->getNev());
-                }
-            }
-        }
-    }
-
-    public function removeMIJSZPartner()
-    {
-        if ($this->mijszpartner !== null) {
-            $this->mijszpartner = null;
-            if (!$this->duplication) {
-                $this->mijszpartnernev = '';
-            }
-        }
-    }
-
-    public function getMIJSZPartnernev()
-    {
-        return $this->mijszpartnernev;
-    }
-
-    public function setMIJSZPartnernev($val)
-    {
-        $this->mijszpartnernev = $val;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMIJSZEv()
-    {
-        return $this->mijszev;
-    }
-
-    /**
-     * @param mixed $mijszev
-     */
-    public function setMIJSZEv($mijszev)
-    {
-        $this->mijszev = $mijszev;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmagid()
-    {
-        return $this->emagid;
-    }
-
-    /**
-     * @param mixed $emagid
-     */
-    public function setEmagid($emagid)
-    {
-        $this->emagid = $emagid;
     }
 
     public function isMarErtekelt()
@@ -1840,50 +1714,6 @@ class Bizonylattetel
             $this->vasarlasdatum = $adat;
         } else {
             $this->vasarlasdatum = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 

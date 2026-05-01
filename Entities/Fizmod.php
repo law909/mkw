@@ -71,10 +71,6 @@ class Fizmod
     private $migrid;
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = false;
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $emagid;
-    /** @ORM\Column(type="string",length=255,nullable=false) */
-    private $wcid;
 
     /** @Gedmo\Locale */
     protected $locale;
@@ -375,22 +371,6 @@ class Fizmod
     /**
      * @return mixed
      */
-    public function getEmagid()
-    {
-        return $this->emagid;
-    }
-
-    /**
-     * @param mixed $emagid
-     */
-    public function setEmagid($emagid)
-    {
-        $this->emagid = $emagid;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getNavtipus()
     {
         return $this->navtipus;
@@ -402,22 +382,6 @@ class Fizmod
     public function setNavtipus($navtipus)
     {
         $this->navtipus = $navtipus;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
     }
 
 }

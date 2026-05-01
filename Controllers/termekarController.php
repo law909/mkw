@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\Client;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekMenu;

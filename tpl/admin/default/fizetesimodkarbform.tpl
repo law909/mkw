@@ -44,20 +44,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="WcidEdit">{at('WooCommerce ID')}:</label></td>
-                    <td><input id="WcidEdit" name="wcid" type="text" size="80" maxlength="255" value="{$egyed.wcid}"></td>
-                </tr>
-                <tr>
                     <td><label for="HaladekEdit">{at('Haladék')}:</label></td>
                     <td><input id="HaladekEdit" name="haladek" type="number" value="{$egyed.haladek}"> {at('nap')}</td>
                 </tr>
                 <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
-                </tr>
-                <tr>
-                    <td><label for="EmagidEdit">{at('eMAG id')}:</label></td>
-                    <td><input id="EmagidEdit" name="emagid" type="number" value="{$egyed.emagid}"></td>
                 </tr>
                 <tr>
                     <td><label for="WebesEdit">{at('Webes')}:</label></td>

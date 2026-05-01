@@ -112,26 +112,6 @@
             <table id="korzetszamgrid"></table>
             <div id="korzetszamgridpager"></div>
         </div>
-        {if ($setup.receptura)}
-            <div class="egyebadat-grid">
-                <table id="termekrecepttipusgrid"></table>
-                <div id="termekrecepttipusgridpager"></div>
-            </div>
-        {/if}
-        {if ($setup.mijsz)}
-            <div class="egyebadat-grid">
-                <table id="mijszoklevelkibocsajtogrid"></table>
-                <div id="mijszoklevelkibocsajtogridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mijszoklevelszintgrid"></table>
-                <div id="mijszoklevelszintgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mijszgyakorlasszintgrid"></table>
-                <div id="mijszgyakorlasszintgridpager"></div>
-            </div>
-        {/if}
         {if ($setup.mpt)}
             <div class="egyebadat-grid">
                 <table id="mptszekciogrid"></table>

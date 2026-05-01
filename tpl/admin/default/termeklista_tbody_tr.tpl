@@ -28,8 +28,6 @@
                         <tr>
                             <td>{at('Azonosító')}:</td>
                             <td>{$_termek.id}</td>
-                            <td>{at('WooCommerce ID:')}</td>
-                            <td>{$_termek.wcid}</td>
                         </tr>
                         <tr>
                             <td>{at('Gyártó')}:</td>
@@ -165,12 +163,6 @@
                 <td><a href="#" data-id="{$_termek.id}" data-flag="termekexportbanszerepel"
                        class="js-flagcheckbox{if ($_termek.termekexportbanszerepel)} ui-state-hover{/if}">{at('Exportokban szerepel')}</a></td>
             </tr>
-            {if ($setup.emag)}
-                <tr>
-                    <td><a href="#" data-id="{$_termek.id}" data-flag="emagtiltva"
-                           class="js-flagcheckbox{if ($_termek.emagtiltva)} ui-state-hover{/if}">{at('eMAG tiltva')}</a></td>
-                </tr>
-            {/if}
             <tr>
                 <td>{at('Hűségpont arány')}: {$_termek.hparany}</td>
             </tr>

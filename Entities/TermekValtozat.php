@@ -1,13 +1,10 @@
 <?php
-// TODO wordpress
 
 namespace Entities;
 
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\ResultSetMapping;
-use GuzzleHttp\Exception\GuzzleException;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -26,7 +23,6 @@ class TermekValtozat
 
     public $keszletinfo = false;
     public $foglalasinfo = false;
-    public $dontUploadToWC = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -179,17 +175,6 @@ class TermekValtozat
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minboltikeszlet;
 
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
-
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $prestaid;
-
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $prestadate;
-
     /**
      * @ORM\ManyToOne(targetEntity="Szin")
      * @ORM\JoinColumn(name="szin_id",referencedColumnName="id",onDelete="set null",nullable=true)
@@ -223,40 +208,6 @@ class TermekValtozat
 
         $this->keszletinfo = false;
         $this->foglalasinfo = false;
-        $this->dontUploadToWC = false;
-    }
-
-    public function toEmag()
-    {
-        $termek = $this->getTermek();
-        $x = $termek->toEmag();
-        $x['id'] = $this->getId();
-        $x['name'] = $x['name'] . ' ' . $this->getNev();
-        $x['part_number'] = 'MKWV' . $this->getId();
-        $x['ean'] = $this->getVonalkod();
-
-        if (!$this->getTermekfokep()) {
-            if ($this->getKep()) {
-                foreach ($x['images'] as $key => $image) {
-                    if ($image['display_type'] == 1) {
-                        $x['images'][$key]['url'] = \mkw\store::getFullUrl($this->getKepurl());
-                    }
-                }
-            }
-        }
-
-        if ($this->getLathato()) {
-            $x['status'] = 1;
-        } else {
-            $x['status'] = 0;
-        }
-        $x['stock'] = [
-            [
-                'warehouse_id' => 1,
-                'value' => $this->getKeszlet()
-            ]
-        ];
-        return $x;
     }
 
     protected function calcKeszletInfo($datum = null, $raktarid = null)
@@ -562,24 +513,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrl($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurl($pre);
-            }
-        }
-        return '';
-    }
-
-    public function getKepwcid()
-    {
-        if (!$this->termekfokep) {
-            if ($this->getKep()) {
-                return $this->getKep()->getWcid();
-            }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepwcid();
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurl($pre);
         }
         return '';
     }
@@ -590,10 +525,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrlMini($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurlMini($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurlMini($pre);
         }
         return '';
     }
@@ -604,10 +537,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrl400($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurl400($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurl400($pre);
         }
         return '';
     }
@@ -618,11 +549,10 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrl2000($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurl2000($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurl2000($pre);
         }
+
         return '';
     }
 
@@ -632,10 +562,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrlSmall($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurlSmall($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurlSmall($pre);
         }
         return '';
     }
@@ -646,10 +574,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrlMedium($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurlMedium($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurlMedium($pre);
         }
         return '';
     }
@@ -660,10 +586,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getUrlLarge($pre);
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepurlLarge($pre);
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepurlLarge($pre);
         }
         return '';
     }
@@ -674,10 +598,8 @@ class TermekValtozat
             if ($this->getKep()) {
                 return $this->getKep()->getLeiras();
             }
-        } else {
-            if ($this->getTermek()) {
-                return $this->getTermek()->getKepleiras();
-            }
+        } elseif ($this->getTermek()) {
+            return $this->getTermek()->getKepleiras();
         }
         return '';
     }
@@ -759,12 +681,10 @@ class TermekValtozat
     {
         if (is_a($adat, 'DateTime')) {
             $this->beerkezesdatum = $adat;
+        } elseif ($adat == '') {
+            $this->beerkezesdatum = null;
         } else {
-            if ($adat == '') {
-                $this->beerkezesdatum = null;
-            } else {
-                $this->beerkezesdatum = new \DateTime(\mkw\store::convDate($adat));
-            }
+            $this->beerkezesdatum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
@@ -1344,60 +1264,6 @@ class TermekValtozat
     public function setElerheto15($elerheto15): void
     {
         $this->elerheto15 = $elerheto15;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
-    public function clearWcdate()
-    {
-        $this->wcdate = null;
-    }
-
-    public function shouldUploadToWc()
-    {
-        return false;
     }
 
     public function calcRegularPrice($valutanem)

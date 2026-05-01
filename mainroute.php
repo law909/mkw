@@ -198,13 +198,6 @@ $router->map('GET', '/export/orderform', 'exportController#orderformExport', 'or
 $router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
 $router->map('GET', '/export/eanstock', 'exportController#eanstockExport', 'eanstockexport');
 
-$router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
-$router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
-$router->map('GET', '/t/emag/printhandlingtime', 'emagController#printHandlingTime', 'printhandlingtime');
-$router->map('GET', '/t/emag/printcharacteristics', 'emagController#printCharacteristics', 'printcharacteristics');
-$router->map('GET', '/t/emag/printtermek', 'emagController#printTermek', 'printtermek');
-$router->map('GET', '/t/emag/uploadtermek', 'emagController#uploadTermek', 'uploadtermek');
-
 $router->map('GET', '/t/reintexdownload', 'toolController#reintexDownload', 'reintexdownload');
 $router->map('GET', '/t/makszutovdownload', 'toolController#makszutovDownload', 'makszutovdownload');
 $router->map('GET', '/t/copydepotermekdownload', 'toolController#copydepotermekDownload', 'copydepotermekdownload');

@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Meretsor;
 use Entities\Raktar;
 use Entities\Szin;
@@ -101,7 +100,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['beerkezesdatum'] = $t->getBeerkezesdatum();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         $x['minboltikeszlet'] = $t->getMinboltikeszlet();
-        $x['wcid'] = $t->getWcid();
         if (\mkw\store::isFixSzinMode()) {
             $x['szinid'] = $t->getSzinId();
             $x['meretid'] = $t->getMeretId();

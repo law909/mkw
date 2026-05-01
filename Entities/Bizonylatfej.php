@@ -2,12 +2,10 @@
 
 namespace Entities;
 
-use Automattic\WooCommerce\Client;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
-use Sqids\Sqids;
 use stdClass;
 
 
@@ -22,7 +20,6 @@ class Bizonylatfej
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
     private $simpleedit = false;
-    public $dontUploadToWC = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -635,9 +632,6 @@ class Bizonylatfej
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = true;
 
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $emagid;
-
     /** @ORM\Column(type="string", length=100,nullable=true) */
     private $programnev;
 
@@ -672,12 +666,6 @@ class Bizonylatfej
      * @ORM\Column(type="smallint",nullable=true)
      */
     private $webshopnum;
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
-    /** @ORM\Column(type="json", nullable=true) */
-    private $szamlazzdata;
     /**
      * @ORM\Column(type="integer",nullable=true)
      */
@@ -961,17 +949,6 @@ class Bizonylatfej
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
             }
-        }
-    }
-
-    public function sendStatusChangeToWc()
-    {
-        if ($this->getWcid() && $this->getBizonylatstatusz()?->getWcid() && \mkw\store::isWoocommerceOn()) {
-            /** @var Client $wc */
-            $wc = store::getWcClient();
-            $wc->put('orders/' . $this->getWcid(), [
-                'status' => $this->getBizonylatstatusz()->getWcid()
-            ]);
         }
     }
 
@@ -4840,22 +4817,6 @@ class Bizonylatfej
     /**
      * @return mixed
      */
-    public function getEmagid()
-    {
-        return $this->emagid;
-    }
-
-    /**
-     * @param mixed $emagid
-     */
-    public function setEmagid($emagid)
-    {
-        $this->emagid = $emagid;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getPartnerhazszam()
     {
         return $this->partnerhazszam;
@@ -5441,66 +5402,6 @@ class Bizonylatfej
     public function setWebshopnum($webshopnum): void
     {
         $this->webshopnum = $webshopnum;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSzamlazzdata()
-    {
-        return $this->szamlazzdata;
-    }
-
-    /**
-     * @param mixed $szamlazzdata
-     */
-    public function setSzamlazzdata($szamlazzdata): void
-    {
-        $this->szamlazzdata = $szamlazzdata;
     }
 
     /**

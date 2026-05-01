@@ -2,9 +2,9 @@
 
 namespace Listeners;
 
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Entities\Bizonylattetel;
 use mkw\store;
 
 class BizonylattetelListener
@@ -69,21 +69,11 @@ class BizonylattetelListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
+        $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
 
         $tids = [];
         foreach ($this->willmodify as $entity) {
             if ($entity instanceof \Entities\Bizonylattetel) {
-                if (\mkw\store::isWoocommerceOn()) {
-                    \mkw\store::writelog($entity->getBizonylatfejId() . ' BizonylattetelListener postFlush');
-                    if (!$tids[$entity->getTermek()->getId()] && $entity->getTermek()->getWcid()) {
-                        $tids[$entity->getTermek()->getId()] = true;
-                    }
-                    if ($entity->getTermekvaltozat() && $entity->getTermekvaltozat()->getWcid()) {
-                        \mkw\store::writelog('BizonylattetelListener termekvaltozat->sendkeszlet START');
-                        \mkw\store::writelog('STOP');
-                    }
-                }
             }
         }
 

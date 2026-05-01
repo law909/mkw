@@ -290,11 +290,6 @@ class consts
     const MiniCRMRendezvenyJelentkezes = 'minicrmrendezvenyjelentkezes';
     const MiniCRMLastPartnerImport = 'minicrmlastpartnerimport';
 
-    const EmagAPIUrl = 'emagapiurl';
-    const EmagUsername = 'emagusername';
-    const EmagUsercode = 'emagusercode';
-    const EmagPassword = 'emagpassword';
-
     const MugenraceFooldalKep = 'mugenracefooldalkep';
     const MugenraceFejlecKep = 'mugenracefejleckep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';
@@ -421,8 +416,6 @@ class consts
     const NoMinKeszlet = 'nominkeszlet';
     const NoMinKeszletTermekkat = 'nominkeszlettermekkat';
     const MinKosarErtek = 'minkosarertek';
-
-    const WCPartnerTipus = 'wcpartnertipus';
 
     const GS1Datasource = 'gs1datasource';
     const GS1DatasourceName = 'gs1datasourcename';

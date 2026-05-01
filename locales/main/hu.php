@@ -1,5 +1,6 @@
 <?php
-return array(
+
+return [
     'Gyártás' => 'Gyártás',
     'Megrendelések' => 'Megrendelések',
     'Megrendelés' => 'Megrendelés',
@@ -80,7 +81,6 @@ return array(
     'Ajánlott' => 'Ajánlott',
     'Hozzá lehet szólni' => 'Hozzá lehet szólni',
     'Készletet mozgat' => 'Készletet mozgat',
-    'Receptúra' => 'Receptúra',
     'Változatok' => 'Változatok',
     'Árak' => 'Árak',
     'Képek' => 'Képek',
@@ -196,4 +196,5 @@ return array(
     'Tétel adatok' => 'Tétel adatok',
     'MKW Admin' => 'MKW Admin',
     'Rendelés' => 'Rendelés',
-    'Szállítólevél' => 'Szállítólevél');
+    'Szállítólevél' => 'Szállítólevél'
+];

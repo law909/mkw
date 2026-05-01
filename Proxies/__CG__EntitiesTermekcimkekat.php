@@ -67,10 +67,10 @@ class Termekcimkekat extends \Entities\Termekcimkekat implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'emagid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'cimkek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'emagid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimkekat' . "\0" . 'cimkek'];
     }
 
     /**
@@ -252,28 +252,6 @@ class Termekcimkekat extends \Entities\Termekcimkekat implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEmagid()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmagid', []);
-
-        return parent::getEmagid();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setEmagid($emagid)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmagid', [$emagid]);
-
-        return parent::setEmagid($emagid);
     }
 
     /**

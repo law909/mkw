@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Entities\Termekcimketorzs;
 use mkw\store;
 
@@ -142,7 +141,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($record ? $record->getGyartoId() : 0)));
         return $view->getTemplateResult();
     }
-    
+
     public function setmenulathato()
     {
         $id = $this->params->getIntRequestParam('id');

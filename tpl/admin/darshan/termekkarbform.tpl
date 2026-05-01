@@ -18,9 +18,6 @@
             {/if}
             <li><a href="#CimkeTab">{at('Címkék')}</a></li>
             <li><a href="#KepTab">{at('Képek')}</a></li>
-            {if ($setup.receptura)}
-                <li><a href="#RecepturaTab">{at('Receptúra')}</a></li>
-            {/if}
             {if ($setup.termekvaltozat)}
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
             {/if}
@@ -221,15 +218,6 @@
                 {/foreach}
             </div>
         </div>
-        {if ($setup.receptura)}
-            <div id="RecepturaTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.receptek as $recept}
-                    {include '../default/termektermekreceptkarb.tpl'}
-                {/foreach}
-                <a class="js-receptnewbutton" href="#" title="{at('Új')}"><span
-                        class="ui-icon ui-icon-circle-plus"></span></a>
-            </div>
-        {/if}
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
                 <div>

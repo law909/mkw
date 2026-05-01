@@ -264,7 +264,6 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setUj($this->params->getBoolRequestParam('uj'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setEladhato($this->params->getBoolRequestParam('eladhato'));
-        $obj->setEmagtiltva($this->params->getBoolRequestParam('emagtiltva'));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
         $obj->setHparany($this->params->getFloatRequestParam('hparany'));
         $obj->setSzelesseg($this->params->getFloatRequestParam('szelesseg'));
@@ -346,9 +345,6 @@ class termekController extends \mkwhelpers\MattableController
                     /** @var TermekKep $kep */
                     $kep = \mkw\store::getEm()->getRepository(TermekKep::class)->find($kepid);
                     if ($kep) {
-                        if ($kep->getUrl() !== $this->params->getStringRequestParam('kepurl_' . $kepid)) {
-                            $kep->setWcid(null);
-                        }
                         $kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
                         $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
                         $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
@@ -1477,9 +1473,6 @@ class termekController extends \mkwhelpers\MattableController
                     break;
                 case 'eladhato':
                     $obj->setEladhato($kibe);
-                    break;
-                case 'emagtiltva':
-                    $obj->setEmagtiltva($kibe);
                     break;
             }
             $this->getEm()->persist($obj);

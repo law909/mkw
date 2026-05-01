@@ -67,10 +67,10 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'wcdate'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'wcid', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'wcdate'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2'];
     }
 
     /**
@@ -278,61 +278,6 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat2', [$valt]);
 
         return parent::removeValtozat2($valt);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcid()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcid', []);
-
-        return parent::getWcid();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setWcid($wcid): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcid', [$wcid]);
-
-        parent::setWcid($wcid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcdate()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdate', []);
-
-        return parent::getWcdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWcdateStr($wcdate)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWcdateStr', [$wcdate]);
-
-        return parent::getWcdateStr($wcdate);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setWcdate($adat = NULL): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWcdate', [$adat]);
-
-        parent::setWcdate($adat);
     }
 
 }

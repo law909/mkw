@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Partnercimketorzs;
 use Entities\TermekFa;
@@ -17,7 +15,7 @@ class termekfaController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\TermekFa');
+        $this->setEntityName(TermekFa::class);
         $this->setKarbFormTplName('termekfakarbform.tpl');
         $this->setKarbTplName('termekfakarb.tpl');
         parent::__construct($params);
@@ -58,7 +56,6 @@ class termekfaController extends \mkwhelpers\MattableController
         $x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
-        $x['emagid'] = $t->getEmagid();
         $x['arukeresoid'] = $t->getArukeresoid();
         $x['lathato'] = $t->getLathato();
         $x['lathato1'] = $t->getLathato();
@@ -114,7 +111,6 @@ class termekfaController extends \mkwhelpers\MattableController
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));

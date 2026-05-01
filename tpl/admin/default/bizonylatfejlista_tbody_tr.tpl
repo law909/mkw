@@ -247,20 +247,11 @@
                         </td>
                     </tr>
                 {/if}
-                {if ($setup.woocommerce)}
-                    {if ($_egyed.wcglsparcellabelurl)}
-                        <tr>
-                            <td>{at('Címke')}:</td>
-                            <td><a href="{$wcparcellabelurl}/{$_egyed.wcglsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
-                        </tr>
-                    {/if}
-                {else}
-                    {if ($_egyed.glsparcellabelurl)}
-                        <tr>
-                            <td>{at('Címke')}:</td>
-                            <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
-                        </tr>
-                    {/if}
+                {if ($_egyed.glsparcellabelurl)}
+                    <tr>
+                        <td>{at('Címke')}:</td>
+                        <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                    </tr>
                 {/if}
             {/if}
             {if ($showkupon)}
@@ -388,15 +379,6 @@
                 {/foreach}
                 </tbody>
             </table>
-        </td>
-    {/if}
-    {if ($setup.woocommerce)}
-        <td class="cell">
-            {foreach $_egyed.szamlazzdata as $szd}
-                <div>
-                    <span>{$szd.document_type} </span><a href="{$szd.document_url}" target="_blank">{$szd.document_number}</a>
-                </div>
-            {/foreach}
         </td>
     {/if}
 </tr>

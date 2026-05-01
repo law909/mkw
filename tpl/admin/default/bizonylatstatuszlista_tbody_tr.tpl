@@ -15,7 +15,6 @@
     {/if}
     <td class="cell">{if ($_egyed.mozgat)}{at('mozgat')}{else}{at('nem mozgat')}{/if}</td>
     <td class="cell">{if ($_egyed.nemertekelheto)}{at('nem értékelhető')}{else}{at('értékelhető')}{/if}</td>
-    <td class="cell">{$_egyed.wcid}</td>
     <td class="cell">{$_egyed.csoport}</td>
     <td class="cell">{$_egyed.sorrend}</td>
 </tr>

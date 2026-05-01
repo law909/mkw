@@ -1,5 +1,4 @@
 <?php
-// TODO wordpress
 
 namespace Entities;
 
@@ -121,7 +120,7 @@ class TermekAr
     public function setValutanem($val)
     {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Valutanem::class)->find($val);
         }
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;

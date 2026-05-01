@@ -167,7 +167,6 @@ $(document).ready(function () {
             var translationtab = $('#TranslationTab');
             var artab = $('#ArsavTab');
             var keptab = $('#KepTab');
-            var recepttab = $('#RecepturaTab');
             var kapcsolodotab = $('#KapcsolodoTab');
             var valtozattab = $('#ValtozatTab');
             var doktab = $('#DokTab');
@@ -179,7 +178,6 @@ $(document).ready(function () {
                 $('table[id^="keptable_"]').attr('data-oper', 'add');
                 $('input[name^="valtozatoper_"]').val('add');
                 $('input[name^="kapcsolodooper_"]').val('add');
-                $('input[name^="receptoper_"]').val('add');
                 $('input[name^="aroper_"]').val('add');
                 $('#mattkarb-okbutton').click();
             });
@@ -364,54 +362,6 @@ $(document).ready(function () {
                     });
                 }
             });
-            recepttab.on('click', '.js-receptnewbutton', function (e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/termekrecept/getemptyrow',
-                    type: 'GET',
-                    success: function (data) {
-                        var tbody = $('#RecepturaTab');
-                        tbody.append(data);
-                        $('.js-receptnewbutton,.js-receptdelbutton').button();
-                        $this.remove();
-                    }
-                });
-            })
-                .on('click', '.js-receptdelbutton', function (e) {
-                    e.preventDefault();
-                    var receptgomb = $(this),
-                        receptid = receptgomb.attr('data-id');
-                    if (receptgomb.attr('data-source') === 'client') {
-                        $('#recepttable_' + receptid).remove();
-                    } else {
-                        dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'Igen': function () {
-                                    $.ajax({
-                                        url: '/admin/termekrecept/save',
-                                        type: 'POST',
-                                        data: {
-                                            id: receptid,
-                                            oper: 'del'
-                                        },
-                                        success: function (data) {
-                                            $('#recepttable_' + data).remove();
-                                        }
-                                    });
-                                    $(this).dialog('close');
-                                },
-                                'Nem': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                });
-            $('.js-receptnewbutton,.js-receptdelbutton').button();
             artab.on('click', '.js-arnewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();

@@ -3,6 +3,9 @@
 namespace Controllers;
 
 use Entities\Bizonylatstatusz;
+use Entities\Emailtemplate;
+use Entities\Fizmod;
+use Entities\Szallitasimod;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -38,7 +41,6 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         $x['nemertekelheto'] = $t->getNemertekelheto();
-        $x['wcid'] = $t->getWcid();
         return $x;
     }
 
@@ -51,18 +53,17 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $obj->setFoglal($this->params->getBoolRequestParam('foglal'));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
         $obj->setNemertekelheto($this->params->getBoolRequestParam('nemertekelheto'));
-        $obj->setWcid($this->params->getStringRequestParam('wcid'));
-        $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
+        $ck = store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
             $obj->setFizmod($ck);
         } else {
             $obj->removeFizmod();
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+        $ck = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod'));
         if ($ck) {
             $obj->setSzallitasimod($ck);
         } else {

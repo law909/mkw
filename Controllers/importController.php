@@ -5673,9 +5673,6 @@ class importController extends \mkwhelpers\Controller
         $maxcol = $sheet->getHighestColumn();
         $maxcolindex = Coordinate::columnIndexFromString($maxcol);
 
-        $wcarsav1 = \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst(\mkw\store::getWcWebshopNum()));
-        $wcarsav2 = \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWcWebshopNum()));
-
         $afa = \mkw\store::getEm()->getRepository(Afa::class)->findByErtek(27);
         $afa = $afa[0];
         $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
@@ -5726,8 +5723,6 @@ class importController extends \mkwhelpers\Controller
                     $brutto[strtoupper($n[1])][$n[2]] = $cell->getValue();
                 }
             }
-
-            $kellwcbe = false;
 
             $termek = false;
             if ($kod) {
@@ -5788,9 +5783,6 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setValutanem($valutanem);
                                         $ar->setArsav($_arsav);
                                     }
-                                    if ($ar->getBrutto() != $ertek && ($_arsav->getId() == $wcarsav1 || $_arsav->getId() == $wcarsav2)) {
-                                        $kellwcbe = true;
-                                    }
                                     $ar->setBrutto($ertek);
                                     \mkw\store::getEm()->persist($ar);
                                 }
@@ -5819,9 +5811,6 @@ class importController extends \mkwhelpers\Controller
                                         $ar->setTermek($termek);
                                         $ar->setValutanem($valutanem);
                                         $ar->setArsav($_arsav);
-                                    }
-                                    if ($ar->getNetto() != $ertek && ($_arsav->getId() == $wcarsav1 || $_arsav->getId() == $wcarsav2)) {
-                                        $kellwcbe = true;
                                     }
                                     $ar->setNetto($ertek);
                                     \mkw\store::getEm()->persist($ar);
@@ -6136,7 +6125,6 @@ class importController extends \mkwhelpers\Controller
         $megr->setTeljesites();
         $megr->setEsedekesseg();
         $megr->setKellszallitasikoltsegetszamolni(false);
-        $megr->dontUploadToWC = true;
 
         /** @var Partner $partner */
         $partner = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto));

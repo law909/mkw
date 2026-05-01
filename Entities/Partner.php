@@ -2,8 +2,10 @@
 
 namespace Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\PartnerRepository")
  * @ORM\Table(name="partner",
@@ -307,31 +309,10 @@ class Partner
      */
     private $szallorszag;
 
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $mijszmiotajogazik = 0;
-
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $mijszmiotatanit = 0;
-
     /**
      * @ORM\Column(type="boolean")
      */
     private $ezuzletkoto = false;
-
-    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOklevel", mappedBy="partner", cascade={"persist", "remove"}) */
-    private $mijszoklevelek;
-
-    /** @ORM\OneToMany(targetEntity="PartnerMIJSZPune", mappedBy="partner", cascade={"persist", "remove"}) */
-    private $mijszpune;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $mijszmembershipbesideshu;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $mijszbusiness;
-
-    /** @ORM\Column(type="boolean") */
-    private $mijszexporttiltva = false;
 
     /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
@@ -348,11 +329,6 @@ class Partner
     /** @ORM\OneToMany(targetEntity="Kontakt", mappedBy="partner",cascade={"persist"}) */
     private $kontaktok;
 
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $minicrmprojectid;
-
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $minicrmcontactid;
     /**
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Dolgozo")
@@ -370,16 +346,8 @@ class Partner
     private $munkahelyneve;
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $foglalkozas;
-    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOralatogatas", mappedBy="partner", cascade={"persist", "remove"}) */
-    private $mijszoralatogatas;
-    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOralatogatas", mappedBy="tanar", cascade={"persist", "remove"}) */
-    private $mijszoralatogatastanar;
-    /** @ORM\OneToMany(targetEntity="PartnerMIJSZTanitas", mappedBy="partner", cascade={"persist", "remove"}) */
-    private $mijsztanitas;
     /** @ORM\OneToMany(targetEntity="PartnerDok", mappedBy="partner", cascade={"persist", "remove"}) */
     private $partnerdokok;
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $emagid;
     /** @ORM\Column(type="boolean") */
     private $anonymizalnikell = false;
     /** @ORM\Column(type="date",nullable=true) */
@@ -603,10 +571,6 @@ class Partner
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekarazonosito;
-    /** @ORM\Column(type="integer", nullable=true) */
-    private $wcid;
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private $wcdate;
     /**
      * @ORM\ManyToOne(targetEntity="MPTNGYEgyetem")
      * @ORM\JoinColumn(name="mptngyegyetem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -627,23 +591,18 @@ class Partner
 
     public function __construct()
     {
-        $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mptfolyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->bankbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->bankbizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->penztarbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termekkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->kontaktok = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mijszpune = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mijszoralatogatas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mijszoralatogatastanar = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mijsztanitas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->partnerdokok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cimkek = new ArrayCollection();
+        $this->bizonylatfejek = new ArrayCollection();
+        $this->mptfolyoszamlak = new ArrayCollection();
+        $this->bankbizonylatfejek = new ArrayCollection();
+        $this->bankbizonylattetelek = new ArrayCollection();
+        $this->penztarbizonylatfejek = new ArrayCollection();
+        $this->kosarak = new ArrayCollection();
+        $this->termekertesitok = new ArrayCollection();
+        $this->termekcsoportkedvezmenyek = new ArrayCollection();
+        $this->termekkedvezmenyek = new ArrayCollection();
+        $this->kontaktok = new ArrayCollection();
+        $this->partnerdokok = new ArrayCollection();
     }
 
     public function __toString()
@@ -667,22 +626,22 @@ class Partner
 
     public function doAnonym()
     {
-        $this->vezeteknev = \mkw\store::generateRandomStr(strlen($this->vezeteknev));
-        $this->keresztnev = \mkw\store::generateRandomStr(strlen($this->keresztnev));
+        $this->vezeteknev = store::generateRandomStr(strlen($this->vezeteknev));
+        $this->keresztnev = store::generateRandomStr(strlen($this->keresztnev));
         $this->nev = implode(' ', [$this->vezeteknev, $this->keresztnev]);
-        $this->adoszam = \mkw\store::generateRandomStr(strlen($this->adoszam), '1234567890');
-        $this->euadoszam = \mkw\store::generateRandomStr(strlen($this->euadoszam), '1234567890');
-        $this->mukengszam = \mkw\store::generateRandomStr(strlen($this->mukengszam));
-        $this->jovengszam = \mkw\store::generateRandomStr(strlen($this->jovengszam));
-        $this->ostermszam = \mkw\store::generateRandomStr(strlen($this->ostermszam));
-        $this->valligszam = \mkw\store::generateRandomStr(strlen($this->valligszam));
-        $this->fvmszam = \mkw\store::generateRandomStr(strlen($this->fvmszam));
-        $this->cjszam = \mkw\store::generateRandomStr(strlen($this->cjszam));
-        $this->statszamjel = \mkw\store::generateRandomStr(strlen($this->statszamjel));
-        $this->irszam = \mkw\store::generateRandomStr(strlen($this->irszam), '1234567890');
-        $this->varos = \mkw\store::generateRandomStr(strlen($this->varos));
-        $this->utca = \mkw\store::generateRandomStr(strlen($this->utca));
-        $this->hazszam = \mkw\store::generateRandomStr(strlen($this->hazszam), '1234567890');
+        $this->adoszam = store::generateRandomStr(strlen($this->adoszam), '1234567890');
+        $this->euadoszam = store::generateRandomStr(strlen($this->euadoszam), '1234567890');
+        $this->mukengszam = store::generateRandomStr(strlen($this->mukengszam));
+        $this->jovengszam = store::generateRandomStr(strlen($this->jovengszam));
+        $this->ostermszam = store::generateRandomStr(strlen($this->ostermszam));
+        $this->valligszam = store::generateRandomStr(strlen($this->valligszam));
+        $this->fvmszam = store::generateRandomStr(strlen($this->fvmszam));
+        $this->cjszam = store::generateRandomStr(strlen($this->cjszam));
+        $this->statszamjel = store::generateRandomStr(strlen($this->statszamjel));
+        $this->irszam = store::generateRandomStr(strlen($this->irszam), '1234567890');
+        $this->varos = store::generateRandomStr(strlen($this->varos));
+        $this->utca = store::generateRandomStr(strlen($this->utca));
+        $this->hazszam = store::generateRandomStr(strlen($this->hazszam), '1234567890');
         $this->clearGDPRData();
     }
 
@@ -710,8 +669,6 @@ class Partner
         $this->bankcim = '';
         $this->iban = '';
         $this->swift = '';
-        $this->minicrmprojectid = 0;
-        $this->minicrmcontactid = 0;
         $this->munkahelyneve = '';
         $this->foglalkozas = '';
         $this->szamlaegyeb = '';
@@ -740,57 +697,6 @@ class Partner
         $x['vendeg'] = $this->getVendeg();
         $x['szamlaegyeb'] = $this->getSzamlaegyeb();
         return $x;
-    }
-
-    public function toWc()
-    {
-        $x = [
-            'email' => $this->getEmail(),
-            'first_name' => $this->getKeresztnev(),
-            'last_name' => $this->getVezeteknev(),
-        ];
-        $x['billing'] = [
-            'first_name' => $this->getKeresztnev(),
-            'last_name' => $this->getVezeteknev(),
-            'email' => $this->getEmail(),
-            'company' => $this->getNev(),
-            'address_1' => $this->getUtca(),
-            'address_2' => $this->getHazszam(),
-            'city' => $this->getVaros(),
-            'postcode' => $this->getIrszam(),
-            'country' => $this->getOrszag()?->getIso3166() ? $this->getOrszag()->getIso3166() : '',
-            'phone' => $this->getTelefon(),
-        ];
-        $x['shipping'] = [
-            'email' => '',
-            'first_name' => '',
-            'last_name' => '',
-            'company' => $this->getSzallnev(),
-            'address_1' => $this->getSzallutca(),
-            'address_2' => $this->getSzallhazszam(),
-            'city' => $this->getSzallvaros(),
-            'postcode' => $this->getSzallirszam(),
-            'country' => $this->getSzallorszag()?->getIso3166() ? $this->getSzallorszag()?->getIso3166() : '',
-            'phone' => $this->getTelefon(),
-        ];
-        return $x;
-    }
-
-    public function sendToWc()
-    {
-        if (\mkw\store::isWoocommerceOn()) {
-            $wc = \mkw\store::getWcClient();
-            $data = $this->toWc();
-
-            if ($this->getWcid()) {
-                \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBE: ' . json_encode($data));
-                \mkw\store::writelog($this->getId() . ': partner adat PUT start');
-                $result = $wc->put('customers/' . $this->getWcid(), $data);
-                \mkw\store::writelog($this->getId() . ': partner adat PUT stop');
-                \mkw\store::writelog($this->getId() . ': partner adat a woocommerceBŐL: ' . json_encode($result));
-                $this->setWcdate('');
-            }
-        }
     }
 
     public function getCim()
@@ -1308,7 +1214,7 @@ class Partner
     public function getLastmodStr()
     {
         if ($this->getLastmod()) {
-            return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
+            return $this->getLastmod()->format(store::$DateTimeFormat);
         }
         return '';
     }
@@ -1321,7 +1227,7 @@ class Partner
     public function getCreatedStr()
     {
         if ($this->getCreated()) {
-            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
+            return $this->getCreated()->format(store::$DateTimeFormat);
         }
         return '';
     }
@@ -1384,7 +1290,7 @@ class Partner
     public function getSzuletesiidoStr()
     {
         if ($this->getSzuletesiido()) {
-            return $this->getSzuletesiido()->format(\mkw\store::$DateFormat);
+            return $this->getSzuletesiido()->format(store::$DateFormat);
         }
         return '';
     }
@@ -1392,7 +1298,7 @@ class Partner
     public function setSzuletesiido($adat = '')
     {
         if ($adat != '') {
-            $this->szuletesiido = new \DateTime(\mkw\store::convDate($adat));
+            $this->szuletesiido = new \DateTime(store::convDate($adat));
         }
     }
 
@@ -1433,17 +1339,17 @@ class Partner
 
     public function setMkwJelszo($adat)
     {
-        $this->jelszo = sha1($adat . \mkw\store::getSalt());
+        $this->jelszo = sha1($adat . store::getSalt());
     }
 
     public function setJelszo($adat)
     {
-        $this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\store::getSalt());
+        $this->jelszo = sha1(strtoupper(md5($adat)) . store::getSalt());
     }
 
     public function checkJelszo($adat)
     {
-        $so = \mkw\store::getSalt();
+        $so = store::getSalt();
         $v = sha1(strtoupper(md5($adat)) . $so);
         return $this->jelszo === $v;
     }
@@ -1505,7 +1411,7 @@ class Partner
 
     public function setPasswordreminder()
     {
-        $this->passwordreminder = sha1(md5(time() . \mkw\store::getSalt()) . \mkw\store::getSalt());
+        $this->passwordreminder = sha1(md5(time() . store::getSalt()) . store::getSalt());
         return $this->passwordreminder;
     }
 
@@ -1590,7 +1496,7 @@ class Partner
     public function getValutanem()
     {
         if (!$this->id && !$this->valutanem) {
-            $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            $this->setValutanem(store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
@@ -1619,7 +1525,7 @@ class Partner
     public function setValutanem($val)
     {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = store::getEm()->getRepository(Valutanem::class)->find($val);
         }
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;
@@ -1799,126 +1705,6 @@ class Partner
     /**
      * @return mixed
      */
-    public function getMijszmiotajogazik()
-    {
-        return $this->mijszmiotajogazik;
-    }
-
-    /**
-     * @param mixed $mijszmiotajogazik
-     */
-    public function setMijszmiotajogazik($mijszmiotajogazik)
-    {
-        $this->mijszmiotajogazik = $mijszmiotajogazik;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMijszmiotatanit()
-    {
-        return $this->mijszmiotatanit;
-    }
-
-    /**
-     * @param mixed $mijszmiotatanit
-     */
-    public function setMijszmiotatanit($mijszmiotatanit)
-    {
-        $this->mijszmiotatanit = $mijszmiotatanit;
-    }
-
-    /**
-     * @return \Entities\PartnerMIJSZOklevel
-     */
-    public function getMijszoklevelek()
-    {
-        return $this->mijszoklevelek;
-    }
-
-    /**
-     * @return \Entities\PartnerMIJSZPune
-     */
-    public function getMijszpune()
-    {
-        return $this->mijszpune;
-    }
-
-    /**
-     * @return \Entities\PartnerMIJSZOralatogatas
-     */
-    public function getMijszoralatogatas()
-    {
-        return $this->mijszoralatogatas;
-    }
-
-    /**
-     * @return \Entities\PartnerMIJSZOralatogatas
-     */
-    public function getMijszoralatogatastanar()
-    {
-        return $this->mijszoralatogatastanar;
-    }
-
-    /**
-     * @return \Entities\PartnerMIJSZTanitas
-     */
-    public function getMijsztanitas()
-    {
-        return $this->mijsztanitas;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMijszmembershipbesideshu()
-    {
-        return $this->mijszmembershipbesideshu;
-    }
-
-    /**
-     * @param mixed $mijszmembershipbesideshu
-     */
-    public function setMijszmembershipbesideshu($mijszmembershipbesideshu)
-    {
-        $this->mijszmembershipbesideshu = $mijszmembershipbesideshu;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMijszbusiness()
-    {
-        return $this->mijszbusiness;
-    }
-
-    /**
-     * @param mixed $mijszbusiness
-     */
-    public function setMijszbusiness($mijszbusiness)
-    {
-        $this->mijszbusiness = $mijszbusiness;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMijszexporttiltva()
-    {
-        return $this->mijszexporttiltva;
-    }
-
-    /**
-     * @param mixed $mijszexporttiltva
-     */
-    public function setMijszexporttiltva($mijszexporttiltva)
-    {
-        $this->mijszexporttiltva = $mijszexporttiltva;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getMigrid()
     {
         return $this->migrid;
@@ -2039,38 +1825,6 @@ class Partner
     /**
      * @return mixed
      */
-    public function getMinicrmprojectid()
-    {
-        return $this->minicrmprojectid;
-    }
-
-    /**
-     * @param mixed $minicrmprojectid
-     */
-    public function setMinicrmprojectid($minicrmprojectid)
-    {
-        $this->minicrmprojectid = $minicrmprojectid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMinicrmcontactid()
-    {
-        return $this->minicrmcontactid;
-    }
-
-    /**
-     * @param mixed $minicrmcontactid
-     */
-    public function setMinicrmcontactid($minicrmcontactid)
-    {
-        $this->minicrmcontactid = $minicrmcontactid;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getCreatedby()
     {
         return $this->createdby;
@@ -2114,22 +1868,6 @@ class Partner
             return $this->updatedby->getNev();
         }
         return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmagid()
-    {
-        return $this->emagid;
-    }
-
-    /**
-     * @param mixed $emagid
-     */
-    public function setEmagid($emagid)
-    {
-        $this->emagid = $emagid;
     }
 
     /**
@@ -2211,7 +1949,7 @@ class Partner
     public function getAnonymkeresdatumStr()
     {
         if ($this->getAnonymkeresdatum()) {
-            return $this->getAnonymkeresdatum()->format(\mkw\store::$DateFormat);
+            return $this->getAnonymkeresdatum()->format(store::$DateFormat);
         }
         return '';
     }
@@ -2222,7 +1960,7 @@ class Partner
     public function setAnonymkeresdatum($anonymkeresdatum = '')
     {
         if ($anonymkeresdatum != '') {
-            $this->anonymkeresdatum = new \DateTime(\mkw\store::convDate($anonymkeresdatum));
+            $this->anonymkeresdatum = new \DateTime(store::convDate($anonymkeresdatum));
         }
     }
 
@@ -2253,7 +1991,7 @@ class Partner
     public function getAnonymdatumStr()
     {
         if ($this->getAnonymdatum()) {
-            return $this->getAnonymdatum()->format(\mkw\store::$DateFormat);
+            return $this->getAnonymdatum()->format(store::$DateFormat);
         }
         return '';
     }
@@ -2264,7 +2002,7 @@ class Partner
     public function setAnonymdatum($anonymdatum = '')
     {
         if ($anonymdatum != '') {
-            $this->anonymdatum = new \DateTime(\mkw\store::convDate($anonymdatum));
+            $this->anonymdatum = new \DateTime(store::convDate($anonymdatum));
         }
     }
 
@@ -2558,7 +2296,7 @@ class Partner
     public function getMptRegisterdateStr()
     {
         if ($this->getMptRegisterdate()) {
-            return $this->getMptRegisterdate()->format(\mkw\store::$DateFormat);
+            return $this->getMptRegisterdate()->format(store::$DateFormat);
         }
         return '';
     }
@@ -2569,7 +2307,7 @@ class Partner
     public function setMptRegisterdate($mpt_registerdate)
     {
         if ($mpt_registerdate != '') {
-            $this->mpt_registerdate = new \DateTime(\mkw\store::convDate($mpt_registerdate));
+            $this->mpt_registerdate = new \DateTime(store::convDate($mpt_registerdate));
         }
     }
 
@@ -2584,7 +2322,7 @@ class Partner
     public function getMptLastvisitStr()
     {
         if ($this->getMptLastvisit()) {
-            return $this->getMptLastvisit()->format(\mkw\store::$DateFormat);
+            return $this->getMptLastvisit()->format(store::$DateFormat);
         }
         return '';
     }
@@ -2595,7 +2333,7 @@ class Partner
     public function setMptLastvisit($mpt_lastvisit)
     {
         if ($mpt_lastvisit != '') {
-            $this->mpt_lastvisit = new \DateTime(\mkw\store::convDate($mpt_lastvisit));
+            $this->mpt_lastvisit = new \DateTime(store::convDate($mpt_lastvisit));
         }
     }
 
@@ -2610,7 +2348,7 @@ class Partner
     public function getMptLastupdateStr()
     {
         if ($this->getMptLastupdate()) {
-            return $this->getMptLastupdate()->format(\mkw\store::$DateFormat);
+            return $this->getMptLastupdate()->format(store::$DateFormat);
         }
         return '';
     }
@@ -2621,7 +2359,7 @@ class Partner
     public function setMptLastupdate($mpt_lastupdate)
     {
         if ($mpt_lastupdate != '') {
-            $this->mpt_lastupdate = new \DateTime(\mkw\store::convDate($mpt_lastupdate));
+            $this->mpt_lastupdate = new \DateTime(store::convDate($mpt_lastupdate));
         }
     }
 
@@ -3100,7 +2838,7 @@ class Partner
     public function getMptTagsagdateStr()
     {
         if ($this->getMptTagsagdate()) {
-            return $this->getMptTagsagdate()->format(\mkw\store::$DateFormat);
+            return $this->getMptTagsagdate()->format(store::$DateFormat);
         }
         return '';
     }
@@ -3111,7 +2849,7 @@ class Partner
     public function setMptTagsagdate($mpt_tagsagdate): void
     {
         if ($mpt_tagsagdate != '') {
-            $this->mpt_tagsagdate = new \DateTime(\mkw\store::convDate($mpt_tagsagdate));
+            $this->mpt_tagsagdate = new \DateTime(store::convDate($mpt_tagsagdate));
         }
     }
 
@@ -3345,7 +3083,7 @@ class Partner
     public function getMptngybefizetesdatum()
     {
         if (!$this->id && !$this->mptngybefizetesdatum) {
-            $this->mptngybefizetesdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
+            $this->mptngybefizetesdatum = new \DateTime(store::convDate(date(store::$DateFormat)));
         }
         return $this->mptngybefizetesdatum;
     }
@@ -3353,7 +3091,7 @@ class Partner
     public function getMptngybefizetesdatumStr()
     {
         if ($this->getMptngybefizetesdatum()) {
-            return $this->getMptngybefizetesdatum()->format(\mkw\store::$DateFormat);
+            return $this->getMptngybefizetesdatum()->format(store::$DateFormat);
         }
         return '';
     }
@@ -3364,9 +3102,9 @@ class Partner
             $this->mptngybefizetesdatum = $adat;
         } else {
             if ($adat == '') {
-                $adat = date(\mkw\store::$DateFormat);
+                $adat = date(store::$DateFormat);
             }
-            $this->mptngybefizetesdatum = new \DateTime(\mkw\store::convDate($adat));
+            $this->mptngybefizetesdatum = new \DateTime(store::convDate($adat));
         }
     }
 
@@ -3407,16 +3145,16 @@ class Partner
         }
         if ($emailtpl) {
             $tpldata = $p->toLista();
-            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject = store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('partner', $tpldata);
-            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body = store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
             $body->setVar('partner', $tpldata);
-            $body->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
-            if (\mkw\store::getConfigValue('developer')) {
-                \mkw\store::writelog($subject->getTemplateResult(), 'partneremail.html');
-                \mkw\store::writelog($body->getTemplateResult(), 'partneremail.html');
+            $body->setVar('mainurl', store::getConfigValue('mainurl'));
+            if (store::getConfigValue('developer')) {
+                store::writelog($subject->getTemplateResult(), 'partneremail.html');
+                store::writelog($body->getTemplateResult(), 'partneremail.html');
             } else {
-                $mailer = \mkw\store::getMailer();
+                $mailer = store::getMailer();
                 $mailer->addTo($p->getEmail());
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
@@ -3462,7 +3200,7 @@ class Partner
      */
     public function isXNemrendelhet()
     {
-        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+        switch (store::getSetupValue('webshopnum', 1)) {
             case 1:
                 return $this->isNemrendelhet();
             case 2:
@@ -3473,6 +3211,8 @@ class Partner
                 return $this->isNemrendelhet4();
             case 5:
                 return $this->isNemrendelhet5();
+            default:
+                return false;
         }
     }
 
@@ -3564,7 +3304,7 @@ class Partner
     public function setArsav($val)
     {
         if (!($val instanceof \Entities\Arsav)) {
-            $val = \mkw\store::getEm()->getRepository(Arsav::class)->find($val);
+            $val = store::getEm()->getRepository(Arsav::class)->find($val);
         }
         if ($this->arsav !== $val) {
             $this->arsav = $val;
@@ -3600,50 +3340,6 @@ class Partner
     public function setMptSzamlazasinev($mpt_szamlazasinev): void
     {
         $this->mpt_szamlazasinev = $mpt_szamlazasinev;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcid()
-    {
-        return $this->wcid;
-    }
-
-    /**
-     * @param mixed $wcid
-     */
-    public function setWcid($wcid): void
-    {
-        $this->wcid = $wcid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWcdate()
-    {
-        return $this->wcdate;
-    }
-
-    public function getWcdateStr($wcdate)
-    {
-        return $this->wcdate->format(\mkw\store::$DateTimeFormat);
-    }
-
-    /**
-     * @param mixed $wcdate
-     */
-    public function setWcdate($adat = null): void
-    {
-        if (is_a($adat, 'DateTime')) {
-            $this->wcdate = $adat;
-        } else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$sqlDateTimeFormat);
-            }
-            $this->wcdate = new \DateTime(\mkw\store::convDate($adat));
-        }
     }
 
     public function isDefaultSzallorszag()

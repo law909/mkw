@@ -73,21 +73,9 @@ $router->map('GET', '/admin/me/navtipuslist', 'meController#navtipuslist', 'admi
 $router->map('GET', '/admin/korzetszam/jsonlist', 'korzetszamController#jsonlist', 'adminkorzetszamjsonlist');
 $router->map('GET', '/admin/korzetszam/htmllist', 'korzetszamController#htmllist', 'adminkorzetszamhtmllist');
 $router->map('POST', '/admin/korzetszam/save', 'korzetszamController#save', 'adminkorzetszamsave');
-$router->map('GET', '/admin/mijszoklevelkibocsajto/jsonlist', 'mijszoklevelkibocsajtoController#jsonlist', 'adminmijszoklevelkibocsajtojsonlist');
-$router->map('GET', '/admin/mijszoklevelkibocsajto/htmllist', 'mijszoklevelkibocsajtoController#htmllist', 'adminmijszoklevelkibocsajtohtmllist');
-$router->map('POST', '/admin/mijszoklevelkibocsajto/save', 'mijszoklevelkibocsajtoController#save', 'adminmijszoklevelkibocsajtosave');
-$router->map('GET', '/admin/mijszoklevelszint/jsonlist', 'mijszoklevelszintController#jsonlist', 'adminmijszoklevelszintjsonlist');
-$router->map('GET', '/admin/mijszoklevelszint/htmllist', 'mijszoklevelszintController#htmllist', 'adminmijszoklevelszinthtmllist');
-$router->map('POST', '/admin/mijszoklevelszint/save', 'mijszoklevelszintController#save', 'adminmijszoklevelszintsave');
-$router->map('GET', '/admin/mijszgyakorlasszint/jsonlist', 'mijszgyakorlasszintController#jsonlist', 'adminmijszgyakorlasszintjsonlist');
-$router->map('GET', '/admin/mijszgyakorlasszint/htmllist', 'mijszgyakorlasszintController#htmllist', 'adminmijszgyakorlasszinthtmllist');
-$router->map('POST', '/admin/mijszgyakorlasszint/save', 'mijszgyakorlasszintController#save', 'adminmijszgyakorlasszintsave');
 $router->map('GET', '/admin/szotar/jsonlist', 'szotarController#jsonlist', 'adminszotarjsonlist');
 $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'adminszotarhtmllist');
 $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
-$router->map('GET', '/admin/termekrecepttipus/jsonlist', 'termekrecepttipusController#jsonlist', 'admintermekrecepttipusjsonlist');
-$router->map('GET', '/admin/termekrecepttipus/htmllist', 'termekrecepttipusController#htmllist', 'admintermekrecepttipushtmllist');
-$router->map('POST', '/admin/termekrecepttipus/save', 'termekrecepttipusController#save', 'admintermekrecepttipussave');
 $router->map('GET', '/admin/jogaterem/jsonlist', 'jogateremController#jsonlist', 'adminjogateremjsonlist');
 $router->map('GET', '/admin/jogaterem/htmllist', 'jogateremController#htmllist', 'adminjogateremhtmllist');
 $router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
@@ -716,11 +704,6 @@ if (!\mkw\store::isClosed()) {
     );
 }
 
-$router->map('GET', '/admin/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getemptyrow', 'adminpartnermijszoklevelgetemptyrow');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'adminpartnermijszoklevelsave');
-}
-
 $router->map('GET', '/admin/termektranslation/getemptyrow', 'termektranslationController#getemptyrow', 'admintermektranslationgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termektranslation/save', 'termektranslationController#save', 'admintermektranslationsave');
@@ -759,11 +742,6 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
-}
-
-$router->map('GET', '/admin/termekrecept/getemptyrow', 'termekreceptController#getemptyrow', 'admintermekreceptgetemptyrow');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/termekrecept/save', 'termekreceptController#save', 'admintermekreceptsave');
 }
 
 $router->map('GET', '/admin/termekdok/getemptyrow', 'termekdokController#getemptyrow', 'admintermekdokgetemptyrow');
@@ -998,7 +976,6 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/regisztral', 'partnerController#regisztral', 'adminpartnerregisztral');
     $router->map('POST', '/admin/partner/checkemail', 'partnerController#checkemail', 'adminpartnercheckemail');
     $router->map('POST', '/admin/partner/getkiegyenlitetlenbiz', 'partnerController#getKiegyenlitetlenBiz', 'admingetkiegyenlitetlenbiz');
-    $router->map('POST', '/admin/partner/mijszexport', 'partnerController#mijszExport', 'adminmijszexport');
     $router->map('POST', '/admin/partner/megjegyzesexport', 'partnerController#megjegyzesExport', 'adminmegjegyzesexport');
     $router->map('POST', '/admin/partner/mptngyszamlazasexport', 'partnerController#mptngyszamlazasExport', 'adminmptngyszamlazasexport');
     $router->map('POST', '/admin/partner/hirlevelexport', 'partnerController#hirlevelExport', 'adminhirlevelexport');
@@ -1196,25 +1173,6 @@ $router->map('GET', '/admin/termekforgalmilista/view', 'termekforgalmilistaContr
 $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaController#refresh', 'admintermekforgalmilistarefresh');
 $router->map('GET', '/admin/termekforgalmilista/export', 'termekforgalmilistaController#export', 'admintermekforgalmilistaexport');
 
-$router->map(
-    'GET',
-    '/admin/partnermijszoralatogatasosszesitolista/view',
-    'partnermijszoralatogatasosszesitolistaController#view',
-    'adminpartnermijszoralatogatasosszesitolistaview'
-);
-$router->map(
-    'GET',
-    '/admin/partnermijszoralatogatasosszesitolista/refresh',
-    'partnermijszoralatogatasosszesitolistaController#refresh',
-    'adminpartnermijszoralatogatasosszesitolistarefresh'
-);
-$router->map(
-    'GET',
-    '/admin/partnermijszoralatogatasosszesitolista/export',
-    'partnermijszoralatogatasosszesitolistaController#export',
-    'adminpartnermijszoralatogatasosszesitolistaexport'
-);
-
 $router->map('GET', '/admin/bizonylattetellista/view', 'bizonylattetellistaController#view', 'adminbizonylattetellistaview');
 $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaController#refresh', 'adminbizonylattetellistarefresh');
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');
@@ -1234,9 +1192,6 @@ $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekes
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
-
-$router->map('GET', '/admin/minicrm/view', 'minicrmController#view', 'adminminicrmview');
-$router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerImport', 'adminminicrmpartnerimport');
 
 $router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
 
@@ -1345,7 +1300,6 @@ $router->map('GET', '/admin/createtermekkep', 'termekController#createTermekKepe
 
 //$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
 
-//$router->map('GET', '/admin/t/presta', 'termekmenuController#exportToPrestashop', 'admintermekmenuexportToPrestashop');
 //$router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
 //$router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 //$router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');

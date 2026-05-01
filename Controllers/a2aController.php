@@ -734,7 +734,6 @@ class a2aController extends \mkwhelpers\Controller
                                 $bizfej->setTeljesites();
                                 $bizfej->setEsedekesseg();
                                 $bizfej->setKellszallitasikoltsegetszamolni(false);
-                                $bizfej->dontUploadToWC = true;
 
                                 $bizfej->setPartner($partner);
                                 $bizfej->setRaktar($raktar);

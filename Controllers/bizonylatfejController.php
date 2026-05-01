@@ -508,11 +508,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['barionpaymentstatus'] = $t->getBarionpaymentstatus();
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
-        $x['wcglsparcellabelurl'] = $t->getGlsparcellabelurl('');
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
         $x['forditottadozas'] = $t->isForditottadozas();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();
-        $x['szamlazzdata'] = $t->getSzamlazzdata();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&
             (
                 ($t->getNaveredmeny() == 'ABORTED') ||
@@ -1159,7 +1157,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $bf = $this->getRepo()->find($id);
             if ($bf) {
                 $bf->setKellszallitasikoltsegetszamolni(false);
-                $bf->dontUploadToWC = true;
                 $bf->setRontott(true);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();

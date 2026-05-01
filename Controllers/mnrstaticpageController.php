@@ -6,8 +6,7 @@ use Entities\MNRStatic;
 use Entities\MNRStaticPage;
 use Entities\MNRStaticPageTranslation;
 use Entities\MNRStaticTranslation;
-use Entities\TermekValtozat,
-    Entities\TermekRecept;
+use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
