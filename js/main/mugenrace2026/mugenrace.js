@@ -562,7 +562,7 @@ $(document).ready(function () {
     }
     var $loginform = $('#Loginform');
     if ($loginform.length > 0) {
-        H5F.setup($loginform);
+        /*
         $('#EmailEdit')
             .on('input', function (e) {
                 mkwcheck.loginEmailCheck();
@@ -572,9 +572,11 @@ $(document).ready(function () {
                 mkwcheck.wasinteraction.email = true;
                 mkwcheck.loginEmailCheck();
             })
-            .each(function (i, ez) {
-                mkwcheck.loginEmailCheck();
-            });
+        //.each(function (i, ez) {
+        //    mkwcheck.loginEmailCheck();
+        //});
+
+         */
         $('.js-passreminder').on('click', function () {
             var email = $('input[name="email"]', $loginform).val();
             if (!email) {
