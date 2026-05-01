@@ -548,6 +548,20 @@ if ($DBVersion < '0066') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0066');
 }
 
+if ($DBVersion < '0067') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mijszgyakorlasszint`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mijszoklevelkibocsajto`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mijszoklevelszint`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0067');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -121,14 +121,6 @@ class partnermergeController extends \mkwhelpers\MattableController
             }
 
             $st = $conn->prepare(
-                'UPDATE bizonylattetel SET'
-                . ' mijszpartner_id=' . $partnerreid
-                . ', mijszpartnernev="' . $partnerre->getNev() . '"'
-                . ' WHERE mijszpartner_id=' . $partnerrolid
-            );
-            $st->executeStatement();
-
-            $st = $conn->prepare(
                 'UPDATE cimketorzs SET'
                 . ' gyarto_id=' . $partnerreid
                 . ' WHERE gyarto_id=' . $partnerrolid

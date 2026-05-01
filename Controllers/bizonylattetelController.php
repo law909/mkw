@@ -22,7 +22,6 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $vtsz = new vtszController($this->params);
         $afa = new afaController($this->params);
         $me = new meController($this->params);
-        $mijszpartner = new partnerController($this->params);
         $x = [];
         if (!$t) {
             $t = new \Entities\Bizonylattetel();
@@ -76,15 +75,6 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['afanev'] = $t->getAfanev();
         $x['elolegtipus'] = $t->getElolegtipus();
 
-        if (\mkw\store::isMIJSZ()) {
-            $x['mijszev'] = $t->getMIJSZEv();
-            $x['mijszpartner'] = $t->getMIJSZPartnerId();
-            $x['mijszpartnernev'] = $t->getMIJSZPartnernev();
-        } else {
-            $x['mijszev'] = 0;
-            $x['mijszpartner'] = 0;
-            $x['mijszpartnernev'] = '';
-        }
         $term = $t->getTermek();
         if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
@@ -108,9 +98,6 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
             $x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
             $x['melist'] = $me->getSelectList($t->getMekodId());
-            if (\mkw\store::isMIJSZ()) {
-                $x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
-            }
             if (!\mkw\store::isTermekAutocomplete()) {
                 $x['termeklist'] = $termek->getSelectList();
             }
@@ -128,19 +115,6 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $biztipus = $this->params->getStringRequestParam('type');
         $view = $this->createView('bizonylattetelkarb.tpl');
         $tetel = $this->loadVars(null, true);
-        if (\mkw\store::isMIJSZ()) {
-            $mijszpartner = new partnerController($this->params);
-            $partnerid = $this->params->getIntRequestParam('partner');
-            $partner = $this->getRepo('Entities\Partner')->find($partnerid);
-            if ($partner) {
-                if (\mkw\store::isMIJSZ()) {
-                    $tetel['mijszpartnerlist'] = $mijszpartner->getSelectList($partnerid);
-                }
-                $tetel['mijszpartner'] = $partnerid;
-                $tetel['mijszpartnernev'] = $partner->getNev();
-            }
-            $tetel['mijszev'] = (int)date('Y');
-        }
         $view->setVar('tetel', $tetel);
         /** @var \Entities\Bizonylattipus $bt */
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);

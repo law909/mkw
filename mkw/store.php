@@ -1557,11 +1557,6 @@ class store
         return self::getTheme() === 'kisszamlazo';
     }
 
-    public static function isMIJSZ()
-    {
-        return self::getTheme() === 'mijsz';
-    }
-
     public static function isDarshan()
     {
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
