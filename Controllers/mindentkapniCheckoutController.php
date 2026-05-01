@@ -159,7 +159,7 @@ class mindentkapniCheckoutController extends checkoutController
                 break;
         }
 
-        $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\Zend_Session::getId());
+        $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\mkw\session::getId());
         $ok = $ok && count($kosartetelek) > 0;
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';
@@ -272,7 +272,7 @@ class mindentkapniCheckoutController extends checkoutController
             $lasttermeknevek = [];
             $lasttermekids = [];
             $lasttermekadat = [];
-            //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+            //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\mkw\session::getId());
             foreach ($kosartetelek as $kt) {
                 $t = new \Entities\Bizonylattetel();
                 $t->setBizonylatfej($megrendfej);

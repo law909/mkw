@@ -2,11 +2,16 @@
 
 namespace Controllers;
 
-class b2bpartnerController extends partnerController {
+use Entities\Emailtemplate;
+use Entities\Partnercimketorzs;
 
-    public function saveRegistration() {
+class b2bpartnerController extends partnerController
+{
+
+    public function saveRegistration()
+    {
         $hibas = false;
-        $hibak = array();
+        $hibak = [];
 
         $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
         $keresztnev = $this->params->getStringRequestParam('keresztnev');
@@ -41,7 +46,7 @@ class b2bpartnerController extends partnerController {
                 $partner->setSzamlatipus($uk->getPartnerszamlatipus());
                 $partner->setTermekarazonosito($uk->getPartnertermekarazonosito());
                 if (\mkw\store::isSuperzoneB2B()) {
-                    $spanyol = $this->getRepo('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::SpanyolCimke));
+                    $spanyol = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::SpanyolCimke));
                     if ($spanyol) {
                         $partner->addCimke($spanyol);
                     }
@@ -52,14 +57,14 @@ class b2bpartnerController extends partnerController {
                 $this->changePartner($partner->getId());
 
                 if ($uk->getEmail()) {
-                    $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
+                    $emailtpl = $this->getEm()->getRepository(Emailtemplate::class)->findOneByNev('regisztracio');
                     if ($emailtpl) {
-                        $tpldata = array(
+                        $tpldata = [
                             'keresztnev' => $keresztnev,
                             'vezeteknev' => $vezeteknev,
                             'fiokurl' => \mkw\store::getRouter()->generate('showaccount', true),
                             'url' => \mkw\store::getFullUrl()
-                        );
+                        ];
                         $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                         $subject->setVar('user', $tpldata);
                         $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
@@ -71,19 +76,18 @@ class b2bpartnerController extends partnerController {
                         $mailer->send();
                     }
                 }
-                //\Zend_Session::writeClose();
+                //\mkw\session::writeClose();
                 header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
-            }
-            else {
+            } else {
                 header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
             }
-        }
-        else {
+        } else {
             $this->showRegistrationForm($vezeteknev, $keresztnev, $email, $hibak);
         }
     }
 
-    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = array()) {
+    public function showRegistrationForm($vezeteknev = '', $keresztnev = '', $email = '', $hibak = [])
+    {
         $view = $this->getTemplateFactory()->createMainView('regisztracio.tpl');
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('hibak', $hibak);
@@ -94,14 +98,14 @@ class b2bpartnerController extends partnerController {
         $view->printTemplateResult(true);
     }
 
-    public function changePartner($ujpartnerid = null) {
+    public function changePartner($ujpartnerid = null)
+    {
         if (!$ujpartnerid) {
             $ujpartnerid = $this->params->getIntRequestParam('partner');
         }
         $user = $this->getRepo()->find($ujpartnerid);
         $regiuser = \mkw\store::getLoggedInUser();
         if ($user) {
-
             // pseudo logout old user
             \mkw\store::clearLoggedInUser();
             if ($regiuser) {
@@ -110,11 +114,11 @@ class b2bpartnerController extends partnerController {
                 $this->getEm()->flush();
             }
             $kc = new kosarController($this->params);
-            $kc->removeSessionId(\Zend_Session::getId());
+            $kc->removeSessionId(\mkw\session::getId());
             \mkw\store::getMainSession()->pk = null;
 
             // pseudo login new user
-            $user->setSessionid(\Zend_Session::getId());
+            $user->setSessionid(\mkw\session::getId());
             $user->setUtolsoklikk();
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);

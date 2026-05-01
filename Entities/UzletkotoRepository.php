@@ -70,7 +70,7 @@ class UzletkotoRepository extends \mkwhelpers\Repository
     public function checkloggedin()
     {
         if (isset(\mkw\store::getMainSession()->uk)) {
-            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->uk, \Zend_Session::getId());
+            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->uk, \mkw\session::getId());
             return count($users) == 1;
         }
         return false;

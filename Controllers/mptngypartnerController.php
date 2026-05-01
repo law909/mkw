@@ -73,7 +73,7 @@ class mptngypartnerController extends partnerController
                 }
             }
             $this->login($email, $jelszo1);
-            \Zend_Session::writeClose();
+            \mkw\session::writeClose();
             echo json_encode([
                 'url' => \mkw\store::getRouter()->generate('mptngyszakmaianyagok', true)
             ]);
@@ -155,7 +155,7 @@ class mptngypartnerController extends partnerController
         }
         if (!$this->checkloggedin()) {
             if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
-//				\Zend_Session::writeClose();
+//				\mkw\session::writeClose();
                 /** @var \Entities\Partner $partnerobj */
                 $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {

@@ -544,6 +544,8 @@ if ($DBVersion < '0066') {
     \mkw\store::getEm()->getConnection()->executeStatement(
         'DROP TABLE IF EXISTS `partnermijsztanitas`'
     );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0066');
 }
 
 /**

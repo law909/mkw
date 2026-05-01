@@ -52,7 +52,7 @@ class superzoneb2bCheckoutController extends checkoutController
             $errors[] = 'Nem adott meg egy kötelező adatot.';
         }
 
-        $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+        $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\mkw\session::getId());
         $ok = $ok && count($kosartetelek) > 0;
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';

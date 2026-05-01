@@ -175,7 +175,7 @@ class KosarRepository extends \mkwhelpers\Repository
     // MKW, egyesével lehet a kosárba rakni; a kosárban lehet mennyiséget módosítani
     public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $egymennyiseg = false)
     {
-        $sessionid = \Zend_Session::getId();
+        $sessionid = \mkw\session::getId();
 
 
         $partnerid = null;
@@ -328,7 +328,7 @@ class KosarRepository extends \mkwhelpers\Repository
     // Superzone, terméklistából is lehet mennyiséget megadni
     public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $kedvezmeny = null)
     {
-        $sessionid = \Zend_Session::getId();
+        $sessionid = \mkw\session::getId();
 
         $partnerid = null;
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
@@ -423,7 +423,7 @@ class KosarRepository extends \mkwhelpers\Repository
     public function remove($termekid, $vid = null)
     {
         if ($termekid) {
-            $sessionid = \Zend_Session::getId();
+            $sessionid = \mkw\session::getId();
 
             $partnerid = null;
             $partner = $this->getRepo(Partner::class)->getLoggedInUser();
@@ -444,7 +444,7 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function del($id)
     {
-        $sessionid = \Zend_Session::getId();
+        $sessionid = \mkw\session::getId();
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
             $this->_em->remove($sor);
@@ -456,7 +456,7 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function edit($id, $mennyiseg, $kedvezmeny = false)
     {
-        $sessionid = \Zend_Session::getId();
+        $sessionid = \mkw\session::getId();
         /** @var \Entities\Kosar $sor */
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
@@ -484,12 +484,10 @@ class KosarRepository extends \mkwhelpers\Repository
         }
         if ($partner) {
             $k = $this->getDataByPartner($partner);
+        } elseif ($partnerid) {
+            $k = false;
         } else {
-            if ($partnerid) {
-                $k = false;
-            } else {
-                $k = $this->getDataBySessionId(\Zend_Session::getId());
-            }
+            $k = $this->getDataBySessionId(\mkw\session::getId());
         }
         foreach ($k as $sor) {
             $this->_em->remove($sor);
@@ -510,7 +508,7 @@ class KosarRepository extends \mkwhelpers\Repository
         $termek = $this->getRepo(Termek::class)->find($termekid);
 
         if ($termekid && $termek) {
-            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $e = $this->calcSumBySessionId(\mkw\session::getId());
             $ertek = $e['sum'];
             $cnt = $e['count'];
             /** @var Kupon $kupon */
@@ -551,7 +549,7 @@ class KosarRepository extends \mkwhelpers\Repository
         $termek = $this->getRepo(Termek::class)->find($termekid);
 
         if ($termekid && $termek) {
-            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $e = $this->calcSumBySessionId(\mkw\session::getId());
             $ertek = $e['sum'];
             $cnt = $e['count'];
             /** @var Kupon $kupon */
@@ -604,7 +602,7 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function getHash()
     {
-        $sorok = $this->getDataBySessionId(\Zend_Session::getId());
+        $sorok = $this->getDataBySessionId(\mkw\session::getId());
         $s = [];
         foreach ($sorok as $sor) {
             $s[] = $sor->toLista();

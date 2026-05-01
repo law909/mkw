@@ -50,7 +50,7 @@ class checkoutController extends \mkwhelpers\MattableController
         }
 
         $kr = $this->getRepo(Kosar::class);
-        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $sorok = $kr->getDataBySessionId(\mkw\session::getId());
         $sum = 0;
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
@@ -178,7 +178,7 @@ class checkoutController extends \mkwhelpers\MattableController
         }
 
         $kr = $this->getRepo(Kosar::class);
-        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $sorok = $kr->getDataBySessionId(\mkw\session::getId());
         $sum = 0;
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
@@ -224,7 +224,7 @@ class checkoutController extends \mkwhelpers\MattableController
                 }
                 $szl['maxhatar'] = $x->getMaxhatar();
                 $szl['ertekszazalek'] = $x->getErtekszazalek();
-                $e = $kosarrepo->calcSumBySessionId(\Zend_Session::getId());
+                $e = $kosarrepo->calcSumBySessionId(\mkw\session::getId());
                 if ($e) {
                     if ($x->getErtekszazalek() != 0) {
                         $szl['novelo'] = max(round($e['sum'] * $x->getErtekszazalek() / 100), $x->getOsszeg());
@@ -273,7 +273,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $kuponkod = $this->params->getStringRequestParam('kupon');
         $kuponszoveg = '';
         if ($kuponkod) {
-            $e = $kr->calcSumBySessionId(\Zend_Session::getId());
+            $e = $kr->calcSumBySessionId(\mkw\session::getId());
             $ertek = $e['sum'];
             /** @var \Entities\Kupon $kupon */
             $kupon = $this->getRepo(Kupon::class)->find($kuponkod);
@@ -309,7 +309,7 @@ class checkoutController extends \mkwhelpers\MattableController
 
         $ret = [];
 
-        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $sorok = $kr->getDataBySessionId(\mkw\session::getId());
         $s = [];
         $partner = \mkw\store::getLoggedInUser();
         if ($partner) {

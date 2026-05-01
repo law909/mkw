@@ -229,7 +229,7 @@ class PartnerRepository extends \mkwhelpers\Repository
     public function checkloggedin()
     {
         if (isset(\mkw\store::getMainSession()->pk)) {
-            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->pk, \Zend_Session::getId());
+            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->pk, \mkw\session::getId());
             return count($users) == 1;
         }
         return false;
@@ -246,7 +246,7 @@ class PartnerRepository extends \mkwhelpers\Repository
     public function checkloggedinUKPartner()
     {
         if (isset(\mkw\store::getMainSession()->ukpartner)) {
-            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->ukpartner, \Zend_Session::getId());
+            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->ukpartner, \mkw\session::getId());
             return count($users) == 1;
         }
         return false;

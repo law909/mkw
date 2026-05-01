@@ -29,17 +29,17 @@ class store
     private static $setup;
     /**
      *
-     * @var \Zend_Session_Namespace
+     * @var \mkw\session_namespace
      */
     private static $mainsession;
     /**
      *
-     * @var \Zend_Session_Namespace
+     * @var \mkw\session_namespace
      */
     private static $adminsession;
     /**
      *
-     * @var \Zend_Session_Namespace
+     * @var \mkw\session_namespace
      */
     private static $pubadminsession;
     private static $templateFactory;
@@ -84,7 +84,7 @@ class store
     public static function checkMinKosarErtek()
     {
         $minertek = (float)\mkw\store::getParameter(\mkw\consts::MinKosarErtek, 0);
-        $kosarsum = \mkw\store::getEm()->getRepository(\Entities\Kosar::class)->calcSumBySessionId(\Zend_Session::getId());
+        $kosarsum = \mkw\store::getEm()->getRepository(\Entities\Kosar::class)->calcSumBySessionId(\mkw\session::getId());
         $res = [
             'success' => true,
             'minvalue' => $minertek,
@@ -498,15 +498,15 @@ class store
 
     /**
      *
-     * @return \Zend_Session_Namespace
+     * @return \mkw\session
      */
     public static function getMainSession()
     {
         if (!isset(self::$mainsession)) {
-            self::$mainsession = new \Zend_Session_Namespace();
+            self::$mainsession = new \mkw\session_namespace();
         }
         if (!isset(self::$mainsession->initialized)) {
-            \Zend_Session::regenerateId();
+            \mkw\session::regenerateId();
             self::$mainsession->initialized = true;
         }
         return self::$mainsession;
@@ -515,23 +515,23 @@ class store
     public static function destroyMainSession()
     {
         if (isset(self::$mainsession)) {
-            \Zend_Session::namespaceUnset('');
-//            \Zend_Session::destroy(true);
+            \mkw\session::namespaceUnset('');
+//            \mkw\session::destroy(true);
 //            self::$mainsession = null;
         }
     }
 
     /**
      *
-     * @return \Zend_Session_Namespace
+     * @return \mkw\session_namespace
      */
     public static function getAdminSession()
     {
         if (!isset(self::$adminsession)) {
-            self::$adminsession = new \Zend_Session_Namespace('a');
+            self::$adminsession = new \mkw\session_namespace('a');
         }
         if (!isset(self::$adminsession->initialized)) {
-            \Zend_Session::regenerateId();
+            \mkw\session::regenerateId();
             self::$adminsession->initialized = true;
         }
         return self::$adminsession;
@@ -540,23 +540,23 @@ class store
     public static function destroyAdminSession()
     {
         if (isset(self::$adminsession)) {
-            \Zend_Session::namespaceUnset('a');
-//            \Zend_Session::destroy(true);
+            \mkw\session::namespaceUnset('a');
+//            \mkw\session::destroy(true);
 //            self::$adminsession = null;
         }
     }
 
     /**
      *
-     * @return \Zend_Session_Namespace
+     * @return \mkw\session_namespace
      */
     public static function getPubAdminSession()
     {
         if (!isset(self::$pubadminsession)) {
-            self::$pubadminsession = new \Zend_Session_Namespace('pa');
+            self::$pubadminsession = new \mkw\session_namespace('pa');
         }
         if (!isset(self::$pubadminsession->initialized)) {
-            \Zend_Session::regenerateId();
+            \mkw\session::regenerateId();
             self::$pubadminsession->initialized = true;
         }
         return self::$pubadminsession;
@@ -565,8 +565,8 @@ class store
     public static function destroyPubAdminSession()
     {
         if (isset(self::$pubadminsession)) {
-            \Zend_Session::namespaceUnset('pa');
-//            \Zend_Session::destroy(true);
+            \mkw\session::namespaceUnset('pa');
+//            \mkw\session::destroy(true);
 //            self::$pubadminsession = null;
         }
     }

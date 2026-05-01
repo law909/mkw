@@ -604,7 +604,7 @@ class partnerController extends \mkwhelpers\MattableController
             }
             $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
             $obj->setVendeg(false);
-            $obj->setSessionid(\Zend_Session::getId());
+            $obj->setSessionid(\mkw\session::getId());
             $obj->setIp($_SERVER['REMOTE_ADDR']);
             $obj->setReferrer(\mkw\store::getMainSession()->referrer);
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
@@ -1155,10 +1155,10 @@ class partnerController extends \mkwhelpers\MattableController
             }
             $kc = new kosarController($this->params);
             $kc->clear($user->getId()); // csak partner alapján
-            $oldid = \Zend_Session::getId();
-            \Zend_Session::regenerateId();
+            $oldid = \mkw\session::getId();
+            \mkw\session::regenerateId();
             \mkw\store::clearLoggedInUser();
-            $user->setSessionid(\Zend_Session::getId());
+            $user->setSessionid(\mkw\session::getId());
             $user->setUtolsoklikk();
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
@@ -1167,9 +1167,9 @@ class partnerController extends \mkwhelpers\MattableController
             $mc->setOrszag($user->getOrszagId());
             if (\mkw\store::isB2B()) {
                 if ($user->getEzuzletkoto()) {
-                    $uk = $this->getRepo('Entities\Uzletkoto')->find($user->getUzletkotoId());
+                    $uk = $this->getRepo(Uzletkoto::class)->find($user->getUzletkotoId());
                     if ($uk) {
-                        $uk->setSessionid(\Zend_Session::getId());
+                        $uk->setSessionid(\mkw\session::getId());
                         $this->getEm()->persist($uk);
                         \mkw\store::getMainSession()->uk = $user->getUzletkotoId();
                         \mkw\store::getMainSession()->ukpartner = $user->getId();
@@ -1193,7 +1193,7 @@ class partnerController extends \mkwhelpers\MattableController
             $this->getEm()->persist($user);
             $this->getEm()->flush();
             $kc = new kosarController($this->params);
-            $kc->removeSessionId(\Zend_Session::getId());
+            $kc->removeSessionId(\mkw\session::getId());
             \mkw\store::getMainSession()->pk = null;
             \mkw\store::getMainSession()->uk = null;
             \mkw\store::getMainSession()->ukpartner = null;
@@ -1286,7 +1286,7 @@ class partnerController extends \mkwhelpers\MattableController
                 $mailer->send();
                 */
             }
-            \Zend_Session::writeClose();
+            \mkw\session::writeClose();
             Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
         } else {
             $this->showRegistrationForm($vezeteknev, $keresztnev, $email, $hibak);
@@ -1308,7 +1308,7 @@ class partnerController extends \mkwhelpers\MattableController
     public function showLoginForm()
     {
         if ($this->checkloggedin()) {
-            \Zend_Session::writeClose();
+            \mkw\session::writeClose();
             if (\mkw\store::isMPTNGY()) {
                 header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
             } else {
@@ -1337,14 +1337,14 @@ class partnerController extends \mkwhelpers\MattableController
         }
 
         if ($this->checkloggedin()) {
-//			\Zend_Session::writeClose();
+//			\mkw\session::writeClose();
             if (\mkw\store::isMugenrace2021()) {
                 echo json_encode(['url' => $route]);
             } else {
                 header('Location: ' . $route);
             }
         } elseif ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
-//				\Zend_Session::writeClose();
+//				\mkw\session::writeClose();
             if (!$checkout) {
                 $kc = new kosarController($this->params);
                 $kc->clear();

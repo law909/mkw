@@ -126,7 +126,7 @@ class kosarController extends \mkwhelpers\MattableController
     {
         switch (true) {
             case \mkw\store::isMindentkapni():
-                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
                 $megingyeneshez = 0;
                 $hatar = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
                 $partner = \mkw\store::getLoggedInUser();
@@ -149,7 +149,7 @@ class kosarController extends \mkwhelpers\MattableController
                     'valutanem' => $valutanem
                 ];
             case \mkw\store::isSuperzoneB2B():
-                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = '';
                 $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
@@ -167,7 +167,7 @@ class kosarController extends \mkwhelpers\MattableController
                     'valutanem' => $valutanem
                 ];
             case \mkw\store::isMugenrace():
-                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
 
                 return [
                     'netto' => $m[0][3],
@@ -175,9 +175,9 @@ class kosarController extends \mkwhelpers\MattableController
                     'valutanem' => \mkw\store::getMainSession()->valutanemnev,
                 ];
             case \mkw\store::isMugenrace2026():
-                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
 
-                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
                 $partner = \mkw\store::getLoggedInUser();
                 // $valutanemnev = \mkw\store::getMainValutanemNev();
                 /** @var Valutanem $valutanem */
@@ -201,7 +201,7 @@ class kosarController extends \mkwhelpers\MattableController
                     'tetellista' => $s
                 ];
             case \mkw\store::isMugenrace2021():
-                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
                 return [
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
@@ -223,7 +223,7 @@ class kosarController extends \mkwhelpers\MattableController
                 $valutanemnev = \mkw\store::getMainValutanemNev();
                 /** @var Valutanem $valutanem */
                 $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainValutanemId());
-                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
                 $s = [];
                 $szallido = 1;
                 /** @var \Entities\Kosar $sor */
@@ -259,7 +259,7 @@ class kosarController extends \mkwhelpers\MattableController
                 if ($partner) {
                     $valutanem = $partner->getValutanemnev();
                 }
-                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
                 $s = [];
                 $tids = [];
                 $szallido = 1;
@@ -280,7 +280,7 @@ class kosarController extends \mkwhelpers\MattableController
 
                 $res = \mkw\store::checkMinKosarErtek();
                 if (!$res['success']) {
-                    $kosarsum = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+                    $kosarsum = $this->getRepo()->calcSumBySessionId(\mkw\session::getId());
                     $mker = 'A rendelés összege (' . \mkw\store::bizformat(
                             $kosarsum['sum']
                         ) . ' Ft) nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat(
@@ -308,7 +308,7 @@ class kosarController extends \mkwhelpers\MattableController
                 if ($partner) {
                     $valutanem = $partner->getValutanemnev();
                 }
-                $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+                $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
                 $s = [];
                 $tids = [];
                 $szallido = 1;
@@ -329,7 +329,7 @@ class kosarController extends \mkwhelpers\MattableController
 
                 $res = \mkw\store::checkMinKosarErtek();
                 if (!$res['success']) {
-                    $kosarsum = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+                    $kosarsum = $this->getRepo()->calcSumBySessionId(\mkw\session::getId());
                     $mker = 'A rendelés összege (' . \mkw\store::bizformat(
                             $kosarsum['sum']
                         ) . ' Ft) nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat(
@@ -484,7 +484,7 @@ class kosarController extends \mkwhelpers\MattableController
 
         $sum = 0;
         $mennyisegsum = 0;
-        $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
+        $m = $this->getRepo()->calcSumBySessionId(\mkw\session::getId());
         if ($m) {
             if ($partner && $partner->getSzamlatipus()) {
                 $sum = $m['nettosum'];
@@ -552,7 +552,7 @@ class kosarController extends \mkwhelpers\MattableController
         $filter->addFilter('sessionid', '=', $oldid);
         $sorok = $this->getRepo()->getAll($filter, []);
         foreach ($sorok as $sor) {
-            $sor->setSessionid(\Zend_Session::getId());
+            $sor->setSessionid(\mkw\session::getId());
             $sor->setPartner($partner);
             $this->getEm()->persist($sor);
         }
@@ -565,7 +565,7 @@ class kosarController extends \mkwhelpers\MattableController
         $filter->addFilter('partner', '=', $partner);
         $sorok = $this->getRepo()->getAll($filter, []);
         foreach ($sorok as $sor) {
-            $sor->setSessionid(\Zend_Session::getId());
+            $sor->setSessionid(\mkw\session::getId());
             $this->getEm()->persist($sor);
         }
         $this->getEm()->flush();
@@ -591,7 +591,7 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function recalcPrices()
     {
-        $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+        $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
             switch (true) {

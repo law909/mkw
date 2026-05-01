@@ -123,7 +123,7 @@ class mugenrace2021CheckoutController extends checkoutController
             ];
         }
 
-        $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+        $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\mkw\session::getId());
         if (!count($kosartetelek)) {
             $ret['success'] = false;
             $ret['error'] = t('Üres a kosara.');

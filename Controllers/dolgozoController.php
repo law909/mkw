@@ -235,8 +235,8 @@ class dolgozoController extends \mkwhelpers\MattableController
         }
         if ($d) {
             if ($d->checkJelszo($pass) || ($sysadmin && $d->checkPlainJelszo(sha1(md5($pass))))) {
-                $oldid = \Zend_Session::getId();
-                \Zend_Session::regenerateId();
+                $oldid = \mkw\session::getId();
+                \mkw\session::regenerateId();
                 if ($sysadmin) {
                     \mkw\store::getAdminSession()->pk = -1;
                 } else {
@@ -287,8 +287,8 @@ class dolgozoController extends \mkwhelpers\MattableController
         }
         if ($d) {
             if ($d->checkJelszo($pass) || ($sysadmin && $d->checkPlainJelszo(sha1(md5($pass))))) {
-                $oldid = \Zend_Session::getId();
-                \Zend_Session::regenerateId();
+                $oldid = \mkw\session::getId();
+                \mkw\session::regenerateId();
                 if ($sysadmin) {
                     \mkw\store::getPubAdminSession()->pk = -1;
                 } else {
