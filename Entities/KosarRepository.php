@@ -189,7 +189,6 @@ class KosarRepository extends \mkwhelpers\Repository
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
-            case \mkw\store::isMugenrace2021():
                 $valutanemid = \mkw\store::getMainSession()->valutanem;
                 break;
             default:
@@ -250,7 +249,6 @@ class KosarRepository extends \mkwhelpers\Repository
                     switch (true) {
                         case \mkw\store::isMugenrace2026():
                         case \mkw\store::isMugenrace():
-                        case \mkw\store::isMugenrace2021():
                             if ($nullasafa) {
                                 $k->setAfa($nullasafa);
                                 $k->setNettoegysar(

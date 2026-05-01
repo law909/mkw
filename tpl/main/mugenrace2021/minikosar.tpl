@@ -1,1 +1,0 @@
-<span class="nav-cart-counter">{number_format($kosar.termekdb,0,',',' ')}</span>

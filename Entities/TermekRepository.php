@@ -359,7 +359,6 @@ class TermekRepository extends \mkwhelpers\Repository
 
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
-            case \mkw\store::isMugenrace2021():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
                 $rsm->addScalarResult('szin_id', 'szin_id');

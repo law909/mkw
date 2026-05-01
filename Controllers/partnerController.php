@@ -1338,11 +1338,7 @@ class partnerController extends \mkwhelpers\MattableController
 
         if ($this->checkloggedin()) {
 //			\mkw\session::writeClose();
-            if (\mkw\store::isMugenrace2021()) {
-                echo json_encode(['url' => $route]);
-            } else {
-                header('Location: ' . $route);
-            }
+            header('Location: ' . $route);
         } elseif ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
 //				\mkw\session::writeClose();
             if (!$checkout) {
@@ -1355,25 +1351,14 @@ class partnerController extends \mkwhelpers\MattableController
                 $mc = new mainController($this->params);
                 $mc->setOrszag($partnerobj->getOrszagId());
             }
-            if (\mkw\store::isMugenrace2021()) {
-                echo json_encode(['url' => $route]);
-            } else {
-                header('Location: ' . $route);
-            }
+            header('Location: ' . $route);
         } else {
             \mkw\store::clearLoggedInUser();
             $mc = new mainController($this->params);
             $mc->clearOrszag();
             if ($checkout) {
                 \mkw\store::getMainSession()->loginerror = true;
-                if (\mkw\store::isMugenrace2021()) {
-                    echo json_encode([
-                        'loginerror' => true,
-                        'errormsg' => t('A bejelentkezés nem sikerült'),
-                    ]);
-                } else {
-                    header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
-                }
+                header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
             } else {
                 \mkw\store::getMainSession()->loginerror = true;
                 header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));

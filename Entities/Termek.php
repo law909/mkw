@@ -797,18 +797,6 @@ class Termek
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
                 break;
-            case \mkw\store::isMugenrace2021():
-                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->getBruttoAr(
-                    $valtozat,
-                    \mkw\store::getLoggedInUser(),
-                    \mkw\store::getMainValutanemId(),
-                    \mkw\store::getParameter(\mkw\consts::Webshop4Price)
-                );
-                $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
-                $x['eredetibruttohuf'] = $x['eredetibrutto'];
-                break;
             default:
                 $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
                 $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
@@ -1020,18 +1008,6 @@ class Termek
                 );
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
-                break;
-            case \mkw\store::isMugenrace2021():
-                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->getBruttoAr(
-                    $valtozat,
-                    \mkw\store::getLoggedInUser(),
-                    \mkw\store::getMainValutanemId(),
-                    \mkw\store::getParameter(\mkw\consts::Webshop4Price)
-                );
-                $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->getEredetiBruttoAr($valtozat);
-                $x['eredetibruttohuf'] = $x['eredetibrutto'];
                 break;
             default:
                 $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -2126,7 +2102,6 @@ class Termek
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
             case \mkw\store::isSuperzoneB2B():
-            case \mkw\store::isMugenrace2021():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);

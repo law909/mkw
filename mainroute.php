@@ -46,12 +46,6 @@ if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
     $router->map('GET', '/riders/[:slug]', 'versenyzoController#show', 'versenyzo');
 }
 
-if (\mkw\store::isMugenrace2021()) {
-    $router->map('GET', '/mnrstatic/[:lap]', 'mnrstaticController#show', 'mnrshowstatic');
-    $router->map('POST', '/setlocale', 'mainController#setLocale', 'setmainlocale');
-    $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
-}
-
 if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/szerepkorlist', 'mptngyszerepkorController#getApiList', 'mptngygetszerepkorlist');
     $router->map('GET', '/szakmaianyagtipuslist', 'mptngyszakmaianyagtipusController#getApiList', 'mptngygetszakmaianyagtipuslist');
@@ -144,9 +138,6 @@ $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList',
 $router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
 
 switch (true) {
-    case (\mkw\store::isMugenrace2021()):
-        $router->map('POST', '/checkout/ment', 'mugenrace2021CheckoutController#save', 'checkoutment');
-        break;
     case \mkw\store::isMindentkapni():
         $router->map('POST', '/checkout/ment', 'mindentkapniCheckoutController#save', 'checkoutment');
         break;

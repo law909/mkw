@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Entities\Kapcsolatfelveteltema;
-use Entities\MNRLanding;
 use Entities\Orszag;
 use Entities\Statlap;
 use Entities\Termek;
@@ -97,12 +96,6 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar('csapatlista', $csapatc->getListAsArray());
                 $this->view->setVar('versenyzolista', $riderc->getListAsArray());
                 $this->view->setVar('blokklista', $blokkc->getListAsArray());
-                break;
-
-            case \mkw\store::isMugenrace2021():
-                $rs = $this->getRepo(MNRLanding::class)->getAll([], ['id' => 'ASC']);
-                $r = $rs[0];
-                $this->view->setVar('mnrlanding', $r->toPublic());
                 break;
 
             case \mkw\store::isMPTNGY():
@@ -376,40 +369,6 @@ class mainController extends \mkwhelpers\Controller
                     }
                     $t['valtozatok'] = $vtt;
                     $this->view->setVar('termek', $t);
-                    $this->view->printTemplateResult(true);
-                } else {
-                    \mkw\store::redirectTo404($com, $this->params);
-                }
-                break;
-            case \mkw\store::isMugenrace2021():
-                $com = $this->params->getStringParam('slug');
-                $tc = new termekController($this->params);
-                $filter = new FilterDescriptor();
-                $filter->addFilter('slug', '=', $com);
-                /** @var Termek $termek */
-                $termek = $tc->getRepo()->getWithJoins($filter);
-                if (is_array($termek)) {
-                    $termek = $termek[0];
-                }
-                //$termek = $tc->getRepo()->findOneBySlug($com);
-                if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
-                    $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
-                    \mkw\store::fillTemplate($this->view);
-                    $this->view->setVar('pagetitle', $termek->getShowOldalcim());
-                    $this->view->setVar('seodescription', $termek->getShowSeodescription());
-
-                    $tfs = $this->getRepo(TermekFa::class)->getForFilter(\mkw\store::getWebshopNum());
-                    if ($tfs) {
-                        $this->view->setVar('categoryfilter', $tfs);
-                    }
-                    $t = $tc->getTermekLap($termek);
-                    foreach ($t as $k => $v) {
-                        $this->view->setVar($k, $v);
-                    }
-                    $statlap = $this->getRepo('Entities\Statlap')->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
-                    if ($statlap) {
-                        $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());
-                    }
                     $this->view->printTemplateResult(true);
                 } else {
                     \mkw\store::redirectTo404($com, $this->params);

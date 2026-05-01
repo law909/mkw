@@ -562,6 +562,38 @@ if ($DBVersion < '0067') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0067');
 }
 
+if ($DBVersion < '0068') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrlanding_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrlanding`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrnavigation_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrnavigation`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrstatic_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrstaticpage_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrstaticpagekep`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrstaticpage`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `mnrstatic`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0068');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

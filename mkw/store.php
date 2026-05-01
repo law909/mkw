@@ -3,13 +3,11 @@
 namespace mkw;
 
 use Controllers\bizonylatfejController;
-use Controllers\mnrnavigationController;
 use Controllers\popupController;
 use Controllers\termekfaController;
 use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
-use Entities\MNRNavigation;
 use Entities\Partner;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -723,24 +721,6 @@ class store
         } else {
             $v->setVar('myownaccount', true);
         }
-        if (\mkw\store::isMugenrace2021()) {
-            $mnrnavictrl = new mnrnavigationController(null);
-            $mnrnavi = [];
-            $navis = self::getEm()->getRepository(MNRNavigation::class)->getAll([], ['szam' => 'ASC']);
-            foreach ($navis as $navi) {
-                $mnrnavi[] = $mnrnavictrl->loadVars($navi);
-            }
-            $v->setVar('mnrnavigation', $mnrnavi);
-
-            $tc = new termekfaController(null);
-            $defakatid = store::getParameter(consts::Web4DefaKatId);
-            /** @var TermekFa $web4defafa */
-            $web4defafa = $tc->getRepo()->find($defakatid);
-            if ($web4defafa) {
-                $v->setVar('mnrdefaultkat', $web4defafa->toLista());
-            }
-            $v->setVar('localelist', self::getLocaleSelectList(self::getMainLocale()));
-        }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
         $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
@@ -1129,13 +1109,7 @@ class store
 
     public static function getLocale()
     {
-        if (self::isMugenrace2021()) {
-            $l = self::getMainLocale();
-            if (!$l) {
-                $l = self::getSetupValue('locale', false);
-            }
-            self::setMainLocale($l);
-        } elseif (self::isMPTNGY()) {
+        if (self::isMPTNGY()) {
             $l = self::getMainLocale();
         } else {
             $l = self::getSetupValue('locale', false);
@@ -1545,11 +1519,6 @@ class store
     public static function isMugenrace2026()
     {
         return self::getTheme() === 'mugenrace2026';
-    }
-
-    public static function isMugenrace2021()
-    {
-        return self::getTheme() === 'mugenrace2021';
     }
 
     public static function isKisszamlazo()
