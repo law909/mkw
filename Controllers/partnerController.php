@@ -1081,7 +1081,7 @@ class partnerController extends \mkwhelpers\MattableController
         $email = $this->params->getStringRequestParam('email');
 
         $ret = [];
-        $ret['hibas'] = !\Zend_Validate::is($email, 'EmailAddress');
+        $ret['hibas'] = !\mkw\validate::is($email, 'EmailAddress');
         if (!$ret['hibas']) {
             if (!$this->params->getBoolRequestParam('dce')) {
                 $ret['hibas'] = $this->getRepo()->countByEmail($email) > 0;
@@ -1460,7 +1460,7 @@ class partnerController extends \mkwhelpers\MattableController
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
                 $keresztnev = $this->params->getStringRequestParam('keresztnev');
                 $email = $this->params->getStringRequestParam('email');
-                if (!\Zend_Validate::is($email, 'EmailAddress')) {
+                if (!\mkw\validate::is($email, 'EmailAddress')) {
                     $hibas = true;
                     $hibak['email'] = t('Rossz az email');
                 }

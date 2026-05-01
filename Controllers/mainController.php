@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Kapcsolatfelveteltema;
 use Entities\MNRLanding;
+use Entities\Orszag;
 use Entities\Statlap;
 use Entities\Termek;
 use Entities\TermekFa;
@@ -498,8 +500,8 @@ class mainController extends \mkwhelpers\Controller
     {
         $termekid = $this->params->getIntRequestParam('t');
         $valtozatid = $this->params->getIntRequestParam('vid');
-        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekid);
-        $valtozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
+        $termek = \mkw\store::getEm()->getRepository(Termek::class)->find($termekid);
+        $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozatid);
         $ret = [];
 
         $ret['szallitasiido'] = $termek->calcSzallitasiido($valtozat);
@@ -509,7 +511,7 @@ class mainController extends \mkwhelpers\Controller
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
         $ret['kepurlsmall'] = $valtozat->getKepurlSmall();
 
-        $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $valtozat);
+        $ret['kepek'] = \mkw\store::getEm()->getRepository(Termek::class)->getKepekKiveve($termek, $valtozat);
 
         echo json_encode($ret);
     }
@@ -524,7 +526,7 @@ class mainController extends \mkwhelpers\Controller
         $ret = [];
 
         /** @var \Entities\Termek $termek */
-        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
+        $termek = \mkw\store::getEm()->getRepository(Termek::class)->find($termekkod);
 
         if ($masiktipusid) {
             $t = [$tipusid, $masiktipusid];
@@ -534,7 +536,7 @@ class mainController extends \mkwhelpers\Controller
             $e = [$valtozatertek];
         }
         /** @var \Entities\TermekValtozat $termekvaltozat */
-        $termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
+        $termekvaltozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->getByProperties($termek->getId(), $t, $e);
 
         $ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
         $ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
@@ -555,7 +557,7 @@ class mainController extends \mkwhelpers\Controller
             $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
             $ret['kepurlorig'] = $termekvaltozat->getKepurl();
         }
-        $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
+        $ret['kepek'] = \mkw\store::getEm()->getRepository(Termek::class)->getKepekKiveve($termek, $termekvaltozat);
         $ret['imagepath'] = \mkw\store::getConfigValue('main.imagepath', '');
 
         $valtozatok = $termek->getValtozatok();
@@ -583,14 +585,14 @@ class mainController extends \mkwhelpers\Controller
                 $email2 = $this->params->getStringRequestParam('email2');
                 $telefon = $this->params->getStringRequestParam('telefon');
                 $rendelesszam = $this->params->getStringRequestParam('rendelesszam');
-                $tema = \mkw\store::getEm()->getRepository('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
+                $tema = \mkw\store::getEm()->getRepository(Kapcsolatfelveteltema::class)->find($this->params->getStringRequestParam('tema'));
                 if ($tema) {
                     $temanev = $tema->getNev();
                 } else {
                     $temanev = 'Imseretlen';
                 }
                 $szoveg = $this->params->getStringRequestParam('szoveg');
-                if (!\Zend_Validate::is($email1, 'EmailAddress') || !\Zend_Validate::is($email2, 'EmailAddress')) {
+                if (!\mkw\validate::is($email1, 'EmailAddress') || !\mkw\validate::is($email2, 'EmailAddress')) {
                     $hibas = true;
                     $hibak['email'] = t('Rossz az email');
                 }
@@ -653,7 +655,7 @@ class mainController extends \mkwhelpers\Controller
             $orszagkod = $this->params->getIntRequestParam('orszag');
         }
         /** @var \Entities\Orszag $orszag */
-        $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($orszagkod);
+        $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
         if ($orszag && $orszag->getValutanem()) {
             \mkw\store::getMainSession()->orszag = (int)$orszagkod;
             \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
