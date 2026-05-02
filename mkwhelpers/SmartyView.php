@@ -41,6 +41,7 @@ class SmartyView extends View
         $this->tplengine->registerPlugin('modifier', 'haveJog', '\haveJog');
         $this->tplengine->registerPlugin('modifier', 'bizformat', '\bizformat');
         $this->tplengine->registerPlugin('modifier', 'number_format', '\number_format');
+        $this->tplengine->registerPlugin('modifier', 'prefixUrl', '\prefixUrl');
 
         $this->tplengine->registerPlugin('function', 't', function (array $params) {
             return \t($params['msgid'] ?? $params['text'] ?? $params['value'] ?? '');
@@ -67,6 +68,13 @@ class SmartyView extends View
                 (int)($params['decimals'] ?? 0),
                 $params['decimal_separator'] ?? $params['dec_point'] ?? '.',
                 $params['thousands_separator'] ?? $params['thousands_sep'] ?? ','
+            );
+        });
+
+        $this->tplengine->registerPlugin('function', 'prefixUrl', function (array $params) {
+            return \prefixUrl(
+                $params['prefix'] ?? $params['value'] ?? '',
+                $params['url'] ?? ''
             );
         });
     }
