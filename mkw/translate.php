@@ -107,6 +107,9 @@ class translate
 
     public static function normalizeLocale(string|null $locale): string
     {
+        if ($locale === null) {
+            return $locale;
+        }
         return strtolower(str_replace('-', '_', $locale));
     }
 }
