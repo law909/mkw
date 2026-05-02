@@ -1143,10 +1143,10 @@ class Bizonylatfej
         $ret['fizetendo'] = $this->getFizetendo();
         $ret['fizetendokiirva'] = \mkw\store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
-        $ret['fizmodnevlocale'] = $this->getLocalizedFieldValue('fizmodnev', $this->getBizonylatnyelv());
+        $ret['fizmodnev_locale'] = $this->getLocalizedFieldValue('fizmodnev', $this->getBizonylatnyelv());
         $ret['fizmodnev_l1'] = $this->getFizmodnev_l1();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
-        $ret['szallitasimodnevlocale'] = $this->getLocalizedFieldValue('szallitasimodnev', $this->getBizonylatnyelv());
+        $ret['szallitasimodnev_locale'] = $this->getLocalizedFieldValue('szallitasimodnev', $this->getBizonylatnyelv());
         $ret['szallitasimodnev_l1'] = $this->getSzallitasimodnev_l1();
         $ret['tulajbanknev'] = $this->getTulajbanknev();
         $ret['tulajbankszamlaszam'] = $this->getTulajbankszamlaszam();

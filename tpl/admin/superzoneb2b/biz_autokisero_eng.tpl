@@ -38,7 +38,7 @@
                 <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
                 <td class="textaligncenter">{$egyed.teljesitesstr|default:"&nbsp;"}</td>
                 <td class="textaligncenter">{$egyed.esedekessegstr|default:"&nbsp;"}</td>
-                <td class="textaligncenter">{$egyed.fizmodnevlocale|default:"&nbsp;"}</td>
+                <td class="textaligncenter">{$egyed.fizmodnev_locale|default:"&nbsp;"}</td>
                 <td class="textaligncenter">{$egyed.valutanemnev|default:"&nbsp;"}</td>
                 <td class="textaligncenter">{$egyed.id}</td>
             </tr>

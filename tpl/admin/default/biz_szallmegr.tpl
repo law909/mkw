@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="row pull-left row-inner">
-            <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnevlocale|default:"&nbsp;"}</p>
+            <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev_locale|default:"&nbsp;"}</p>
             <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
             <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
             <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>

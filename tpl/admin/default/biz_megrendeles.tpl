@@ -8,7 +8,7 @@
         </div>
         {include "biz_headboxki.tpl"}
         <div class="row pull-left row-inner">
-            <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnevlocale|default:"&nbsp;"}</p>
+            <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev_locale|default:"&nbsp;"}</p>
             <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
         </div>
         <div class="row pull-left">
