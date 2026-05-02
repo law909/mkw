@@ -14,7 +14,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Bizonylatstatusz');
+        $this->setEntityName(Bizonylatstatusz::class);
         $this->setKarbFormTplName('bizonylatstatuszkarbform.tpl');
         $this->setKarbTplName('bizonylatstatuszkarb.tpl');
         $this->setListBodyRowTplName('bizonylatstatuszlista_tbody_tr.tpl');
