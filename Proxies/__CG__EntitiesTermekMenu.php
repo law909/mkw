@@ -67,10 +67,10 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'id', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'created', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'children', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'locale', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'arukeresoid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'id', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'created', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'children', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'arukeresoid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'id', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'created', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'children', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'locale', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'arukeresoid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'id', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'created', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'children', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'nev_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'rovidleiras_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras2_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'leiras3_l1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato4', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato5', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato6', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato7', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato8', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato9', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato10', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato11', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato12', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato13', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato14', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'lathato15', '' . "\0" . 'Entities\\TermekMenu' . "\0" . 'arukeresoid'];
     }
 
     /**
@@ -294,6 +294,17 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getParentNevLocale()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParentNevLocale', []);
+
+        return parent::getParentNevLocale();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setParent(\Entities\TermekMenu $parent)
     {
 
@@ -344,6 +355,28 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNev_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+
+        return parent::getNev_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNev_l1($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev]);
+
+        return parent::setNev_l1($nev);
     }
 
     /**
@@ -492,6 +525,28 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getLeiras_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+
+        return parent::getLeiras_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLeiras_l1($leiras)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras]);
+
+        return parent::setLeiras_l1($leiras);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLeiras2()
     {
 
@@ -514,6 +569,28 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getLeiras2_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras2_l1', []);
+
+        return parent::getLeiras2_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLeiras2_l1($leiras)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras2_l1', [$leiras]);
+
+        return parent::setLeiras2_l1($leiras);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLeiras3()
     {
 
@@ -531,6 +608,28 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras3', [$leiras]);
 
         return parent::setLeiras3($leiras);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLeiras3_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras3_l1', []);
+
+        return parent::getLeiras3_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLeiras3_l1($leiras)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras3_l1', [$leiras]);
+
+        return parent::setLeiras3_l1($leiras);
     }
 
     /**
@@ -800,6 +899,28 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getRovidleiras_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleiras_l1', []);
+
+        return parent::getRovidleiras_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRovidleiras_l1($rovidleiras)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleiras_l1', [$rovidleiras]);
+
+        return parent::setRovidleiras_l1($rovidleiras);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getInaktiv()
     {
 
@@ -839,61 +960,6 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', [$idegenkod]);
 
         return parent::setIdegenkod($idegenkod);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTranslatableLocale($l)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTranslatableLocale', [$l]);
-
-        return parent::setTranslatableLocale($l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTranslations()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
-
-        return parent::getTranslations();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTranslationsArray()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslationsArray', []);
-
-        return parent::getTranslationsArray();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addTranslation(\Entities\TermekMenuTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
-
-        return parent::addTranslation($t);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeTranslation(\Entities\TermekMenuTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
-
-        return parent::removeTranslation($t);
     }
 
     /**
@@ -1273,34 +1339,34 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getNevForditas($ford, $locale)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevForditas', [$ford, $locale]);
-
-        return parent::getNevForditas($ford, $locale);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLeirasForditas($ford, $locale)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasForditas', [$ford, $locale]);
-
-        return parent::getLeirasForditas($ford, $locale);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getPath($parent)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPath', [$parent]);
 
         return parent::getPath($parent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFieldValue($fieldName)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFieldValue', [$fieldName]);
+
+        return parent::getFieldValue($fieldName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocalizedFieldValue($fieldname, $locale = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValue', [$fieldname, $locale]);
+
+        return parent::getLocalizedFieldValue($fieldname, $locale);
     }
 
 }

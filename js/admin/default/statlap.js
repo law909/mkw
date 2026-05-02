@@ -13,8 +13,8 @@ $(document).ready(function () {
             }
         },
         beforeHide: function () {
-            var editor;
             if (!$.browser.mobile) {
+                let editor;
                 $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
                     if (editor) {

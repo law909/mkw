@@ -5,6 +5,7 @@ namespace Entities;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
+use Traits\GetsFieldValue;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekMenuRepository")
@@ -15,10 +16,11 @@ use mkw\store;
  *      @ORM\index(name="termekmenunevparent_idx",columns={"nev","parent_id"}),
  *      @ORM\index(name="termekmenuidegenkod_idx",columns={"idegenkod"})
  * })
- * @Gedmo\TranslationEntity(class="Entities\TermekMenuTranslation")
  */
 class TermekMenu
 {
+
+    use GetsFieldValue;
 
     private static $translatedFields = [
         'nev' => ['caption' => 'Név', 'type' => 1],
@@ -64,11 +66,11 @@ class TermekMenu
      */
     private $parent;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
+
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $nev_l1;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
@@ -82,29 +84,26 @@ class TermekMenu
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $karkod;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $rovidleiras = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $rovidleiras_l1 = '';
+
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras_l1;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras2;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras2_l1;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras3;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras3_l1;
 
     /** @ORM\Column(type="boolean",nullable=true) */
     private $menu1lathato = true;
@@ -118,9 +117,7 @@ class TermekMenu
     /** @ORM\Column(type="boolean",nullable=true) */
     private $menu4lathato = false;
 
-    /**
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $oldalcim;
 
     /** @ORM\Column(type="text",nullable=true) */
@@ -132,9 +129,7 @@ class TermekMenu
     /** @ORM\Column(type="text",nullable=true) */
     private $kepleiras;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Termek",mappedBy="termekmenu1")
-     */
+    /** @ORM\OneToMany(targetEntity="Termek",mappedBy="termekmenu1") */
     private $termekek1;
 
     /** @ORM\Column(type="boolean",nullable=true) */
@@ -142,14 +137,6 @@ class TermekMenu
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
-
-    /** @ORM\OneToMany(targetEntity="TermekMenuTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
-
-    /**
-     * @Gedmo\Locale
-     */
-    private $locale;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
@@ -204,51 +191,31 @@ class TermekMenu
         return (string)$this->id . ' - ' . $this->nev;
     }
 
-    public static function getTranslatedFields()
-    {
-        return self::$translatedFields;
-    }
-
-    public static function getTranslatedFieldsSelectList($sel = null)
-    {
-        $ret = [];
-        foreach (self::$translatedFields as $k => $v) {
-            $ret[] = [
-                'id' => $k,
-                'caption' => $v['caption'],
-                'selected' => ($k === $sel)
-            ];
-        }
-        return $ret;
-    }
-
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekek1 = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function toA2a()
     {
-        $ford = $this->getTranslationsArray();
         $x = [];
         $x['id'] = $this->getId();
         $x['nev'] = $this->getNev();
-        $x['nev_en'] = $ford['en_us']['nev'];
-        $x['nev_it'] = $ford['it_it']['nev'];
+        $x['nev_l1'] = $this->getNev_l1();
+        $x['nev_en'] = $this->getNev_l1();
         $x['rovidleiras'] = $this->getRovidleiras();
-        $x['rovidleiras_en'] = $ford['en_us']['rovidleiras'];
-        $x['rovidleiras_it'] = $ford['it_it']['rovidleiras'];
+        $x['rovidleiras_l1'] = $this->getRovidleiras_l1();
+        $x['rovidleiras_en'] = $this->getRovidleiras_l1();
         $x['leiras'] = $this->getLeiras();
-        $x['leiras_en'] = $ford['en_us']['leiras'];
-        $x['leiras_it'] = $ford['it_it']['leiras'];
+        $x['leiras_l1'] = $this->getLeiras_l1();
+        $x['leiras_en'] = $this->getLeiras_l1();
         $x['leiras2'] = $this->getLeiras2();
-        $x['leiras2_en'] = $ford['en_us']['leiras2'];
-        $x['leiras2_it'] = $ford['it_it']['leiras2'];
+        $x['leiras2_l1'] = $this->getLeiras2_l1();
+        $x['leiras2_en'] = $this->getLeiras2_l1();
         $x['leiras3'] = $this->getLeiras3();
-        $x['leiras3_en'] = $ford['en_us']['leiras3'];
-        $x['leiras3_it'] = $ford['it_it']['leiras3'];
+        $x['leiras3_l1'] = $this->getLeiras3_l1();
+        $x['leiras3_en'] = $this->getLeiras3_l1();
         $x['karkod'] = $this->getKarkod();
         $x['sorrend'] = $this->getSorrend();
         if ($this->getKepurl()) {
@@ -271,12 +238,17 @@ class TermekMenu
     {
         $x = [];
         $x['id'] = $this->getId();
-        $x['nev'] = $this->getNev();
         $x['slug'] = $this->getSlug();
+        $x['nev'] = $this->getNev();
+        $x['nev_l1'] = $this->getNev_l1();
         $x['rovidleiras'] = $this->getRovidleiras();
+        $x['rovidleiras_l1'] = $this->getRovidleiras_l1();
         $x['leiras'] = $this->getLeiras();
+        $x['leiras_l1'] = $this->getLeiras_l1();
         $x['leiras2'] = $this->getLeiras2();
+        $x['leiras2_l1'] = $this->getLeiras2_l1();
         $x['leiras3'] = $this->getLeiras3();
+        $x['leiras3_l1'] = $this->getLeiras3_l1();
         $x['karkod'] = $this->getKarkod();
         $x['sorrend'] = $this->getSorrend();
         if ($this->getKepurl()) {
@@ -343,6 +315,14 @@ class TermekMenu
         return '';
     }
 
+    public function getParentNevLocale()
+    {
+        if ($this->parent) {
+            return $this->parent->getNev();
+        }
+        return '';
+    }
+
     public function setParent(TermekMenu $parent)
     {
         if ($this->parent !== $parent) {
@@ -388,6 +368,16 @@ class TermekMenu
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getNev_l1()
+    {
+        return $this->nev_l1;
+    }
+
+    public function setNev_l1($nev)
+    {
+        $this->nev_l1 = $nev;
     }
 
     public function getSorrend()
@@ -455,6 +445,16 @@ class TermekMenu
         $this->leiras = $leiras;
     }
 
+    public function getLeiras_l1()
+    {
+        return $this->leiras_l1;
+    }
+
+    public function setLeiras_l1($leiras)
+    {
+        $this->leiras_l1 = $leiras;
+    }
+
     public function getLeiras2()
     {
         return $this->leiras2;
@@ -465,6 +465,16 @@ class TermekMenu
         $this->leiras2 = $leiras;
     }
 
+    public function getLeiras2_l1()
+    {
+        return $this->leiras2_l1;
+    }
+
+    public function setLeiras2_l1($leiras)
+    {
+        $this->leiras2_l1 = $leiras;
+    }
+
     public function getLeiras3()
     {
         return $this->leiras3;
@@ -473,6 +483,16 @@ class TermekMenu
     public function setLeiras3($leiras)
     {
         $this->leiras3 = $leiras;
+    }
+
+    public function getLeiras3_l1()
+    {
+        return $this->leiras3_l1;
+    }
+
+    public function setLeiras3_l1($leiras)
+    {
+        $this->leiras3_l1 = $leiras;
     }
 
     public function getKarkod()
@@ -497,7 +517,7 @@ class TermekMenu
         } else {
             $result = store::getParameter(\mkw\consts::Katoldalcim);
             if ($result) {
-                $result = str_replace('[kategorianev]', $this->getNev(), $result);
+                $result = str_replace('[kategorianev]', $this->getLocalizedFieldValue('nev'), $result);
                 $result = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $result);
                 return $result;
             } else {
@@ -657,6 +677,16 @@ class TermekMenu
         $this->rovidleiras = $rovidleiras;
     }
 
+    public function getRovidleiras_l1()
+    {
+        return $this->rovidleiras_l1;
+    }
+
+    public function setRovidleiras_l1($rovidleiras)
+    {
+        $this->rovidleiras_l1 = $rovidleiras;
+    }
+
     public function getInaktiv()
     {
         return $this->inaktiv;
@@ -675,39 +705,6 @@ class TermekMenu
     public function setIdegenkod($idegenkod)
     {
         $this->idegenkod = $idegenkod;
-    }
-
-    public function setTranslatableLocale($l)
-    {
-        $this->locale = $l;
-    }
-
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function getTranslationsArray()
-    {
-        $r = [];
-        /** @var \Entities\TermekMenuTranslation $tr */
-        foreach ($this->translations as $tr) {
-            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
-        }
-        return $r;
-    }
-
-    public function addTranslation(TermekMenuTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(TermekMenuTranslation $t)
-    {
-        $this->translations->removeElement($t);
     }
 
     /**
@@ -1007,22 +1004,6 @@ class TermekMenu
     public function setArukeresoid($arukeresoid)
     {
         $this->arukeresoid = $arukeresoid;
-    }
-
-    public function getNevForditas($ford, $locale)
-    {
-        if ($ford[$locale]['nev']) {
-            return $ford[$locale]['nev'];
-        }
-        return $this->getNev();
-    }
-
-    public function getLeirasForditas($ford, $locale)
-    {
-        if ($ford[$locale]['leiras']) {
-            return $ford[$locale]['leiras'];
-        }
-        return $this->getLeiras();
     }
 
     public function getPath($parent)

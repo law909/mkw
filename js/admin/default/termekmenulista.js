@@ -2,8 +2,8 @@ $(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
     function _new_edit(uj) {
-        var valasztottid = $('#termekmenu').jstree('get_selected').children('a').attr('id'),
-            scrollPosition;
+        let valasztottid = $('#termekmenu').jstree('get_selected').children('a').attr('id'),
+            scrollPosition, adat;
         if (!valasztottid) {
             if (uj) {
                 dialogcenter.html('Válasszon szülő menüt').dialog({
@@ -56,9 +56,9 @@ $(document).ready(function () {
                     beforeShow: function () {
                         if (!$.browser.mobile) {
                             CKFinder.setupCKEditor(null, '/ckfinder/');
-                            $('#LeirasEdit').ckeditor();
-                            $('#Leiras2Edit').ckeditor();
-                            $('#Leiras3Edit').ckeditor();
+                            $('.js-ckeditor').each(function () {
+                                $(this).ckeditor();
+                            });
                         }
                         $('#AltalanosTab').on('click', '#KepDelButton', function (e) {
                             e.preventDefault();
@@ -107,74 +107,19 @@ $(document).ready(function () {
                                 finder.popup();
                             });
                         $('#KepDelButton,#KepBrowseButton').button();
-                        $('#TranslationTab').on('click', '.js-translationnewbutton', function (e) {
-                            var $this = $(this);
-                            e.preventDefault();
-                            $.ajax({
-                                url: '/admin/termekmenutranslation/getemptyrow',
-                                type: 'GET',
-                                success: function (data) {
-                                    var tbody = $('#TranslationTab');
-                                    tbody.append(data);
-                                    $('.js-translationnewbutton,.js-translationdelbutton').button();
-                                    $this.remove();
-                                }
-                            });
-                        })
-                            .on('click', '.js-translationdelbutton', function (e) {
-                                e.preventDefault();
-                                var translationgomb = $(this),
-                                    translationid = translationgomb.attr('data-id'),
-                                    egyedid = translationgomb.attr('data-egyedid');
-                                if (translationgomb.attr('data-source') === 'client') {
-                                    $('#translationtable_' + translationid).remove();
-                                } else {
-                                    dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
-                                        resizable: false,
-                                        height: 140,
-                                        modal: true,
-                                        buttons: {
-                                            'Igen': function () {
-                                                $.ajax({
-                                                    url: '/admin/termekmenutranslation/save',
-                                                    type: 'POST',
-                                                    data: {
-                                                        id: translationid,
-                                                        egyedid: egyedid,
-                                                        oper: 'del'
-                                                    },
-                                                    success: function (data) {
-                                                        $('#translationtable_' + data).remove();
-                                                    }
-                                                });
-                                                $(this).dialog('close');
-                                            },
-                                            'Nem': function () {
-                                                $(this).dialog('close');
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        $('.js-translationnewbutton,.js-translationdelbutton').button();
                         if (!$.browser.mobile) {
                             $('.js-toflyout').flyout();
                         }
                     },
                     beforeHide: function () {
                         if (!$.browser.mobile) {
-                            editor = $('#LeirasEdit').ckeditorGet();
-                            if (editor) {
-                                editor.destroy();
-                            }
-                            editor = $('#Leiras2Edit').ckeditorGet();
-                            if (editor) {
-                                editor.destroy();
-                            }
-                            editor = $('#Leiras3Edit').ckeditorGet();
-                            if (editor) {
-                                editor.destroy();
-                            }
+                            let editor;
+                            $('.js-ckeditor').each(function () {
+                                editor = $(this).ckeditorGet();
+                                if (editor) {
+                                    editor.destroy();
+                                }
+                            });
                         }
                     },
                     onSubmit: function (data) {

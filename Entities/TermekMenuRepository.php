@@ -76,6 +76,7 @@ class TermekMenuRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' AND (f.lathato' . $webshopnum . '=1) ';
             }
         }
+        // TODO locale
         if (!\mkw\store::isMultilang()) {
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
@@ -99,9 +100,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
             return $q->getScalarResult();
         } else {
             $q = $this->_em->createQuery('SELECT f FROM Entities\TermekMenu f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
-            if (\mkw\store::isMainMode()) {
-                \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
-            }
             $res = $q->getResult();
             $ret = [];
             /** @var TermekMenu $r */
@@ -132,6 +130,7 @@ class TermekMenuRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
             }
         }
+        // TODO locale
         $q = $this->_em->createQuery('SELECT f FROM Entities\TermekMenu f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend,f.nev');
         $res = $q->getResult();
         $ret = [];
@@ -171,6 +170,7 @@ class TermekMenuRepository extends \mkwhelpers\Repository
 
     public function getForParent($parentid, $menunum = 0)
     {
+        // TODO locale
         $filterstr = '';
         if ($menunum > 0) {
             $filterstr = ' AND menu' . $menunum . 'lathato=1';

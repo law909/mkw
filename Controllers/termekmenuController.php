@@ -7,7 +7,6 @@ use Entities\Szin;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekMenu;
-use Entities\TermekMenuTranslation;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -40,12 +39,22 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
+        $x['nev_l1'] = $t->getNev_l1();
+        $x['nev_locale'] = $t->getLocalizedFieldValue('nev');
         $x['sorrend'] = $t->getSorrend();
         $x['oldalcim'] = $t->getOldalcim();
         $x['rovidleiras'] = $t->getRovidleiras();
         $x['leiras'] = $t->getLeiras();
         $x['leiras2'] = $t->getLeiras2();
         $x['leiras3'] = $t->getLeiras3();
+        $x['rovidleiras_l1'] = $t->getRovidleiras_l1();
+        $x['leiras_l1'] = $t->getLeiras_l1();
+        $x['leiras2_l1'] = $t->getLeiras2_l1();
+        $x['leiras3_l1'] = $t->getLeiras3_l1();
+        $x['rovidleiras_locale'] = $t->getLocalizedFieldValue('rovidleiras');
+        $x['leiras_locale'] = $t->getLocalizedFieldValue('leiras');
+        $x['leiras2_locale'] = $t->getLocalizedFieldValue('leiras2');
+        $x['leiras3_locale'] = $t->getLocalizedFieldValue('leiras3');
         $x['seodescription'] = $t->getSeodescription();
         $x['menu1lathato'] = $t->getMenu1lathato();
         $x['menu2lathato'] = $t->getMenu2lathato();
@@ -58,20 +67,13 @@ class termekmenuController extends \mkwhelpers\MattableController
         $x['kepleiras'] = $t->getKepleiras();
         $x['parentid'] = $t->getParentId();
         $x['parentnev'] = $t->getParentNev();
+        $x['parentnev_locale'] = $t->getParentNevLocale();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         $x['arukeresoid'] = $t->getArukeresoid();
         $x['lathato'] = $t->getLathato();
         $x['path'] = implode('/', $t->getPath($t));
         $x['slug'] = $t->getSlug();
-        if (false && \mkw\store::isMultilang()) {
-            $translations = [];
-            $translationsCtrl = new termekmenutranslationController($this->params);
-            foreach ($t->getTranslations() as $tr) {
-                $translations[] = $translationsCtrl->loadVars($tr, true);
-            }
-            $x['translations'] = $translations;
-        }
         return $x;
     }
 
@@ -83,11 +85,16 @@ class termekmenuController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
         $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
         $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
         $obj->setLeiras3($this->params->getOriginalStringRequestParam('leiras3'));
+        $obj->setRovidleiras_l1($this->params->getStringRequestParam('rovidleiras_l1'));
+        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
+        $obj->setLeiras2_l1($this->params->getOriginalStringRequestParam('leiras2_l1'));
+        $obj->setLeiras3_l1($this->params->getOriginalStringRequestParam('leiras3_l1'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->m1lchanged = $obj->getMenu1lathato() !== $this->params->getBoolRequestParam('menu1lathato');
         $obj->m2lchanged = $obj->getMenu2lathato() !== $this->params->getBoolRequestParam('menu2lathato');
@@ -103,45 +110,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        if (\mkw\store::isMultilang()) {
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            $_tf = \Entities\TermekMenu::getTranslatedFields();
-            foreach ($translationids as $translationid) {
-                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-                $loca = $this->params->getStringRequestParam('translationlocale_' . $translationid);
-                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
-                $mezotype = $_tf[$mezo]['type'];
-                switch ($mezotype) {
-                    case 1:
-                    case 3:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    case 2:
-                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    default:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                }
-                if ($oper === 'add') {
-                    $translation = new \Entities\TermekMenuTranslation(
-                        $loca,
-                        $mezo,
-                        $mezoertek
-                    );
-                    $obj->addTranslation($translation);
-                    $this->getEm()->persist($translation);
-                } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository(TermekMenuTranslation::class)->find($translationid);
-                    if ($translation) {
-                        $translation->setLocale($loca);
-                        $translation->setField($mezo);
-                        $translation->setContent($mezoertek);
-                        $this->getEm()->persist($translation);
-                    }
-                }
-            }
-        }
         $parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
         if ($parent) {
             $obj->setParent($parent);
@@ -248,23 +216,23 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
     }
 
-    public function getNavigator($parent, $elsourlkell = true)
+    public function getNavigator(TermekMenu $parent, $elsourlkell = true)
     {
         $navi = [];
         if ($elsourlkell) {
-            $navi[] = ['caption' => $parent->getNev(), 'url' => $parent->getSlug()];
+            $navi[] = ['caption' => $parent->getLocalizedFieldValue('nev'), 'url' => $parent->getSlug()];
         } else {
-            $navi[] = ['caption' => $parent->getNev(), 'url' => ''];
+            $navi[] = ['caption' => $parent->getLocalizedFieldValue('nev'), 'url' => ''];
         }
         $szulo = $parent->getParent();
         while ($szulo) {
-            $navi[] = ['caption' => $szulo->getNev(), 'url' => $szulo->getSlug()];
+            $navi[] = ['caption' => $szulo->getLocalizedFieldValue('nev'), 'url' => $szulo->getSlug()];
             $szulo = $szulo->getParent();
         }
         return array_reverse($navi);
     }
 
-    public function getkatlista($parent)
+    public function getkatlista(TermekMenu $parent)
     {
         $repo = $this->getRepo();
         $children = $repo->getForParent($parent->getId(), 4);

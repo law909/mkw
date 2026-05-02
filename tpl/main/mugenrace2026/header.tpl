@@ -1,10 +1,4 @@
 {include "headerfirstrow.tpl"}
-{* {$mugenracetermekmenu}  *}
-
-{* Demo content amíg nem sikerül lekérdezni a termékmenüt *}
-{* {$menu1[0]['childcount'] = 10 }
-{$menu1[0]['children'] = $menu1} *}
-{* Demo content amíg nem sikerül lekérdezni a termékmenüt *}
 
 <div class="header container-full__with-padding">
     <div class="row">
@@ -17,35 +11,35 @@
                 <ul id="" class="flex-cc">
                     {foreach $menu1[0]['children'] as $_menupont}
                         <li class="main-menu-item {if ($_menupont@last)} last{/if}" {if ($_menupont@first)} class="first"{/if}><a href="#"
-                                                                                                                                  data-cnt="{count($_menupont.children)}">{$_menupont.nev}</a>
+                                                                                                                                  data-cnt="{count($_menupont.children)}">{$_menupont.nev_locale}</a>
                             {if (count($_menupont.children)>0)}
                                 <i class="icon arrow-down white main-menu__arrow icon__click"></i>
                                 <div class="sub">
                                     <div class="sub__wrapper">
                                         {foreach $_menupont.children as $_focsoport}
                                             <ul>
-                                                <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev}</a></li>
+                                                <li class="categorytitle"><a href="/categories/{$_focsoport.slug}">{$_focsoport.nev_locale}</a></li>
                                                 {foreach $_focsoport.children as $_alcsoport}
                                                     <li>
-                                                        <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev}</a>
+                                                        <a href="/categories/{$_alcsoport.slug}">{$_alcsoport.nev_locale}</a>
                                                         {if (count($_alcsoport.children)>0)}
                                                         <ul>
                                                             {/if}
                                                             {foreach $_alcsoport.children as $_alcsoport2}
                                                                 <li>
-                                                                    <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev}</a>
+                                                                    <a href="/categories/{$_alcsoport2.slug}">{$_alcsoport2.nev_locale}</a>
                                                                     {if (count($_alcsoport2.children)>0)}
                                                                     <ul>
                                                                         {/if}
                                                                         {foreach $_alcsoport2.children as $_alcsoport3}
                                                                             <li>
-                                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev}</a>
+                                                                                <a href="/categories/{$_alcsoport3.slug}">{$_alcsoport3.nev_locale}</a>
                                                                                 {if (count($_alcsoport3.children)>0)}
                                                                                 <ul>
                                                                                     {/if}
                                                                                     {foreach $_alcsoport3.children as $_alcsoport4}
                                                                                         <li>
-                                                                                            <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev}</a>
+                                                                                            <a href="/categories/{$_alcsoport4.slug}">{$_alcsoport4.nev_locale}</a>
 
                                                                                         </li>
                                                                                     {/foreach}
@@ -86,13 +80,11 @@
                 <ul id="" class="flex-cc">
                     <li><i class="icon search white icon__click"></i></li>
                     <li>
-                        {* <a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow"> *}
                         {if $hidecart != 1}
                             <div id="minikosar">
                                 {include "minikosar.tpl"}
                             </div>
                         {/if}
-                        {* </a> *}
                     </li>
                     <li>
                         <i class="icon menu white menu-toggle icon__click"></i>
@@ -104,101 +96,9 @@
                 <div class="searchinputbox flex-cc">
                     <input id="searchinput" class="siteSearch span2" type="text" title="{t('Keressen a termékeink között!')}"
                            placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
-                    {* <input id="searchbutton" type="submit" value=""> *}
                 </div>
                 <i class="icon close white header__searchform-close icon__click"></i>
             </form>
         </div>
     </div>
 </div>
-
-{*
-<div class="headertop">
-	<div class="container">
-		<div class="row headercartcontainer">
-			{if (!$user.loggedin)}
-			<div class="span8">
-				<div class="headerbutton firstheaderbutton">
-					<a rel="nofollow" href="{$showloginlink}" class="headerloginicon">{t('Jelentkezzen be')}</a>
-				</div>
-				<div class="headerbutton">
-					<a rel="nofollow" href="{$showregisztraciolink}">{t('Hozza létre saját fiókját')}</a>
-				</div>
-                <div class="headerbutton lastheaderbutton">
-                    <select name="headerorszag" class="headerorszag">
-                        {foreach $orszaglist as $f}
-                            <option value="{$f.id}"{if ($f.selected)} selected="selected"{/if}>{$f.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
-			</div>
-			{else}
-			<div class="span8">
-				<div class="headerbutton">
-					<a rel="nofollow" href="{$showaccountlink}" title="{t('Fiókom')}">{$user.nev}</a>
-				</div>
-				<div class="headerbutton lastheaderbutton">
-					<a rel="nofollow" href="{$dologoutlink}">{t('Kijelentkezés')}</a>
-				</div>
-			</div>
-			{/if}
-			<div class="headercart">
-				<a href="{$kosargetlink}" class="btn cartbtn pull-right" rel="nofollow">{t('Kosár')}</a>
-				<a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow">
-					{include "minikosar.tpl"}
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="header-ingyenes">
-    <div id="minikosaringyenes" class="container">
-        {include "minikosaringyenes.tpl"}
-    </div>
-</div>
-<div class="container whitebg headbgtakaro">
-    <div class="headermid container whitebg">
-        <div class="row">
-            <div class="span12">
-                <div class="span2">
-                    <a href="/"><img src="{$imagepath}{$mugenracelogo}" class="headerlogo" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
-                </div>
-                <div class="span2">
-                    <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
-                    <div class="searchinputbox">
-                        <input id="searchinput" class="siteSearch span2" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
-                        <input id="searchbutton" type="submit" value="">
-                    </div>
-                    </form>
-                </div>
-                <div class="span7 fejleckep">
-                    <img src="{$imagepath}{$mugenracefejleckep}">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container headernav">
-        <div class="row">
-            <div class="span16">
-                <nav>
-                    <ul id="navmain">
-                        {foreach $menu1 as $_menupont}
-                            <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/termekfa/{$_menupont.slug}" data-cnt="{$_menupont.childcount}">{$_menupont.caption}</a>
-                            <div class="sub">
-                                {foreach $_menupont.children as $_focsoport}
-                                <ul>
-                                    <li class="categorytitle">{$_focsoport.caption}</li>
-                                    {foreach $_focsoport.children as $_alcsoport}
-                                        <li><a href="/termekfa/{$_alcsoport.slug}">{$_alcsoport.caption}</a></li>
-                                    {/foreach}
-                                </ul>
-                                {/foreach}
-                            </div>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div> *}

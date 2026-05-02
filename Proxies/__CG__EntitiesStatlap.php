@@ -401,4 +401,15 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
         return parent::getFieldValue($fieldName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocalizedFieldValue($fieldname, $locale = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValue', [$fieldname, $locale]);
+
+        return parent::getLocalizedFieldValue($fieldname, $locale);
+    }
+
 }
