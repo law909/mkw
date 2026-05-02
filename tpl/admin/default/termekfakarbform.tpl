@@ -5,8 +5,7 @@
     <div id="fakarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
-            {if ($setup.multilang)}
-                <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>{/if}
+            <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
             <li><a href="#WebTab">{at('Webes adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
@@ -33,14 +32,32 @@
                 <input id="SketchfabEdit" name="sketchfabmodelid" type="text" value="{$egyed.sketchfabmodelid}">
             </div>
         </div>
-        {if ($setup.multilang)}
-            <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.translations as $translation}
-                    {include 'translationkarb.tpl'}
-                {/foreach}
-                <a class="js-translationnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+        <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <label for="NevL1Edit">{at('Név')}:</label>
+                <input id="NevL1Edit" name="nev_l1" type="text" size="83" maxlength="255" value="{$egyed.nev_l1}">
             </div>
-        {/if}
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="RovidleirasL1Edit">{at('Rövid leírás')}:</label>
+                <input id="RovidleirasL1Edit" name="rovidleiras_l1" type="text" size="100" maxlength="255" value="{$egyed.rovidleiras_l1}">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="LeirasL1Edit">{at('Leírás')}:</label>
+                <textarea id="LeirasL1Edit" name="leiras_l1" class="js-ckeditor">{$egyed.leiras_l1}</textarea>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="Leiras2L1Edit">{at('Leírás 2')}:</label>
+                <textarea id="Leiras2L1Edit" name="leiras2_l1" class="js-ckeditor">{$egyed.leiras2_l1}</textarea>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="Leiras3L1Edit">{at('Leírás 3')}:</label>
+                <textarea id="Leiras3L1Edit" name="leiras3_l1" class="js-ckeditor">{$egyed.leiras3_l1}</textarea>
+            </div>
+        </div>
         <div id="WebTab" class="mattkarb-page">
             <input id="InaktivCheck" name="inaktiv" type="checkbox" {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}</input>
             <input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox" {if ($egyed.menu1lathato)}checked="checked"{/if}>{at('Főmenü')}</input>
@@ -69,15 +86,15 @@
                 </tr>
                 <tr>
                     <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
+                    <td><textarea id="LeirasEdit" name="leiras" class="js-ckeditor">{$egyed.leiras}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="Leiras2Edit">{at('Leírás 2')}:</label></td>
-                    <td><textarea id="Leiras2Edit" name="leiras2">{$egyed.leiras2}</textarea></td>
+                    <td><textarea id="Leiras2Edit" name="leiras2" class="js-ckeditor">{$egyed.leiras2}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="Leiras3Edit">{at('Leírás 3')}:</label></td>
-                    <td><textarea id="Leiras3Edit" name="leiras3">{$egyed.leiras3}</textarea></td>
+                    <td><textarea id="Leiras3Edit" name="leiras3" class="js-ckeditor">{$egyed.leiras3}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>

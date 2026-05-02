@@ -13,7 +13,7 @@ class TermekFaRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\TermekFa');
+        $this->setEntityname(TermekFa::class);
         $this->setOrders([
             '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']]
         ]);
@@ -90,6 +90,7 @@ class TermekFaRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' AND (f.lathato' . $webshopnum . '=1) ';
             }
         }
+        // TODO locale
         if (!\mkw\store::isMultilang()) {
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
@@ -147,6 +148,7 @@ class TermekFaRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
             }
         }
+        // TODO locale
         $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend,f.nev');
         $res = $q->getResult();
         $ret = [];
@@ -190,6 +192,7 @@ class TermekFaRepository extends \mkwhelpers\Repository
         if ($menunum > 0) {
             $filterstr = ' AND menu' . $menunum . 'lathato=1';
         }
+        // TODO locale
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('nev', 'caption');
@@ -245,10 +248,10 @@ class TermekFaRepository extends \mkwhelpers\Repository
         $tfrsm->addScalarResult('karkod', 'karkod');
         $tfrsm->addScalarResult('sorrend', 'sorrend');
         $tfrsm->addScalarResult('fanev', 'fanev');
+        $nevfieldname = \mkw\store::getLocalizedFieldName('tf.nev');
         return $this->_em->createNativeQuery(
-            'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,coalesce(tt.content,tf.nev) AS fanev '
+            'SELECT tf.id,tf.slug,tf.karkod,tf.sorrend,' . $nevfieldname . ' AS fanev '
             . 'FROM termekfa tf '
-            . 'LEFT JOIN termekfa_translations tt ON (tf.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
             . 'WHERE tf.menu1lathato=1 and tf.lathato=1 '
             . 'ORDER BY sorrend',
             $tfrsm

@@ -642,11 +642,6 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termektranslation/save', 'termektranslationController#save', 'admintermektranslationsave');
 }
 
-$router->map('GET', '/admin/termekfatranslation/getemptyrow', 'termekfatranslationController#getemptyrow', 'admintermekfatranslationgetemptyrow');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/termekfatranslation/save', 'termekfatranslationController#save', 'admintermekfatranslationsave');
-}
-
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');

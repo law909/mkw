@@ -659,6 +659,21 @@ if ($DBVersion < '0071') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0071');
 }
 
+if ($DBVersion < '0072') {
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM termekfa_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE termekfa SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `termekfa_translations`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0072');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

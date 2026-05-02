@@ -22,14 +22,6 @@ class TermekMenu
 
     use GetsFieldValue;
 
-    private static $translatedFields = [
-        'nev' => ['caption' => 'Név', 'type' => 1],
-        'rovidleiras' => ['caption' => 'Rövid leírás', 'type' => 1],
-        'leiras' => ['caption' => 'Leírás', 'type' => 2],
-        'leiras2' => ['caption' => 'Leírás 2', 'type' => 2],
-        'leiras3' => ['caption' => 'Leírás 3', 'type' => 2]
-    ];
-
     private $gtnev;
     public $m1lchanged = false;
     public $m2lchanged = false;
@@ -318,7 +310,7 @@ class TermekMenu
     public function getParentNevLocale()
     {
         if ($this->parent) {
-            return $this->parent->getNev();
+            return $this->parent->getLocalizedFieldValue('nev');
         }
         return '';
     }

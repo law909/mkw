@@ -5,6 +5,7 @@ namespace Entities;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
+use Traits\GetsFieldValue;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekFaRepository")
@@ -15,18 +16,11 @@ use mkw\store;
  *      @ORM\index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
  *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"})
  * })
- * @Gedmo\TranslationEntity(class="Entities\TermekFaTranslation")
  */
 class TermekFa
 {
 
-    private static $translatedFields = [
-        'nev' => ['caption' => 'Név', 'type' => 1],
-        'rovidleiras' => ['caption' => 'Rövid leírás', 'type' => 1],
-        'leiras' => ['caption' => 'Leírás', 'type' => 2],
-        'leiras2' => ['caption' => 'Leírás 2', 'type' => 2],
-        'leiras3' => ['caption' => 'Leírás 3', 'type' => 2]
-    ];
+    use GetsFieldValue;
 
     private $gtnev;
     public $m1lchanged = false;
@@ -64,11 +58,11 @@ class TermekFa
      */
     private $parent;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
+
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $nev_l1;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
@@ -82,29 +76,26 @@ class TermekFa
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $karkod;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $rovidleiras = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $rovidleiras_l1 = '';
+
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras_l1;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras2;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras2_l1;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras3;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras3_l1;
 
     /** @ORM\Column(type="boolean",nullable=true) */
     private $menu1lathato = true;
@@ -219,40 +210,20 @@ class TermekFa
         return (string)$this->id . ' - ' . $this->nev;
     }
 
-    public static function getTranslatedFields()
-    {
-        return self::$translatedFields;
-    }
-
-    public static function getTranslatedFieldsSelectList($sel = null)
-    {
-        $ret = [];
-        foreach (self::$translatedFields as $k => $v) {
-            $ret[] = [
-                'id' => $k,
-                'caption' => $v['caption'],
-                'selected' => ($k === $sel)
-            ];
-        }
-        return $ret;
-    }
-
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekek1 = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekek2 = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekek3 = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function toA2a()
     {
-        $ford = $this->getTranslationsArray();
         $x = [];
         $x['id'] = $this->getId();
         $x['name'] = $this->getNev();
-        $x['name_en'] = $ford['en_us']['nev'];
+        $x['name_en'] = $this->getNev_l1();
         $x['short_description'] = $this->getRovidleiras();
         $x['short_description_en'] = $ford['en_us']['rovidleiras'] ?: '';
         $x['description'] = $this->getLeiras();
@@ -354,6 +325,14 @@ class TermekFa
         return '';
     }
 
+    public function getParentNevLocale()
+    {
+        if ($this->parent) {
+            return $this->parent->getLocalizedFieldValue('nev');
+        }
+        return '';
+    }
+
     public function setParent(TermekFa $parent)
     {
         if ($this->parent !== $parent) {
@@ -399,6 +378,16 @@ class TermekFa
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getNev_l1()
+    {
+        return $this->nev_l1;
+    }
+
+    public function setNev_l1($nev)
+    {
+        $this->nev_l1 = $nev;
     }
 
     public function getSorrend()
@@ -466,6 +455,16 @@ class TermekFa
         $this->leiras = $leiras;
     }
 
+    public function getLeiras_l1()
+    {
+        return $this->leiras_l1;
+    }
+
+    public function setLeiras_l1($leiras)
+    {
+        $this->leiras_l1 = $leiras;
+    }
+
     public function getLeiras2()
     {
         return $this->leiras2;
@@ -476,6 +475,16 @@ class TermekFa
         $this->leiras2 = $leiras;
     }
 
+    public function getLeiras2_l1()
+    {
+        return $this->leiras2_l1;
+    }
+
+    public function setLeiras2_l1($leiras)
+    {
+        $this->leiras2_l1 = $leiras;
+    }
+
     public function getLeiras3()
     {
         return $this->leiras3;
@@ -484,6 +493,16 @@ class TermekFa
     public function setLeiras3($leiras)
     {
         $this->leiras3 = $leiras;
+    }
+
+    public function getLeiras3_l1()
+    {
+        return $this->leiras3_l1;
+    }
+
+    public function setLeiras3_l1($leiras)
+    {
+        $this->leiras3_l1 = $leiras;
     }
 
     public function getKarkod()
@@ -508,7 +527,7 @@ class TermekFa
         } else {
             $result = store::getParameter(\mkw\consts::Katoldalcim);
             if ($result) {
-                $result = str_replace('[kategorianev]', $this->getNev(), $result);
+                $result = str_replace('[kategorianev]', $this->getLocalizedFieldValue('nev'), $result);
                 $result = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $result);
                 return $result;
             } else {
@@ -712,6 +731,16 @@ class TermekFa
         $this->rovidleiras = $rovidleiras;
     }
 
+    public function getRovidleiras_l1()
+    {
+        return $this->rovidleiras_l1;
+    }
+
+    public function setRovidleiras_l1($rovidleiras)
+    {
+        $this->rovidleiras_l1 = $rovidleiras;
+    }
+
     public function getInaktiv()
     {
         return $this->inaktiv;
@@ -730,39 +759,6 @@ class TermekFa
     public function setIdegenkod($idegenkod)
     {
         $this->idegenkod = $idegenkod;
-    }
-
-    public function setTranslatableLocale($l)
-    {
-        $this->locale = $l;
-    }
-
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function getTranslationsArray()
-    {
-        $r = [];
-        /** @var \Entities\TermekFaTranslation $tr */
-        foreach ($this->translations as $tr) {
-            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
-        }
-        return $r;
-    }
-
-    public function addTranslation(TermekFaTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(TermekFaTranslation $t)
-    {
-        $this->translations->removeElement($t);
     }
 
     /**
@@ -1078,22 +1074,6 @@ class TermekFa
     public function setSketchfabmodelid($sketchfabmodelid): void
     {
         $this->sketchfabmodelid = $sketchfabmodelid;
-    }
-    
-    public function getNevForditas($ford, $locale)
-    {
-        if ($ford[$locale]['nev']) {
-            return $ford[$locale]['nev'];
-        }
-        return $this->getNev();
-    }
-
-    public function getLeirasForditas($ford, $locale)
-    {
-        if ($ford[$locale]['leiras']) {
-            return $ford[$locale]['leiras'];
-        }
-        return $this->getLeiras();
     }
 
 }
