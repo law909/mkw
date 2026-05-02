@@ -102,9 +102,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        if ($locale) {
-            \mkw\store::setTranslationHint($q, $locale);
-        }
         return $q->getResult();
     }
 
@@ -261,8 +258,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         );
 
         $q->setParameters($this->getQueryParameters($filter));
-
-        \mkw\store::setTranslationHint($q, $locale);
 
         $res = $q->getResult();
         if (count($res)) {
@@ -534,10 +529,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         $filter->addFilter($datumtipus, '<', $datumtol);
         if ($raktarid) {
@@ -574,10 +567,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
@@ -619,10 +610,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
@@ -663,10 +652,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.mozgat', '=', true);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumig) {
             $filter->addFilter($datumtipus, '<=', $datumig);

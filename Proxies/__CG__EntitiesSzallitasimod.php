@@ -67,10 +67,10 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes4', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'termek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev_l1', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras_l1', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes4', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'termek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes4', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'termek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev_l1', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras_l1', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes4', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'termek'];
     }
 
     /**
@@ -217,6 +217,28 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
+    public function getNev_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+
+        return parent::getNev_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNev_l1($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev]);
+
+        return parent::setNev_l1($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getWebes()
     {
 
@@ -256,6 +278,28 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLeiras_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+
+        return parent::getLeiras_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLeiras_l1($leiras)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras]);
+
+        return parent::setLeiras_l1($leiras);
     }
 
     /**
@@ -333,61 +377,6 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarok', []);
 
         return parent::getHatarok();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTranslations()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
-
-        return parent::getTranslations();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addTranslation(\Entities\SzallitasimodTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
-
-        return parent::addTranslation($t);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeTranslation(\Entities\SzallitasimodTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
-
-        return parent::removeTranslation($t);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLocale()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
-
-        return parent::getLocale();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLocale($locale)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
-
-        return parent::setLocale($locale);
     }
 
     /**

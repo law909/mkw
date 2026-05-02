@@ -130,7 +130,7 @@ $test->run();
 
 - **Location**: `Entities/` directory
 - **Pattern**: Doctrine ORM entities with annotations
-- **Extensions**: Uses Gedmo extensions for timestamps, slugs, translations
+- **Extensions**: Uses Gedmo extensions for timestamps, slugs
 - **Example**: `Entities/Termek.php` for product management
 
 #### Controller Structure
@@ -170,7 +170,7 @@ $test->run();
 #### Entity Relationships
 
 - Uses Doctrine annotations for relationships
-- Supports multilingual content via Gedmo Translatable
+- Supports multilingual content via added fields ended with `_l1`, `_l2`...
 - Automatic timestamps via Gedmo Timestampable
 - User tracking via Gedmo Blameable
 - Uses repository pattern for entity operations
@@ -189,7 +189,6 @@ cache = file
 - Automatic detection via `mkw\store::isMultilang()`
 - Default locale: `hu_hu`
 - Fallback support enabled
-- Translation listener handles locale switching
 
 ### Integration Points
 

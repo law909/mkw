@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Entities\Fizmod;
 use Entities\FizmodHatar;
-use Entities\FizmodTranslation;
 use Entities\Valutanem;
 
 class fizmodController extends \mkwhelpers\MattableController
@@ -23,8 +22,6 @@ class fizmodController extends \mkwhelpers\MattableController
     public function loadVars($t, $forKarb = false)
     {
         $letezik = true;
-        $translationsCtrl = new fizmodtranslationController($this->params);
-        $translations = [];
         $x = [];
         if (!$t) {
             $letezik = false;
@@ -33,11 +30,13 @@ class fizmodController extends \mkwhelpers\MattableController
         }
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
+        $x['nev_l1'] = $t->getNev_l1();
         $x['tipus'] = $t->getTipus();
         $x['navtipus'] = $t->getNavtipus();
         $x['haladek'] = $t->getHaladek();
         $x['webes'] = $t->getWebes();
         $x['leiras'] = $t->getLeiras();
+        $x['leiras_l1'] = $t->getLeiras_l1();
         $x['sorrend'] = $t->getSorrend();
         $x['osztotthaladek1'] = $t->getOsztotthaladek1();
         $x['osztottszazalek1'] = $t->getOsztottszazalek1();
@@ -62,12 +61,6 @@ class fizmodController extends \mkwhelpers\MattableController
                 }
                 $x['hatarok'] = $hatararr;
             }
-            if (\mkw\store::isMultilang()) {
-                foreach ($t->getTranslations() as $tr) {
-                    $translations[] = $translationsCtrl->loadVars($tr, true);
-                }
-                $x['translations'] = $translations;
-            }
         }
         return $x;
     }
@@ -80,11 +73,13 @@ class fizmodController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
         $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
         $obj->setHaladek($this->params->getIntRequestParam('haladek'));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
+        $obj->setLeiras_l1($this->params->getStringRequestParam('leiras_l1'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setOsztotthaladek1($this->params->getIntRequestParam('osztotthaladek1'));
         $obj->setOsztottszazalek1($this->params->getNumRequestParam('osztottszazalek1'));
@@ -121,44 +116,6 @@ class fizmodController extends \mkwhelpers\MattableController
                         $hatar->setValutanem($valutanem);
                     }
                     $this->getEm()->persist($hatar);
-                }
-            }
-        }
-        if (\mkw\store::isMultilang()) {
-            $_tf = \Entities\Fizmod::getTranslatedFields();
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            foreach ($translationids as $translationid) {
-                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
-                $mezotype = $_tf[$mezo]['type'];
-                switch ($mezotype) {
-                    case 1:
-                    case 3:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    case 2:
-                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    default:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                }
-                if ($oper === 'add') {
-                    $translation = new \Entities\FizmodTranslation(
-                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
-                        $mezo,
-                        $mezoertek
-                    );
-                    $obj->addTranslation($translation);
-                    $this->getEm()->persist($translation);
-                } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository(FizmodTranslation::class)->find($translationid);
-                    if ($translation) {
-                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField($mezo);
-                        $translation->setContent($mezoertek);
-                        $this->getEm()->persist($translation);
-                    }
                 }
             }
         }
@@ -245,13 +202,11 @@ class fizmodController extends \mkwhelpers\MattableController
             ];
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
+            } elseif (!$vanvalasztott) {
+                $r['selected'] = true;
+                $vanvalasztott = true;
             } else {
-                if (!$vanvalasztott) {
-                    $r['selected'] = true;
-                    $vanvalasztott = true;
-                } else {
-                    $r['selected'] = false;
-                }
+                $r['selected'] = false;
             }
             $res[] = $r;
         }

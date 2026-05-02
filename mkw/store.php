@@ -2062,6 +2062,17 @@ class store
         return 0;
     }
 
+    public static function getLocalizedFieldName($fieldName, $locale = null)
+    {
+        $locale = translate::normalizeLocale($locale);
+        switch ($locale) {
+            case 'en_us':
+                return $fieldName . '_l1';
+            default:
+                return $fieldName;
+        }
+    }
+
     public static function setMainLocale($ny)
     {
         $ny = self::translateLocale($ny);

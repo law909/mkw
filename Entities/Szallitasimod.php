@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="Entities\SzallitasimodRepository")
  * @ORM\Table(name="szallitasimod",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
- * @Gedmo\TranslationEntity(class="Entities\SzallitasimodTranslation")
  */
 class Szallitasimod
 {
@@ -23,20 +22,18 @@ class Szallitasimod
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255)
-     */
+    /** @ORM\Column(type="string",length=255) */
     private $nev;
+    /** @ORM\Column(type="string",length=255) */
+    private $nev_l1;
     /** @ORM\Column(type="boolean") */
     private $webes = true;
     /** @ORM\Column(type="boolean") */
     private $vanszallitasiktg = true;
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras;
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras_l1;
     /**
      * @ORM\Column(type="string",length=255)
      */
@@ -49,12 +46,6 @@ class Szallitasimod
     private $partnerek;
     /** @ORM\OneToMany(targetEntity="SzallitasimodHatar", mappedBy="szallitasimod",cascade={"persist"}) */
     private $hatarok;
-
-    /** @Gedmo\Locale */
-    protected $locale;
-
-    /** @ORM\OneToMany(targetEntity="SzallitasimodTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $terminaltipus;
@@ -76,25 +67,11 @@ class Szallitasimod
         return self::$translatedFields;
     }
 
-    public static function getTranslatedFieldsSelectList($sel = null)
-    {
-        $ret = [];
-        foreach (self::$translatedFields as $k => $v) {
-            $ret[] = [
-                'id' => $k,
-                'caption' => $v['caption'],
-                'selected' => ($k === $sel)
-            ];
-        }
-        return $ret;
-    }
-
     public function __construct()
     {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->partnerek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->hatarok = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId()
@@ -110,6 +87,16 @@ class Szallitasimod
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getNev_l1()
+    {
+        return $this->nev_l1;
+    }
+
+    public function setNev_l1($nev)
+    {
+        $this->nev_l1 = $nev;
     }
 
     public function getWebes()
@@ -130,6 +117,16 @@ class Szallitasimod
     public function setLeiras($leiras)
     {
         $this->leiras = $leiras;
+    }
+
+    public function getLeiras_l1()
+    {
+        return $this->leiras_l1;
+    }
+
+    public function setLeiras_l1($leiras)
+    {
+        $this->leiras_l1 = $leiras;
     }
 
     public function getFizmodok()
@@ -165,34 +162,6 @@ class Szallitasimod
     public function getHatarok()
     {
         return $this->getHatarok();
-    }
-
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function addTranslation(SzallitasimodTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(SzallitasimodTranslation $t)
-    {
-        $this->translations->removeElement($t);
-    }
-
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
     }
 
     /**

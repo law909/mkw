@@ -8,9 +8,7 @@
             <li><a href="#HatarTab">{at('Összeghatárok')}</a></li>
             <li><a href="#OrszagTab">{at('Összeghatárok országonként')}</a></li>
             <li><a href="#FizmodTab">{at('Fiz.mód növelők')}</a></li>
-            {if ($setup.multilang)}
-                <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
-            {/if}
+            <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -102,16 +100,17 @@
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>
-        {if ($setup.multilang)}
-            <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.translations as $translation}
-                    {include 'translationkarb.tpl'}
-                {/foreach}
-                <a class="js-translationnewbutton" href="#" title="{at('Új')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
+        <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <label for="NevL1Edit">{at('Név')}:</label>
+                <input id="NevL1Edit" name="nev_l1" type="text" size="80" maxlength="255" value="{$egyed.nev_l1}">
             </div>
-        {/if}
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="LeirasL1Edit">{at('Leírás')}:</label>
+                <textarea id="LeirasL1Edit" name="leiras_l1">{$egyed.leiras_l1}</textarea>
+            </div>
+        </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">
     <input name="id" type="hidden" value="{$egyed.id}">

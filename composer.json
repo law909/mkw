@@ -28,7 +28,8 @@
             "mkwhelpers\\": "mkwhelpers",
             "Entities\\": "Entities",
             "Controllers\\": "Controllers",
-            "Proxies\\": "Proxies"
+            "Proxies\\": "Proxies",
+            "Traits\\": "Traits"
         },
         "files": [
             "vendor/prestashop/prestashop-webservice-lib/PSWebServiceLibrary.php"

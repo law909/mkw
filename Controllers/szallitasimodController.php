@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Fizmod;
 use Entities\Orszag;
 use Entities\Szallitasimod;
 use Entities\SzallitasimodFizmodNovelo;
@@ -26,8 +27,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
     protected function loadVars($t, $forKarb = false)
     {
         $letezik = true;
-        $translationsCtrl = new szallitasimodtranslationController($this->params);
-        $translations = [];
         $x = [];
         if (!$t) {
             $letezik = false;
@@ -36,11 +35,13 @@ class szallitasimodController extends \mkwhelpers\MattableController
         }
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
+        $x['nev_l1'] = $t->getNev_l1();
         $x['webes'] = $t->getWebes();
         $x['webes2'] = $t->getWebes2();
         $x['webes3'] = $t->getWebes3();
         $x['webes4'] = $t->getWebes4();
         $x['leiras'] = $t->getLeiras();
+        $x['leiras_l1'] = $t->getLeiras_l1();
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
@@ -74,12 +75,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $x['fizmodnovelok'] = $orszagarr;
             }
-            if (\mkw\store::isMultilang()) {
-                foreach ($t->getTranslations() as $tr) {
-                    $translations[] = $translationsCtrl->loadVars($tr, true);
-                }
-                $x['translations'] = $translations;
-            }
         }
         return $x;
     }
@@ -92,11 +87,13 @@ class szallitasimodController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1', $obj->getNev_l1()));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
         $obj->setWebes3($this->params->getBoolRequestParam('webes3'));
         $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
+        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
@@ -156,7 +153,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $this->getEm()->persist($orszagrec);
             } elseif ($oper === 'edit') {
-                $orszagrec = $this->getEm()->getRepository('Entities\SzallitasimodOrszag')->find($orszagid);
+                $orszagrec = $this->getEm()->getRepository(SzallitasimodOrszag::class)->find($orszagid);
                 if ($orszagrec) {
                     $orszagrec->setHatarertek($this->params->getNumRequestParam('orszagertek_' . $orszagid));
                     $orszagrec->setOsszeg($this->params->getNumRequestParam('orszagosszeg_' . $orszagid));
@@ -173,7 +170,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $fizmodids = $this->params->getArrayRequestParam('fizmodid');
         foreach ($fizmodids as $fizmodid) {
             $oper = $this->params->getStringRequestParam('fizmodoper_' . $fizmodid);
-            $fizmod = $this->getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmodfizmod_' . $fizmodid));
+            $fizmod = $this->getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmodfizmod_' . $fizmodid));
             if ($oper === 'add') {
                 $fizmodrec = new \Entities\SzallitasimodFizmodNovelo();
                 $fizmodrec->setSzallitasimod($obj);
@@ -185,7 +182,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $this->getEm()->persist($fizmodrec);
             } elseif ($oper === 'edit') {
-                $fizmodrec = $this->getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->find($fizmodid);
+                $fizmodrec = $this->getEm()->getRepository(SzallitasimodFizmodNovelo::class)->find($fizmodid);
                 if ($fizmodrec) {
                     $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
                     $fizmodrec->setMaxhatar($this->params->getNumRequestParam('fizmodmaxhatar_' . $fizmodid));
@@ -194,44 +191,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
                         $fizmodrec->setFizmod($fizmod);
                     }
                     $this->getEm()->persist($fizmodrec);
-                }
-            }
-        }
-        if (\mkw\store::isMultilang()) {
-            $_tf = \Entities\Szallitasimod::getTranslatedFields();
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            foreach ($translationids as $translationid) {
-                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
-                $mezotype = $_tf[$mezo]['type'];
-                switch ($mezotype) {
-                    case 1:
-                    case 3:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    case 2:
-                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    default:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                }
-                if ($oper === 'add') {
-                    $translation = new \Entities\SzallitasimodTranslation(
-                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
-                        $mezo,
-                        $mezoertek
-                    );
-                    $obj->addTranslation($translation);
-                    $this->getEm()->persist($translation);
-                } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository('Entities\SzallitasimodTranslation')->find($translationid);
-                    if ($translation) {
-                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField($mezo);
-                        $translation->setContent($mezoertek);
-                        $this->getEm()->persist($translation);
-                    }
                 }
             }
         }

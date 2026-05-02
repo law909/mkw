@@ -5,20 +5,23 @@ namespace Entities;
 use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
-class FizmodRepository extends \mkwhelpers\Repository {
+class FizmodRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Fizmod');
-        $this->setOrders(array(
-            '1' => array('caption' => 'név szerint növekvő','order' => array('_xx.nev' => 'ASC')),
-            '2' => array('caption' => 'sorrend szerint növekvő', 'order' => array('_xx.sorrend' => 'ASC'))
-        ));
+        $this->setEntityname(Fizmod::class);
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'sorrend szerint növekvő', 'order' => ['_xx.sorrend' => 'ASC']]
+        ]);
     }
 
-    public function getAllWebesBySzallitasimod($szmid, $exc = array()) {
+    public function getAllWebesBySzallitasimod($szmid, $exc = [])
+    {
         if (!is_null($szmid)) {
-            $szm = $this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
+            $szm = $this->_em->getRepository(Szallitasimod::class)->find($szmid);
         }
         $filter = new FilterDescriptor();
         $filter->addFilter('webes', '=', true);
@@ -28,13 +31,14 @@ class FizmodRepository extends \mkwhelpers\Repository {
         if ($exc) {
             $filter->addFilter('id', 'NOT IN', $exc);
         }
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getAllBySzallitasimod($szmid, $exc = array()) {
+    public function getAllBySzallitasimod($szmid, $exc = [])
+    {
         $szm = false;
         if (!is_null($szmid)) {
-            $szm = $this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
+            $szm = $this->_em->getRepository(Szallitasimod::class)->find($szmid);
         }
         $filter = new FilterDescriptor();
         if ($szm) {
@@ -43,23 +47,26 @@ class FizmodRepository extends \mkwhelpers\Repository {
         if ($exc) {
             $filter->addFilter('id', 'NOT IN', $exc);
         }
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getAllBanki() {
+    public function getAllBanki()
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('tipus', '=', 'B');
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getAllKeszpenzes() {
+    public function getAllKeszpenzes()
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('tipus', '=', 'P');
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
-    public function getAllNormal() {
-        $fm = array();
+    public function getAllNormal()
+    {
+        $fm = [];
         if (\mkw\store::getParameter(\mkw\consts::SZEPFizmod)) {
             $fm[] = \mkw\store::getParameter(\mkw\consts::SZEPFizmod);
         }
@@ -73,7 +80,7 @@ class FizmodRepository extends \mkwhelpers\Repository {
         if ($fm) {
             $filter->addSql('_xx.id NOT IN (' . implode(',', $fm) . ')');
         }
-        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        return $this->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
     }
 
 }

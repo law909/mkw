@@ -7,14 +7,16 @@ use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
 use stdClass;
+use Traits\GetsFieldValue;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
- * @Gedmo\TranslationEntity(class="Entities\BizonylatfejTranslation")
  * */
 class Bizonylatfej
 {
+
+    use GetsFieldValue;
 
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
@@ -237,11 +239,10 @@ class Bizonylatfej
      */
     private $fizmod;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $fizmodnev;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $fizmodnev_l1;
 
     /**
      * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
@@ -250,11 +251,11 @@ class Bizonylatfej
      */
     private $szallitasimod;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szallitasimodnev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $szallitasimodnev_l1;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $szallitasiido;
@@ -598,12 +599,6 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerktdszerzszam;
 
-    /** @Gedmo\Locale */
-    protected $locale;
-
-    /** @ORM\OneToMany(targetEntity="BizonylatfejTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
-
     /**
      * @ORM\ManyToOne(targetEntity="Dolgozo")
      * @ORM\JoinColumn(name="felhasznalo_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -839,7 +834,6 @@ class Bizonylatfej
         $this->szulobizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylatdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setPersistentData();
     }
@@ -1086,13 +1080,12 @@ class Bizonylatfej
                 $partner = $this->getPartner();
                 if (!\mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
                     $ppr->Locale = \UILocale::HU;
+                } elseif ($partner->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
+                    $ppr->Locale = \UILocale::HU;
                 } else {
-                    if ($partner->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
-                        $ppr->Locale = \UILocale::HU;
-                    } else {
-                        $ppr->Locale = \UILocale::EN;
-                    }
+                    $ppr->Locale = \UILocale::EN;
                 }
+
                 break;
         }
         $ppr->OrderNumber = $this->getId();
@@ -1150,7 +1143,11 @@ class Bizonylatfej
         $ret['fizetendo'] = $this->getFizetendo();
         $ret['fizetendokiirva'] = \mkw\store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
+        $ret['fizmodnevlocale'] = $this->getFieldValue(\mkw\store::getLocalizedFieldName('fizmodnev', $this->getBizonylatnyelv()));
+        $ret['fizmodnev_l1'] = $this->getFizmodnev_l1();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
+        $ret['szallitasimodnevlocale'] = $this->getFieldValue(\mkw\store::getLocalizedFieldName('szallitasimodnev', $this->getBizonylatnyelv()));
+        $ret['szallitasimodnev_l1'] = $this->getSzallitasimodnev_l1();
         $ret['tulajbanknev'] = $this->getTulajbanknev();
         $ret['tulajbankszamlaszam'] = $this->getTulajbankszamlaszam();
         $ret['tulajiban'] = $this->getTulajiban();
@@ -2476,6 +2473,11 @@ class Bizonylatfej
         return $this->fizmodnev;
     }
 
+    public function getFizmodnev_l1()
+    {
+        return $this->fizmodnev_l1;
+    }
+
     public function getFizmodId()
     {
         $fm = $this->getFizmod();
@@ -2500,6 +2502,7 @@ class Bizonylatfej
                 $this->fizmod = $val;
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
+                    $this->fizmodnev_l1 = $val->getNev_l1();
                     $this->setNincspenzmozgas($val->getNincspenzmozgas());
                 }
             }
@@ -2512,6 +2515,7 @@ class Bizonylatfej
             $this->fizmod = null;
             if (!$this->duplication) {
                 $this->fizmodnev = '';
+                $this->fizmodnev_l1 = '';
                 $this->setNincspenzmozgas(false);
             }
         }
@@ -2528,6 +2532,11 @@ class Bizonylatfej
     public function getSzallitasimodnev()
     {
         return $this->szallitasimodnev;
+    }
+
+    public function getSzallitasimodnev_l1()
+    {
+        return $this->szallitasimodnev_l1;
     }
 
     public function getSzallitasimodId()
@@ -2553,6 +2562,7 @@ class Bizonylatfej
                 $this->szallitasimod = $val;
                 if (!$this->duplication) {
                     $this->szallitasimodnev = $val->getNev();
+                    $this->szallitasimodnev_l1 = $val->getNev_l1();
                 }
             }
         }
@@ -2564,6 +2574,7 @@ class Bizonylatfej
             $this->szallitasimod = null;
             if (!$this->duplication) {
                 $this->szallitasimodnev = '';
+                $this->szallitasimodnev_l1 = '';
             }
         }
     }
@@ -4044,6 +4055,14 @@ class Bizonylatfej
     }
 
     /**
+     * @param mixed $szallitasimodnev
+     */
+    public function setSzallitasimodnev_l1($szallitasimodnev)
+    {
+        $this->szallitasimodnev_l1 = $szallitasimodnev;
+    }
+
+    /**
      * @param mixed $trxid
      */
     public function setTrxid($trxid)
@@ -4123,25 +4142,17 @@ class Bizonylatfej
         $this->fizmodnev = $fizmodnev;
     }
 
+    /**
+     * @param mixed $fizmodnev
+     */
+    public function setFizmodnev_l1($fizmodnev)
+    {
+        $this->fizmodnev_l1 = $fizmodnev;
+    }
+
     public function getUzletkotojutalek()
     {
         return $this->uzletkotojutalek;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMese()
-    {
-        return $this->mese;
-    }
-
-    /**
-     * @param mixed $mese
-     */
-    public function setMese($mese)
-    {
-        $this->mese = $mese;
     }
 
     /**
@@ -4456,34 +4467,6 @@ class Bizonylatfej
     public function setPartnerktdszerzszam($partnerktdszerzszam)
     {
         $this->partnerktdszerzszam = $partnerktdszerzszam;
-    }
-
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function addTranslation(BizonylatfejTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(BizonylatfejTranslation $t)
-    {
-        $this->translations->removeElement($t);
-    }
-
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
     }
 
     /**

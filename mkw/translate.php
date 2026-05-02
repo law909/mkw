@@ -35,7 +35,7 @@ class translate
 
     public function translate(string $messageId, ?string $locale = null): string
     {
-        $locale = $this->normalizeLocale($locale ?: $this->locale);
+        $locale = self::normalizeLocale($locale ?: $this->locale);
 
         if (isset($this->messages[$locale][$messageId])) {
             return $this->messages[$locale][$messageId];
@@ -51,7 +51,7 @@ class translate
 
     public function setLocale(string $locale): self
     {
-        $this->locale = $this->normalizeLocale($locale);
+        $this->locale = self::normalizeLocale($locale);
 
         return $this;
     }
@@ -60,7 +60,7 @@ class translate
     {
         $adapter = $options['adapter'] ?? null;
         $content = $options['content'] ?? null;
-        $locale = $this->normalizeLocale($options['locale'] ?? $this->locale);
+        $locale = self::normalizeLocale($options['locale'] ?? $this->locale);
 
         if ($adapter !== 'array') {
             throw new \InvalidArgumentException(
@@ -105,7 +105,7 @@ class translate
         return $messages;
     }
 
-    private function normalizeLocale(string $locale): string
+    public static function normalizeLocale(string|null $locale): string
     {
         return strtolower(str_replace('-', '_', $locale));
     }

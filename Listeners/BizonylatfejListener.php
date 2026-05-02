@@ -5,7 +5,12 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Entities\Afa;
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
 use Entities\Feketelista;
+use Entities\Folyoszamla;
+use Entities\Kupon;
+use Entities\Penztarbizonylatfej;
 use Entities\Szallitasimod;
 use Entities\Termek;
 
@@ -15,10 +20,8 @@ class BizonylatfejListener
     private $em;
     private $uow;
     private $bizonylatfejmd;
-    private $bizonylatfejtranslationmd;
     private $penztarbizonylatfejmd;
     private $bizonylattetelmd;
-    private $bizonylatteteltranslationmd;
     private $folyoszamlamd;
     private $kuponmd;
 
@@ -448,75 +451,15 @@ class BizonylatfejListener
         }
     }
 
-    /**
-     * @param \Entities\Bizonylatfej $entity
-     */
-    private function addFizmodTranslations($entity)
-    {
-        $fizmod = $entity->getFizmod();
-        if ($fizmod) {
-            foreach ($fizmod->getTranslations() as $trans) {
-                if ($trans->getField() === 'nev') {
-                    $volttrans = false;
-                    foreach ($entity->getTranslations() as $translation) {
-                        if ($translation->getLocale() == $trans->getLocale() && $translation->getField() === 'fizmodnev') {
-                            $volttrans = true;
-                            $translation->setContent($trans->getContent());
-                            $this->em->persist($translation);
-                            $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejtranslationmd, $translation);
-                        }
-                    }
-                    if (!$volttrans) {
-                        $uj = new \Entities\BizonylatfejTranslation($trans->getLocale(), 'fizmodnev', $trans->getContent());
-                        $entity->addTranslation($uj);
-                        $this->em->persist($uj);
-                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $translation);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @param \Entities\Bizonylatfej $entity
-     */
-    private function addSzallmodTranslations($entity)
-    {
-        $szallmod = $entity->getSzallitasimod();
-        if ($szallmod) {
-            foreach ($szallmod->getTranslations() as $trans) {
-                if ($trans->getField() === 'nev') {
-                    $volttrans = false;
-                    foreach ($entity->getTranslations() as $translation) {
-                        if ($translation->getLocale() == $trans->getLocale() && $translation->getField() === 'szallitasimodnev') {
-                            $volttrans = true;
-                            $translation->setContent($trans->getContent());
-                            $this->em->persist($translation);
-                            $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejtranslationmd, $translation);
-                        }
-                    }
-                    if (!$volttrans) {
-                        $uj = new \Entities\BizonylatfejTranslation($trans->getLocale(), 'szallitasimodnev', $trans->getContent());
-                        $entity->addTranslation($uj);
-                        $this->em->persist($uj);
-                        $this->uow->computeChangeSet($this->bizonylatfejtranslationmd, $translation);
-                    }
-                }
-            }
-        }
-    }
-
     public function prePersist(LifecycleEventArgs $args)
     {
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bizonylatfej');
-        $this->bizonylatfejtranslationmd = $this->em->getClassMetadata('Entities\BizonylatfejTranslation');
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
-        $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
-        $this->penztarbizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
-        $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
+        $this->bizonylatfejmd = $this->em->getClassMetadata(Bizonylatfej::class);
+        $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
+        $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
+        $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
         $entity = $args->getObject();
         if ($entity instanceof \Entities\Bizonylatfej) {
@@ -529,13 +472,11 @@ class BizonylatfejListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bizonylatfej');
-        $this->bizonylatfejtranslationmd = $this->em->getClassMetadata('Entities\BizonylatfejTranslation');
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
-        $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
-        $this->penztarbizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
-        $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
-        $this->kuponmd = $this->em->getClassMetadata('Entities\Kupon');
+        $this->bizonylatfejmd = $this->em->getClassMetadata(Bizonylatfej::class);
+        $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
+        $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
+        $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
+        $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
 
         $updatedentities = $this->uow->getScheduledEntityUpdates();
         $entities = array_merge(
@@ -587,9 +528,6 @@ class BizonylatfejListener
                         //$this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
                     }
 
-                    //$this->addFizmodTranslations($entity);
-                    //$this->addSzallmodTranslations($entity);
-
                     $this->createFolyoszamla($entity);
 
                     if (!$entity->getWebshopnum()) {
@@ -598,7 +536,6 @@ class BizonylatfejListener
 
                     if ($entity->getStorno() || $entity->getRontott()) {
                         $this->rontPenztarBizonylat($entity);
-                    } else {
                     }
                     $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
                 }

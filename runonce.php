@@ -594,6 +594,41 @@ if ($DBVersion < '0068') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0068');
 }
 
+if ($DBVersion < '0069') {
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM fizmod_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE fizmod SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM szallitasimod_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE szallitasimod SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM bizonylatfej_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylatfej SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=\'' . $fm['object_id'] . '\''
+        );
+    }
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `fizmod_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `szallitasimod_translations`'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `bizonylatfej_translations`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0069');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
