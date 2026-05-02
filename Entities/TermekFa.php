@@ -144,14 +144,6 @@ class TermekFa
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
 
-    /** @ORM\OneToMany(targetEntity="TermekFaTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
-
-    /**
-     * @Gedmo\Locale
-     */
-    private $locale;
-
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
 
