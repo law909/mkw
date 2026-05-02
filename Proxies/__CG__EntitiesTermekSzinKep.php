@@ -133,7 +133,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
      * {@inheritDoc}
      * @internal generated method: use only when explicitly handling proxy specific loading logic
      */
-    public function __setInitializer(\Closure $initializer = null): void
+    public function __setInitializer(?\Closure $initializer = null): void
     {
         $this->__initializer__ = $initializer;
     }
@@ -151,7 +151,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
      * {@inheritDoc}
      * @internal generated method: use only when explicitly handling proxy specific loading logic
      */
-    public function __setCloner(\Closure $cloner = null): void
+    public function __setCloner(?\Closure $cloner = null): void
     {
         $this->__cloner__ = $cloner;
     }
@@ -206,7 +206,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function setTermek(\Entities\Termek $termek = NULL)
+    public function setTermek(?\Entities\Termek $termek = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$termek]);
@@ -250,7 +250,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function setSzin(\Entities\Szin $szin = NULL)
+    public function setSzin(?\Entities\Szin $szin = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzin', [$szin]);
@@ -283,7 +283,7 @@ class TermekSzinKep extends \Entities\TermekSzinKep implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function setKep(\Entities\TermekKep $kep = NULL)
+    public function setKep(?\Entities\TermekKep $kep = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKep', [$kep]);
