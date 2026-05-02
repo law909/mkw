@@ -68,9 +68,6 @@
                 <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
                    target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
             {/if}
-            {if (false && havejog(99) && !$_egyed.vegleges)}
-                <a class="js-vissza" href="#" data-href="/admin/bizvissza?b={$_egyed.id}">V</a>
-            {/if}
             {if ($showfeketelistabutton)}
                 <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}" target="_blank"><span
                         class="ui-icon ui-icon-alert"></span></a>
