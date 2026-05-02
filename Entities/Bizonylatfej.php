@@ -29,56 +29,6 @@ class Bizonylatfej
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10,nullable=true)
-     */
-    private $hashid;
-
-    /**
-     * @ORM\Column(type="integer",nullable=true)
-     */
-    private $trxid;
-
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned"=true},nullable=true)
-     */
-    private $otpayid;
-
-    /**
-     * @ORM\Column(type="string", length=30,nullable=true)
-     */
-    private $otpaymsisdn;
-
-    /**
-     * @ORM\Column(type="string", length=30,nullable=true)
-     */
-    private $otpaympid;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $otpayresult;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $otpayresulttext;
-
-    /**
-     * @ORM\Column(type="string", length=36,nullable=true)
-     */
-    private $masterpasscorrelationid;
-
-    /**
-     * @ORM\Column(type="string", length=100,nullable=true)
-     */
-    private $masterpassbanktrxid;
-
-    /**
-     * @ORM\Column(type="string", length=100,nullable=true)
-     */
-    private $masterpasstrxid;
-
-    /**
      * @ORM\Column(type="string", length=100,nullable=true)
      */
     private $foxpostbarcode;
@@ -90,12 +40,6 @@ class Bizonylatfej
 
     /** @ORM\Column(type="text",nullable=true) */
     private $glsparcellabelurl;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $fix = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $mese = false;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -1099,7 +1043,6 @@ class Bizonylatfej
     {
         $ret = [];
         $ret['id'] = $this->getId();
-        $ret['hashid'] = $this->getHashid();
         $ret['lastmodstr'] = $this->getLastmodStr();
         $ret['createdstr'] = $this->getCreatedStr();
         $ret['updatedby'] = $this->getUpdatedbyNev();
@@ -1947,32 +1890,11 @@ class Bizonylatfej
     public function clearId()
     {
         $this->id = null;
-        $this->hashid = null;
-    }
-
-    public function getHashid()
-    {
-        return $this->hashid;
     }
 
     public function getSanitizedId()
     {
         return str_replace(['/', ' ', '.', '-'], '_', $this->getId());
-    }
-
-    public function getTrxId()
-    {
-        return $this->trxid;
-    }
-
-    public function getOTPayId()
-    {
-        return $this->otpayid;
-    }
-
-    public function setOTPayId($val)
-    {
-        $this->otpayid = $val;
     }
 
     public static function getNextId($bizszam)
@@ -2055,10 +1977,6 @@ class Bizonylatfej
                 }
             }
             $this->id = self::createBizonylatszam($azon, $ev, $szam);
-            if (\mkw\store::getConfigValue('sqid')) {
-                $sqids = new \Sqids\Sqids(alphabet: \mkw\store::getConfigValue('sqid'), minLength: 10);
-                $this->hashid = $sqids->encode([$ev, $szam]);
-            }
         }
         return $szam;
     }
@@ -3605,26 +3523,6 @@ class Bizonylatfej
         return implode(', ', $a);
     }
 
-    public function getOTPayMSISDN()
-    {
-        return $this->otpaymsisdn;
-    }
-
-    public function setOTPayMSISDN($val)
-    {
-        $this->otpaymsisdn = $val;
-    }
-
-    public function getOTPayMPID()
-    {
-        return $this->otpaympid;
-    }
-
-    public function setOTPayMPID($val)
-    {
-        $this->otpaympid = $val;
-    }
-
     public function getFizetve()
     {
         return $this->fizetve;
@@ -3633,56 +3531,6 @@ class Bizonylatfej
     public function setFizetve($val)
     {
         $this->fizetve = $val;
-    }
-
-    public function getMasterPassCorrelationID()
-    {
-        return $this->masterpasscorrelationid;
-    }
-
-    public function setMasterPassCorrelationID($val)
-    {
-        $this->masterpasscorrelationid = $val;
-    }
-
-    public function getMasterPassBankTrxId()
-    {
-        return $this->masterpassbanktrxid;
-    }
-
-    public function setMaterPassBankTrxId($val)
-    {
-        $this->masterpassbanktrxid = $val;
-    }
-
-    public function getMasterPassTrxId()
-    {
-        return $this->masterpasstrxid;
-    }
-
-    public function setMaterPassTrxId($val)
-    {
-        $this->masterpasstrxid = $val;
-    }
-
-    public function getOTPayResult()
-    {
-        return $this->otpayresult;
-    }
-
-    public function setOTPayResult($val)
-    {
-        $this->otpayresult = $val;
-    }
-
-    public function getOTPayResultText()
-    {
-        return $this->otpayresulttext;
-    }
-
-    public function setOTPayResultText($val)
-    {
-        $this->otpayresulttext = $val;
     }
 
     public function getPartnerSzamlatipus()
@@ -3774,16 +3622,6 @@ class Bizonylatfej
     public function setSysmegjegyzes($adat)
     {
         $this->sysmegjegyzes = $adat;
-    }
-
-    public function getFix()
-    {
-        return $this->fix;
-    }
-
-    public function setFix($adat)
-    {
-        $this->fix = $adat;
     }
 
     public function getBizonylatnyelv()
@@ -4023,22 +3861,6 @@ class Bizonylatfej
     }
 
     /**
-     * @param mixed $masterpassbanktrxid
-     */
-    public function setMasterpassbanktrxid($masterpassbanktrxid)
-    {
-        $this->masterpassbanktrxid = $masterpassbanktrxid;
-    }
-
-    /**
-     * @param mixed $masterpasstrxid
-     */
-    public function setMasterpasstrxid($masterpasstrxid)
-    {
-        $this->masterpasstrxid = $masterpasstrxid;
-    }
-
-    /**
      * @param mixed $raktarnev
      */
     public function setRaktarnev($raktarnev)
@@ -4060,14 +3882,6 @@ class Bizonylatfej
     public function setSzallitasimodnev_l1($szallitasimodnev)
     {
         $this->szallitasimodnev_l1 = $szallitasimodnev;
-    }
-
-    /**
-     * @param mixed $trxid
-     */
-    public function setTrxid($trxid)
-    {
-        $this->trxid = $trxid;
     }
 
     /**

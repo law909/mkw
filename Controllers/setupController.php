@@ -502,16 +502,6 @@ class setupController extends \mkwhelpers\Controller
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0)));
 
-        if (\mkw\store::isOTPay()) {
-            $p = $repo->find(\mkw\consts::OTPayFizmod);
-            $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
-        }
-
-        if (\mkw\store::isMasterPass()) {
-            $p = $repo->find(\mkw\consts::MasterPassFizmod);
-            $view->setVar('masterpassfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
-        }
-
         $p = $repo->find(\mkw\consts::Raktar);
         $raktar = new raktarController($this->params);
         $view->setVar('raktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1549,22 +1539,6 @@ class setupController extends \mkwhelpers\Controller
         $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
         if ($szallmod) {
             $this->setObj(\mkw\consts::Szallitasimod, $szallmod->getId());
-        }
-        if (\mkw\store::isOTPay()) {
-            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('otpayfizmod', 0));
-            if ($fizmod) {
-                $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
-            } else {
-                $this->setObj(\mkw\consts::OTPayFizmod, '');
-            }
-        }
-        if (\mkw\store::isMasterPass()) {
-            $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('masterpassfizmod', 0));
-            if ($fizmod) {
-                $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
-            } else {
-                $this->setObj(\mkw\consts::MasterPassFizmod, '');
-            }
         }
         $afa = \mkw\store::getEm()->getRepository(Afa::class)->find($this->params->getIntRequestParam('nullasafa', 0));
         if ($afa) {

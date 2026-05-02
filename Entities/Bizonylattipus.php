@@ -66,8 +66,6 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showbackorder = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $showmesebutton = false;
-    /** @ORM\Column(type="boolean",nullable=false) */
     private $showcsomagbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfeketelistabutton = false;
@@ -118,7 +116,6 @@ class Bizonylattipus
         $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
         $view->setVar('showstorno', $this->getShowstorno());
         $view->setVar('showbackorder', $this->getShowbackorder());
-        $view->setVar('showmesebutton', $this->getShowmesebutton());
         $view->setVar('showcsomagbutton', $this->getShowcsomagbutton());
         $view->setVar('showfeketelistabutton', $this->getShowfeketelistabutton());
         $view->setVar('showkupon', $this->getShowkupon());
@@ -426,22 +423,6 @@ class Bizonylattipus
     public function setFoglal($adat)
     {
         $this->foglal = $adat;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getShowmesebutton()
-    {
-        return $this->showmesebutton;
-    }
-
-    /**
-     * @param mixed $showmesebutton
-     */
-    public function setShowmesebutton($showmesebutton)
-    {
-        $this->showmesebutton = $showmesebutton;
     }
 
     /**

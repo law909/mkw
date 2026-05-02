@@ -181,9 +181,6 @@ class consts
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 
-    const OTPayFizmod = 'otpayfizmod';
-    const MasterPassFizmod = 'masterpassfizmod';
-
     const ValtozatTipusSzin = 'valtozattipusszin';
     const ValtozatTipusMeret = 'valtozattipusmeret';
 

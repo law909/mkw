@@ -1,5 +1,6 @@
 <?php
-return array(
+
+return [
     'Általános adatok' => 'General',
     'Kelt' => 'Issue date',
     'Esedékesség' => 'Payment due',
@@ -58,7 +59,6 @@ return array(
     'Referrer' => 'Referrer',
     'Oka' => 'Reason',
     'Nyomtat' => 'Print',
-    'Mese' => 'Tale',
     'Számlával egy tekintet alá eső okirat' => '',
     'Érvénytelenítő számla' => '',
     'IP' => 'IP',
@@ -332,4 +332,4 @@ return array(
     'Vezető üzletkötő' => '',
     'Több címet is megadhat vesszővel elválasztva.' => '',
     'Spanyolország' => 'Spain'
-);
+];

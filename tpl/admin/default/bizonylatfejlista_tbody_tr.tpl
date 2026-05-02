@@ -68,9 +68,6 @@
                 <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
                    target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
             {/if}
-            {if ($showmesebutton && havejog(99))}
-                <a class="js-mese" href="#" title="{at('Mese')}" data-href="/admin/mese?b={$_egyed.id}"><span class="ui-icon ui-icon-image"></span></a>
-            {/if}
             {if (false && havejog(99) && !$_egyed.vegleges)}
                 <a class="js-vissza" href="#" data-href="/admin/bizvissza?b={$_egyed.id}">V</a>
             {/if}
@@ -91,11 +88,6 @@
         {/if}
         <table>
             <tbody>
-            {if ($_egyed.hashid)}
-                <tr>
-                    <td>{$_egyed.hashid}</td>
-                </tr>
-            {/if}
             {if ($showfelhasznalo)}
                 <tr>
                     <td>{$_egyed.felhasznalonev}</td>
@@ -183,18 +175,6 @@
     <td class="cell">
         <table>
             <tbody>
-            {if ($_egyed.showotpay)}
-                <tr>
-                    <td></td>
-                    <td>{$_egyed.otpayresulttext}</td>
-                </tr>
-            {/if}
-            {if ($setup.fanta && $_egyed.fix)}
-                <tr>
-                    <td></td>
-                    <td>{at('Fix')}</td>
-                </tr>
-            {/if}
             <tr>
                 <td></td>
                 <td>{$_egyed.raktarnev}</td>

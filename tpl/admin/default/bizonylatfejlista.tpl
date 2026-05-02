@@ -17,8 +17,6 @@
         <div id="mattable-filterwrapper">
             <label for="idfilter">{at('Sorszám')}:</label>
             <input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
-            <label for="hashidfilter">{at('Hash')}:</label>
-            <input id="hashidfilter" name="hashidfilter" type="text" size="20" maxlength="10">
             <div class="matt-hseparator"></div>
             <div>
                 <label for="vevonevfilter">{at('Vevő név')}:</label>

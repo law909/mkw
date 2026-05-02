@@ -189,28 +189,6 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($setup.otpay)}
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="OTPayFizmodEdit">{at('OTPay fizetési mód')}:</label></span>
-                                <select id="OTPayFizmodEdit" name="otpayfizmod">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $otpayfizmodlist as $_fizmod}
-                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        {/if}
-                        {if ($setup.masterpass)}
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="MasterPassFizmodEdit">{at('MasterPass fizetési mód')}:</label></span>
-                                <select id="MasterPassFizmodEdit" name="masterpassfizmod">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $masterpassfizmodlist as $_fizmod}
-                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultTermekEdit">{at('Termék')}:</label></span>
                             <select id="defaultTermekEdit" name="defaulttermek">

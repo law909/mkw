@@ -1141,7 +1141,6 @@ var bizonylathelper = function ($) {
                 filter: {
                     fields: [
                         '#idfilter',
-                        '#hashidfilter',
                         '#vevonevfilter',
                         '#vevoemailfilter',
                         '#vevotelefonfilter',
@@ -1189,7 +1188,7 @@ var bizonylathelper = function ($) {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function () {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
-                            '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-mese, ' +
+                            '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email').button();
                     },
                     onDoEditLink: function () {
@@ -1526,66 +1525,6 @@ var bizonylathelper = function ($) {
                                         }
                                     }
                                 });
-                            }
-                        }
-                    });
-                })
-                .on('click', '.js-mese', function (e) {
-                    var $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: $this.data('href'),
-                        type: 'GET',
-                        success: function (d) {
-                            if (d) {
-                                var adat = JSON.parse(d), szoveg = '';
-                                if (adat.qst) {
-                                    if (adat.msg) {
-                                        szoveg = szoveg + adat.msg + '<br>';
-                                    }
-                                    szoveg = szoveg + adat.qst;
-                                    dialogcenter.html(szoveg).dialog({
-                                        resizable: false,
-                                        height: 140,
-                                        modal: true,
-                                        buttons: {
-                                            'Igen': function () {
-                                                var dial = $(this);
-                                                $.ajax({
-                                                    url: $this.data('href'),
-                                                    type: 'GET',
-                                                    data: {
-                                                        mindenaron: 1
-                                                    },
-                                                    success: function () {
-                                                        $('.mattable-tablerefresh').click();
-                                                        dial.dialog('close');
-                                                    }
-                                                });
-                                            },
-                                            'Nem': function () {
-                                                $('.mattable-tablerefresh').click();
-                                                $(this).dialog('close');
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    if (adat.msg) {
-                                        dialogcenter.html(adat.msg).dialog({
-                                            resizable: false,
-                                            height: 140,
-                                            modal: true,
-                                            buttons: {
-                                                'OK': function () {
-                                                    $('.mattable-tablerefresh').click();
-                                                    $(this).dialog('close');
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                $('.mattable-tablerefresh').click();
                             }
                         }
                     });

@@ -376,43 +376,6 @@
                     {/if}
                     </tbody>
                 </table>
-                {if ($egyed.showotpay)}
-                    <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <tbody>
-                        {if ($egyed.fizetve)}
-                            <tr>
-                                <td class='mattable-important'>Fizetve</td>
-                                <td></td>
-                            </tr>
-                        {else}
-                            <tr>
-                                <td class='mattable-important'>Nincs fizetve</td>
-                                <td></td>
-                            </tr>
-                        {/if}
-                        <tr>
-                            <td><label>{at('Merch Trx ID')}:</label></td>
-                            <td>{$egyed.trxid}</td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('OTPay ID')}:</label></td>
-                            <td>{$egyed.otpayid}</td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('OTPay MSISDN')}:</label></td>
-                            <td>{$egyed.otpaymsisdn}</td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('OTPay MPID')}:</label></td>
-                            <td>{$egyed.otpaympid}</td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('OTPay result')}:</label></td>
-                            <td>{$egyed.otpayresulttext}</td>
-                        </tr>
-                        <tbody>
-                    </table>
-                {/if}
                 <div>
                     {foreach $egyed.tetelek as $tetel}
                         {include 'bizonylattetelkarb.tpl'}

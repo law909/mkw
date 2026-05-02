@@ -150,9 +150,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('idfilter', null))) {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
-        if (!is_null($this->params->getRequestParam('hashidfilter', null))) {
-            $filter->addFilter('hashid', 'LIKE', '%' . $this->params->getStringRequestParam('hashidfilter') . '%');
-        }
 
         $f = $this->params->getIntRequestParam('partnerid');
         if ($f) {
@@ -367,7 +364,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $this->getEm()->detach($t);
         }
         $x['id'] = $t->getId();
-        $x['hashid'] = $t->getHashid();
         $x['editprinted'] = $t->getBizonylattipus() ? $t->getBizonylattipus()->getEditprinted() : false;
         $x['nyomtatva'] = $t->getNyomtatva();
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
@@ -473,15 +469,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['ip'] = $t->getIp();
         $x['referrer'] = $t->getReferrer();
         $x['fizetve'] = $t->getFizetve();
-        $x['otpayid'] = $t->getOTPayId();
-        $x['otpaymsisdn'] = $t->getOTPayMSISDN();
-        $x['otpaympid'] = $t->getOTPayMPID();
-        $x['otpayresult'] = $t->getOTPayResult();
-        $x['otpayresulttext'] = $t->getOTPayResultText();
-        $x['showotpay'] = ($t->getFizmodId() == \mkw\store::getParameter(\mkw\consts::OTPayFizmod));
-        $x['trxid'] = $t->getTrxId();
         $x['termekertekelesid'] = $t->getTermekertekelesid();
-        $x['fix'] = $t->getFix();
         $x['uzletkoto'] = $t->getUzletkotoId();
         $x['uzletkotonev'] = $t->getUzletkotonev();
         $x['uzletkotoemail'] = $t->getUzletkotoemail();
@@ -673,8 +661,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
 
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
-
-        $obj->setFix($this->params->getBoolRequestParam('fix'));
 
         $obj->setForditottadozas($this->params->getBoolRequestParam('forditottadozas'));
 

@@ -1271,16 +1271,6 @@ class store
         return self::getSetupValue('arsavok');
     }
 
-    public static function isOTPay()
-    {
-        return self::getSetupValue('otpay');
-    }
-
-    public static function isMasterPass()
-    {
-        return self::getSetupValue('masterpass');
-    }
-
     public static function isEmailTemplateCKEditor()
     {
         return self::getSetupValue('emailtemplateckeditor');
