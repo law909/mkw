@@ -1,10 +1,15 @@
 <?php
+
 namespace Controllers;
 
-class statlapController extends \mkwhelpers\MattableController {
+use Entities\Statlap;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Statlap');
+class statlapController extends \mkwhelpers\MattableController
+{
+
+    public function __construct($params)
+    {
+        $this->setEntityName(Statlap::class);
         $this->setKarbFormTplName('statlapkarbform.tpl');
         $this->setKarbTplName('statlapkarb.tpl');
         $this->setListBodyRowTplName('statlaplista_tbody_tr.tpl');
@@ -12,81 +17,41 @@ class statlapController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
-        $translationsCtrl = new statlaptranslationController($this->params);
-        $translations = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Statlap();
             $this->getEm()->detach($t);
         }
         $x['id'] = $t->getId();
         $x['oldalcim'] = $t->getOldalcim();
+        $x['oldalcim_l1'] = $t->getOldalcim_l1();
         $x['slug'] = $t->getSlug();
         $x['szoveg'] = $t->getSzoveg();
+        $x['szoveg_l1'] = $t->getSzoveg_l1();
         $x['seodescription'] = $t->getSeodescription();
         $x['oldurl'] = $t->getOldurl();
-        if (\mkw\store::isMultilang()) {
-            foreach($t->getTranslations() as $tr) {
-                $translations[] = $translationsCtrl->loadVars($tr, true);
-            }
-            $x['translations'] = $translations;
-        }
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
         $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
+        $obj->setOldalcim_l1($this->params->getStringRequestParam('oldalcim_l1'));
+        $obj->setSzoveg_l1($this->params->getOriginalStringRequestParam('szoveg_l1'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->setOldurl($this->params->getStringRequestParam('oldurl'));
-        if (\mkw\store::isMultilang()) {
-            $_tf = \Entities\Statlap::getTranslatedFields();
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            foreach ($translationids as $translationid) {
-                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
-                $mezotype = $_tf[$mezo]['type'];
-                switch ($mezotype) {
-                    case 1:
-                    case 3:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    case 2:
-                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    default:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                }
-                if ($oper === 'add') {
-                    $translation = new \Entities\StatlapTranslation(
-                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
-                        $mezo,
-                        $mezoertek
-                    );
-                    $obj->addTranslation($translation);
-                    $this->getEm()->persist($translation);
-                }
-                elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository('Entities\StatlapTranslation')->find($translationid);
-                    if ($translation) {
-                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField($mezo);
-                        $translation->setContent($mezoertek);
-                        $this->getEm()->persist($translation);
-                    }
-                }
-            }
-        }
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('statlaplista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('oldalcim', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
@@ -96,19 +61,22 @@ class statlapController extends \mkwhelpers\MattableController {
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('statlaplista.tpl');
 
         $view->setVar('pagetitle', t('Statikus lapok'));
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('statlaplista.tpl');
 
         $view->setVar('pagetitle', t('Statikus lapok'));
@@ -117,7 +85,8 @@ class statlapController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -130,15 +99,18 @@ class statlapController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getstatlap($statlap) {
-        $t = array();
-        $t['szoveg'] = $statlap->getSzoveg();
-        $t['oldalcim'] = $statlap->getOldalcim();
+    public function getstatlap(Statlap $statlap)
+    {
+        $t = [];
+        $t['szoveg'] = $statlap->getLocalizedFieldValue('szoveg');
+        $t['oldalcim'] = $statlap->getLocalizedFieldValue('oldalcim');
         return $t;
     }
 
-    public function show() {
+    public function show()
+    {
         $com = $this->params->getStringParam('lap');
+        /** @var Statlap $statlap */
         $statlap = $this->getRepo()->findOneBySlug($com);
         if ($statlap) {
             $view = $this->getTemplateFactory()->createMainView('statlap.tpl');
@@ -147,44 +119,45 @@ class statlapController extends \mkwhelpers\MattableController {
             $view->setVar('seodescription', $statlap->getShowSeodescription());
             $view->setVar('statlap', $this->getstatlap($statlap));
             $view->printTemplateResult(true);
-        }
-        else {
+        } else {
             \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
-    public function showPopup() {
+    public function showPopup()
+    {
         $com = $this->params->getStringParam('lap');
+        /** @var Statlap $statlap */
         $statlap = $this->getRepo()->findOneBySlug($com);
         if ($statlap) {
             $view = $this->getTemplateFactory()->createMainView('statlappopup.tpl');
             \mkw\store::fillTemplate($view);
-            $view->setVar('szoveg', $statlap->getSzoveg());
+            $view->setVar('szoveg', $statlap->getLocalizedFieldValue('szoveg'));
             $view->printTemplateResult(false);
-        }
-        else {
+        } else {
             echo '';
         }
     }
 
-    public function redirectOldUrl() {
+    public function redirectOldUrl()
+    {
         $lapid = $this->params->getStringRequestParam('page');
         if ($lapid) {
             switch ($lapid) {
                 case 'hirek':
-                    $newlink = \mkw\store::getRouter()->generate('showhirlist', false, array());
+                    $newlink = \mkw\store::getRouter()->generate('showhirlist', false, []);
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . $newlink);
                     return;
                 case 'markak':
-                    $newlink = \mkw\store::getRouter()->generate('markak', false, array());
+                    $newlink = \mkw\store::getRouter()->generate('markak', false, []);
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . $newlink);
                     return;
                 default:
                     $lap = $this->getRepo()->findOneByOldurl($lapid);
                     if ($lap) {
-                        $newlink = \mkw\store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
+                        $newlink = \mkw\store::getRouter()->generate('showstatlap', false, ['lap' => $lap->getSlug()]);
                         header("HTTP/1.1 301 Moved Permanently");
                         header('Location: ' . $newlink);
                         return;
@@ -195,15 +168,16 @@ class statlapController extends \mkwhelpers\MattableController {
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('oldalcim' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['oldalcim' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getOldalcim(),
                 'selected' => ($sor->getId() == $selid)
-            );
+            ];
         }
         return $res;
     }

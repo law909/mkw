@@ -67,10 +67,10 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl', 'locale', '' . "\0" . 'Entities\\Statlap' . "\0" . 'translations'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim_l1', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg_l1', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl', 'locale', '' . "\0" . 'Entities\\Statlap' . "\0" . 'translations'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim_l1', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg_l1', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl'];
     }
 
     /**
@@ -206,6 +206,17 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getOldalcim_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim_l1', []);
+
+        return parent::getOldalcim_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getShowOldalcim()
     {
 
@@ -223,6 +234,17 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', [$adat]);
 
         return parent::setOldalcim($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOldalcim_l1($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim_l1', [$adat]);
+
+        return parent::setOldalcim_l1($adat);
     }
 
     /**
@@ -267,6 +289,28 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', [$adat]);
 
         return parent::setSzoveg($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzoveg_l1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg_l1', []);
+
+        return parent::getSzoveg_l1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzoveg_l1($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg_l1', [$adat]);
+
+        return parent::setSzoveg_l1($adat);
     }
 
     /**
@@ -349,56 +393,12 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getTranslations()
+    public function getFieldValue($fieldName)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFieldValue', [$fieldName]);
 
-        return parent::getTranslations();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addTranslation(\Entities\StatlapTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
-
-        return parent::addTranslation($t);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeTranslation(\Entities\StatlapTranslation $t)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
-
-        return parent::removeTranslation($t);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLocale()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
-
-        return parent::getLocale();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLocale($locale)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
-
-        return parent::setLocale($locale);
+        return parent::getFieldValue($fieldName);
     }
 
 }

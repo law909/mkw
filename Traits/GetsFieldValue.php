@@ -8,4 +8,12 @@ trait GetsFieldValue
     {
         return $this->$fieldName;
     }
+
+    public function getLocalizedFieldValue($fieldname, $locale = null)
+    {
+        if (!$locale) {
+            $locale = \mkw\store::getMainLocale();
+        }
+        return $this->getFieldValue(\mkw\store::getLocalizedFieldName($fieldname, $locale));
+    }
 }

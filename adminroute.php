@@ -652,26 +652,6 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekmenutranslation/save', 'termekmenutranslationController#save', 'admintermekmenutranslationsave');
 }
 
-$router->map('GET', '/admin/statlaptranslation/getemptyrow', 'statlaptranslationController#getemptyrow', 'adminstatlaptranslationgetemptyrow');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/statlaptranslation/save', 'statlaptranslationController#save', 'adminstatlaptranslationsave');
-}
-
-$router->map('GET', '/admin/fizmodtranslation/getemptyrow', 'fizmodtranslationController#getemptyrow', 'adminfizmodtranslationgetemptyrow');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/fizmodtranslation/save', 'fizmodtranslationController#save', 'adminfizmodtranslationsave');
-}
-
-$router->map(
-    'GET',
-    '/admin/szallitasimodtranslation/getemptyrow',
-    'szallitasimodtranslationController#getemptyrow',
-    'adminszallitasimodtranslationgetemptyrow'
-);
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/szallitasimodtranslation/save', 'szallitasimodtranslationController#save', 'adminszallitasimodtranslationsave');
-}
-
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');

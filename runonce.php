@@ -629,6 +629,21 @@ if ($DBVersion < '0069') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0069');
 }
 
+if ($DBVersion < '0070') {
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM statlap_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE statlap SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `statlap_translations`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0070');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
