@@ -287,6 +287,9 @@ class store
         if (!array_key_exists('stripe', self::$setup)) {
             self::$setup['stripe'] = false;
         }
+        if (!array_key_exists('barion', self::$setup)) {
+            self::$setup['barion'] = false;
+        }
         if (self::$setup['barion'] && self::$setup['stripe']) {
             self::$setup['stripe'] = false;
         }
