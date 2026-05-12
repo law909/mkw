@@ -1488,6 +1488,11 @@ class store
         return $i == self::getParameter(\mkw\consts::SportkartyaFizmod);
     }
 
+    public static function isGalad()
+    {
+        return self::getTheme() === 'galad';
+    }
+
     public static function isSuperzoneB2B()
     {
         return self::getTheme() === 'superzoneb2b';
