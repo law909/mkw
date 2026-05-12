@@ -334,11 +334,6 @@ class megrendelesfejController extends bizonylatfejController
                             $ujtetel->duplicateFrom($regitetel);
                             $ujtetel->clearCreated();
                             $ujtetel->clearLastmod();
-                            foreach ($regitetel->getTranslations() as $trans) {
-                                $ujtrans = clone $trans;
-                                $ujtetel->addTranslation($ujtrans);
-                                $this->getEm()->persist($ujtrans);
-                            }
                             $ujtetel->setMennyiseg($regitetel->getMennyiseg() - $keszlet);
                             $ujtetel->calc();
                             $ujbiz->addBizonylattetel($ujtetel);

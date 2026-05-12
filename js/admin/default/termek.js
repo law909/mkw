@@ -164,7 +164,6 @@ $(document).ready(function () {
         newWindowUrl: '/admin/termek/viewkarb',
         saveUrl: '/admin/termek/save',
         beforeShow: function () {
-            var translationtab = $('#TranslationTab');
             var artab = $('#ArsavTab');
             var keptab = $('#KepTab');
             var kapcsolodotab = $('#KapcsolodoTab');
@@ -410,75 +409,6 @@ $(document).ready(function () {
                     }
                 });
             $('.js-arnewbutton,.js-ardelbutton').button();
-            translationtab.on('click', '.js-translationnewbutton', function (e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/termektranslation/getemptyrow',
-                    type: 'GET',
-                    success: function (data) {
-                        var tbody = $('#TranslationTab');
-                        tbody.append(data);
-                        $('.js-translationnewbutton,.js-translationdelbutton').button();
-                        $this.remove();
-                    }
-                });
-            })
-                .on('click', '.js-translationdelbutton', function (e) {
-                    e.preventDefault();
-                    var translationgomb = $(this),
-                        translationid = translationgomb.attr('data-id'),
-                        egyedid = translationgomb.attr('data-egyedid');
-                    if (translationgomb.attr('data-source') === 'client') {
-                        $('#translationtable_' + translationid).remove();
-                    } else {
-                        dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'Igen': function () {
-                                    $.ajax({
-                                        url: '/admin/termektranslation/save',
-                                        type: 'POST',
-                                        data: {
-                                            id: translationid,
-                                            egyedid: egyedid,
-                                            oper: 'del'
-                                        },
-                                        success: function (data) {
-                                            $('#translationtable_' + data).remove();
-                                        }
-                                    });
-                                    $(this).dialog('close');
-                                },
-                                'Nem': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                })
-                .on('change', '.js-fieldselect', function (e) {
-                    var $this = $(this),
-                        x = $('option:selected', $this).val(),
-                        editor;
-                    if (!$.browser.mobile) {
-                        if (x === 'leiras') {
-                            editor = $('.js-contenteditor_' + $this.data('id'));
-                            editor.addClass('js-ckeditor');
-                            editor.ckeditor();
-                        } else {
-                            editor = $('.js-contenteditor_' + $this.data('id'));
-                            if (editor && editor.hasClass('js-ckeditor')) {
-                                editor.removeClass('js-ckeditor');
-                                editor = editor.ckeditorGet();
-                                editor.destroy();
-                            }
-                        }
-                    }
-                });
-            $('.js-translationnewbutton,.js-translationdelbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
@@ -781,7 +711,6 @@ $(document).ready(function () {
                 .button();
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
-                $('#LeirasEdit').ckeditor();
                 $('.js-ckeditor').each(function () {
                     $(this).ckeditor();
                 });
@@ -816,10 +745,6 @@ $(document).ready(function () {
         beforeHide: function () {
             var editor;
             if (!$.browser.mobile) {
-                editor = $('#LeirasEdit').ckeditorGet();
-                if (editor) {
-                    editor.destroy();
-                }
                 $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
                     if (editor) {

@@ -674,6 +674,39 @@ if ($DBVersion < '0072') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0072');
 }
 
+if ($DBVersion < '0073') {
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM bizonylattetel_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylattetel SET ' . $fm['field'] . '_l1=\'' . $fm['content'] . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `bizonylattetel_translations`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0073');
+}
+
+if ($DBVersion < '0074') {
+    $fms = \mkw\store::getEm()->getConnection()->executeQuery('SELECT * FROM termek_translations')->fetchAllAssociative();
+    foreach ($fms as $fm) {
+        $escapedContent = addslashes($fm['content']);
+        if ($fm['field'] == 'rovidleiras') {
+            $escapedContent = mb_substr($escapedContent, 0, 255);
+        }
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE termek SET ' . $fm['field'] . '_l1=\'' . $escapedContent . '\' WHERE id=' . $fm['object_id']
+        );
+    }
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DROP TABLE IF EXISTS `termek_translations`'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0074');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

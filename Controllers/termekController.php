@@ -4,22 +4,24 @@ namespace Controllers;
 
 use Entities\Afa;
 use Entities\Arsav;
+use Entities\ME;
 use Entities\Meret;
 use Entities\Partner;
 use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\Termekcimketorzs;
+use Entities\Termekcsoport;
 use Entities\TermekDok;
 use Entities\TermekFa;
 use Entities\TermekKapcsolodo;
 use Entities\TermekKep;
 use Entities\TermekMenu;
-use Entities\TermekTranslation;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
+use Entities\Vtsz;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -48,20 +50,22 @@ class termekController extends \mkwhelpers\MattableController
         $kepCtrl = new termekkepController($this->params);
         $valtozatCtrl = new termekvaltozatController($this->params);
         $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
-        $translationsCtrl = new termektranslationController($this->params);
         $dokCtrl = new termekdokController($this->params);
         $ar = [];
         $kep = [];
         $valtozat = [];
         $lvaltozat = [];
         $kapcsolodo = [];
-        $translations = [];
         $dok = [];
         if (!$t) {
             $t = new \Entities\Termek();
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
+        $x['nev_locale'] = $t->getLocalizedFieldValue('nev');
+        $x['leiras_locale'] = $t->getLocalizedFieldValue('leiras');
+        $x['rovidleiras_locale'] = $t->getLocalizedFieldValue('rovidleiras');
+        $x['oldalcim_locale'] = $t->getLocalizedFieldValue('oldalcim');
         $x['vtsznev'] = $t->getVtszNev();
         $x['afanev'] = $t->getAfaNev();
         if (!\mkw\store::isArsavok()) {
@@ -176,12 +180,6 @@ class termekController extends \mkwhelpers\MattableController
                 }
                 $x['arak'] = $ar;
             }
-            if (\mkw\store::isMultilang()) {
-                foreach ($t->getTranslations() as $tr) {
-                    $translations[] = $translationsCtrl->loadVars($tr, true);
-                }
-                $x['translations'] = $translations;
-            }
         }
         return $x;
     }
@@ -194,41 +192,38 @@ class termekController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $oldnemkaphato = $obj->getNemkaphato();
-        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find($this->params->getIntRequestParam('vtsz'));
+        $vtsz = \mkw\store::getEm()->getRepository(Vtsz::class)->find($this->params->getIntRequestParam('vtsz'));
         if ($vtsz) {
             $obj->setVtsz($vtsz);
         }
-        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+        $afa = \mkw\store::getEm()->getRepository(Afa::class)->find($this->params->getIntRequestParam('afa'));
         if ($afa) {
             $obj->setAfa($afa);
         }
-        $valt = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus'));
+        $valt = \mkw\store::getEm()->getRepository(TermekValtozatAdatTipus::class)->find($this->params->getIntRequestParam('valtozatadattipus'));
         if ($valt) {
             $obj->setValtozatadattipus($valt);
         } else {
             $obj->setValtozatadattipus(null);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
+        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('gyarto'));
         if ($ck) {
             $obj->setGyarto($ck);
         } else {
             $obj->setGyarto(null);
         }
-        $csoport = $this->getRepo('Entities\Termekcsoport')->find($this->params->getIntRequestParam('termekcsoport'));
+        $csoport = $this->getRepo(Termekcsoport::class)->find($this->params->getIntRequestParam('termekcsoport'));
         if ($csoport) {
             $obj->setTermekcsoport($csoport);
         } else {
             $obj->setTermekcsoport(null);
         }
-        $me = \mkw\store::getEm()->getRepository('Entities\ME')->find($this->params->getIntRequestParam('me'));
+        $me = \mkw\store::getEm()->getRepository(ME::class)->find($this->params->getIntRequestParam('me'));
         if ($me) {
             $obj->setMekod($me);
         }
         $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNev2($this->params->getStringRequestParam('nev2'));
-        $obj->setNev3($this->params->getStringRequestParam('nev3'));
-        $obj->setNev4($this->params->getStringRequestParam('nev4'));
-        $obj->setNev5($this->params->getStringRequestParam('nev5'));
+        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
         $obj->setKiirtnev($this->params->getStringRequestParam('kiirtnev'));
         $obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
         $obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
@@ -237,6 +232,9 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
         $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
+        $obj->setOldalcim_l1($this->params->getStringRequestParam('oldalcim_l1'));
+        $obj->setRovidleiras_l1($this->params->getStringRequestParam('rovidleiras_l1'));
+        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->setFeltoltheto($this->params->getBoolRequestParam('feltoltheto'));
         $obj->setFeltoltheto2($this->params->getBoolRequestParam('feltoltheto2'));
@@ -497,44 +495,6 @@ class termekController extends \mkwhelpers\MattableController
                             $ar->setValutanem($valutanem);
                         }
                         $this->getEm()->persist($ar);
-                    }
-                }
-            }
-        }
-        if (\mkw\store::isMultilang()) {
-            $_tf = \Entities\Termek::getTranslatedFields();
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            foreach ($translationids as $translationid) {
-                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
-                $mezotype = $_tf[$mezo]['type'];
-                switch ($mezotype) {
-                    case 1:
-                    case 3:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    case 2:
-                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                    default:
-                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
-                        break;
-                }
-                if ($oper === 'add') {
-                    $translation = new \Entities\TermekTranslation(
-                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
-                        $mezo,
-                        $mezoertek
-                    );
-                    $obj->addTranslation($translation);
-                    $this->getEm()->persist($translation);
-                } elseif ($oper === 'edit') {
-                    $translation = $this->getEm()->getRepository(TermekTranslation::class)->find($translationid);
-                    if ($translation) {
-                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField($mezo);
-                        $translation->setContent($mezoertek);
-                        $this->getEm()->persist($translation);
                     }
                 }
             }
@@ -926,7 +886,7 @@ class termekController extends \mkwhelpers\MattableController
 
         $fv = $this->params->getArrayRequestParam('cimkefilter');
         if (!empty($fv)) {
-            $res = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimke($fv);
+            $res = \mkw\store::getEm()->getRepository(Termekcimketorzs::class)->getTermekIdsWithCimke($fv);
             $cimkefilter = [];
             foreach ($res as $sor) {
                 $cimkefilter[] = $sor['id'];
@@ -1833,9 +1793,8 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($kepek as $kep) {
                 $kepurlarr[] = \mkw\store::getFullUrl($kep->getUrl(), \mkw\store::getConfigValue('mainurl'));
             }
-            $ford = $termek->getTranslationsArray();
-            $nev = $termek->getNevForditas($ford, 'en_us');
-            $leiras = $termek->getLeirasForditas($ford, 'en_us');
+            $nev = $termek->getLocalizedFieldValue('nev', 'en_us');
+            $leiras = $termek->getLocalizedFieldValue('leiras', 'en_us');
 
             if ($termek->getValtozatok()) {
                 /** @var TermekValtozat $valtozat */
@@ -1921,15 +1880,12 @@ class termekController extends \mkwhelpers\MattableController
         $sor = 3;
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
-            $ford = $termek->getTranslationsArray();
-            $nev = $termek->getNevForditas($ford, 'en_us');
-            $leiras = $termek->getLeirasForditas($ford, 'en_us');
+            $nev = $termek->getLocalizedFieldValue('nev', 'en_us');
+            $leiras = $termek->getLocalizedFieldValue('leiras', 'en_us');
 
             if ($termek->getValtozatok()) {
                 /** @var TermekFa $kat */
                 $kat = $termek->getTermekfa1();
-                $kattrans = $kat->getTranslationsArray();
-                $termektrans = $termek->getTranslationsArray();
                 /** @var TermekValtozat $valtozat */
                 foreach ($termek->getValtozatok() as $valtozat) {
                     if (!$valtozat->getVonalkod()) {
@@ -1939,8 +1895,8 @@ class termekController extends \mkwhelpers\MattableController
                             ->setCellValue('C' . $sor, 'Alap')
                             ->setCellValue('E' . $sor, '10003707')
                             ->setCellValue('F' . $sor, 'MUGENRACE')
-                            ->setCellValue('G' . $sor, $termektrans['en_us']['nev']) // Almárka
-                            ->setCellValue('H' . $sor, $kattrans['en_us']['nev'])
+                            ->setCellValue('G' . $sor, $termek->getLocalizedFieldValue('nev', 'en_us')) // Almárka
+                            ->setCellValue('H' . $sor, $kat->getLocalizedFieldValue('nev', 'en_us'))
                             ->setCellValue('I' . $sor, 'Angol')
                             ->setCellValue('J' . $sor, $valtozat->getSzin() . ' ' . $valtozat->getMeret())
                             ->setCellValue('K' . $sor, 'Angol')

@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use Traits\GetsFieldValue;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
@@ -22,18 +23,12 @@ use mkwhelpers\FilterDescriptor;
  * 		@ORM\index(name="termekidegencikkszamgyarto_idx",columns={"idegencikkszam","gyarto_id"}),
  *      @ORM\index(name="termekidegenkod_idx",columns={"idegenkod"})
  * })
- * @Gedmo\TranslationEntity(class="Entities\TermekTranslation")
  * @ORM\HasLifecycleCallbacks
  */
 class Termek
 {
 
-    private static $translatedFields = [
-        'nev' => ['caption' => 'Név', 'type' => 1],
-        'leiras' => ['caption' => 'Leírás', 'type' => 2],
-        'rovidleiras' => ['caption' => 'Rövid leírás', 'type' => 1],
-        'oldalcim' => ['caption' => 'Oldalcím', 'type' => 1]
-    ];
+    use GetsFieldValue;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -56,28 +51,11 @@ class Termek
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev = '';
 
-    /**
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $nev2 = '';
-    /**
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $nev3 = '';
-    /**
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $nev4 = '';
-    /**
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $nev5 = '';
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $nev_l1 = '';
 
     /**
      * @Gedmo\Translatable
@@ -140,23 +118,23 @@ class Termek
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $vonalkod = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text",nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
     private $leiras = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="text",nullable=true) */
+    private $leiras_l1 = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $rovidleiras = '';
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=true)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $rovidleiras_l1 = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $oldalcim = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $oldalcim_l1 = '';
 
     /**
      * @ORM\Column(type="text",nullable=true)
@@ -377,17 +355,11 @@ class Termek
     /** @ORM\OneToMany(targetEntity="TermekAr", mappedBy="termek", cascade={"persist", "remove"}) */
     private $termekarak;
 
-    /** @ORM\OneToMany(targetEntity="TermekTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
-
     /**
      * @ORM\ManyToOne(targetEntity="Termekcsoport")
      * @ORM\JoinColumn(name="termekcsoport_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekcsoport;
-
-    /** @Gedmo\Locale */
-    protected $locale;
 
     /** @ORM\Column(type="boolean") */
     private $kozvetitett = 0;
@@ -456,24 +428,6 @@ class Termek
         return (string)$this->id . ' - ' . $this->nev;
     }
 
-    public static function getTranslatedFields()
-    {
-        return self::$translatedFields;
-    }
-
-    public static function getTranslatedFieldsSelectList($sel = null)
-    {
-        $ret = [];
-        foreach (self::$translatedFields as $k => $v) {
-            $ret[] = [
-                'id' => $k,
-                'caption' => $v['caption'],
-                'selected' => ($k === $sel)
-            ];
-        }
-        return $ret;
-    }
-
     /**
      * @ORM\PrePersist
      */
@@ -513,7 +467,6 @@ class Termek
         $this->altermekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekarak = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->blogposztok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertekelesek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1244,12 +1197,6 @@ class Termek
         return $this->id;
     }
 
-    public function getTranslatedNev($locale)
-    {
-        $ta = $this->getTranslationsArray();
-        return $ta[$locale]['nev'];
-    }
-
     public function getNev()
     {
         return $this->nev;
@@ -1258,6 +1205,16 @@ class Termek
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getNev_l1()
+    {
+        return $this->nev_l1;
+    }
+
+    public function setNev_l1($nev)
+    {
+        $this->nev_l1 = $nev;
     }
 
     public function getMekod()
@@ -1397,6 +1354,16 @@ class Termek
         $this->leiras = $leiras;
     }
 
+    public function getLeiras_l1()
+    {
+        return $this->leiras_l1;
+    }
+
+    public function setLeiras_l1($leiras)
+    {
+        $this->leiras_l1 = $leiras;
+    }
+
     public function getRovidleiras()
     {
         return $this->rovidleiras;
@@ -1405,6 +1372,16 @@ class Termek
     public function setRovidleiras($rovidleiras)
     {
         $this->rovidleiras = $rovidleiras;
+    }
+
+    public function getRovidleiras_l1()
+    {
+        return $this->rovidleiras_l1;
+    }
+
+    public function setRovidleiras_l1($rovidleiras)
+    {
+        $this->rovidleiras_l1 = $rovidleiras;
     }
 
     public function getOldalcim()
@@ -1434,6 +1411,16 @@ class Termek
     public function setOldalcim($oldalcim)
     {
         $this->oldalcim = $oldalcim;
+    }
+
+    public function getOldalcim_l1()
+    {
+        return $this->oldalcim_l1;
+    }
+
+    public function setOldalcim_l1($oldalcim)
+    {
+        $this->oldalcim_l1 = $oldalcim;
     }
 
     public function getSeodescription()
@@ -2697,44 +2684,6 @@ class Termek
         return false;
     }
 
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function getTranslationsArray()
-    {
-        $r = [];
-        /** @var \Entities\TermekTranslation $tr */
-        foreach ($this->translations as $tr) {
-            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
-        }
-        return $r;
-    }
-
-    public function addTranslation(TermekTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(TermekTranslation $t)
-    {
-        $this->translations->removeElement($t);
-    }
-
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
     /**
      * @return \Entities\Termekcsoport
      */
@@ -2812,70 +2761,6 @@ class Termek
     public function setMigrid($migrid)
     {
         $this->migrid = $migrid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNev2()
-    {
-        return $this->nev2;
-    }
-
-    /**
-     * @param mixed $nev2
-     */
-    public function setNev2($nev2)
-    {
-        $this->nev2 = $nev2;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNev3()
-    {
-        return $this->nev3;
-    }
-
-    /**
-     * @param mixed $nev3
-     */
-    public function setNev3($nev3)
-    {
-        $this->nev3 = $nev3;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNev4()
-    {
-        return $this->nev4;
-    }
-
-    /**
-     * @param mixed $nev4
-     */
-    public function setNev4($nev4)
-    {
-        $this->nev4 = $nev4;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNev5()
-    {
-        return $this->nev5;
-    }
-
-    /**
-     * @param mixed $nev5
-     */
-    public function setNev5($nev5)
-    {
-        $this->nev5 = $nev5;
     }
 
     /**

@@ -2,12 +2,20 @@
 
 namespace Controllers;
 
+use Entities\Afa;
+use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
+use Entities\Partner;
+use Entities\Termek;
+use Entities\TermekValtozat;
+use Entities\Valutanem;
+
 class bizonylattetelController extends \mkwhelpers\MattableController
 {
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Bizonylattetel');
+        $this->setEntityName(Bizonylattetel::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
@@ -35,6 +43,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['termek'] = $t->getTermekId();
         $x['termekvaltozat'] = $t->getTermekvaltozatId();
         $x['termeknev'] = $t->getTermeknev();
+        $x['termeknev_l1'] = $t->getTermeknev_l1();
+        $x['termeknev_locale'] = $t->getLocalizedFieldValue('termeknev');
         $x['cikkszam'] = $t->getCikkszam();
         $x['mozgat'] = $t->getMozgat();
         $x['me'] = $t->getME();
@@ -117,7 +127,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $tetel = $this->loadVars(null, true);
         $view->setVar('tetel', $tetel);
         /** @var \Entities\Bizonylattipus $bt */
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($biztipus);
         $bt->setTemplateVars($view);
         echo $view->getTemplateResult();
     }
@@ -127,7 +137,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $biztipus = $this->params->getStringRequestParam('type');
         $view = $this->createView('bizonylattetelquickkarb.tpl');
         $view->setVar('tetel', $this->loadVars(null, true));
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($biztipus);
         $bt->setTemplateVars($view);
         echo $view->getTemplateResult();
     }
@@ -136,12 +146,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
-            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
-            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {
-                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
             }
             if ($termek) {
                 $r = [
@@ -164,12 +174,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         } // Vannak ársávok
         else {
             /** @var \Entities\Termek $termek */
-            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
-            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {
-                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
             }
             if ($termek) {
                 $r = [
@@ -194,7 +204,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
     public function calcAr($afaid, $arfolyam, $nettoegysar, $enettoegysar, $mennyiseg)
     {
-        $afaent = $this->getEm()->getRepository('Entities\Afa')->find($afaid);
+        $afaent = $this->getEm()->getRepository(Afa::class)->find($afaid);
         $bruttoegysar = 0;
         $ebruttoegysar = 0;
         if ($afaent) {

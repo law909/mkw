@@ -15,9 +15,7 @@
             {if ($setup.arsavok)}
                 <li><a href="#ArsavTab">{at('Ársávok')}</a></li>
             {/if}
-            {if ($setup.multilang)}
-                <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
-            {/if}
+            <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
             <li><a href="#CimkeTab">{at('Címkék')}</a></li>
             <li><a href="#KepTab">{at('Képek')}</a></li>
             {if ($setup.termekvaltozat)}
@@ -234,16 +232,28 @@
                 </a>
             </div>
         {/if}
-        {if ($setup.multilang)}
-            <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.translations as $translation}
-                    {include 'translationkarb.tpl'}
-                {/foreach}
-                <a class="js-translationnewbutton" href="#" title="{at('Új')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
+        <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <label for="NevL1Edit">{at('Név')}:</label>
+                <input id="NevL1Edit" name="nev_l1" type="text" size="83" maxlength="255" value="{$egyed.nev_l1}">
             </div>
-        {/if}
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="RovidleirasL1Edit">{at('Rövid leírás')}:</label>
+                <input id="RovidleirasL1Edit" name="rovidleiras_l1" type="text" size="100" maxlength="255" value="{$egyed.rovidleiras_l1}">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="OldalCimL1Edit">{at('Lap címe')}:</label>
+                <input id="OldalCimL1Edit" name="oldalcim_l1" type="text" size="100" maxlength="255"
+                       value="{$egyed.oldalcim_l1}">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="LeirasL1Edit">{at('Leírás')}:</label>
+                <textarea id="LeirasL1Edit" name="leiras_l1" class="js-ckeditor">{$egyed.leiras_l1}</textarea>
+            </div>
+        </div>
         <div id="CimkeTab" class="mattkarb-page" data-visible="visible">
             <div id="cimkekarbcontainer">
                 <div id="cimkekarbcontainerhead"><a id="cimkekarbcollapse" href="#">{at('Kinyit/becsuk')}</a></div>
@@ -515,7 +525,7 @@
                 </tr>
                 <tr>
                     <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
+                    <td><textarea id="LeirasEdit" name="leiras" class="js-ckeditor">{$egyed.leiras}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>

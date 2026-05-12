@@ -5,13 +5,14 @@ namespace Entities;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
+use Traits\GetsFieldValue;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattetelRepository")
  * @ORM\Table(name="bizonylattetel",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
- * @Gedmo\TranslationEntity(class="Entities\BizonylattetelTranslation")
  */
 class Bizonylattetel
 {
+    use GetsFieldValue;
 
     private $duplication;
     private $vanmozgatoos;
@@ -71,11 +72,11 @@ class Bizonylattetel
      */
     private $termek;
 
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
     private $termeknev;
+
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $termeknev_l1;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $me;
@@ -252,9 +253,6 @@ class Bizonylattetel
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $valtozatertek2;
 
-    /** @ORM\OneToMany(targetEntity="BizonylattetelTranslation", mappedBy="object", cascade={"persist", "remove"}) */
-    private $translations;
-
     /**
      * @ORM\ManyToOne(targetEntity="Termekcsoport")
      * @ORM\JoinColumn(name="termekcsoport_id",referencedColumnName="id",onDelete="restrict")
@@ -264,9 +262,6 @@ class Bizonylattetel
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekcsoportnev;
-
-    /** @Gedmo\Locale */
-    protected $locale;
 
     /**
      * @ORM\Column(type="string",length=6,nullable=true)
@@ -292,7 +287,6 @@ class Bizonylattetel
     public function __construct()
     {
         $this->szulobizonylattetelek = new ArrayCollection();
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function toBarionModel()
@@ -338,18 +332,7 @@ class Bizonylattetel
         $ret['brutto'] = $this->getBrutto();
         $ret['kedvezmeny'] = $this->getKedvezmeny();
         $nyelv = $this->getBizonylatfej()?->getBizonylatnyelv();
-        if (\mkw\store::isMultilang() && $nyelv) {
-            $tn = $this->getTranslatedTermeknev($nyelv);
-            if (!$tn) {
-                $tn = $this->getTermek()->getTranslatedNev($nyelv);
-                if (!$tn) {
-                    $tn = $this->getTermeknev();
-                }
-            }
-            $ret['termeknev'] = $tn;
-        } else {
-            $ret['termeknev'] = $this->getTermeknev();
-        }
+        $ret['termeknev'] = $this->getLocalizedFieldValue('termeknev', $nyelv);
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
         $ret['vtszszam'] = $this->getVtszszam();
@@ -696,6 +679,7 @@ class Bizonylattetel
                     } else {
                         $this->setTermeknev($val->getNev());
                     }
+                    $this->setTermeknev_l1($val->getNev_l1());
                     $this->setCikkszam($val->getCikkszam());
                     $this->setHosszusag($val->getHosszusag());
                     $this->setEhparany($val->getHparany());
@@ -739,6 +723,7 @@ class Bizonylattetel
             $this->termek = null;
             if (!$this->duplication) {
                 $this->termeknev = '';
+                $this->termeknev_l1 = '';
                 $this->cikkszam = '';
                 $this->hosszusag = 0;
                 $this->ehparany = 0;
@@ -757,18 +742,13 @@ class Bizonylattetel
         }
     }
 
+    // TODO locale
     public function getFullTermeknev()
     {
         if ($this->getTermekvaltozat()) {
             $valtnev = $this->getTermekvaltozat()->getNev();
         }
         return implode(' ', [$this->getTermeknev(), $valtnev]);
-    }
-
-    public function getTranslatedTermeknev($locale)
-    {
-        $ta = $this->getTranslationsArray();
-        return $ta[$locale]['termeknev'];
     }
 
     public function getTermeknev()
@@ -779,6 +759,16 @@ class Bizonylattetel
     public function setTermeknev($val)
     {
         $this->termeknev = $val;
+    }
+
+    public function getTermeknev_l1()
+    {
+        return $this->termeknev_l1;
+    }
+
+    public function setTermeknev_l1($val)
+    {
+        $this->termeknev_l1 = $val;
     }
 
     public function getCikkszam()
@@ -837,11 +827,9 @@ class Bizonylattetel
         }
         if (!$mekod) {
             $this->removeMekod();
-        } else {
-            if ($this->mekod !== $mekod) {
-                $this->mekod = $mekod;
-                $this->me = $mekod->getNev();
-            }
+        } elseif ($this->mekod !== $mekod) {
+            $this->mekod = $mekod;
+            $this->me = $mekod->getNev();
         }
     }
 
@@ -1414,34 +1402,6 @@ class Bizonylattetel
         $this->rontott = $adat;
     }
 
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    public function getTranslationsArray()
-    {
-        $r = [];
-        /** @var \Entities\BizonylattetelTranslation $tr */
-        foreach ($this->translations as $tr) {
-            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
-        }
-        return $r;
-    }
-
-    public function addTranslation(BizonylattetelTranslation $t)
-    {
-        if (!$this->translations->contains($t)) {
-            $this->translations[] = $t;
-            $t->setObject($this);
-        }
-    }
-
-    public function removeTranslation(BizonylattetelTranslation $t)
-    {
-        $this->translations->removeElement($t);
-    }
-
     public function getTermekcsoport()
     {
         return $this->termekcsoport;
@@ -1458,16 +1418,6 @@ class Bizonylattetel
         } else {
             $this->termekcsoportnev = '';
         }
-    }
-
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
     }
 
     public function duplicateFrom($entityB)

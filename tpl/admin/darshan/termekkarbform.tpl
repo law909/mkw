@@ -13,9 +13,6 @@
             {if ($setup.arsavok)}
                 <li><a href="#ArsavTab">{at('Ársávok')}</a></li>
             {/if}
-            {if ($setup.multilang)}
-                <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
-            {/if}
             <li><a href="#CimkeTab">{at('Címkék')}</a></li>
             <li><a href="#KepTab">{at('Képek')}</a></li>
             {if ($setup.termekvaltozat)}
@@ -182,16 +179,6 @@
                     {include '../default/termektermekarkarb.tpl'}
                 {/foreach}
                 <a class="js-arnewbutton" href="#" title="{at('Új')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
-            </div>
-        {/if}
-        {if ($setup.multilang)}
-            <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.translations as $translation}
-                    {include '../default/translationkarb.tpl'}
-                {/foreach}
-                <a class="js-translationnewbutton" href="#" title="{at('Új')}">
                     <span class="ui-icon ui-icon-circle-plus"></span>
                 </a>
             </div>
