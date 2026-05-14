@@ -3866,6 +3866,169 @@ class importController extends \mkwhelpers\Controller
         echo 'Kész';
     }
 
+    public function galadPartnerImport()
+    {
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        if ($dbtol < 2) {
+            $dbtol = 2;
+        }
+
+        if (empty($_FILES['toimport']['name'])) {
+            echo 'Nincs fájl.';
+            return;
+        }
+
+        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+
+        $em = \mkw\store::getEm();
+        $partnerrepo = $em->getRepository(Partner::class);
+        $orszagrepo = $em->getRepository(\Entities\Orszag::class);
+        $orszagcache = [];
+
+        $vatstatusmap = [
+            'DOMESTIC' => 1,
+            'PRIVATE_PERSON' => 2,
+            'OTHER' => 3,
+        ];
+
+        $added = 0;
+        $updated = 0;
+        $skipped = 0;
+        $batchsize = 50;
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $idegenkod = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(1) . $row)->getValue());
+            if ($idegenkod === '') {
+                $skipped++;
+                continue;
+            }
+            $nev = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(2) . $row)->getValue());
+            $vezeteknev = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(3) . $row)->getValue());
+            $keresztnev = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(4) . $row)->getValue());
+            $adozas = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(5) . $row)->getValue());
+            // col 6 (Adóalanyiság helye) — no matching Partner field
+            $adoszam = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(7) . $row)->getValue());
+            $csoportosadoszam = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(8) . $row)->getValue());
+            $euadoszam = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(9) . $row)->getValue());
+            $adoazonjel = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(10) . $row)->getValue());
+            $email = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(11) . $row)->getValue());
+            $telefon = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(12) . $row)->getValue());
+            // col 13 (Cím típusa) — not mapped
+            $orszagkod = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(14) . $row)->getValue());
+            $irszam = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(15) . $row)->getValue());
+            $varos = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(16) . $row)->getValue());
+            $utca = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(17) . $row)->getValue());
+            $aktiv = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(18) . $row)->getValue());
+            $megjegyzes = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(19) . $row)->getValue());
+            $bankszamla = '';
+            $b = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex(20) . $row)->getValue());
+            if ($b !== '') {
+                $bankszamla = $b;
+            }
+
+            /** @var Partner|null $me */
+            $me = $partnerrepo->findOneBy(['idegenkod' => $idegenkod]);
+            $isNew = !$me;
+            if ($isNew) {
+                $me = new Partner();
+                $me->setIdegenkod($idegenkod);
+                $me->setVendeg(false);
+                $added++;
+            } else {
+                $updated++;
+            }
+
+            if ($nev !== '') {
+                $me->setNev($nev);
+            }
+            if ($vezeteknev !== '') {
+                $me->setVezeteknev($vezeteknev);
+            }
+            if ($keresztnev !== '') {
+                $me->setKeresztnev($keresztnev);
+            }
+
+            if ($adoszam !== '') {
+                if (preg_match('/^\d{8}-\d-\d{2}$/', $adoszam)) {
+                    $me->setAdoszam($adoszam);
+                } else {
+                    $me->setEuadoszam($adoszam);
+                }
+            } elseif ($adoazonjel !== '') {
+                $me->setAdoszam($adoazonjel);
+            }
+            if ($csoportosadoszam !== '') {
+                $me->setCsoportosadoszam($csoportosadoszam);
+            }
+            if ($euadoszam !== '') {
+                $me->setEuadoszam($euadoszam);
+            }
+
+            if (isset($vatstatusmap[$adozas])) {
+                $me->setVatstatus($vatstatusmap[$adozas]);
+            }
+
+            if ($email !== '') {
+                $me->setEmail($email);
+            }
+            if ($telefon !== '') {
+                $me->setTelefon($telefon);
+            }
+
+            if ($orszagkod !== '') {
+                if (!array_key_exists($orszagkod, $orszagcache)) {
+                    $orszagcache[$orszagkod] = $orszagrepo->findOneBy(['iso3166' => $orszagkod]);
+                }
+                if ($orszagcache[$orszagkod]) {
+                    $me->setOrszag($orszagcache[$orszagkod]);
+                }
+            }
+            if ($irszam !== '') {
+                $me->setIrszam($irszam);
+            }
+            if ($varos !== '') {
+                $me->setVaros($varos);
+            }
+            if ($utca !== '') {
+                $me->setUtca($utca);
+            }
+
+            $me->setInaktiv($aktiv === 'active' ? 0 : 1);
+
+            if ($megjegyzes !== '') {
+                $me->setMegjegyzes($megjegyzes);
+            }
+            if ($bankszamla !== '') {
+                $me->setIban($bankszamla);
+            }
+
+            $em->persist($me);
+
+            if ((($row - $dbtol + 1) % $batchsize) === 0) {
+                $em->flush();
+                $em->clear();
+                $orszagcache = [];
+            }
+        }
+
+        $em->flush();
+        $em->clear();
+
+        echo 'Kész. Új: ' . $added . ', frissítve: ' . $updated . ', kihagyva: ' . $skipped;
+    }
+
     public function legavenueSzotar()
     {
         if (!$this->checkRunningImport(\mkw\consts::RunningLegavenueImport)) {

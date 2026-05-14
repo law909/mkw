@@ -5,7 +5,7 @@
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
-    <script type="text/javascript" src="/js/admin/superzoneb2b/importsform.js"></script>
+    <script type="text/javascript" src="/js/admin/galad/importsform.js"></script>
 {/block}
 
 {block "kozep"}
@@ -66,6 +66,10 @@
                         <a href="/admin/import/szin" class="js-szinimport">Színek</a>
                         <a href="/admin/import/meret" class="js-meretimport">Méretek</a>
                         <a href="/admin/import/orszag" class="js-orszagimport">Országok</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/galadpartner" class="js-galadpartnerimport">Partnerek (Galád XLSX)</a>
                     </div>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
