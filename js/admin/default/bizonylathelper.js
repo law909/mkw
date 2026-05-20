@@ -309,6 +309,87 @@ var bizonylathelper = function ($) {
         return ret;
     }
 
+    function checkTetelOsszegek() {
+        let mindenOk = true,
+            hibaClass = 'tetelszamhiba',
+            arfolyam = $('#ArfolyamEdit').val() * 1;
+
+        // Korábbi hibajelölések törlése, hogy a javított mezők ne maradjanak megjelölve.
+        $('.' + hibaClass).removeClass(hibaClass);
+
+        // Két összeg akkor tekinthető egyezőnek, ha az eltérés a kerekítésből
+        // adódó hibahatáron belül van. A hibahatár a szorzótényezővel arányosan nő.
+        function egyezik(tenyleges, elvart, tenyezo) {
+            let hibahatar = 0.1 + Math.abs(tenyezo) * 0.01;
+            return Math.abs(tenyleges - elvart) <= hibahatar;
+        }
+
+        // Az adott nevű input megjelölése hibásként.
+        function jelol(name) {
+            $('input[name="' + name + '"]').addClass(hibaClass);
+            mindenOk = false;
+        }
+
+        $('input.js-mennyiseginput').each(function () {
+            let sorId = $(this).attr('name').split('_')[1],
+                menny = $('input[name="tetelmennyiseg_' + sorId + '"]').val() * 1,
+                kedv = $('input[name="tetelkedvezmeny_' + sorId + '"]').val() * 1,
+                afakulcs = $('select[name="tetelafa_' + sorId + '"] option:selected').data('afakulcs') * 1,
+                enettoegysar = $('input[name="tetelenettoegysar_' + sorId + '"]').val() * 1,
+                ebruttoegysar = $('input[name="tetelebruttoegysar_' + sorId + '"]').val() * 1,
+                nettoegysar = $('input[name="tetelnettoegysar_' + sorId + '"]').val() * 1,
+                bruttoegysar = $('input[name="tetelbruttoegysar_' + sorId + '"]').val() * 1,
+                netto = $('input[name="tetelnetto_' + sorId + '"]').val() * 1,
+                brutto = $('input[name="tetelbrutto_' + sorId + '"]').val() * 1,
+                nettohuf = $('input[name="tetelnettohuf_' + sorId + '"]'),
+                bruttohuf = $('input[name="tetelbruttohuf_' + sorId + '"]');
+
+            if (isNaN(kedv)) {
+                kedv = 0;
+            }
+
+            // 1. Mennyiség * Egységár = Érték
+            if (!egyezik(netto, menny * nettoegysar, menny)) {
+                jelol('tetelnetto_' + sorId);
+            }
+            if (!egyezik(brutto, menny * bruttoegysar, menny)) {
+                jelol('tetelbrutto_' + sorId);
+            }
+
+            // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár
+            //    (csak akkor, ha van eredeti egységár)
+            if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1)) {
+                jelol('tetelnettoegysar_' + sorId);
+            }
+            if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1)) {
+                jelol('tetelbruttoegysar_' + sorId);
+            }
+
+            // 3. Nettó * (100 + ÁFA%) = Bruttó
+            //    (csak akkor, ha van kiválasztott ÁFA kulcs)
+            if (!isNaN(afakulcs)) {
+                if (!egyezik(bruttoegysar, nettoegysar * (100 + afakulcs) / 100, 1)) {
+                    jelol('tetelbruttoegysar_' + sorId);
+                }
+                if (!egyezik(brutto, netto * (100 + afakulcs) / 100, 1)) {
+                    jelol('tetelbrutto_' + sorId);
+                }
+            }
+
+            // 4. Érték * Árfolyam = Érték HUF (csak valutás bizonylatnál)
+            if (nettohuf.length && !isNaN(arfolyam) && arfolyam) {
+                if (!egyezik(nettohuf.val() * 1, netto * arfolyam, arfolyam)) {
+                    jelol('tetelnettohuf_' + sorId);
+                }
+                if (!egyezik(bruttohuf.val() * 1, brutto * arfolyam, arfolyam)) {
+                    jelol('tetelbruttohuf_' + sorId);
+                }
+            }
+        });
+
+        return mindenOk;
+    }
+
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
         var raktarid = $('select[name="raktar"] option:selected').val();
         $.ajax({
@@ -1105,7 +1186,21 @@ var bizonylathelper = function ($) {
                             $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
                 }
-                return checkBizonylatFej(bizonylattipus, $('input[name="id"]').val());
+                var fejok = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
+                    osszegekok = checkTetelOsszegek();
+                if (fejok && !osszegekok) {
+                    $('#dialogcenter').html('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+                return fejok && osszegekok;
             },
             onSubmit: function () {
                 $('#dialogcenter').html('A mentés sikerült.').dialog({
@@ -1905,7 +2000,8 @@ var bizonylathelper = function ($) {
 
     return {
         createMattable: createMattable,
-        getMattKarbConfig: getMattKarbConfig
+        getMattKarbConfig: getMattKarbConfig,
+        checkTetelOsszegek: checkTetelOsszegek
     };
 
 }(jQuery);

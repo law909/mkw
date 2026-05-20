@@ -288,3 +288,8 @@ table.termekkarton tr:nth-child(even) {
 .unstyled-list {
     list-style: none;
 }
+
+input.tetelszamhiba {
+    background-color: #ffd5d5;
+    border: 1px solid red;
+}
