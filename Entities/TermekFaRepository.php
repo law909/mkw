@@ -115,9 +115,6 @@ class TermekFaRepository extends \mkwhelpers\Repository
             return $q->getScalarResult();
         } else {
             $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
-            if (\mkw\store::isMainMode()) {
-                \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
-            }
             $res = $q->getResult();
             $ret = [];
             /** @var TermekFa $r */

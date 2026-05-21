@@ -236,9 +236,6 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                     $mainlocale = store::getLocale();
                     if ($mainlocale) {
                         $__maintranslate->setLocale($mainlocale);
-                        if (\mkw\store::isMultilang()) {
-                            \mkw\store::getTranslationListener()->setTranslatableLocale($mainlocale);
-                        }
                     }
 
                     if (!$mainsess->referrer) {

@@ -44,7 +44,6 @@ class store
     private static $router;
     private static $gdl;
     private static $sanitizer;
-    private static $translationListener;
     private static $locales = ['hu' => 'hu_hu', 'en' => 'en_us'];
     private static $valutanemperlocale = ['hu_hu' => 'HUF', 'en_us' => 'EUR'];
     private static $adminmode = false;
@@ -216,19 +215,6 @@ class store
     public static function setEm($em)
     {
         self::$em = $em;
-    }
-
-    /**
-     * @return \Gedmo\Translatable\TranslatableListener()
-     */
-    public static function getTranslationListener()
-    {
-        return self::$translationListener;
-    }
-
-    public static function setTranslationListener($l)
-    {
-        self::$translationListener = $l;
     }
 
     public static function getConfig()
@@ -1604,15 +1590,7 @@ class store
     {
         return self::getSetupValue('enabledwebshops', 1);
     }
-
-    public static function setTranslationHint($q, $locale)
-    {
-        if (self::isMultilang() && $locale) {
-            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
-            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale);
-        }
-    }
-
+    
     public static function getAdminTemplatePath()
     {
         return self::getConfigValue('path.template');

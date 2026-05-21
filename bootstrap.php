@@ -115,16 +115,6 @@ $blameableListener->setAnnotationReader($cachedAnnotationReader);
 store::setBlameableListener($blameableListener);
 $evm->addEventSubscriber($blameableListener);
 
-if (mkw\store::isMultilang()) {
-    $translatableListener = new Gedmo\Translatable\TranslatableListener();
-    $translatableListener->setAnnotationReader($cachedAnnotationReader);
-    $translatableListener->setDefaultLocale('hu_hu');
-    $translatableListener->setTranslatableLocale('hu_hu');
-    $translatableListener->setTranslationFallback(true);
-    $evm->addEventSubscriber($translatableListener);
-    mkw\store::setTranslationListener($translatableListener);
-}
-
 $evm->addEventListener(['onFlush', 'prePersist'], new BizonylatfejListener());
 $evm->addEventListener(['onFlush', 'prePersist'], new BankbizonylatfejListener());
 $evm->addEventListener(['onFlush', 'prePersist'], new PenztarbizonylatfejListener());

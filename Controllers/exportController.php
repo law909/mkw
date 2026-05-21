@@ -10,7 +10,9 @@ use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatErtek;
+use Entities\TermekValtozatErtekKodszotar;
 use Entities\TermekValtozatErtekRepository;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -995,16 +997,13 @@ class exportController extends \mkwhelpers\Controller
     {
         //    $this->getEm()->getConfiguration()->setSQLLogger(new \mkwhelpers\FileSQLLogger('superzoneexportsql.log'));
 
-        $oldtranslocale = \mkw\store::getTranslationListener()->getListenerLocale();
-        \mkw\store::getTranslationListener()->setTranslatableLocale('hu_hu');
-
         $maxstock = $this->params->getNumRequestParam('max', 0);
 
-        $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
+        $kodszotarrepo = \mkw\store::getEm()->getRepository(TermekValtozatErtekKodszotar::class);
 
         $ertek1 = array_merge(
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
-            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2()
+            \mkw\store::getEm()->getRepository(TermekValtozat::class)->getDistinctErtek1(),
+            \mkw\store::getEm()->getRepository(TermekValtozat::class)->getDistinctErtek2()
         );
 
         foreach ($ertek1 as $eee1) {
@@ -1022,9 +1021,9 @@ class exportController extends \mkwhelpers\Controller
             }
         }
 
-        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(['nev' => 'HUF']);
+        $huf = \mkw\store::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => 'HUF']);
 
-        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $tr = \mkw\store::getEm()->getRepository(Termek::class);
 
         $res = $tr->getSuperzonehuExport();
 
@@ -1033,8 +1032,6 @@ class exportController extends \mkwhelpers\Controller
         $sor = [];
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-            $ford = $t->getTranslationsArray();
-
             $termekkepek = $t->getTermekKepek();
             $kepek = [];
             /** @var TermekKep $kep */
@@ -1061,8 +1058,8 @@ class exportController extends \mkwhelpers\Controller
                         'categoryVisible' => $t->getTermekfa1()->getLathato3(),
                         'articleNumber' => $t->getCikkszam(),
                         'articleName' => $t->getNev(),
-                        'articleNameEN' => $ford['en_us']['nev'],
-                        'articleNameIT' => $ford['it_it']['nev'],
+                        'articleNameEN' => $t->getLocalizedFieldValue('nev', 'en_us'),
+                        'articleNameIT' => '',
                         'color' => $valt->getSzin(),
                         'size' => $valt->getMeret(),
                         'inactive' => $t->getInaktiv(),
@@ -1070,8 +1067,8 @@ class exportController extends \mkwhelpers\Controller
                         'stock' => $keszlet,
                         'EANcode' => (string)$valt->getVonalkod(),
                         'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
-                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
-                        'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
+                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                        'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", ''),
                         'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                         'images' => $kepek,
                         'price' => $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
@@ -1094,8 +1091,8 @@ class exportController extends \mkwhelpers\Controller
                     'categoryVisible' => $t->getTermekfa1()->getLathato3(),
                     'articleNumber' => $t->getCikkszam(),
                     'articleName' => $t->getNev(),
-                    'articleNameEN' => $ford['en_us']['nev'],
-                    'articleNameIT' => $ford['it_it']['nev'],
+                    'articleNameEN' => $t->getLocalizedFieldValue('nev', 'en_us'),
+                    'articleNameIT' => '',
                     'color' => '',
                     'size' => '',
                     'inactive' => $t->getInaktiv(),
@@ -1103,8 +1100,8 @@ class exportController extends \mkwhelpers\Controller
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
                     'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
-                    'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                    'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", ''),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)),
@@ -1114,8 +1111,6 @@ class exportController extends \mkwhelpers\Controller
                 ];
             }
         }
-
-        //  \mkw\store::getTranslationListener()->setTranslatableLocale($oldtranslocale);
 
         $this->getEm()->getConfiguration()->setSQLLogger();
 
@@ -1223,8 +1218,6 @@ class exportController extends \mkwhelpers\Controller
         $sor = [];
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
-            $ford = $t->getTranslationsArray();
-
             $termekkepek = $t->getTermekKepek();
             $kepek = [];
             /** @var TermekKep $kep */
@@ -1271,12 +1264,12 @@ class exportController extends \mkwhelpers\Controller
                     'category' => $t->getTermekfa1()->getTeljesNev(),
                     'categoryVisible' => $t->getTermekfa1()->getLathato(),
                     'articleNumber' => $t->getCikkszam(),
-                    'articleNameEN' => $ford['en_us']['nev'],
+                    'articleNameEN' => $t->getLocalizedFieldValue('nev', 'en_us'),
                     'inactive' => $t->getInaktiv(),
                     'visible' => $t->getLathato(),
                     'pending' => $t->getFuggoben(),
                     'notAvailable' => $t->getNemkaphato(),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $price,
@@ -1296,14 +1289,14 @@ class exportController extends \mkwhelpers\Controller
                     'category' => $t->getTermekfa1()->getTeljesNev(),
                     'categoryVisible' => $t->getTermekfa1()->getLathato(),
                     'articleNumber' => $t->getCikkszam(),
-                    'articleNameEN' => $ford['en_us']['nev'],
+                    'articleNameEN' => $t->getLocalizedFieldValue('nev', 'en_us'),
                     'inactive' => $t->getInaktiv(),
                     'visible' => $t->getLathato(),
                     'pending' => $t->getFuggoben(),
                     'notAvailable' => $t->getNemkaphato(),
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']),
+                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $price,

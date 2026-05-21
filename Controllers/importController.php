@@ -5983,44 +5983,14 @@ class importController extends \mkwhelpers\Controller
                     }
                 }
 
+                // TODO locale
                 if ($nev) {
                     foreach ($nev as $loc => $text) {
-                        if ($loc !== \mkw\store::getTranslationListener()->getDefaultLocale()) {
-                            if (!$ujtermek) {
-                                $translation = \mkw\store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
-                                    ['object' => $termek->getId(), 'locale' => $loc, 'field' => 'nev']
-                                );
-                                if ($translation) {
-                                    $translation = $translation[0];
-                                }
-                            }
-                            if ($ujtermek || !$translation) {
-                                $translation = new \Entities\TermekTranslation('', 'nev', '');
-                                $translation->setObject($termek);
-                            }
-                            $translation->setLocale($loc);
-                            $translation->setContent($text);
-                            \mkw\store::getEm()->persist($translation);
-                        } else {
-                            $termek->setNev($text);
-                        }
+                        $termek->setNev($text);
                     }
                 }
                 \mkw\store::getEm()->persist($termek);
                 \mkw\store::getEm()->flush();
-
-//                if (is_array($nev)) {
-//                    foreach($nev as $loc => $text) {
-//                        $termek->setNev($text);
-//                        $termek->setTranslatableLocale($loc);
-//                        \mkw\store::getEm()->persist($termek);
-//                        \mkw\store::getEm()->flush();
-//                    }
-//                }
-//                else {
-//                    \mkw\store::getEm()->persist($termek);
-//                    \mkw\store::getEm()->flush();
-//                }
             }
         }
     }

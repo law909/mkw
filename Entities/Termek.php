@@ -622,16 +622,15 @@ class Termek
     public function toA2a($partner = null)
     {
         $x = [];
-        $ford = $this->getTranslationsArray();
         $x['id'] = $this->getId();
         $x['image_url'] = \mkw\store::getFullUrl($this->getKepurlLarge());
         //$x['link'] = \mkw\store::getRouter()->generate('showtermek', true, ['slug' => $this->getSlug()]);
         $x['name'] = $this->getNev();
-        $x['name_en'] = $ford['en_us']['nev'];
+        $x['name_en'] = $this->getLocalizedFieldValue('nev', 'en_us');
         $x['sku'] = $this->getCikkszam();
         $x['short_description'] = $this->getRovidLeiras();
         $x['description'] = $this->getLeiras();
-        $x['description_en'] = $ford['en_us']['leiras'] ?: '';
+        $x['description_en'] = $this->getLocalizedFieldValue('leiras', 'en_us') ?: '';
         $x['category_id'] = $this->getTermekfa1Id();
         $x['category_name'] = $this->getTermekfa1()->getTeljesNev();
         $vtt = [];
@@ -647,12 +646,17 @@ class Termek
                     $valtadat['stock'] = $keszlet;
                     $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
                     $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
-                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek1();
-                        $valtadat['size'] = $valt->getErtek2();
-                    } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                        $valtadat['color'] = $valt->getErtek2();
-                        $valtadat['size'] = $valt->getErtek1();
+                    if (\mkw\store::isFixSzinMode()) {
+                        $valtadat['color'] = $valt->getSzinNev();
+                        $valtadat['size'] = $valt->getMeretNev();
+                    } else {
+                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $valtadat['color'] = $valt->getErtek1();
+                            $valtadat['size'] = $valt->getErtek2();
+                        } elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $valtadat['color'] = $valt->getErtek2();
+                            $valtadat['size'] = $valt->getErtek1();
+                        }
                     }
                     $vtt[] = $valtadat;
                 }
