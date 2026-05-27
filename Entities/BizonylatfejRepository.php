@@ -481,22 +481,13 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $trsm->addScalarResult('tvid', 'tvid');
         $trsm->addScalarResult('ertek1', 'ertek1');
         $trsm->addScalarResult('ertek2', 'ertek2');
-
-        if ($locale) {
-            $termeknevmezo = 'COALESCE(tt.content, t.nev)';
-            $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (tt.field="nev") AND (tt.locale="' . $locale . '")';
-        } else {
-            $termeknevmezo = 't.nev';
-            $translationjoin = '';
-        }
-
+        
         $q = $this->_em->createNativeQuery(
-            'SELECT t.id,t.cikkszam,' . $termeknevmezo . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
+            'SELECT t.id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
             . ' LEFT OUTER JOIN termekvaltozat tv ON (tv.termek_id=t.id)'
-            . $translationjoin
             . $this->getFilterString($termekfilter)
-            . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2',
+            . ' ORDER BY t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ',tv.ertek1,tv.ertek2',
             $trsm
         );
         $q->setParameters($this->getQueryParameters($termekfilter));
@@ -813,13 +804,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $termekfilter->addFilter('t.gyarto_id', '=', $gyartoid);
         }
 
-        if ($locale) {
-            $termeknevmezo = 'COALESCE(tt.content, t.nev)';
-            $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (tt.field="nev") AND (tt.locale="' . $locale . '")';
-        } else {
-            $termeknevmezo = 't.nev';
-            $translationjoin = '';
-        }
+        $termeknevmezo = \mkw\store::getLocalizedFieldName('t.nev', $locale);
 
         $bizstatuszObj = false;
         if ($bizstatusz) {
@@ -844,10 +829,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
@@ -883,16 +866,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $q = $this->_em->createNativeQuery(
                     'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
+                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
                     . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
-                    . $translationjoin
                     . $arsavsql
                     . $this->getFilterString($filter)
                     . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-                    . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2'
+                    . ' ORDER BY t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ',tv.ertek1,tv.ertek2'
                     ,
                     $rsm
                 );
@@ -919,16 +901,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                     'SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
+                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
                     . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
-                    . $translationjoin
                     . $arsavsql
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.partner_id,bt.termek_id,bt.termekvaltozat_id'
-                    . ' ORDER BY bf.partnernev,bf.partner_id,t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2'
+                    . ' ORDER BY bf.partnernev,bf.partner_id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ',tv.ertek1,tv.ertek2'
                     ,
                     $rsm
                 );
@@ -983,7 +964,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $q = $this->_em->createNativeQuery(
                     'SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
                     . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,bt.mennyiseg, '
-                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev,tv.vonalkod '
+                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN bizonylatstatusz bs ON (bf.bizonylatstatusz_id=bs.id)'

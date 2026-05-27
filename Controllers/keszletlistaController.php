@@ -118,13 +118,6 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $filter = $this->createFilter();
 
         $locale = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
-        if ($locale) {
-            $termeknevmezo = 'COALESCE(tt.content, t.nev)';
-            $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="' . $locale . '")';
-        } else {
-            $termeknevmezo = 't.nev';
-            $translationjoin = '';
-        }
 
         $keszlettipus = '';
 
@@ -164,14 +157,13 @@ class keszletlistaController extends \mkwhelpers\MattableController
         }
 
         $q = $this->getEm()->createNativeQuery(
-            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            'SELECT _xx.termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . $keszletsql
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
-            . $translationjoin
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
-            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2',
+            . ' ORDER BY t.cikkszam, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ', _xx.ertek1, _xx.ertek2',
             $rsm
         );
 

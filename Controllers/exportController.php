@@ -1350,9 +1350,8 @@ class exportController extends \mkwhelpers\Controller
                 ->getStyle('B' . $sor)->getFont()->setBold(true)->setSize(20);
             $sor++;
             $termekek = $this->getEm()->createNativeQuery(
-                'SELECT t.id,t.cikkszam,t.vonalkod,COALESCE(tt.content,t.nev) AS termeknev '
+                'SELECT t.id,t.cikkszam,t.vonalkod,' . \mkw\store::getLocalizedFieldName('t.nev', 'en_us') . ' AS termeknev '
                 . 'FROM termek t '
-                . 'LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="en_us") '
                 . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
                 $trsm
             )->getScalarResult();
