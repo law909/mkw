@@ -67,10 +67,10 @@ class Apiconsumer extends \Entities\Apiconsumer implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'raktar'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'id', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'nev', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'kulcs', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'partner', '' . "\0" . 'Entities\\Apiconsumer' . "\0" . 'raktar'];
     }
 
     /**
@@ -256,6 +256,39 @@ class Apiconsumer extends \Entities\Apiconsumer implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
 
         return parent::setPartner($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRaktar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', []);
+
+        return parent::getRaktar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRaktar($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRaktar', [$val]);
+
+        return parent::setRaktar($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRaktarId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktarId', []);
+
+        return parent::getRaktarId();
     }
 
 }

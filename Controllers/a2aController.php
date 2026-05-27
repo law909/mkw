@@ -796,6 +796,10 @@ class a2aController extends \mkwhelpers\Controller
                         $results['abortedcnt'] = $bizcnt['aborted'];
                         $results['bekuldetlencnt'] = $bizcnt['null'];
                         break;
+                    case 'termekbevetcsv':
+                        $cnt = $this->streamTermekbevetCsv($consumer);
+                        $this->writelog($consumer, $rawdata, 'termekbevetcsv rows=' . $cnt);
+                        return;
                 }
             }
         } else {
@@ -806,5 +810,82 @@ class a2aController extends \mkwhelpers\Controller
 
         $result['results'] = $results;
         echo json_encode($result);
+    }
+
+    protected function streamTermekbevetCsv($consumer)
+    {
+        $raktar = $consumer->getRaktar();
+        if (!$raktar) {
+            header('HTTP/1.1 400 Bad Request');
+            header('Content-Type: text/plain; charset=utf-8');
+            echo 'No raktar configured for this consumer.';
+            return 0;
+        }
+
+        $em = $this->getEm();
+        $rows = $em->getRepository(\Entities\TermekbevetImport::class)
+            ->findBy(['raktar' => $raktar, 'letoltve' => false], ['id' => 'ASC']);
+
+        header('Content-Type: text/csv; charset=iso-8859-2');
+        header('Content-Disposition: attachment; filename="termekbevet.csv"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        $fp = fopen('php://output', 'w');
+
+        fputcsv($fp, $this->toIso2([
+            'id',
+            'created',
+            'forrasfajl',
+            'cikkszam',
+            'leiras',
+            'karton',
+            'mennyiseg',
+            'egysegar',
+            'adokod',
+            'osszesen',
+        ]), ';', '"');
+
+        $ids = [];
+        /** @var \Entities\TermekbevetImport $row */
+        foreach ($rows as $row) {
+            $ids[] = $row->getId();
+            fputcsv($fp, $this->toIso2([
+                $row->getId(),
+                $row->getCreatedStr(),
+                $row->getForrasfajl(),
+                $row->getCikkszam(),
+                $row->getLeiras(),
+                $row->getKarton(),
+                $row->getMennyiseg(),
+                $row->getEgysegar(),
+                $row->getAdokod(),
+                $row->getOsszesen(),
+            ]), ';', '"');
+        }
+        fclose($fp);
+
+        if ($ids) {
+            $qb = $em->createQueryBuilder();
+            $qb->update(\Entities\TermekbevetImport::class, 't')
+                ->set('t.letoltve', ':true')
+                ->where($qb->expr()->in('t.id', ':ids'))
+                ->setParameter('true', true)
+                ->setParameter('ids', $ids)
+                ->getQuery()
+                ->execute();
+        }
+
+        return count($ids);
+    }
+
+    private function toIso2(array $row): array
+    {
+        return array_map(function ($v) {
+            if ($v === null) {
+                return '';
+            }
+            return mb_convert_encoding((string)$v, 'ISO-8859-2', 'UTF-8');
+        }, $row);
     }
 }

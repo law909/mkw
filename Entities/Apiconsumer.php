@@ -25,6 +25,12 @@ class Apiconsumer
      * @var \Entities\Partner
      */
     private $partner;
+    /**
+     * @ORM\ManyToOne(targetEntity="Raktar")
+     * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Raktar
+     */
+    private $raktar;
 
     /**
      * @return mixed
@@ -80,6 +86,30 @@ class Apiconsumer
     public function setPartner($val)
     {
         $this->partner = $val;
+    }
+
+    /**
+     * @return \Entities\Raktar|null
+     */
+    public function getRaktar()
+    {
+        return $this->raktar;
+    }
+
+    /**
+     * @param \Entities\Raktar $val
+     */
+    public function setRaktar($val)
+    {
+        $this->raktar = $val;
+    }
+
+    public function getRaktarId()
+    {
+        if ($this->raktar) {
+            return $this->raktar->getId();
+        }
+        return null;
     }
 
 }
