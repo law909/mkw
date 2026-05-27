@@ -6703,4 +6703,138 @@ class importController extends \mkwhelpers\Controller
         }
         echo 'OK';
     }
+
+    public function termekbevetImport()
+    {
+        if (empty($_FILES['toimport']['name'])) {
+            echo 'Nincs fájl.';
+            return;
+        }
+
+        $eredetinev = $_FILES['toimport']['name'];
+
+        $em = \mkw\store::getEm();
+        $mar = $em->getRepository(\Entities\TermekbevetImport::class)->findOneBy(['forrasfajl' => $eredetinev]);
+        if ($mar) {
+            echo 'A fájl már importálva van';
+            return;
+        }
+
+        $filenev = \mkw\store::storagePath($eredetinev);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+
+        $raktar = null;
+        $raktarid = null;
+        $dolgozo = \mkw\store::getLoggedInDolgozo();
+        if ($dolgozo && $dolgozo->getAlapertelmezettRaktarId()) {
+            $raktarid = $dolgozo->getAlapertelmezettRaktarId();
+            $raktar = $em->getRepository(\Entities\Raktar::class)->find($raktarid);
+        }
+
+        $headerMap = [];
+        for ($col = 1; $col <= 16; ++$col) {
+            $h = strtolower(trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($col) . '1')->getValue()));
+            if ($h !== '') {
+                $headerMap[$h] = $col;
+            }
+        }
+
+        $pick = function (array $names) use ($headerMap) {
+            foreach ($names as $n) {
+                if (isset($headerMap[$n])) {
+                    return $headerMap[$n];
+                }
+            }
+            return null;
+        };
+
+        $colCikkszam = $pick(['cikkszám', 'cikkszam']);
+        $colLeiras = $pick(['cikk leírása', 'cikk leirasa', 'leírás', 'leiras', 'megnevezés', 'megnevezes']);
+        $colKarton = $pick(['karton']);
+        $colMennyiseg = $pick(['mennyiség', 'mennyiseg']);
+        $colEgysegar = $pick(['egységár', 'egysegar']);
+        $colAdokod = $pick(['adókód', 'adokod']);
+        $colOsszesen = $pick(['összesen (sp)', 'osszesen (sp)', 'összesen', 'osszesen']);
+
+        if (!$colCikkszam) {
+            echo 'Hiányzó "Cikkszám" oszlop.';
+            return;
+        }
+
+        $added = 0;
+        $skipped = 0;
+        $batchsize = 50;
+
+        for ($row = 2; $row <= $maxrow; ++$row) {
+            $cikkszam = trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colCikkszam) . $row)->getValue());
+            if ($cikkszam === '') {
+                $skipped++;
+                continue;
+            }
+            $leiras = $colLeiras ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colLeiras) . $row)->getValue()) : '';
+            $karton = $colKarton ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colKarton) . $row)->getValue()) : '';
+            $mennyiseg = $colMennyiseg ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colMennyiseg) . $row)->getValue()) : '';
+            $egysegar = $colEgysegar ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colEgysegar) . $row)->getValue()) : '';
+            $adokod = $colAdokod ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colAdokod) . $row)->getValue()) : '';
+            $osszesen = $colOsszesen ? trim((string)$sheet->getCell(Coordinate::stringFromColumnIndex($colOsszesen) . $row)->getValue()) : '';
+
+            $imp = new \Entities\TermekbevetImport();
+            $imp->setForrasfajl($eredetinev);
+            $imp->setCikkszam($cikkszam);
+            $imp->setLeiras($leiras !== '' ? $leiras : null);
+            $imp->setKarton($karton !== '' ? (int)$karton : null);
+            $imp->setMennyiseg($mennyiseg !== '' ? $this->termekbevetParseNumber($mennyiseg) : null);
+            $imp->setEgysegar($egysegar !== '' ? $this->termekbevetParseNumber($egysegar) : null);
+            $imp->setAdokod($adokod !== '' ? $adokod : null);
+            $imp->setOsszesen($osszesen !== '' ? $this->termekbevetParseNumber($osszesen) : null);
+            $imp->setLetoltve(false);
+            if ($raktar) {
+                $imp->setRaktar($raktar);
+            }
+
+            $em->persist($imp);
+            $added++;
+
+            if (($added % $batchsize) === 0) {
+                $em->flush();
+                $em->clear();
+                if ($raktarid) {
+                    $raktar = $em->getRepository(\Entities\Raktar::class)->find($raktarid);
+                }
+            }
+        }
+
+        $em->flush();
+        $em->clear();
+
+        echo 'Kész. Importált sorok: ' . $added . ', kihagyva: ' . $skipped;
+    }
+
+    private function termekbevetParseNumber($val)
+    {
+        if (is_numeric($val)) {
+            return (float)$val;
+        }
+        $s = (string)$val;
+        $s = preg_replace('/\s*Ft\s*$/u', '', $s);
+        $s = trim($s);
+        if (preg_match('/,\d+$/', $s)) {
+            $s = str_replace('.', '', $s);
+            $s = str_replace(',', '.', $s);
+        } else {
+            $s = str_replace(',', '', $s);
+        }
+        $s = preg_replace('/[^0-9.\-]/', '', $s);
+        if ($s === '' || $s === '-' || $s === '.') {
+            return null;
+        }
+        return (float)$s;
+    }
 }

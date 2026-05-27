@@ -1003,6 +1003,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/aszfdownload', 'importController#aszfdownload', 'adminaszfdownload');
     $router->map('GET', '/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
     $router->map('POST', '/admin/import/galadpartner', 'importController#galadPartnerImport', 'admingaladpartnerimport');
+    $router->map('POST', '/admin/import/termekbevet', 'importController#termekbevetImport', 'admintermekbevetimport');
     $router->map('POST', '/admin/import/szin', 'szinController#importExcel', 'adminszinimport');
     $router->map('POST', '/admin/import/meret', 'meretController#importExcel', 'adminmeretimport');
     $router->map('POST', '/admin/import/orszag', 'orszagController#importExcel', 'adminorszagimport');
