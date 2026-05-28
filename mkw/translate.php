@@ -105,7 +105,7 @@ class translate
         return $messages;
     }
 
-    public static function normalizeLocale(string|null $locale): string
+    public static function normalizeLocale(string|null $locale): string|null
     {
         if ($locale === null) {
             return $locale;

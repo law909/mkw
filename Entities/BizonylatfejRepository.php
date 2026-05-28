@@ -481,7 +481,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $trsm->addScalarResult('tvid', 'tvid');
         $trsm->addScalarResult('ertek1', 'ertek1');
         $trsm->addScalarResult('ertek2', 'ertek2');
-        
+
         $q = $this->_em->createNativeQuery(
             'SELECT t.id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
@@ -803,8 +803,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($gyartoid) {
             $termekfilter->addFilter('t.gyarto_id', '=', $gyartoid);
         }
-
-        $termeknevmezo = \mkw\store::getLocalizedFieldName('t.nev', $locale);
 
         $bizstatuszObj = false;
         if ($bizstatusz) {
