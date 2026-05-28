@@ -707,6 +707,18 @@ if ($DBVersion < '0074') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0074');
 }
+
+if ($DBVersion < '0075') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattetel bt'
+        . ' INNER JOIN termek t ON bt.termek_id = t.id'
+        . ' SET bt.termeknev_l1 = t.nev_l1'
+        . ' WHERE (bt.termeknev_l1 IS NULL OR bt.termeknev_l1 = \'\')'
+        . ' AND t.nev_l1 IS NOT NULL AND t.nev_l1 <> \'\''
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0075');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
