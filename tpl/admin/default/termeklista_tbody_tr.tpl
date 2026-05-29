@@ -8,7 +8,7 @@
                             src="{$mainurl}{$_termek.kepurlsmall}"/></a>{/if}</td>
                 <td>
                     <a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit"
-                       title="{at('Szerkeszt')}">{if ($maintheme == 'superzoneb2b')}{$_termek.cikkszam}&nbsp;{/if}{$_termek.nev}</a>
+                       title="{at('Szerkeszt')}">{if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace2026')}{$_termek.cikkszam}&nbsp;{/if}{$_termek.nev}</a>
                     {if (haveJog(20))}
                         <a class="js-karton" href="#" data-termekid="{$_termek.id}" title="{at('Karton')}" target="_blank"><span
                                 class="ui-icon ui-icon-folder-collapsed"></span></a>
