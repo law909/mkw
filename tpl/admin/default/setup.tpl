@@ -639,7 +639,7 @@
                                 </select>
                             </div>
                         {/if}
-                        {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
+                        {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace" || $maintheme === "mugenrace2026")}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SzinEdit">{at('Szín')}:</label></span>
                                 <select id="SzinEdit" name="valtozattipusszin">
