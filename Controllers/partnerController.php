@@ -609,6 +609,7 @@ class partnerController extends \mkwhelpers\MattableController
             $obj->setReferrer(\mkw\store::getMainSession()->referrer);
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+            $obj->setBizonylatnyelv(\mkw\store::getWebshopLongLocale());
             $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizetesimod', 0));
             if ($fizmod) {
                 $obj->setFizmod($fizmod);

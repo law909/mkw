@@ -2694,7 +2694,16 @@ class Bizonylatfej
         $this->setPartnerszallorszag($val->getSzallorszag());
 
         $this->setPartnerSzamlatipus($val->getSzamlatipus());
-        $this->setBizonylatnyelv($val->getBizonylatnyelv());
+
+        $nyelv = $val->getBizonylatnyelv();
+        if (!$nyelv) {
+            if (\mkw\store::isAdminMode()) {
+                $nyelv = \mkw\store::getAdminDataLocale();
+            } else {
+                $nyelv = \mkw\store::getWebshopLongLocale();
+            }
+        }
+        $this->setBizonylatnyelv($nyelv);
 
         $this->setPartnerktdatalany($val->getKtdatalany());
         $this->setPartnerktdatvallal($val->getKtdatvallal());

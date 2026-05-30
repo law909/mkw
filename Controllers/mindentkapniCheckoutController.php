@@ -132,11 +132,9 @@ class mindentkapniCheckoutController extends checkoutController
                 if (!$kapcsemail) {
                     $errorlogtext[] = '2vendegemail';
                     $errors[] = 'Nem adott meg emailcímet.';
-                } else {
-                    if (!$validkapcsemail) {
-                        $errorlogtext[] = '2vendegemailhiba';
-                        $errors[] = 'A megadott emailcím hibás.';
-                    }
+                } elseif (!$validkapcsemail) {
+                    $errorlogtext[] = '2vendegemailhiba';
+                    $errors[] = 'A megadott emailcím hibás.';
                 }
                 break;
             case 2: // regisztráció
@@ -148,11 +146,9 @@ class mindentkapniCheckoutController extends checkoutController
                 if (!$kapcsemail) {
                     $errorlogtext[] = '3regemail';
                     $errors[] = 'Nem adott meg emailcímet.';
-                } else {
-                    if (!$validkapcsemail) {
-                        $errorlogtext[] = '3vendegemailhiba';
-                        $errors[] = 'A megadott emailcím hibás.';
-                    }
+                } elseif (!$validkapcsemail) {
+                    $errorlogtext[] = '3vendegemailhiba';
+                    $errors[] = 'A megadott emailcím hibás.';
                 }
                 break;
             default: // be van jelentkezve elvileg
