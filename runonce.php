@@ -707,6 +707,15 @@ if ($DBVersion < '0074') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0074');
 }
+
+if ($DBVersion < '0075') {
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Országok","/admin/orszag/viewlist","/admin/orszag",40,1,245, "")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0075');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

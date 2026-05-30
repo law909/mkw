@@ -11,6 +11,11 @@ class OrszagRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Orszag');
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint csökkenő', 'order' => ['_xx.nev' => 'DESC']],
+            '3' => ['caption' => 'ISO 3166 szerint növekvő', 'order' => ['_xx.iso3166' => 'ASC']],
+        ]);
     }
 
     public function getAllLathato()

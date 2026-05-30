@@ -64,9 +64,14 @@ $router->map('POST', '/admin/termekcsoport/save', 'termekcsoportController#save'
 $router->map('GET', '/admin/partnertipus/jsonlist', 'partnertipusController#jsonlist', 'adminpartnertipusjsonlist');
 $router->map('GET', '/admin/partnertipus/htmllist', 'partnertipusController#htmllist', 'adminpartnertipushtmllist');
 $router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 'adminpartnertipussave');
-$router->map('GET', '/admin/orszag/jsonlist', 'orszagController#jsonlist', 'adminorszagjsonlist');
+$router->map('GET', '/admin/orszag/viewlist', 'orszagController#viewlist', 'adminorszagviewlist');
+$router->map('GET', '/admin/orszag/getlistbody', 'orszagController#getlistbody', 'adminorszaggetlistbody');
+$router->map('GET', '/admin/orszag/getkarb', 'orszagController#getkarb', 'adminorszaggetkarb');
+$router->map('GET', '/admin/orszag/viewkarb', 'orszagController#viewkarb', 'adminorszagviewkarb');
 $router->map('GET', '/admin/orszag/htmllist', 'orszagController#htmllist', 'adminorszaghtmllist');
-$router->map('POST', '/admin/orszag/save', 'orszagController#save', 'adminorszagsave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/orszag/save', 'orszagController#save', 'adminorszagsave');
+}
 $router->map('GET', '/admin/me/jsonlist', 'meController#jsonlist', 'adminmejsonlist');
 $router->map('GET', '/admin/me/htmllist', 'meController#htmllist', 'adminmehtmllist');
 $router->map('POST', '/admin/me/save', 'meController#save', 'adminmesave');

@@ -6,40 +6,58 @@ use Entities\Orszag;
 use Entities\Valutanem;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
-class orszagController extends \mkwhelpers\JQGridController
+class orszagController extends \mkwhelpers\MattableController
 {
 
     public function __construct($params)
     {
-        $this->setEntityName('Entities\Orszag');
+        $this->setEntityName(Orszag::class);
+        $this->setKarbFormTplName('orszagkarbform.tpl');
+        $this->setKarbTplName('orszagkarb.tpl');
+        $this->setListBodyRowTplName('orszaglista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
     }
 
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        $valuta = $sor->getValutanem();
-        return [
-            $sor->getNev(),
-            $sor->getIso3166(),
-            (isset($valuta) ? $valuta->getNev() : ''),
-            $sor->getLathato(),
-            $sor->getLathato2(),
-            $sor->getLathato3(),
-            $sor->getLathato4(),
-            $sor->getLathato5(),
-            $sor->getLathato6(),
-            $sor->getLathato7(),
-            $sor->getLathato8(),
-            $sor->getLathato9(),
-            $sor->getLathato10(),
-            $sor->getLathato11(),
-            $sor->getLathato12(),
-            $sor->getLathato13(),
-            $sor->getLathato14(),
-            $sor->getLathato15(),
-        ];
+        $x = [];
+        if (!$t) {
+            $t = new \Entities\Orszag();
+            $this->getEm()->detach($t);
+        }
+        $x['id'] = $t->getId();
+        $x['nev'] = $t->getNev();
+        $x['iso3166'] = $t->getIso3166();
+        $x['valutanemnev'] = $t->getValutanemNev();
+        $x['valutanemid'] = $t->getValutanemId();
+        $x['lathato'] = $t->getLathato();
+        $x['lathato2'] = $t->getLathato2();
+        $x['lathato3'] = $t->getLathato3();
+        $x['lathato4'] = $t->getLathato4();
+        $x['lathato5'] = $t->getLathato5();
+        $x['lathato6'] = $t->getLathato6();
+        $x['lathato7'] = $t->getLathato7();
+        $x['lathato8'] = $t->getLathato8();
+        $x['lathato9'] = $t->getLathato9();
+        $x['lathato10'] = $t->getLathato10();
+        $x['lathato11'] = $t->getLathato11();
+        $x['lathato12'] = $t->getLathato12();
+        $x['lathato13'] = $t->getLathato13();
+        $x['lathato14'] = $t->getLathato14();
+        $x['lathato15'] = $t->getLathato15();
+        if ($forKarb) {
+            $valutanem = new valutanemController($this->params);
+            $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanemId());
+        }
+        return $x;
     }
 
+    /**
+     * @param \Entities\Orszag $obj
+     *
+     * @return mixed
+     */
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
@@ -60,7 +78,7 @@ class orszagController extends \mkwhelpers\JQGridController
         $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
         $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
 
-        $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
         } else {
@@ -69,16 +87,53 @@ class orszagController extends \mkwhelpers\JQGridController
         return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('orszaglista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('orszaglista.tpl');
+
+        $view->setVar('pagetitle', t('Országok'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Ország'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminorszagsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null, $mind = false)

@@ -37,10 +37,6 @@
             <div id="raktargridpager"></div>
         </div>
         <div class="egyebadat-grid">
-            <table id="orszaggrid"></table>
-            <div id="orszaggridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
             <table id="irszamgrid"></table>
             <div id="irszamgridpager"></div>
         </div>
