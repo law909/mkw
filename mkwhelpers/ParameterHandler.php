@@ -53,7 +53,7 @@ class ParameterHandler implements IParameterHandler
             if ($sanitize) {
                 $data = \mkw\store::getSanitizer()->sanitize($data);
             }
-            if ($data !== 'null') {
+            if ($data !== 'null' && $data !== '' && $data !== null) {
                 return $this->trim($data);
             }
         }
@@ -67,7 +67,7 @@ class ParameterHandler implements IParameterHandler
             if ($sanitize) {
                 $data = \mkw\store::getSanitizer()->sanitize($data);
             }
-            if ($data !== 'null') {
+            if ($data !== 'null' && $data !== '' && $data !== null) {
                 return $this->trim($data);
             }
         }

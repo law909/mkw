@@ -610,7 +610,7 @@ class store
         $v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
         $v->setVar('dev', self::getConfigValue('developer', false));
         $v->setVar('imagepath', self::getConfigValue('main.imagepath', ''));
-        $v->setVar('locale', self::getLocale());
+        $v->setVar('locale', self::getWebshopLongLocale());
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
@@ -1086,38 +1086,40 @@ class store
         return $cim;
     }
 
-    public static function getAdminLocale()
+    public static function getAdminUILocale()
     {
         $l = self::getSetupValue('adminlocale', 'hu');
         if ($l) {
-            $l = self::getLocaleName($l);
+            $l = self::translateToLongLocaleName($l);
         }
         return $l;
     }
 
-    public static function getLocale()
+    public static function getAdminDataLocale()
+    {
+        return 'hu';
+    }
+
+    public static function getWebshopLongLocale()
     {
         if (self::isMPTNGY()) {
             $l = self::getMainLocale();
         } else {
-            $l = self::getSetupValue('locale', false);
+            $l = self::getParameter(self::getWebshopFieldName('locale'));
             if ($l) {
-                $l = self::getLocaleName($l);
-            } else {
-                $l = self::getParameter(\mkw\consts::Locale);
+                $l = self::translateToLongLocaleName($l);
             }
         }
         return $l;
     }
 
-    public static function getLocaleName($ny)
+    public static function translateToLongLocaleName($ny)
     {
-        return self::$locales[$ny];
-    }
-
-    public static function translateLocale($ny)
-    {
-        if (array_key_exists(strtolower($ny), self::$locales)) {
+        $ny = strtolower($ny);
+        if (in_array($ny, self::getLongLocaleList())) {
+            return $ny;
+        }
+        if (array_key_exists($ny, self::$locales)) {
             return self::$locales[$ny];
         }
         return $ny;
@@ -1135,18 +1137,9 @@ class store
         return $valutanem;
     }
 
-    public static function getLocaleList()
+    public static function getLongLocaleList()
     {
         return array_values(self::$locales);
-    }
-
-    public static function toLocale($ny)
-    {
-        $a = self::getLocaleList();
-        if (in_array($ny, $a, true)) {
-            return $ny;
-        }
-        return null;
     }
 
     public static function getLocaleSelectList($sel = null)
@@ -1590,7 +1583,7 @@ class store
     {
         return self::getSetupValue('enabledwebshops', 1);
     }
-    
+
     public static function getAdminTemplatePath()
     {
         return self::getConfigValue('path.template');
@@ -2051,7 +2044,7 @@ class store
 
     public static function setMainLocale($ny)
     {
-        $ny = self::translateLocale($ny);
+        $ny = self::translateToLongLocaleName($ny);
         \mkw\store::getMainSession()->locale = $ny;
         $v = self::getValutanemForLocale($ny);
         if ($v) {

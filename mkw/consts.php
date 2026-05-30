@@ -27,6 +27,10 @@ class consts
     const ImportNewKatId = 'importnewkatid';
     const Logo = 'logo';
     const Locale = 'locale';
+    const Locale2 = 'locale2';
+    const Locale3 = 'locale3';
+    const Locale4 = 'locale4';
+    const Locale5 = 'locale5';
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
     const NagykerCimke = 'nagykercimke';

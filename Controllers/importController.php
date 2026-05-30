@@ -5875,9 +5875,9 @@ class importController extends \mkwhelpers\Controller
                     $vtsz = $cell->getValue();
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 4) == 'nev_') {
                     $nyelv = strtoupper(substr($fej[$col], 4));
-                    $nev[\mkw\store::getLocaleName($nyelv)] = $cell->getValue();
+                    $nev[\mkw\store::translateToLongLocaleName($nyelv)] = $cell->getValue();
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 3) == 'nev') {
-                    $nev[\mkw\store::getLocaleName('HU')] = $cell->getValue();
+                    $nev[\mkw\store::translateToLongLocaleName('HU')] = $cell->getValue();
                 } elseif ($cell->getValue() && substr($fej[$col], 0, 6) == 'netto_') {
                     $n = explode('_', $fej[$col]);
                     $netto[strtoupper($n[1])][$n[2]] = $cell->getValue();
@@ -5986,7 +5986,14 @@ class importController extends \mkwhelpers\Controller
                 // TODO locale
                 if ($nev) {
                     foreach ($nev as $loc => $text) {
-                        $termek->setNev($text);
+                        switch ($loc) {
+                            case 'hu_hu':
+                                $termek->setNev($text);
+                                break;
+                            case 'en_us':
+                                $termek->setNev_l1($text);
+                                break;
+                        }
                     }
                 }
                 \mkw\store::getEm()->persist($termek);

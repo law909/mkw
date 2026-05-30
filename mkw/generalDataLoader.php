@@ -39,7 +39,7 @@ class generalDataLoader
         $view->setVar('dev', \mkw\store::getConfigValue('developer', false));
         $view->setVar('jsversion', \mkw\store::getJSVersion());
         $view->setVar('bootstrapjsversion', \mkw\store::getBootstrapJSVersion());
-        $view->setVar('localelist', \mkw\store::getLocaleList());
+        $view->setVar('localelist', \mkw\store::getLongLocaleList());
         $setup = \mkw\store::getSetup();
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', \mkw\store::getTheme());

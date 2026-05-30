@@ -277,17 +277,6 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($setup.multilang)}
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="LocaleEdit">{at('Publikus felület nyelve')}:</label></span>
-                                <select id="LocaleEdit" name="locale">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $localelist as $_loc}
-                                        <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="BizonylatMennyisegEdit">{at('Bizonylattétel alap mennyisége')}:</label></span>
                             <span><input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}">
@@ -848,6 +837,15 @@
                             <span class="setuplabel"><label for="OffEdit">{at('Publikus felület kikapcsolva')}:</label></span>
                             <input id="OffEdit" name="off" type="checkbox"{if ($off)} checked="checked"{/if}>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="LocaleEdit">{at('Publikus felület nyelve')}:</label></span>
+                            <select id="LocaleEdit" name="locale">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $localelist as $_loc}
+                                    <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <tbody>
@@ -1218,6 +1216,15 @@
                                 <span class="setuplabel"><label for="Off2Edit">{at('Publikus felület kikapcsolva')}:</label></span>
                                 <input id="Off2Edit" name="off2" type="checkbox"{if ($off2)} checked="checked"{/if}>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Locale2Edit">{at('Publikus felület nyelve')}:</label></span>
+                                <select id="Locale2Edit" name="locale2">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $localelist2 as $_loc}
+                                        <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1253,6 +1260,15 @@
                                 <span class="setuplabel"><label for="Off3Edit">{at('Publikus felület kikapcsolva')}:</label></span>
                                 <input id="Off3Edit" name="off3" type="checkbox"{if ($off3)} checked="checked"{/if}>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Locale3Edit">{at('Publikus felület nyelve')}:</label></span>
+                                <select id="Locale3Edit" name="locale3">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $localelist3 as $_loc}
+                                        <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1287,6 +1303,15 @@
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off4Edit">{at('Publikus felület kikapcsolva')}:</label></span>
                                 <input id="Off4Edit" name="off4" type="checkbox"{if ($off4)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Locale4Edit">{at('Publikus felület nyelve')}:</label></span>
+                                <select id="Locale4Edit" name="locale4">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $localelist4 as $_loc}
+                                        <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1328,6 +1353,15 @@
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off5Edit">{at('Publikus felület kikapcsolva')}:</label></span>
                                 <input id="Off5Edit" name="off5" type="checkbox"{if ($off2)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Locale5Edit">{at('Publikus felület nyelve')}:</label></span>
+                                <select id="Locale5Edit" name="locale5">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $localelist5 as $_loc}
+                                        <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

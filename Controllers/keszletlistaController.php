@@ -117,7 +117,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $filter = $this->createFilter();
 
-        $locale = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        $locale = \mkw\store::translateToLongLocaleName($this->params->getStringRequestParam('nyelv', \mkw\store::getAdminDataLocale()));
 
         $keszlettipus = '';
 

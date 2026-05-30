@@ -239,14 +239,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
     public function findForPrint($id)
     {
-        $locale = false;
-        if ($id) {
-            $b = $this->find($id);
-            if ($b) {
-                $locale = $b->getBizonylatnyelv();
-            }
-        }
-
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', '=', $id);
 

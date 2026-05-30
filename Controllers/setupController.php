@@ -640,6 +640,14 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::Locale);
         $view->setVar('localelist', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Locale2);
+        $view->setVar('localelist2', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Locale3);
+        $view->setVar('localelist3', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Locale4);
+        $view->setVar('localelist4', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Locale5);
+        $view->setVar('localelist5', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::ImportNewKatId);
         $inkid = $p ? $p->getErtek() : 0;
@@ -1810,6 +1818,10 @@ class setupController extends \mkwhelpers\Controller
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
         $this->setObj(\mkw\consts::Locale, $this->params->getStringRequestParam('locale'));
+        $this->setObj(\mkw\consts::Locale2, $this->params->getStringRequestParam('locale2'));
+        $this->setObj(\mkw\consts::Locale3, $this->params->getStringRequestParam('locale3'));
+        $this->setObj(\mkw\consts::Locale4, $this->params->getStringRequestParam('locale4'));
+        $this->setObj(\mkw\consts::Locale5, $this->params->getStringRequestParam('locale5'));
 
         $inkid = $this->params->getIntRequestParam('importnewkatid');
         if ($inkid) {

@@ -71,7 +71,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $nevfilter = $this->params->getRequestParam('nevfilter', null);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
         $fizmodid = $this->params->getIntRequestParam('fizmod');
-        $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        $nyelv = \mkw\store::translateToLongLocaleName($this->params->getStringRequestParam('nyelv', \mkw\store::getAdminDataLocale()));
         $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
         $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
         $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');

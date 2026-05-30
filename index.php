@@ -160,8 +160,8 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'locale' => 'en_us'
                         ]
                     );
-                    if (store::getAdminLocale()) {
-                        $__admintranslate->setLocale(store::getAdminLocale());
+                    if (store::getAdminUILocale()) {
+                        $__admintranslate->setLocale(store::getAdminUILocale());
                     }
 
                     if (!in_array(
@@ -233,7 +233,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                         }
                     }
 
-                    $mainlocale = store::getLocale();
+                    $mainlocale = store::getWebshopLongLocale();
                     if ($mainlocale) {
                         $__maintranslate->setLocale($mainlocale);
                     }

@@ -39,7 +39,8 @@ class b2bpartnerController extends partnerController
                 $partner = $this->setFields($partner, 'add', 'jelszo');
                 $partner = $this->setFields($partner, 'add', 'registration');
                 $partner->setUzletkoto($uk);
-                $partner->setBizonylatnyelv($uk->getPartnerbizonylatnyelv());
+                //$partner->setBizonylatnyelv($uk->getPartnerbizonylatnyelv());
+                $partner->setBizonylatnyelv(\mkw\store::getWebshopLongLocale());
                 $partner->setValutanem($uk->getPartnervalutanem());
                 $partner->setFizmod($uk->getPartnerfizmod());
                 $partner->setSzallitasimod($uk->getPartnerszallitasimod());

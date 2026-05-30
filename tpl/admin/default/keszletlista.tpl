@@ -50,10 +50,8 @@
                         <label for="MinkeszletEdit">{at('Minimum készlet számít')}:</label>
                         <input id="MinkeszletEdit" type="checkbox" name="minkeszletszamit">
                     </div>
-                    {if ($setup.multilang)}
-                        <div class="matt-hseparator"></div>
-                        {include "comp_nyelvselect.tpl"}
-                    {/if}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_nyelvselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
                         <label for="ArsavEdit">{at('Ársáv')}:</label>

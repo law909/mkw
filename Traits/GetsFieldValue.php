@@ -12,7 +12,7 @@ trait GetsFieldValue
     public function getLocalizedFieldValue($fieldname, $locale = null)
     {
         if (!$locale) {
-            $locale = \mkw\store::getLocale();
+            $locale = \mkw\store::getWebshopLongLocale();
         }
         return $this->getFieldValue(\mkw\store::getLocalizedFieldName($fieldname, $locale));
     }

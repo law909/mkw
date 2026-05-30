@@ -615,7 +615,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if ($ck) {
                 $partnerobj->setValutanem($ck);
             }
-            $partnerobj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
+            $partnerobj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv', \mkw\store::getAdminDataLocale()));
 
             $kiskercimkeid = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
             if ($kiskercimkeid) {
@@ -753,7 +753,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setSzepkartyatipus($this->params->getIntRequestParam('szepkartyatipus'));
         $obj->setSzepkartyaervenyesseg($this->params->getStringRequestParam('szepkartyaervenyesseg'));
 
-        $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
+        $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv', \mkw\store::getAdminDataLocale()));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
 
         $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));

@@ -49,7 +49,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
         $fafilter = $this->params->getArrayRequestParam('fafilter');
         $nevfilter = $this->params->getRequestParam('nevfilter', null);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
-        $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        $nyelv = \mkw\store::translateToLongLocaleName($this->params->getStringRequestParam('nyelv', \mkw\store::getAdminDataLocale()));
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
 
         $tetelek = $this->getRepo(Bizonylatfej::class)->getTermekForgalmiLista(
