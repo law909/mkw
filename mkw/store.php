@@ -1865,6 +1865,11 @@ class store
         return number_format($num, 2, '.', '');
     }
 
+    public static function NAVVATPercentage($num)
+    {
+        return number_format($num, 4, '.', '');
+    }
+
     public static function strpos_array($haystack, $needles)
     {
         if ($haystack && $needles && is_array($needles)) {

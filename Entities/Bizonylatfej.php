@@ -1496,7 +1496,7 @@ class Bizonylatfej
                         ) . '</reason>';
                     $result = $result . '</vatExemption>';
                 } else {
-                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage>';
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVVATPercentage($bt->getAfakulcs() / 100) . '</vatPercentage>';
                 }
             }
             $result = $result . '</lineVatRate>';
@@ -1557,7 +1557,7 @@ class Bizonylatfej
                         ) . '</reason>';
                     $result = $result . '</vatExemption>';
                 } else {
-                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage>';
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVVATPercentage($as['afakulcs'] / 100) . '</vatPercentage>';
                 }
             }
             $result = $result . '</vatRate>';

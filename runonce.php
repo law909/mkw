@@ -782,6 +782,31 @@ if ($DBVersion < '0076') {
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0076');
 }
+
+if ($DBVersion < '0077') {
+    \mkw\store::getEm()->getConnection()->executeUpdate(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "ÁFA kulcsok","/admin/afa/viewlist","/admin/afa",40,1,247, "")'
+    );
+    if (\mkw\store::isSuperzoneB2B() || \mkw\store::isMugenrace2026()) {
+        $em = \mkw\store::getEm();
+        $afa = $em->getRepository(\Entities\Afa::class)->findOneBy(['ertek' => 25.5]);
+        if (!$afa) {
+            $afa = new \Entities\Afa();
+            $afa->setNev('25.5%');
+            $afa->setErtek(25.5);
+            $em->persist($afa);
+        }
+        $orszag = $em->getRepository(\Entities\Orszag::class)->findOneBy(['iso3166' => 'FI']);
+        if ($orszag) {
+            $orszag->setAfa($afa);
+            $em->persist($orszag);
+        }
+        $em->flush();
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0077');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

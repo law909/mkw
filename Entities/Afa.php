@@ -17,7 +17,7 @@ class Afa
     private $id;
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="decimal",precision=5,scale=2) */
     private $ertek = 0;
     /** @ORM\Column(type="integer", nullable=true) */
     private $rlbkod;

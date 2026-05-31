@@ -8,10 +8,15 @@ $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'admi
 $router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
 $router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
-$router->map('GET', '/admin/afa/jsonlist', 'afaController#jsonlist', 'adminafajsonlist');
+$router->map('GET', '/admin/afa/viewlist', 'afaController#viewlist', 'adminafaviewlist');
+$router->map('GET', '/admin/afa/getlistbody', 'afaController#getlistbody', 'adminafagetlistbody');
+$router->map('GET', '/admin/afa/getkarb', 'afaController#getkarb', 'adminafagetkarb');
+$router->map('GET', '/admin/afa/viewkarb', 'afaController#viewkarb', 'adminafaviewkarb');
 $router->map('GET', '/admin/afa/htmllist', 'afaController#htmllist', 'adminafahtmllist');
-$router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
 $router->map('GET', '/admin/afa/navcaselist', 'afaController#navcaselist', 'adminafanavcaselist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
+}
 $router->map('GET', '/admin/arfolyam/jsonlist', 'arfolyamController#jsonlist', 'adminarfolyamjsonlist');
 $router->map('GET', '/admin/arfolyam/htmllist', 'arfolyamController#htmllist', 'adminarfolyamhtmllist');
 $router->map('POST', '/admin/arfolyam/save', 'arfolyamController#save', 'adminarfolyamsave');

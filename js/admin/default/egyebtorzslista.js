@@ -33,59 +33,6 @@ $().ready(
         }
 
 
-        // AFA grid
-        var _afa = {
-            grid: '#afagrid',
-            pager: '#afagridpager'
-        };
-        var afagrid = $(_afa.grid).jqGrid({
-            url: '/admin/afa/jsonlist',
-            editurl: '/admin/afa/save',
-            datatype: 'json',
-            colModel: [
-                {
-                    name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
-                    editable: true,
-                    editoptions: {size: 25, maxlength: 255},
-                    editrules: {required: true},
-                    formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}
-                },
-                {
-                    name: 'ertek', index: 'ertek', label: 'ÁFA kulcs', width: 25, align: 'right',
-                    editable: true,
-                    editoptions: {size: 2},
-                    editrules: {integer: true, required: true},
-                    formoptions: {rowpos: 2, label: 'ÁFA kulcs:', elmsuffix: '*'}
-                },
-                {
-                    name: 'navcase', index: 'navcase', label: 'NAV case', width: 60,
-                    editable: true,
-                    edittype: 'select',
-                    editoptions: {size: 4, dataUrl: '/admin/afa/navcaselist'},
-                    formoptions: {rowpos: 3, label: 'NAV case:'}
-                },
-                {
-                    name: 'rlbkod', index: 'rlbkod', label: 'RLB kód', width: 25, align: 'right',
-                    editable: true,
-                    editoptions: {size: 2},
-                    editrules: {integer: true, required: false},
-                    formoptions: {rowpos: 4, label: 'RLB kód:'}
-                }],
-            rowNum: 100000,
-            rowList: [10, 20, 30],
-            pager: _afa.pager,
-            sortname: 'nev',
-            sortorder: 'asc',
-            viewrecords: true,
-            loadonce: false,
-            gridview: true,
-            height: 100,
-            width: 320,
-            hiddengrid: true,
-            caption: 'ÁFA kulcsok'
-        });
-        createNav(_afa, afagrid);
-
         // Bankszamla grid
         var _bszla = {
             grid: '#bankszamlagrid',

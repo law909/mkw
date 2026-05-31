@@ -140,7 +140,7 @@ class Bizonylattetel
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $afanev;
 
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="decimal",precision=5,scale=2) */
     private $afakulcs;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */

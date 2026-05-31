@@ -13,10 +13,6 @@
 {block "kozep"}
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">
-            <table id="afagrid"></table>
-            <div id="afagridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
             <table id="vtszgrid"></table>
             <div id="vtszgridpager"></div>
         </div>
