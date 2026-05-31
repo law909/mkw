@@ -67,10 +67,10 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato15'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'afa', '' . "\0" . 'Entities\\Orszag' . "\0" . 'eu', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato15'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato15'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'afa', '' . "\0" . 'Entities\\Orszag' . "\0" . 'eu', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato15'];
     }
 
     /**
@@ -256,6 +256,72 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfa()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
+
+        return parent::getAfa();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfaNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaNev', []);
+
+        return parent::getAfaNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfaId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', []);
+
+        return parent::getAfaId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAfa($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$val]);
+
+        return parent::setAfa($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEu()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEu', []);
+
+        return parent::getEu();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEu($eu)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEu', [$eu]);
+
+        return parent::setEu($eu);
     }
 
     /**

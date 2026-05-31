@@ -7,4 +7,6 @@
     </td>
     <td class="cell">{$_egyed.iso3166}</td>
     <td class="cell">{$_egyed.valutanemnev}</td>
+    <td class="cell">{$_egyed.afanev}</td>
+    <td class="cell">{if ($_egyed.eu)}{at('EU-n belüli')}{else}{at('EU-n kívüli')}{/if}</td>
 </tr>

@@ -31,6 +31,9 @@ class orszagController extends \mkwhelpers\MattableController
         $x['iso3166'] = $t->getIso3166();
         $x['valutanemnev'] = $t->getValutanemNev();
         $x['valutanemid'] = $t->getValutanemId();
+        $x['afanev'] = $t->getAfaNev();
+        $x['afaid'] = $t->getAfaId();
+        $x['eu'] = $t->getEu();
         $x['lathato'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();
         $x['lathato3'] = $t->getLathato3();
@@ -49,6 +52,8 @@ class orszagController extends \mkwhelpers\MattableController
         if ($forKarb) {
             $valutanem = new valutanemController($this->params);
             $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanemId());
+            $afa = new afaController($this->params);
+            $x['afalist'] = $afa->getSelectList($t->getAfaId());
         }
         return $x;
     }
@@ -62,6 +67,7 @@ class orszagController extends \mkwhelpers\MattableController
     {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setIso3166($this->params->getStringRequestParam('iso3166', $obj->getIso3166()));
+        $obj->setEu($this->params->getBoolRequestParam('eu'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
         $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
@@ -83,6 +89,13 @@ class orszagController extends \mkwhelpers\MattableController
             $obj->setValutanem($valutanem);
         } else {
             $obj->setValutanem(null);
+        }
+
+        $afa = $this->getRepo(\Entities\Afa::class)->find($this->params->getIntRequestParam('afa', 0));
+        if ($afa) {
+            $obj->setAfa($afa);
+        } else {
+            $obj->setAfa(null);
         }
         return $obj;
     }

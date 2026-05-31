@@ -29,6 +29,21 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <td><label for="AfaEdit">{at('Áfakulcs')}:</label></td>
+                    <td>
+                        <select id="AfaEdit" name="afa">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $egyed.afalist as $_afa}
+                                <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if}>{$_afa.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="EuEdit">{at('EU-n belüli')}:</label></td>
+                    <td><input id="EuEdit" name="eu" type="checkbox"{if ($egyed.eu)} checked="checked"{/if}></td>
+                </tr>
                 </tbody>
             </table>
         </div>

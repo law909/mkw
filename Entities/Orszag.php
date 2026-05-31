@@ -35,6 +35,16 @@ class Orszag
      * @var \Entities\Valutanem
      */
     private $valutanem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Afa")
+     * @ORM\JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Afa
+     */
+    private $afa;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $eu = 0;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
 
@@ -123,6 +133,59 @@ class Orszag
             $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         $this->valutanem = $val;
+    }
+
+    /**
+     * @return Afa
+     */
+    public function getAfa()
+    {
+        return $this->afa;
+    }
+
+    public function getAfaNev()
+    {
+        $a = $this->getAfa();
+        if ($a) {
+            return $a->getNev();
+        }
+        return '';
+    }
+
+    public function getAfaId()
+    {
+        $a = $this->getAfa();
+        if ($a) {
+            return $a->getId();
+        }
+        return 0;
+    }
+
+    /**
+     * @param \Entities\Afa $val
+     */
+    public function setAfa($val)
+    {
+        if (!($val instanceof \Entities\Afa)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Afa')->find($val);
+        }
+        $this->afa = $val;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEu()
+    {
+        return $this->eu;
+    }
+
+    /**
+     * @param mixed $eu
+     */
+    public function setEu($eu)
+    {
+        $this->eu = $eu;
     }
 
     /**
