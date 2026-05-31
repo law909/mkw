@@ -716,6 +716,70 @@ if ($DBVersion < '0075') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0075');
 }
+
+if ($DBVersion < '0076') {
+    // EU-tagországok áfakulcsai, iso3166 szerint.
+    // Az érték az általános áfakulcs egész százalékban (az Afa.ertek mező egész szám).
+    // Finnország (FI) tényleges kulcsa 25,5% lenne, ami egész számként nem tárolható,
+    // ezért ott csak az EU jelölést kapcsoljuk be, áfakulcsot nem állítunk.
+    $euafak = [
+        'HU' => 27,
+        'FI' => null,
+        'HR' => 25,
+        'DK' => 25,
+        'SE' => 25,
+        'EE' => 24,
+        'GR' => 24,
+        'RO' => 24,
+        'PL' => 23,
+        'PT' => 23,
+        'IE' => 23,
+        'SK' => 23,
+        'IT' => 22,
+        'SI' => 22,
+        'CZ' => 21,
+        'BE' => 21,
+        'ES' => 21,
+        'NL' => 21,
+        'LV' => 21,
+        'LT' => 21,
+        'AT' => 20,
+        'FR' => 20,
+        'BG' => 20,
+        'DE' => 19,
+        'CY' => 19,
+        'MT' => 18,
+        'LU' => 17,
+    ];
+    $em = \mkw\store::getEm();
+    $orszagrepo = $em->getRepository(\Entities\Orszag::class);
+    $afarepo = $em->getRepository(\Entities\Afa::class);
+    $afacache = [];
+    foreach ($euafak as $iso => $ertek) {
+        /** @var \Entities\Orszag $orszag */
+        $orszag = $orszagrepo->findOneBy(['iso3166' => $iso]);
+        if (!$orszag) {
+            continue;
+        }
+        $orszag->setEu(1);
+        if (!is_null($ertek)) {
+            if (!isset($afacache[$ertek])) {
+                $afa = $afarepo->findOneBy(['ertek' => $ertek]);
+                if (!$afa) {
+                    $afa = new \Entities\Afa();
+                    $afa->setNev($ertek . '%');
+                    $afa->setErtek($ertek);
+                    $em->persist($afa);
+                }
+                $afacache[$ertek] = $afa;
+            }
+            $orszag->setAfa($afacache[$ertek]);
+        }
+        $em->persist($orszag);
+    }
+    $em->flush();
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0076');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
