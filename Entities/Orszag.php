@@ -26,7 +26,7 @@ class Orszag
      */
     private $iso3166;
 
-    /** @ORM\OneToMany(targetEntity="Partner", mappedBy="szallitasimod",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Partner", mappedBy="orszag",cascade={"persist"}) */
     private $partnerek;
 
     /**
