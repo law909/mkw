@@ -529,10 +529,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $x['dokok'] = $dok;
 
-            if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
-                $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                $x['partnerafa'] = $afa->getId();
-                $x['partnerafakulcs'] = $afa->getErtek();
+            if ($t->getPartner()) {
+                $afaoverride = $t->getPartner()->getAFAOverride();
+                if ($afaoverride) {
+                    $x['partnerafa'] = $afaoverride->getId();
+                    $x['partnerafakulcs'] = $afaoverride->getErtek();
+                }
             }
             foreach ($t->getBizonylattetelek() as $ttetel) {
                 $tetel[] = $tetelCtrl->loadVars($ttetel, true);

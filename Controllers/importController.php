@@ -6253,9 +6253,6 @@ class importController extends \mkwhelpers\Controller
         $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getDefaultRaktarId());
         $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(12); // függőben
         $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
-        $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-        $nullasafa = $afa->getId();
-        $nullasafakulcs = $afa->getErtek();
 
         $megr = new Bizonylatfej();
         $megr->setPersistentData();
@@ -6295,10 +6292,6 @@ class importController extends \mkwhelpers\Controller
                     $tetel->setPersistentData();
                     $tetel->setTermek($tv->getTermek());
                     $tetel->setTermekvaltozat($tv);
-                    if ($partner->getSzamlatipus() > 0) {
-                        $tetel->setAfa($nullasafa);
-                        $tetel->setAfakulcs($nullasafakulcs);
-                    }
 
                     $tetel->setMennyiseg($mennyiseg);
                     $tetel->setNettoegysar($egysar);

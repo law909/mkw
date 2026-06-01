@@ -137,8 +137,6 @@ class BizonylatfejListener
      * @param $ktg
      * @param \Entities\Bizonylatfej $bizfej
      * @param mixed $termekid
-     * @param $nullasafa
-     * @param $termek
      *
      * @return void
      */
@@ -147,8 +145,9 @@ class BizonylatfejListener
         $ktg = $ktg * 1;
 
         if ($ktg) {
-            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            $afaoverride = false;
+            if ($bizfej->getPartner()) {
+                $afaoverride = $bizfej->getPartner()->getAFAOverride();
             }
             $termek = $this->em->getRepository(Termek::class)->find($termekid);
 
@@ -159,8 +158,8 @@ class BizonylatfejListener
             }
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                 } else {
                     $k->setAfa($termek->getAfa());
                 }
@@ -180,8 +179,8 @@ class BizonylatfejListener
                 $k->setMozgat();
                 $k->setFoglal();
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                     $k->setNettoegysar($ktg);
                     $k->setNettoegysarhuf($ktg * $k->getArfolyam());
                 } else {
@@ -311,8 +310,9 @@ class BizonylatfejListener
         $szallmod = $bizfej->getSzallitasimod();
         $kezktg = $szallmod?->getTermek();
         if ($kezktg) {
-            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                $nullasafa = $this->em->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            $afaoverride = false;
+            if ($bizfej->getPartner()) {
+                $afaoverride = $bizfej->getPartner()->getAFAOverride();
             }
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $kezktg->getId()) {
@@ -321,8 +321,8 @@ class BizonylatfejListener
             }
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                 }
                 $k->setBruttoegysar($kezktg->getBruttoAr());
                 $k->calc();
@@ -339,8 +339,8 @@ class BizonylatfejListener
                 $k->setMozgat();
                 $k->setFoglal();
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                     $k->setNettoegysar($kezktg->getNettoAr());
                     $k->setNettoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
                 } else {
@@ -391,8 +391,9 @@ class BizonylatfejListener
         $termek = $this->em->getRepository('Entities\Termek')->find($termekid);
 
         if ($termek && $bruttoegysar != 0) {
-            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            $afaoverride = false;
+            if ($bizfej->getPartner()) {
+                $afaoverride = $bizfej->getPartner()->getAFAOverride();
             }
 
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
@@ -402,8 +403,8 @@ class BizonylatfejListener
             }
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                 } else {
                     $k->setAfa($termek->getAfa());
                 }
@@ -423,8 +424,8 @@ class BizonylatfejListener
                 $k->setMozgat();
                 $k->setFoglal();
                 $k->setMennyiseg(1);
-                if ($nullasafa) {
-                    $k->setAfa($nullasafa);
+                if ($afaoverride) {
+                    $k->setAfa($afaoverride);
                     $k->setNettoegysar($bruttoegysar);
                     $k->setNettoegysarhuf($bruttoegysar * $k->getArfolyam());
                 } else {

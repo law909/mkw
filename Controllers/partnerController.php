@@ -209,12 +209,10 @@ class partnerController extends \mkwhelpers\MattableController
         $x['nemrendelhet3'] = $t->isNemrendelhet3();
         $x['nemrendelhet4'] = $t->isNemrendelhet4();
         $x['nemrendelhet5'] = $t->isNemrendelhet5();
-        if ($t->getSzamlatipus() > 0) {
-            $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-            if ($afa) {
-                $x['afa'] = $afa->getId();
-                $x['afakulcs'] = $afa->getErtek();
-            }
+        $afaoverride = $t->getAFAOverride();
+        if ($afaoverride) {
+            $x['afa'] = $afaoverride->getId();
+            $x['afakulcs'] = $afaoverride->getErtek();
         }
         if ($forKarb) {
             $kedv = [];
@@ -950,21 +948,19 @@ class partnerController extends \mkwhelpers\MattableController
         $term = trim($this->params->getStringRequestParam('term'));
         $ret = [];
         if ($term) {
-            $r = \mkw\store::getEm()->getRepository('Entities\Partner');
+            $r = \mkw\store::getEm()->getRepository(Partner::class);
             $res = $r->getBizonylatfejLista($term);
 
-            $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-            $partnerafa = $afa->getId();
-            $partnerafakulcs = $afa->getErtek();
-
+            /** @var Partner $r */
             foreach ($res as $r) {
                 $x = [
-                    'id' => $r['id'],
-                    'value' => $r['nev'] . ' ' . \mkw\store::implodeCim($r['irszam'], $r['varos'], $r['utca'], $r['hazszam']) . ' (' . $r['email'] . ')'
+                    'id' => $r->getId(),
+                    'value' => $r->getNev() . ' ' . $r->getCim() . ' (' . $r->getEmail() . ')'
                 ];
-                if ($r['szamlatipus'] > 0) {
-                    $x['afa'] = $partnerafa;
-                    $x['afakulcs'] = $partnerafakulcs;
+                $afaoverride = $r->getAFAOverride();
+                if ($afaoverride) {
+                    $x['afa'] = $afaoverride->getId();
+                    $x['afakulcs'] = $afaoverride->getErtek();
                 }
                 $ret[] = $x;
             }
@@ -1046,13 +1042,28 @@ class partnerController extends \mkwhelpers\MattableController
                 'mptngyszerepkor' => $partner->getMptngyszerepkorId(),
                 'mpttag' => $partner->isMptngympttag() ? t('MPT tag') : t('nem MPT tag'),
             ];
-            if ($partner->getSzamlatipus() > 0) {
-                $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                $ret['afa'] = $afa->getId();
-                $ret['afakulcs'] = $afa->getErtek();
+            $afaoverride = $partner->getAFAOverride();
+            if ($afaoverride) {
+                $ret['afa'] = $afaoverride->getId();
+                $ret['afakulcs'] = $afaoverride->getErtek();
             }
         }
         echo json_encode($ret);
+    }
+
+    public function getAFAOverride()
+    {
+        $afa = Partner::calcAFAOverride(
+            $this->params->getIntRequestParam('szallorszag'),
+            $this->params->getIntRequestParam('orszag'),
+            $this->params->getIntRequestParam('szamlatipus'),
+            $this->params->getStringRequestParam('euadoszam')
+        );
+        if ($afa) {
+            echo json_encode(['id' => $afa->getId(), 'ertek' => $afa->getErtek()]);
+        } else {
+            echo json_encode(['id' => false, 'ertek' => false]);
+        }
     }
 
     public function getSzallitoSelectList($selid)

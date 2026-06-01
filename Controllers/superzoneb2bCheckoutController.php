@@ -68,7 +68,6 @@ class superzoneb2bCheckoutController extends checkoutController
 
         if ($ok) {
             $partner = \mkw\store::getLoggedInUser();
-            $nullasafa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             $biztetelcontroller = new bizonylattetelController($this->params);
             $valutanem = $partner->getValutanem();
 
@@ -117,19 +116,13 @@ class superzoneb2bCheckoutController extends checkoutController
                 $t->setTermek($kt->getTermek());
                 $t->setTermekvaltozat($kt->getTermekvaltozat());
                 $t->setMennyiseg($kt->getMennyiseg());
-                if ($partner->getSzamlatipus()) {
-                    if ($nullasafa) {
-                        $t->setAfa($nullasafa);
-                    }
-                    $t->setNettoegysar($kt->getNettoegysar());
-                    $t->setEnettoegysar($kt->getEnettoegysar());
-                    $t->setEbruttoegysar($kt->getEnettoegysar());
-                } else {
-                    $t->setNettoegysar($kt->getNettoegysar());
-                    $t->setBruttoegysar($kt->getBruttoegysar());
-                    $t->setEnettoegysar($kt->getEnettoegysar());
-                    $t->setEbruttoegysar($kt->getEbruttoegysar());
+                $afaoverride = $partner->getAFAOverride();
+                if ($afaoverride) {
+                    $t->setAfa($afaoverride);
                 }
+                $t->setNettoegysar($kt->getNettoegysar());
+                $t->setEnettoegysar($kt->getEnettoegysar());
+                $t->setEbruttoegysar($kt->getEnettoegysar());
                 $t->setKedvezmeny($kt->getKedvezmeny());
                 $arak = $biztetelcontroller->calcAr(
                     $t->getAfaId(),

@@ -135,17 +135,7 @@ class PartnerRepository extends \mkwhelpers\Repository
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter(['_xx.nev', '_xx.email'], 'LIKE', '%' . $keresett . '%');
         $order = ['_xx.nev' => 'ASC'];
-        $a = $this->alias;
-        $q = $this->_em->createQuery(
-            'SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca, ' . $a . '.hazszam,'
-            . $a . '.szamlatipus, ' . $a . '.email'
-            . ' FROM ' . $this->entityname . ' ' . $a
-            . $this->getFilterString($filter)
-            . $this->getOrderString($order)
-        );
-        $q->setParameters($this->getQueryParameters($filter));
-        $res = $q->getScalarResult();
-        return $res;
+        return $this->getAll($filter, $order);
     }
 
     public function getByCimkek($cimkefilter)

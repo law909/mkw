@@ -884,6 +884,7 @@ $router->map('GET', '/admin/partner/getlistbody', 'partnerController#getlistbody
 $router->map('GET', '/admin/partner/getkarb', 'partnerController#getkarb', 'adminpartnergetkarb');
 $router->map('GET', '/admin/partner/viewkarb', 'partnerController#viewkarb', 'adminpartnerviewkarb');
 $router->map('GET', '/admin/partner/getdata', 'partnerController#getPartnerData', 'adminpartnergetdata');
+$router->map('GET', '/admin/partner/getafaoverride', 'partnerController#getAfaOverride', 'adminpartnergetafaoverride');
 $router->map('GET', '/admin/partnerdok/getemptyrow', 'partnerdokController#getemptyrow', 'adminpartnerdokgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/save', 'partnerController#save', 'adminpartnersave');

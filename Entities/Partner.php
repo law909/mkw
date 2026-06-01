@@ -3523,4 +3523,44 @@ class Partner
         $this->mptngyegyetemegyeb = $egyetemegyeb;
     }
 
+    public static function calcAFAOverride($szallorszag, $orszag, $szamlatipus, $euadoszam)
+    {
+        if (!is_a($szallorszag, Orszag::class)) {
+            $afaorszag = store::getEm()->getRepository(Orszag::class)->find($szallorszag);
+        } else {
+            $afaorszag = $szallorszag;
+        }
+        if (!$afaorszag) {
+            if (!is_a($orszag, Orszag::class)) {
+                $afaorszag = store::getEm()->getRepository(Orszag::class)->find($orszag);
+            } else {
+                $afaorszag = $orszag;
+            }
+            if (!$afaorszag) {
+                // ha nincs se szállítási se székhely ország megadva, akkor fallback döntés az ÁFA kulcsról
+                if (($szamlatipus == 1 && $euadoszam) || // EU-n belüli B2B
+                    ($szamlatipus == 2)) { // EU-n kívüli B2B és B2C
+                    return \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                }
+                return false;
+            }
+        }
+        if (\mkw\store::isMagyarorszag($afaorszag)) {
+            return false;
+        }
+        if ($afaorszag->getEu() && $euadoszam || // EU-n belüli B2B
+            (!$afaorszag->getEu())) { // EU-n kívüli B2B és B2C
+            return \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+        }
+        $orszagafa = $afaorszag->getAfa();
+        if (!$orszagafa) {
+            return false;
+        }
+        return $orszagafa;
+    }
+
+    public function getAFAOverride()
+    {
+        return self::calcAFAOverride($this->getSzallorszag(), $this->getOrszag(), $this->getSzamlatipus(), $this->getEuadoszam());
+    }
 }

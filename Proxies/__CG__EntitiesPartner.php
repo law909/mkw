@@ -4504,4 +4504,15 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
         parent::setMPTNGYEgyetemegyeb($egyetemegyeb);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getAFAOverride()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAFAOverride', []);
+
+        return parent::getAFAOverride();
+    }
+
 }

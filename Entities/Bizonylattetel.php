@@ -710,6 +710,10 @@ class Bizonylattetel
                     } else {
                         $this->setAfa(null);
                     }
+                    $afaoverride = $this->getAfaOverride();
+                    if ($afaoverride) {
+                        $this->setAfa($afaoverride);
+                    }
                     //$this->setMozgat();
                     //$this->setFoglal();
                 }
@@ -951,6 +955,22 @@ class Bizonylattetel
             $this->setAfanev('');
             $this->setAfakulcs(0);
         }
+    }
+
+    public function getAfaOverride()
+    {
+        if ($this->duplication) {
+            return false;
+        }
+        $fej = $this->getBizonylatfej();
+        if (!$fej) {
+            return false;
+        }
+        if ($this->getAfakulcs() <= 0) {
+            // 0%-os tétel (fordított adózás / export / nullás ÁFA) -> nem írjuk felül
+            return false;
+        }
+        return $this->getBizonylatfej()->getPartner()->getAFAOverride();
     }
 
     public function getGymennyiseg()

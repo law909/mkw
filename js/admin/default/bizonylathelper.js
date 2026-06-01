@@ -1,13 +1,13 @@
-var bizonylathelper = function ($) {
+let bizonylathelper = function ($) {
 
-    var nocalcarak = false;
+    let nocalcarak = false;
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
     function setDates() {
-        var keltedit = $('#KeltEdit'),
+        let keltedit = $('#KeltEdit'),
             esededit = $('#EsedekessegEdit'),
             kelt = keltedit.datepicker('getDate'),
             partner;
@@ -24,14 +24,14 @@ var bizonylathelper = function ($) {
                 partner: partner
             },
             success: function (data) {
-                var d = JSON.parse(data);
+                let d = JSON.parse(data);
                 esededit.datepicker('setDate', d.esedekesseg);
             }
         });
     }
 
     function calcOsszesen() {
-        var netto = 0, brutto = 0, nettohuf = 0, bruttohuf = 0;
+        let netto = 0, brutto = 0, nettohuf = 0, bruttohuf = 0;
         $('input[name^="tetelnetto_"]').each(function () {
             netto = netto + $(this).val() * 1;
         });
@@ -47,7 +47,7 @@ var bizonylathelper = function ($) {
 
         // quick
         $('.js-quickmennyiseginput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 menny = $this.val() * 1,
                 id = $this.data('termektetelid');
             netto = netto + $('#NettoegysarEdit' + id).val() * menny;
@@ -64,52 +64,52 @@ var bizonylathelper = function ($) {
 
     function recalcHufPrices(arfolyam) {
         $('.js-quicknettoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="qtetelnettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-quickbruttoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-quickenettoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="qtetelenettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-quickebruttoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="qtetelebruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-nettoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelnettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-bruttoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-enettoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelenettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-ebruttoegysarinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelebruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-nettoinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelnettohuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-bruttoinput').each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelbruttohuf_' + id + '"]').val($this.val() * arfolyam);
         });
@@ -117,7 +117,7 @@ var bizonylathelper = function ($) {
     }
 
     function getArfolyam() {
-        var d = $('#TeljesitesEdit').datepicker('getDate');
+        let d = $('#TeljesitesEdit').datepicker('getDate');
         if (d.getDate === undefined) {
             d = $('#KeltEdit').datepicker('getDate');
         }
@@ -130,7 +130,7 @@ var bizonylathelper = function ($) {
                     datum: d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate()
                 },
                 success: function (data) {
-                    var arfolyam = data * 1;
+                    let arfolyam = data * 1;
                     $('#ArfolyamEdit').val(data);
                     recalcHufPrices(arfolyam);
                 }
@@ -139,7 +139,7 @@ var bizonylathelper = function ($) {
     }
 
     function setTermekAr(sorId) {
-        var partner, termekedit;
+        let partner, termekedit;
         if (isPartnerAutocomplete()) {
             partner = $('.js-partnerid').val();
         } else {
@@ -161,7 +161,7 @@ var bizonylathelper = function ($) {
                 valtozat: $('select[name="tetelvaltozat_' + sorId + '"]').val()
             },
             success: function (data) {
-                var c = $('input[name="tetelnettoegysar_' + sorId + '"]'),
+                let c = $('input[name="tetelnettoegysar_' + sorId + '"]'),
                     eb = $('#eladasibruttoar_' + sorId),
                     hasz = $('#haszonszazalek_' + sorId),
                     adat = JSON.parse(data);
@@ -193,7 +193,7 @@ var bizonylathelper = function ($) {
                     mennyiseg: $('input[name="tetelmennyiseg_' + sorId + '"]').val()
                 },
                 success: function (data) {
-                    var resp = JSON.parse(data),
+                    let resp = JSON.parse(data),
                         eb = $('#eladasibruttoar_' + sorId),
                         hasz = $('#haszonszazalek_' + sorId),
                         n = eb.data('ertek') / resp.bruttoegysar * 100 - 100;
@@ -225,13 +225,13 @@ var bizonylathelper = function ($) {
     }
 
     function calcKedvezmeny(sorId) {
-        var kedv = $('input[name="tetelkedvezmeny_' + sorId + '"]').val() * 1;
+        let kedv = $('input[name="tetelkedvezmeny_' + sorId + '"]').val() * 1;
         $('input[name="tetelnettoegysar_' + sorId + '"]').val($('input[name="tetelenettoegysar_' + sorId + '"]').val() * (100 - kedv) / 100);
         calcArak(sorId);
     }
 
     function checkKelt(kelt, biztipus, bizszam) {
-        var retval = false;
+        let retval = false;
         $.ajax({
             async: false,
             url: '/admin/bizonylatfej/checkkelt',
@@ -241,7 +241,7 @@ var bizonylathelper = function ($) {
                 bizszam: bizszam
             },
             success: function (data) {
-                var d = JSON.parse(data);
+                let d = JSON.parse(data);
                 if (d.response === 'ok') {
                     retval = true;
                 }
@@ -391,7 +391,7 @@ var bizonylathelper = function ($) {
     }
 
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
-        var raktarid = $('select[name="raktar"] option:selected').val();
+        let raktarid = $('select[name="raktar"] option:selected').val();
         $.ajax({
             async: false,
             url: '/admin/bizonylattetel/valtozatlist',
@@ -402,7 +402,7 @@ var bizonylathelper = function ($) {
                 raktar: raktarid
             },
             success: function (data) {
-                var d = JSON.parse(data);
+                let d = JSON.parse(data);
                 if (d.db) {
                     $(d.html).appendTo(valtozatplace);
                 } else {
@@ -428,7 +428,7 @@ var bizonylathelper = function ($) {
                         tip: 1
                     },
                     success: function (data) {
-                        var d = JSON.parse(data);
+                        let d = JSON.parse(data);
                         resp(d);
                     },
                     error: function () {
@@ -454,7 +454,7 @@ var bizonylathelper = function ($) {
                         tip: 1
                     },
                     success: function (data) {
-                        var d = JSON.parse(data);
+                        let d = JSON.parse(data);
                         resp(d);
                     },
                     error: function () {
@@ -480,7 +480,7 @@ var bizonylathelper = function ($) {
             autoFocus: true,
             source: '/admin/bizonylatfej/getpartnerlist',
             select: function (event, ui) {
-                var partner = ui.item,
+                let partner = ui.item,
                     pi = $('input[name="partner"]');
                 if (partner) {
                     pi.val(partner.id);
@@ -509,9 +509,9 @@ var bizonylathelper = function ($) {
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {
-                var termek = ui.item;
+                let termek = ui.item;
                 if (termek) {
-                    var $this = $(this),
+                    let $this = $(this),
                         sorid = $this.attr('name').split('_')[1],
                         vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
                         afa = $('select[name="tetelafa_' + sorid + '"]'),
@@ -547,7 +547,7 @@ var bizonylathelper = function ($) {
     }
 
     function quicksetTermekAr(sorId) {
-        var partner;
+        let partner;
         if (isPartnerAutocomplete()) {
             partner = $('.js-partnerid').val();
         } else {
@@ -563,7 +563,7 @@ var bizonylathelper = function ($) {
                 valtozat: $('select[name="qtetelvaltozat_' + sorId + '"]').val()
             },
             success: function (data) {
-                var c = $('input[name="qtetelnettoegysar_' + sorId + '"]'),
+                let c = $('input[name="qtetelnettoegysar_' + sorId + '"]'),
                     adat = JSON.parse(data);
                 $('input[name="qtetelenettoegysar_' + sorId + '"]').val(adat.enetto);
                 $('input[name="qtetelebruttoegysar_' + sorId + '"]').val(adat.ebrutto);
@@ -588,7 +588,7 @@ var bizonylathelper = function ($) {
                     mennyiseg: 1
                 },
                 success: function (data) {
-                    var resp = JSON.parse(data);
+                    let resp = JSON.parse(data);
                     $('input[name="qtetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
                     $('input[name="qtetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
 
@@ -614,7 +614,7 @@ var bizonylathelper = function ($) {
     }
 
     function quickcalcKedvezmeny(sorId) {
-        var kedv = $('input[name="qtetelkedvezmeny_' + sorId + '"]').val() * 1;
+        let kedv = $('input[name="qtetelkedvezmeny_' + sorId + '"]').val() * 1;
         $('input[name="qtetelnettoegysar_' + sorId + '"]').val($('input[name="qtetelenettoegysar_' + sorId + '"]').val() * (100 - kedv) / 100);
         quickcalcArak(sorId);
     }
@@ -628,7 +628,7 @@ var bizonylathelper = function ($) {
                 tetelid: sorid
             },
             success: function (data) {
-                var d = JSON.parse(data);
+                let d = JSON.parse(data);
                 $('#valtozattable_' + d.tetelid).html(d.html);
             }
         });
@@ -640,9 +640,9 @@ var bizonylathelper = function ($) {
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {
-                var termek = ui.item;
+                let termek = ui.item;
                 if (termek) {
-                    var $this = $(this),
+                    let $this = $(this),
                         sorid = $this.attr('name').split('_')[1],
                         partneredit = $('#PartnerEdit');
                     if (partneredit.data('afa')) {
@@ -708,6 +708,9 @@ var bizonylathelper = function ($) {
         if (d.orszag) {
             $('#OrszagEdit').val(d.orszag);
         }
+        if (d.szallorszag) {
+            $('#SzallOrszagEdit').val(d.szallorszag);
+        }
         if (d.vatstatus) {
             $('#VatstatusEdit').val(d.vatstatus);
         }
@@ -717,6 +720,44 @@ var bizonylathelper = function ($) {
         valutanemChange();
     }
 
+    function handleAFAOverrideFieldChange(e) {
+        e.preventDefault();
+        let dialogcenter = $('#dialogcenter');
+        $.ajax({
+            async: false,
+            url: '/admin/partner/getafaoverride',
+            data: {
+                szallorszag: $('#SzallOrszagEdit').val(),
+                orszag: $('#OrszagEdit').val(),
+                szamlatipus: $('#SzamlatipusEdit').val(),
+                euadoszam: $('input[name="partnereuadoszam"]').val()
+            },
+            success: function (data) {
+                let d = JSON.parse(data);
+                if (d.id) {
+                    $('#PartnerEdit').data('afa', d.id).data('afakulcs', d.ertek);
+                    $('.js-afaselect').each(function () {
+                        let $this = $(this);
+                        $this.val(d.id);
+                        $this.change();
+                    })
+                } else {
+                    dialogcenter.html('Az ÁFA kulcsot nem lehet megállapítani.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
     function getMattKarbConfig(bizonylattipus) {
         return {
             container: '#mattkarb',
@@ -724,16 +765,16 @@ var bizonylathelper = function ($) {
             newWindowUrl: '/admin/' + bizonylattipus + 'fej/viewkarb',
             saveUrl: '/admin/' + bizonylattipus + 'fej/save',
             beforeShow: function () {
-                var keltedit = $('#KeltEdit'),
+                let keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
                     fizmodedit = $('#FizmodEdit'),
                     alttab = $('#AltalanosTab'),
                     dialogcenter = $('#dialogcenter');
-                var doktab = $('#DokTab');
+                let doktab = $('#DokTab');
 
                 doktab
                     .on('click', '.js-doknewbutton', function (e) {
-                        var $this = $(this);
+                        let $this = $(this);
                         e.preventDefault();
                         $.ajax({
                             url: '/admin/bizonylatdok/getemptyrow',
@@ -747,7 +788,7 @@ var bizonylathelper = function ($) {
                     })
                     .on('click', '.js-dokdelbutton', function (e) {
                         e.preventDefault();
-                        var $this = $(this);
+                        let $this = $(this);
                         dialogcenter.html('Biztos, hogy törli a dokumentumot?').dialog({
                             resizable: false,
                             height: 140,
@@ -774,7 +815,7 @@ var bizonylathelper = function ($) {
                     })
                     .on('click', '.js-dokbrowsebutton', function (e) {
                         e.preventDefault();
-                        var finder = new CKFinder(),
+                        let finder = new CKFinder(),
                             $dokpathedit = $('#DokPathEdit_' + $(this).attr('data-id')),
                             path = $dokpathedit.val();
                         finder.resourceType = 'Images';
@@ -789,7 +830,7 @@ var bizonylathelper = function ($) {
                 $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton,.js-dokopen2button').button();
 
                 $('#EmailEdit').change(function () {
-                    var partner,
+                    let partner,
                         ee = $(this);
                     if (isPartnerAutocomplete()) {
                         partner = $('.js-partnerid').val();
@@ -804,7 +845,7 @@ var bizonylathelper = function ($) {
                                 email: ee.val()
                             },
                             success: function (data) {
-                                var d = JSON.parse(data);
+                                let d = JSON.parse(data);
                                 if (d.id) {
                                     setPartnerData(d);
                                     if (isPartnerAutocomplete()) {
@@ -819,7 +860,7 @@ var bizonylathelper = function ($) {
                 });
 
                 $('.js-partnerid').change(function () {
-                    var pe = $(this);
+                    let pe = $(this);
                     if (pe.val() > 0) {
                         $.ajax({
                             url: '/admin/partner/getdata',
@@ -828,7 +869,7 @@ var bizonylathelper = function ($) {
                                 partnerid: pe.val()
                             },
                             success: function (data) {
-                                var d = JSON.parse(data);
+                                let d = JSON.parse(data);
                                 setPartnerData(d);
                             }
                         });
@@ -844,9 +885,11 @@ var bizonylathelper = function ($) {
                 irszamAutocomplete('input[name="szallirszam"]', 'input[name="szallvaros"]');
                 varosAutocomplete('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
+                $('#SzallOrszagEdit,#OrszagEdit,#SzamlatipusEdit,#EUAdoszamEdit').change(handleAFAOverrideFieldChange);
+
                 $('.js-querytaxpayer').on('click', function (e) {
                     e.preventDefault();
-                    var adoszam = $('#AdoszamEdit').val();
+                    let adoszam = $('#AdoszamEdit').val();
                     if (adoszam.length > 0) {
                         $.ajax({
                             url: '/admin/partner/querytaxpayer',
@@ -897,7 +940,7 @@ var bizonylathelper = function ($) {
                 });
                 alttab
                     .on('click', '.js-quicktetelnewbutton', function (e) {
-                        var $this = $(this);
+                        let $this = $(this);
                         e.preventDefault();
                         $.ajax({
                             url: '/admin/bizonylattetel/getquickemptyrow',
@@ -915,7 +958,7 @@ var bizonylathelper = function ($) {
                         });
                     })
                     .on('click', '.js-tetelnewbutton', function (e) {
-                        var $this = $(this);
+                        let $this = $(this);
                         e.preventDefault();
                         if (isPartnerAutocomplete()) {
                             partner = $('.js-partnerid').val();
@@ -940,7 +983,7 @@ var bizonylathelper = function ($) {
                     })
                     .on('click', '.js-teteldelbutton', function (e) {
                         e.preventDefault();
-                        var removegomb = $(this),
+                        let removegomb = $(this),
                             removeid = removegomb.attr('data-id');
                         if (removegomb.attr('data-source') == 'client') {
                             dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
@@ -988,10 +1031,10 @@ var bizonylathelper = function ($) {
                     })
                     .on('change', '.js-vtszselect', function (e) {
                         e.preventDefault();
-                        var $this = $(this);
-                        var sorid = $this.attr('name').split('_')[1],
+                        let $this = $(this);
+                        let sorid = $this.attr('name').split('_')[1],
                             valasztott = $('option:selected', $this);
-                        var afa = $('select[name="tetelafa_' + sorid + '"]');
+                        let afa = $('select[name="tetelafa_' + sorid + '"]');
                         afa.val(valasztott.data('afa'));
                         afa.change();
                     })
@@ -1001,58 +1044,58 @@ var bizonylathelper = function ($) {
                     })
                     .on('change', '.js-afaselect', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
+                        let sorid = $(this).attr('name').split('_')[1];
                         calcArak(sorid);
                     })
                     .on('change', '.js-nettoegysarinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
+                        let sorid = $(this).attr('name').split('_')[1];
                         calcArak(sorid);
                     })
                     .on('change', '.js-bruttoegysarinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
-                        var afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
-                        var n = $('input[name="tetelnettoegysar_' + sorid + '"]');
+                        let sorid = $(this).attr('name').split('_')[1];
+                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
+                        let n = $('input[name="tetelnettoegysar_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
                     })
                     .on('change', '.js-quicknettoegysarinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
+                        let sorid = $(this).attr('name').split('_')[1];
                         quickcalcArak(sorid);
                     })
                     .on('change', '.js-quickbruttoegysarinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
-                        var afakulcs = $('input[name="qtetelafa_' + sorid + '"]').data('afakulcs');
-                        var n = $('input[name="qtetelnettoegysar_' + sorid + '"]');
+                        let sorid = $(this).attr('name').split('_')[1];
+                        let afakulcs = $('input[name="qtetelafa_' + sorid + '"]').data('afakulcs');
+                        let n = $('input[name="qtetelnettoegysar_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
                     })
                     .on('change', '.js-nettoinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
-                        var n = $('input[name="tetelnettoegysar_' + sorid + '"]');
+                        let sorid = $(this).attr('name').split('_')[1];
+                        let n = $('input[name="tetelnettoegysar_' + sorid + '"]');
                         n.val($(this).val() / $('input[name="tetelmennyiseg_' + sorid + '"]').val());
                         n.change();
                     })
                     .on('change', '.js-bruttoinput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
-                        var afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
-                        var n = $('input[name="tetelnetto_' + sorid + '"]');
+                        let sorid = $(this).attr('name').split('_')[1];
+                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
+                        let n = $('input[name="tetelnetto_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
                     })
                     .on('change', '.js-mennyiseginput', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
+                        let sorid = $(this).attr('name').split('_')[1];
                         calcArak(sorid);
                     })
                     .on('change', '.js-tetelvaltozat', function (e) {
                         e.preventDefault();
-                        var sorid = $(this).attr('name').split('_')[1];
+                        let sorid = $(this).attr('name').split('_')[1];
                         setTermekAr(sorid);
                     })
                     .on('change', '.js-bizonylatstatuszedit', function (e) {
@@ -1075,7 +1118,7 @@ var bizonylathelper = function ($) {
                                 szmid: $('#SzallitasimodEdit option:selected').val()
                             },
                             success: function (data) {
-                                var d = JSON.parse(data);
+                                let d = JSON.parse(data);
                                 if (d) {
                                     $('#CsomagTerminalEdit').html(d.html);
                                 }
@@ -1084,7 +1127,7 @@ var bizonylathelper = function ($) {
 
                     })
                     .on('change', '.js-termekselectreal', function (e) {
-                        var $this = $(this),
+                        let $this = $(this),
                             sorid = $this.attr('name').split('_')[1],
                             vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
                             afa = $('select[name="tetelafa_' + sorid + '"]'),
@@ -1098,7 +1141,7 @@ var bizonylathelper = function ($) {
                                 id: $('option:selected', $this).val()
                             },
                             success: function (data) {
-                                var termek = JSON.parse(data);
+                                let termek = JSON.parse(data);
                                 if (termek) {
                                     if (partneredit.data('afa')) {
                                         termek.afa = partneredit.data('afa');
@@ -1133,7 +1176,7 @@ var bizonylathelper = function ($) {
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email').button();
 
                 $('.js-inheritbizonylat').each(function () {
-                    var $this = $(this);
+                    let $this = $(this);
                     $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
                 });
 
@@ -1167,7 +1210,7 @@ var bizonylathelper = function ($) {
                         }
                     });
                     $('input[name="tetelid[]"]').each(function () {
-                        var $this = $(this),
+                        let $this = $(this),
                             parent = $this.parent(),
                             termeksorid = $this.parents('tbody').data('id');
                         parent.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' +
@@ -1186,7 +1229,7 @@ var bizonylathelper = function ($) {
                             $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
                 }
-                var fejok = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
+                let fejok = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
                     osszegekok = checkTetelOsszegek();
                 if (fejok && !osszegekok) {
                     $('#dialogcenter').html('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.').dialog({
@@ -1270,7 +1313,7 @@ var bizonylathelper = function ($) {
                         $('.js-cimkefilter').removeClass('ui-state-hover');
                     },
                     onFilter: function (obj) {
-                        var cimkek = new Array();
+                        let cimkek = new Array();
                         $('.js-cimkefilter').filter('.ui-state-hover').each(function () {
                             cimkek.push($(this).attr('data-id'));
                         });
@@ -1288,32 +1331,32 @@ var bizonylathelper = function ($) {
                     },
                     onDoEditLink: function () {
                         $('.js-inheritbizonylat').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
                         });
                         $('.js-printbizonylat').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/print?id=' + $this.data('egyedid'));
                         });
                         $('.js-pdf').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/bizonylatfej/pdf?id=' + $this.data('egyedid'));
                         });
                         $('.js-stornobizonylat1').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=1');
                         });
                         $('.js-stornobizonylat2').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=2');
                         });
                         $('.js-printelolegbekero').each(function () {
-                            var $this = $(this);
+                            let $this = $(this);
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/printelolegbekero?id=' + $this.data('egyedid'));
                         });
                         $('.js-nav').each(function () {
                             if ($('#mattable-table').data('noversion') <= '1_1') {
-                                var $this = $(this);
+                                let $this = $(this);
                                 $this.attr('href', '/admin/' + bizonylattipus + 'fej/navonline?id=' + $this.data('egyedid'));
                             }
                         });
@@ -1344,7 +1387,7 @@ var bizonylathelper = function ($) {
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var dia = $(this);
+                                        let dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/generatefoxpostlabel',
                                             type: 'POST',
@@ -1370,7 +1413,7 @@ var bizonylathelper = function ($) {
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var dia = $(this);
+                                        let dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/sendtofoxpost',
                                             type: 'POST',
@@ -1396,7 +1439,7 @@ var bizonylathelper = function ($) {
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        var dia = $(this);
+                                        let dia = $(this);
                                         $.ajax({
                                             url: '/admin/' + bizonylattipus + 'fej/sendtogls',
                                             type: 'POST',
@@ -1442,16 +1485,16 @@ var bizonylathelper = function ($) {
                             });
                             break;
                         case 'excelfejexport':
-                            var $exportform = $('#exportform');
-                            $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/fejexport');
-                            $('input[name="ids"]', $exportform).val(tomb);
-                            $exportform.submit();
+                            let $exportfejform = $('#exportform');
+                            $exportfejform.attr('action', '/admin/' + bizonylattipus + 'fej/fejexport');
+                            $('input[name="ids"]', $exportfejform).val(tomb);
+                            $exportfejform.submit();
                             break;
                         case 'exceltetelexport':
-                            var $exportform = $('#exportform');
-                            $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/tetelexport');
-                            $('input[name="ids"]', $exportform).val(tomb);
-                            $exportform.submit();
+                            let $exporttetelform = $('#exportform');
+                            $exporttetelform.attr('action', '/admin/' + bizonylattipus + 'fej/tetelexport');
+                            $('input[name="ids"]', $exporttetelform).val(tomb);
+                            $exporttetelform.submit();
                             break;
                         case 'sendemailek':
                             let $dia = $('#emailsablondialog');
@@ -1462,7 +1505,7 @@ var bizonylathelper = function ($) {
                                 modal: true,
                                 buttons: {
                                     'OK': function () {
-                                        var dial = $(this),
+                                        let dial = $(this),
                                             sablon = $('select[name="emailsablon"]').val();
                                         $('select[name="emailsablon"]').val('');
                                         $.ajax({
@@ -1540,7 +1583,7 @@ var bizonylathelper = function ($) {
                         });
                     }
 
-                    var $this = $(this),
+                    let $this = $(this),
                         id = $this.parents('tr').data('egyedid'),
                         statusz = $this.val();
                     dialogcenter.html('Küld email értesítést a változásról?').dialog({
@@ -1560,7 +1603,7 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-rontbizonylat', function (e) {
-                    var $this = $(this);
+                    let $this = $(this);
                     e.preventDefault();
                     dialogcenter.html('Biztosan rontja a bizonylatot?').dialog({
                         resizable: false,
@@ -1595,7 +1638,7 @@ var bizonylathelper = function ($) {
                             id: $(this).data('egyedid')
                         },
                         success: function (data) {
-                            var d = JSON.parse(data);
+                            let d = JSON.parse(data);
                             if (d.refresh) {
                                 dialogcenter.html('A backorder rendelés elkészült.').dialog({
                                     resizable: false,
@@ -1625,14 +1668,14 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-vissza', function (e) {
-                    var $this = $(this);
+                    let $this = $(this);
                     e.preventDefault();
                     $.ajax({
                         url: $this.data('href'),
                         type: 'GET',
                         success: function (d) {
                             if (d) {
-                                var adat = JSON.parse(d), szoveg = '';
+                                let adat = JSON.parse(d), szoveg = '';
                                 if (adat.qst) {
                                     if (adat.msg) {
                                         szoveg = szoveg + adat.msg + '<br>';
@@ -1644,7 +1687,7 @@ var bizonylathelper = function ($) {
                                         modal: true,
                                         buttons: {
                                             'Igen': function () {
-                                                var dial = $(this);
+                                                let dial = $(this);
                                                 $.ajax({
                                                     url: $this.data('href'),
                                                     type: 'GET',
@@ -1685,7 +1728,7 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-feketelista', function (e) {
-                    var $this = $(this),
+                    let $this = $(this),
                         $dia = $('#feketelistaokdialog');
                     e.preventDefault();
                     $dia.dialog({
@@ -1695,7 +1738,7 @@ var bizonylathelper = function ($) {
                         modal: true,
                         buttons: {
                             'OK': function () {
-                                var dial = $(this),
+                                let dial = $(this),
                                     ok = $('textarea[name="feketelistaok"]').val();
                                 $('textarea[name="feketelistaok"]').val('');
                                 $.ajax({
@@ -1718,7 +1761,7 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-emailpdf', function (e) {
-                    var $this = $(this),
+                    let $this = $(this),
                         $dia = $('#emailpdfdialog');
                     e.preventDefault();
                     $dia.dialog({
@@ -1728,7 +1771,7 @@ var bizonylathelper = function ($) {
                         modal: true,
                         buttons: {
                             'OK': function () {
-                                var dial = $(this);
+                                let dial = $(this);
                                 $.ajax({
                                     url: '/admin/bizonylatfej/emailpdf',
                                     type: 'POST',
@@ -1785,7 +1828,7 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-email', function (e) {
-                    var $this = $(this),
+                    let $this = $(this),
                         $dia = $('#emailsablondialog');
                     e.preventDefault();
                     $dia.dialog({
@@ -1795,7 +1838,7 @@ var bizonylathelper = function ($) {
                         modal: true,
                         buttons: {
                             'OK': function () {
-                                var dial = $(this),
+                                let dial = $(this),
                                     sablon = $('select[name="emailsablon"]').val();
                                 $('select[name="emailsablon"]').val('');
                                 $.ajax({
@@ -1818,7 +1861,7 @@ var bizonylathelper = function ($) {
                 })
                 .on('click', '.js-nav', function (e) {
                     if ($('#mattable-table').data('noversion') > '1_1') {
-                        var $this = $(this),
+                        let $this = $(this),
                             $dia = $('#navdialog');
                         e.preventDefault();
                         $dia.dialog({
@@ -1828,7 +1871,7 @@ var bizonylathelper = function ($) {
                             modal: true,
                             buttons: {
                                 'OK': function () {
-                                    var dial = $(this);
+                                    let dial = $(this);
                                     $.ajax({
                                         url: '/admin/bizonylatfej/navonline',
                                         type: 'POST',
@@ -1862,7 +1905,7 @@ var bizonylathelper = function ($) {
                 })
                 .on('click', '.js-navstat', function (e) {
                     if ($('#mattable-table').data('noversion') > '1_1') {
-                        var $this = $(this),
+                        let $this = $(this),
                             $dia = $('#naverrordialog');
                         e.preventDefault();
                         $.ajax({
@@ -1887,7 +1930,7 @@ var bizonylathelper = function ($) {
                     }
                 })
                 .on('click', '.js-folyoszamlabtn', function (e) {
-                    var $this = $(this);
+                    let $this = $(this);
                     e.preventDefault();
                     $.ajax({
                         url: '/admin/bizonylatfej/getfolyoszamla',
@@ -1907,7 +1950,7 @@ var bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-printbizonylat, .js-pdf', function (e) {
-                    var $this = $(this);
+                    let $this = $(this);
                     e.preventDefault();
                     window.open($this.attr('href'));
                     if ($this.data('kellkerdezni') == 1) {
@@ -1951,14 +1994,14 @@ var bizonylathelper = function ($) {
                 })
                 .on('click', '.js-delglsparcel', function (e) {
                     e.preventDefault();
-                    var $this = $(this);
+                    let $this = $(this);
                     dialogcenter.html('Biztos, hogy törli a csomagot a GLS-nél?').dialog({
                         resizable: false,
                         height: 140,
                         modal: true,
                         buttons: {
                             'Igen': function () {
-                                var dia = $(this);
+                                let dia = $(this);
                                 $.ajax({
                                     url: '/admin/' + bizonylattipus + 'fej/delglsparcel',
                                     type: 'POST',

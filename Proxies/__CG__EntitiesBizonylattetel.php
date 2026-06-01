@@ -965,6 +965,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getAfaOverride()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaOverride', []);
+
+        return parent::getAfaOverride();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getGymennyiseg()
     {
 

@@ -134,7 +134,6 @@ class mugenraceCheckoutController extends checkoutController
             $partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
             $this->getEm()->persist($partner);
 
-            $nullasafa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             $biztetelcontroller = new bizonylattetelController($this->params);
             //$valutanem =
 
@@ -213,19 +212,10 @@ class mugenraceCheckoutController extends checkoutController
                 $t->setTermek($kt->getTermek());
                 $t->setTermekvaltozat($kt->getTermekvaltozat());
                 $t->setMennyiseg($kt->getMennyiseg());
-                if ($partner->getSzamlatipus()) {
-                    if ($nullasafa) {
-                        $t->setAfa($nullasafa);
-                    }
-                    $t->setNettoegysar($kt->getNettoegysar());
-                    $t->setEnettoegysar($kt->getEnettoegysar());
-                    $t->setEbruttoegysar($kt->getEnettoegysar());
-                } else {
-                    $t->setNettoegysar($kt->getNettoegysar());
-                    $t->setBruttoegysar($kt->getBruttoegysar());
-                    $t->setEnettoegysar($kt->getEnettoegysar());
-                    $t->setEbruttoegysar($kt->getEbruttoegysar());
-                }
+                $t->setNettoegysar($kt->getNettoegysar());
+                $t->setBruttoegysar($kt->getBruttoegysar());
+                $t->setEnettoegysar($kt->getEnettoegysar());
+                $t->setEbruttoegysar($kt->getEbruttoegysar());
                 $t->setKedvezmeny($kt->getKedvezmeny());
                 $arak = $biztetelcontroller->calcAr(
                     $t->getAfaId(),

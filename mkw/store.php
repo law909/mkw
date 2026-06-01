@@ -8,6 +8,7 @@ use Controllers\termekfaController;
 use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
+use Entities\Orszag;
 use Entities\Partner;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -2010,6 +2011,23 @@ class store
             return 0;
         }
         return (float)self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
+    }
+
+    public static function isMagyarorszag($orszag)
+    {
+        $moid = self::getParameter(\mkw\consts::Magyarorszag);
+        if (!$moid) {
+            $mo = self::getEm()->getRepository(Orszag::class)->findBy(['iso3166' => 'HU']);
+            if ($mo) {
+                $moid = $mo[0]->getId();
+            } else {
+                return true;
+            }
+        }
+        if (is_a($orszag, Orszag::class)) {
+            return $orszag->getId() == $moid;
+        }
+        return $orszag == $moid;
     }
 
     public static function isMagyarAdoszam($adoszam)

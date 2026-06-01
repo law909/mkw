@@ -694,9 +694,6 @@ class a2aController extends \mkwhelpers\Controller
                             if (!$partner) {
                                 $results['msg'][] = 'Unknown partner.';
                             }
-                            $afa = $this->getRepo(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                            $nullasafa = $afa->getId();
-                            $nullasafakulcs = $afa->getErtek();
 
                             foreach ($data['products'] as $tetel) {
                                 /** @var Termek $termek */
@@ -760,10 +757,6 @@ class a2aController extends \mkwhelpers\Controller
                                     $biztetel->setPersistentData();
                                     $biztetel->setTermek($tv->getTermek());
                                     $biztetel->setTermekvaltozat($tv);
-                                    if ($partner->getSzamlatipus() > 0) {
-                                        $biztetel->setAfa($nullasafa);
-                                        $biztetel->setAfakulcs($nullasafakulcs);
-                                    }
 
                                     $biztetel->setMennyiseg($tetel['quantity']);
                                     $biztetel->setEnettoegysar($tv->getTermek()->getKedvezmenynelkuliNettoAr($tv, $partner));
