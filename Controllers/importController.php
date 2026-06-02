@@ -21,7 +21,6 @@ use Entities\TermekAr;
 use Entities\Termekcimkekat;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
-use Entities\TermekTranslation;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
