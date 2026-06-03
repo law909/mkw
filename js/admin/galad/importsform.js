@@ -8,28 +8,7 @@ $(document).ready(function () {
         saveUrl: '/admin/save',
         beforeShow: function () {
 
-            $('.js-szimport').on('click', function (e) {
-                e.preventDefault();
-                if (!$('#TermekKategoria1').attr('data-value')) {
-                    alert('Válasszon kategóriát.');
-                } else {
-                    var data = new FormData($('#mattkarb-form')[0]);
-                    data.append('katid', $('#TermekKategoria1').attr('data-value'));
-                    $.ajax({
-                        type: 'POST',
-                        url: $(this).attr('href'),
-                        processData: false,
-                        contentType: false,
-                        data: data,
-                        success: function () {
-                            alert('Kész.');
-                        }
-                    });
-                }
-            }).button();
-
-            $('.js-szinvarimport, .js-szcimkeimport, .js-szeanimport, .js-szmeretimport, .js-szcolorimport, '
-                + '.js-fcmotoorderimport, .js-szinimport, .js-meretimport, .js-orszagimport, .js-galadpartnerimport').on('click', function (e) {
+            $('.js-galadoxfordimport, .js-szinimport, .js-meretimport, .js-orszagimport, .js-galadpartnerimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);
                 $.ajax({

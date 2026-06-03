@@ -39,27 +39,7 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <a href="/admin/import/szimport" class="js-szinvarimport">Termék adatok</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <a href="/admin/import/szcimkeimport" class="js-szcimkeimport">Termék adatok cimkékkel</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <a href="/admin/import/szeanimport" class="js-szeanimport">Termékváltozat vonalkódok</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <a href="/admin/import/szmeretimport" class="js-szmeretimport">Termék méretek</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <a href="/admin/import/szcolorimport" class="js-szcolorimport">Szín kódok</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <a href="/admin/import/fcmotoorderimport" class="js-fcmotoorderimport">FCMoto rendelés</a>
+                        <a href="/admin/import/galadoxfordimport" class="js-galadoxfordimport">Oxford lista</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
