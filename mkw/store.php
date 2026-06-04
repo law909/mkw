@@ -940,7 +940,7 @@ class store
         ];
 
         $plus = $num >= 0;
-        $num = abs($num);
+        $num = (int)abs($num);
         $t_txt = '';
         if ($num == 0) {
             $t_txt = $szamok[0];
