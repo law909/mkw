@@ -2030,6 +2030,21 @@ class store
         return $orszag == $moid;
     }
 
+    public static function getMagyarorszag()
+    {
+        $moid = self::getParameter(\mkw\consts::Magyarorszag);
+        if (!$moid) {
+            $mo = self::getEm()->getRepository(Orszag::class)->findBy(['iso3166' => 'HU']);
+            if ($mo) {
+                return $mo;
+            } else {
+                return false;
+            }
+        } else {
+            return self::getEm()->getRepository(Orszag::class)->find($moid);
+        }
+    }
+
     public static function isMagyarAdoszam($adoszam)
     {
         preg_match('/\d{8}-\d{1}-\d{2}/m', $adoszam, $out);

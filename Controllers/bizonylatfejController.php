@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Afa;
 use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
@@ -534,6 +535,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 if ($afaoverride) {
                     $x['partnerafa'] = $afaoverride->getId();
                     $x['partnerafakulcs'] = $afaoverride->getErtek();
+                } else {
+                    $afa27 = $this->getRepo(Afa::class)->findOneBy(['ertek' => 27]);
+                    if ($afa27) {
+                        $x['partnerafa'] = $afa27->getId();
+                        $x['partnerafakulcs'] = $afa27->getErtek();
+                    }
                 }
             }
             foreach ($t->getBizonylattetelek() as $ttetel) {

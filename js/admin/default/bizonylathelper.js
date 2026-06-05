@@ -1,6 +1,8 @@
 let bizonylathelper = function ($) {
 
     let nocalcarak = false;
+    // igaz, ha a felhasznalo a "Mentes igy" gombbal feluldontotte az afa-ellenorzest
+    let afaEllenorzesAtlepes = false;
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
@@ -259,9 +261,10 @@ let bizonylathelper = function ($) {
             keltok = (!keltchanged) || (keltchanged && checkKelt(keltedit.val(), biztipus, bizszam)),
             tetelok = ($('.js-termekid').length !== 0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
             partnerok = (isPartnerAutocomplete() && ((partnerselect.val() !== '') || (partnerselect.val() === '' && $('.js-ujpartnercb').val() === '1'))) || (!isPartnerAutocomplete()),
+            partnernevok = $('input[name="partnernev"]').val() !== '' || $('input[name="partnerkeresztnev"]').val() !== '' || $('input[name="partnervezeteknev"]').val() !== '',
             funnypartnermessage = form.data('funnypartnermessage'),
             lastname = form.data('lastname'),
-            ret = keltok && tetelok && partnerok;
+            ret = keltok && tetelok && partnerok && partnernevok;
         let msg;
         if (!keltok) {
             dialogcenter.html('A bizonylatoknak szigorú sorszámozás van előírva.').dialog({
@@ -303,6 +306,19 @@ let bizonylathelper = function ($) {
                             }
                         }
                     });
+                } else {
+                    if (!partnernevok) {
+                        dialogcenter.html('Nincs megadva partner név.').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -311,9 +327,12 @@ let bizonylathelper = function ($) {
 
     function checkTetelOsszegek() {
         let mindenOk = true,
+            afaEgyezik = true,
             hibaClass = 'tetelszamhiba',
-            arfolyam = $('#ArfolyamEdit').val() * 1;
+            arfolyam = $('#ArfolyamEdit').val() * 1,
+            szuksegesAfa = $('#PartnerEdit').data('afa');
 
+        console.log(szuksegesAfa);
         // Korábbi hibajelölések törlése, hogy a javított mezők ne maradjanak megjelölve.
         $('.' + hibaClass).removeClass(hibaClass);
 
@@ -385,9 +404,19 @@ let bizonylathelper = function ($) {
                     jelol('tetelbruttohuf_' + sorId);
                 }
             }
+
+            // 5. A tétel ÁFA kulcsa egyezzen meg a partnernél előírt (szükséges) ÁFA kulccsal.
+            //    Csak akkor ellenőrizzük, ha a partnerhez tartozik előírt (override) ÁFA.
+            if (szuksegesAfa) {
+                let afaselect = $('select[name="tetelafa_' + sorId + '"]');
+                if (afaselect.length && (afaselect.val() != szuksegesAfa)) {
+                    afaselect.addClass(hibaClass);
+                    afaEgyezik = false;
+                }
+            }
         });
 
-        return mindenOk;
+        return {osszegekok: mindenOk, afaegyezik: afaEgyezik};
     }
 
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
@@ -1241,7 +1270,8 @@ let bizonylathelper = function ($) {
                     });
                 }
                 let fejok = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
-                    osszegekok = checkTetelOsszegek();
+                    tetelek = checkTetelOsszegek(),
+                    osszegekok = tetelek.osszegekok;
                 if (fejok && !osszegekok) {
                     $('#dialogcenter').html('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.').dialog({
                         resizable: false,
@@ -1253,7 +1283,28 @@ let bizonylathelper = function ($) {
                             }
                         }
                     });
+                    return false;
                 }
+                // ÁFA eltérés esetén a felhasználó dönt: így menti, vagy javítja az ÁFA kulcsokat.
+                if (fejok && osszegekok && !tetelek.afaegyezik && !afaEllenorzesAtlepes) {
+                    $('#dialogcenter').html('Egy vagy több tétel ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól (pirossal jelölve). Így menti a bizonylatot, vagy javítja az ÁFA kulcsokat?').dialog({
+                        resizable: false,
+                        width: 460,
+                        modal: true,
+                        buttons: {
+                            'Mentés így': function () {
+                                afaEllenorzesAtlepes = true;
+                                $(this).dialog('close');
+                                $('#mattkarb-form').submit();
+                            },
+                            'ÁFA kulcsok javítása': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                    return false;
+                }
+                afaEllenorzesAtlepes = false;
                 return fejok && osszegekok;
             },
             onSubmit: function () {
