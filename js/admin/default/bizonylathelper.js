@@ -540,7 +540,13 @@ let bizonylathelper = function ($) {
                     $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
                     $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
                     $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
+                    if (termek.valtozat) {  // cikkszam alapjan beazonositott konkret valtozat
+                        selvaltozat = termek.valtozat;
+                    }
                     loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
+                    if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
+                        $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
+                    }
                 }
             }
         };
@@ -1095,7 +1101,12 @@ let bizonylathelper = function ($) {
                     })
                     .on('change', '.js-tetelvaltozat', function (e) {
                         e.preventDefault();
-                        let sorid = $(this).attr('name').split('_')[1];
+                        let $this = $(this),
+                            sorid = $this.attr('name').split('_')[1],
+                            valtozatcikkszam = $('option:selected', $this).attr('data-cikkszam');
+                        if (valtozatcikkszam) {
+                            $('input[name="tetelcikkszam_' + sorid + '"]').val(valtozatcikkszam);
+                        }
                         setTermekAr(sorid);
                     })
                     .on('change', '.js-bizonylatstatuszedit', function (e) {

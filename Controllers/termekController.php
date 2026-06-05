@@ -782,9 +782,17 @@ class termekController extends \mkwhelpers\MattableController
             $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
-            $filter->addFilter(['nev', 'rovidleiras', 'cikkszam', 'vonalkod', 'idegencikkszam'],
-                'LIKE',
-                '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+            $nflike = '%' . str_replace("'", "''", $this->params->getStringRequestParam('nevfilter')) . '%';
+            $lit = "'" . $nflike . "'";
+            $filter->addSql(
+                '_xx.nev LIKE ' . $lit
+                . ' OR _xx.rovidleiras LIKE ' . $lit
+                . ' OR _xx.cikkszam LIKE ' . $lit
+                . ' OR _xx.vonalkod LIKE ' . $lit
+                . ' OR _xx.idegencikkszam LIKE ' . $lit
+                . ' OR EXISTS (SELECT vnf.id FROM Entities\\TermekValtozat vnf'
+                . ' WHERE IDENTITY(vnf.termek) = _xx.id AND vnf.cikkszam LIKE ' . $lit . ')'
+            );
         }
         if (!is_null($this->params->getRequestParam('kepurlfilter', null))) {
             $filter->addFilter(['kepurl'], 'LIKE', '%' . $this->params->getStringRequestParam('kepurlfilter') . '%');
@@ -1015,6 +1023,7 @@ class termekController extends \mkwhelpers\MattableController
                         $ret[] = [
                             'id' => $valt->getId(),
                             'caption' => $valt->getNev(),
+                            'cikkszam' => $valt->getCikkszam(),
                             'selected' => $sel == $valt->getId(),
                             'elerheto' => $valt->getXElerheto(),
                             'keszlet' => $valt->getKeszlet(null, $raktarid) * 1
@@ -1173,12 +1182,19 @@ class termekController extends \mkwhelpers\MattableController
             if ($term) {
                 $r = \mkw\store::getEm()->getRepository(Termek::class);
                 $res = $r->getBizonylattetelLista($term);
+                $termekidk = [];
+                foreach ($res as $_t) {
+                    $termekidk[] = $_t->getId();
+                }
+                $valtozatmatch = \mkw\store::getEm()->getRepository(TermekValtozat::class)
+                    ->getCikkszamMatchMap($termekidk, $term);
                 switch (true) {
                     case \mkw\store::isMindentkapni():
                         foreach ($res as $r) {
                             $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
+                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),
@@ -1208,6 +1224,7 @@ class termekController extends \mkwhelpers\MattableController
                                 'value' => $r->getNev(),
                                 'label' => $r->getCikkszam() . ' ' . $r->getNev(),
                                 'id' => $r->getId(),
+                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),
@@ -1236,6 +1253,7 @@ class termekController extends \mkwhelpers\MattableController
                             $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
+                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),

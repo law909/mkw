@@ -38,6 +38,52 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    /**
+     * A megadott termekekhez visszaadja azt a valtozatot, amelynek cikkszama a keresett
+     * szovegre konkretan illeszkedik. Pontos cikkszam-egyezes elsobbseget elvez; ha az adott
+     * termeknel nincs pontos talalat es tobb valtozat is csak reszben illeszkedik, akkor ahhoz
+     * a termekhez nem adunk vissza valtozatot (a felhasznalo valasszon a valtozat selectbol).
+     *
+     * @param int[]  $termekids
+     * @param string $keresett
+     *
+     * @return array  termekid => valtozatid
+     */
+    public function getCikkszamMatchMap($termekids, $keresett)
+    {
+        $ret = [];
+        if (!$termekids || ((string)$keresett === '')) {
+            return $ret;
+        }
+        $q = $this->_em->createQuery(
+            'SELECT v.id AS valtozatid, IDENTITY(v.termek) AS termekid, v.cikkszam AS cikkszam'
+            . ' FROM Entities\TermekValtozat v'
+            . ' WHERE IDENTITY(v.termek) IN (:ids) AND v.cikkszam LIKE :keresett'
+        );
+        $q->setParameter('ids', $termekids);
+        $q->setParameter('keresett', '%' . $keresett . '%');
+        $byTermek = [];
+        foreach ($q->getScalarResult() as $row) {
+            $byTermek[$row['termekid']][] = $row;
+        }
+        foreach ($byTermek as $termekid => $matches) {
+            $valtozatid = null;
+            foreach ($matches as $m) {
+                if ((string)$m['cikkszam'] === (string)$keresett) {  // pontos cikkszam-talalat
+                    $valtozatid = $m['valtozatid'];
+                    break;
+                }
+            }
+            if ($valtozatid === null && count($matches) === 1) {  // egyetlen reszleges talalat
+                $valtozatid = $matches[0]['valtozatid'];
+            }
+            if ($valtozatid !== null) {
+                $ret[$termekid] = $valtozatid;
+            }
+        }
+        return $ret;
+    }
+
     public function getByProperties($termekid, $adattipusok, $ertekek)
     {
         $filter = new FilterDescriptor();

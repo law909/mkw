@@ -764,7 +764,14 @@ class TermekRepository extends \mkwhelpers\Repository
     public function getBizonylattetelLista($keresett)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter(['_xx.nev', '_xx.cikkszam', '_xx.vonalkod'], 'LIKE', '%' . $keresett . '%');
+        $lit = "'%" . str_replace("'", "''", $keresett) . "%'";
+        $filter->addSql(
+            '_xx.nev LIKE ' . $lit
+            . ' OR _xx.cikkszam LIKE ' . $lit
+            . ' OR _xx.vonalkod LIKE ' . $lit
+            . ' OR EXISTS (SELECT vnf.id FROM Entities\\TermekValtozat vnf'
+            . ' WHERE IDENTITY(vnf.termek) = _xx.id AND vnf.cikkszam LIKE ' . $lit . ')'
+        );
         $order = ['_xx.nev' => 'ASC'];
         $q = $this->_em->createQuery(
             'SELECT _xx'
