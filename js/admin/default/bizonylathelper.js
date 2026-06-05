@@ -1,7 +1,6 @@
 let bizonylathelper = function ($) {
 
     let nocalcarak = false;
-    // igaz, ha a felhasznalo a "Mentes igy" gombbal feluldontotte az afa-ellenorzest
     let afaEllenorzesAtlepes = false;
 
     function isPartnerAutocomplete() {
@@ -332,7 +331,6 @@ let bizonylathelper = function ($) {
             arfolyam = $('#ArfolyamEdit').val() * 1,
             szuksegesAfa = $('#PartnerEdit').data('afa');
 
-        console.log(szuksegesAfa);
         // Korábbi hibajelölések törlése, hogy a javított mezők ne maradjanak megjelölve.
         $('.' + hibaClass).removeClass(hibaClass);
 
@@ -1090,7 +1088,7 @@ let bizonylathelper = function ($) {
                     .on('change', '.js-bruttoegysarinput', function (e) {
                         e.preventDefault();
                         let sorid = $(this).attr('name').split('_')[1];
-                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
+                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs') * 1;
                         let n = $('input[name="tetelnettoegysar_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
@@ -1103,7 +1101,7 @@ let bizonylathelper = function ($) {
                     .on('change', '.js-quickbruttoegysarinput', function (e) {
                         e.preventDefault();
                         let sorid = $(this).attr('name').split('_')[1];
-                        let afakulcs = $('input[name="qtetelafa_' + sorid + '"]').data('afakulcs');
+                        let afakulcs = $('input[name="qtetelafa_' + sorid + '"]').data('afakulcs') * 1;
                         let n = $('input[name="qtetelnettoegysar_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
@@ -1118,7 +1116,7 @@ let bizonylathelper = function ($) {
                     .on('change', '.js-bruttoinput', function (e) {
                         e.preventDefault();
                         let sorid = $(this).attr('name').split('_')[1];
-                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs');
+                        let afakulcs = $('select[name="tetelafa_' + sorid + '"] option:selected').data('afakulcs') * 1;
                         let n = $('input[name="tetelnetto_' + sorid + '"]');
                         n.val($(this).val() / (100 + afakulcs) * 100);
                         n.change();
