@@ -510,12 +510,7 @@ class Bizonylattetel
             }
             $t = $this->termek;
             if ($bf && $t) {
-                $bs = $bf->getBizonylatstatusz();
-                if ($bs) {
-                    $this->mozgat = $bf->getMozgat() && $t->getMozgat() && $bs->getMozgat();
-                } else {
-                    $this->mozgat = $bf->getMozgat() && $t->getMozgat();
-                }
+                $this->mozgat = $bf->getMozgat() && $t->getMozgat();
             } else {
                 $this->mozgat = false;
             }
