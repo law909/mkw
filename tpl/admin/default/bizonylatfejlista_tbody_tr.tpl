@@ -19,68 +19,72 @@
         {else}
             {$_egyed.id}
         {/if}
-        <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
-           title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
-        {if ($setup.pdf && $showpdf)}
-            <a class="js-pdf" href="#" data-egyedid="{$_egyed.id}" data-oper="pdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
-               title="{at('PDF letöltés')}" target="_blank">PDF</a>
-            <a class="js-emailpdf" href="#" data-egyedid="{$_egyed.id}" data-oper="emailpdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
-               title="{at('Küldés emailben')}" target="_blank"><span class="ui-icon ui-icon-mail-closed"></span></a>
-        {/if}
-        {if (!$_egyed.hibas && $showemailbutton)}
-            <a class="js-email" href="#" data-egyedid="{$_egyed.id}" title="{at('Email sablon küldése a partnernek')}"><span
-                    class="ui-icon ui-icon-mail-open"></span></a>
-        {/if}
-        {if (!$_egyed.hibas && $shownavallapot && $_egyed.navbekuldendo)}
-            <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV beküldés')}" target="_blank">NAV</a>
-            <a class="js-navstat" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV állapot lekérdezés')}" target="_blank">NAV stat</a>
-        {/if}
-        {if (!$_egyed.hibas && $_egyed.nemrossz)}
-            {if ($_egyed.bizonylattipusid=='megrendeles')}
-                <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('Előleg bekérő')}" target="_blank"><span
-                        class="ui-icon ui-icon-print"></span></a>
+        {if (!$_egyed.hibas)}
+            <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
+               title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+            {if ($setup.pdf && $showpdf)}
+                <a class="js-pdf" href="#" data-egyedid="{$_egyed.id}" data-oper="pdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
+                   title="{at('PDF letöltés')}" target="_blank">PDF</a>
+                <a class="js-emailpdf" href="#" data-egyedid="{$_egyed.id}" data-oper="emailpdf"
+                   data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
+                   title="{at('Küldés emailben')}" target="_blank"><span class="ui-icon ui-icon-mail-closed"></span></a>
             {/if}
-            {if ($showbackorder)}
-                <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{at('Backorder')}"><span
-                        class="ui-icon ui-icon-transferthick-e-w"></span></a>
+            {if ($showemailbutton)}
+                <a class="js-email" href="#" data-egyedid="{$_egyed.id}" title="{at('Email sablon küldése a partnernek')}"><span
+                        class="ui-icon ui-icon-mail-open"></span></a>
             {/if}
-            {if ($showszallitobutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallitofej" data-oper="inherit"
-                   title="{at('Szállítólevél')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+            {if ($shownavallapot && $_egyed.navbekuldendo)}
+                <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV beküldés')}" target="_blank">NAV</a>
+                <a class="js-navstat" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV állapot lekérdezés')}" target="_blank">NAV stat</a>
             {/if}
-            {if ($showszamlabutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
-                   target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showkeziszamlabutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit"
-                   title="{at('Kézi számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showkivetbutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{at('Kivét')}"
-                   target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showbevetbutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
-                   target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showcsomagbutton)}
-                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
-                   target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showfeketelistabutton)}
-                <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}" target="_blank"><span
-                        class="ui-icon ui-icon-alert"></span></a>
-            {/if}
-            {if ($showstorno)}
-                {if ($_egyed.naveredmeny=='DONE')}
-                    <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
-                       title="{at('Számlával egy tekintet alá eső okirat')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
-                    <a class="js-stornobizonylat2" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
-                       title="{at('Érvénytelenítő számla')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
+            {if ($_egyed.nemrossz)}
+                {if ($_egyed.bizonylattipusid=='megrendeles')}
+                    <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('Előleg bekérő')}" target="_blank"><span
+                            class="ui-icon ui-icon-print"></span></a>
                 {/if}
-            {else}
-                <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                {if ($showbackorder)}
+                    <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{at('Backorder')}"><span
+                            class="ui-icon ui-icon-transferthick-e-w"></span></a>
+                {/if}
+                {if ($showszallitobutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallitofej" data-oper="inherit"
+                       title="{at('Szállítólevél')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showszamlabutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
+                       target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showkeziszamlabutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit"
+                       title="{at('Kézi számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showkivetbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{at('Kivét')}"
+                       target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showbevetbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
+                       target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showcsomagbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
+                       target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showfeketelistabutton)}
+                    <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}"
+                       target="_blank"><span
+                            class="ui-icon ui-icon-alert"></span></a>
+                {/if}
+                {if ($showstorno)}
+                    {if ($_egyed.naveredmeny=='DONE')}
+                        <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
+                           title="{at('Számlával egy tekintet alá eső okirat')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                        <a class="js-stornobizonylat2" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
+                           title="{at('Érvénytelenítő számla')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                    {/if}
+                {else}
+                    <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                {/if}
             {/if}
         {/if}
         <table>
