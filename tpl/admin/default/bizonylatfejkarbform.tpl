@@ -429,7 +429,7 @@
                 <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
             {/if}
             <a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
-            {if ($egyed.nemrossz)}
+            {if (!$egyed.hibas && $egyed.nemrossz)}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
                        target="_blank">{at('Számla')}</a>

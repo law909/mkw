@@ -290,7 +290,8 @@ table.termekkarton tr:nth-child(even) {
 }
 
 input.tetelszamhiba,
-select.tetelszamhiba {
+select.tetelszamhiba,
+.tetelszamhiba {
     background-color: #ffd5d5;
     border: 1px solid red;
 }

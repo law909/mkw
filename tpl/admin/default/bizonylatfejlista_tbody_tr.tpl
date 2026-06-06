@@ -13,7 +13,7 @@
             </select>
         </td>
     {/if}
-    <td class="cell">
+    <td class="cell{if ($_egyed.hibas)} tetelszamhiba{/if}">
         {if ($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva))}
             <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.id}</a>
         {else}
@@ -27,15 +27,15 @@
             <a class="js-emailpdf" href="#" data-egyedid="{$_egyed.id}" data-oper="emailpdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                title="{at('Küldés emailben')}" target="_blank"><span class="ui-icon ui-icon-mail-closed"></span></a>
         {/if}
-        {if ($showemailbutton)}
+        {if (!$_egyed.hibas && $showemailbutton)}
             <a class="js-email" href="#" data-egyedid="{$_egyed.id}" title="{at('Email sablon küldése a partnernek')}"><span
                     class="ui-icon ui-icon-mail-open"></span></a>
         {/if}
-        {if ($shownavallapot && $_egyed.navbekuldendo)}
+        {if (!$_egyed.hibas && $shownavallapot && $_egyed.navbekuldendo)}
             <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV beküldés')}" target="_blank">NAV</a>
             <a class="js-navstat" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV állapot lekérdezés')}" target="_blank">NAV stat</a>
         {/if}
-        {if ($_egyed.nemrossz)}
+        {if (!$_egyed.hibas && $_egyed.nemrossz)}
             {if ($_egyed.bizonylattipusid=='megrendeles')}
                 <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('Előleg bekérő')}" target="_blank"><span
                         class="ui-icon ui-icon-print"></span></a>
@@ -168,6 +168,9 @@
             {/if}
             </tbody>
         </table>
+        {if ($_egyed.hibas)}
+            <div>{$_egyed.hibauzenetek}</div>
+        {/if}
     </td>
     <td class="cell">
         <table>

@@ -372,7 +372,7 @@ class megrendelesfejController extends bizonylatfejController
     public function getTeljesithetoBackorderLista()
     {
         $ret = [];
-        $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+        $backorder = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
         if ($backorder) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = $this->getRepo(TermekFa::class)->find(\mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat))?->getKarkod();
@@ -381,6 +381,7 @@ class megrendelesfejController extends bizonylatfejController
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
             $filter->addFilter('rontott', '=', false);
+            $filter->addFilter('hibas', '=', false);
             $fejek = $this->getRepo()->getWithTetelek($filter, ['hatarido' => 'ASC']);
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
@@ -397,11 +398,9 @@ class megrendelesfejController extends bizonylatfejController
                                     $vankeszlet = true;
                                     break;
                                 }
-                            } else {
-                                if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
-                                    $vankeszlet = true;
-                                    break;
-                                }
+                            } elseif ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
+                                $vankeszlet = true;
+                                break;
                             }
                         } else {
                             $termek = $tetel->getTermek();
@@ -411,11 +410,9 @@ class megrendelesfejController extends bizonylatfejController
                                         $vankeszlet = true;
                                         break;
                                     }
-                                } else {
-                                    if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() - $termek->getMinboltikeszlet() > 0) {
-                                        $vankeszlet = true;
-                                        break;
-                                    }
+                                } elseif ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() - $termek->getMinboltikeszlet() > 0) {
+                                    $vankeszlet = true;
+                                    break;
                                 }
                             }
                         }

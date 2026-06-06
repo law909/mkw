@@ -526,6 +526,9 @@ class BizonylatfejListener
                     if ($entity->getStorno() || $entity->getRontott()) {
                         $this->rontPenztarBizonylat($entity);
                     }
+
+                    $entity->checkHibak();
+
                     $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
                 }
             }

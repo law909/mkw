@@ -417,6 +417,7 @@ let bizonylathelper = function ($) {
                 }
             }
         });
+        return {osszegekok: true, afaegyezik: true};
 
         return {osszegekok: mindenOk, afaegyezik: afaEgyezik};
     }

@@ -610,6 +610,12 @@ class Bizonylatfej
      */
     private $csomagcount;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $hibas = false;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $hibauzenetek;
+
 
     public function __toString()
     {
@@ -680,6 +686,187 @@ class Bizonylatfej
         } else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
         }
+    }
+
+    /**
+     * A bizonylat ellenőrzése mentéskor. A korábbi kliensoldali (JS) checkBizonylatFej és
+     * checkTetelOsszegek ellenőrzések szerveroldali megfelelője. A talált hibákat nem dobja,
+     * hanem a $hibas és $hibauzenetek mezőkbe írja, hogy minden mentett bizonylaton nyoma legyen.
+     */
+    public function checkHibak()
+    {
+        $hibak = [];
+        $this->checkBizonylatFejHibak($hibak);
+        $this->checkTetelOsszegHibak($hibak);
+        $this->hibauzenetek = $hibak ? implode("<br>", $hibak) : null;
+        $this->hibas = count($hibak) > 0;
+    }
+
+    /**
+     * Két összeg akkor tekinthető egyezőnek, ha az eltérés a kerekítésből adódó hibahatáron
+     * belül van. A hibahatár a szorzótényezővel arányosan nő. (JS: egyezik())
+     */
+    private static function osszegEgyezik($tenyleges, $elvart, $tenyezo)
+    {
+        $hibahatar = 0.1 + abs($tenyezo) * 0.01;
+        return abs($tenyleges - $elvart) <= $hibahatar;
+    }
+
+    /**
+     * A bizonylatfej szintű ellenőrzések (JS: checkBizonylatFej). A kliensoldali, kizárólag a
+     * felhasználói folyamatot érintő ellenőrzések (pl. "Új" partner pipa) nem kerültek átültetésre.
+     */
+    private function checkBizonylatFejHibak(array &$hibak)
+    {
+        // Tételek megléte (JS: tetelok)
+        $tetelszam = 0;
+        $vantermeknelkuli = false;
+        /** @var \Entities\Bizonylattetel $tetel */
+        foreach ($this->bizonylattetelek as $tetel) {
+            $tetelszam++;
+            if (!$tetel->getTermekId()) {
+                $vantermeknelkuli = true;
+            }
+        }
+        if ($tetelszam === 0) {
+            $hibak[] = 'Nincsenek tételek a bizonylaton.';
+        } elseif ($vantermeknelkuli) {
+            $hibak[] = 'Egy vagy több tételhez nincs termék kiválasztva.';
+        }
+
+        // Partner név megléte (JS: partnernevok)
+        if (((string)$this->getPartnernev() === '')
+            && ((string)$this->getPartnervezeteknev() === '')
+            && ((string)$this->getPartnerkeresztnev() === '')) {
+            $hibak[] = 'Nincs megadva partner név.';
+        }
+
+        // Szigorú sorszámozás (JS: keltok / checkKelt)
+        $bt = $this->getBizonylattipus();
+        if ($bt && $bt->getCheckkelt() && $this->getKelt() && !$this->checkKeltSorszamozas()) {
+            $hibak[] = 'A bizonylatoknak szigorú sorszámozás van előírva.';
+        }
+    }
+
+    /**
+     * A kelt ellenőrzése szigorú sorszámozás esetén: a megelőző sorszámú bizonylat kelte nem
+     * lehet későbbi, a következő sorszámúé pedig nem lehet korábbi az aktuálisnál. (JS: checkKelt)
+     */
+    private function checkKeltSorszamozas()
+    {
+        $repo = \mkw\store::getEm()->getRepository(self::class);
+        $kelt = $this->getKelt()->format(\mkw\store::$SQLDateFormat);
+        $prevbiz = $repo->find(self::getPrevId($this->getId()));
+        $nextbiz = $repo->find(self::getNextId($this->getId()));
+        $prevok = !$prevbiz || ($prevbiz->getKelt()->format(\mkw\store::$SQLDateFormat) <= $kelt);
+        $nextok = !$nextbiz || ($nextbiz->getKelt()->format(\mkw\store::$SQLDateFormat) >= $kelt);
+        return $prevok && $nextok;
+    }
+
+    /**
+     * A tételek összegeinek ellenőrzése (JS: checkTetelOsszegek). A tételek belső számtani
+     * összefüggéseit, valamint a partnernél előírt ÁFA kulcsot ellenőrzi.
+     */
+    private function checkTetelOsszegHibak(array &$hibak)
+    {
+        $arfolyam = (float)$this->getArfolyam();
+        $valutas = $this->getValutanemId() != \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
+        // A partnernél előírt (override) ÁFA kulcs a bizonylat adatai alapján (JS: szuksegesAfa).
+        $szuksegesAfa = Partner::calcAFAOverride(
+            $this->getPartnerszallorszag(),
+            $this->getPartnerorszag(),
+            $this->getPartnerSzamlatipus(),
+            $this->getPartnereuadoszam()
+        );
+        $szuksegesAfaId = $szuksegesAfa ? $szuksegesAfa->getId() : null;
+
+        $sorszam = 0;
+        /** @var \Entities\Bizonylattetel $tetel */
+        foreach ($this->bizonylattetelek as $tetel) {
+            $sorszam++;
+            $nev = $tetel->getFullTermeknev();
+            $cimke = 'A(z) ' . $sorszam . '. tétel' . ($nev ? ' (' . $nev . ')' : '');
+
+            $menny = (float)$tetel->getMennyiseg();
+            $kedv = (float)$tetel->getKedvezmeny();
+            // Az ÁFA kulcs (százalék) a tételen tárolt érték, amit setAfa() a kiválasztott ÁFA-val
+            // szinkronban tart. Ha nincs ÁFA kiválasztva, a 3. ellenőrzést kihagyjuk (JS: isNaN).
+            $afakulcs = $tetel->getAfa() !== null ? (float)$tetel->getAfakulcs() : null;
+            $enettoegysar = (float)$tetel->getEnettoegysar();
+            $ebruttoegysar = (float)$tetel->getEbruttoegysar();
+            $nettoegysar = (float)$tetel->getNettoegysar();
+            $bruttoegysar = (float)$tetel->getBruttoegysar();
+            $netto = (float)$tetel->getNetto();
+            $brutto = (float)$tetel->getBrutto();
+
+            // 1. Mennyiség * Egységár = Érték
+            if (!self::osszegEgyezik($netto, $menny * $nettoegysar, $menny)) {
+                $hibak[] = $cimke . ' nettó értéke nem egyezik a mennyiség és a nettó egységár szorzatával.';
+            }
+            if (!self::osszegEgyezik($brutto, $menny * $bruttoegysar, $menny)) {
+                $hibak[] = $cimke . ' bruttó értéke nem egyezik a mennyiség és a bruttó egységár szorzatával.';
+            }
+
+            // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár (csak ha van eredeti egységár)
+            if ($kedv) {
+                if ($enettoegysar && !self::osszegEgyezik($nettoegysar, $enettoegysar * (100 - $kedv) / 100, 1)) {
+                    $hibak[] = $cimke . ' nettó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
+                }
+                if ($ebruttoegysar && !self::osszegEgyezik($bruttoegysar, $ebruttoegysar * (100 - $kedv) / 100, 1)) {
+                    $hibak[] = $cimke . ' bruttó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
+                }
+            }
+
+            // 3. Nettó * (100 + ÁFA%) = Bruttó (csak ha van kiválasztott ÁFA kulcs)
+            if ($afakulcs !== null) {
+                if (!self::osszegEgyezik($bruttoegysar, $nettoegysar * (100 + $afakulcs) / 100, 1)) {
+                    $hibak[] = $cimke . ' bruttó egységára nem egyezik a nettó egységár és az ÁFA alapján számolt értékkel.';
+                }
+                if (!self::osszegEgyezik($brutto, $netto * (100 + $afakulcs) / 100, 1)) {
+                    $hibak[] = $cimke . ' bruttó értéke nem egyezik a nettó érték és az ÁFA alapján számolt értékkel.';
+                }
+            }
+
+            // 4. Érték * Árfolyam = Érték HUF (csak valutás bizonylatnál)
+            if ($valutas && $arfolyam) {
+                if (!self::osszegEgyezik((float)$tetel->getNettohuf(), $netto * $arfolyam, $arfolyam)) {
+                    $hibak[] = $cimke . ' forintban számolt nettó értéke nem egyezik az árfolyammal számolt értékkel.';
+                }
+                if (!self::osszegEgyezik((float)$tetel->getBruttohuf(), $brutto * $arfolyam, $arfolyam)) {
+                    $hibak[] = $cimke . ' forintban számolt bruttó értéke nem egyezik az árfolyammal számolt értékkel.';
+                }
+            }
+
+            // 5. A tétel ÁFA kulcsa egyezzen meg a partnernél előírt (szükséges) ÁFA kulccsal.
+            if ($szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
+                $hibak[] = $cimke . ' ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól.';
+            }
+        }
+    }
+
+    public function getHibas()
+    {
+        return $this->hibas;
+    }
+
+    public function isHibas()
+    {
+        return $this->hibas;
+    }
+
+    public function setHibas($val)
+    {
+        $this->hibas = $val;
+    }
+
+    public function getHibauzenetek()
+    {
+        return $this->hibauzenetek;
+    }
+
+    public function setHibauzenetek($val)
+    {
+        $this->hibauzenetek = $val;
     }
 
     public function calcBruttoWithoutKtgs()
@@ -1154,6 +1341,8 @@ class Bizonylatfej
         $ret['storno'] = $this->getStorno();
         $ret['stornozott'] = $this->getStornozott();
         $ret['rontott'] = $this->getRontott();
+        $ret['hibas'] = $this->getHibas();
+        $ret['hibauzenetek'] = $this->getHibauzenetek();
         $ret['kupon'] = $this->getKupon();
         $ret['fakekintlevoseg'] = $this->getFakekintlevoseg();
         $ret['fakekifizetve'] = $this->getFakekifizetve();

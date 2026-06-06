@@ -368,6 +368,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['editprinted'] = $t->getBizonylattipus() ? $t->getBizonylattipus()->getEditprinted() : false;
         $x['nyomtatva'] = $t->getNyomtatva();
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
+        $x['hibas'] = $t->getHibas();
+        $x['hibauzenetek'] = $t->getHibauzenetek();
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
         $x['rontott'] = $t->getRontott();
