@@ -375,11 +375,15 @@ let bizonylathelper = function ($) {
 
             // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár
             //    (csak akkor, ha van eredeti egységár)
-            if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1)) {
-                jelol('tetelnettoegysar_' + sorId);
-            }
-            if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1)) {
-                jelol('tetelbruttoegysar_' + sorId);
+            if (kedv !== 0) {
+                if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1)) {
+                    jelol('tetelnettoegysar_' + sorId);
+                    jelol('tetelkedvezmeny_' + sorId);
+                }
+                if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1)) {
+                    jelol('tetelbruttoegysar_' + sorId);
+                    jelol('tetelkedvezmeny_' + sorId);
+                }
             }
 
             // 3. Nettó * (100 + ÁFA%) = Bruttó
