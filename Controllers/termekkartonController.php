@@ -2,14 +2,18 @@
 
 namespace Controllers;
 
+use Entities\Bizonylattetel;
+use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 
-class termekkartonController extends \mkwhelpers\Controller {
+class termekkartonController extends \mkwhelpers\Controller
+{
 
-    public function view() {
+    public function view()
+    {
         $termekid = $this->params->getIntRequestParam('id');
         /** @var \Entities\Termek $termek */
-        $termek = $this->getRepo('Entities\Termek')->find($termekid);
+        $termek = $this->getRepo(Termek::class)->find($termekid);
 
         $view = $this->createView('termekkarton.tpl');
 
@@ -19,6 +23,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $view->setVar('termeknev', $termek->getNev());
         $view->setVar('cikkszam', $termek->getCikkszam());
         $view->setVar('keszletetmozgat', $termek->getMozgat());
+        $view->setVar('kellegyediazonosito', $termek->getKellegyediazonosito());
         if ($termek) {
             $tc = new termekController($this->params);
             $view->setVar('valtozatlista', $tc->getValtozatList($termekid, null));
@@ -31,10 +36,10 @@ class termekkartonController extends \mkwhelpers\Controller {
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);
-
     }
 
-    public function refresh() {
+    public function refresh()
+    {
         $termekid = $this->params->getIntRequestParam('termekid');
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $mozgat = $this->params->getIntRequestParam('mozgat');
@@ -55,6 +60,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
         $datumtolstr = $this->params->getStringRequestParam('datumtol');
         $datumigstr = $this->params->getStringRequestParam('datumig');
+        $egyediazonosito = trim($this->params->getStringRequestParam('egyediazonosito'));
 
         $nyitofilter = new FilterDescriptor();
         $filter = new FilterDescriptor();
@@ -63,6 +69,10 @@ class termekkartonController extends \mkwhelpers\Controller {
         if ($valtozatid) {
             $nyitofilter->addFilter('bt.termekvaltozat', '=', $valtozatid);
             $filter->addFilter('bt.termekvaltozat', '=', $valtozatid);
+        }
+        if ($egyediazonosito !== '') {
+            $nyitofilter->addFilter('bt.termekegyediazonosito', '=', $egyediazonosito);
+            $filter->addFilter('bt.termekegyediazonosito', '=', $egyediazonosito);
         }
         if ($datumtolstr) {
             $nyitofilter->addFilter($datumtipus, '<', $datumtolstr);
@@ -98,28 +108,24 @@ class termekkartonController extends \mkwhelpers\Controller {
         if ($partnerid) {
             $nyitofilter->addFilter('bf.partner', '=', $partnerid);
             $filter->addFilter('bf.partner', '=', $partnerid);
-        }
-        else {
-            if ($partnerkodok) {
-                $nyitofilter->addFilter('bf.partner', 'IN', $partnerkodok);
-                $filter->addFilter('bf.partner', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $nyitofilter->addFilter('bf.partner', 'IN', $partnerkodok);
+            $filter->addFilter('bf.partner', 'IN', $partnerkodok);
         }
 
         if ($datumtolstr) {
             $nyito = $this->getRepo('Entities\Termek')->calcKeszlet($nyitofilter);
             $nyito = $nyito[0];
+        } else {
+            $nyito = ['mennyiseg' => 0, 'nettohuf' => 0, 'bruttohuf' => 0];
         }
-        else {
-            $nyito = array('mennyiseg' => 0, 'nettohuf' => 0, 'bruttohuf' => 0);
-        }
-        $tetelek = $this->getRepo('Entities\Termek')->getKarton($filter, array($datumtipus => 'ASC'));
-        $kartontetelek = array();
-        foreach($tetelek as $tetel) {
-            $r = array(
+        $tetelek = $this->getRepo('Entities\Termek')->getKarton($filter, [$datumtipus => 'ASC']);
+        $kartontetelek = [];
+        foreach ($tetelek as $tetel) {
+            $r = [
                 'tetel' => $tetel->toLista(),
                 'fej' => $tetel->getBizonylatfej()->toLista()
-            );
+            ];
             $kartontetelek[] = $r;
         }
 
@@ -128,6 +134,19 @@ class termekkartonController extends \mkwhelpers\Controller {
         $view->setVar('nyito', $nyito['mennyiseg']);
         $view->setVar('kartontetelek', $kartontetelek);
         $view->printTemplateResult();
+    }
+
+    public function egyediAzonositoLista()
+    {
+        $termekid = $this->params->getIntRequestParam('termekid');
+        $valtozatid = $this->params->getIntRequestParam('valtozatid');
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if ($termekid) {
+            $ret = $this->getRepo(Bizonylattetel::class)
+                ->getEgyediAzonositoLista($termekid, $valtozatid, $term);
+        }
+        echo json_encode($ret);
     }
 
 }

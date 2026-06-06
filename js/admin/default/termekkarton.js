@@ -39,6 +39,27 @@ $(document).ready(function () {
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                 .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
 
+            // Egyedi azonosító szűrő autocomplete: a termékhez (és kiválasztott változatához)
+            // tartozó, bizonylattételekben szereplő azonosítókat ajánlja, 1 karakter után.
+            $('.js-egyediazonositoszuro').autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/admin/termekkarton/egyediazonositolista',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            termekid: $('input[name="termekid"]').val(),
+                            valtozatid: $('select[name="valtozat"]').val(),
+                            term: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                }
+            });
+
             $('.js-refresh')
                 .on('click', function () {
 
@@ -63,7 +84,8 @@ $(document).ready(function () {
                             rontott: $('select[name="rontott"]').val(),
                             raktarid: $('select[name="raktar"]').val(),
                             partnerid: partnerid,
-                            partnercimkefilter: partnercimkefilter
+                            partnercimkefilter: partnercimkefilter,
+                            egyediazonosito: $('input[name="egyediazonosito"]').val()
                         },
                         success: function (d) {
                             $('#eredmeny').html(d);

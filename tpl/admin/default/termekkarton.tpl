@@ -24,6 +24,14 @@
                         {/foreach}
                     </select>
                 </div>
+                {if ($kellegyediazonosito)}
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="EgyediazonositoEdit">{at('Egyedi azonosító')}:</label>
+                        <input id="EgyediazonositoEdit" class="js-egyediazonositoszuro" name="egyediazonosito" type="text"
+                               autocomplete="off">
+                    </div>
+                {/if}
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
                 <div class="matt-hseparator"></div>
