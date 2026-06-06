@@ -709,7 +709,7 @@ if ($DBVersion < '0074') {
 }
 
 if ($DBVersion < '0075') {
-    \mkw\store::getEm()->getConnection()->executeUpdate(
+    \mkw\store::getEm()->getConnection()->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
         . '(7, "Országok","/admin/orszag/viewlist","/admin/orszag",40,1,245, "")'
@@ -784,7 +784,7 @@ if ($DBVersion < '0076') {
 }
 
 if ($DBVersion < '0077') {
-    \mkw\store::getEm()->getConnection()->executeUpdate(
+    \mkw\store::getEm()->getConnection()->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
         . '(7, "ÁFA kulcsok","/admin/afa/viewlist","/admin/afa",40,1,247, "")'
