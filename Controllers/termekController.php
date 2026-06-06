@@ -261,6 +261,7 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
         $obj->setUj($this->params->getBoolRequestParam('uj'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+        $obj->setKellegyediazonosito($this->params->getBoolRequestParam('kellegyediazonosito'));
         $obj->setEladhato($this->params->getBoolRequestParam('eladhato'));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
         $obj->setHparany($this->params->getFloatRequestParam('hparany'));
@@ -1156,6 +1157,7 @@ class termekController extends \mkwhelpers\MattableController
                 $ret = [
                     'value' => $termek->getNev(),
                     'id' => $termek->getId(),
+                    'kellegyediazonosito' => (bool)$termek->getKellegyediazonosito(),
                     'me' => $termek->getMekodId(),
                     'cikkszam' => $termek->getCikkszam(),
                     'vtsz' => $termek->getVtszId(),
@@ -1194,6 +1196,7 @@ class termekController extends \mkwhelpers\MattableController
                             $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
+                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
                                 'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
@@ -1224,6 +1227,7 @@ class termekController extends \mkwhelpers\MattableController
                                 'value' => $r->getNev(),
                                 'label' => $r->getCikkszam() . ' ' . $r->getNev(),
                                 'id' => $r->getId(),
+                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
                                 'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
@@ -1253,6 +1257,7 @@ class termekController extends \mkwhelpers\MattableController
                             $x = [
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
+                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
                                 'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
                                 'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),

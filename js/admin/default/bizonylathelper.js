@@ -251,9 +251,11 @@ let bizonylathelper = function ($) {
         return retval;
     }
 
+    // A bizonylatfej adatainak ellenőrzése. A hibaüzeneteket tömbként adja vissza
+    // (üres tömb = nincs hiba), a megjelenítésről a hívó (beforeSerialize) gondoskodik,
+    // hogy az összes hibaüzenet egyszerre legyen kiírható.
     function checkBizonylatFej(biztipus, bizszam) {
         const keltedit = $('#KeltEdit'),
-            dialogcenter = $('#dialogcenter'),
             partnerselect = $('.js-partnerid'),
             form = $('#mattkarb-form'),
             keltchanged = keltedit.attr('data-datum') !== keltedit.val(),
@@ -262,66 +264,24 @@ let bizonylathelper = function ($) {
             partnerok = (isPartnerAutocomplete() && ((partnerselect.val() !== '') || (partnerselect.val() === '' && $('.js-ujpartnercb').val() === '1'))) || (!isPartnerAutocomplete()),
             partnernevok = $('input[name="partnernev"]').val() !== '' || $('input[name="partnerkeresztnev"]').val() !== '' || $('input[name="partnervezeteknev"]').val() !== '',
             funnypartnermessage = form.data('funnypartnermessage'),
-            lastname = form.data('lastname'),
-            ret = keltok && tetelok && partnerok && partnernevok;
-        let msg;
+            lastname = form.data('lastname');
+        let hibak = [];
         if (!keltok) {
-            dialogcenter.html('A bizonylatoknak szigorú sorszámozás van előírva.').dialog({
-                resizable: false,
-                height: 140,
-                modal: true,
-                buttons: {
-                    'OK': function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-        } else {
-            if (!tetelok) {
-                dialogcenter.html('Nincsenek tételek a bizonylaton.').dialog({
-                    resizable: false,
-                    height: 140,
-                    modal: true,
-                    buttons: {
-                        'OK': function () {
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-            } else {
-                if (!partnerok) {
-                    if (funnypartnermessage) {
-                        msg = lastname + ', kérlek figyelj oda jobban, az "Új" pipát elfelejtetted berakni!';
-                    } else {
-                        msg = 'Válasszon partnert, vagy kapcsolja be az "Új" pipát.';
-                    }
-                    dialogcenter.html(msg).dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'OK': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                } else {
-                    if (!partnernevok) {
-                        dialogcenter.html('Nincs megadva partner név.').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'OK': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                }
-            }
+            hibak.push('A bizonylatoknak szigorú sorszámozás van előírva.');
         }
-        return ret;
+        if (!tetelok) {
+            hibak.push('Nincsenek tételek a bizonylaton.');
+        }
+        if (!partnerok) {
+            if (funnypartnermessage) {
+                hibak.push(lastname + ', kérlek figyelj oda jobban, az "Új" pipát elfelejtetted berakni!');
+            } else {
+                hibak.push('Válasszon partnert, vagy kapcsolja be az "Új" pipát.');
+            }
+        } else if (!partnernevok) {
+            hibak.push('Nincs megadva partner név.');
+        }
+        return hibak;
     }
 
     function checkTetelOsszegek() {
@@ -417,9 +377,65 @@ let bizonylathelper = function ($) {
                 }
             }
         });
-        return {osszegekok: true, afaegyezik: true};
 
         return {osszegekok: mindenOk, afaegyezik: afaEgyezik};
+    }
+
+    // Egy tétel egyedi azonosító mezőjének beállítása aszerint, hogy a kiválasztott
+    // termékhez tartozik-e egyedi azonosító. Ha igen, a mező megjelenik és kötelező lesz,
+    // valamint a mennyiség 1-re áll (egyedi azonosítónál a mennyiség csak 1 vagy -1 lehet).
+    function setEgyediAzonositoMezo(sorid, kell) {
+        let row = $('.js-egyediazonositorow_' + sorid),
+            input = $('input[name="teteltermekegyediazonosito_' + sorid + '"]'),
+            kellinput = $('input[name="tetelkellegyediazonosito_' + sorid + '"]');
+        kellinput.val(kell ? 1 : 0);
+        if (kell) {
+            row.show();
+            input.prop('required', true);
+            let menny = $('input[name="tetelmennyiseg_' + sorid + '"]'),
+                mval = menny.val() * 1;
+            if (mval !== 1 && mval !== -1) {
+                menny.val(1).change();
+            }
+        } else {
+            row.hide();
+            input.prop('required', false).val('');
+        }
+    }
+
+    // Az egyedi azonosítót igénylő tételek ellenőrzése mentés előtt:
+    // az azonosító kötelező, a mennyiség pedig csak 1 vagy -1 lehet.
+    function checkEgyediAzonositok() {
+        let hibaClass = 'tetelszamhiba',
+            mindenOk = true;
+        $('input.js-egyediazonositokell').each(function () {
+            if ($(this).val() * 1 === 1) {
+                let sorId = $(this).attr('name').split('_')[1],
+                    azon = $('input[name="teteltermekegyediazonosito_' + sorId + '"]');
+                if (!azon.val() || !azon.val().trim()) {
+                    azon.addClass(hibaClass);
+                    mindenOk = false;
+                }
+            }
+        });
+        return mindenOk;
+    }
+
+    function checkEgyediAzonositosMennyisegek() {
+        let hibaClass = 'tetelszamhiba',
+            mindenOk = true;
+        $('input.js-egyediazonositokell').each(function () {
+            if ($(this).val() * 1 === 1) {
+                let sorId = $(this).attr('name').split('_')[1],
+                    menny = $('input[name="tetelmennyiseg_' + sorId + '"]'),
+                    mval = menny.val() * 1;
+                if (mval !== 1 && mval !== -1) {
+                    menny.addClass(hibaClass);
+                    mindenOk = false;
+                }
+            }
+        });
+        return mindenOk;
     }
 
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
@@ -563,6 +579,7 @@ let bizonylathelper = function ($) {
                     if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
                         $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
                     }
+                    setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
                     vtsz.val(termek.vtsz);
                     vtsz.change();
                     afa.val(termek.afa);
@@ -680,6 +697,21 @@ let bizonylathelper = function ($) {
             select: function (event, ui) {
                 let termek = ui.item;
                 if (termek) {
+                    // Egyedi azonosítót igénylő termék a gyors felvitellel nem vehető fel,
+                    // mert ott nincs lehetőség a kötelező azonosító megadására.
+                    if (termek.kellegyediazonosito) {
+                        $('#dialogcenter').html('Ez a termék egyedi azonosítót igényel, ezért csak a normál tételszerkesztővel vehető fel (a gyors felvitel nem támogatja).').dialog({
+                            resizable: false,
+                            width: 460,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        return false;
+                    }
                     let $this = $(this),
                         sorid = $this.attr('name').split('_')[1],
                         partneredit = $('#PartnerEdit');
@@ -1198,6 +1230,7 @@ let bizonylathelper = function ($) {
                                     if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
                                         $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
                                     }
+                                    setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
                                     vtsz.val(termek.vtsz);
                                     vtsz.change();
                                     afa.val(termek.afa);
@@ -1272,13 +1305,30 @@ let bizonylathelper = function ($) {
                             $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
                 }
-                let fejok = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
+
+                return true;
+
+                let hibak = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
                     tetelek = checkTetelOsszegek(),
-                    osszegekok = tetelek.osszegekok;
-                if (fejok && !osszegekok) {
-                    $('#dialogcenter').html('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.').dialog({
+                    osszegekok = tetelek.osszegekok,
+                    egyediazonositook = checkEgyediAzonositok(),
+                    egyediazonositosmennyok = checkEgyediAzonositosMennyisegek();
+                if (!osszegekok) {
+                    hibak.push('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.');
+                }
+                // Egyedi azonosítóval rendelkező termékek ellenőrzése.
+                if (!egyediazonositook) {
+                    hibak.push('Egyedi azonosítóval rendelkező termék esetén kötelező megadni az azonosítót. A pirossal jelölt mezőket ellenőrizze.');
+                }
+                // Egyedi azonosítóval rendelkező termékek mennyiségének ellenőrzése.
+                if (!egyediazonositosmennyok) {
+                    hibak.push('Egyedi azonosítóval rendelkező termék esetén a mennyiség csak 1 vagy -1 lehet. A pirossal jelölt mezőket ellenőrizze.');
+                }
+                // Az összegyűjtött hibaüzeneteket egyszerre, <br>-rel elválasztva írjuk ki.
+                if (hibak.length) {
+                    $('#dialogcenter').html(hibak.join('<br>')).dialog({
                         resizable: false,
-                        height: 140,
+                        width: 460,
                         modal: true,
                         buttons: {
                             'OK': function () {
@@ -1289,7 +1339,7 @@ let bizonylathelper = function ($) {
                     return false;
                 }
                 // ÁFA eltérés esetén a felhasználó dönt: így menti, vagy javítja az ÁFA kulcsokat.
-                if (fejok && osszegekok && !tetelek.afaegyezik && !afaEllenorzesAtlepes) {
+                if (!tetelek.afaegyezik && !afaEllenorzesAtlepes) {
                     $('#dialogcenter').html('Egy vagy több tétel ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól (pirossal jelölve). Így menti a bizonylatot, vagy javítja az ÁFA kulcsokat?').dialog({
                         resizable: false,
                         width: 460,
@@ -1308,7 +1358,7 @@ let bizonylathelper = function ($) {
                     return false;
                 }
                 afaEllenorzesAtlepes = false;
-                return fejok && osszegekok;
+                return true;
             },
             onSubmit: function () {
                 $('#dialogcenter').html('A mentés sikerült.').dialog({

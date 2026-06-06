@@ -881,6 +881,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                 $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                 $tetel->setMegjegyzes($this->params->getStringRequestParam('tetelmegjegyzes_' . $tetelid));
                                 $tetel->setMegjegyzes2($this->params->getStringRequestParam('tetelmegjegyzes2_' . $tetelid));
+                                $tetel->setTermekegyediazonosito($this->params->getStringRequestParam('teteltermekegyediazonosito_' . $tetelid));
                                 $tetel->setVasarlasdatum($this->params->getStringRequestParam('tetelvasarlasdatum_' . $tetelid));
                                 $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                 $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
@@ -975,6 +976,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                     $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                     $tetel->setMegjegyzes($this->params->getStringRequestParam('tetelmegjegyzes_' . $tetelid));
                                     $tetel->setMegjegyzes2($this->params->getStringRequestParam('tetelmegjegyzes2_' . $tetelid));
+                                    $tetel->setTermekegyediazonosito($this->params->getStringRequestParam('teteltermekegyediazonosito_' . $tetelid));
                                     $tetel->setVasarlasdatum($this->params->getStringRequestParam('tetelvasarlasdatum_' . $tetelid));
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));

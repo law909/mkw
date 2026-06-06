@@ -26,7 +26,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     public function loadVars($t, $forKarb = false)
     {
         $oper = $this->params->getStringRequestParam('oper');
-        $termek = new termekController($this->params);
+        $termekCtrl = new termekController($this->params);
         $vtsz = new vtszController($this->params);
         $afa = new afaController($this->params);
         $me = new meController($this->params);
@@ -50,6 +50,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['me'] = $t->getME();
         $x['megjegyzes'] = $t->getMegjegyzes();
         $x['megjegyzes2'] = $t->getMegjegyzes2();
+        $x['termekegyediazonosito'] = $t->getTermekegyediazonosito();
         $x['vasarlasdatumstr'] = $t->getVasarlasdatumStr();
         if ($oper === 'storno') {
             $x['netto'] = $t->getNetto() * -1;
@@ -86,6 +87,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['elolegtipus'] = $t->getElolegtipus();
 
         $term = $t->getTermek();
+        $x['kellegyediazonosito'] = $term ? (bool)$term->getKellegyediazonosito() : false;
         if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
             $x['eladasibrutto'] = $eb;
@@ -104,12 +106,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
 
         if ($forKarb) {
-            $x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
+            $x['valtozatlist'] = $termekCtrl->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
             $x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
             $x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
             $x['melist'] = $me->getSelectList($t->getMekodId());
             if (!\mkw\store::isTermekAutocomplete()) {
-                $x['termeklist'] = $termek->getSelectList();
+                $x['termeklist'] = $termekCtrl->getSelectList();
             }
         }
         return $x;

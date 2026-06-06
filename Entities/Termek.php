@@ -213,6 +213,9 @@ class Termek
     /** @ORM\Column(type="boolean",nullable=false) */
     private $termekexportbanszerepel = true;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $kellegyediazonosito = 0;
+
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $hparany = 0;
 
@@ -1514,6 +1517,16 @@ class Termek
     public function setInaktiv($inaktiv)
     {
         $this->inaktiv = $inaktiv;
+    }
+
+    public function getKellegyediazonosito()
+    {
+        return $this->kellegyediazonosito;
+    }
+
+    public function setKellegyediazonosito($kellegyediazonosito)
+    {
+        $this->kellegyediazonosito = $kellegyediazonosito;
     }
 
     public function getTermekexportbanszerepel()

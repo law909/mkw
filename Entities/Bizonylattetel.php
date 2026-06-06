@@ -274,6 +274,9 @@ class Bizonylattetel
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes2;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekegyediazonosito;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $vasarlasdatum;
     /**
@@ -331,6 +334,7 @@ class Bizonylattetel
         $ret['afa'] = $this->getAfaertek();
         $ret['brutto'] = $this->getBrutto();
         $ret['kedvezmeny'] = $this->getKedvezmeny();
+        $ret['termekegyediazonosito'] = $this->getTermekegyediazonosito();
         $nyelv = $this->getBizonylatfej()?->getBizonylatnyelv();
         $ret['termeknev'] = $this->getLocalizedFieldValue('termeknev', $nyelv);
         $ret['me'] = $this->getME();
@@ -1658,6 +1662,16 @@ class Bizonylattetel
     public function setMegjegyzes2($megjegyzes2): void
     {
         $this->megjegyzes2 = $megjegyzes2;
+    }
+
+    public function getTermekegyediazonosito()
+    {
+        return $this->termekegyediazonosito;
+    }
+
+    public function setTermekegyediazonosito($termekegyediazonosito): void
+    {
+        $this->termekegyediazonosito = $termekegyediazonosito;
     }
 
     public function getVasarlasdatum()

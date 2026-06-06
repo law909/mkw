@@ -841,6 +841,18 @@ class Bizonylatfej
             if ($szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
                 $hibak[] = $cimke . ' ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól.';
             }
+
+            // 6. Egyedi azonosítót igénylő termék: az azonosító kötelező, és a mennyiség csak 1 vagy -1 lehet.
+            //    (JS: checkEgyediAzonositok / checkEgyediAzonositosMennyisegek)
+            $termek = $tetel->getTermek();
+            if ($termek && $termek->getKellegyediazonosito()) {
+                if (trim((string)$tetel->getTermekegyediazonosito()) === '') {
+                    $hibak[] = $cimke . ' egyedi azonosítóval rendelkező termék, ezért kötelező megadni az egyedi azonosítót.';
+                }
+                if ($menny != 1 && $menny != -1) {
+                    $hibak[] = $cimke . ' egyedi azonosítóval rendelkező termék, ezért a mennyiség csak 1 vagy -1 lehet.';
+                }
+            }
         }
     }
 

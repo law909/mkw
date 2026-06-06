@@ -37,6 +37,8 @@
                    {if ($egyed.mozgat)}checked="checked"{/if}>{at('Készletet mozgat')}
             <input id="KozvetitettCheck" name="kozvetitett" type="checkbox"
                    {if ($egyed.kozvetitett)}checked="checked"{/if}>{at('Közvetített szolgáltatás')}
+            <input id="KellegyediazonositoCheck" name="kellegyediazonosito" type="checkbox"
+                   {if ($egyed.kellegyediazonosito)}checked="checked"{/if}>{at('Van egyedi azonosítója')}
             <table>
                 <tbody>
                 <tr>
