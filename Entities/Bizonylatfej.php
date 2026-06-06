@@ -781,6 +781,7 @@ class Bizonylatfej
         $szuksegesAfaId = $szuksegesAfa ? $szuksegesAfa->getId() : null;
 
         $sorszam = 0;
+        $egyediAzonositoElofordulasok = [];
         /** @var \Entities\Bizonylattetel $tetel */
         foreach ($this->bizonylattetelek as $tetel) {
             $sorszam++;
@@ -846,12 +847,26 @@ class Bizonylatfej
             //    (JS: checkEgyediAzonositok / checkEgyediAzonositosMennyisegek)
             $termek = $tetel->getTermek();
             if ($termek && $termek->getKellegyediazonosito()) {
-                if (trim((string)$tetel->getTermekegyediazonosito()) === '') {
+                $azonosito = trim((string)$tetel->getTermekegyediazonosito());
+                if ($azonosito === '') {
                     $hibak[] = $cimke . ' egyedi azonosítóval rendelkező termék, ezért kötelező megadni az egyedi azonosítót.';
+                } else {
+                    // Az üres azonosítót a fenti ág kezeli; itt csak a kitöltötteket gyűjtjük az
+                    // egyediség (7.) ellenőrzéshez, termékenként csoportosítva.
+                    $egyediAzonositoElofordulasok[$termek->getId() . '|' . $azonosito][] = $sorszam;
                 }
                 if ($menny != 1 && $menny != -1) {
                     $hibak[] = $cimke . ' egyedi azonosítóval rendelkező termék, ezért a mennyiség csak 1 vagy -1 lehet.';
                 }
+            }
+        }
+
+        // 7. Egyedi azonosítós termék: ha ugyanaz a termék több tételben szerepel, az egyedi
+        //    azonosítóknak különbözniük kell. (JS: checkEgyediAzonositoEgyediseg)
+        foreach ($egyediAzonositoElofordulasok as $sorszamok) {
+            if (count($sorszamok) > 1) {
+                $hibak[] = 'A(z) ' . implode('., ', $sorszamok)
+                    . '. tétel ugyanazon termékhez ugyanazt az egyedi azonosítót használja, az azonosítóknak különbözniük kell.';
             }
         }
     }

@@ -438,6 +438,41 @@ let bizonylathelper = function ($) {
         return mindenOk;
     }
 
+    // Az egyedi azonosítós termékek azonosítóinak egyediségének ellenőrzése: ha ugyanaz a termék
+    // több tételben szerepel, az egyedi azonosítóknak különbözniük kell. Az ütköző (azonos termékhez
+    // azonos azonosítójú) mezőket megjelöli. (Szerver: Bizonylatfej::checkTetelOsszegHibak 7. pont)
+    function checkEgyediAzonositoEgyediseg() {
+        let hibaClass = 'tetelszamhiba',
+            mindenOk = true,
+            elofordulasok = {}; // termékid + '|' + azonosító -> [sorId, ...]
+        $('input.js-egyediazonositokell').each(function () {
+            if ($(this).val() * 1 === 1) {
+                let sorId = $(this).attr('name').split('_')[1],
+                    termekid = $('[name="teteltermek_' + sorId + '"]').val(),
+                    azon = $('input[name="teteltermekegyediazonosito_' + sorId + '"]').val();
+                azon = azon ? azon.trim() : '';
+                // Az üres azonosítót a checkEgyediAzonositok kezeli, itt nem foglalkozunk vele.
+                if (azon === '') {
+                    return;
+                }
+                let kulcs = termekid + '|' + azon;
+                if (!elofordulasok[kulcs]) {
+                    elofordulasok[kulcs] = [];
+                }
+                elofordulasok[kulcs].push(sorId);
+            }
+        });
+        $.each(elofordulasok, function (kulcs, sorIdk) {
+            if (sorIdk.length > 1) {
+                mindenOk = false;
+                $.each(sorIdk, function (i, sorId) {
+                    $('input[name="teteltermekegyediazonosito_' + sorId + '"]').addClass(hibaClass);
+                });
+            }
+        });
+        return mindenOk;
+    }
+
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
         let raktarid = $('select[name="raktar"] option:selected').val();
         $.ajax({
@@ -1306,13 +1341,12 @@ let bizonylathelper = function ($) {
                     });
                 }
 
-                return true;
-
                 let hibak = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
                     tetelek = checkTetelOsszegek(),
                     osszegekok = tetelek.osszegekok,
                     egyediazonositook = checkEgyediAzonositok(),
-                    egyediazonositosmennyok = checkEgyediAzonositosMennyisegek();
+                    egyediazonositosmennyok = checkEgyediAzonositosMennyisegek(),
+                    egyediazonositoegyedi = checkEgyediAzonositoEgyediseg();
                 if (!osszegekok) {
                     hibak.push('Hibás összeg a tételek között. A pirossal jelölt mezőket ellenőrizze.');
                 }
@@ -1323,6 +1357,11 @@ let bizonylathelper = function ($) {
                 // Egyedi azonosítóval rendelkező termékek mennyiségének ellenőrzése.
                 if (!egyediazonositosmennyok) {
                     hibak.push('Egyedi azonosítóval rendelkező termék esetén a mennyiség csak 1 vagy -1 lehet. A pirossal jelölt mezőket ellenőrizze.');
+                }
+                // Egyedi azonosítók egyediségének ellenőrzése: ugyanazon termék több tételében az
+                // azonosítóknak különbözniük kell.
+                if (!egyediazonositoegyedi) {
+                    hibak.push('Ugyanaz az a termék több tételben ugyanazzal az egyedi azonosítóval szerepel, az azonosítóknak különbözniük kell. A pirossal jelölt mezőket ellenőrizze.');
                 }
                 // Az összegyűjtött hibaüzeneteket egyszerre, <br>-rel elválasztva írjuk ki.
                 if (hibak.length) {
