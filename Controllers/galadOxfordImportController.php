@@ -75,7 +75,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         $vtsz = $this->getOrCreateVtsz('-', '-', $afa);
 
         // gyártó partner ("Oxford"), ha még nincs (szállító = 1)
-        $gyarto = $this->getOrCreatePartner('Oxford');
+        $gyarto = $this->getOrCreatePartner('OXFORD PRODUCT');
 
         // alapértelmezett valutanem
         $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)
@@ -348,6 +348,10 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         if (!$partner) {
             $partner = new \Entities\Partner();
             $partner->setNev($nev);
+            $partner->setSzallito(1);
+            \mkw\store::getEm()->persist($partner);
+            \mkw\store::getEm()->flush();
+        } elseif (!$partner->getSzallito()) {
             $partner->setSzallito(1);
             \mkw\store::getEm()->persist($partner);
             \mkw\store::getEm()->flush();
