@@ -13,6 +13,7 @@
     <script type="text/javascript" src="/js/admin/default/tools.js"></script>
     <script type="text/javascript" src="/js/admin/default/mkwcomp.js"></script>
     <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+    <script type="text/javascript">window.mattableMindigNyitva = {$mindignyitva|default:0};</script>
     {block "inhead"}
     {/block}
     <script type="text/javascript" src="/js/admin/default/appinit.js"></script>

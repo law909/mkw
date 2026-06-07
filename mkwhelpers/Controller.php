@@ -75,7 +75,22 @@ abstract class Controller
     {
         $view = $this->getTemplateFactory()->createView($tplfilename);
         $this->generalDataLoader->loadData($view);
+        $this->loadListParams($view, $tplfilename);
         return $view;
+    }
+
+    /**
+     * A lista-sablonokhoz (…lista.tpl) átadja a "Mindig nyitva" (szűrő nyitva tartása)
+     * mentett állapotát. A kulcs a lista URL-jének elérési útja (a ? előtti rész, domain nélkül) –
+     * ugyanaz, amit a kliens a mentéskor használ. Így egy helyen, minden mattable listára
+     * érvényesen (a controller ősosztályától függetlenül) töltődik be az érték.
+     */
+    protected function loadListParams($view, $tplfilename)
+    {
+        if (substr($tplfilename, -9) === 'lista.tpl') {
+            $key = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+            $view->setVar('mindignyitva', \mkw\store::getParameter($key) ? 1 : 0);
+        }
     }
 
     public function createMainView($tplfilename)

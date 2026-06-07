@@ -265,6 +265,7 @@ $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'adming
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
 $router->map('GET', '/admin/regeneratemenukarkod', 'adminController#regeneratemenukarkod', 'adminregeneratemenukarkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
+$router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
 $router->map('GET', '/admin/setgrideditbutton', 'adminController#setGridEditButton', 'adminsetgrideditbutton');
 $router->map('GET', '/admin/seteditstyle', 'adminController#setEditStyle', 'adminseteditstyle');
 $router->map('GET', '/admin/setvonalkodfromvaltozat', 'adminController#setVonalkodFromValtozat', 'adminsetvonalkodfromvaltozat');

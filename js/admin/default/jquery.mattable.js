@@ -69,7 +69,8 @@
                 filterOpenCloseTitle: 'Szűrő kinyit/becsuk',
                 orderUp: 'növekvő',
                 orderDown: 'csökkenő',
-                msgDel: 'Biztosan törli a tételt?'
+                msgDel: 'Biztosan törli a tételt?',
+                alwaysOpen: 'Mindig nyitva'
             }
         };
 
@@ -180,11 +181,43 @@
                     }
                 });
 
+                // "Mindig nyitva" pipa: a szűrő nyitva tartásának be/ki kapcsolása.
+                // Az állapotot lista-URL-enként a parameterek táblába mentjük (AJAX),
+                // a kezdeti értéket a sablon adja át (window.mattableMindigNyitva).
+                header.append('<label class="mattable-mindignyitva"><input type="checkbox" class="js-mattable-mindignyitva"' +
+                    (window.mattableMindigNyitva ? ' checked="checked"' : '') + '> ' + setup.txt.alwaysOpen + '</label>');
+                var _mindignyitva = $('.js-mattable-mindignyitva');
+                _mindignyitva.on('change', function () {
+                    var checked = $(this).prop('checked');
+                    $.ajax({
+                        url: '/admin/setlistparam',
+                        type: 'POST',
+                        data: {
+                            key: window.location.pathname,
+                            value: checked ? 1 : 0
+                        }
+                    });
+                    // bepipáláskor azonnal nyissuk ki a szűrőt (kicsukáskor hagyjuk, ahogy van)
+                    if (checked && !filterwrapper.is(':visible')) {
+                        _filtercloseupbutton.click();
+                    }
+                });
+                // ha be van pipálva, a szűrő legyen nyitva már betöltéskor (animáció nélkül)
+                if (window.mattableMindigNyitva) {
+                    filterwrapper.show();
+                    _filtercloseupbutton.children('span')
+                        .removeClass('ui-icon-circle-triangle-s').addClass('ui-icon-circle-triangle-n');
+                    _filtercloseupbutton.attr('title', setup.txt.filterCloseTitle);
+                }
+
                 $(setup.filter.refreshButton)
                     .on('click', function (e) {
                         e.preventDefault();
                         reloadTbody();
-                        _filtercloseupbutton.click();
+                        // a szűrőt szűrés után becsukjuk, KIVÉVE ha "Mindig nyitva" aktív
+                        if (!_mindignyitva.prop('checked')) {
+                            _filtercloseupbutton.click();
+                        }
                     })
                     .button();
                 $(setup.filter.clearButton)

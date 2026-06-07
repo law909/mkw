@@ -418,6 +418,22 @@ class adminController extends mkwhelpers\Controller
         }
     }
 
+    /**
+     * Lista-szintű felhasználói beállítás mentése a parameterek táblába.
+     * A kulcs a lista URL-jének (? előtti) elérési útja, a domain nélkül (pl. /admin/orszag/viewlist).
+     * Jelenleg a "Mindig nyitva" (szűrő nyitva tartása) állapotot menti a mattable listák.
+     */
+    public function setListParam()
+    {
+        $key = $this->params->getStringRequestParam('key', '');
+        $value = $this->params->getStringRequestParam('value', '0');
+        // biztonsági korlát: csak elérési út jellegű kulcs (vezető /, nincs domain/query),
+        // hogy ne lehessen tetszőleges parameterek-sort felülírni
+        if (preg_match('#^/[A-Za-z0-9/_-]+$#', $key)) {
+            \mkw\store::setParameter($key, $value ? '1' : '0');
+        }
+    }
+
     public function getSmallUrl()
     {
         echo \mkw\store::createSmallImageUrl($this->params->getStringRequestParam('url'));
