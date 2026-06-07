@@ -1398,19 +1398,6 @@ let bizonylathelper = function ($) {
                 }
                 afaEllenorzesAtlepes = false;
                 return true;
-            },
-            onSubmit: function () {
-                $('#dialogcenter').html('A mentés sikerült.').dialog({
-                    resizable: false,
-                    height: 140,
-                    modal: true,
-                    buttons: {
-                        'OK': function () {
-                            $(this).dialog('close');
-                            window.close();
-                        }
-                    }
-                });
             }
         };
     }

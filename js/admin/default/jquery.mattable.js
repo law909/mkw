@@ -113,10 +113,9 @@
             '</tbody></table></div>';
         let pagerhidehtml = '<div class="mattable-pager"></div>';
 
-        let scrollPosition;
+        let defaultOrder, defaultOrderdir;
 
         let selectContainer = this,
-            karbContainer = $(setup.karb.container),
             header = $(setup.header),
             table = $(setup.table),
             pager = $(setup.pager.selector),
@@ -193,20 +192,7 @@
                         e.preventDefault();
                         if ($.isArray(setup.filter.fields)) {
                             for (i in setup.filter.fields) {
-                                var elem = $(setup.filter.fields[i])[0];
-                                if (elem) {
-                                    var t = elem.type,
-                                        tag = elem.tagName.toLowerCase();
-                                    if (t === 'text' || t === 'password' || tag === 'textarea') {
-                                        elem.value = '';
-                                    } else if (t === 'checkbox' || t === 'radio') {
-                                        elem.checked = false;
-                                    } else if (t === 'number') {
-                                        elem.value = null;
-                                    } else if (tag === 'select') {
-                                        elem.selectedIndex = 0;
-                                    }
-                                }
+                                clearFilterElement($(setup.filter.fields[i])[0]);
                             }
                         }
                         if ($.isFunction(setup.filter.onClear)) {
@@ -289,25 +275,154 @@
             }
         };
 
-        var reloadTbody = function () {
-            gettbody($('.' + _pagerIds.pageno).val(), $('.' + _pagerIds.elemperpage).val());
+        var reloadTbody = function (_mode) {
+            gettbody($('.' + _pagerIds.pageno).val(), $('.' + _pagerIds.elemperpage).val(), _mode);
+        };
+
+        // a szűrőmezők name attribútumai – ezeket vezérlőelem állítja elő, így az URL-ben mi kezeljük
+        var getFilterFieldNames = function () {
+            var names = [];
+            if ($.isArray(setup.filter.fields)) {
+                for (var i in setup.filter.fields) {
+                    var nm = $(setup.filter.fields[i]).attr('name');
+                    if (nm) {
+                        names.push(nm);
+                    }
+                }
+            }
+            return names;
+        };
+
+        // az URL-ben általunk kezelt kulcsok (szűrőmezők + lapozó/rendezés)
+        var managedUrlKeys = function () {
+            return getFilterFieldNames().concat(['pageno', 'elemperpage', 'order', 'orderdir']);
+        };
+
+        // máshonnan belinkelt, vezérlőelem nélküli paraméterek (pl. ?partnerid=5) – ezeket megőrizzük
+        var getExtraUrlParams = function () {
+            var managed = managedUrlKeys();
+            var extra = {};
+            var urlParams = new URLSearchParams(window.location.search);
+            for (var pair of urlParams) {
+                if (managed.indexOf(pair[0]) === -1) {
+                    extra[pair[0]] = pair[1];
+                }
+            }
+            return extra;
         };
 
         var createFilterObject = function (obj) {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            for (i in setup.filter.fields) {
-                o = $(setup.filter.fields[i]);
+            for (var i in setup.filter.fields) {
+                var o = $(setup.filter.fields[i]);
                 if (o.val()) {
                     obj[o.attr('name')] = o.val();
                 }
             }
-            for (const [key, value] of urlParams) {
-                obj[key] = value;
+            // máshonnan belinkelt, vezérlő nélküli paraméterek megőrzése
+            var extra = getExtraUrlParams();
+            for (var key in extra) {
+                if (!(key in obj)) {
+                    obj[key] = extra[key];
+                }
             }
         };
 
-        var gettbody = function (_pageno, _elemperpage) {
+        // a teljes nézet állapotának kiírása az URL-be (megosztható / könyvjelzőzhető)
+        // mode: 'push' = új előzmény-bejegyzés (felhasználói állapotváltozás, hogy a Vissza gomb
+        //                visszahozza az előző nézetet), 'replace' = csak az aktuális bejegyzés cseréje
+        //                (kezdeti betöltés, Vissza/Előre szinkron, bfcache frissítés).
+        var updateUrl = function (obj, mode) {
+            if (!window.history) {
+                return;
+            }
+            var params = new URLSearchParams();
+            for (var key in obj) {
+                if (!obj.hasOwnProperty(key)) {
+                    continue;
+                }
+                var val = obj[key];
+                if (val === undefined || val === null || val === '') {
+                    continue;
+                }
+                // az alapértelmezett értékeket nem írjuk ki, hogy tiszta maradjon az URL
+                if (key === 'pageno' && val == 1) {
+                    continue;
+                }
+                if (key === 'elemperpage' && val == setup.numberOfRows) {
+                    continue;
+                }
+                if (key === 'order' && defaultOrder !== undefined && val == defaultOrder) {
+                    continue;
+                }
+                if (key === 'orderdir' && defaultOrderdir !== undefined && val == defaultOrderdir) {
+                    continue;
+                }
+                params.set(key, val);
+            }
+            var qs = params.toString();
+            var newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+            var currentUrl = window.location.pathname + window.location.search + window.location.hash;
+            // csak akkor hozunk létre új előzmény-bejegyzést, ha az URL tényleg változott –
+            // így a sima frissítés / ugyanarra a nézetre lapozás nem szemeteli az előzményeket
+            if (mode === 'push' && newUrl !== currentUrl && window.history.pushState) {
+                window.history.pushState(null, '', newUrl);
+            } else if (window.history.replaceState) {
+                window.history.replaceState(null, '', newUrl);
+            }
+        };
+
+        // egyetlen szűrőmező ürítése a típusa szerint
+        var clearFilterElement = function (elem) {
+            if (!elem) {
+                return;
+            }
+            var t = elem.type,
+                tag = elem.tagName.toLowerCase();
+            if (t === 'text' || t === 'password' || tag === 'textarea') {
+                elem.value = '';
+            } else if (t === 'checkbox' || t === 'radio') {
+                elem.checked = false;
+            } else if (t === 'number') {
+                elem.value = null;
+            } else if (tag === 'select') {
+                elem.selectedIndex = 0;
+            } else {
+                elem.value = '';
+            }
+        };
+
+        // URL → vezérlők: a szűrőmezőket, rendezést és lapozást az URL-hez igazítja.
+        // Az URL-ben NEM szereplő szűrőt törli, a rendezést alapértékre állítja – így
+        // a Vissza/Előre gomb (popstate) korrektül vissza tudja állítani a korábbi nézetet.
+        var applyUrlToControls = function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            if ($.isArray(setup.filter.fields)) {
+                for (var i in setup.filter.fields) {
+                    var o = $(setup.filter.fields[i]),
+                        nm = o.attr('name');
+                    if (!nm) {
+                        continue;
+                    }
+                    if (urlParams.has(nm)) {
+                        o.val(urlParams.get(nm));
+                    } else {
+                        clearFilterElement(o[0]);
+                    }
+                }
+            }
+            if (orderselect && orderselect[0]) {
+                orderselect.val(urlParams.has('order') ? urlParams.get('order') : defaultOrder);
+            }
+            if (orderdirselect && orderdirselect[0]) {
+                orderdirselect.val(urlParams.has('orderdir') ? urlParams.get('orderdir') : defaultOrderdir);
+            }
+            return {
+                pageno: urlParams.has('pageno') ? urlParams.get('pageno') : 1,
+                elemperpage: urlParams.has('elemperpage') ? urlParams.get('elemperpage') : setup.numberOfRows
+            };
+        };
+
+        var gettbody = function (_pageno, _elemperpage, _mode) {
             var obj = {
                 pageno: _pageno,
                 elemperpage: _elemperpage
@@ -322,6 +437,9 @@
             if ($.isFunction(setup.filter.onFilter)) {
                 setup.filter.onFilter.call(this, obj);
             }
+            // a felhasználói műveletek alapból új előzmény-bejegyzést kapnak (push),
+            // a kezdeti betöltés / Vissza-Előre szinkron explicit 'replace'-t kér
+            updateUrl(obj, _mode === 'replace' ? 'replace' : 'push');
             $.ajax({
                 url: setup.tablebody.url, type: 'GET',
                 data: obj,
@@ -384,87 +502,16 @@
             }
         };
 
-        var showKarb = function (elem) {
-            var $elem = $(elem),
-                isquick = $elem.attr(_dataattr.quick);
-
-            scrollPosition = $(document).scrollTop();
-            $.blockUI({
-                message: 'Kérem várjon...',
-                css: {
-                    border: 'none',
-                    padding: '15px',
-                    backgroundColor: '#000',
-                    '-webkit-border-radius': '10px',
-                    '-moz-border-radius': '10px',
-                    opacity: .5,
-                    color: '#fff'
-                }
-            });
-            $.ajax({
-                url: setup.karb.viewUrl,
-                data: {
-                    id: $elem.attr(_dataattr.recordid),
-                    oper: $elem.attr(_dataattr.oper),
-                    quick: isquick
-                },
-                success: function (data) {
-                    selectContainer.hide();
-                    karbContainer.append(data);
-
-                    var karbsetup = setup.karb;
-                    karbsetup.name = setup.name;
-                    karbsetup.independent = false;
-                    karbsetup.quick = isquick;
-                    karbsetup.onSubmit = function (data) {
-                        var resp = JSON.parse(data);
-                        switch (resp.oper) {
-                            case 'edit':
-                                if (isNaN(resp.id)) {
-                                    var x = setup.tableRow + resp.id.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/])/g, '\\$1');
-                                } else {
-                                    var x = setup.tableRow + resp.id;
-                                }
-                                $(x).replaceWith(resp.html);
-                                doEditLink($(x));
-                                styleTbody();
-                                break;
-                            case 'addreopen':
-                                $(setup.tablebody.selector).prepend(resp.html);
-                                doEditLink($(setup.tablebody.selector));
-                                styleTbody();
-                                $('.mattable-editlink[data-termekid="' + resp.id + '"]').click();
-                                break;
-                            case 'add':
-                                $(setup.tablebody.selector).prepend(resp.html);
-                                doEditLink($(setup.tablebody.selector));
-                                styleTbody();
-                                break;
-                        }
-                        showSelect();
-                    };
-                    karbsetup.onCancel = function () {
-                        showSelect();
-                    };
-                    $(document).scrollTop(0);
-                    karbContainer.mattkarb(karbsetup);
-                }
-            });
-        };
-
-        var showSelect = function () {
-            karbContainer.empty().hide();
-            selectContainer.show();
-            $(document).scrollTop(scrollPosition);
-            return false;
-        };
+        // Megjegyzés: a karb (szerkesztő) űrlapok korábbi inline, AJAX-os megnyitását
+        // (showKarb / showSelect) szándékosan eltávolítottuk. A szerkesztő/új linkek
+        // mostantól a karb saját URL-jére (newWindowUrl = viewkarb) navigálnak teljes
+        // oldalbetöltéssel, hogy az URL megosztható/könyvjelzőzhető legyen, és a böngésző
+        // Vissza gombjával vissza lehessen lépni a lista nézetbe.
 
         var initialize = function () {
             if ($.meta) {
                 setup = $.extend({}, setup, this.data());
             }
-            karbContainer.hide();
-            karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
 
             theme = selectContainer.attr(_dataattr.theme);
             selectContainer.addClass('ui-widget ui-widget-content ui-corner-all mattable');
@@ -483,10 +530,9 @@
                 e.preventDefault();
                 reloadTbody();
             });
-            $(table).on('click', setup.editLink, function (e) {
-                e.preventDefault();
-                showKarb(this);
-            });
+            // A szerkesztő link href-je a karb saját URL-jére mutat (lásd doEditLink),
+            // így kattintásra a böngésző natívan odanavigál – nincs inline megnyitás,
+            // és a Vissza gomb visszahozza a (szűrt/lapozott) lista nézetet.
             $(table).on('click', setup.delLink, function (e) {
                 e.preventDefault();
                 var termeksor = $(this);
@@ -519,16 +565,10 @@
                     }
                 });
             });
-            $(setup.addLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add')
-                .on('click', function (e) {
-                    e.preventDefault();
-                    showKarb(this);
-                });
-            $(setup.quickAddLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add&quick=1')
-                .on('click', function (e) {
-                    e.preventDefault();
-                    showKarb(this);
-                });
+            // Az új / gyors-új linkek is a karb saját URL-jére navigálnak (teljes oldal),
+            // nem inline nyílnak meg.
+            $(setup.addLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add');
+            $(setup.quickAddLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add&quick=1');
             orderselect.change(function (e) {
                 orderselect.val(this.value);
                 reloadTbody();
@@ -539,7 +579,33 @@
                     reloadTbody();
                 });
             }
-            gettbody(1, setup.numberOfRows);
+            // alapértelmezett rendezés rögzítése, mielőtt az URL felülírná (az URL-ben az alapértelmezést nem írjuk ki)
+            if (orderselect && orderselect[0]) {
+                defaultOrder = orderselect[0].options[orderselect[0].selectedIndex].value;
+            }
+            if (orderdirselect && orderdirselect[0]) {
+                defaultOrderdir = orderdirselect[0].options[orderdirselect[0].selectedIndex].value;
+            }
+            // megosztható / könyvjelzőzhető nézet visszaállítása az URL alapján
+            // (kezdeti betöltés: csak az aktuális előzmény-bejegyzést cseréljük, nem hozunk létre újat)
+            var initState = applyUrlToControls();
+            gettbody(initState.pageno, initState.elemperpage, 'replace');
+
+            // Vissza/Előre gomb: az URL-hez igazítjuk a vezérlőket és újratöltjük a listát,
+            // így a szűrő/lapozás/rendezés lépései a böngésző előzményeiben navigálhatók
+            // (a Vissza gomb az előző listanézetbe visz, nem a lista előtti oldalra).
+            window.addEventListener('popstate', function (event) {
+                var st = applyUrlToControls();
+                gettbody(st.pageno, st.elemperpage, 'replace');
+            });
+
+            // Ha a böngésző a cache-éből (bfcache) hozza vissza az oldalt – tipikusan a karb
+            // mentése utáni "vissza" lépéskor –, frissítsük a listát, hogy a mentett változás látszódjon.
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    reloadTbody('replace');
+                }
+            });
         };
 
         initialize();

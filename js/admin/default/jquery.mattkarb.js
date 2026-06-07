@@ -48,6 +48,26 @@
             cancelbtn = $(setup.cancel),
             titlebar = $(setup.titlebar);
 
+        // Önálló (saját URL-es) karb oldal-e? Ezek a /viewkarb útvonalon töltődnek be,
+        // a listából idenavigálva. Csak ezeken térünk vissza mentés után az előző URL-re –
+        // az inline-fragmentként betöltött karbokon (pl. fa-szerkesztő, munkafolyamat) nem.
+        var isStandaloneKarbPage = function () {
+            return setup.independent && window.location.pathname.indexOf('/viewkarb') !== -1;
+        };
+
+        // Visszatérés az előző URL-re (a lista nézetre) a mentés után.
+        var returnToPreviousUrl = function () {
+            var origin = window.location.origin,
+                ref = document.referrer;
+            if (window.history.length > 1 && ref && ref.indexOf(origin + '/') === 0) {
+                // belső oldalról (a listából) jöttünk – pontosan az előző URL-re lépünk vissza
+                window.history.back();
+            } else {
+                // közvetlen megnyitás (könyvjelző/megosztott link): a /viewkarb levágásával a lista
+                window.location.href = origin + window.location.pathname.replace(/\/viewkarb.*$/, '');
+            }
+        };
+
         var showKarb = function () {
             $(setup.form).ajaxForm({
                 type: 'POST',
@@ -79,6 +99,11 @@
                     if ($.isFunction(setup.onSubmit)) {
                         setup.onSubmit.call(this, data);
                     }
+                    // Önálló (saját URL-es / viewkarb) karb oldalon a mentés után
+                    // visszatérünk az előző URL-re (a lista nézetre).
+                    if (isStandaloneKarbPage()) {
+                        returnToPreviousUrl();
+                    }
                 }
             });
             karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
@@ -98,20 +123,18 @@
                 }
             });
             $(setup.ok).button();
-            if (setup.independent) {
-                cancelbtn.hide();
-            } else {
-                cancelbtn.button();
-                if ($.isFunction(setup.onCancel)) {
-                    cancelbtn.on('click', function (e) {
-                        e.preventDefault();
-                        if ($.isFunction(setup.beforeHide)) {
-                            setup.beforeHide.call(this);
-                        }
-                        setup.onCancel.call(this);
-                    });
+            cancelbtn.on('click', function (e) {
+                e.preventDefault();
+                if ($.isFunction(setup.beforeHide)) {
+                    setup.beforeHide.call(this);
                 }
-            }
+                if ($.isFunction(setup.onCancel)) {
+                    setup.onCancel.call(this);
+                }
+                if (isStandaloneKarbPage()) {
+                    returnToPreviousUrl();
+                }
+            }).button();
             $(setup.tab).tabs();
             titlebar.on('click', function (e) {
                 e.preventDefault();
