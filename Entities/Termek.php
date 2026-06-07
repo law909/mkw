@@ -730,9 +730,9 @@ class Termek
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
-        $x['caption'] = $this->getNev();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
         $x['cikkszam'] = $this->getCikkszam();
-        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
@@ -876,10 +876,10 @@ class Termek
         $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
-        $x['caption'] = $this->getNev();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
         $x['cikkszam'] = $this->getCikkszam();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
-        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
@@ -920,7 +920,7 @@ class Termek
         $x['ujtermek'] = $this->getUjTermek($ujtermekid);
         $x['top10'] = $this->getTop10($top10min);
         $x['id'] = $this->getId();
-        $x['caption'] = $this->getNev();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
         $x['slug'] = $this->getSlug();
         $x['eredetikepurl'] = $this->getKepurl();
         $x['kepurl'] = $this->getKepurlLarge();
@@ -929,8 +929,8 @@ class Termek
         $x['minikepurl'] = $this->getKepurlMini();
         $x['kepurl400'] = $this->getKepurl400();
         $x['kepurl2000'] = $this->getKepurl2000();
-        $x['rovidleiras'] = $this->getRovidleiras();
-        $x['leiras'] = $this->getLeiras();
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
+        $x['leiras'] = $this->getLocalizedFieldValue('leiras');
         $x['cikkszam'] = $this->getCikkszam();
         $x['me'] = $this->getMe();
         $x['hozzaszolas'] = $this->getHozzaszolas();
@@ -1086,9 +1086,9 @@ class Termek
         $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['slug'] = $this->getSlug();
-        $x['caption'] = $this->getNev();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
         $x['cikkszam'] = $this->getCikkszam();
-        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['akcios'] = $this->getAkcios();
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
@@ -1126,8 +1126,8 @@ class Termek
         $x['kepurl2000'] = $this->getKepurl2000();
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['slug'] = $this->getSlug();
-        $x['caption'] = $this->getNev();
-        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['cikkszam'] = $this->getCikkszam();
         $x['me'] = $this->getMe();
         if ($valtozat) {
@@ -1154,9 +1154,9 @@ class Termek
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
-        $x['caption'] = $this->getNev();
+        $x['caption'] = $this->getLocalizedFieldValue('nev');
         $x['cikkszam'] = $this->getCikkszam();
-        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['szallitasiido'] = $this->calcSzallitasiido();
         $x['minszallitasiido'] = intdiv($x['szallitasiido'], 2);
