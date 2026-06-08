@@ -411,6 +411,7 @@ class mainController extends \mkwhelpers\Controller
             } else {
                 $t['valutanemnev'] = 'X';
             }
+            // TODO: ÁFA
             if ($partner && $partner->getSzamlatipus()) {
                 $t['ar'] = $termek->getNettoAr(null, $partner);
                 $t['eredetiar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);

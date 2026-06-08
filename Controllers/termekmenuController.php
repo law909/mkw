@@ -37,43 +37,21 @@ class termekmenuController extends \mkwhelpers\MattableController
             $t = new \Entities\TermekMenu();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['nev_l1'] = $t->getNev_l1();
+        $this->getEntityFieldsArray($t);
         $x['nev_locale'] = $t->getLocalizedFieldValue('nev');
-        $x['sorrend'] = $t->getSorrend();
-        $x['oldalcim'] = $t->getOldalcim();
-        $x['rovidleiras'] = $t->getRovidleiras();
-        $x['leiras'] = $t->getLeiras();
-        $x['leiras2'] = $t->getLeiras2();
-        $x['leiras3'] = $t->getLeiras3();
-        $x['rovidleiras_l1'] = $t->getRovidleiras_l1();
-        $x['leiras_l1'] = $t->getLeiras_l1();
-        $x['leiras2_l1'] = $t->getLeiras2_l1();
-        $x['leiras3_l1'] = $t->getLeiras3_l1();
         $x['rovidleiras_locale'] = $t->getLocalizedFieldValue('rovidleiras');
         $x['leiras_locale'] = $t->getLocalizedFieldValue('leiras');
         $x['leiras2_locale'] = $t->getLocalizedFieldValue('leiras2');
         $x['leiras3_locale'] = $t->getLocalizedFieldValue('leiras3');
-        $x['seodescription'] = $t->getSeodescription();
-        $x['menu1lathato'] = $t->getMenu1lathato();
-        $x['menu2lathato'] = $t->getMenu2lathato();
-        $x['menu3lathato'] = $t->getMenu3lathato();
-        $x['menu4lathato'] = $t->getMenu4lathato();
-        $x['kepurl'] = $t->getKepurl();
+
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
-        $x['kepleiras'] = $t->getKepleiras();
+
         $x['parentid'] = $t->getParentId();
         $x['parentnev'] = $t->getParentNev();
         $x['parentnev_locale'] = $t->getParentNevLocale();
-        $x['inaktiv'] = $t->getInaktiv();
-        $x['idegenkod'] = $t->getIdegenkod();
-        $x['arukeresoid'] = $t->getArukeresoid();
-        $x['lathato'] = $t->getLathato();
         $x['path'] = implode('/', $t->getPath($t));
-        $x['slug'] = $t->getSlug();
         return $x;
     }
 
