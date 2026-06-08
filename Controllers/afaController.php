@@ -20,16 +20,12 @@ class afaController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Afa();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['ertek'] = 0 + $t->getErtek();
-        $x['navcase'] = $t->getNavcase();
-        $x['rlbkod'] = $t->getRLBkod();
+        $x = $this->getEntityFieldsArray($t);
+
         if ($forKarb) {
             $x['navcaselist'] = $this->getRepo()->getNavcaseList($t->getNavcase());
         }
@@ -43,10 +39,7 @@ class afaController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setErtek($this->params->getNumRequestParam('ertek', $obj->getErtek()));
-        $obj->setRLBkod($this->params->getIntRequestParam('rlbkod', $obj->getRLBkod()));
-        $obj->setNavcase($this->params->getStringRequestParam('navcase', $obj->getNavcase()));
+        $this->setEntityFieldsFromRequest($obj);
         return $obj;
     }
 

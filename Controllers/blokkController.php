@@ -20,78 +20,36 @@ class blokkController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $v = [];
         if (!$t) {
             $t = new Blokk();
             $this->getEm()->detach($t);
         }
-        $v['id'] = $t->getId();
-        $v['nev'] = $t->getNev();
-        $v['tipus'] = $t->getTipus();
+        $v = $this->getEntityFieldsArray($t);
         $tipuslist = $this->getRepo()->getTipusList();
         $v['tipusnev'] = $tipuslist[$t->getTipus()];
         $sziglist = $this->getRepo()->getSzovegigazitasList();
         $bmlist = $this->getRepo()->getBlokkmagassagList();
-        $v['cssclass'] = $t->getCssclass();
-        $v['cssstyle'] = $t->getCssstyle();
-        $v['sorrend'] = $t->getSorrend();
-        $v['lathato'] = $t->isLathato();
-        $v['hatterkepurl'] = $t->getHatterkepurl();
         $v['hatterkepurlmedium'] = $t->getHatterkepurlMedium();
         $v['hatterkepurlsmall'] = $t->getHatterkepurlSmall();
         $v['hatterkepurlmini'] = $t->getHatterkepurlMini();
         $v['hatterkepurllarge'] = $t->getHatterkepurlLarge();
         $v['hatterkepurl400'] = $t->getHatterkepurl400();
         $v['hatterkepurl2000'] = $t->getHatterkepurl2000();
-        $v['videourl'] = $t->getVideourl();
-        $v['cim'] = $t->getCim();
-        $v['leiras'] = $t->getLeiras();
-        $v['gombfelirat'] = $t->getGombfelirat();
-        $v['gomburl'] = $t->getGomburl();
-        $v['szovegigazitas'] = $t->getSzovegigazitas();
         $v['szovegigazitasnev'] = $sziglist[$t->getSzovegigazitas()];
-        $v['blokkmagassag'] = $t->getBlokkmagassag();
         $v['blokkmagassagnev'] = $bmlist[$t->getBlokkmagassag()];
-        $v['hatterkepurl2'] = $t->getHatterkepurl2();
         $v['hatterkepurl2medium'] = $t->getHatterkepurl2Medium();
         $v['hatterkepurl2small'] = $t->getHatterkepurl2Small();
         $v['hatterkepurl2mini'] = $t->getHatterkepurl2Mini();
         $v['hatterkepurl2large'] = $t->getHatterkepurl2Large();
         $v['hatterkepurl2400'] = $t->getHatterkepurl2400();
         $v['hatterkepurl22000'] = $t->getHatterkepurl22000();
-        $v['videourl2'] = $t->getVideourl2();
-        $v['cim2'] = $t->getCim2();
-        $v['leiras2'] = $t->getLeiras2();
-        $v['gombfelirat2'] = $t->getGombfelirat2();
-        $v['gomburl2'] = $t->getGomburl2();
-        $v['szovegigazitas2'] = $t->getSzovegigazitas2();
         $v['szovegigazitas2nev'] = $sziglist[$t->getSzovegigazitas2()];
         return $v;
     }
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setTipus($this->params->getIntRequestParam('tipus'));
-        $obj->setCssclass($this->params->getStringRequestParam('cssclass'));
-        $obj->setCssstyle($this->params->getStringRequestParam('cssstyle'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setHatterkepurl($this->params->getStringRequestParam('hatterkepurl'));
-        $obj->setVideourl($this->params->getStringRequestParam('videourl'));
-        $obj->setCim($this->params->getStringRequestParam('cim'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setGombfelirat($this->params->getStringRequestParam('gombfelirat'));
-        $obj->setGomburl($this->params->getStringRequestParam('gomburl'));
-        $obj->setSzovegigazitas($this->params->getIntRequestParam('szovegigazitas'));
-        $obj->setBlokkmagassag($this->params->getIntRequestParam('blokkmagassag'));
-        $obj->setHatterkepurl2($this->params->getStringRequestParam('hatterkepurl2'));
-        $obj->setVideourl2($this->params->getStringRequestParam('videourl2'));
-        $obj->setCim2($this->params->getStringRequestParam('cim2'));
-        $obj->setLeiras2($this->params->getStringRequestParam('leiras2'));
-        $obj->setGombfelirat2($this->params->getStringRequestParam('gombfelirat2'));
-        $obj->setGomburl2($this->params->getStringRequestParam('gomburl2'));
-        $obj->setSzovegigazitas2($this->params->getIntRequestParam('szovegigazitas2'));
+        $this->setEntityFieldsFromRequest($obj);
         return $obj;
     }
 

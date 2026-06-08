@@ -28,28 +28,21 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
         if (!$t) {
             $t = new \Entities\Bankbizonylattetel();
             $this->getEm()->detach($t);
+            $x = $this->getEntityFieldsArray($t);
             $x['id'] = store::createUID();
             $x['oper'] = 'add';
         } else {
+            $x = $this->getEntityFieldsArray($t);
             $x['id'] = $t->getId();
             $x['oper'] = 'edit';
         }
         $x['fejid'] = $t->getBizonylatfejId();
         $x['keltstr'] = $t->getBizonylatfej()?->getKeltStr();
-        $x['irany'] = $t->getIrany();
         $x['datumstr'] = $t->getDatumStr();
-        $x['netto'] = $t->getNetto();
-        $x['afa'] = $t->getAfa();
-        $x['brutto'] = $t->getBrutto();
         $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
-        $x['jogcim'] = $t->getJogcimId();
         $x['jogcimnev'] = $t->getJogcimnev();
         $x['hivatkozottdatumstr'] = $t->getHivatkozottdatumStr();
-        $x['hivatkozottbizonylat'] = $t->getHivatkozottbizonylat();
         $x['valutanem'] = $t->getValutanemId();
-        $x['valutanemnev'] = $t->getValutanemnev();
-        $x['erbizonylatszam'] = $t->getErbizonylatszam();
 
         if ($forKarb) {
             $x['partnerlist'] = $partner->getSelectList($t->getPartnerId());

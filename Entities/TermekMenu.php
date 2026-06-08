@@ -23,10 +23,6 @@ class TermekMenu
     use GetsFieldValue;
 
     private $gtnev;
-    public $m1lchanged = false;
-    public $m2lchanged = false;
-    public $m3lchanged = false;
-    public $m4lchanged = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")

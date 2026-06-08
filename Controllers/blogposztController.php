@@ -2,12 +2,16 @@
 
 namespace Controllers;
 
+use Entities\Termek;
+use Entities\TermekFa;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
-class blogposztController extends \mkwhelpers\MattableController {
+class blogposztController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         $this->setEntityName('Entities\Blogposzt');
         $this->setKarbFormTplName('blogposztkarbform.tpl');
         $this->setKarbTplName('blogposztkarb.tpl');
@@ -16,38 +20,30 @@ class blogposztController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
         if (!$t) {
             $t = new \Entities\Blogposzt();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
+        $x = $this->getEntityFieldsArray($t);
         $x['megjelenesdatumstr'] = $t->getMegjelenesdatumStr();
-        $x['cim'] = $t->getCim();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['kivonat'] = $t->getKivonat();
-        $x['lathato'] = $t->getLathato();
         $x['termekfa1nev'] = $t->getTermekfa1Nev();
         $x['termekfa2nev'] = $t->getTermekfa2Nev();
         $x['termekfa3nev'] = $t->getTermekfa3Nev();
         $x['termekfa1'] = $t->getTermekfa1Id();
         $x['termekfa2'] = $t->getTermekfa2Id();
         $x['termekfa3'] = $t->getTermekfa3Id();
-        $x['slug'] = $t->getSlug();
         $x['kepurl'] = $t->getKepurl();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
-        $x['kepleiras'] = $t->getKepleiras();
-        $x['seodescription'] = $t->getSeodescription();
-        $x['showseodescription'] = $t->getShowSeodescription();
 
         if ($forKarb) {
-            $termekek = array();
+            $termekek = [];
             /** @var \Entities\Termek $termek */
             foreach ($t->getTermekek() as $termek) {
-                $termekek[] = array('id' => $termek->getId(), 'nev' => $termek->getNev());
+                $termekek[] = ['id' => $termek->getId(), 'nev' => $termek->getNev()];
             }
             $x['termekek'] = $termekek;
         }
@@ -56,43 +52,37 @@ class blogposztController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Blogposzt $obj
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
-        $obj->setCim($this->params->getStringRequestParam('cim'));
-        $obj->setKivonat($this->params->getStringRequestParam('kivonat'));
-        $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
-        $obj->setMegjelenesdatum($this->params->getStringRequestParam('megjelenesdatum'));
-        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+    protected function setFields($obj)
+    {
+        $this->setEntityFieldsFromRequest($obj, [
+            'raw' => ['szoveg'],
+        ]);
 
-        $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
+        $farepo = \mkw\store::getEm()->getRepository(TermekFa::class);
         $fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
         if ($fa) {
             $obj->setTermekfa1($fa);
-        }
-        else {
+        } else {
             $obj->setTermekfa1(null);
         }
         $fa = $farepo->find($this->params->getIntRequestParam('termekfa2'));
         if ($fa) {
             $obj->setTermekfa2($fa);
-        }
-        else {
+        } else {
             $obj->setTermekfa2(null);
         }
         $fa = $farepo->find($this->params->getIntRequestParam('termekfa3'));
         if ($fa) {
             $obj->setTermekfa3($fa);
-        }
-        else {
+        } else {
             $obj->setTermekfa3(null);
         }
         $termekids = $this->params->getArrayRequestParam('termekid');
         foreach ($termekids as $termekid) {
-            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
                 $obj->addTermek($termek);
             }
@@ -100,7 +90,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('blogposztlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -118,36 +109,42 @@ class blogposztController extends \mkwhelpers\MattableController {
         if (!empty($fv)) {
             $ff = new \mkwhelpers\FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
-            $filter->addFilter(array('_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod'), 'LIKE', $faszuro);
+            $filter->addFilter(['_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod'], 'LIKE', $faszuro);
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
         $egyedek = $this->getRepo()->getWithJoins(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'blogposztlista', $view));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAllForSelectList(array(), array('megjelenesdatum' => 'DESC', 'cim' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAllForSelectList([], ['megjelenesdatum' => 'DESC', 'cim' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor['id'],
                 'caption' => $sor['cim'],
                 'selected' => ($sor['id'] == $selid)
-            );
+            ];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAllForSelectList(array(), array('megjelenesdatum' => 'DESC', 'cim' => 'ASC'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAllForSelectList([], ['megjelenesdatum' => 'DESC', 'cim' => 'ASC']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor['id'] . '">' . $sor['cim'] . '</option>';
@@ -156,7 +153,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         echo $ret;
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('blogposztlista.tpl');
         $view->setVar('pagetitle', t('Blogposztok'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
@@ -164,22 +162,23 @@ class blogposztController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getTermekEmptyrow() {
+    public function getTermekEmptyrow()
+    {
         $view = $this->createView('blogposzttermekkarb.tpl');
         $tetel = $this->loadVars(null, true);
         $tetel['oper'] = 'add';
         $tetel['id'] = \mkw\store::createUID();
         $view->setVar('termek', $tetel);
         echo $view->getTemplateResult();
-
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         $tid = $this->params->getStringRequestParam('tid');
         $bid = $this->params->getIntRequestParam('bid');
         /** @var \Entities\Blogposzt $poszt */
         $poszt = $this->getRepo()->find($bid);
-        $termek = $this->getRepo('Entities\Termek')->find($tid);
+        $termek = $this->getRepo(Termek::class)->find($tid);
         if ($termek) {
             $poszt->removeTermek($termek);
             $this->getEm()->persist($poszt);
@@ -188,7 +187,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         echo $tid;
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -202,7 +202,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function setflag() {
+    public function setflag()
+    {
         $id = $this->params->getIntRequestParam('id');
         $kibe = $this->params->getBoolRequestParam('kibe');
         $flag = $this->params->getStringRequestParam('flag');
@@ -219,7 +220,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function show() {
+    public function show()
+    {
         $com = $this->params->getStringParam('blogposzt');
         /** @var \Entities\Blogposzt $blogposzt */
         $blogposzt = $this->getRepo()->findOneBySlug($com);
@@ -230,13 +232,13 @@ class blogposztController extends \mkwhelpers\MattableController {
             $view->setVar('seodescription', $blogposzt->getShowSeodescription());
             $view->setVar('blogposzt', $blogposzt->convertToArray());
             $view->printTemplateResult(false);
-        }
-        else {
+        } else {
             \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
-    public function showBlogposztList() {
+    public function showBlogposztList()
+    {
         $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Blogposztdb, 15));
 
         $pageno = $this->params->getIntRequestParam('pageno', 1);
@@ -246,17 +248,16 @@ class blogposztController extends \mkwhelpers\MattableController {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('lathato', '=', true);
 
-        $t = array();
+        $t = [];
         $posztdb = $this->getRepo()->getCount($filter);
         if ($posztdb > 0) {
-
             // termekdarabszam kategoriaval es cimkevel es arral szurve
             // lapozohoz kell
             $this->initPager($posztdb, $elemperpage, $pageno);
             $pager = $this->getPager();
             $elemperpage = $pager->getElemPerPage();
 
-            $blogposztok = $this->getRepo()->getWithJoins($filter, array('megjelenesdatum' => 'DESC', 'id' => 'DESC'), $pager->getOffset(), $elemperpage);
+            $blogposztok = $this->getRepo()->getWithJoins($filter, ['megjelenesdatum' => 'DESC', 'id' => 'DESC'], $pager->getOffset(), $elemperpage);
             /** @var \Entities\Blogposzt $poszt */
             foreach ($blogposztok as $poszt) {
                 $t[] = $poszt->convertToArray();
@@ -269,8 +270,7 @@ class blogposztController extends \mkwhelpers\MattableController {
         $mpt = \mkw\store::getParameter(\mkw\consts::Blogoldalcim);
         if ($mpt) {
             $mpt = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $mpt);
-        }
-        else {
+        } else {
             $mpt = \mkw\store::getParameter(\mkw\consts::Oldalcim);
         }
         $view->setVar('pagetitle', $mpt);
@@ -278,8 +278,7 @@ class blogposztController extends \mkwhelpers\MattableController {
         $msd = \mkw\store::getParameter(\mkw\consts::Blogseodescription);
         if ($msd) {
             $msd = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $msd);
-        }
-        else {
+        } else {
             $msd = \mkw\store::getParameter(\mkw\consts::Seodescription);
         }
         $view->setVar('seodescription', $msd);
@@ -288,7 +287,8 @@ class blogposztController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    public function feed() {
+    public function feed()
+    {
         $feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
         $feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedblogtitle, t('Blog')));
         $feedview->setVar('link', \mkw\store::getRouter()->generate('blogposztfeed', true));
@@ -296,17 +296,17 @@ class blogposztController extends \mkwhelpers\MattableController {
         $feedview->setVar('pubdate', $d->format('D, d M Y H:i:s'));
         $feedview->setVar('lastbuilddate', $d->format('D, d M Y H:i:s'));
         $feedview->setVar('description', \mkw\store::getParameter(\mkw\consts::Feedblogdescription, ''));
-        $entries = array();
+        $entries = [];
         $blogposztok = $this->getRepo()->getFeedBlogposztok();
         /** @var \Entities\Blogposzt $poszt */
         foreach ($blogposztok as $poszt) {
-            $entries[] = array(
+            $entries[] = [
                 'title' => $poszt->getCim(),
-                'link' => \mkw\store::getRouter()->generate('showblogposzt', true, array('blogposzt' => $poszt->getSlug())),
-                'guid' => \mkw\store::getRouter()->generate('showblogposzt', true, array('blogposzt' => $poszt->getSlug())),
+                'link' => \mkw\store::getRouter()->generate('showblogposzt', true, ['blogposzt' => $poszt->getSlug()]),
+                'guid' => \mkw\store::getRouter()->generate('showblogposzt', true, ['blogposzt' => $poszt->getSlug()]),
                 'description' => $poszt->getSzoveg(),
                 'pubdate' => $poszt->getMegjelenesdatum()->format('D, d M Y H:i:s')
-            );
+            ];
         }
         $feedview->setVar('entries', $entries);
         header('Content-type: text/xml');

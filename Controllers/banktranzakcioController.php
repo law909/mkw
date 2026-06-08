@@ -29,24 +29,13 @@ class banktranzakcioController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $letezik = true;
-        $x = [];
         if (!$t) {
-            $letezik = false;
             $t = new \Entities\BankTranzakcio();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['azonosito'] = $t->getAzonosito();
-        $x['kozlemeny1'] = $t->getKozlemeny1();
-        $x['kozlemeny2'] = $t->getKozlemeny2();
-        $x['kozlemeny3'] = $t->getKozlemeny3();
+        $x = $this->getEntityFieldsArray($t);
         $x['konyvelesdatumstr'] = $t->getKonyvelesdatumStr();
         $x['erteknapstr'] = $t->getErteknapStr();
-        $x['osszeg'] = $t->getOsszeg();
-        $x['bizonylatszamok'] = $t->getBizonylatszamok();
-        $x['bankbizonylatkesz'] = $t->isBankbizonylatkesz();
-        $x['inaktiv'] = $t->isInaktiv();
         return $x;
     }
 

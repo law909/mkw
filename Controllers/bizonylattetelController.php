@@ -30,27 +30,20 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $vtsz = new vtszController($this->params);
         $afa = new afaController($this->params);
         $me = new meController($this->params);
-        $x = [];
         if (!$t) {
             $t = new \Entities\Bizonylattetel();
             $this->getEm()->detach($t);
+            $x = $this->getEntityFieldsArray($t);
             $x['id'] = \mkw\store::createUID();
             $x['oper'] = 'add';
         } else {
+            $x = $this->getEntityFieldsArray($t);
             $x['id'] = $t->getId();
             $x['oper'] = 'edit';
         }
         $x['termek'] = $t->getTermekId();
         $x['termekvaltozat'] = $t->getTermekvaltozatId();
-        $x['termeknev'] = $t->getTermeknev();
-        $x['termeknev_l1'] = $t->getTermeknev_l1();
         $x['termeknev_locale'] = $t->getLocalizedFieldValue('termeknev');
-        $x['cikkszam'] = $t->getCikkszam();
-        $x['mozgat'] = $t->getMozgat();
-        $x['me'] = $t->getME();
-        $x['megjegyzes'] = $t->getMegjegyzes();
-        $x['megjegyzes2'] = $t->getMegjegyzes2();
-        $x['termekegyediazonosito'] = $t->getTermekegyediazonosito();
         $x['vasarlasdatumstr'] = $t->getVasarlasdatumStr();
         if ($oper === 'storno') {
             $x['netto'] = $t->getNetto() * -1;
@@ -60,31 +53,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $x['afahuf'] = $t->getAfaertekhuf() * -1;
             $x['bruttohuf'] = $t->getBruttohuf() * -1;
             $x['mennyiseg'] = $t->getMennyiseg() * -1;
-        } else {
-            $x['mennyiseg'] = $t->getMennyiseg();
-            $x['netto'] = $t->getNetto();
-            $x['afa'] = $t->getAfaertek();
-            $x['brutto'] = $t->getBrutto();
-            $x['nettohuf'] = $t->getNettohuf();
-            $x['afahuf'] = $t->getAfaertekhuf();
-            $x['bruttohuf'] = $t->getBruttohuf();
         }
-        $x['nettoegysar'] = $t->getNettoegysar();
-        $x['bruttoegysar'] = $t->getBruttoegysar();
-        $x['nettoegysarhuf'] = $t->getNettoegysarhuf();
-        $x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
-
-        $x['enettoegysar'] = $t->getEnettoegysar();
-        $x['ebruttoegysar'] = $t->getEbruttoegysar();
-        $x['enettoegysarhuf'] = $t->getEnettoegysarhuf();
-        $x['ebruttoegysarhuf'] = $t->getEbruttoegysarhuf();
-
-        $x['kedvezmeny'] = $t->getKedvezmeny();
 
         $x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = \mkw\store::getConfigValue('mainurl');
-        $x['afanev'] = $t->getAfanev();
-        $x['elolegtipus'] = $t->getElolegtipus();
 
         $term = $t->getTermek();
         $x['kellegyediazonosito'] = $term ? (bool)$term->getKellegyediazonosito() : false;

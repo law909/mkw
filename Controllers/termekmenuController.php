@@ -64,32 +64,10 @@ class termekmenuController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
-        $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-        $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
-        $obj->setLeiras3($this->params->getOriginalStringRequestParam('leiras3'));
-        $obj->setRovidleiras_l1($this->params->getStringRequestParam('rovidleiras_l1'));
-        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
-        $obj->setLeiras2_l1($this->params->getOriginalStringRequestParam('leiras2_l1'));
-        $obj->setLeiras3_l1($this->params->getOriginalStringRequestParam('leiras3_l1'));
-        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-        $obj->m1lchanged = $obj->getMenu1lathato() !== $this->params->getBoolRequestParam('menu1lathato');
-        $obj->m2lchanged = $obj->getMenu2lathato() !== $this->params->getBoolRequestParam('menu2lathato');
-        $obj->m3lchanged = $obj->getMenu3lathato() !== $this->params->getBoolRequestParam('menu3lathato');
-        $obj->m4lchanged = $obj->getMenu4lathato() !== $this->params->getBoolRequestParam('menu4lathato');
-        $obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
-        $obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
-        $obj->setMenu3lathato($this->params->getBoolRequestParam('menu3lathato'));
-        $obj->setMenu4lathato($this->params->getBoolRequestParam('menu4lathato'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
+        $this->setEntityFieldsFromRequest($obj, [
+            'raw' => ['leiras', 'leiras2', 'leiras3', 'leiras_l1', 'leiras2_l1', 'leiras3_l1'],
+        ]);
+
         $parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
         if ($parent) {
             $obj->setParent($parent);

@@ -41,51 +41,21 @@ class termekfaController extends \mkwhelpers\MattableController
             $t = new \Entities\TermekFa();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['nev_l1'] = $t->getNev_l1();
-        $x['sorrend'] = $t->getSorrend();
-        $x['oldalcim'] = $t->getOldalcim();
-        $x['rovidleiras'] = $t->getRovidleiras();
-        $x['leiras'] = $t->getLeiras();
-        $x['leiras2'] = $t->getLeiras2();
-        $x['leiras3'] = $t->getLeiras3();
-        $x['rovidleiras_l1'] = $t->getRovidleiras_l1();
-        $x['leiras_l1'] = $t->getLeiras_l1();
-        $x['leiras2_l1'] = $t->getLeiras2_l1();
-        $x['leiras3_l1'] = $t->getLeiras3_l1();
-        $x['seodescription'] = $t->getSeodescription();
-        $x['menu1lathato'] = $t->getMenu1lathato();
-        $x['menu2lathato'] = $t->getMenu2lathato();
-        $x['menu3lathato'] = $t->getMenu3lathato();
-        $x['menu4lathato'] = $t->getMenu4lathato();
-        $x['kepurl'] = $t->getKepurl();
+        $x = $this->getEntityFieldsArray($t);
+        $x['nev_locale'] = $t->getLocalizedFieldValue('nev');
+        $x['rovidleiras_locale'] = $t->getLocalizedFieldValue('rovidleiras');
+        $x['leiras_locale'] = $t->getLocalizedFieldValue('leiras');
+        $x['leiras2_locale'] = $t->getLocalizedFieldValue('leiras2');
+        $x['leiras3_locale'] = $t->getLocalizedFieldValue('leiras3');
+
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
-        $x['kepleiras'] = $t->getKepleiras();
+
         $x['parentid'] = $t->getParentId();
         $x['parentnev'] = $t->getParentNev();
-        $x['inaktiv'] = $t->getInaktiv();
-        $x['idegenkod'] = $t->getIdegenkod();
-        $x['arukeresoid'] = $t->getArukeresoid();
-        $x['lathato'] = $t->getLathato();
-        $x['lathato1'] = $t->getLathato();
-        $x['lathato2'] = $t->getLathato2();
-        $x['lathato3'] = $t->getLathato3();
-        $x['lathato4'] = $t->getLathato4();
-        $x['lathato5'] = $t->getLathato5();
-        $x['lathato6'] = $t->getLathato6();
-        $x['lathato7'] = $t->getLathato7();
-        $x['lathato8'] = $t->getLathato8();
-        $x['lathato9'] = $t->getLathato9();
-        $x['lathato10'] = $t->getLathato10();
-        $x['lathato11'] = $t->getLathato11();
-        $x['lathato12'] = $t->getLathato12();
-        $x['lathato13'] = $t->getLathato13();
-        $x['lathato14'] = $t->getLathato14();
-        $x['lathato15'] = $t->getLathato15();
-        $x['sketchfabmodelid'] = $t->getSketchfabmodelid();
+        $x['parentnev_locale'] = $t->getParentNevLocale();
+        $x['path'] = implode('/', $t->getPath($t));
         return $x;
     }
 
@@ -96,47 +66,10 @@ class termekfaController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
-        $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-        $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
-        $obj->setLeiras3($this->params->getOriginalStringRequestParam('leiras3'));
-        $obj->setRovidleiras_l1($this->params->getStringRequestParam('rovidleiras_l1'));
-        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
-        $obj->setLeiras2_l1($this->params->getOriginalStringRequestParam('leiras2_l1'));
-        $obj->setLeiras3_l1($this->params->getOriginalStringRequestParam('leiras3_l1'));
-        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-        $obj->m1lchanged = $obj->getMenu1lathato() !== $this->params->getBoolRequestParam('menu1lathato');
-        $obj->m2lchanged = $obj->getMenu2lathato() !== $this->params->getBoolRequestParam('menu2lathato');
-        $obj->m3lchanged = $obj->getMenu3lathato() !== $this->params->getBoolRequestParam('menu3lathato');
-        $obj->m4lchanged = $obj->getMenu4lathato() !== $this->params->getBoolRequestParam('menu4lathato');
-        $obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
-        $obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
-        $obj->setMenu3lathato($this->params->getBoolRequestParam('menu3lathato'));
-        $obj->setMenu4lathato($this->params->getBoolRequestParam('menu4lathato'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setArukeresoid($this->params->getStringRequestParam('arukeresoid'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
-        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
-        $obj->setLathato4($this->params->getBoolRequestParam('lathato4'));
-        $obj->setLathato5($this->params->getBoolRequestParam('lathato5'));
-        $obj->setLathato6($this->params->getBoolRequestParam('lathato6'));
-        $obj->setLathato7($this->params->getBoolRequestParam('lathato7'));
-        $obj->setLathato8($this->params->getBoolRequestParam('lathato8'));
-        $obj->setLathato9($this->params->getBoolRequestParam('lathato9'));
-        $obj->setLathato10($this->params->getBoolRequestParam('lathato10'));
-        $obj->setLathato11($this->params->getBoolRequestParam('lathato11'));
-        $obj->setLathato12($this->params->getBoolRequestParam('lathato12'));
-        $obj->setLathato13($this->params->getBoolRequestParam('lathato13'));
-        $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
-        $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
-        $obj->setSketchfabmodelid($this->params->getStringRequestParam('sketchfabmodelid'));
+        $this->setEntityFieldsFromRequest($obj, [
+            'raw' => ['leiras', 'leiras2', 'leiras3', 'leiras_l1', 'leiras2_l1', 'leiras3_l1'],
+        ]);
+
         $parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
         if ($parent) {
             $obj->setParent($parent);

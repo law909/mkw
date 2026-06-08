@@ -29,30 +29,19 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
             $t = new \Entities\Bizonylatstatusz();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['sorrend'] = $t->getSorrend();
-        $x['csoport'] = $t->getCsoport();
-        $x['foglal'] = $t->getFoglal();
-        $x['mozgat'] = $t->getMozgat();
+        $x = $this->getEntityFieldsArray($t);
         $x['emailtemplatenev'] = $t->getEmailtemplateNev();
         $x['fizmod'] = $t->getFizmodId();
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
-        $x['nemertekelheto'] = $t->getNemertekelheto();
         return $x;
     }
 
     /** @param \Entities\Bizonylatstatusz $obj */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setCsoport($this->params->getStringRequestParam('csoport'));
-        $obj->setFoglal($this->params->getBoolRequestParam('foglal'));
-        $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
-        $obj->setNemertekelheto($this->params->getBoolRequestParam('nemertekelheto'));
+        $this->setEntityFieldsFromRequest($obj);
         $ck = store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);

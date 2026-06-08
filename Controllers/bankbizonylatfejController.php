@@ -26,34 +26,17 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Bankbizonylatfej();
+
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['irany'] = $t->getIrany();
+        $x = $this->getEntityFieldsArray($t);
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
-        $x['rontott'] = $t->getRontott();
-        $x['erbizonylatszam'] = $t->getErbizonylatszam();
-        $x['megjegyzes'] = $t->getMegjegyzes();
         $x['keltstr'] = $t->getKeltStr();
-        $x['netto'] = $t->getNetto();
-        $x['afa'] = $t->getAfa();
-        $x['brutto'] = $t->getBrutto();
-        $x['valutanemnev'] = $t->getValutanemnev();
-        $x['bankszamla'] = $t->getBankszamla();
         $x['bankszamlaszam'] = $t->getTulajbankszamlaszam();
         $x['swift'] = $t->getTulajswift();
         $x['iban'] = $t->getTulajiban();
-        $x['partnernev'] = $t->getPartnernev();
-        $x['partnerkeresztnev'] = $t->getPartnerkeresztnev();
-        $x['partnervezeteknev'] = $t->getPartnervezeteknev();
-        $x['partneradoszam'] = $t->getPartneradoszam();
-        $x['partnereuadoszam'] = $t->getPartnereuadoszam();
-        $x['partnerirszam'] = $t->getPartnerirszam();
-        $x['partnervaros'] = $t->getPartnervaros();
-        $x['partnerutca'] = $t->getPartnerutca();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
         $x['lastmodstr'] = $t->getLastmodStr();

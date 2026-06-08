@@ -203,6 +203,83 @@ class MattableController extends Controller
         return $result;
     }
 
+    /**
+     * A request paraméterek automatikus visszaírása az entity skalár mezőire a
+     * Doctrine metaadat (mezőnév + típus) alapján — a getEntityFieldsArray() párja.
+     * Új skalár mező felvételekor nem kell a controller setFields()-ét bővíteni:
+     * ha a form ugyanazon a néven beküldi, magától beíródik.
+     *
+     * Csak a ténylegesen beküldött (existsRequestParam) mezőket írja, így a formon
+     * nem szereplő mezőket nem nullázza ki. A típus dönti el a getter-t:
+     *   string|text              -> getStringRequestParam (raw esetén getOriginalStringRequestParam)
+     *   integer|smallint|bigint  -> getIntRequestParam
+     *   decimal|float            -> getFloatRequestParam
+     *
+     * A boolean mezőket SZÁNDÉKOSAN nem kezeli: a bekapcsolatlan checkbox nem kerül
+     * be a POST-ba, így a "csak a beküldöttet írd" elv kinullázás helyett a régi
+     * értéket őrizné meg. A boolean mezőket (és az asszociációkat, dátumokat) a
+     * controllernek kézzel kell beállítania. Alapból kihagyott rendszermezők:
+     * az azonosító(k), valamint id, slug, created, updated.
+     *
+     * @param object $entity
+     * @param array $options {
+     *     'raw'  => array  HTML mezők, sanitizálás nélkül olvasva
+     *     'skip' => array  további kihagyandó mezőnevek
+     * }
+     *
+     * @return object a (módosított) entity
+     */
+    protected function setEntityFieldsFromRequest($entity, array $options = [])
+    {
+        if (!$entity || !is_object($entity)) {
+            return $entity;
+        }
+        $raw = array_flip($options['raw'] ?? []);
+        $skip = array_flip(array_merge(['id', 'slug', 'created', 'updated'], $options['skip'] ?? []));
+        $meta = $this->getEm()->getClassMetadata(get_class($entity));
+        foreach ($meta->getFieldNames() as $fieldName) {
+            if (isset($skip[$fieldName]) || $meta->isIdentifier($fieldName)) {
+                continue;
+            }
+            if (!$this->params->existsRequestParam($fieldName)) {
+                continue;
+            }
+            $setter = 'set' . ucfirst($fieldName);
+            if (!method_exists($entity, $setter)) {
+                continue;
+            }
+            switch ($meta->getTypeOfField($fieldName)) {
+                case 'string':
+                case 'text':
+                    $value = isset($raw[$fieldName])
+                        ? $this->params->getOriginalStringRequestParam($fieldName)
+                        : $this->params->getStringRequestParam($fieldName);
+                    break;
+                case 'integer':
+                case 'smallint':
+                case 'bigint':
+                    $value = $this->params->getIntRequestParam($fieldName);
+                    break;
+                case 'decimal':
+                case 'float':
+                    $value = $this->params->getFloatRequestParam($fieldName);
+                    break;
+                case 'boolean':
+                    $value = $this->params->getBoolRequestParam($fieldName);
+                    break;
+                case 'datetime':
+                case 'date':
+                    $value = $this->params->getStringRequestParam($fieldName);
+                    break;
+                default:
+                    // json, stb. — nem automatikus
+                    continue 2;
+            }
+            $entity->$setter($value);
+        }
+        return $entity;
+    }
+
     protected function loadDataToView($data, $datavarname = '', $view = null)
     {
         $vl = [];

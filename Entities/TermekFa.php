@@ -23,10 +23,6 @@ class TermekFa
     use GetsFieldValue;
 
     private $gtnev;
-    public $m1lchanged = false;
-    public $m2lchanged = false;
-    public $m3lchanged = false;
-    public $m4lchanged = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -1066,6 +1062,17 @@ class TermekFa
     public function setSketchfabmodelid($sketchfabmodelid): void
     {
         $this->sketchfabmodelid = $sketchfabmodelid;
+    }
+
+    public function getPath($parent)
+    {
+        $navi = [$parent->getNev()];
+        $szulo = $parent->getParent();
+        while ($szulo) {
+            $navi[] = $szulo->getNev();
+            $szulo = $szulo->getParent();
+        }
+        return array_reverse($navi);
     }
 
 }
