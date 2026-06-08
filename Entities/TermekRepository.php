@@ -821,12 +821,6 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
-            if ($karkod) {
-                $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace
-            }
-        }
 
         $q = $this->_em->createQuery(
             'SELECT _xx.megvasarlasdb'

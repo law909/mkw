@@ -1616,6 +1616,18 @@ class store
         return $s * $mire * $sg;
     }
 
+    /**
+     * Felfelé kerekítés a megadott lépésközre.
+     */
+    public static function felKerekit($ertek, $step)
+    {
+        if (($ertek % $step) != 0) {
+            return (floor($ertek / $step) + 1) * $step;
+        }
+        return $ertek;
+    }
+
+
     public static function getPartnerValutanem($partner)
     {
         if ($partner) {

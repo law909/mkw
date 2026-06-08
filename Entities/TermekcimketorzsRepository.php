@@ -5,26 +5,31 @@ namespace Entities;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
 
-class TermekcimketorzsRepository extends \mkwhelpers\Repository {
+class TermekcimketorzsRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Termekcimketorzs');
-        $this->setOrders(array(
-            '1' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC')),
-            '2' => array('caption' => 'csoport szerint növekvő', 'order' => array('ck.nev' => 'ASC', '_xx.nev' => 'ASC'))
-        ));
-        $this->setBatches(array(
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'csoport szerint növekvő', 'order' => ['ck.nev' => 'ASC', '_xx.nev' => 'ASC']]
+        ]);
+        $this->setBatches([
             '1' => 'áthelyezés másik címkecsoportba'
-        ));
+        ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,ck'
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,ck'
             . ' FROM Entities\Termekcimketorzs _xx'
             . ' JOIN _xx.kategoria ck '
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -35,16 +40,20 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Termekcimketorzs _xx'
             . ' JOIN _xx.kategoria ck '
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
-    public function getAllNative() {
+    public function getAllNative()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('cimketorzs_id', 'cimketorzs_id');
@@ -53,52 +62,61 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getTermekIdsWithCimke($cimkekodok) {
+    public function getTermekIdsWithCimke($cimkekodok)
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('id', null, $cimkekodok);
 
-        $q = $this->_em->createQuery('SELECT t.id'
+        $q = $this->_em->createQuery(
+            'SELECT t.id'
             . ' FROM Entities\Termekcimketorzs _xx'
             . ' JOIN _xx.termekek t '
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getScalarResult();
     }
 
-    public function getTermekIdsWithCimkeAnd($cimkekodok) {
+    public function getTermekIdsWithCimkeAnd($cimkekodok)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
-        $r = array();
+        $r = [];
         foreach ($cimkekodok as $cimkefej) {
             $cimkestr = implode(',', $cimkefej);
-            $q = $this->_em->createNativeQuery('SELECT tc.termek_id FROM termek_cimkek tc '
+            $q = $this->_em->createNativeQuery(
+                'SELECT tc.termek_id FROM termek_cimkek tc '
                 . 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
-                . 'WHERE (tc.cimketorzs_id IN (' . $cimkestr . ')) AND (t.inaktiv=0) AND (t.lathato=1)', $rsm);
+                . 'WHERE (tc.cimketorzs_id IN (' . $cimkestr . ')) AND (t.inaktiv=0) AND (' . \mkw\store::getWebshopFieldName('t.lathato') . '=1)',
+                $rsm
+            );
             $res = $q->getScalarResult();
             foreach ($res as $sor) {
                 if (array_key_exists($sor['termek_id'], $r) && $r[$sor['termek_id']] > 0) {
                     $r[$sor['termek_id']]++;
-                }
-                else {
+                } else {
                     $r[$sor['termek_id']] = 1;
                 }
             }
         }
         $kelldb = count($cimkekodok);
-        $ret = array();
+        $ret = [];
         foreach ($r as $tid => $db) {
             if ($db == $kelldb) {
-                $ret[] = array('termek_id' => $tid);
+                $ret[] = ['termek_id' => $tid];
             }
         }
         unset($r, $res);
         return $ret;
     }
 
-    public function getByNevAndKategoria($nev, $kat) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getByNevAndKategoria($nev, $kat)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Termekcimketorzs _xx'
-            . ' WHERE _xx.nev=?1 AND _xx.kategoria=?2');
+            . ' WHERE _xx.nev=?1 AND _xx.kategoria=?2'
+        );
         $q->setParameter(1, $nev);
         $q->setParameter(2, $kat);
         $t = $q->getResult();
@@ -108,16 +126,18 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function getKiemelt() {
+    public function getKiemelt()
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('kiemelt', '=', true);
-        return $this->getWithJoins($filter, array('sorrend' => 'ASC'));
+        return $this->getWithJoins($filter, ['sorrend' => 'ASC']);
     }
 
-    public function getMarkak() {
+    public function getMarkak()
+    {
         $filter = new FilterDescriptor();
         $filter->addFilter('kategoria', '=', \mkw\store::getParameter(\mkw\consts::MarkaCs, 0));
-        return $this->getWithJoins($filter, array('sorrend' => 'ASC'));
+        return $this->getWithJoins($filter, ['sorrend' => 'ASC']);
     }
 
 }

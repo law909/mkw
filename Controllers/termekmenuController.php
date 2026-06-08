@@ -10,9 +10,11 @@ use Entities\TermekMenu;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use Traits\PublicTermekLista;
 
 class termekmenuController extends \mkwhelpers\MattableController
 {
+    use PublicTermekLista;
 
     private $fatomb;
 
@@ -37,7 +39,7 @@ class termekmenuController extends \mkwhelpers\MattableController
             $t = new \Entities\TermekMenu();
             $this->getEm()->detach($t);
         }
-        $this->getEntityFieldsArray($t);
+        $x = $this->getEntityFieldsArray($t);
         $x['nev_locale'] = $t->getLocalizedFieldValue('nev');
         $x['rovidleiras_locale'] = $t->getLocalizedFieldValue('rovidleiras');
         $x['leiras_locale'] = $t->getLocalizedFieldValue('leiras');
@@ -275,327 +277,182 @@ class termekmenuController extends \mkwhelpers\MattableController
 
     public function gettermeklistaforparent($parent, $caller = null)
     {
-        switch (true) {
-            case \mkw\store::isMugenrace2026():
-                $kategoriafilter = new FilterDescriptor();
-                $nativkategoriafilter = new FilterDescriptor();
-                $arfilter = new FilterDescriptor();
-                $termekidfilter = new FilterDescriptor();
-                $akciosfilter = new FilterDescriptor();
-                $ret = [];
+        return match (true) {
+            \mkw\store::isMugenrace2026() => $this->termeklistaMugenrace2026($parent, $caller),
+            \mkw\store::isSuperzoneB2B() => $this->termeklistaSuperzoneB2B($parent),
+            default => throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme()),
+        };
+    }
 
-                $tc = new termekController($this->params);
-                /** @var \Entities\TermekRepository $termekrepo */
-                $termekrepo = $tc->getRepo();
-                $tck = new termekcimkekatController($this->params);
+    /**
+     * Mugenrace2026 terméklista a kategória / keresés / szűrő / márka nézetekhez.
+     */
+    private function termeklistaMugenrace2026(\Entities\TermekMenu|null $parent, string|null $caller): array
+    {
+        $ret = [];
+        $listVariations = true;
 
-                $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
-                /**
-                 * 'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
-                 * 'pageno'=>$this->params->getIntRequestParam('pageno',1),
-                 * 'order'=>$this->params->getStringRequestParam('order','ardesc'),
-                 * 'filter'=>$this->params->getStringRequestParam('filter',''),
-                 * 'klikkeltcimkekatid'=>$this->params->getIntRequestParam('cimkekatid'),
-                 * 'arfilter'=>$this->params->getStringRequestParam('arfilter',''),
-                 * 'keresett'=>$this->params->getStringRequestParam('keresett',''),
-                 * 'vt'=>$this->params->getIntRequestParam('vt',1)
-                 */
-                $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+        /** @var \Entities\TermekRepository $termekrepo */
+        $termekrepo = $this->getRepo(Termek::class);
+        $tc = new TermekController($this->params);
+        $tck = new termekcimkekatController($this->params);
 
-                $pageno = $this->params->getIntRequestParam('pageno', 1);
-                $ord = $this->params->getStringRequestParam('order');
-                if (!$ord) {
-                    $ord = 'featuredasc';
-                }
-                $szurostr = $this->params->getStringRequestParam('filter');
+        $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
 
-                if ($caller === 'marka') {
-                    $marka = $this->getRepo(Termekcimketorzs::class)->findOneBySlug($this->params->getStringParam('slug'));
-                    if ($marka) {
-                        $szuroarr = [$szurostr, $marka->getTermekFilter()];
-                        $szurostr = implode(',', $szuroarr);
-                    }
-                }
+        // --- request paraméterek ---
+        $pElemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+        $pPageno = $this->params->getIntRequestParam('pageno', 1);
+        $pOrd = $this->params->getStringRequestParam('order') ?: 'featuredasc';
+        $pCimkeszurostr = $this->params->getStringRequestParam('filter');
+        $pKeresoszo = $this->params->getStringRequestParam('keresett');
+        $pCsakakcios = $this->params->getBoolRequestParam('csakakcios', false);
+        [$minarfilter, $maxarfilter] = $this->parseArfilter($this->params->getStringRequestParam('arfilter'));
 
-                if ($this->params->getIntRequestParam('cimkekatid')) {
-                    $klikkeltcimkekatid = $this->params->getIntRequestParam('cimkekatid', false);
-                }
-                $keresoszo = $this->params->getStringRequestParam('keresett');
-                $arfiltertomb = explode(';', $this->params->getStringRequestParam('arfilter'));
-                if (count($arfiltertomb) > 0) {
-                    $minarfilter = (float)$arfiltertomb[0];
-                } else {
-                    $minarfilter = 0;
-                }
-                if (count($arfiltertomb) > 1) {
-                    $maxarfilter = (float)$arfiltertomb[1];
-                } else {
-                    $maxarfilter = 0;
-                }
-
-                if ($minarfilter == $maxarfilter) {
-                    $minarfilter = 0;
-                    $maxarfilter = 0;
-                }
-
-                if ($parent) {
-                    $kategoriafilter->addFilter('_xx.termekmenu1', '=', $parent->getId());
-                    $nativkategoriafilter->addFilter('_xx.termekmenu1_id', '=', $parent->getId());
-                }
-
-                $keresofilter = new FilterDescriptor();
-                if ($keresoszo) {
-                    $keresofilter->addFilter(['_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'], 'LIKE', '%' . $keresoszo . '%');
-                }
-
-                if ($this->params->getBoolRequestParam('csakakcios', false)) {
-                    $akciosfilter->addSql($termekrepo->getAkciosFilterSQL());
-                }
-                $szurok = explode(',', $szurostr);
-                $szurotomb = [];
-                foreach ($szurok as $egyszuro) {
-                    $egyreszei = explode('_', $egyszuro);
-                    if (count($egyreszei) >= 3) {
-                        $szurotomb[$egyreszei[1]][] = $egyreszei[2] * 1;
-                    }
-                }
-                $termekidfiltered = [];
-                if (count($szurotomb) > 0) {
-                    $res = $this->getRepo(Termekcimketorzs::class)->getTermekIdsWithCimkeAnd($szurotomb);
-                    foreach ($res as $sor) {
-                        $termekidfiltered[] = $sor['termek_id'];
-                    }
-                    if (count($termekidfiltered) > 0) {
-                        $termekidfilter->addFilter('id', null, $termekidfiltered);
-                    } else {
-                        $termekidfilter->addFilter('id', '=', false);
-                    }
-                }
-
-                // termek max ar kategoriaval es cimkevel szurve
-                $maxar = $termekrepo->getTermekListaMaxAr($keresofilter->merge($kategoriafilter)->merge($termekidfilter));
-
-                if ($maxarfilter == 0 || \mkw\store::getMainSession()->autoepp) {
-                    $maxarfilter = $maxar;
-                }
-
-                $arfilterstring = '(_xx.brutto>=' . $minarfilter . ')';
-                if ($maxarfilter > 0) {
-                    $arfilterstring = $arfilterstring . ' AND (_xx.brutto<=' . $maxarfilter . ')';
-                }
-                $arfilterstring = '((' . $arfilterstring . ') OR (_xx.brutto IS NULL))';
-                $arfilter->addSql($arfilterstring);
-
-                $listVariations = true;
-
-                $termekdb = $termekrepo->getTermekListaCount(
-                    $keresofilter->merge($kategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
-                    $listVariations
-                );
-                if ($termekdb > 0) {
-                    // termekdarabszam kategoriaval es cimkevel es arral szurve
-                    // lapozohoz kell
-                    $tc->initPager(
-                        $termekdb,
-                        $elemperpage,
-                        $pageno
-                    );
-                    $pager = $tc->getPager();
-                    $elemperpage = $pager->getElemPerPage();
-
-                    switch ($ord) {
-                        case 'featuredasc':
-                            $order = [];
-                            break;
-                        case 'nevasc':
-                            $order = ['_xx.nev' => 'ASC'];
-                            break;
-                        case 'nevdesc':
-                            $order = ['_xx.nev' => 'DESC'];
-                            break;
-                        case 'arasc':
-                            $order = ['_xx.brutto' => 'ASC'];
-                            break;
-                        case 'ardesc':
-                            $order = ['_xx.brutto' => 'DESC'];
-                            break;
-                        case 'idasc':
-                            $order = ['_xx.id' => 'ASC'];
-                            break;
-                        case 'iddesc':
-                            $order = ['_xx.id' => 'DESC'];
-                            break;
-                        default:
-                            $order = [];
-                            break;
-                    }
-
-                    $ujtermekminid = $termekrepo->getUjTermekId();
-                    $top10min = $termekrepo->getTop10Mennyiseg();
-
-                    // kiemelt termekek, kategoriaszures es kereses
-                    $t = [];
-                    $kiemelt = [];
-                    $kiemeltdb = 0;
-                    if (($kiemelttermekdb > 0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro') && ($caller !== 'marka')) {
-                        $kiemelttermekek = $termekrepo->getKiemeltTermekek($keresofilter->merge($kategoriafilter), $kiemelttermekdb);
-                        $kt = [];
-                        foreach ($kiemelttermekek as $termek) {
-                            $term = $termekrepo->find($termek['id']);
-                            if ($termek['valtozatid']) {
-                                $valt = $this->getEm()->getRepository(TermekValtozat::class)->find($termek['valtozatid']);
-                            } else {
-                                $valt = null;
-                            }
-                            $tete = $term->toTermekLista($valt, $ujtermekminid, $top10min);
-                            $tete['kiemelt'] = true;
-                            $kiemelt[] = $tete;
-                            $kiemeltdb++;
-                        }
-                    }
-                    $ret['kiemelttermekek'] = $kiemelt;
-                    // termekek kategoriaval es cimkevel es arral szurve, lapozva
-                    // ez a konkret termeklista
-                    $termekek = $termekrepo->getTermekLista(
-                        $keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
-                        $order,
-                        $pager->getOffset(),
-                        $elemperpage,
-                        $listVariations
-                    );
-                    foreach ($termekek as $termek) {
-                        /** @var \Entities\Termek $term */
-                        $_termekidfilter = new FilterDescriptor();
-                        $_termekidfilter->addFilter('id', '=', $termek['id']);
-                        $term = $termekrepo->getWithJoins($_termekidfilter);
-                        if (is_array($term)) {
-                            $term = $term[0];
-                        }
-                        // $term = $termekrepo->find($termek['id']);
-                        $szin = null;
-                        $valt = null;
-                        if ($termek['valtozatid']) {
-                            /** @var \Entities\TermekValtozat $valt */
-                            $valt = $this->getEm()->getRepository(TermekValtozat::class)->find($termek['valtozatid']);
-                        } elseif ($termek['szin_id']) {
-                            $szin = $this->getEm()->getRepository(Szin::class)->find($termek['szin_id']);
-                        }
-                        $tete = $term->toSzinesTermekLista($valt, $ujtermekminid, $top10min, $szin);
-                        $tete['kiemelt'] = false;
-                        $t[] = $tete;
-                    }
-                    if (($caller === 'marka') || ($caller === 'szuro')) {
-                        $osszeslapozatlantermekid = [];
-                        $termekek = $termekrepo->getTermekLista(
-                            $keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter),
-                            $order,
-                            null,
-                            null,
-                            $listVariations
-                        );
-                        foreach ($termekek as $termek) {
-                            $osszeslapozatlantermekid[] = $termek['id'];
-                        }
-                    }
-                    // termek id-k csak kategoriaval es arral szurve
-                    // a szuroben szereplo cimkek megallapitasahoz
-                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter));
-                    $tid = [];
-                    foreach ($termekids as $termek) {
-                        $tid[] = $termek['id'];
-                    }
-
-                    $ret['arfilterstep'] = \mkw\store::getParameter(\mkw\consts::Arfilterstep, 500);
-                    if (($maxar % $ret['arfilterstep']) != 0) {
-                        $ret['maxar'] = (floor($maxar / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
-                    } else {
-                        $ret['maxar'] = $maxar;
-                    }
-                    $ret['minarfilter'] = $minarfilter;
-                    if (($maxarfilter % $ret['arfilterstep']) != 0) {
-                        $ret['maxarfilter'] = (floor($maxarfilter / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
-                    } else {
-                        $ret['maxarfilter'] = $maxarfilter;
-                    }
-                    switch ($caller) {
-                        case 'categories':
-                            $ret['url'] = '/categories/' . $parent->getSlug();
-                            $ret['navigator'] = $this->getNavigator($parent);
-                            // $tid = termek id-k csak kategoriaval es arral szurve
-                            $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
-                            break;
-                        case 'kereses':
-                        case 'search':
-                            $ret['url'] = '/search';
-                            $ret['navigator'] = [['caption' => t('A keresett kifejezés') . ': ' . $keresoszo]];
-                            // $tid = termek id-k csak kategoriaval es arral szurve
-                            $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
-                            break;
-                        case 'szuro':
-                            $ret['url'] = '/szuro';
-                            $ret['navigator'] = [['caption' => t('Szűrő')]];
-                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
-                            break;
-                        case 'marka':
-                            $ret['url'] = '/marka/' . $marka->getSlug();
-                            $ret['navigator'] = [['caption' => $marka->getNev()]];
-                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
-                    }
-                    $ret['keresett'] = $keresoszo;
-                    $ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
-                    $ret['csakakcios'] = $this->params->getBoolRequestParam('csakakcios', false);
-                    if ($ord == 'featuredasc') {
-                        shuffle($t);
-                    }
-                    $ret['termekek'] = $t;
-                    $ret['lapozo'] = $pager->loadValues();
-                    $ret['order'] = $ord;
-                    if ($parent) {
-                        $ret['kategoria'] = [
-                            'nev' => $parent->getNev(),
-                            'leiras2' => $parent->getLeiras2(),
-                            'leiras3' => $parent->getLeiras3()
-                        ];
-                    } else {
-                        $ret['kategoria'] = [
-                            'nev' => '',
-                            'leiras2' => '',
-                            'leiras3' => ''
-                        ];
-                    }
-                } else {
-                    $ret['lapozo'] = 0;
-                }
-                return $ret;
-
-            case \mkw\store::isSuperzoneB2B():
-                $termekrepo = $this->getEm()->getRepository(Termek::class);
-                $order = [];
-                $kategoriafilter = new FilterDescriptor();
-                $nativkategoriafilter = new FilterDescriptor();
-                if ($parent) {
-                    $kategoriafilter->addFilter('_xx.termekmenu1', '=', $parent['id']);
-                    $nativkategoriafilter->addFilter('_xx.termekmenu1_id', '=', $parent['id']);
-                }
-                $keresofilter = new FilterDescriptor();
-                if ($this->params) {
-                    $keresoszo = $this->params->getStringRequestParam('keresett');
-                    if ($keresoszo) {
-                        $keresofilter->addFilter(['_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'], 'LIKE', '%' . $keresoszo . '%');
-                    }
-                }
-                $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
-                $t = [];
-                foreach ($termekek as $te) {
-                    $tete = $te->toMenu();
-                    $tete['kiemelt'] = false;
-                    $t[] = $tete;
-                }
-                return $t;
-
-            default :
-                throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());
+        // márka nézetnél a márka saját termékszűrője hozzáfűződik a felhasználói szűrőhöz
+        $marka = null;
+        if ($caller === 'marka') {
+            $marka = $this->getRepo(Termekcimketorzs::class)->findOneBySlug($this->params->getStringParam('slug'));
+            if ($marka) {
+                $pCimkeszurostr = implode(',', [$pCimkeszurostr, $marka->getTermekFilter()]);
+            }
         }
+
+        // --- szűrők összeállítása ---
+        $kategoriafilter = $this->buildTermekmenuFilter($parent);
+        $nativkategoriafilter = $this->buildNativTermekmenuFilter($parent);
+
+        $keresofilter = $this->buildKeresoszoFilter($pKeresoszo);
+
+        $akciosfilter = $this->buildAkciosFilter($pCsakakcios);
+
+        $cimkeszurotomb = $this->decodeCimkeSzuroString($pCimkeszurostr);
+        $cimkefilter = $this->buildTermekidFilter($cimkeszurotomb);
+
+        $maxexistingar = $termekrepo->getTermekListaMaxAr($keresofilter->merge($kategoriafilter)->merge($cimkefilter));
+        if ($maxarfilter == 0 || \mkw\store::getMainSession()->autoepp) {
+            $maxarfilter = $maxexistingar;
+        }
+        $arfilter = $this->buildArfilter($minarfilter, $maxarfilter);
+
+        // termekdarabszam kategoriaval es cimkevel es arral szurve, lapozohoz kell
+        $termekdb = $termekrepo->getTermekListaCount(
+            $keresofilter->merge($kategoriafilter)->merge($cimkefilter)->merge($arfilter)->merge($akciosfilter),
+            $listVariations
+        );
+        if ($termekdb > 0) {
+            // --- lapozó ---
+            $tc->initPager($termekdb, $pElemperpage, $pPageno);
+            $pager = $tc->getPager();
+            $elemperpage = $pager->getElemPerPage();
+
+            $order = $this->orderMap($pOrd);
+
+            $ujtermekminid = $termekrepo->getUjTermekId();
+
+            // --- kiemelt termékek (csak 1. oldalon, nem szűrő/márka nézetben) ---
+            $kiemelt = [];
+            if ((($pPageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro') && ($caller !== 'marka')) {
+                $kiemelt = $this->buildKiemeltTermekLista(
+                    $keresofilter->merge($kategoriafilter),
+                    $kiemelttermekdb,
+                    $ujtermekminid
+                );
+            }
+            $ret['kiemelttermekek'] = $kiemelt;
+
+            // --- a konkrét terméklista (kategória + címke + ár szűrve, lapozva) ---
+            $termekek = $termekrepo->getTermekLista(
+                $keresofilter->merge($nativkategoriafilter)->merge($cimkefilter)->merge($arfilter)->merge($akciosfilter),
+                $order,
+                $pager->getOffset(),
+                $elemperpage,
+                $listVariations
+            );
+            $termeklista = $this->buildSzinesTermekLista($termekek, $ujtermekminid);
+
+            // --- ár-skála a szűrőhöz ---
+            $ret['arfilterstep'] = \mkw\store::getParameter(\mkw\consts::Arfilterstep, 500);
+            $ret['maxar'] = \mkw\store::felKerekit($maxexistingar, $ret['arfilterstep']);
+            $ret['minarfilter'] = $minarfilter;
+            $ret['maxarfilter'] = \mkw\store::felKerekit($maxarfilter, $ret['arfilterstep']);
+
+            // --- caller-függő navigátor / url / címkeszűrő ---
+            switch ($caller) {
+                case 'categories':
+                    $ret['url'] = '/categories/' . $parent->getSlug();
+                    $ret['navigator'] = $this->getNavigator($parent);
+                    $ret['szurok'] = $tck->getForTermekSzuro(
+                        $this->getTermekIdsForCimkeSzuro($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter)),
+                        $cimkeszurotomb
+                    );
+                    break;
+                case 'kereses':
+                case 'search':
+                    $ret['url'] = '/search';
+                    $ret['navigator'] = [['caption' => t('A keresett kifejezés') . ': ' . $pKeresoszo]];
+                    $ret['szurok'] = $tck->getForTermekSzuro(
+                        $this->getTermekIdsForCimkeSzuro($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter)),
+                        $cimkeszurotomb
+                    );
+                    break;
+                case 'szuro':
+                    $ret['url'] = '/szuro';
+                    $ret['navigator'] = [['caption' => t('Szűrő')]];
+                    $ret['szurok'] = $tck->getForTermekSzuro(
+                        $this->getTermekIdsFromTermekListaForCimkeSzuro($keresofilter->merge($nativkategoriafilter)->merge($arfilter)->merge($akciosfilter)),
+                        $cimkeszurotomb
+                    );
+                    break;
+                case 'marka':
+                    $ret['url'] = '/marka/' . $marka->getSlug();
+                    $ret['navigator'] = [['caption' => $marka->getNev()]];
+                    $ret['szurok'] = $tck->getForTermekSzuro(
+                        $this->getTermekIdsFromTermekListaForCimkeSzuro($keresofilter->merge($nativkategoriafilter)->merge($arfilter)->merge($akciosfilter)),
+                        $cimkeszurotomb
+                    );
+            }
+
+            $ret['keresett'] = $pKeresoszo;
+            $ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
+            $ret['csakakcios'] = $pCsakakcios;
+            if ($pOrd == 'featuredasc') {
+                shuffle($termeklista);
+            }
+            $ret['termekek'] = $termeklista;
+            $ret['lapozo'] = $pager->loadValues();
+            $ret['order'] = $pOrd;
+            $ret['kategoria'] = $parent
+                ? [
+                    'nev' => $parent->getLocalizedFieldValue('nev'),
+                    'leiras2' => $parent->getLocalizedFieldValue('leiras2'),
+                    'leiras3' => $parent->getLocalizedFieldValue('leiras3')
+                ]
+                : ['nev' => '', 'leiras2' => '', 'leiras3' => ''];
+        } else {
+            $ret['lapozo'] = 0;
+        }
+        return $ret;
+    }
+
+    /**
+     * SuperzoneB2B terméklista: egyszerű menü-lista, lapozó / ár-szűrő nélkül.
+     */
+    private function termeklistaSuperzoneB2B($parent)
+    {
+        $termekrepo = $this->getEm()->getRepository(Termek::class);
+
+        $kategoriafilter = $this->buildTermekmenuFilter($parent);
+        $keresofilter = $this->buildKeresoszoFilter($this->params->getStringRequestParam('keresett'));
+
+        $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
+        $t = [];
+        /** @var Termek $te */
+        foreach ($termekek as $te) {
+            $tete = $te->toMenu();
+            $tete['kiemelt'] = false;
+            $t[] = $tete;
+        }
+        return $t;
     }
 
 }
