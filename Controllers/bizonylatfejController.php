@@ -7,6 +7,7 @@ use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
@@ -1188,16 +1189,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if (!$this->biztipus) {
                 $this->biztipus = $o->getBizonylattipus()->getId();
             }
+            $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
             if ($o->getReportfile()) {
                 $tplname = $o->getReportfile();
-            } else {
-                $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
-                if ($biztip && $biztip->getTplname()) {
-                    $tplname = $biztip->getTplname();
+            } elseif ($bt) {
+                $tplname = $bt->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv());
+                if (!$tplname) {
+                    $tplname = $bt->getTplname();
                 }
             }
             $view = $this->createView($tplname);
-            $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             $bt->setTemplateVars($view);
             $x = $o->toLista();
             $view->setVar('egyed', $x);

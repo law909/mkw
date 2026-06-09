@@ -2300,7 +2300,6 @@ class Bizonylatfej
                     $this->setIrany($val->getIrany());
                     $this->setBizonylatnev($val->getNev());
                     $this->setPenztmozgat($val->getPenztmozgat());
-                    $this->setReportfile($val->getTplname());
                 }
             }
         }
@@ -2312,7 +2311,6 @@ class Bizonylatfej
             $this->bizonylattipus = null;
             if (!$this->duplication) {
                 $this->bizonylatnev = '';
-                $this->setReportfile('');
             }
         }
     }

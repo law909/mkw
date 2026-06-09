@@ -3,12 +3,15 @@
 namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Traits\GetsFieldValue;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattipusRepository")
  * @ORM\Table(name="bizonylattipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  **/
 class Bizonylattipus
 {
+    use GetsFieldValue;
+    
     /**
      * @ORM\Id @ORM\Column(type="string",length=30)
      */
@@ -75,6 +78,8 @@ class Bizonylattipus
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
     private $tplname;
+    /** @ORM\Column(type="string",length=200,nullable=true) */
+    private $tplname_l1;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfoxpostterminaleditor = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -283,6 +288,16 @@ class Bizonylattipus
     public function setTplname($d)
     {
         $this->tplname = $d;
+    }
+
+    public function getTplname_l1()
+    {
+        return $this->tplname_l1;
+    }
+
+    public function setTplname_l1($d)
+    {
+        $this->tplname_l1 = $d;
     }
 
     public function getShowbizonylatstatuszeditor()
