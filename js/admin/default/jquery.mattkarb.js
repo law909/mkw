@@ -58,13 +58,39 @@
         // Visszatérés az előző URL-re (a lista nézetre) a mentés után.
         var returnToPreviousUrl = function () {
             var origin = window.location.origin,
-                ref = document.referrer;
-            if (window.history.length > 1 && ref && ref.indexOf(origin + '/') === 0) {
-                // belső oldalról (a listából) jöttünk – pontosan az előző URL-re lépünk vissza
+                ref = document.referrer,
+                internalRef = !!ref && ref.indexOf(origin + '/') === 0,
+                // a /viewkarb levágásával a lista nézet URL-je
+                listUrl = origin + window.location.pathname.replace(/\/viewkarb.*$/, '/viewlist');
+            if (window.history.length > 1 && internalRef) {
+                // belső oldalról (a listából) jöttünk ugyanabban a fülben – pontosan az előző URL-re lépünk vissza
                 window.history.back();
+            } else if (internalRef) {
+                // másik bizonylatról ÚJ FÜLÖN nyílt meg (pl. "Számla"/"Bevét" gomb vagy stornó) –
+                // a sikeres mentésről visszajelzünk, majd az OK után csukjuk be a fület
+                // (ha a böngésző nem engedi, essünk vissza a lista nézetre)
+                if ($.unblockUI) {
+                    $.unblockUI();
+                }
+                $('<div>A mentés sikerült.</div>').dialog({
+                    title: 'Mentés',
+                    resizable: false,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    },
+                    close: function () {
+                        window.close();
+                        setTimeout(function () {
+                            window.location.href = listUrl;
+                        }, 200);
+                    }
+                });
             } else {
-                // közvetlen megnyitás (könyvjelző/megosztott link): a /viewkarb levágásával a lista
-                window.location.href = origin + window.location.pathname.replace(/\/viewkarb.*$/, '');
+                // közvetlen megnyitás (könyvjelző/megosztott link): a lista nézetre lépünk
+                window.location.href = listUrl;
             }
         };
 
