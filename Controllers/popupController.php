@@ -9,14 +9,14 @@ use mkwhelpers\FilterDescriptor;
 class popupController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Popup::class);
         $this->setKarbFormTplName('popupkarbform.tpl');
         $this->setKarbTplName('popupkarb.tpl');
         $this->setListBodyRowTplName('popuplista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_popup');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)

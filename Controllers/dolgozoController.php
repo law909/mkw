@@ -14,14 +14,14 @@ use mkwhelpers\FilterDescriptor;
 class dolgozoController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Dolgozo');
+        $this->setEntityName(Dolgozo::class);
         $this->setKarbFormTplName('dolgozokarbform.tpl');
         $this->setKarbTplName('dolgozokarb.tpl');
         $this->setListBodyRowTplName('dolgozolista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -188,7 +188,7 @@ class dolgozoController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Dolgozók'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $emailtpl = new emailtemplateController($this->params);
+        $emailtpl = new emailtemplateController();
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
         $view->printTemplateResult(false);
     }
@@ -204,11 +204,11 @@ class dolgozoController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
-        $munkakor = new munkakorController($this->params);
+        $munkakor = new munkakorController();
         $view->setVar('munkakorlist', $munkakor->getSelectList(($record ? $record->getMunkakorId() : 0)));
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList(($record ? $record->getAlapertelmezettRaktarId() : 0)));
         return $view->getTemplateResult();
     }

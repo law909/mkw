@@ -6,25 +6,28 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
-class munkaidolistaController extends \mkwhelpers\MattableController {
+class munkaidolistaController extends \mkwhelpers\MattableController
+{
 
     private $tolstr;
     private $igstr;
     private $dolgozonev;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('munkaidolista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
-        $d = new dolgozoController($this->params);
+        $d = new dolgozoController();
         $view->setVar('dolgozolist', $d->getSelectList());
 
         $view->printTemplateResult();
     }
 
-    protected function createFilter($tol, $ig, $dolgozo) {
+    protected function createFilter($tol, $ig, $dolgozo)
+    {
         $filter = new FilterDescriptor();
 
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tol)));
@@ -45,15 +48,16 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    public function getData() {
+    public function getData()
+    {
         $tol = $this->params->getStringRequestParam('tol');
         $ig = $this->params->getStringRequestParam('ig');
         $dolgozo = $this->params->getIntRequestParam('dolgozo');
         $filter = $this->createFilter($tol, $ig, $dolgozo);
 
-        $mind = $this->getRepo('Entities\Jelenletiiv')->getAll($filter, array('datum' => 'ASC', 'belepes' => 'ASC'));
+        $mind = $this->getRepo('Entities\Jelenletiiv')->getAll($filter, ['datum' => 'ASC', 'belepes' => 'ASC']);
 
-        $ret = array();
+        $ret = [];
         /** @var \Entities\Jelenletiiv $m */
         foreach ($mind as $m) {
             $kul = 0;
@@ -62,7 +66,7 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
                 $difi = $m->getBelepes()->diff($m->getKilepes());
                 $kul = $difi->h * 60 + $difi->i;
             }
-            $ret[] = array(
+            $ret[] = [
                 'datum' => $m->getDatumStr(),
                 'belepes' => $m->getBelepesStr(),
                 'kilepes' => $m->getKilepesStr(),
@@ -70,13 +74,13 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
                 'dolgozonev' => $m->getDolgozoNev(),
                 'ido' => $kul,
                 'masip' => $m->getBeip() !== $m->getKiip()
-            );
+            ];
         }
         return $ret;
     }
 
-    public function createLista() {
-
+    public function createLista()
+    {
         $d = $this->getData();
         $report = $this->createView('rep_munkaido.tpl');
         $report->setVar('lista', $d);

@@ -8,10 +8,10 @@ use mkwhelpers\FilterDescriptor;
 
 class apierrorlogController extends Controller
 {
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Apierrorlog::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function getList()

@@ -13,23 +13,23 @@ use Entities\Valutanem;
 class bizonylattetelController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Bizonylattetel::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
         $oper = $this->params->getStringRequestParam('oper');
-        $termekCtrl = new termekController($this->params);
-        $vtsz = new vtszController($this->params);
-        $afa = new afaController($this->params);
-        $me = new meController($this->params);
+        $termekCtrl = new termekController();
+        $vtsz = new vtszController();
+        $afa = new afaController();
+        $me = new meController();
         if (!$t) {
             $t = new \Entities\Bizonylattetel();
             $this->getEm()->detach($t);
@@ -233,7 +233,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
     public function valtozathtmllist()
     {
-        $tc = new termekController($this->params);
+        $tc = new termekController();
         $tomb = [
             'id' => $this->params->getRequestParam('tetelid', 0),
             'valtozatlist' => $tc->getValtozatList(
@@ -254,7 +254,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     {
         $termekid = $this->params->getRequestParam('id', 0);
         $termektetelid = $this->params->getRequestParam('tetelid', 0);
-        $tc = new termekController($this->params);
+        $tc = new termekController();
         $view = $this->createView('bizonylattetelquickvaltozatkarb.tpl');
         $valtozatlist = $tc->getValtozatList($termekid, 0);
         $vlist = [];

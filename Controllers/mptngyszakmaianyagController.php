@@ -16,14 +16,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class mptngyszakmaianyagController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(MPTNGYSzakmaianyag::class);
         $this->setKarbFormTplName('mptngyszakmaianyagkarbform.tpl');
         $this->setKarbTplName('mptngyszakmaianyagkarb.tpl');
         $this->setListBodyRowTplName('mptngyszakmaianyaglista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**
@@ -569,18 +569,18 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 
-        $pc = new partnerController($this->params);
+        $pc = new partnerController();
         $view->setVar('tulajdonoslist', $pc->getSelectList());
         $view->setVar('elsoszerzolist', $pc->getSelectList());
         $view->setVar('szerzolist', $pc->getSelectList());
         $view->setVar('opponenslist', $pc->getSelectList());
-        $tk = new mptngytemakorController($this->params);
+        $tk = new mptngytemakorController();
         $view->setVar('temakor1list', $tk->getSelectList());
-        $tc = new mptngyszakmaianyagtipusController($this->params);
+        $tc = new mptngyszakmaianyagtipusController();
         $view->setVar('tipuslist', $tc->getSelectList());
-        $jt = new jogateremController($this->params);
+        $jt = new jogateremController();
         $view->setVar('teremlist', $jt->getSelectList());
-        $tx = new mptngytemaController($this->params);
+        $tx = new mptngytemaController();
         $view->setVar('temalist', $tx->getSelectList());
 
         $view->printTemplateResult();
@@ -598,16 +598,16 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         /** @var MPTNGYSzakmaianyag $anyag */
         $anyag = $this->getRepo()->findWithJoins($id);
         // loadVars utan nem abc sorrendben adja vissza
-        $tc = new mptngyszakmaianyagtipusController($this->params);
+        $tc = new mptngyszakmaianyagtipusController();
         $view->setVar('tipuslist', $tc->getSelectList($anyag?->getTipusId()));
 
-        $jt = new jogateremController($this->params);
+        $jt = new jogateremController();
         $view->setVar('teremlist', $jt->getSelectList($anyag?->getTeremId()));
 
-        $xt = new mptngytemaController($this->params);
+        $xt = new mptngytemaController();
         $view->setVar('temalist', $xt->getSelectList($anyag?->getTema()?->getId()));
 
-        $pc = new partnerController($this->params);
+        $pc = new partnerController();
         $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonosId()));
         $view->setVar('opponenslist', $pc->getSelectList($anyag?->getOpponensId()));
         $view->setVar('szerzo1list', $pc->getSelectList($anyag?->getSzerzo1Id()));
@@ -622,14 +622,14 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('szerzo10list', $pc->getSelectList($anyag?->getSzerzo10Id()));
         $view->setVar('beszelgetopartnerlist', $pc->getSelectList($anyag?->getBeszelgetopartnerId()));
 
-        $ac = new mptngyszakmaianyagController($this->params);
+        $ac = new mptngyszakmaianyagController();
         $view->setVar('eloadas1list', $ac->getSelectList($anyag?->getEloadas1Id()));
         $view->setVar('eloadas2list', $ac->getSelectList($anyag?->getEloadas2Id()));
         $view->setVar('eloadas3list', $ac->getSelectList($anyag?->getEloadas3Id()));
         $view->setVar('eloadas4list', $ac->getSelectList($anyag?->getEloadas4Id()));
         $view->setVar('eloadas5list', $ac->getSelectList($anyag?->getEloadas5Id()));
 
-        $bc = new dolgozoController($this->params);
+        $bc = new dolgozoController();
         // biralo temakore kozt szerepel temakor1,2,3
         $biraloids = [];
         $tkor = $this->getRepo(MPTNGYTemakor::class)->find($anyag?->getTemakor1()?->getId());
@@ -677,7 +677,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id(), true, $birafilter));
         $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id(), true, $birafilter));
 
-        $tk = new mptngytemakorController($this->params);
+        $tk = new mptngytemakorController();
         $view->setVar('temakor1list', $tk->getSelectList($anyag?->getTemakor1()?->getId()));
         $view->setVar('temakor2list', $tk->getSelectList($anyag?->getTemakor2()?->getId()));
         $view->setVar('temakor3list', $tk->getSelectList($anyag?->getTemakor3()?->getId()));
@@ -721,7 +721,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $v = $this->createMainView('anyaglist.tpl');
             $v->printTemplateResult();
         } else {
-            $pc = new partnerController($this->params);
+            $pc = new partnerController();
             $pc->showLoginForm();
         }
     }
@@ -853,7 +853,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $anyagid = $this->params->getIntRequestParam('id');
         if ($partner) {
             if ($this->params->getBoolRequestParam('vegleges')) {
-                $pc = new mptngypartnerController($this->params);
+                $pc = new mptngypartnerController();
                 $ell = $pc->getPartnerInfoForCheck($partner, $anyagid);
             } else {
                 $ell['success'] = true;

@@ -15,10 +15,10 @@ class leltarController extends \mkwhelpers\Controller
     {
         $view = $this->createView('leltar.tpl');
 
-        $rc = new raktarController($this->params);
+        $rc = new raktarController();
         $view->setVar('raktarlist', $rc->getSelectList());
 
-        $tac = new arsavController($this->params);
+        $tac = new arsavController();
         $view->setVar('arsavlist', $tac->getSelectList());
 
         $view->printTemplateResult();
@@ -133,7 +133,7 @@ class leltarController extends \mkwhelpers\Controller
             default:
                 break;
         }
-        
+
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);

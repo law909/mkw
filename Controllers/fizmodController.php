@@ -9,14 +9,14 @@ use Entities\Valutanem;
 class fizmodController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Fizmod::class);
         $this->setKarbFormTplName('fizetesimodkarbform.tpl');
         $this->setKarbTplName('fizetesimodkarb.tpl');
         $this->setListBodyRowTplName('fizetesimodlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
@@ -53,7 +53,7 @@ class fizmodController extends \mkwhelpers\MattableController
 
         if ($forKarb) {
             if ($letezik) {
-                $fhc = new fizmodhatarController($this->params);
+                $fhc = new fizmodhatarController();
                 $h = $this->getRepo(FizmodHatar::class)->getByFizmod($t);
                 $hatararr = [];
                 foreach ($h as $hat) {

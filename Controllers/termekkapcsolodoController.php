@@ -2,24 +2,25 @@
 
 namespace Controllers;
 
+use Entities\TermekKapcsolodo;
 use mkw\store;
 
 class termekkapcsolodoController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\TermekKapcsolodo');
+        $this->setEntityName(TermekKapcsolodo::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekKapcsolodo();

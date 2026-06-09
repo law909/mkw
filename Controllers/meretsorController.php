@@ -9,14 +9,14 @@ use mkwhelpers\MattableController;
 
 class meretsorController extends MattableController
 {
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Meretsor::class);
         $this->setKarbFormTplName('meretsorkarbform.tpl');
         $this->setKarbTplName('meretsorkarb.tpl');
         $this->setListBodyRowTplName('meretsorlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_meretsor');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)

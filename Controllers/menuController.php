@@ -1,19 +1,25 @@
 <?php
+
 namespace Controllers;
 
-class menuController extends \mkwhelpers\MattableController {
+use Entities\Menu;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Menu');
+class menuController extends \mkwhelpers\MattableController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(Menu::class);
         $this->setKarbFormTplName('menukarbform.tpl');
         $this->setKarbTplName('menukarb.tpl');
         $this->setListBodyRowTplName('menulista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Menu();
             $this->getEm()->detach($t);
@@ -31,9 +37,11 @@ class menuController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Menu $obj
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setUrl($this->params->getOriginalStringRequestParam('url'));
         $obj->setRoutename($this->params->getStringRequestParam('routename'));
@@ -47,36 +55,41 @@ class menuController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('menulista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),
             $this->params->getIntRequestParam('elemperpage', 30),
-            $this->params->getIntRequestParam('pageno', 1));
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getWithJoins(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('menulista.tpl');
 
         $view->setVar('pagetitle', t('Menü'));
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('menulista.tpl');
 
         $view->setVar('pagetitle', t('Menü'));
@@ -85,7 +98,8 @@ class menuController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -97,23 +111,24 @@ class menuController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getMenu() {
-        $menu = array();
+    public function getMenu()
+    {
+        $menu = [];
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('lathato', '=', true)
             ->addSql('(m.lathato=1) OR (m.lathato IS NULL)');
-        $adat = $this->getRepo()->getAll($filter, array('m.sorrend' => 'ASC', 'sorrend' => 'ASC'));
+        $adat = $this->getRepo()->getAll($filter, ['m.sorrend' => 'ASC', 'sorrend' => 'ASC']);
         /** @var \Entities\Menu $rek */
-        foreach($adat as $rek) {
+        foreach ($adat as $rek) {
             if ($rek->isLathato(\mkw\store::getJog())) {
-                $menu[] = array(
+                $menu[] = [
                     'mcsid' => $rek->getMenucsoportId(),
                     'mcsnev' => $rek->getMenucsoportNev(),
                     'nev' => $rek->getNev(),
                     'url' => $rek->getUrl(),
                     'class' => $rek->getClass()
-                );
+                ];
             }
         }
         return $menu;

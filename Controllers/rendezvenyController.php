@@ -17,19 +17,19 @@ use mkwhelpers\FilterDescriptor;
 class rendezvenyController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Rendezveny');
+        $this->setEntityName(Rendezveny::class);
         $this->setKarbFormTplName('rendezvenykarbform.tpl');
         $this->setKarbTplName('rendezvenykarb.tpl');
         $this->setListBodyRowTplName('rendezvenylista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
     {
-        $dokCtrl = new rendezvenydokController($this->params);
+        $dokCtrl = new rendezvenydokController();
         $dok = [];
         $x = [];
         if (!$t) {
@@ -219,15 +219,15 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Rendezvények'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $dcs = new dolgozoController($this->params);
+        $dcs = new dolgozoController();
         $view->setVar('tanarlist', $dcs->getSelectList());
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('termeklist', $termek->getSelectList(null));
-        $rcs = new rendezvenyallapotController($this->params);
+        $rcs = new rendezvenyallapotController();
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList());
-        $jtcs = new jogateremController($this->params);
+        $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList());
-        $hcs = new helyszinController($this->params);
+        $hcs = new helyszinController();
         $view->setVar('helyszinlist', $hcs->getSelectList());
         $view->printTemplateResult(false);
     }
@@ -243,15 +243,15 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record, true));
-        $tanar = new dolgozoController($this->params);
+        $tanar = new dolgozoController();
         $view->setVar('tanarlist', $tanar->getSelectList($record?->getTanarId()));
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('termeklist', $termek->getSelectList($record?->getTermekId()));
-        $rcs = new rendezvenyallapotController($this->params);
+        $rcs = new rendezvenyallapotController();
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapotId()));
-        $jtcs = new jogateremController($this->params);
+        $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogateremId()));
-        $hcs = new helyszinController($this->params);
+        $hcs = new helyszinController();
         $view->setVar('helyszinlist', $hcs->getSelectList($record?->getHelyszinId()));
         return $view->getTemplateResult();
     }
@@ -341,7 +341,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                     $partner = new \Entities\Partner();
                     $partner->setVatstatus(2);
                 }
-                $partnerctrl = new \Controllers\partnerController($this->params);
+                $partnerctrl = new \Controllers\partnerController();
                 $partner = $partnerctrl->setFields($partner, null, 'pubreg');
                 if (!$kellszamlazasiadat) {
                     $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
@@ -489,7 +489,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
                 }
             }
 
-            $rjc = new \Controllers\rendezvenyjelentkezesController($this->params);
+            $rjc = new \Controllers\rendezvenyjelentkezesController();
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('rendezveny', '=', $rendezveny);
             $filter->addFilter('lemondva', '=', false);
@@ -524,7 +524,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $ret = ['msg' => at('A kezdés emlékeztető levelek kiküldve.')];
         $rend = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         if ($rend) {
-            $rjc = new \Controllers\rendezvenyjelentkezesController($this->params);
+            $rjc = new \Controllers\rendezvenyjelentkezesController();
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('rendezveny', '=', $rend);
             $filter->addFilter('lemondva', '=', false);

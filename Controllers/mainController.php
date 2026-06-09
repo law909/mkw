@@ -43,7 +43,7 @@ class mainController extends \mkwhelpers\Controller
     {
         $this->view = $this->getTemplateFactory()->createMainView('404.tpl');
         \mkw\store::fillTemplate($this->view);
-        $tc = new termekController($this->params);
+        $tc = new termekController();
         $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
         $this->view->setVar('seodescription', t('Sajnos nem találjuk.'));
         $this->view->setVar('pagetitle', t('Sajnos nem találjuk.'));
@@ -59,12 +59,12 @@ class mainController extends \mkwhelpers\Controller
 
         $this->view = $this->getTemplateFactory()->createMainView('main.tpl');
         \mkw\store::fillTemplate($this->view);
-        $hc = new hirController($this->params);
-        $tc = new termekController($this->params);
-        $khc = new korhintaController($this->params);
-        $tfc = new termekfaController($this->params);
-        $tcc = new termekcimkeController($this->params);
-        $tec = new termekertekelesController($this->params);
+        $hc = new hirController();
+        $tc = new termekController();
+        $khc = new korhintaController();
+        $tfc = new termekfaController();
+        $tcc = new termekcimkeController();
+        $tec = new termekertekelesController();
         $this->view->setVar('pagetitle', \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $this->view->setVar('seodescription', \mkw\store::getParameter(\mkw\consts::Seodescription));
         switch (true) {
@@ -82,9 +82,9 @@ class mainController extends \mkwhelpers\Controller
 
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
-                $csapatc = new csapatController($this->params);
-                $riderc = new versenyzoController($this->params);
-                $blokkc = new blokkController($this->params);
+                $csapatc = new csapatController();
+                $riderc = new versenyzoController();
+                $blokkc = new blokkController();
                 $this->view->setVar('hirek', $hc->gethirlist());
                 $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
                 $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
@@ -110,7 +110,7 @@ class mainController extends \mkwhelpers\Controller
 
     public function termekfa()
     {
-        $tf = new termekfaController($this->params);
+        $tf = new termekfaController();
         $com = $this->params->getStringParam('slug');
         /** @var TermekFa $ag */
         $ag = $tf->getRepo()->findOneBySlug($com);
@@ -139,7 +139,7 @@ class mainController extends \mkwhelpers\Controller
 
     public function termekmenu()
     {
-        $tf = new termekmenuController($this->params);
+        $tf = new termekmenuController();
         $com = $this->params->getStringParam('slug');
         /** @var TermekMenu $ag */
         $ag = $tf->getRepo()->findOneBySlug($com);
@@ -168,8 +168,8 @@ class mainController extends \mkwhelpers\Controller
     public function marka()
     {
         $com = $this->params->getStringParam('slug');
-        $tf = new termekfaController($this->params);
-        $tc = new termekcimkeController($this->params);
+        $tf = new termekfaController();
+        $tc = new termekcimkeController();
         $c = $tc->getRepo()->findOneBySlug($com);
         if ($c) {
             $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
@@ -205,7 +205,7 @@ class mainController extends \mkwhelpers\Controller
 
     public function szuro()
     {
-        $tf = new termekfaController($this->params);
+        $tf = new termekfaController();
         $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
         $t = $tf->gettermeklistaforparent(null, 'szuro');
         foreach ($t as $k => $v) {
@@ -230,10 +230,10 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->flush();
 
                 if (\mkw\store::isMugenrace2026()) {
-                    $tf = new termekmenuController($this->params);
+                    $tf = new termekmenuController();
                     $t = $tf->gettermeklistaforparent(null, 'search');
                 } else {
-                    $tf = new termekfaController($this->params);
+                    $tf = new termekfaController();
                     $t = $tf->gettermeklistaforparent(null, 'kereses');
                 }
 
@@ -247,7 +247,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->printTemplateResult(true);
             } else {
                 $this->view = $this->getTemplateFactory()->createMainView('nincstalalat.tpl');
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
                 \mkw\store::fillTemplate($this->view);
                 $this->view->setVar('seodescription', t('Keressen valamit.'));
@@ -265,7 +265,7 @@ class mainController extends \mkwhelpers\Controller
             case \mkw\store::isMugenrace():
                 $com = $this->params->getStringParam('slug');
                 $szin_id = $this->params->getIntParam('szin_id');
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 $filter = new FilterDescriptor();
                 $filter->addFilter('slug', '=', $com);
                 /** @var Termek $termek */
@@ -308,7 +308,7 @@ class mainController extends \mkwhelpers\Controller
 
             case \mkw\store::isSuperzoneB2B():
                 $com = $this->params->getStringParam('slug');
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 /** @var Termek $termek */
                 $termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
@@ -382,7 +382,7 @@ class mainController extends \mkwhelpers\Controller
     {
         $com = $this->params->getStringParam('slug');
         $szin = $this->params->getStringRequestParam('szin');
-        $tc = new termekController($this->params);
+        $tc = new termekController();
         /** @var \Entities\Termek $termek */
         $termek = $tc->getRepo()->findOneBySlug($com);
         if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
@@ -585,7 +585,7 @@ class mainController extends \mkwhelpers\Controller
                     $view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
                     \mkw\store::fillTemplate($view);
                 } else {
-                    $kftc = new kapcsolatfelveteltemaController($this->params);
+                    $kftc = new kapcsolatfelveteltemaController();
                     $view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
                     $view->setVar('nev', $nev);
                     $view->setVar('email1', $email1);
@@ -599,7 +599,7 @@ class mainController extends \mkwhelpers\Controller
                 $view->printTemplateResult(false);
                 break;
             default :
-                $kftc = new kapcsolatfelveteltemaController($this->params);
+                $kftc = new kapcsolatfelveteltemaController();
                 $this->view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
                 \mkw\store::fillTemplate($this->view);
                 $this->view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\store::getParameter('oldalcim'));
@@ -620,7 +620,7 @@ class mainController extends \mkwhelpers\Controller
             \mkw\store::getMainSession()->orszag = (int)$orszagkod;
             \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
             \mkw\store::getMainSession()->valutanemnev = $orszag->getValutanemNev();
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->recalcPrices();
         }
     }
@@ -636,7 +636,7 @@ class mainController extends \mkwhelpers\Controller
     {
         $locale = $this->params->getStringRequestParam('locale');
         \mkw\store::setMainLocale($locale);
-        $kc = new kosarController($this->params);
+        $kc = new kosarController();
         $kc->recalcPrices();
     }
 }

@@ -9,19 +9,19 @@ use mkw\store;
 class csapatController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Csapat::class);
         $this->setKarbTplName('csapatkarb.tpl');
         $this->setKarbFormTplName('csapatkarbform.tpl');
         $this->setListBodyRowVarName('_csapat');
         $this->setListBodyRowTplName('csapatlista_tbody_tr.tpl');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
-        $kepCtrl = new csapatkepController($this->params);
+        $kepCtrl = new csapatkepController();
         $kep = [];
         $v = [];
         if (!$t) {
@@ -54,7 +54,7 @@ class csapatController extends \mkwhelpers\MattableController
         $v['kepek'] = $kep;
         if (!$forKarb) {
             $v['versenyzok'] = [];
-            $vctrl = new versenyzoController($this->params);
+            $vctrl = new versenyzoController();
             foreach ($t->getVersenyzok() as $versenyzo) {
                 $v['versenyzok'][] = $vctrl->loadVars($versenyzo);
             }

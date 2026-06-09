@@ -2,23 +2,27 @@
 
 namespace Controllers;
 
-class szallitasimodhatarController extends \mkwhelpers\MattableController {
+use Entities\SzallitasimodHatar;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\SzallitasimodHatar');
-        parent::__construct($params);
+class szallitasimodhatarController extends \mkwhelpers\MattableController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(SzallitasimodHatar::class);
+        parent::__construct();
     }
 
-    public function loadVars($t, $forKarb = false) {
-        $valutanem = new valutanemController($this->params);
-        $x = array();
+    public function loadVars($t, $forKarb = false)
+    {
+        $valutanem = new valutanemController();
+        $x = [];
         if (!$t) {
             $t = new \Entities\SzallitasimodHatar();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -31,11 +35,13 @@ class szallitasimodhatarController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('szallitasimodhatarkarb.tpl');
         $view->setVar('hatar', $this->loadVars(null, true));
         echo $view->getTemplateResult();

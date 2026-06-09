@@ -8,14 +8,14 @@ use mkw\store;
 class afaController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Afa::class);
         $this->setKarbFormTplName('afakarbform.tpl');
         $this->setKarbTplName('afakarb.tpl');
         $this->setListBodyRowTplName('afalista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)

@@ -1,21 +1,26 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Penztarbizonylatfej;
 use Entities\Penztarbizonylattetel;
 
-class penztarbizonylatfejController extends \mkwhelpers\MattableController {
+class penztarbizonylatfejController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Penztarbizonylatfej');
+    public function __construct()
+    {
+        $this->setEntityName(Penztarbizonylatfej::class);
         $this->setKarbFormTplName('penztarbizonylatfejkarbform.tpl');
         $this->setKarbTplName('penztarbizonylatfejkarb.tpl');
         $this->setListBodyRowTplName('penztarbizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Penztarbizonylatfej();
             $this->getEm()->detach($t);
@@ -53,22 +58,22 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $x['nemrossz'] = !$t->getRontott();
 
         if ($forKarb) {
-            $tetelCtrl = new penztarbizonylattetelController($this->params);
+            $tetelCtrl = new penztarbizonylattetelController();
             foreach ($t->getBizonylattetelek() as $ttetel) {
                 $tetel[] = $tetelCtrl->loadVars($ttetel, true);
             }
             $x['tetelek'] = $tetel;
-
         }
         return $x;
     }
 
     /**
      * @param \Entities\Penztarbizonylatfej $obj
+     *
      * @return \Entities\Penztarbizonylatfej
      */
-    protected function setFields($obj) {
-
+    protected function setFields($obj)
+    {
         $quick = $this->params->getBoolRequestParam('quick');
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
@@ -86,12 +91,11 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         if ($partnerkod == -1) {
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(['email' => $partneremail]);
                 if (!$partnerobj) {
                     $partnerobj = new \Entities\Partner();
                 }
-            }
-            else {
+            } else {
                 $partnerobj = new \Entities\Partner();
             }
             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
@@ -107,11 +111,9 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
             $this->getEm()->persist($partnerobj);
             $obj->setPartner($partnerobj);
-        }
-        else {
+        } else {
             $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
             if ($partnerobj) {
-
                 if ($quick) {
                     $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
                     $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
@@ -160,13 +162,11 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                     $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg'));
 
                     $this->getEm()->persist($tetel);
-                }
-                else {
+                } else {
                     \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
                 }
             }
-        }
-        else {
+        } else {
             $tetelids = $this->params->getArrayRequestParam('tetelid');
             foreach ($tetelids as $tetelid) {
                 if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
@@ -203,8 +203,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                                 }
                                 break;
                         }
-                    }
-                    else {
+                    } else {
                         \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
                     }
                 }
@@ -213,27 +212,29 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    protected function setVars($view) {
+    protected function setVars($view)
+    {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
         if ($bt) {
             $bt->setTemplateVars($view);
         }
 
-        $vc = new valutanemController($this->params);
+        $vc = new valutanemController();
         $view->setVar('valutanemlist', $vc->getSelectList());
 
-        $bc = new penztarController($this->params);
+        $bc = new penztarController();
         $view->setVar('penztarlist', $bc->getSelectList());
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('penztarbizonylatfejlista_tbody.tpl');
 
         $this->setVars($view);
 
         $filter = new \mkwhelpers\FilterDescriptor();
 
-        if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('idfilter', null))) {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
@@ -288,18 +289,21 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $this->initPager(
             $this->getRepo()->getCount($filter),
             $this->params->getIntRequestParam('elemperpage', 30),
-            $this->params->getIntRequestParam('pageno', 1));
+            $this->params->getIntRequestParam('pageno', 1)
+        );
 
         $egyedek = $this->getRepo()->getWithJoins(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('penztarbizonylatfejlista.tpl');
 
         $this->setVars($view);
@@ -308,7 +312,8 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('penztarbizonylatfejlista.tpl');
 
         $this->setVars($view);
@@ -316,15 +321,15 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Pénztárbizonylat'));
         if (\mkw\store::isSuperzoneB2B()) {
             $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl(7));
-        }
-        else {
+        } else {
             $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         }
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -338,19 +343,18 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
         $bt->setTemplateVars($view);
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
 
-        $valutanem = new valutanemController($this->params);
+        $valutanem = new valutanemController();
         if (!$record || !$record->getValutanemId()) {
             $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
-        }
-        else {
+        } else {
             $valutaid = $record->getValutanemId();
         }
         $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
 
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $penztarid = false;
         if ($record && $record->getPenztarId()) {
             $penztarid = $record->getPenztarId();
@@ -360,7 +364,8 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function ront() {
+    public function ront()
+    {
         $id = $this->params->getStringRequestParam('id');
         if ($id) {
             $bf = $this->getRepo()->find($id);
@@ -372,18 +377,20 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function zarasView() {
+    public function zarasView()
+    {
         $view = $this->createView('penztarzaras.tpl');
         $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Pénztár zárás'));
         $view->setVar('datum', date(\mkw\store::$DateFormat));
 
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
         $view->printTemplateResult();
     }
 
-    public function zar() {
+    public function zar()
+    {
         $penztarid = $this->params->getIntRequestParam('penztar');
         if ($this->getRepo('Entities\Penztar')->find($penztarid)) {
             $datum = date_create_from_format(\mkw\store::$JavascriptDateFormat, $this->params->getStringRequestParam('datum'));
@@ -393,12 +400,12 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function checkZartIdoszak() {
+    public function checkZartIdoszak()
+    {
         if (\mkw\store::getAdminSession()->loggedinuser['jog'] == 999) {
-            $res = array('response' => 'ok');
-        }
-        else {
-            $res = array('response' => 'error');
+            $res = ['response' => 'ok'];
+        } else {
+            $res = ['response' => 'error'];
             $penztarid = $this->params->getIntRequestParam('penztar');
             if ($this->getRepo('Entities\Penztar')->find($penztarid)) {
                 $datum = date_create_from_format(\mkw\store::$JavascriptDateFormat, $this->params->getStringRequestParam('datum'));
@@ -408,8 +415,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                     if ($diff && $diff->days > 0 && $diff->invert === 1) {
                         $res['response'] = 'ok';
                     }
-                }
-                elseif (!$zart) {
+                } elseif (!$zart) {
                     $res['response'] = 'ok';
                 }
             }

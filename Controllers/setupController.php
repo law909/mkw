@@ -21,10 +21,10 @@ use Entities\Valutanem;
 class setupController extends \mkwhelpers\Controller
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Parameterek::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function view()
@@ -68,7 +68,7 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::ProgramNev);
         $view->setVar(\mkw\consts::ProgramNev, ($p ? $p->getErtek() : ''));
-        $tulajpartner = new partnerController($this->params);
+        $tulajpartner = new partnerController();
         $p = $repo->find(\mkw\consts::Tulajpartner);
         $view->setVar('tulajpartnerlist', $tulajpartner->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
@@ -139,7 +139,7 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Watermark, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumTipus);
-        $sza = new mptngyszakmaianyagtipusController($this->params);
+        $sza = new mptngyszakmaianyagtipusController();
         $view->setVar('mptngyszakmaianyagtipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::MPTNGYSzimpoziumEloadasTipus);
         $view->setVar('mptngyszatipuslist', $sza->getSelectList(($p ? $p->getErtek() : 0)));
@@ -165,98 +165,98 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::MPTNGYSzempont5, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
-        $szallstatlap = new statlapController($this->params);
+        $szallstatlap = new statlapController();
         $view->setVar('szallitasifeltetelstatlaplist', $szallstatlap->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::SzamlalevelSablon);
-        $szamlalevelsablon = new emailtemplateController($this->params);
+        $szamlalevelsablon = new emailtemplateController();
         $view->setVar('szamlalevelsablonlist', $szamlalevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::KonyvelolevelSablon);
-        $konyvelolevelsablon = new emailtemplateController($this->params);
+        $konyvelolevelsablon = new emailtemplateController();
         $view->setVar('konyvelolevelsablonlist', $konyvelolevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::ErtekelesErtesitoSablon);
-        $eesablon = new emailtemplateController($this->params);
+        $eesablon = new emailtemplateController();
         $view->setVar('ertekelesertesitosablonlist', $eesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::ErtekelesKeroSablon);
-        $eesablon = new emailtemplateController($this->params);
+        $eesablon = new emailtemplateController();
         $view->setVar('ertekeleskerosablonlist', $eesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonFelszabadultHelyErtesito);
-        $rsdsablon = new emailtemplateController($this->params);
+        $rsdsablon = new emailtemplateController();
         $view->setVar('rendezvenysablonfelszabadulthelyertesitolist', $rsdsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonDijbekero);
-        $rsdsablon = new emailtemplateController($this->params);
+        $rsdsablon = new emailtemplateController();
         $view->setVar('rendezvenysablondijbekerolist', $rsdsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonRegKoszono);
-        $rsrksablon = new emailtemplateController($this->params);
+        $rsrksablon = new emailtemplateController();
         $view->setVar('rendezvenysablonregkoszonolist', $rsrksablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonRegErtesito);
-        $rsresablon = new emailtemplateController($this->params);
+        $rsresablon = new emailtemplateController();
         $view->setVar('rendezvenysablonregertesitolist', $rsresablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenyRegErtesitoEmail);
         $view->setVar(\mkw\consts::RendezvenyRegErtesitoEmail, ($p ? $p->getErtek() : 0));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonFizetesKoszono);
-        $rsfksablon = new emailtemplateController($this->params);
+        $rsfksablon = new emailtemplateController();
         $view->setVar('rendezvenysablonfizeteskoszonolist', $rsfksablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezvenySablonKezdesEmlekezteto);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('rendezvenysablonkezdesemlekeztetolist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletFelszolitoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletfelszolitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletSzamlazvaSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletszamlazvasablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletKoszonoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletkoszonosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletLefogjarniSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletlefogjarnisablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletLejartSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletlejartsablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBerletDatumLejartSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletdatumlejartsablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaLemondasKoszonoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogalemondaskoszonosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaElmaradasErtesitoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogaelmaradasertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaBejelentkezesErtesitoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogabejelentkezesertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::JogaLemondasErtesitoSablon);
-        $rskesablon = new emailtemplateController($this->params);
+        $rskesablon = new emailtemplateController();
         $view->setVar('jogalemondasertesitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MPTNGYRegVisszaigSablon);
-        $mptngyregsablon = new emailtemplateController($this->params);
+        $mptngyregsablon = new emailtemplateController();
         $view->setVar('mptngyregsablonlist', $mptngyregsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MPTNGYJelszoEmlekSablon);
-        $mptngyjelszoemleksablon = new emailtemplateController($this->params);
+        $mptngyjelszoemleksablon = new emailtemplateController();
         $view->setVar('mptngyjelszoemleksablonlist', $mptngyjelszoemleksablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
@@ -279,14 +279,14 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::SzallitasiKtg3Ertek, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('szallitasiktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::UtanvetKtgTermek);
         $view->setVar('utanvetktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
-        $szallmod = new szallitasimodController($this->params);
+        $szallmod = new szallitasimodController();
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::TOFSzallitasiMod);
         $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
@@ -298,11 +298,11 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('arukeresoexportszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::NullasAfa);
-        $fizmod = new afaController($this->params);
+        $fizmod = new afaController();
         $view->setVar('nullasafalist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::BelsoUzletkoto);
-        $uk = new uzletkotoController($this->params);
+        $uk = new uzletkotoController();
         $fofilter = new \mkwhelpers\FilterDescriptor();
         $fofilter->addFilter('belso', '=', true);
         $view->setVar('belsouklist', $uk->getSelectList(($p ? $p->getErtek() : 0), $fofilter));
@@ -419,7 +419,7 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::JogaAYCMJutalek);
         $view->setVar(\mkw\consts::JogaAYCMJutalek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaTanarelszamolasSablon);
-        $tanarelszsablon = new emailtemplateController($this->params);
+        $tanarelszsablon = new emailtemplateController();
         $view->setVar('tanarelszamolassablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaNemjonsenkiSablon);
         $view->setVar('nemjonsenkisablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -461,7 +461,7 @@ class setupController extends \mkwhelpers\Controller
 
 
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
-//        $termek = new termekController($this->params);
+//        $termek = new termekController();
         $view->setVar('vasarlasiutalvanytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaOrajegyTermek);
         $view->setVar('jogaorajegytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
@@ -470,13 +470,13 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::JogaBerlet10Termek);
         $view->setVar('jogaberlet10termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $jtc = new jogaoratipusController($this->params);
+        $jtc = new jogaoratipusController();
         $p = $repo->find(\mkw\consts::JogaAllapotfelmeresTipus);
         $view->setVar('jogaallapotfelmerestipuslist', $jtc->getSelectList(($p ? $p->getErtek() : 0)));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::UtanvetFizmod);
@@ -495,28 +495,28 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('stripefizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
-        $c = new jelenlettipusController($this->params);
+        $c = new jelenlettipusController();
         $view->setVar('munkajelenletlist', $c->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Szallitasimod);
-        $szallmod = new szallitasimodController($this->params);
+        $szallmod = new szallitasimodController();
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Raktar);
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Napijelentes2DefaultRaktar);
         $view->setVar('napijelentes2defaultraktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Valutanem);
-        $valutanem = new valutanemController($this->params);
+        $valutanem = new valutanemController();
         $view->setVar('valutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::ShowTermekArsavValutanem);
         $view->setVar('showtermekarsavvalutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Arsav);
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::ShowTermekArsav);
         $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -573,22 +573,22 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('akciosarsav5list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::MarkaCs);
-        $markacs = new termekcimkekatController($this->params);
+        $markacs = new termekcimkekatController();
         $view->setVar('markacslist', $markacs->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::DENCs);
-        $dencs = new termekcimkekatController($this->params);
+        $dencs = new termekcimkekatController();
         $view->setVar('dencslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::EpitoelemszamCs);
-        $dencs = new termekcimkekatController($this->params);
+        $dencs = new termekcimkekatController();
         $view->setVar('epitoelemszamcslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::CsomagoltmeretCs);
-        $dencs = new termekcimkekatController($this->params);
+        $dencs = new termekcimkekatController();
         $view->setVar('csomagoltmeretcslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::AjanlottkorosztalyCs);
-        $dencs = new termekcimkekatController($this->params);
+        $dencs = new termekcimkekatController();
         $view->setVar('ajanlottkorosztalycslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $partnercimkec = new partnercimkeController($this->params);
+        $partnercimkec = new partnercimkeController();
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::NagykerCimke);
@@ -597,7 +597,7 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::FelvetelAlattCimke);
         $view->setVar('felvetelalattcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
-        $orszagc = new orszagController($this->params);
+        $orszagc = new orszagController();
         $p = $repo->find(\mkw\consts::Spanyolorszag);
         $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::Orszag);
@@ -606,16 +606,16 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('magyarorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::FelvetelAlattTipus);
-        $partnertipusc = new partnertipusController($this->params);
+        $partnertipusc = new partnertipusController();
         $view->setVar('felvetelalattpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $mkcs = new munkakorController($this->params);
+        $mkcs = new munkakorController();
         $p = $repo->find(\mkw\consts::AdminRole);
         $view->setVar('adminrolelist', $mkcs->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::TermekfeltoltoRole);
         $view->setVar('termekfeltoltorolelist', $mkcs->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $bsf = new bizonylatstatuszController($this->params);
+        $bsf = new bizonylatstatuszController();
         $p = $repo->find(\mkw\consts::BizonylatStatuszFuggoben);
         $view->setVar('bizonylatstatuszfuggobenlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::BizonylatStatuszTeljesitheto);
@@ -712,15 +712,15 @@ class setupController extends \mkwhelpers\Controller
         }
 
         $p = $repo->find(\mkw\consts::ValtozatTipusMeret);
-        $meretcs = new termekvaltozatadattipusController($this->params);
+        $meretcs = new termekvaltozatadattipusController();
         $view->setVar('valtozattipusmeretlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::ValtozatTipusSzin);
-//        $szincs = new termekvaltozatadattipusController($this->params);
+//        $szincs = new termekvaltozatadattipusController();
         $view->setVar('valtozattipusszinlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::RendezendoValtozat);
-//        $meretcs = new termekvaltozatadattipusController($this->params);
+//        $meretcs = new termekvaltozatadattipusController();
         $view->setVar('rendezendovaltozatlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::ValtozatSorrend);
@@ -776,7 +776,7 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::AKTrustedShopApiKey);
         $view->setVar(\mkw\consts::AKTrustedShopApiKey, ($p ? $p->getErtek() : ''));
 
-        $gyarto = new partnerController($this->params);
+        $gyarto = new partnerController();
         $p = $repo->find(\mkw\consts::GyartoDelton);
         $view->setVar('gyartodeltonlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoKreativ);
@@ -887,12 +887,12 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::MugenraceFooldalSzoveg);
         $view->setVar(\mkw\consts::MugenraceFooldalSzoveg, ($p ? $p->getErtek() : ''));
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $p = $repo->find(\mkw\consts::DefaultPartner);
         $view->setVar('defaultpartnerlist', $partner->getSelectList(($p ? $p->getErtek() : '')));
 
         $tc = $repo->find(\mkw\consts::DefaultTermek);
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('defaulttermeklist', $termek->getSelectList(($tc ? $tc->getErtek() : 0)));
 
         $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'kreativ']));

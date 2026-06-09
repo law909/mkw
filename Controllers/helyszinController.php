@@ -2,21 +2,25 @@
 
 namespace Controllers;
 
+use Entities\Helyszin;
 use Entities\Rendezveny;
 
-class helyszinController extends \mkwhelpers\MattableController {
+class helyszinController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Helyszin');
+    public function __construct()
+    {
+        $this->setEntityName(Helyszin::class);
         $this->setKarbFormTplName('helyszinkarbform.tpl');
         $this->setKarbTplName('helyszinkarb.tpl');
         $this->setListBodyRowTplName('helyszinlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t, $forKarb = false) {
-        $x = array();
+    protected function loadVars($t, $forKarb = false)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Helyszin();
             $this->getEm()->detach($t);
@@ -34,49 +38,59 @@ class helyszinController extends \mkwhelpers\MattableController {
     /**
      * @param \Entities\Helyszin $obj
      * @param $oper
+     *
      * @return mixed
      */
-    protected function setFields($obj, $oper) {
+    protected function setFields($obj, $oper)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setEmailsablon($this->params->getOriginalStringRequestParam('emailsablon'));
         $obj->setAr($this->params->getNumRequestParam('ar'));
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('helyszinlista_tbody.tpl');
 
         $filterarr = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filterarr->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filterarr));
 
         $egyedek = $this->getRepo()->getWithJoins(
-            $filterarr, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filterarr,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         /** @var \Entities\Helyszin $sor */
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('helyszinlista.tpl');
 
         $view->setVar('pagetitle', t('Helyszínek'));
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('helyszinlista.tpl');
 
         $view->setVar('pagetitle', t('Helyszínek'));
@@ -85,7 +99,8 @@ class helyszinController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);

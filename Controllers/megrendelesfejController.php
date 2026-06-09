@@ -12,12 +12,12 @@ use Entities\TermekValtozat;
 class megrendelesfejController extends bizonylatfejController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->biztipus = 'megrendeles';
         $this->setPageTitle('Megrendelés');
         $this->setPluralPageTitle('Megrendelések');
-        parent::__construct($params);
+        parent::__construct();
         $this->getRepo()->addToBatches(['foxpostsend' => 'Küldés Foxpostnak']);
         $this->getRepo()->addToBatches(['foxpostlabel' => 'Foxpost címke letöltés']);
         $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);
@@ -35,7 +35,7 @@ class megrendelesfejController extends bizonylatfejController
     public function getszamlakarb()
     {
         $megrendszam = $this->params->getStringRequestParams('id');
-        $szamlac = new SzamlafejController($this->params);
+        $szamlac = new SzamlafejController();
         $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 
@@ -66,7 +66,7 @@ class megrendelesfejController extends bizonylatfejController
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
                 $megrendfej->setSimpleedit(true);
-                $fpc = new \Controllers\csomagterminalController($this->params);
+                $fpc = new \Controllers\csomagterminalController();
                 $fpres = $fpc->sendMegrendelesToFoxpost($megrendfej);
                 if ($fpres) {
                     switch (\mkw\store::getParameter(\mkw\consts::FoxpostApiVersion, 'v2')) {

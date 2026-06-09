@@ -4,16 +4,19 @@ namespace Controllers;
 
 use mkw\store;
 
-class KeziszamlafejController extends bizonylatfejController {
+class KeziszamlafejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'keziszamla';
         $this->setPageTitle('Kézi számla');
         $this->setPluralPageTitle('Kézi számlák');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id)
+    {
         $source = $this->params->getStringRequestParam('source', '');
         if ($oper == 'inherit') {
             $egyed['id'] = \mkw\store::createUID();
@@ -32,9 +35,9 @@ class KeziszamlafejController extends bizonylatfejController {
                     $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
                     break;
             }
-            $ttk = array();
+            $ttk = [];
             $cikl = 1;
-            foreach($egyed['tetelek'] as $tetel) {
+            foreach ($egyed['tetelek'] as $tetel) {
                 $tetel['parentid'] = $tetel['id'];
                 $tetel['id'] = \mkw\store::createUID($cikl);
                 $tetel['oper'] = 'inherit';

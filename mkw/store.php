@@ -633,16 +633,16 @@ class store
         if ($needmenu) {
             switch (true) {
                 case self::isMugenrace2026():
-                    $tmc = new termekmenuController(self::getInput());
+                    $tmc = new termekmenuController();
                     $v->setVar('menu1', $tmc->getTreeAsArray());
                     break;
                 default:
-                    $tf = new termekfaController(self::getInput());
+                    $tf = new termekfaController();
                     $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
                     break;
             }
         }
-        $kc = new kosarController(self::getInput());
+        $kc = new kosarController();
         $minidata = $kc->getMiniData();
         $v->setVar('kosar', $minidata);
         if ($minidata && array_key_exists('termekdb', $minidata)) {
@@ -650,7 +650,7 @@ class store
         }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
-        $oc = new orszagController(self::getInput());
+        $oc = new orszagController();
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
         if (self::isMugenrace() || self::isMugenrace2026()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));

@@ -9,14 +9,14 @@ use Entities\Partner;
 class jogabejelentkezesController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(JogaBejelentkezes::class);
         $this->setKarbFormTplName('jogabejelentkezeskarbform.tpl');
         $this->setKarbTplName('jogabejelentkezeskarb.tpl');
         $this->setListBodyRowTplName('jogabejelentkezeslista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)

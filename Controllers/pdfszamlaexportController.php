@@ -22,7 +22,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
     private function getPDFs($biztipus, $utolsoszamla)
     {
         $bizrepo = $this->getEm()->getRepository('Entities\Bizonylatfej');
-        $bizctrl = bizonylatfejController::factory($biztipus, $this->params);
+        $bizctrl = bizonylatfejController::factory($biztipus);
         $bt = \mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find($biztipus);
 
         $filter = new \mkwhelpers\FilterDescriptor();

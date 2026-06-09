@@ -13,14 +13,14 @@ use mkwhelpers\FilterDescriptor;
 class termekertekelesController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(TermekErtekeles::class);
         $this->setKarbFormTplName('termekertekeleskarbform.tpl');
         $this->setKarbTplName('termekertekeleskarb.tpl');
         $this->setListBodyRowTplName('termekertekeleslista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
@@ -105,9 +105,9 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Termék értékelések'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList(0));
-        $tcs = new termekController($this->params);
+        $tcs = new termekController();
         $view->setVar('termeklist', $tcs->getSelectList());
         $view->printTemplateResult();
     }
@@ -124,10 +124,10 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $te = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($te, true));
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList(($te ? $te->getPartnerId() : 0)));
 
-        $csoport = new termekController($this->params);
+        $csoport = new termekController();
         $view->setVar('termeklist', $csoport->getSelectList(($te ? $te->getTermekId() : 0)));
 
         $view->printTemplateResult();

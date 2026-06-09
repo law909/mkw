@@ -21,14 +21,14 @@ use Entities\Valutanem;
 class jogareszvetelController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(JogaReszvetel::class);
         $this->setKarbFormTplName('jogareszvetelkarbform.tpl');
         $this->setKarbTplName('jogareszvetelkarb.tpl');
         $this->setListBodyRowTplName('jogareszvetellista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
@@ -79,19 +79,19 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $x['online'] = $t->getOnline();
 
         if ($forKarb) {
-            $fizmod = new fizmodController($this->params);
+            $fizmod = new fizmodController();
             $x['fizmodlist'] = $fizmod->getSelectList();
-            $termek = new termekController($this->params);
+            $termek = new termekController();
             $x['termeklist'] = $termek->getEladhatoSelectList();
-            $penztar = new penztarController($this->params);
+            $penztar = new penztarController();
             $x['penztarlist'] = $penztar->getSelectList();
-            $tanar = new dolgozoController($this->params);
+            $tanar = new dolgozoController();
             $x['tanarlist'] = $tanar->getSelectList();
-            $terem = new jogateremController($this->params);
+            $terem = new jogateremController();
             $x['jogateremlist'] = $terem->getSelectList();
-            $ot = new jogaoratipusController($this->params);
+            $ot = new jogaoratipusController();
             $x['jogaoratipuslist'] = $ot->getSelectList();
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $x['partnerlist'] = $partner->getSelectList();
         }
 
@@ -268,16 +268,16 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
         $view->setVar('pagetitle', t('Óra látogatások'));
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList());
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList());
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('termeklist', $termek->getSelectList());
-        $tanarc = new dolgozoController($this->params);
+        $tanarc = new dolgozoController();
         $view->setVar('tanarlist', $tanarc->getSelectList());
         $view->printTemplateResult(false);
     }
@@ -290,14 +290,14 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $tanarc = new dolgozoController($this->params);
+        $tanarc = new dolgozoController();
         $view->setVar('tanarlist', $tanarc->getSelectList());
         $view->printTemplateResult(false);
     }
@@ -326,10 +326,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
 
         return $view->getTemplateResult();

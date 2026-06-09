@@ -14,14 +14,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class bankbizonylatfejController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Bankbizonylatfej');
+        $this->setEntityName(Bankbizonylatfej::class);
         $this->setKarbFormTplName('bankbizonylatfejkarbform.tpl');
         $this->setKarbTplName('bankbizonylatfejkarb.tpl');
         $this->setListBodyRowTplName('bankbizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
@@ -45,7 +45,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $x['nemrossz'] = !$t->getRontott();
 
         if ($forKarb) {
-            $tetelCtrl = new bankbizonylattetelController($this->params);
+            $tetelCtrl = new bankbizonylattetelController();
             foreach ($t->getBizonylattetelek() as $ttetel) {
                 $tetel[] = $tetelCtrl->loadVars($ttetel, true);
             }
@@ -161,10 +161,10 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
             $bt->setTemplateVars($view);
         }
 
-        $vc = new valutanemController($this->params);
+        $vc = new valutanemController();
         $view->setVar('valutanemlist', $vc->getSelectList());
 
-        $bc = new bankszamlaController($this->params);
+        $bc = new bankszamlaController();
         $view->setVar('bankszamlalist', $bc->getSelectList());
     }
 
@@ -267,10 +267,10 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
         $bt->setTemplateVars($view);
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
 
-        $valutanem = new valutanemController($this->params);
+        $valutanem = new valutanemController();
         if (!$record || !$record->getValutanemId()) {
             $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
         } else {
@@ -278,7 +278,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         }
         $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
 
-        $bankszla = new bankszamlaController($this->params);
+        $bankszla = new bankszamlaController();
         $bankszlaid = false;
         if ($record && $record->getBankszamlaId()) {
             $bankszlaid = $record->getBankszamlaId();

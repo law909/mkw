@@ -8,10 +8,10 @@ use mkw\store;
 class arsavController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Arsav::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**

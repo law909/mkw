@@ -25,12 +25,12 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $view->setVar('datum', date(\mkw\store::$DateFormat));
 
-        $rc = new raktarController($this->params);
+        $rc = new raktarController();
         $view->setVar('raktarlist', $rc->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
-        $tac = new termekarController($this->params);
+        $tac = new termekarController();
         $tacok = $tac->getSelectList();
         $tacok[] = [
             'id' => '---utolsobeszar',

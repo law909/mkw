@@ -31,22 +31,22 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class partnerController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Partner::class);
         $this->setKarbFormTplName('partnerkarbform.tpl');
         $this->setKarbTplName('partnerkarb.tpl');
         $this->setListBodyRowTplName('partnerlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_partner');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
-        $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
-        $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
-        $dokCtrl = new partnerdokController($this->params);
-        $mptfolyoszamlaCtrl = new mptfolyoszamlaController($this->params);
+        $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController();
+        $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController();
+        $dokCtrl = new partnerdokController();
+        $mptfolyoszamlaCtrl = new mptfolyoszamlaController();
         $x = [];
         if (!$t) {
             $t = new \Entities\Partner();
@@ -832,22 +832,22 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Partnerek'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $tcc = new partnercimkekatController($this->params);
+        $tcc = new partnercimkekatController();
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
-        $orszag = new orszagController($this->params);
+        $orszag = new orszagController();
         $view->setVar('orszaglist', $orszag->getSelectList(0, true));
         $view->setVar('szallorszaglist', $orszag->getSelectList(0, true));
-        $partnertipus = new partnertipusController($this->params);
+        $partnertipus = new partnertipusController();
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
-        $tcs = new termekcsoportController($this->params);
+        $tcs = new termekcsoportController();
         $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
-        $emailtpl = new emailtemplateController($this->params);
+        $emailtpl = new emailtemplateController();
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
-        $ec = new mptngyegyetemController($this->params);
+        $ec = new mptngyegyetemController();
         $view->setVar('egyetemlist', $ec->getSelectList());
-        $kc = new mptngykarController($this->params);
+        $kc = new mptngykarController();
         $view->setVar('karlist', $kc->getSelectList());
 
         $view->printTemplateResult();
@@ -867,47 +867,47 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('szamlatipuslist', $this->getRepo()->getSzamlatipusList(($partner ? $partner->getSzamlatipus() : 0)));
         $view->setVar('vatstatuslist', $this->getRepo()->getVatstatusList(($partner ? $partner->getVatstatus() : 0)));
         // loadVars utan nem abc sorrendben adja vissza
-        $tcc = new partnercimkekatController($this->params);
+        $tcc = new partnercimkekatController();
         $cimkek = $partner ? $partner->getCimkek() : null;
         $view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList($partner?->getFizmodId()));
-        $uk = new uzletkotoController($this->params);
+        $uk = new uzletkotoController();
         $view->setVar('uzletkotolist', $uk->getSelectList($partner?->getUzletkotoId()));
-        $valutanem = new valutanemController($this->params);
+        $valutanem = new valutanemController();
         $view->setVar('valutanemlist', $valutanem->getSelectList($partner?->getValutanemId()));
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList($partner?->getArsav()?->getId()));
 
-        $szallmod = new szallitasimodController($this->params);
+        $szallmod = new szallitasimodController();
         $view->setVar('szallitasimodlist', $szallmod->getSelectList($partner?->getSzallitasimodId()));
-        $orszag = new orszagController($this->params);
+        $orszag = new orszagController();
         $view->setVar('orszaglist', $orszag->getSelectList($partner?->getOrszagId(), true));
         $view->setVar('szallorszaglist', $orszag->getSelectList($partner?->getSzallorszagId(), true));
-        $partnertipus = new partnertipusController($this->params);
+        $partnertipus = new partnertipusController();
         $view->setVar('partnertipuslist', $partnertipus->getSelectList($partner?->getPartnertipusId()));
-        $mpttagsagforma = new mpttagsagformaController($this->params);
+        $mpttagsagforma = new mpttagsagformaController();
         $view->setVar('mpttagsagformalist', $mpttagsagforma->getSelectList($partner?->getMptTagsagformaId()));
-        $mptszekcio = new mptszekcioController($this->params);
+        $mptszekcio = new mptszekcioController();
         $view->setVar('mptszekcio1list', $mptszekcio->getSelectList($partner?->getMptSzekcio1Id()));
         $view->setVar('mptszekcio2list', $mptszekcio->getSelectList($partner?->getMptSzekcio2Id()));
         $view->setVar('mptszekcio3list', $mptszekcio->getSelectList($partner?->getMptSzekcio3Id()));
-        $mpttagozat = new mpttagozatController($this->params);
+        $mpttagozat = new mpttagozatController();
         $view->setVar('mpttagozatlist', $mpttagozat->getSelectList($partner?->getMptTagozatId()));
 
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner?->getBizonylatnyelv()));
 
-        $telkorzetc = new korzetszamController($this->params);
+        $telkorzetc = new korzetszamController();
         $view->setVar('telkorzetlist', $telkorzetc->getSelectList($partner?->getTelkorzet()));
 
-        $mptngyszkc = new mptngyszerepkorController($this->params);
+        $mptngyszkc = new mptngyszerepkorController();
         $view->setVar('mptngyszerepkorlist', $mptngyszkc->getSelectList($partner?->getMptngyszerepkorId()));
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('mptngybefizetesmodlist', $fizmod->getSelectList($partner?->getMptngybefizetesmod()?->getId()));
 
-        $ec = new mptngyegyetemController($this->params);
+        $ec = new mptngyegyetemController();
         $view->setVar('egyetemlist', $ec->getSelectList($partner?->getMPTNGYEgyetemId()));
-        $kc = new mptngykarController($this->params);
+        $kc = new mptngykarController();
         $view->setVar('karlist', $kc->getSelectList($partner?->getMPTNGYKarId()));
 
         $view->setVar('partner', $this->loadVars($partner, true));
@@ -1165,7 +1165,7 @@ class partnerController extends \mkwhelpers\MattableController
                     }
                 }
             }
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->clear($user->getId()); // csak partner alapján
             $oldid = \mkw\session::getId();
             \mkw\session::regenerateId();
@@ -1175,7 +1175,7 @@ class partnerController extends \mkwhelpers\MattableController
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
             \mkw\store::getMainSession()->pk = $user->getId();
-            $mc = new mainController($this->params);
+            $mc = new mainController();
             $mc->setOrszag($user->getOrszagId());
             if (\mkw\store::isB2B()) {
                 if ($user->getEzuzletkoto()) {
@@ -1204,7 +1204,7 @@ class partnerController extends \mkwhelpers\MattableController
             $user->setSessionid('');
             $this->getEm()->persist($user);
             $this->getEm()->flush();
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->removeSessionId(\mkw\session::getId());
             \mkw\store::getMainSession()->pk = null;
             \mkw\store::getMainSession()->uk = null;
@@ -1354,19 +1354,19 @@ class partnerController extends \mkwhelpers\MattableController
         } elseif ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
 //				\mkw\session::writeClose();
             if (!$checkout) {
-                $kc = new kosarController($this->params);
+                $kc = new kosarController();
                 $kc->clear();
             }
             /** @var \Entities\Partner $partnerobj */
             $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
             if ($partnerobj) {
-                $mc = new mainController($this->params);
+                $mc = new mainController();
                 $mc->setOrszag($partnerobj->getOrszagId());
             }
             header('Location: ' . $route);
         } else {
             \mkw\store::clearLoggedInUser();
-            $mc = new mainController($this->params);
+            $mc = new mainController();
             $mc->clearOrszag();
             if ($checkout) {
                 \mkw\store::getMainSession()->loginerror = true;
@@ -1390,7 +1390,7 @@ class partnerController extends \mkwhelpers\MattableController
         }
         if ($this->checkloggedin()) {
             $this->logout();
-            $mc = new mainController($this->params);
+            $mc = new mainController();
             $mc->clearOrszag();
         }
         Header('Location: ' . $prevuri);
@@ -1407,32 +1407,32 @@ class partnerController extends \mkwhelpers\MattableController
             $view->setVar('pagetitle', t('Fiók') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('user', $this->loadVars($user)); // fillTemplate-ben megtortenik
 
-            $tec = new termekertesitoController($this->params);
+            $tec = new termekertesitoController();
             $view->setVar('ertesitok', $tec->getAllByPartner($user));
 
-            $megrc = new megrendelesfejController($this->params);
+            $megrc = new megrendelesfejController();
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
 
             $megrlist = $megrc->getFiokList(true);
             $view->setVar('mindenmegrendeleslist', $megrlist);
 
-            $szamlac = new szamlafejController($this->params);
+            $szamlac = new szamlafejController();
             $szamlalist = $szamlac->getFiokList();
             $view->setVar('szamlalist', $szamlalist);
 
-            $garugyc = new garanciaugyfejController($this->params);
+            $garugyc = new garanciaugyfejController();
             $garugylist = $garugyc->getFiokList();
             $view->setVar('garanciaugylist', $garugylist);
 
-            $orszagc = new orszagController($this->params);
+            $orszagc = new orszagController();
             $view->setVar('orszaglist', $orszagc->getSelectList($user->getOrszagId()));
             $view->setVar('szallorszaglist', $orszagc->getSelectList($user->getSzallorszagId()));
 
-            $telkorzetc = new korzetszamController($this->params);
+            $telkorzetc = new korzetszamController();
             $view->setVar('telkorzetlist', $telkorzetc->getSelectList($user->getTelkorzet()));
 
-            $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
+            $ptcsk = new partnertermekcsoportkedvezmenyController();
             $ptcsklist = $ptcsk->getFiokList();
             $view->setVar('discountlist', $ptcsklist);
             $view->printTemplateResult(true);
@@ -1617,7 +1617,7 @@ class partnerController extends \mkwhelpers\MattableController
                     $this->getEm()->persist($user);
                     $this->getEm()->flush();
                     if ($this->login($user)) {
-                        $kc = new kosarController($this->params);
+                        $kc = new kosarController();
                         $kc->clear();
                         $route = \mkw\store::getRouter()->generate('showaccount');
                     }

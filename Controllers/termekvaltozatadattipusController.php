@@ -8,10 +8,10 @@ use mkw\store;
 class termekvaltozatadattipusController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\TermekValtozatAdatTipus');
-        parent::__construct($params);
+        $this->setEntityName(TermekValtozatAdatTipus::class);
+        parent::__construct();
     }
 
     protected function loadCells($obj)

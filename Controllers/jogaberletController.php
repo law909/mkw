@@ -18,14 +18,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class jogaberletController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(JogaBerlet::class);
         $this->setKarbFormTplName('jogaberletkarbform.tpl');
         $this->setKarbTplName('jogaberletkarb.tpl');
         $this->setListBodyRowTplName('jogaberletlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -193,7 +193,7 @@ class jogaberletController extends \mkwhelpers\MattableController
         $view->setVar('controllerscript', 'jogaberletlista.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $termek = new termekController($this->params);
+        $termek = new termekController();
         $view->setVar('termeklist', $termek->getEladhatoSelectList());
         $view->printTemplateResult();
     }
@@ -211,11 +211,11 @@ class jogaberletController extends \mkwhelpers\MattableController
         /** @var \Entities\JogaBerlet $record */
         $record = $this->getRepo()->findWithJoins($id);
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
         }
         if (!\mkw\store::isTermekAutocomplete()) {
-            $termek = new termekController($this->params);
+            $termek = new termekController();
             $view->setVar('termeklist', $termek->getEladhatoSelectList(($record ? $record->getTermekId() : 0)));
         }
         $view->setVar('egyed', $this->loadVars($record));

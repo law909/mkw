@@ -7,10 +7,10 @@ use mkw\store;
 class mptngytemaController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(\Entities\MPTNGYTema::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadCells($obj)

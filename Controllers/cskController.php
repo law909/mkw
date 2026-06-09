@@ -2,29 +2,35 @@
 
 namespace Controllers;
 
+use Entities\Csk;
 use mkw\store;
 
-class cskController extends \mkwhelpers\JQGridController {
+class cskController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Csk');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Csk::class);
+        parent::__construct();
     }
 
-    protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getErtek());
+    protected function loadCells($sor)
+    {
+        return [$sor->getNev(), $sor->getErtek()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setErtek($this->params->getFloatRequestParam('ertek', $obj->getErtek()));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', NULL))) {
+            if (!is_null($this->params->getParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -32,22 +38,24 @@ class cskController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
                 'ertek' => $sor->getErtek()
-            );
+            ];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         $ret .= '<option value="0">Válasszon</option>';
         foreach ($rec as $sor) {

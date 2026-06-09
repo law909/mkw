@@ -2,17 +2,19 @@
 
 namespace Controllers;
 
+use Entities\Hir;
+
 class hirController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Hir');
+        $this->setEntityName(Hir::class);
         $this->setKarbFormTplName('hirkarbform.tpl');
         $this->setKarbTplName('hirkarb.tpl');
         $this->setListBodyRowTplName('hirlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)

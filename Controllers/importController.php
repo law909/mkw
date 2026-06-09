@@ -36,9 +36,9 @@ class importController extends \mkwhelpers\Controller
 
     private $settings;
 
-    public function __construct($params)
+    public function __construct()
     {
-        parent::__construct($params);
+        parent::__construct();
         $this->settings = [
             'quality' => 80,
             'sizes' => ['100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800']

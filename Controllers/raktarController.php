@@ -2,28 +2,35 @@
 
 namespace Controllers;
 
+use Entities\Raktar;
 use mkw\store;
 
-class raktarController extends \mkwhelpers\JQGridController {
+class raktarController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Raktar');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Raktar::class);
+        parent::__construct();
     }
 
     /**
      * @param \Entities\Raktar $obj
+     *
      * @return mixed
      */
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getMozgat(), $obj->getArchiv(), $obj->getIdegenkod());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev(), $obj->getMozgat(), $obj->getArchiv(), $obj->getIdegenkod()];
     }
 
     /**
      * @param \Entities\Raktar $obj
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
         $obj->setArchiv($this->params->getBoolRequestParam('archiv'));
@@ -31,7 +38,8 @@ class raktarController extends \mkwhelpers\JQGridController {
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
@@ -40,11 +48,12 @@ class raktarController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }

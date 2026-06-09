@@ -2,15 +2,16 @@
 
 namespace Controllers;
 
+use Entities\Vtsz;
 use mkw\store;
 
 class vtszController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Vtsz');
-        parent::__construct($params);
+        $this->setEntityName(Vtsz::class);
+        parent::__construct();
     }
 
     protected function loadCells($sor)

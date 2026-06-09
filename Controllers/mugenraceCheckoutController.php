@@ -92,13 +92,13 @@ class mugenraceCheckoutController extends checkoutController
         if ($ok) {
             switch ($regkell) {
                 case 1: // vendég
-                    $pc = new \Controllers\partnerController($this->params);
+                    $pc = new \Controllers\partnerController();
                     $partner = $pc->saveRegistrationData(true);
                     $szamlasave = true;
                     $szallsave = true;
                     break;
                 case 2: // regisztráció
-                    $pc = new \Controllers\partnerController($this->params);
+                    $pc = new \Controllers\partnerController();
                     $partner = $pc->saveRegistrationData(false);
                     $pc->login($kapcsemail, $jelszo1);
                     break;
@@ -134,7 +134,7 @@ class mugenraceCheckoutController extends checkoutController
             $partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
             $this->getEm()->persist($partner);
 
-            $biztetelcontroller = new bizonylattetelController($this->params);
+            $biztetelcontroller = new bizonylattetelController();
             //$valutanem =
 
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
@@ -240,11 +240,11 @@ class mugenraceCheckoutController extends checkoutController
             \mkw\store::getMainSession()->lasttermekids = $lasttermekids;
             \mkw\store::getMainSession()->lastszallmod = $szallitasimod;
             \mkw\store::getMainSession()->lastfizmod = $fizetesimod;
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->clear();
 
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
-                $bc = new barionController($this->params);
+                $bc = new barionController();
                 $paymentres = $bc->startPayment($megrendfej);
                 if ($paymentres['result']) {
                     Header('Location: ' . $paymentres['redirecturl']);

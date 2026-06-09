@@ -3,18 +3,19 @@
 namespace Controllers;
 
 use Entities\Arsav;
+use Entities\Uzletkoto;
 
 class uzletkotoController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Uzletkoto');
+        $this->setEntityName(Uzletkoto::class);
         $this->setKarbFormTplName('uzletkotokarbform.tpl');
         $this->setKarbTplName('uzletkotokarb.tpl');
         $this->setListBodyRowTplName('uzletkotolista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_uzletkoto');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -162,14 +163,14 @@ class uzletkotoController extends \mkwhelpers\MattableController
         $uk = $this->getRepo()->findWithJoins($id);
         // loadVars utan nem abc sorrendben adja vissza
 
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($uk ? $uk->getPartnerfizmodId() : 0)));
-        $valutanem = new valutanemController($this->params);
+        $valutanem = new valutanemController();
         $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($uk ? $uk->getPartnervalutanemId() : 0)));
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($uk ? $uk->getArsav()?->getId() : 0)));
 
-        $szallmod = new szallitasimodController($this->params);
+        $szallmod = new szallitasimodController();
         $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($uk ? $uk->getPartnerszallitasimodId() : 0)));
         $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($uk ? $uk->getPartnerszamlatipus() : 0)));
         $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($uk ? $uk->getPartnerbizonylatnyelv() : ''));

@@ -10,10 +10,10 @@ class termekcimkekatController extends \mkwhelpers\JQGridController
 
     private $termekcimkek;
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Termekcimkekat');
-        parent::__construct($params);
+        $this->setEntityName(Termekcimkekat::class);
+        parent::__construct();
     }
 
     protected function loadCells($obj)

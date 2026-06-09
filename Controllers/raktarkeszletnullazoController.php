@@ -21,7 +21,7 @@ class raktarkeszletnullazoController extends \mkwhelpers\Controller
         $view = $this->createView('raktarkeszletnullazo.tpl');
         $view->setVar('pagetitle', t('Raktár készlet nullázás'));
 
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList());
         $view->setVar('result', null);
 
@@ -37,7 +37,7 @@ class raktarkeszletnullazoController extends \mkwhelpers\Controller
         /** @var Raktar $raktar */
         $raktar = $this->getRepo(Raktar::class)->find($raktarid);
 
-        $raktarcontroller = new raktarController($this->params);
+        $raktarcontroller = new raktarController();
         $view->setVar('raktarlist', $raktarcontroller->getSelectList($raktarid));
 
         if (!$raktar) {

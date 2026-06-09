@@ -7,10 +7,10 @@ use Entities\CsapatKep;
 class csapatkepController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(CsapatKep::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t)

@@ -9,14 +9,14 @@ use mkw\store;
 class versenyzoController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Versenyzo::class);
         $this->setKarbTplName('versenyzokarb.tpl');
         $this->setKarbFormTplName('versenyzokarbform.tpl');
         $this->setListBodyRowVarName('_versenyzo');
         $this->setListBodyRowTplName('versenyzolista_tbody_tr.tpl');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
@@ -132,7 +132,7 @@ class versenyzoController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins(['id' => $id], []);
         $this->setVars($view);
         $view->setVar('versenyzo', $this->loadVars($record, true));
-        $csapatctrl = new csapatController($this->params);
+        $csapatctrl = new csapatController();
         $view->setVar('csapatlist', $csapatctrl->getSelectList($record?->getCsapatId()));
         $view->printTemplateResult();
     }

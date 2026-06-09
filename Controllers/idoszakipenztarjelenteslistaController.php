@@ -6,27 +6,29 @@ namespace Controllers;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableController {
+class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableController
+{
 
     private $tolstr;
     private $igstr;
     private $penztarid;
     private $penztarnev;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('idoszakipenztarjelenteslista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
 
         $view->printTemplateResult();
     }
 
-    protected function createFilter() {
-
+    protected function createFilter()
+    {
         $this->tolstr = $this->params->getStringRequestParam('tol');
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
@@ -53,8 +55,8 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         return $filter;
     }
 
-    protected function createNyitoFilter() {
-
+    protected function createNyitoFilter()
+    {
         $this->tolstr = $this->params->getStringRequestParam('tol');
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
@@ -77,8 +79,8 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         return $filter;
     }
 
-    public function createLista() {
-
+    public function createLista()
+    {
         $nyitofilter = $this->createNyitoFilter();
         $filter = $this->createFilter();
 
@@ -86,22 +88,24 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $repo = $this->getRepo('Entities\Penztarbizonylatfej');
 
         $nyito = $repo->getSum($nyitofilter);
-        $mind = $repo->getWithJoins($filter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
-        $adat = array(array(
-            'kelt' => '',
-            'id' => 'Nyitó',
-            'partnernev' => '',
-            'brutto' => $nyito,
-            'irany' => ($nyito < 0 ? -1 : 1)
-        ));
+        $mind = $repo->getWithJoins($filter, ['_xx.kelt' => 'ASC', '_xx.id' => 'ASC']);
+        $adat = [
+            [
+                'kelt' => '',
+                'id' => 'Nyitó',
+                'partnernev' => '',
+                'brutto' => $nyito,
+                'irany' => ($nyito < 0 ? -1 : 1)
+            ]
+        ];
         foreach ($mind as $elem) {
-            $adat[] = array(
+            $adat[] = [
                 'kelt' => $elem->getKeltStr(),
                 'id' => $elem->getId(),
                 'partnernev' => $elem->getPartnernev(),
                 'brutto' => $elem->getBrutto(),
                 'irany' => $elem->getIrany()
-            );
+            ];
         }
 
         $report = $this->createView('rep_idoszakipenztarjelentes.tpl');
@@ -112,9 +116,10 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $report->printTemplateResult();
     }
 
-    public function exportLista() {
-
-        function x($o) {
+    public function exportLista()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -137,7 +142,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $repo = $this->getRepo('Entities\Penztarbizonylatfej');
 
         $nyito = $repo->getSum($nyitofilter);
-        $mind = $repo->getWithJoins($filter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
+        $mind = $repo->getWithJoins($filter, ['_xx.kelt' => 'ASC', '_xx.id' => 'ASC']);
 
         $sor = 2;
         $egyenleg = 0;
@@ -147,8 +152,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
             $egyenleg = $egyenleg + $nyito;
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('F' . $sor, $egyenleg);
-        }
-        else {
+        } else {
             $egyenleg = $egyenleg - $nyito;
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('F' . $sor, $egyenleg);
@@ -166,8 +170,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
                     ->setCellValue('D' . $sor, $item->getBrutto())
                     ->setCellValue('E' . $sor, 0)
                     ->setCellValue('F' . $sor, $egyenleg);
-            }
-            else {
+            } else {
                 $egyenleg = $egyenleg - $item->getBrutto();
                 $excel->setActiveSheetIndex(0)
                     ->setCellValue('D' . $sor, 0)

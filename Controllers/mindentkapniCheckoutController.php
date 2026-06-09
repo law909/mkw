@@ -172,13 +172,13 @@ class mindentkapniCheckoutController extends checkoutController
         if ($ok) {
             switch ($regkell) {
                 case 1: // vendég
-                    $pc = new \Controllers\partnerController($this->params);
+                    $pc = new \Controllers\partnerController();
                     $partner = $pc->saveRegistrationData(true);
                     $szamlasave = true;
                     $szallsave = true;
                     break;
                 case 2: // regisztráció
-                    $pc = new \Controllers\partnerController($this->params);
+                    $pc = new \Controllers\partnerController();
                     $partner = $pc->saveRegistrationData(false);
                     $pc->login($kapcsemail, $jelszo1);
                     break;
@@ -303,14 +303,14 @@ class mindentkapniCheckoutController extends checkoutController
             \mkw\store::getMainSession()->lastszallmod = $szallitasimod;
             \mkw\store::getMainSession()->lastfizmod = $fizetesimod;
             \mkw\store::getMainSession()->lasttermekadat = $lasttermekadat;
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->clear();
 
             if ($bizstatusz) {
                 $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
             }
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
-                $bc = new barionController($this->params);
+                $bc = new barionController();
                 $paymentres = $bc->startPayment($megrendfej);
                 if ($paymentres['result']) {
                     Header('Location: ' . $paymentres['redirecturl']);

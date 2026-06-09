@@ -68,7 +68,7 @@ class superzoneb2bCheckoutController extends checkoutController
 
         if ($ok) {
             $partner = \mkw\store::getLoggedInUser();
-            $biztetelcontroller = new bizonylattetelController($this->params);
+            $biztetelcontroller = new bizonylattetelController();
             $valutanem = $partner->getValutanem();
 
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
@@ -147,7 +147,7 @@ class superzoneb2bCheckoutController extends checkoutController
             \mkw\store::getMainSession()->lasttermekids = $lasttermekids;
             //\mkw\store::getMainSession()->lastszallmod = $szallitasimod;
             //\mkw\store::getMainSession()->lastfizmod = $fizetesimod;
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->clear();
 
             if ($bizstatusz) {

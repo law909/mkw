@@ -24,26 +24,26 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     protected $biztipus;
 
-    public static function factory($biztip, $params)
+    public static function factory($biztip)
     {
         switch ($biztip) {
             case 'szamla':
-                return new szamlafejController($params);
+                return new szamlafejController();
             case 'esetiszamla':
-                return new esetiszamlafejController($params);
+                return new esetiszamlafejController();
             default:
-                return new bizonylatfejController($params);
+                return new bizonylatfejController();
         }
     }
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Bizonylatfej');
+        $this->setEntityName(Bizonylatfej::class);
         $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
         $this->setKarbTplName('bizonylatfejkarb.tpl');
         $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
         $this->getRepo()->addToBatches(['excelfejexport' => 'Fejadat export']);
         $this->getRepo()->addToBatches(['exceltetelexport' => 'Tételadat export']);
     }
@@ -81,28 +81,28 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
         $bt->setTemplateVars($view);
 
-        $fmc = new fizmodController($this->params);
+        $fmc = new fizmodController();
         $view->setVar('fizmodlist', $fmc->getSelectList());
 
-        $fmc = new szallitasimodController($this->params);
+        $fmc = new szallitasimodController();
         $view->setVar('szallitasimodlist', $fmc->getSelectList());
 
-        $fmc = new uzletkotoController($this->params);
+        $fmc = new uzletkotoController();
         $view->setVar('uzletkotolist', $fmc->getSelectList(false));
 
-        $fmc = new valutanemController($this->params);
+        $fmc = new valutanemController();
         $view->setVar('valutanemlist', $fmc->getSelectList());
 
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList());
 
-        $felh = new dolgozoController($this->params);
+        $felh = new dolgozoController();
         $view->setVar('felhasznalolist', $felh->getSelectList());
 
-        $emailtpl = new emailtemplateController($this->params);
+        $emailtpl = new emailtemplateController();
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
 
-        $bsc = new bizonylatstatuszController($this->params);
+        $bsc = new bizonylatstatuszController();
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
@@ -137,7 +137,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('datumtolfilter', $a);
         }
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek());
     }
 
@@ -355,8 +355,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false, $oper = false)
     {
-        $tetelCtrl = new bizonylattetelController($this->params);
-        $dokCtrl = new termekdokController($this->params);
+        $tetelCtrl = new bizonylattetelController();
+        $dokCtrl = new termekdokController();
         $tetel = [];
         $dok = [];
         $x = [];
@@ -524,7 +524,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['fakekifizetve'] = $t->getFakekifizetve();
             $x['fakekifizetesdatumstr'] = $t->getFakekifizetesdatumStr();
         }
-        $bsc = new bizonylatstatuszController($this->params);
+        $bsc = new bizonylatstatuszController();
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId(), $t->getFizmodId(), $t->getSzallitasimodId());
         if ($forKarb) {
             foreach ($t->getBizonylatDokok() as $kepje) {
@@ -850,7 +850,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $quick = $this->params->getBoolRequestParam('quick');
         $tetelids = $this->params->getArrayRequestParam('tetelid');
-        $biztetelcontroller = new bizonylattetelController($this->params);
+        $biztetelcontroller = new bizonylattetelController();
         foreach ($tetelids as $tetelid) {
             if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
                 $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
@@ -1354,11 +1354,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $bt->setTemplateVars($view);
 
             if (!\mkw\store::isPartnerAutocomplete()) {
-                $partnerc = new partnerController($this->params);
+                $partnerc = new partnerController();
                 $view->setVar('partnerlist', $partnerc->getSelectList(($record ? $record->getPartnerId() : 0)));
             }
 
-            $raktar = new raktarController($this->params);
+            $raktar = new raktarController();
             if (!$record || !$record->getRaktarId()) {
                 $raktarid = \mkw\store::getDefaultRaktarId();
             } else {
@@ -1366,7 +1366,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
-            $fizmod = new fizmodController($this->params);
+            $fizmod = new fizmodController();
             if (!$record || !$record->getFizmodId()) {
                 $fmid = \mkw\store::getParameter(\mkw\consts::Fizmod);
             } else {
@@ -1374,7 +1374,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
 
-            $szallitasimod = new szallitasimodController($this->params);
+            $szallitasimod = new szallitasimodController();
             if (!$record || !$record->getSzallitasimodId()) {
                 $szallmodid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
             } else {
@@ -1382,7 +1382,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($szallmodid, true));
 
-            $valutanem = new valutanemController($this->params);
+            $valutanem = new valutanemController();
             if (!$record || !$record->getValutanemId()) {
                 $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
             } else {
@@ -1390,7 +1390,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
 
-            $bankszla = new bankszamlaController($this->params);
+            $bankszla = new bankszamlaController();
             $bankszlaid = false;
             if ($record && $record->getBankszamlaId()) {
                 $bankszlaid = $record->getBankszamlaId();
@@ -1403,7 +1403,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
             $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
 
-            $uk = new uzletkotoController($this->params);
+            $uk = new uzletkotoController();
             if ($record && $record->getUzletkotoId()) {
                 $ukid = $record->getUzletkotoId();
             }
@@ -1426,17 +1426,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             );
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
-            $csomagctrl = new csomagterminalController($this->params);
+            $csomagctrl = new csomagterminalController();
             $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
             $view->setVar(
                 'csomagterminallist',
                 $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null))
             );
 
-            $felh = new dolgozoController($this->params);
+            $felh = new dolgozoController();
             $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));
 
-            $orszagc = new orszagController($this->params);
+            $orszagc = new orszagController();
             $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
             $view->setVar('szallorszaglist', $orszagc->getSelectList(($record ? $record->getPartnerszallorszagId() : 0)));
 

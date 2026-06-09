@@ -8,14 +8,14 @@ use mkwhelpers\FilterDescriptor;
 class szinController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Szin::class);
         $this->setKarbFormTplName('szinkarbform.tpl');
         $this->setKarbTplName('szinkarb.tpl');
         $this->setListBodyRowTplName('szinlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_szin');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)

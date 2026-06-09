@@ -2,13 +2,18 @@
 
 namespace Controllers;
 
-class xmlszamlaexportController extends \mkwhelpers\MattableController {
+use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
 
-    private $files = array();
+class xmlszamlaexportController extends \mkwhelpers\MattableController
+{
+
+    private $files = [];
     private $mar;
     private $esetimar;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('xmlszamlaexport.tpl');
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::XMLUtolsoSzamlaszam));
@@ -17,10 +22,11 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    private function getXMLs($biztipus, $utolsoszamla) {
-        $bizrepo = $this->getEm()->getRepository('Entities\Bizonylatfej');
-        $bizctrl = bizonylatfejController::factory($biztipus, $this->params);
-        $bt = \mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find($biztipus);
+    private function getXMLs($biztipus, $utolsoszamla)
+    {
+        $bizrepo = $this->getEm()->getRepository(Bizonylatfej::class);
+        $bizctrl = bizonylatfejController::factory($biztipus);
+        $bt = \mkw\store::getEm()->getRepository(Bizonylattipus::class)->find($biztipus);
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', $bt);
@@ -28,7 +34,7 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
         if ($mar) {
             $filter->addFilter('id', '>', $mar);
         }
-        $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
+        $r = $bizrepo->getAll($filter, ['id' => 'ASC']);
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
@@ -46,12 +52,12 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
         return $mar;
     }
 
-    protected function createZip() {
+    protected function createZip()
+    {
         $this->mar = $this->getXMLs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
         $this->esetimar = $this->getXMLs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
 
         if ($this->files) {
-
             $zipname = 'xmlkonyvelonek.zip';
             $zippath = \mkw\store::storagePath($zipname);
             $zip = new \ZipArchive();
@@ -70,20 +76,20 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
         return false;
     }
 
-    public function sendEmail() {
-
-        $res = array('msg' => at('A feldolgozás során hiba lépett fel!'));
+    public function sendEmail()
+    {
+        $res = ['msg' => at('A feldolgozás során hiba lépett fel!')];
 
         $zipname = $this->createZip();
         if ($zipname) {
-
             $email = \mkw\store::getParameter(\mkw\consts::KonyveloEmail);
             if ($email) {
                 $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::KonyvelolevelSablon));
                 if ($emailtpl) {
-
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                    $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
 
                     $mailer = \mkw\store::getMailer();
 
@@ -98,12 +104,10 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
                     \mkw\store::setParameter(\mkw\consts::XMLUtolsoSzamlaszam, $this->mar);
                     \mkw\store::setParameter(\mkw\consts::XMLUtolsoEsetiSzamlaszam, $this->esetimar);
                     $res['msg'] = at('Az email sikeresen elküldve.');
-                }
-                else {
+                } else {
                     $res['msg'] = at('Nincs megadva könyvelő levél sablon!');
                 }
-            }
-            else {
+            } else {
                 $res['msg'] = at('Nincs megadva könyvelő email!');
             }
             @unlink(\mkw\store::storagePath($zipname));
@@ -111,8 +115,8 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
         echo json_encode($res);
     }
 
-    public function download() {
-
+    public function download()
+    {
         $zipname = $this->createZip();
         if ($zipname) {
             header("Pragma: public");
@@ -121,9 +125,9 @@ class xmlszamlaexportController extends \mkwhelpers\MattableController {
             header("Cache-Control: public");
             header("Content-Description: File Transfer");
             header("Content-type: application/octet-stream");
-            header("Content-Disposition: attachment; filename=\"".$zipname."\"");
+            header("Content-Disposition: attachment; filename=\"" . $zipname . "\"");
             header("Content-Transfer-Encoding: binary");
-            header("Content-Length: ".filesize(\mkw\store::storagePath($zipname)));
+            header("Content-Length: " . filesize(\mkw\store::storagePath($zipname)));
             ob_end_flush();
             @readfile(\mkw\store::storagePath($zipname));
             @unlink(\mkw\store::storagePath($zipname));

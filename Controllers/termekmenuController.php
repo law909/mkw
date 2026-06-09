@@ -18,12 +18,12 @@ class termekmenuController extends \mkwhelpers\MattableController
 
     private $fatomb;
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(TermekMenu::class);
         $this->setKarbFormTplName('termekmenukarbform.tpl');
         $this->setKarbTplName('termekmenukarb.tpl');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**
@@ -272,8 +272,8 @@ class termekmenuController extends \mkwhelpers\MattableController
 
         /** @var \Entities\TermekRepository $termekrepo */
         $termekrepo = $this->getRepo(Termek::class);
-        $tc = new termekController($this->params);
-        $tck = new termekcimkekatController($this->params);
+        $tc = new termekController();
+        $tck = new termekcimkekatController();
 
         $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
 

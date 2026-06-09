@@ -14,14 +14,14 @@ use Entities\Valutanem;
 class szallitasimodController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Szallitasimod::class);
         $this->setKarbFormTplName('szallitasimodkarbform.tpl');
         $this->setKarbTplName('szallitasimodkarb.tpl');
         $this->setListBodyRowTplName('szallitasimodlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
@@ -51,7 +51,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
 
         if ($forKarb) {
             if ($letezik) {
-                $fhc = new szallitasimodhatarController($this->params);
+                $fhc = new szallitasimodhatarController();
                 $h = $this->getRepo(SzallitasimodHatar::class)->getBySzallitasimod($t);
                 $hatararr = [];
                 foreach ($h as $hat) {
@@ -59,7 +59,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $x['hatarok'] = $hatararr;
 
-                $fhc = new szallitasimodorszagController($this->params);
+                $fhc = new szallitasimodorszagController();
                 $h = $this->getRepo(SzallitasimodOrszag::class)->getBySzallitasimod($t);
                 $orszagarr = [];
                 foreach ($h as $hat) {
@@ -67,7 +67,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 }
                 $x['orszagok'] = $orszagarr;
 
-                $fhc = new szallitasimodfizmodnoveloController($this->params);
+                $fhc = new szallitasimodfizmodnoveloController();
                 $h = $this->getRepo(SzallitasimodFizmodNovelo::class)->getBySzallitasimod($t);
                 $orszagarr = [];
                 foreach ($h as $hat) {

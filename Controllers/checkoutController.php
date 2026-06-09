@@ -13,10 +13,10 @@ use mkw\store;
 class checkoutController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Kosar::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     private function vv($a, $b)
@@ -57,7 +57,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $sum = $sum + $sor->getBruttoegysar() * $sor->getMennyiseg();
         }
 
-        $szm = new szallitasimodController($this->params);
+        $szm = new szallitasimodController();
         $szlist = $szm->getSelectList(null, false, $valu, $sum);
 
         $u = \mkw\store::getLoggedInUser();
@@ -158,10 +158,10 @@ class checkoutController extends \mkwhelpers\MattableController
         $view->setVar('aszfready', $p->getBoolRequestParam('aszfready'));
         $view->setVar('akciohirlevel', $this->vv($p->getBoolRequestParam('akciohirlevel'), $user['akcioshirlevelkell']));
         $view->setVar('ujdonsaghirlevel', $this->vv($p->getBoolRequestParam('ujdonsaghirlevel'), $user['ujdonsaghirlevelkell']));
-        $oc = new orszagController($p);
+        $oc = new orszagController();
         $view->setVar('orszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('orszag'), $user['orszag'])));
         $view->setVar('szallorszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('szallorszag'), $user['szallorszag'])));
-        $telkorzetc = new korzetszamController($this->params);
+        $telkorzetc = new korzetszamController();
         $view->setVar('telkorzetlist', $telkorzetc->getSelectList($this->vv($p->getStringRequestParam('telkorzet'), $user['telkorzet'])));
         \mkw\store::getMainSession()->loginerror = false;
         \mkw\store::getMainSession()->checkoutErrors = false;
@@ -187,8 +187,8 @@ class checkoutController extends \mkwhelpers\MattableController
 
         $ret = [];
         $fr = $this->getRepo(Fizmod::class);
-        $fc = new fizmodController($this->params);
-        $szm = new szallitasimodController($this->params);
+        $fc = new fizmodController();
+        $szm = new szallitasimodController();
         $szlist = $szm->getSelectList(null, false, $valu, $sum);
         foreach ($szlist as $szallmod) {
             $fmlist = explode(',', $szallmod['fizmodok']);
@@ -210,7 +210,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $kosarrepo = $this->getRepo(Kosar::class);
         $krepo = $this->getRepo(SzallitasimodFizmodNovelo::class);
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
-        $fm = new fizmodController($this->params);
+        $fm = new fizmodController();
         $szm = $this->params->getIntRequestParam('szallitasimod');
         $szlist = $fm->getSelectList(null, $szm);
         $adat = [];
@@ -364,7 +364,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $excfm = [];
 
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
-        $fm = new fizmodController($this->params);
+        $fm = new fizmodController();
         $szlist = $fm->getSelectList($fizmod, $szallmod, $excfm);
         $view->setVar('fizmodlist', $szlist);
         $fml = $view->getTemplateResult();
@@ -373,7 +373,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $stripeClientSecret = '';
         $stripePublishableKey = '';
         if ($isStripe && $mr) {
-            $sc = new stripeController($this->params);
+            $sc = new stripeController();
             $paymentRes = $sc->createPaymentIntent($mr);
             if ($paymentRes['result']) {
                 $stripeClientSecret = $paymentRes['clientSecret'];

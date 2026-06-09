@@ -8,22 +8,22 @@ use mkw\store;
 class bankbizonylattetelController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Bankbizonylattetel');
+        $this->setEntityName(Bankbizonylattetel::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
         $this->setListBodyRowTplName('bankbizonylattetellista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
         $oper = $this->params->getStringRequestParam('oper');
-        $partner = new partnerController($this->params);
-        $jogcim = new jogcimController($this->params);
-        $valutanem = new valutanemController($this->params);
+        $partner = new partnerController();
+        $jogcim = new jogcimController();
+        $valutanem = new valutanemController();
         $x = [];
         if (!$t) {
             $t = new \Entities\Bankbizonylattetel();
@@ -95,8 +95,8 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 
-        $partner = new partnerController($this->params);
-        $valutanem = new valutanemController($this->params);
+        $partner = new partnerController();
+        $valutanem = new valutanemController();
 
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('valutanemlist', $valutanem->getSelectList());

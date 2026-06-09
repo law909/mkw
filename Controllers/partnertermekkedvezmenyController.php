@@ -3,28 +3,33 @@
 namespace Controllers;
 
 
-class partnertermekkedvezmenyController extends \mkwhelpers\MattableController {
+use Entities\PartnerTermekKedvezmeny;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\PartnerTermekKedvezmeny');
-        parent::__construct($params);
+class partnertermekkedvezmenyController extends \mkwhelpers\MattableController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(PartnerTermekKedvezmeny::class);
+        parent::__construct();
     }
 
     /**
      * @param \Entities\PartnerTermekKedvezmeny $t
      * @param bool|false $forKarb
+     *
      * @return array
      */
-    public function loadVars($t, $forKarb = false) {
-        $tc = new termekController($this->params);
-        $x = array();
+    public function loadVars($t, $forKarb = false)
+    {
+        $tc = new termekController();
+        $x = [];
         if (!$t) {
             $t = new \Entities\PartnerTermekKedvezmeny();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -38,30 +43,31 @@ class partnertermekkedvezmenyController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('partnertermekkedvezmenykarb.tpl');
         $view->setVar('kd', $this->loadVars(null, true));
         echo $view->getTemplateResult();
     }
 
-    public function getFiokList($newpartner = false) {
+    public function getFiokList($newpartner = false)
+    {
         if (!$newpartner) {
             $l = $this->getRepo()->getForFiok($this->getRepo('Entities\Partner')->getLoggedInUser());
-        }
-        else {
+        } else {
             $l = $this->getRepo()->getForFiok();
         }
-        $ret = array();
+        $ret = [];
         $db = 0;
         foreach ($l as $it) {
             $db++;
-            $ret[] = array(
+            $ret[] = [
                 'id' => ($it['id'] ? $it['id'] : 'new' . $db),
                 'oper' => ($it['id'] ? 'edit' : 'add'),
                 'tid' => $it['tid'],
                 'nev' => $it['nev'],
                 'kedvezmeny' => ($it['kedvezmeny'] ? $it['kedvezmeny'] * 1 : '')
-            );
+            ];
         }
         return $ret;
     }

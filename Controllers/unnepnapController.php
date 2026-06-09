@@ -1,23 +1,31 @@
 <?php
+
 namespace Controllers;
 
-class unnepnapController extends \mkwhelpers\JQGridController {
+use Entities\Unnepnap;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Unnepnap');
-        parent::__construct($params);
+class unnepnapController extends \mkwhelpers\JQGridController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(Unnepnap::class);
+        parent::__construct();
     }
 
-    protected function loadCells($sor) {
-        return array($sor->getDatumString());
+    protected function loadCells($sor)
+    {
+        return [$sor->getDatumString()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setDatum(new \DateTime(str_replace('.', '-', $this->params->getStringRequestParam('datum'))));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
             if ($this->params->getStringRequestParam('datum', '') != '') {
@@ -28,18 +36,20 @@ class unnepnapController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('datum' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['datum' => 'ASC']);
+        $res = [];
         /** @var \Entities\Unnepnap $sor */
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getDatumString(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getDatumString(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('datum' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['datum' => 'asc']);
         $ret = '<select>';
         /** @var \Entities\Unnepnap $sor */
         foreach ($rec as $sor) {

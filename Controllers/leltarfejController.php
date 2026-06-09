@@ -22,14 +22,14 @@ class leltarfejController extends \mkwhelpers\MattableController
 
     private $raktarnev;
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Leltarfej::class);
         $this->setKarbFormTplName('leltarfejkarbform.tpl');
         $this->setKarbTplName('leltarfejkarb.tpl');
         $this->setListBodyRowTplName('leltarfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_leltarfej');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function viewExport()
@@ -38,7 +38,7 @@ class leltarfejController extends \mkwhelpers\MattableController
         $leltarfej = $this->getRepo()->findWithJoins($id);
         $view = $this->createView('leltarexport.tpl');
 
-        $tac = new arsavController($this->params);
+        $tac = new arsavController();
         $view->setVar('arsavlist', $tac->getSelectList());
 
         $view->setVar('leltarfej', $this->loadVars($leltarfej, true));
@@ -122,7 +122,7 @@ class leltarfejController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Leltárak'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList(0));
         $view->printTemplateResult();
     }
@@ -137,7 +137,7 @@ class leltarfejController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
 
         $leltarfej = $this->getRepo()->findWithJoins($id);
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $view->setVar('raktarlist', $raktar->getSelectList(($leltarfej ? $leltarfej->getRaktarId() : 0)));
 
         $view->setVar('leltarfej', $this->loadVars($leltarfej, true));

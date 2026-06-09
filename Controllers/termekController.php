@@ -34,23 +34,23 @@ class termekController extends \mkwhelpers\MattableController
     private $kaphatolett = false;
     private $vanshowarsav = false;
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Termek::class);
         $this->setKarbFormTplName('termekkarbform.tpl');
         $this->setKarbTplName('termekkarb.tpl');
         $this->setListBodyRowTplName('termeklista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_termek');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
     {
-        $termekarCtrl = new termekarController($this->params);
-        $kepCtrl = new termekkepController($this->params);
-        $valtozatCtrl = new termekvaltozatController($this->params);
-        $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
-        $dokCtrl = new termekdokController($this->params);
+        $termekarCtrl = new termekarController();
+        $kepCtrl = new termekkepController();
+        $valtozatCtrl = new termekvaltozatController();
+        $kapcsolodoCtrl = new termekkapcsolodoController();
+        $dokCtrl = new termekdokController();
         $ar = [];
         $kep = [];
         $valtozat = [];
@@ -768,7 +768,7 @@ class termekController extends \mkwhelpers\MattableController
     protected function afterSave($o, $parancs = null)
     {
         if ($this->kaphatolett) {
-            $tec = new termekertesitoController($this->params);
+            $tec = new termekertesitoController();
             $tec->sendErtesito($o);
         }
         parent::afterSave($o, $parancs);
@@ -1294,11 +1294,11 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Termékek'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $tcc = new termekcimkekatController($this->params);
+        $tcc = new termekcimkekatController();
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
-        $gyarto = new partnerController($this->params);
+        $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
-        $tcs = new termekcsoportController($this->params);
+        $tcs = new termekcsoportController();
         $view->setVar('termekcsoportlist', $tcs->getSelectList());
         $view->printTemplateResult();
     }
@@ -1313,34 +1313,34 @@ class termekController extends \mkwhelpers\MattableController
 
         $termek = $this->getRepo()->findWithJoins($id);
         // LoadVars utan nem abc sorrendben adja vissza
-        $tcc = new termekcimkekatController($this->params);
+        $tcc = new termekcimkekatController();
         $cimkek = $termek ? $termek->getAllCimkeId() : null;
         $view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
 
         $view->setVar('egyed', $this->loadVars($termek, true));
 
-        $vtsz = new vtszController($this->params);
+        $vtsz = new vtszController();
         $view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : 0)));
 
-        $afa = new afaController($this->params);
+        $afa = new afaController();
         $view->setVar('afalist', $afa->getSelectList(($termek ? $termek->getAfaId() : 0)));
 
-        $valtozatadattipus = new termekvaltozatadattipusController($this->params);
+        $valtozatadattipus = new termekvaltozatadattipusController();
         $view->setVar('valtozatadattipuslist', $valtozatadattipus->getSelectList(($termek ? $termek->getValtozatadattipusId() : 0)));
 
-        $meretsor = new meretsorController($this->params);
+        $meretsor = new meretsorController();
         $view->setVar('meretsorlist', $meretsor->getSelectList());
 
-        $kep = new termekkepController($this->params);
+        $kep = new termekkepController();
         $view->setVar('keplist', $kep->getSelectList($termek, null));
 
-        $gyarto = new partnerController($this->params);
+        $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($termek ? $termek->getGyartoId() : 0)));
 
-        $csoport = new termekcsoportController($this->params);
+        $csoport = new termekcsoportController();
         $view->setVar('termekcsoportlist', $csoport->getSelectList(($termek ? $termek->getTermekcsoportId() : 0)));
 
-        $me = new meController($this->params);
+        $me = new meController();
         $view->setVar('melist', $me->getSelectList(($termek ? $termek->getMekodId() : 0)));
 
         $view->printTemplateResult();
@@ -1461,7 +1461,7 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
             if ($kaphatolett) {
-                $tec = new termekertesitoController($this->params);
+                $tec = new termekertesitoController();
                 $tec->sendErtesito($obj);
             }
         }
@@ -1518,14 +1518,14 @@ class termekController extends \mkwhelpers\MattableController
         $ret = [];
 
         if (\mkw\store::isMugenrace2026()) {
-            $tf = new termekmenuController($this->params);
+            $tf = new termekmenuController();
             if ($termek->getTermekmenu1()) {
                 $ret['navigator'] = $tf->getNavigator($termek->getTermekmenu1(), true);
             } else {
                 $ret['navigator'] = [];
             }
         } else {
-            $tfc = new termekfaController($this->params);
+            $tfc = new termekfaController();
             if ($termek->getTermekfa1()) {
                 $ret['navigator'] = $tfc->getNavigator($termek->getTermekfa1(), true);
             } else {
@@ -1641,7 +1641,7 @@ class termekController extends \mkwhelpers\MattableController
                 return;
             }
         }
-        $mc = new mainController($this->params);
+        $mc = new mainController();
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
@@ -1664,7 +1664,7 @@ class termekController extends \mkwhelpers\MattableController
                 return;
             }
         }
-        $mc = new mainController($this->params);
+        $mc = new mainController();
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
@@ -1981,7 +1981,7 @@ class termekController extends \mkwhelpers\MattableController
 
     public function colorexport()
     {
-        $tvec = new termekvaltozatertekController($this->params);
+        $tvec = new termekvaltozatertekController();
         $tvec->fill();
 
         $sor = 1;

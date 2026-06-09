@@ -17,10 +17,10 @@ class arlistaController extends \mkwhelpers\Controller
     {
         $view = $this->createView('arlista.tpl');
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
 
         $view->printTemplateResult(false);
@@ -33,8 +33,7 @@ class arlistaController extends \mkwhelpers\Controller
         $partnerid = $this->params->getIntRequestParam('partner');
         if ($partnerid) {
             $filter->addFilter('id', '=', $partnerid);
-        }
-        else {
+        } else {
             $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             $this->partnerkodok = $partnerkodok;
             if ($partnerkodok) {
@@ -53,13 +52,13 @@ class arlistaController extends \mkwhelpers\Controller
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, array());
-            $faszuro = array();
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
+            $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
             }
             if ($faszuro) {
-                $termekfilter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $faszuro);
+                $termekfilter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
 

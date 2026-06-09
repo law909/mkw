@@ -15,22 +15,22 @@ use mkw\store;
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(TermekValtozat::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $termek, $forKarb = false)
     {
-        $tvatc = new termekvaltozatadattipusController($this->params);
-        $tkepc = new termekkepController($this->params);
-        $szinc = new szinController($this->params);
-        $meretc = new meretController($this->params);
+        $tvatc = new termekvaltozatadattipusController();
+        $tkepc = new termekkepController();
+        $szinc = new szinController();
+        $meretc = new meretController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekValtozat();
@@ -474,5 +474,5 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             'html' => $tpl,
         ]);
     }
-    
+
 }

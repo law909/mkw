@@ -2,18 +2,20 @@
 
 namespace Controllers;
 
+use Entities\SzallitasimodFizmodNovelo;
+
 class szallitasimodfizmodnoveloController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\SzallitasimodFizmodNovelo');
-        parent::__construct($params);
+        $this->setEntityName(SzallitasimodFizmodNovelo::class);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
-        $oc = new fizmodController($this->params);
+        $oc = new fizmodController();
         $x = [];
         if (!$t) {
             $t = new \Entities\SzallitasimodFizmodNovelo();

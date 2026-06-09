@@ -25,14 +25,14 @@ class termekkartonController extends \mkwhelpers\Controller
         $view->setVar('keszletetmozgat', $termek->getMozgat());
         $view->setVar('kellegyediazonosito', $termek->getKellegyediazonosito());
         if ($termek) {
-            $tc = new termekController($this->params);
+            $tc = new termekController();
             $view->setVar('valtozatlista', $tc->getValtozatList($termekid, null));
         }
-        $rc = new raktarController($this->params);
+        $rc = new raktarController();
         $view->setVar('raktarlista', $rc->getSelectList());
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);

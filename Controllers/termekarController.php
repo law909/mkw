@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Termek;
+use Entities\TermekAr;
 use Entities\TermekFa;
 use Entities\TermekMenu;
 use Entities\Valutanem;
@@ -12,16 +13,16 @@ use mkwhelpers\FilterDescriptor;
 class termekarController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\TermekAr');
-        parent::__construct($params);
+        $this->setEntityName(TermekAr::class);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
     {
-        $valutanem = new valutanemController($this->params);
-        $arsav = new arsavController($this->params);
+        $valutanem = new valutanemController();
+        $arsav = new arsavController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekAr();

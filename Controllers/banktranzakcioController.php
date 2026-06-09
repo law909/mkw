@@ -17,14 +17,14 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 class banktranzakcioController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(BankTranzakcio::class);
         $this->setKarbFormTplName('banktranzakciokarbform.tpl');
         $this->setKarbTplName('banktranzakciokarb.tpl');
         $this->setListBodyRowTplName('banktranzakciolista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
@@ -101,7 +101,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->find($id);
 
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partnerc = new partnerController($this->params);
+            $partnerc = new partnerController();
             $view->setVar('partnerlist', $partnerc->getSelectList(($record ? $record->getPartnerId() : 0)));
         }
 

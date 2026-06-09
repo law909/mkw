@@ -2,13 +2,15 @@
 
 namespace Controllers;
 
-class EgyebmozgasfejController extends bizonylatfejController {
+class egyebmozgasfejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'egyeb';
         $this->setPageTitle('Egyéb mozgás');
         $this->setPluralPageTitle('Egyéb mozgások');
-        parent::__construct($params);
+        parent::__construct();
     }
 
 }

@@ -2,24 +2,28 @@
 
 namespace Controllers;
 
-class szallitasimodorszagController extends \mkwhelpers\MattableController {
+use Entities\SzallitasimodOrszag;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\SzallitasimodOrszag');
-        parent::__construct($params);
+class szallitasimodorszagController extends \mkwhelpers\MattableController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(SzallitasimodOrszag::class);
+        parent::__construct();
     }
 
-    public function loadVars($t, $forKarb = false) {
-        $valutanem = new valutanemController($this->params);
-        $oc = new orszagController($this->params);
-        $x = array();
+    public function loadVars($t, $forKarb = false)
+    {
+        $valutanem = new valutanemController();
+        $oc = new orszagController();
+        $x = [];
         if (!$t) {
             $t = new \Entities\SzallitasimodOrszag();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -34,11 +38,13 @@ class szallitasimodorszagController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('szallitasimodorszagkarb.tpl');
         $view->setVar('orszag', $this->loadVars(null, true));
         echo $view->getTemplateResult();

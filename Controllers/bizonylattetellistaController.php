@@ -28,30 +28,30 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
 
         $view->setVar('pagetitle', t('Bizonylattétel lista'));
         $view->setVar('datumtipus', 'teljesites');
-        $rc = new raktarController($this->params);
+        $rc = new raktarController();
         $view->setVar('raktarlista', $rc->getSelectList());
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
 
-        $uk = new uzletkotoController($this->params);
+        $uk = new uzletkotoController();
         $view->setVar('uklist', $uk->getSelectList());
-        $fm = new fizmodController($this->params);
+        $fm = new fizmodController();
         $view->setVar('fizmodlist', $fm->getSelectList());
 
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
-        $bsc = new bizonylatstatuszController($this->params);
+        $bsc = new bizonylatstatuszController();
         $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
         $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
 
-        $btc = new bizonylattipusController($this->params);
+        $btc = new bizonylattipusController();
         $view->setVar('bizonylattipuslist', $btc->getSelectList());
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);

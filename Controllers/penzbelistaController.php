@@ -3,27 +3,30 @@
 namespace Controllers;
 
 
-class penzbelistaController extends \mkwhelpers\MattableController {
+class penzbelistaController extends \mkwhelpers\MattableController
+{
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('penzbelista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
 
-        $bsz = new bankszamlaController($this->params);
+        $bsz = new bankszamlaController();
         $view->setVar('bankszamlalist', $bsz->getSelectList());
 
         $view->printTemplateResult();
     }
 
-    public function createLista() {
+    public function createLista()
+    {
         $bankszamlaid = $this->params->getIntRequestParam('bankszamla');
         $bsz = $this->getRepo('Entities\Bankszamla')->find($bankszamlaid);
         if ($bsz) {
@@ -47,8 +50,7 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         $selpartner = $this->params->getIntRequestParam('partner');
         if ($selpartner) {
             $filter->addFilter('partner', '=', $selpartner);
-        }
-        else {
+        } else {
             $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             if ($partnerkodok) {
                 $filter->addFilter('partner', 'IN', $partnerkodok);
@@ -62,20 +64,22 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
 
-        $mind = $btrepo->getAllWithFej($filter,
-            array('datum' => 'ASC', 'partnernev' => 'ASC'));
+        $mind = $btrepo->getAllWithFej(
+            $filter,
+            ['datum' => 'ASC', 'partnernev' => 'ASC']
+        );
 
-        $lista = array();
+        $lista = [];
         /** @var \Entities\Bankbizonylattetel $item */
         foreach ($mind as $item) {
-            $lista[] = array(
+            $lista[] = [
                 'datum' => $item->getDatumStr(),
                 'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
                 'partnerid' => $item->getPartnerId(),
                 'partnernev' => $item->getPartnernev(),
                 'osszeg' => $item->getBrutto(),
                 'valutanem' => $item->getValutanemnev()
-            );
+            ];
         }
 
         $valsum = $btrepo->calcSumByValutanem($filter);

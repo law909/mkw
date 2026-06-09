@@ -2,16 +2,19 @@
 
 namespace Controllers;
 
-class esetiszamlafejController extends bizonylatfejController {
+class esetiszamlafejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'esetiszamla';
         $this->setPageTitle('Eseti számla');
         $this->setPluralPageTitle('Eseti számlák');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)
+    {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
@@ -26,7 +29,10 @@ class esetiszamlafejController extends bizonylatfejController {
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\store::convDate($egyed['teljesitesstr'])));
+                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam(
+                            $egyed['valutanem'],
+                            new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
+                        );
                         if ($arf) {
                             $egyed['arfolyam'] = $arf->getArfolyam();
                         }
@@ -35,9 +41,9 @@ class esetiszamlafejController extends bizonylatfejController {
                         $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
                         break;
                 }
-                $ttk = array();
+                $ttk = [];
                 $cikl = 1;
-                foreach($egyed['tetelek'] as $tetel) {
+                foreach ($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
@@ -68,9 +74,9 @@ class esetiszamlafejController extends bizonylatfejController {
                     default:
                         $egyed['megjegyzes'] = $id . ' stornó bizonylata';
                 }
-                $ttk = array();
+                $ttk = [];
                 $cikl = 1;
-                foreach($egyed['tetelek'] as $tetel) {
+                foreach ($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'storno';

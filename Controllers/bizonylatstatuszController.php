@@ -12,14 +12,14 @@ use mkwhelpers\FilterDescriptor;
 class bizonylatstatuszController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Bizonylatstatusz::class);
         $this->setKarbFormTplName('bizonylatstatuszkarbform.tpl');
         $this->setKarbTplName('bizonylatstatuszkarb.tpl');
         $this->setListBodyRowTplName('bizonylatstatuszlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -118,11 +118,11 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         /** @var \Entities\Bizonylatstatusz $record */
         $record = $this->getRepo()->findWithJoins($id);
-        $etpl = new emailtemplateController($this->params);
+        $etpl = new emailtemplateController();
         $view->setVar('emailtemplatelist', $etpl->getSelectList(($record ? $record->getEmailtemplateId() : 0)));
-        $fmc = new fizmodController($this->params);
+        $fmc = new fizmodController();
         $view->setVar('fizmodlist', $fmc->getSelectList($record ? $record->getFizmodId() : 0));
-        $fmc = new szallitasimodController($this->params);
+        $fmc = new szallitasimodController();
         $view->setVar('szallitasimodlist', $fmc->getSelectList($record ? $record->getSzallitasimodId() : 0, true));
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();

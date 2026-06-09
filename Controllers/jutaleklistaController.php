@@ -23,10 +23,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
 
-        $fmc = new uzletkotoController($this->params);
+        $fmc = new uzletkotoController();
         $view->setVar('uklist', $fmc->getSelectList(false));
 
         $view->printTemplateResult();

@@ -8,7 +8,8 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class kintlevoseglistaController extends \mkwhelpers\MattableController {
+class kintlevoseglistaController extends \mkwhelpers\MattableController
+{
 
     private $tolstr;
     private $igstr;
@@ -20,7 +21,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
     private $cimkenevek;
     private $fizmodnev;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('kintlevoseglista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
@@ -28,19 +30,20 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $view->setVar('befdatum', date(\mkw\store::$DateFormat));
         $view->setVar('datumtipus', 'teljesites');
 
-        $uk = new uzletkotoController($this->params);
+        $uk = new uzletkotoController();
         $view->setVar('uklist', $uk->getSelectList());
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
 
         $view->printTemplateResult();
     }
 
-    protected function createBefdatumFilter($befdatumfilter) {
+    protected function createBefdatumFilter($befdatumfilter)
+    {
         $filter = new FilterDescriptor();
 
         $this->befdatumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($befdatumfilter)));
@@ -49,7 +52,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter) {
+    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter)
+    {
         $filter = new FilterDescriptor();
 
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tol)));
@@ -88,8 +92,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             if ($partner) {
                 $this->partnernev = $partner->getNev();
             }
-        }
-        else {
+        } else {
             $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
@@ -112,7 +115,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createSecFilter($partnerkod, $cimkefilter) {
+    protected function createSecFilter($partnerkod, $cimkefilter)
+    {
         $filter = new FilterDescriptor();
 
         $filter
@@ -121,8 +125,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
-        }
-        else {
+        } else {
             $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
@@ -237,29 +240,32 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' HAVING (tartozas <> 0)'
             . ')'
             . $sorrend
-            , $rsm);
-        $q->setParameters(array_merge_recursive(
-            $filter->getQueryParameters('par'),
-            $beffilter->getQueryParameters('bef'),
-            $secfilter->getQueryParameters('sec')
-        ));
+            ,
+            $rsm
+        );
+        $q->setParameters(
+            array_merge_recursive(
+                $filter->getQueryParameters('par'),
+                $beffilter->getQueryParameters('bef'),
+                $secfilter->getQueryParameters('sec')
+            )
+        );
 
         if (!$lejartfilter) {
             $lejartfilter = $this->params->getIntRequestParam('lejartfilter');
         }
 
         $d = $q->getScalarResult();
-        $ret = array();
+        $ret = [];
         $ma = new \DateTime(date(\mkw\store::$SQLDateFormat));
         $mastr = date(\mkw\store::$SQLDateFormat);
-        foreach($d as $sor) {
+        foreach ($d as $sor) {
             $sor['lejart'] = $sor['hivatkozottdatum'] <= $mastr;
             $es = new \DateTime($sor['hivatkozottdatum']);
             $diff = $ma->diff($es);
             if ($sor['lejart']) {
                 $sor['lejartnap'] = $diff->days;
-            }
-            else {
+            } else {
                 $sor['lejartnap'] = 0;
             }
             switch ($lejartfilter) {
@@ -288,7 +294,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    protected function createFakeFilter() {
+    protected function createFakeFilter()
+    {
         $filter = new FilterDescriptor();
 
         $tolstr = $this->params->getStringRequestParam('tol');
@@ -320,8 +327,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $partnerkod = $this->params->getIntRequestParam('partner');
         if ($partnerkod) {
             $filter->addFilter('bf.partner_id', '=', $partnerkod);
-        }
-        else {
+        } else {
             $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
@@ -340,7 +346,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function getFakeData($ret) {
+    protected function getFakeData($ret)
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'bizonylatfej_id');
         $rsm->addScalarResult('partner_id', 'partner_id');
@@ -371,11 +378,13 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' LEFT OUTER JOIN partner p ON (bf.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
             . ' ORDER BY nev, partner_id, kelt'
-            , $rsm);
+            ,
+            $rsm
+        );
         $q->setParameters($filter->getQueryParameters('par'));
 
         $d = $q->getScalarResult();
-        foreach($d as $sor) {
+        foreach ($d as $sor) {
             $sor['lejart'] = true;
             $sor['lejartnap'] = 0;
             $ret[] = $sor;
@@ -384,8 +393,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
-    public function createLista() {
-
+    public function createLista()
+    {
         $d = $this->getData();
         $report = $this->createView('rep_kintlevoseg.tpl');
         $report->setVar('lista', $d);
@@ -400,9 +409,10 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $report->printTemplateResult();
     }
 
-    public function exportLista() {
-
-        function x($o) {
+    public function exportLista()
+    {
+        function x($o)
+        {
             if ($o <= 26) {
                 return chr(65 + $o);
             }
@@ -464,6 +474,5 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
-
     }
 }

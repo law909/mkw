@@ -68,11 +68,11 @@ class adminController extends mkwhelpers\Controller
         }
         $view->setVar('nohibalista', $nohibasbeallitas);
 
-        $raktar = new raktarController($this->params);
+        $raktar = new raktarController();
         $raktarid = \mkw\store::getDefaultRaktarId();
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
-        $lista = new listaController($this->params);
+        $lista = new listaController();
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneB2B():
@@ -82,9 +82,9 @@ class adminController extends mkwhelpers\Controller
                 $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
                 $view->setVar('napijelentes2defaultraktar', $raktarid2);
                 $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
-                $felh = new dolgozoController($this->params);
+                $felh = new dolgozoController();
                 $view->setVar('felhasznalolist', $felh->getSelectList());
-                $apierrorlog = new apierrorlogController($this->params);
+                $apierrorlog = new apierrorlogController();
                 $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
             case \mkw\store::isMindentkapni():
@@ -94,32 +94,32 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
                 break;
             case \mkw\store::isDarshan():
-                $partner = new partnerController($this->params);
+                $partner = new partnerController();
                 $view->setVar('partnerlist', $partner->getSelectList());
                 $szallitofilter = new \mkwhelpers\FilterDescriptor();
                 $szallitofilter->addFilter('szallito', '=', true);
                 $view->setVar('szallitolist', $partner->getSelectList(null, $szallitofilter));
-                $valutanem = new valutanemController($this->params);
+                $valutanem = new valutanemController();
                 $view->setVar('valutanemlist', $valutanem->getSelectList());
-                $penztar = new penztarController($this->params);
+                $penztar = new penztarController();
                 $view->setVar('penztarlist', $penztar->getSelectList());
-                $bankszamla = new bankszamlaController($this->params);
+                $bankszamla = new bankszamlaController();
                 $view->setVar('bankszamlalist', $bankszamla->getSelectList());
-                $jogcim = new jogcimController($this->params);
+                $jogcim = new jogcimController();
                 $view->setVar('jogcimlist', $jogcim->getSelectList());
-                $fizmod = new fizmodController($this->params);
+                $fizmod = new fizmodController();
                 $view->setVar('fizmodlist', $fizmod->getSelectList());
-                $termek = new termekController($this->params);
+                $termek = new termekController();
                 $view->setVar('termeklist', $termek->getSelectList());
                 $view->setVar('eladhatotermeklist', $termek->getEladhatoSelectList());
-                $felh = new dolgozoController($this->params);
+                $felh = new dolgozoController();
                 $view->setVar('felhasznalolist', $felh->getSelectList());
                 $view->setVar('tanarlist', $felh->getSelectList());
-                $terem = new jogateremController($this->params);
+                $terem = new jogateremController();
                 $view->setVar('jogateremlist', $terem->getSelectList());
-                $ot = new jogaoratipusController($this->params);
+                $ot = new jogaoratipusController();
                 $view->setVar('jogaoratipuslist', $ot->getSelectList());
-                $rendezveny = new rendezvenyController($this->params);
+                $rendezveny = new rendezvenyController();
                 $view->setVar('rendezvenylist', $rendezveny->getSelectList());
                 $view->setVar('datumstr', date(\mkw\store::$DateFormat));
 
@@ -144,7 +144,7 @@ class adminController extends mkwhelpers\Controller
     public function refreshTeljesithetoBackorderek()
     {
         $view = $this->createView('teljesithetobackorderekbody.tpl');
-        $megrend = new megrendelesfejController($this->params);
+        $megrend = new megrendelesfejController();
         $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
         $view->printTemplateResult();
     }
@@ -322,7 +322,7 @@ class adminController extends mkwhelpers\Controller
                 $telszig = Carbon::now()->endOfMonth();
                 break;
         }
-        $tec = new tanarelszamolasController($this->params);
+        $tec = new tanarelszamolasController();
         $tecres = $tec->getData(null, $telsztol->format(\mkw\store::$DateFormat), $telszig->format(\mkw\store::$DateFormat));
 
         $tecview = $this->createView('tanarelszamolastanarsum.tpl');
@@ -339,7 +339,7 @@ class adminController extends mkwhelpers\Controller
 
     public function printNapijelentes()
     {
-        $lista = new listaController($this->params);
+        $lista = new listaController();
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('datumig');
@@ -352,7 +352,7 @@ class adminController extends mkwhelpers\Controller
 
     public function printNapijelentes2()
     {
-        $lista = new listaController($this->params);
+        $lista = new listaController();
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('datumig');
@@ -367,7 +367,7 @@ class adminController extends mkwhelpers\Controller
 
     public function printTeljesitmenyJelentes()
     {
-        $lista = new listaController($this->params);
+        $lista = new listaController();
 
         $datumstr = $this->params->getStringRequestParam('tol');
         $datum = \mkw\store::convDate($datumstr);
@@ -486,7 +486,7 @@ class adminController extends mkwhelpers\Controller
         */
         echo 'kesz';
     }
-    
+
     public function replier()
     {
         header('HTTP/1.1 200 OK');

@@ -7,14 +7,14 @@ use Entities\TermekKep;
 class termekkepController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\TermekKep');
+        $this->setEntityName(TermekKep::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t)

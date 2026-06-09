@@ -2,17 +2,21 @@
 
 namespace Controllers;
 
+use Entities\CsomagTerminal;
 use mkw\consts;
 
-class csomagterminalController extends \mkwhelpers\MattableController {
+class csomagterminalController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\CsomagTerminal');
+    public function __construct()
+    {
+        $this->setEntityName(CsomagTerminal::class);
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function initFoxpostCurl($resource) {
+    public function initFoxpostCurl($resource)
+    {
         switch (\mkw\store::getParameter(\mkw\consts::FoxpostApiVersion, 'v1')) {
             case 'v1':
                 return $this->initFoxpostCurlv1($resource);
@@ -23,7 +27,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         }
     }
 
-    private function initFoxpostCurlv2($resource, array $headers = []) {
+    private function initFoxpostCurlv2($resource, array $headers = [])
+    {
         $ch = curl_init(\mkw\store::getParameter(\mkw\consts::Foxpostv2ApiURL) . $resource);
         $vanaccept = false;
         foreach ($headers as $h) {
@@ -37,25 +42,35 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $headers[] = 'Content-Type: application/json';
         $headers[] = "api-key: " . \mkw\store::getParameter(\mkw\consts::Foxpostv2ApiKey);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_USERPWD, \mkw\store::getParameter(\mkw\consts::Foxpostv2Username) . ":" . \mkw\store::getParameter(\mkw\consts::Foxpostv2Password));
+        curl_setopt(
+            $ch,
+            CURLOPT_USERPWD,
+            \mkw\store::getParameter(\mkw\consts::Foxpostv2Username) . ":" . \mkw\store::getParameter(\mkw\consts::Foxpostv2Password)
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         return $ch;
     }
 
-    private function initFoxpostCurlv1($resource) {
+    private function initFoxpostCurlv1($resource)
+    {
         $ch = curl_init(\mkw\store::getParameter(\mkw\consts::FoxpostApiURL) . $resource);
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HEADER, "Accept:application/vnd.cleveron+json; version=1.0");
         curl_setopt($ch, CURLOPT_HEADER, "Content-Type:application/vnd.cleveron+json");
-        curl_setopt($ch, CURLOPT_USERPWD, \mkw\store::getParameter(\mkw\consts::FoxpostUsername) . ":" . \mkw\store::getParameter(\mkw\consts::FoxpostPassword));
+        curl_setopt(
+            $ch,
+            CURLOPT_USERPWD,
+            \mkw\store::getParameter(\mkw\consts::FoxpostUsername) . ":" . \mkw\store::getParameter(\mkw\consts::FoxpostPassword)
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         return $ch;
     }
 
-    public function downloadFoxpostTerminalList() {
+    public function downloadFoxpostTerminalList()
+    {
         switch (\mkw\store::getParameter(\mkw\consts::FoxpostApiVersion, 'v1')) {
             case 'v1':
                 return $this->downloadFoxpostTerminalListv1();
@@ -66,7 +81,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         }
     }
 
-    private function downloadFoxpostTerminalListv2() {
+    private function downloadFoxpostTerminalListv2()
+    {
         $ch = curl_init('https://cdn.foxpost.hu/apms.json');
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HEADER, "Accept:application/vnd.cleveron+json; version=1.0");
@@ -80,7 +96,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $db = 0;
             foreach ($res as $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r->operator_id, 'tipus' => 'foxpost'));
+                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r->operator_id, 'tipus' => 'foxpost']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -88,7 +104,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                 $terminal->setNev($r->name);
                 $terminal->setCim($r->address);
                 $terminal->setCsoport($r->group);
-                $terminal->setFindme(mb_substr($r->findme,0,254));
+                $terminal->setFindme(mb_substr($r->findme, 0, 254));
                 $open = 'hétfő: ' . $r->open->hetfo
                     . '; kedd: ' . $r->open->kedd
                     . '; szerda: ' . $r->open->szerda
@@ -130,7 +146,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         return $res;
     }
 
-    private function downloadFoxpostTerminalListv1() {
+    private function downloadFoxpostTerminalListv1()
+    {
         $ch = $this->initFoxpostCurl('places');
         $res = curl_exec($ch);
         $res = json_decode($res);
@@ -139,7 +156,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $db = 0;
             foreach ($res as $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r->place_id, 'tipus' => 'foxpost'));
+                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r->place_id, 'tipus' => 'foxpost']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -184,9 +201,11 @@ class csomagterminalController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Bizonylatfej $fej
+     *
      * @return mixed
      */
-    public function sendMegrendelesToFoxpost($fej) {
+    public function sendMegrendelesToFoxpost($fej)
+    {
         switch (\mkw\store::getParameter(\mkw\consts::FoxpostApiVersion, 'v1')) {
             case 'v1':
                 return $this->sendMegrendelesToFoxpostv1($fej);
@@ -199,12 +218,14 @@ class csomagterminalController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Bizonylatfej $fej
+     *
      * @return mixed
      */
-    private function sendMegrendelesToFoxpostv2($fej) {
+    private function sendMegrendelesToFoxpostv2($fej)
+    {
         $ch = $this->initFoxpostCurl('parcel');
 
-        $fields = array($fej->toFoxpostv2API());
+        $fields = [$fej->toFoxpostv2API()];
         $tosend = json_encode($fields);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -220,8 +241,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                             'success' => true,
                             'data' => $res['parcels'][0]
                         ];
-                    }
-                    else {
+                    } else {
                         $retval = [
                             'success' => false,
                             'http_code' => $info['http_code'],
@@ -245,8 +265,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                     ];
                     break;
             }
-        }
-        else {
+        } else {
             $retval = [
                 'success' => false,
                 'http_code' => $info['http_code'],
@@ -262,17 +281,19 @@ class csomagterminalController extends \mkwhelpers\MattableController {
 
     /**
      * @param \Entities\Bizonylatfej $fej
+     *
      * @return mixed
      */
-    private function sendMegrendelesToFoxpostv1($fej) {
+    private function sendMegrendelesToFoxpostv1($fej)
+    {
         $ch = $this->initFoxpostCurl('orders');
-        $fields = array(
+        $fields = [
             'place_id' => (int)$fej->getCsomagterminalIdegenId(),
-            'name' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
+            'name' => (\mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
             'phone' => $fej->getPartnertelefon(),
             'email' => $fej->getPartneremail(),
             'refcode' => $fej->getId()
-        );
+        ];
         if (\mkw\store::isUtanvetFizmod($fej->getFizmodId())) {
             $fields['cod_amount'] = (int)$fej->getBrutto() * 100;
             $fields['cod_currency'] = 'HUF';
@@ -280,25 +301,26 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $tosend = json_encode($fields);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $tosend);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Length: ' . strlen($tosend),
             'Content-Type:application/vnd.cleveron+json'
-        ));
+        ]);
         $res = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($res, true);
         return $res;
     }
 
-    public function generateFoxpostLabels(array $ids) {
+    public function generateFoxpostLabels(array $ids)
+    {
         $ch = $this->initFoxpostCurlv2('label/A7?startPos=0', ['accept: application/pdf']);
         $tosend = json_encode($ids);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $tosend);
         $pdfname = implode('/', [
-            rtrim(\mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir), '/'),
-            'foxpost' . date('YmdHis') . '.pdf'
+                rtrim(\mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir), '/'),
+                'foxpost' . date('YmdHis') . '.pdf'
             ]
         );
         $ih = fopen($pdfname, 'w');
@@ -330,8 +352,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
                     ];
                     break;
             }
-        }
-        else {
+        } else {
             $retval = [
                 'success' => false,
                 'http_code' => $info['http_code'],
@@ -345,7 +366,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         return $retval;
     }
 
-    public function downloadGLSTerminalList() {
+    public function downloadGLSTerminalList()
+    {
         $sep = ';';
         $ch = curl_init(\mkw\store::getParameter(\mkw\consts::GLSTerminalURL));
         $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'w');
@@ -356,8 +378,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         fclose($fh);
         $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'r');
         if ($fh) {
-
-            $pontok = array();
+            $pontok = [];
             fgetcsv($fh, 0, $sep);
             while ($data = fgetcsv($fh, 0, $sep)) {
                 $pontok[] = $data;
@@ -365,7 +386,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $db = 0;
             foreach ($pontok as $i => $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r[\mkw\store::n('a')], 'tipus' => 'gls'));
+                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r[\mkw\store::n('a')], 'tipus' => 'gls']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -404,7 +425,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function getCsoportok() {
+    public function getCsoportok()
+    {
         $szmid = $this->params->getIntRequestParam('szmid');
         $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
         $tipus = null;
@@ -417,28 +439,28 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $elozocsoport = \mkw\store::getMainSession()->$key;
 
         $rec = $this->getRepo('Entities\CsomagTerminal')->getCsoportok($tipus);
-        $res = array();
+        $res = [];
         foreach ($rec as $sor) {
-            $r = array(
+            $r = [
                 'id' => $sor['csoport'],
                 'caption' => $sor['csoport']
-            );
+            ];
             if ($elozocsoport && ($sor['csoport'] == $elozocsoport)) {
                 $r['selected'] = true;
-            }
-            else {
+            } else {
                 $r['selected'] = false;
             }
             $res[] = $r;
         }
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'csoportlist.tpl');
-		$view->setVar($tipus . 'csoportlist', $res);
-		echo json_encode(array(
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'csoportlist.tpl');
+        $view->setVar($tipus . 'csoportlist', $res);
+        echo json_encode([
             'html' => $view->getTemplateResult()
-        ));
+        ]);
     }
 
-    public function getTerminalok() {
+    public function getTerminalok()
+    {
         $szmid = $this->params->getIntRequestParam('szmid');
         $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
         $tipus = null;
@@ -451,48 +473,49 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $elozoterminal = \mkw\store::getMainSession()->$key;
 
         $rec = $this->getRepo('Entities\CsomagTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus, ['nev' => 'ASC']);
-        $res = array();
+        $res = [];
         foreach ($rec as $sor) {
-            $r = array(
+            $r = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'cim' => $sor->getCim()
-            );
+            ];
             if ($elozoterminal && ($sor->getId() == $elozoterminal)) {
                 $r['selected'] = true;
-            }
-            else {
+            } else {
                 $r['selected'] = false;
             }
             $res[] = $r;
         }
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'terminallist.tpl');
-		$view->setVar($tipus . 'terminallist', $res);
-		echo json_encode(array(
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'terminallist.tpl');
+        $view->setVar($tipus . 'terminallist', $res);
+        echo json_encode([
             'html' => $view->getTemplateResult()
-        ));
+        ]);
     }
 
-    public function getSelectList($selid, $tipus = null) {
+    public function getSelectList($selid, $tipus = null)
+    {
         if (!is_null($tipus)) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('inaktiv', '=', false);
             $filter->addFilter('tipus', '=', $tipus);
-            $rec = $this->getRepo()->getAll($filter, array('csoport' => 'ASC', 'nev' => 'ASC'));
-            $res = array();
+            $rec = $this->getRepo()->getAll($filter, ['csoport' => 'ASC', 'nev' => 'ASC']);
+            $res = [];
             foreach ($rec as $sor) {
-                $res[] = array(
+                $res[] = [
                     'id' => $sor->getId(),
                     'caption' => $sor->getCsoport() . ' ' . $sor->getNev() . ' ' . $sor->getCim(),
                     'selected' => ($sor->getId() == $selid)
-                );
+                ];
             }
             return $res;
         }
         return null;
     }
 
-    public function getHTMLList() {
+    public function getHTMLList()
+    {
         $szmid = $this->params->getIntRequestParam('szmid');
         $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
         $tipus = null;
@@ -508,19 +531,19 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $view->setVar('variable', $tipus . 'terminal');
         $view->setVar('tagid', 'CsomagTerminalEdit');
 
-        echo json_encode(array(
+        echo json_encode([
             'html' => $view->getTemplateResult()
-        ));
+        ]);
     }
 
-    public function getTerminalId() {
+    public function getTerminalId()
+    {
         $tipus = $this->params->getStringRequestParam('tipus');
         $id = $this->params->getStringRequestParam('id');
-        $obj = $this->getRepo()->findBy(array('tipus' => $tipus, 'idegenid' => $id));
+        $obj = $this->getRepo()->findBy(['tipus' => $tipus, 'idegenid' => $id]);
         if ($obj) {
             $obj = $obj[0];
-        }
-        else {
+        } else {
             $obj = new \Entities\CsomagTerminal();
             $obj->setTipus($tipus);
             $obj->setIdegenid($id);

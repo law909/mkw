@@ -7,10 +7,10 @@ use Entities\Bizonylattipus;
 class bizonylattipusController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Bizonylattipus::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function getSelectList($selid = null)

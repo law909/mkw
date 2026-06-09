@@ -1,21 +1,25 @@
 <?php
+
 namespace Controllers;
 
 use Entities\Jelenletiiv;
 
-class jelenletiivController extends \mkwhelpers\MattableController {
+class jelenletiivController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Jelenletiiv');
+    public function __construct()
+    {
+        $this->setEntityName(Jelenletiiv::class);
         $this->setKarbFormTplName('jelenletiivkarbform.tpl');
         $this->setKarbTplName('jelenletiivkarb.tpl');
         $this->setListBodyRowTplName('jelenletiivlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Jelenletiiv();
             $this->getEm()->detach($t);
@@ -37,7 +41,8 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    public function setFields($obj) {
+    public function setFields($obj)
+    {
         $obj->setDatum($this->params->getStringRequestParam('datum'));
         $obj->setMunkaido($this->params->getIntRequestParam('munkaido'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo', 0));
@@ -51,15 +56,16 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('jelenletiivlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
 
-        if (!is_null($this->params->getRequestParam('tolfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('tolfilter', null))) {
             $filter->addFilter('datum', '>=', \mkw\store::convDate(($this->params->getStringRequestParam('tolfilter', ''))));
         }
-        if (!is_null($this->params->getRequestParam('igfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('igfilter', null))) {
             $filter->addFilter('datum', '<=', \mkw\store::convDate(($this->params->getStringRequestParam('igfilter', ''))));
         }
         $fv = $this->params->getIntRequestParam('dolgozofilter');
@@ -77,32 +83,36 @@ class jelenletiivController extends \mkwhelpers\MattableController {
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('jelenletiivlista.tpl');
 
         $view->setVar('pagetitle', t('Jelenléti ívek'));
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('jelenletiivlista.tpl');
 
         $view->setVar('pagetitle', t('Jelenléti ívek'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $dolgozo = new dolgozoController($this->params);
+        $dolgozo = new dolgozoController();
         $view->setVar('dolgozolist', $dolgozo->getSelectList(0));
-        $jt = new jelenlettipusController($this->params);
+        $jt = new jelenlettipusController();
         $view->setVar('jelenlettipuslist', $jt->getSelectList(0));
         $view->printTemplateResult(false);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -112,17 +122,18 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
-        $dolgozo = new dolgozoController($this->params);
+        $dolgozo = new dolgozoController();
         $view->setVar('dolgozolist', $dolgozo->getSelectList(($record ? $record->getDolgozoId() : 0)));
-        $jt = new jelenlettipusController($this->params);
+        $jt = new jelenlettipusController();
         $view->setVar('jelenlettipuslist', $jt->getSelectList(($record ? $record->getJelenlettipusId() : 0)));
         return $view->getTemplateResult();
     }
 
-    public function generatenapi() {
+    public function generatenapi()
+    {
         $nap = $this->params->getStringRequestParam('datum', '');
         $jt = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jt', 0));
-        $egyedek = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins(array(), array());
+        $egyedek = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins([], []);
         foreach ($egyedek as $egyed) {
             if ($this->getRepo()->getCount('(_xx.datum=\'' . $nap . '\') AND (d.id=' . $egyed->getId() . ') AND (j.id=' . $jt->getId() . ')') == 0) {
                 $jelen = new Jelenletiiv();
@@ -136,7 +147,8 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         $this->getEm()->flush();
     }
 
-    public function isDolgozoJelen($dolgozoid) {
+    public function isDolgozoJelen($dolgozoid)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('datum', '=', \mkw\store::convDate(date(\mkw\store::$SQLDateFormat)));
         $filter->addFilter('dolgozo', '=', $dolgozoid);
@@ -149,7 +161,8 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         return $jelen;
     }
 
-    public function createBelepes() {
+    public function createBelepes()
+    {
         $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {
             $jelenlet = new \Entities\Jelenletiiv();
@@ -163,11 +176,12 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function createKilepes() {
+    public function createKilepes()
+    {
         $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {
             $jelenlet = null;
-            $jelenletek = $this->getRepo()->findBy(array('dolgozo' => $dolgozo, 'datum' => new \DateTime(\mkw\store::convDate(date(\mkw\store::$SQLDateFormat)))));
+            $jelenletek = $this->getRepo()->findBy(['dolgozo' => $dolgozo, 'datum' => new \DateTime(\mkw\store::convDate(date(\mkw\store::$SQLDateFormat)))]);
             foreach ($jelenletek as $j) {
                 if ($j->getBelepes() && !$j->getKilepes()) {
                     $jelenlet = $j;

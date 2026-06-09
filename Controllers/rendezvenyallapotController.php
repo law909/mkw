@@ -1,36 +1,44 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Rendezvenyallapot;
 use mkw\store;
 
-class rendezvenyallapotController extends \mkwhelpers\JQGridController {
+class rendezvenyallapotController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Rendezvenyallapot');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Rendezvenyallapot::class);
+        parent::__construct();
     }
 
-    protected function getOrderArray() {
-        $order = array();
+    protected function getOrderArray()
+    {
+        $order = [];
         $order[$this->params->getRequestParam('sidx', 'sorrend')] = $this->params->getRequestParam('sord', 'ASC');
         return $order;
     }
 
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getSorrend(), $obj->isOrarendbenszerepel());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev(), $obj->getSorrend(), $obj->isOrarendbenszerepel()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend', $obj->getSorrend()));
         $obj->setOrarendbenszerepel($this->params->getBoolRequestParam('orarendbenszerepel', $obj->isOrarendbenszerepel()));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -38,17 +46,19 @@ class rendezvenyallapotController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('sorrend' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['sorrend' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('sorrend' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['sorrend' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';

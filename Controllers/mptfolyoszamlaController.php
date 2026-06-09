@@ -9,14 +9,14 @@ use Entities\Rendezveny;
 class mptfolyoszamlaController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(MPTFolyoszamla::class);
         $this->setKarbFormTplName('mptfolyoszamlakarbform.tpl');
         $this->setKarbTplName('mptfolyoszamlakarb.tpl');
         $this->setListBodyRowTplName('mptfolyoszamlalista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
@@ -143,7 +143,7 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
             $this->getEm()->persist($eloiras);
             $this->getEm()->flush();
 
-            $partnerctrl = new partnerController($this->params);
+            $partnerctrl = new partnerController();
             $partnerarr = $partnerctrl->loadVars($partner);
             $view = $this->createView('mptfolyoszamlatabla.tpl');
             $view->setVar('partner', $partnerarr);
@@ -159,7 +159,7 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
             $this->getEm()->remove($this->getRepo()->find($id));
             $this->getEm()->flush();
 
-            $partnerctrl = new partnerController($this->params);
+            $partnerctrl = new partnerController();
             $partnerarr = $partnerctrl->loadVars($partner);
             $view = $this->createView('mptfolyoszamlatabla.tpl');
             $view->setVar('partner', $partnerarr);
@@ -194,7 +194,7 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
             $this->getEm()->persist($befizetes);
             $this->getEm()->flush();
 
-            $partnerctrl = new partnerController($this->params);
+            $partnerctrl = new partnerController();
             $partnerarr = $partnerctrl->loadVars($partner);
             $view = $this->createView('mptfolyoszamlatabla.tpl');
             $view->setVar('partner', $partnerarr);

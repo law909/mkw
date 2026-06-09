@@ -18,18 +18,18 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
         $view->setVar('datumtipus', 'teljesites');
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
-        $rc = new raktarController($this->params);
+        $rc = new raktarController();
         $view->setVar('raktarlista', $rc->getSelectList());
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
 
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);

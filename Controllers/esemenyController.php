@@ -1,21 +1,26 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Esemeny;
 use mkw\store;
 
-class esemenyController extends \mkwhelpers\MattableController {
+class esemenyController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Esemeny');
+    public function __construct()
+    {
+        $this->setEntityName(Esemeny::class);
         $this->setKarbFormTplName('esemenykarbform.tpl');
         $this->setKarbTplName('esemenykarb.tpl');
         $this->setListBodyRowTplName('esemenylista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Esemeny();
             $this->getEm()->detach($t);
@@ -30,7 +35,8 @@ class esemenyController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner', 0));
         if ($ck) {
             $obj->setPartner($ck);
@@ -41,12 +47,13 @@ class esemenyController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('esemenylista_tbody.tpl');
 
         $filterarr = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('bejegyzesfilter', NULL))) {
-            $filterarr->addFilter(array('_xx.bejegyzes', '_xx.leiras', 'a.nev'), 'LIKE', '%' . $this->params->getStringRequestParam('bejegyzesfilter') . '%');
+        if (!is_null($this->params->getRequestParam('bejegyzesfilter', null))) {
+            $filterarr->addFilter(['_xx.bejegyzes', '_xx.leiras', 'a.nev'], 'LIKE', '%' . $this->params->getStringRequestParam('bejegyzesfilter') . '%');
         }
 
         $fv = $this->params->getStringRequestParam('dtfilter');
@@ -65,19 +72,22 @@ class esemenyController extends \mkwhelpers\MattableController {
             $filterarr,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
-            $this->getPager()->getElemPerPage());
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('esemenylista.tpl');
 
         $view->setVar('pagetitle', t('Események'));
         $view->printTemplateResult(false);
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('esemenylista.tpl');
 
         $view->setVar('pagetitle', t('Események'));
@@ -86,7 +96,8 @@ class esemenyController extends \mkwhelpers\MattableController {
         $view->printTemplateResult(false);
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -97,7 +108,7 @@ class esemenyController extends \mkwhelpers\MattableController {
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
 
         return $view->getTemplateResult();

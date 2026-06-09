@@ -93,7 +93,7 @@ class b2bpartnerController extends partnerController
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('hibak', $hibak);
         \mkw\store::fillTemplate($view);
-        $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
+        $ptcsk = new partnertermekcsoportkedvezmenyController();
         $ptcsklist = $ptcsk->getFiokList(true);
         $view->setVar('discountlist', $ptcsklist);
         $view->printTemplateResult(true);
@@ -114,7 +114,7 @@ class b2bpartnerController extends partnerController
                 $this->getEm()->persist($regiuser);
                 $this->getEm()->flush();
             }
-            $kc = new kosarController($this->params);
+            $kc = new kosarController();
             $kc->removeSessionId(\mkw\session::getId());
             \mkw\store::getMainSession()->pk = null;
 

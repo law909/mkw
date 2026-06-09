@@ -1,29 +1,36 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Munkakor;
 use mkw\store;
 
-class MunkakorController extends \mkwhelpers\JQGridController {
+class MunkakorController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Munkakor');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Munkakor::class);
+        parent::__construct();
     }
 
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getJog());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev(), $obj->getJog()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setJog($this->params->getIntRequestParam('jog', 0));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -31,11 +38,12 @@ class MunkakorController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }

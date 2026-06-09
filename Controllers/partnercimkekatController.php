@@ -1,32 +1,39 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Partnercimkekat;
 use mkw\store;
 
-class partnercimkekatController extends \mkwhelpers\JQGridController {
+class partnercimkekatController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Partnercimkekat');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Partnercimkekat::class);
+        parent::__construct();
     }
 
-    protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getLathato());
+    protected function loadCells($sor)
+    {
+        return [$sor->getNev(), $sor->getLathato()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('lathato', NULL))) {
+            if (!is_null($this->params->getRequestParam('lathato', null))) {
                 $filter->addFilter('lathato', '=', $this->params->getBoolRequestParam('lathato'));
             }
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -34,34 +41,36 @@ class partnercimkekatController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function getWithCimkek($selected = null) {
-        $cimkekat = $this->getRepo()->getWithJoins(array(), array('_xx.nev' => 'asc', 'c.nev' => 'asc'));
-        $res = array();
+    public function getWithCimkek($selected = null)
+    {
+        $cimkekat = $this->getRepo()->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
+        $res = [];
         foreach ($cimkekat as $kat) {
-            $adat = array();
+            $adat = [];
             $cimkek = $kat->getCimkek();
             foreach ($cimkek as $cimke) {
-                $adat[] = array(
+                $adat[] = [
                     'id' => $cimke->getId(),
                     'caption' => $cimke->getNev(),
                     'selected' => ($selected && ($selected->contains($cimke)) ? true : false)
-                );
+                ];
             }
-            $res[] = array(
+            $res[] = [
                 'id' => $kat->getId(),
                 'caption' => $kat->getNev(),
                 'sanitizedcaption' => str_replace('.', '', $kat->getSlug()),
                 'cimkek' => $adat
-            );
+            ];
         }
         return $res;
     }

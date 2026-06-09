@@ -8,14 +8,14 @@ use mkw\store;
 class blokkController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Blokk::class);
         $this->setKarbTplName('blokkkarb.tpl');
         $this->setKarbFormTplName('blokkkarbform.tpl');
         $this->setListBodyRowVarName('_blokk');
         $this->setListBodyRowTplName('blokklista_tbody_tr.tpl');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)

@@ -9,14 +9,14 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 class orszagController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Orszag::class);
         $this->setKarbFormTplName('orszagkarbform.tpl');
         $this->setKarbTplName('orszagkarb.tpl');
         $this->setListBodyRowTplName('orszaglista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)
@@ -50,9 +50,9 @@ class orszagController extends \mkwhelpers\MattableController
         $x['lathato14'] = $t->getLathato14();
         $x['lathato15'] = $t->getLathato15();
         if ($forKarb) {
-            $valutanem = new valutanemController($this->params);
+            $valutanem = new valutanemController();
             $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanemId());
-            $afa = new afaController($this->params);
+            $afa = new afaController();
             $x['afalist'] = $afa->getSelectList($t->getAfaId());
         }
         return $x;

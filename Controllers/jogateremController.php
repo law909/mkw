@@ -5,26 +5,32 @@ namespace Controllers;
 use Entities\Jogaterem;
 use mkw\store;
 
-class jogateremController extends \mkwhelpers\JQGridController {
+class jogateremController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->setEntityName(Jogaterem::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**
      * @param $sor \Entities\Jogaterem
+     *
      * @return array
      */
-    protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getMaxferohely(), $sor->getInaktiv(), $sor->getOrarendclass());
+    protected function loadCells($sor)
+    {
+        return [$sor->getNev(), $sor->getMaxferohely(), $sor->getInaktiv(), $sor->getOrarendclass()];
     }
 
     /**
      * @param $obj \Entities\Jogaterem
+     *
      * @return mixed
      */
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setMaxferohely($this->params->getFloatRequestParam('maxferohely', $obj->getMaxferohely()));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', $obj->getInaktiv()));
@@ -32,10 +38,11 @@ class jogateremController extends \mkwhelpers\JQGridController {
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', NULL))) {
+            if (!is_null($this->params->getParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -43,23 +50,25 @@ class jogateremController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid = null)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         /** @var \Entities\Jogaterem $sor */
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
                 'maxferohely' => $sor->getMaxferohely()
-            );
+            ];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         $ret .= '<option value="0">Válasszon</option>';
         foreach ($rec as $sor) {

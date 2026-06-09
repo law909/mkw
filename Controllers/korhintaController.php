@@ -2,21 +2,25 @@
 
 namespace Controllers;
 
+use Entities\Korhinta;
 use mkw\store;
 
-class korhintaController extends \mkwhelpers\MattableController {
+class korhintaController extends \mkwhelpers\MattableController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Korhinta');
+    public function __construct()
+    {
+        $this->setEntityName(Korhinta::class);
         $this->setKarbFormTplName('korhintakarbform.tpl');
         $this->setKarbTplName('korhintakarb.tpl');
         $this->setListBodyRowTplName('korhintalista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    protected function loadVars($t) {
-        $x = array();
+    protected function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\Korhinta();
             $this->getEm()->detach($t);
@@ -34,7 +38,8 @@ class korhintaController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setUrl($this->params->getStringRequestParam('url'));
         $obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
@@ -45,30 +50,37 @@ class korhintaController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    public function getlistbody() {
+    public function getlistbody()
+    {
         $view = $this->createView('korhintalista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getAll(
-            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect() {
+    public function viewselect()
+    {
         $view = $this->createView('korhintalista.tpl');
 
         $view->setVar('pagetitle', t('Körhinta'));
         $view->printTemplateResult();
     }
 
-    public function viewlist() {
+    public function viewlist()
+    {
         $view = $this->createView('korhintalista.tpl');
 
         $view->setVar('pagetitle', t('Körhinta'));
@@ -77,7 +89,8 @@ class korhintaController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
+    protected function _getkarb($tplname)
+    {
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
@@ -90,7 +103,8 @@ class korhintaController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function delpicture() {
+    public function delpicture()
+    {
         $fa = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         if ($fa) {
             unlink($fa->getKepurl(''));
@@ -103,7 +117,8 @@ class korhintaController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function setflag() {
+    public function setflag()
+    {
         $id = $this->params->getIntRequestParam('id');
         $kibe = $this->params->getBoolRequestParam('kibe');
         $flag = $this->params->getStringRequestParam('flag');
@@ -119,8 +134,9 @@ class korhintaController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function getLista() {
-        $t = array();
+    public function getLista()
+    {
+        $t = [];
         $hintak = $this->getRepo()->getAllLathato();
         foreach ($hintak as $hinta) {
             $t[] = $hinta->convertToArray();

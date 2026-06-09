@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Blogposzt;
 use Entities\Termek;
 use Entities\TermekFa;
 use mkw\store;
@@ -10,14 +11,14 @@ use mkwhelpers\FilterDescriptor;
 class blogposztController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Blogposzt');
+        $this->setEntityName(Blogposzt::class);
         $this->setKarbFormTplName('blogposztkarbform.tpl');
         $this->setKarbTplName('blogposztkarb.tpl');
         $this->setListBodyRowTplName('blogposztlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_blogposzt');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)

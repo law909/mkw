@@ -20,12 +20,12 @@ class termekfaController extends \mkwhelpers\MattableController
 
     private $fatomb;
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(TermekFa::class);
         $this->setKarbFormTplName('termekfakarbform.tpl');
         $this->setKarbTplName('termekfakarb.tpl');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**
@@ -321,8 +321,8 @@ class termekfaController extends \mkwhelpers\MattableController
 
         /** @var \Entities\TermekRepository $termekrepo */
         $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
-        $tc = new termekController($this->params);
-        $tck = new termekcimkekatController($this->params);
+        $tc = new termekController();
+        $tck = new termekcimkekatController();
 
         switch (true) {
             case \mkw\store::isMindentkapni():
@@ -526,10 +526,10 @@ class termekfaController extends \mkwhelpers\MattableController
                 $akciosfilter = new FilterDescriptor();
                 $ret = [];
 
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 /** @var \Entities\TermekRepository $termekrepo */
                 $termekrepo = $tc->getRepo();
-                $tck = new termekcimkekatController($this->params);
+                $tck = new termekcimkekatController();
 
                 $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
                 /**

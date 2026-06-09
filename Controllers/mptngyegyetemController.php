@@ -7,10 +7,10 @@ use mkwhelpers\JQGridController;
 
 class mptngyegyetemController extends JQGridController
 {
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(MPTNGYEgyetem::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**

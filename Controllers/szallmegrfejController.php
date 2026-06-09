@@ -5,12 +5,12 @@ namespace Controllers;
 class szallmegrfejController extends bizonylatfejController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->biztipus = 'szallmegr';
         $this->setPageTitle('Szállítói megrendelés');
         $this->setPluralPageTitle('Szállítói megrendelések');
-        parent::__construct($params);
+        parent::__construct();
     }
 
 }

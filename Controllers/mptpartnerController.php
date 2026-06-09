@@ -76,12 +76,12 @@ class mptpartnerController extends partnerController
                 /** @var \Entities\Partner $partnerobj */
                 $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {
-                    $mc = new mainController($this->params);
+                    $mc = new mainController();
                     $mc->setOrszag($partnerobj->getOrszagId());
                 }
             } else {
                 \mkw\store::clearLoggedInUser();
-                $mc = new mainController($this->params);
+                $mc = new mainController();
                 $mc->clearOrszag();
                 \mkw\store::getMainSession()->loginerror = true;
                 $route = \mkw\store::getRouter()->generate('showlogin', true);

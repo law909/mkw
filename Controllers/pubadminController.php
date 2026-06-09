@@ -314,7 +314,7 @@ class pubadminController extends mkwhelpers\Controller
                 if (\mkw\store::isSendableEmail($email)) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletSzamlazvaSablon));
 
-                    $bfcontroller = new bizonylatfejController($this->params);
+                    $bfcontroller = new bizonylatfejController();
                     $html = $bfcontroller->getBizonylatHTML($szamlafej->getId());
                     $pdf = \mkw\store::getPDFEngine($html);
                     $filepath = \mkw\store::storagePath(\mkw\store::urlize($szamlafej->getId()) . '.pdf');

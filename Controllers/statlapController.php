@@ -7,14 +7,14 @@ use Entities\Statlap;
 class statlapController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Statlap::class);
         $this->setKarbFormTplName('statlapkarbform.tpl');
         $this->setKarbTplName('statlapkarb.tpl');
         $this->setListBodyRowTplName('statlaplista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t, $forKarb = false)
@@ -164,7 +164,7 @@ class statlapController extends \mkwhelpers\MattableController
                     }
             }
         }
-        $mc = new mainController($this->params);
+        $mc = new mainController();
         $mc->show404('HTTP/1.1 410 Gone');
     }
 

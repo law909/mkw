@@ -7,10 +7,10 @@ use Entities\Partner;
 class partnermergeController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Partner::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function view()
@@ -22,7 +22,7 @@ class partnermergeController extends \mkwhelpers\MattableController
         $view->setVar('befdatum', date(\mkw\store::$DateFormat));
         $view->setVar('datumtipus', 'teljesites');
 
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
 
         $view->printTemplateResult();

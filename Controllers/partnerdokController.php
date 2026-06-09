@@ -2,26 +2,30 @@
 
 namespace Controllers;
 
-class partnerdokController extends \mkwhelpers\MattableController {
+use Entities\PartnerDok;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\PartnerDok');
+class partnerdokController extends \mkwhelpers\MattableController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(PartnerDok::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function loadVars($t) {
-        $x = array();
+    public function loadVars($t)
+    {
+        $x = [];
         if (!$t) {
             $t = new \Entities\PartnerDok();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
-        }
-        else {
+        } else {
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
@@ -31,29 +35,39 @@ class partnerdokController extends \mkwhelpers\MattableController {
         return $x;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setUrl(\mkw\store::addHttp($this->params->getStringRequestParam('url')));
         $obj->setPath($this->params->getBoolRequestParam('path'));
         return $obj;
     }
 
-    public function getemptyrow() {
+    public function getemptyrow()
+    {
         $view = $this->createView('dokumentumtarkarb.tpl');
         $view->setVar('dok', $this->loadVars(null));
         echo $view->getTemplateResult();
     }
 
-    public function getSelectList($partner, $selid) {
+    public function getSelectList($partner, $selid)
+    {
         $dokok = $this->getRepo()->getByPartner($partner);
-        $doklista = array();
+        $doklista = [];
         foreach ($dokok as $dok) {
-            $doklista[] = array('id' => $dok->getId(), 'caption' => $dok->getUrl(), 'selected' => $dok->getId() == $selid, 'url' => $dok->getUrl(), 'path' => $dok->getPath());
+            $doklista[] = [
+                'id' => $dok->getId(),
+                'caption' => $dok->getUrl(),
+                'selected' => $dok->getId() == $selid,
+                'url' => $dok->getUrl(),
+                'path' => $dok->getPath()
+            ];
         }
         return $doklista;
     }
 
-    public function del() {
+    public function del()
+    {
         $dok = $this->getRepo()->find($this->params->getNumRequestParam('id'));
         if ($dok) {
             $this->getEm()->remove($dok);

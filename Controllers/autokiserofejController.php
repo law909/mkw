@@ -2,16 +2,19 @@
 
 namespace Controllers;
 
-class AutokiserofejController extends bizonylatfejController {
+class AutokiserofejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'autokisero';
         $this->setPageTitle('Gépjármű kísérő');
         $this->setPluralPageTitle('Gépjármű kísérők');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id)
+    {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
@@ -25,9 +28,9 @@ class AutokiserofejController extends bizonylatfejController {
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                         break;
                 }
-                $ttk = array();
+                $ttk = [];
                 $cikl = 1;
-                foreach($egyed['tetelek'] as $tetel) {
+                foreach ($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';

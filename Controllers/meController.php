@@ -2,19 +2,23 @@
 
 namespace Controllers;
 
+use Entities\ME;
 use mkw\store;
 
-class meController extends \mkwhelpers\JQGridController {
+class meController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\ME');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(ME::class);
+        parent::__construct();
     }
 
-    public function jsonlist() {
-        $filter = array();
+    public function jsonlist()
+    {
+        $filter = [];
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter['fields'][] = 'nev';
                 $filter['values'][] = $this->params->getStringRequestParam('nev');
             }
@@ -23,17 +27,19 @@ class meController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
@@ -42,8 +48,9 @@ class meController extends \mkwhelpers\JQGridController {
         echo $ret;
     }
 
-    public function navtipuslist() {
-        $ar = array(
+    public function navtipuslist()
+    {
+        $ar = [
             'PIECE',
             'KILOGRAM',
             'TON',
@@ -60,7 +67,7 @@ class meController extends \mkwhelpers\JQGridController {
             'CARTON',
             'PACK',
             'OWN'
-        );
+        ];
         $ret = '<select>';
         foreach ($ar as $e) {
             $ret .= '<option value="' . $e . '">' . $e . '</option>';
@@ -69,11 +76,13 @@ class meController extends \mkwhelpers\JQGridController {
         echo $ret;
     }
 
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getNavtipus());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev(), $obj->getNavtipus()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setNavtipus($this->params->getStringRequestParam('navtipus', $obj->getNavtipus()));
         return $obj;

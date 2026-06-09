@@ -5,12 +5,12 @@ namespace Controllers;
 class szamlafejController extends bizonylatfejController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->biztipus = 'szamla';
         $this->setPageTitle('Számla');
         $this->setPluralPageTitle('Számlák');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)

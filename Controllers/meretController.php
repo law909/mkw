@@ -12,14 +12,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class meretController extends MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Meret::class);
         $this->setKarbFormTplName('meretkarbform.tpl');
         $this->setKarbTplName('meretkarb.tpl');
         $this->setListBodyRowTplName('meretlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_meret');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function loadVars($t, $forKarb = false)

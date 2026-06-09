@@ -3,13 +3,15 @@
 namespace Controllers;
 
 
+use Entities\Termekcsoport;
+
 class termekcsoportController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Termekcsoport');
-        parent::__construct($params);
+        $this->setEntityName(Termekcsoport::class);
+        parent::__construct();
     }
 
     /**

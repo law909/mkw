@@ -9,10 +9,10 @@ use mkwhelpers\JQGridController;
 
 class mptngykarController extends JQGridController
 {
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(MPTNGYKar::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadCells($sor)

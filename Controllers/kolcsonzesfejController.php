@@ -2,23 +2,27 @@
 
 namespace Controllers;
 
-class kolcsonzesfejController extends bizonylatfejController {
+class kolcsonzesfejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'kolcsonzes';
         $this->setPageTitle('Kölcsönzés');
         $this->setPluralPageTitle('Kölcsönzések');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function setVars($view) {
+    public function setVars($view)
+    {
         parent::setVars($view);
         $view->setVar('datumtolfilter', null);
     }
 
-    public function getszamlakarb() {
+    public function getszamlakarb()
+    {
         $megrendszam = $this->params->getStringRequestParams('id');
-        $szamlac = new SzamlafejController($this->params);
+        $szamlac = new SzamlafejController();
         $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 }

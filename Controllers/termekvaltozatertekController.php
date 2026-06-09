@@ -10,10 +10,10 @@ use mkw\store;
 class termekvaltozatertekController extends \mkwhelpers\JQGridController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(TermekValtozatErtek::class);
-        parent::__construct($params);
+        parent::__construct();
     }
 
     public function fill()

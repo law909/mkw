@@ -8,14 +8,14 @@ use mkw\store;
 class termekcimkeController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Termekcimketorzs');
+        $this->setEntityName(Termekcimketorzs::class);
         $this->setKarbFormTplName('cimkekarbform.tpl');
         $this->setKarbTplName('cimkekarb.tpl');
         $this->setListBodyRowTplName('cimkelista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_cimke');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -116,9 +116,9 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $view->setVar('controllerscript', 'termekcimke.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $ckat = new termekcimkekatController($this->params);
+        $ckat = new termekcimkekatController();
         $view->setVar('cimkecsoportlist', $ckat->getSelectList(0));
-        $gyarto = new partnerController($this->params);
+        $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
         $view->printTemplateResult();
     }
@@ -135,9 +135,9 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('cimke', $this->loadVars($record));
-        $ckat = new termekcimkekatController($this->params);
+        $ckat = new termekcimkekatController();
         $view->setVar('cimkecsoportlist', $ckat->getSelectList(($record ? $record->getKategoriaId() : 0)));
-        $gyarto = new partnerController($this->params);
+        $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($record ? $record->getGyartoId() : 0)));
         return $view->getTemplateResult();
     }

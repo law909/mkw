@@ -2,15 +2,20 @@
 
 namespace Controllers;
 
-class partnertipusController extends \mkwhelpers\JQGridController {
+use Entities\Partnertipus;
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Partnertipus');
-        parent::__construct($params);
+class partnertipusController extends \mkwhelpers\JQGridController
+{
+
+    public function __construct()
+    {
+        $this->setEntityName(Partnertipus::class);
+        parent::__construct();
     }
 
-    protected function loadCells($sor) {
-        return array(
+    protected function loadCells($sor)
+    {
+        return [
             $sor->getNev(),
             $sor->getBelephet(),
             $sor->getBelephet2(),
@@ -27,10 +32,11 @@ class partnertipusController extends \mkwhelpers\JQGridController {
             $sor->getBelephet13(),
             $sor->getBelephet14(),
             $sor->getBelephet15()
-        );
+        ];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setBelephet($this->params->getStringRequestParam('belephet'));
         $obj->setBelephet2($this->params->getStringRequestParam('belephet2'));
@@ -50,10 +56,11 @@ class partnertipusController extends \mkwhelpers\JQGridController {
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', NULL))) {
+            if (!is_null($this->params->getParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -61,21 +68,23 @@ class partnertipusController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array(
+            $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid)
-            );
+            ];
         }
         return $res;
     }
 
-    public function htmllist() {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
+    public function htmllist()
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';

@@ -12,11 +12,11 @@ class bizomanyosertekesiteslistaController extends \mkwhelpers\Controller
 
         $view->setVar('pagetitle', t('Bizományos értékesítés lista'));
         $view->setVar('datumtipus', 'teljesites');
-        $partner = new partnerController($this->params);
+        $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
-        $arsav = new arsavController($this->params);
+        $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
-        $pcc = new partnercimkekatController($this->params);
+        $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);

@@ -11,14 +11,14 @@ use Entities\Valutanem;
 class kosarController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setEntityName(Kosar::class);
 //		$this->setKarbFormTplName('kosarkarbform.tpl');
 //		$this->setKarbTplName('kosarkarb.tpl');
         $this->setListBodyRowTplName('kosarlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -252,7 +252,7 @@ class kosarController extends \mkwhelpers\MattableController
                     $v->setVar('minkosarertekerror', $mker);
                 }
 
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
                 $v->printTemplateResult(false);
                 break;
@@ -296,7 +296,7 @@ class kosarController extends \mkwhelpers\MattableController
                     $v->setVar('minkosarertekerror', $mker);
                 }
 
-                $tc = new termekController($this->params);
+                $tc = new termekController();
                 $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
                 $v->printTemplateResult(false);
                 break;

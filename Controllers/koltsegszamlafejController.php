@@ -2,16 +2,19 @@
 
 namespace Controllers;
 
-class KoltsegszamlafejController extends bizonylatfejController {
+class KoltsegszamlafejController extends bizonylatfejController
+{
 
-    public function __construct($params) {
+    public function __construct()
+    {
         $this->biztipus = 'koltsegszamla';
         $this->setPageTitle('Költségszámla');
         $this->setPluralPageTitle('Költségszámlák');
-        parent::__construct($params);
+        parent::__construct();
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id)
+    {
         if ($oper == 'inherit') {
             $egyed['id'] = \mkw\store::createUID();
             $egyed['parentid'] = $id;
@@ -19,7 +22,7 @@ class KoltsegszamlafejController extends bizonylatfejController {
             $egyed['keltstr'] = $kelt;
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-            $ttk = array();
+            $ttk = [];
             $cikl = 1;
             foreach ($egyed['tetelek'] as $tetel) {
                 $tetel['parentid'] = $tetel['id'];
@@ -31,7 +34,7 @@ class KoltsegszamlafejController extends bizonylatfejController {
             $egyed['tetelek'] = $ttk;
         }
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('szallito', '=', true);
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));

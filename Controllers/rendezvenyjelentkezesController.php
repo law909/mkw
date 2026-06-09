@@ -18,14 +18,14 @@ use Entities\RendezvenyJelentkezes;
 class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\RendezvenyJelentkezes');
+        $this->setEntityName(RendezvenyJelentkezes::class);
         $this->setKarbFormTplName('rendezvenyjelentkezeskarbform.tpl');
         $this->setKarbTplName('rendezvenyjelentkezeskarb.tpl');
         $this->setListBodyRowTplName('rendezvenyjelentkezeslista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     protected function loadVars($t)
@@ -228,16 +228,16 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
 
         $view->setVar('pagetitle', t('Rendezvény jelentkezések'));
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList());
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList());
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $bankszamla = new bankszamlaController($this->params);
+        $bankszamla = new bankszamlaController();
         $view->setVar('bankszamlalist', $bankszamla->getSelectList());
-        $rendezveny = new rendezvenyController($this->params);
+        $rendezveny = new rendezvenyController();
         $view->setVar(
             'rendezvenylist',
             $rendezveny->getSelectList(
@@ -259,18 +259,18 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList());
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList());
-        $penztar = new penztarController($this->params);
+        $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $bankszamla = new bankszamlaController($this->params);
+        $bankszamla = new bankszamlaController();
         $view->setVar('bankszamlalist', $bankszamla->getSelectList());
-        $jogcim = new jogcimController($this->params);
+        $jogcim = new jogcimController();
         $view->setVar('jogcimlist', $jogcim->getSelectList());
-        $rendezveny = new rendezvenyController($this->params);
+        $rendezveny = new rendezvenyController();
         $view->setVar(
             'rendezvenylist',
             $rendezveny->getSelectList(
@@ -297,14 +297,14 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
         if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
+            $partner = new partnerController();
             $view->setVar('partnerlist', $partner->getSelectList($record?->getPartnerId()));
         }
-        $fizmod = new fizmodController($this->params);
+        $fizmod = new fizmodController();
         $view->setVar('fizmodlist', $fizmod->getSelectList($record?->getFizmodId()));
-        $jogcim = new jogcimController($this->params);
+        $jogcim = new jogcimController();
         $view->setVar('jogcimlist', $jogcim->getSelectList());
-        $rendezveny = new rendezvenyController($this->params);
+        $rendezveny = new rendezvenyController();
         $view->setVar(
             'rendezvenylist',
             $rendezveny->getSelectList(
@@ -613,7 +613,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
                 }
             }
 
-            $rjc = new \Controllers\rendezvenyjelentkezesController($this->params);
+            $rjc = new \Controllers\rendezvenyjelentkezesController();
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('rendezveny', '=', $rendezveny);
             $filter->addFilter('lemondva', '=', false);

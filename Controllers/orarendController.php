@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Orarend;
 use Entities\Orarendhelyettesites;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -9,14 +10,14 @@ use mkwhelpers\FilterDescriptor;
 class orarendController extends \mkwhelpers\MattableController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
-        $this->setEntityName('Entities\Orarend');
+        $this->setEntityName(Orarend::class);
         $this->setKarbFormTplName('orarendkarbform.tpl');
         $this->setKarbTplName('orarendkarb.tpl');
         $this->setListBodyRowTplName('orarendlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_orarend');
-        parent::__construct($params);
+        parent::__construct();
     }
 
     /**
@@ -189,13 +190,13 @@ class orarendController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 
-        $dc = new dolgozoController($this->params);
+        $dc = new dolgozoController();
         $view->setVar('dolgozolist', $dc->getSelectList());
 
-        $jtc = new jogateremController($this->params);
+        $jtc = new jogateremController();
         $view->setVar('jogateremlist', $jtc->getSelectList());
 
-        $jotc = new jogaoratipusController($this->params);
+        $jotc = new jogaoratipusController();
         $view->setVar('jogaoratipuslist', $jotc->getSelectList());
 
         $view->setVar('naplist', store::getDaynameSelectList());
@@ -214,13 +215,13 @@ class orarendController extends \mkwhelpers\MattableController
         $ora = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($ora, true));
 
-        $dc = new dolgozoController($this->params);
+        $dc = new dolgozoController();
         $view->setVar('dolgozolist', $dc->getSelectList(($ora ? $ora->getDolgozoId() : 0)));
 
-        $jtc = new jogateremController($this->params);
+        $jtc = new jogateremController();
         $view->setVar('jogateremlist', $jtc->getSelectList(($ora ? $ora->getJogateremId() : 0)));
 
-        $jotc = new jogaoratipusController($this->params);
+        $jotc = new jogaoratipusController();
         $view->setVar('jogaoratipuslist', $jotc->getSelectList(($ora ? $ora->getJogaoratipusId() : 0)));
 
         $view->setVar('naplist', store::getDaynameSelectList(($ora ? $ora->getNap() : 0)));

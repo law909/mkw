@@ -1,36 +1,42 @@
 <?php
+
 namespace Controllers;
 
+use Entities\Felhasznalo;
 use mkw\store;
 
-class felhasznaloController extends \mkwhelpers\JQGridController {
+class felhasznaloController extends \mkwhelpers\JQGridController
+{
 
-    public function __construct($params) {
-        $this->setEntityName('Entities\Felhasznalo');
-        parent::__construct($params);
+    public function __construct()
+    {
+        $this->setEntityName(Felhasznalo::class);
+        parent::__construct();
     }
 
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getFelhasznalonev(), $obj->getJelszo(), $obj->getUzletkotoNev());
+    protected function loadCells($obj)
+    {
+        return [$obj->getNev(), $obj->getFelhasznalonev(), $obj->getJelszo(), $obj->getUzletkotoNev()];
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj)
+    {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setFelhasznalonev($this->params->getStringRequestParam('felhasznalonev', $obj->getFelhasznalonev()));
         $obj->setJelszo($this->params->getStringRequestParam('jelszo', $obj->getJelszo()));
         $ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
         if ($ck) {
             $obj->setUzletkoto($ck);
-        }
-        else {
+        } else {
         }
         return $obj;
     }
 
-    public function jsonlist() {
+    public function jsonlist()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
+            if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
@@ -38,11 +44,12 @@ class felhasznaloController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
+    public function getSelectList($selid)
+    {
+        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        $res = [];
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }

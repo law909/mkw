@@ -5,12 +5,12 @@ namespace Controllers;
 class garanciaugyfejController extends bizonylatfejController
 {
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->biztipus = 'garanciaugy';
         $this->setPageTitle('Garanciális ügy');
         $this->setPluralPageTitle('Garanciális ügyek');
-        parent::__construct($params);
+        parent::__construct();
     }
 
 }
