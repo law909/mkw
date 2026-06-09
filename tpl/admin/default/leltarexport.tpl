@@ -4,7 +4,6 @@
     <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/leltarexport.js"></script>
 {/block}
 
@@ -38,7 +37,8 @@
                     <select id="ArsavEdit" name="arsav" class="mattable-important">
                         <option value="">{at('mindegy')}</option>
                         {foreach $arsavlist as $_mk}
-                            <option value="{$_mk.caption}_{$_mk.valutanemid}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption} {$_mk.valutanem}</option>
+                            <option
+                                value="{$_mk.caption}_{$_mk.valutanemid}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption} {$_mk.valutanem}</option>
                         {/foreach}
                     </select>
                     <select id="NettoBruttoEdit" name="nettobrutto">

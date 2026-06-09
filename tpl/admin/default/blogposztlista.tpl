@@ -4,7 +4,6 @@
     <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/blogposzt.js"></script>
 {/block}
 

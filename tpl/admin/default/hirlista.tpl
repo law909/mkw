@@ -2,7 +2,6 @@
 
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
     <script type="text/javascript" src="/js/admin/default/hir.js"></script>
 {/block}

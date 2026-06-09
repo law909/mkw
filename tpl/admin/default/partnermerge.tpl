@@ -4,7 +4,6 @@
     <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/partnermerge.js"></script>
 {/block}
 
@@ -14,9 +13,9 @@
             <h3>{at('Partner összefűzés')}</h3>
         </div>
         <div id="mattkarb-tabs">
-                <ul>
-                    <li><a href="#DefaTab">{at('Partner összefűzés')}</a></li>
-                </ul>
+            <ul>
+                <li><a href="#DefaTab">{at('Partner összefűzés')}</a></li>
+            </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="partnermerge" action="" target="_blank">
                     <div class="matt-hseparator"></div>
