@@ -58,10 +58,10 @@
                     <th class="textalignright bold">Mennyiség</th>
                     <th class="bold">ME</th>
                     {if ($egyed.kedvezmenycount > 0)}
-                        <th class="textalignright bold">Eredeti e.ár</th>
+                        <th class="textalignright bold">Eredeti br.e.ár</th>
                         <th class="textalignright bold">Kedvezmény %</th>
                     {/if}
-                    <th class="textalignright bold">Egységár</th>
+                    <th class="textalignright bold">Nettó egységár</th>
                     <th class="textalignright bold">Nettó érték</th>
                     <th class="textalignright bold">ÁFA</th>
                     <th class="textalignright bold">ÁFA érték</th>

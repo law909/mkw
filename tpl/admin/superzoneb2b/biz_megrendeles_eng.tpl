@@ -66,7 +66,7 @@
                     <th class="textalignright bold">Mennyiség</th>
                     <th class="bold">ME</th>
                     {if ($egyed.kedvezmenycount > 0)}
-                        <th class="textalignright bold">Eredeti e.ár</th>
+                        <th class="textalignright bold">Eredeti net.e.ár</th>
                         <th class="textalignright bold">Kedvezmény %</th>
                     {/if}
                     <th class="textalignright bold">Egységár</th>
@@ -81,7 +81,7 @@
                     <th class="textalignright bold">Quantity</th>
                     <th class="bold">Unit</th>
                     {if ($egyed.kedvezmenycount > 0)}
-                        <th class="textalignright bold">Original u.price</th>
+                        <th class="textalignright bold">Original net.u.price</th>
                         <th class="textalignright bold">Discount %</th>
                     {/if}
                     <th class="textalignright bold">Unit price</th>
