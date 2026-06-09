@@ -150,7 +150,7 @@ class szinController extends \mkwhelpers\MattableController
                 try {
                     $sql = 'UPDATE termekvaltozat SET ertek1 = :ertek1 WHERE szin_id = :id';
                     $stmt = $this->getEm()->getConnection()->prepare($sql);
-                    $stmt->executeQuery([':ertek1' => $o->nev, ':id' => $o->id]);
+                    $stmt->executeQuery([':ertek1' => $o->getNev(), ':id' => $o->getId()]);
                     $this->getEm()->getConnection()->commit();
                 } catch (\Exception $e) {
                     $this->getEm()->getConnection()->rollBack();
@@ -313,7 +313,7 @@ class szinController extends \mkwhelpers\MattableController
         if (!\mkw\store::isFixSzinMode()) {
             return;
         }
-        
+
         $this->getEm()->getConnection()->beginTransaction();
 
         try {
