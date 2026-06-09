@@ -132,7 +132,7 @@ class meretController extends MattableController
                 try {
                     $sql = 'UPDATE termekvaltozat SET ertek2 = :ertek WHERE meret_id = :id';
                     $stmt = $this->getEm()->getConnection()->prepare($sql);
-                    $stmt->executeQuery([':ertek' => $o->nev, ':id' => $o->id]);
+                    $stmt->executeQuery([':ertek' => $o->getNev(), ':id' => $o->getId()]);
                     $this->getEm()->getConnection()->commit();
                 } catch (\Exception $e) {
                     $this->getEm()->getConnection()->rollBack();

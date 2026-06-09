@@ -7,9 +7,9 @@
                 <td>{if ($_meret.kepurl)}<a class="js-toflyout" href="{$mainurl}{$_meret.kepurl}" target="_blank"><img
                             src="{$mainurl}{$_meret.kepurlsmall}"/></a>{/if}</td>
                 <td>
-                    <a class="mattable-editlink" href="#" data-szinid="{$_meret.id}" data-oper="edit"
+                    <a class="mattable-editlink" href="#" data-meretid="{$_meret.id}" data-oper="edit"
                        title="{at('Szerkeszt')}">{$_meret.nev}</a>
-                    <a class="mattable-dellink" href="#" data-szinid="{$_meret.id}" data-oper="del" title="{at('Töröl')}"><span
+                    <a class="mattable-dellink" href="#" data-meretid="{$_meret.id}" data-oper="del" title="{at('Töröl')}"><span
                             class="ui-icon ui-icon-circle-minus"></span></a>
                 </td>
             </tr>
