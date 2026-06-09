@@ -195,6 +195,9 @@ class MattableController extends Controller
             $meta = $this->getEm()->getClassMetadata(get_class($entity));
             foreach ($meta->getFieldNames() as $fieldName) {
                 $getter = 'get' . ucfirst($fieldName);
+                if (!method_exists($entity, $getter)) {
+                    $getter = 'is' . ucfirst($fieldName);
+                }
                 if (method_exists($entity, $getter)) {
                     $result[$fieldName] = $entity->$getter();
                 }
