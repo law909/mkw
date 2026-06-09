@@ -3,7 +3,6 @@
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
-    <script type="text/javascript" src="/js/admin/default/ajaxupload.js"></script>
     <script type="text/javascript" src="/js/admin/default/popup.js"></script>
 {/block}
 

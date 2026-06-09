@@ -5,7 +5,6 @@
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
-    <script type="text/javascript" src="/js/admin/default/ajaxupload.js"></script>
     <script type="text/javascript" src="/js/admin/default/termek.js"></script>
 {/block}
 
