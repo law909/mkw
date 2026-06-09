@@ -3,6 +3,8 @@
 namespace mkw;
 
 use Controllers\bizonylatfejController;
+use Controllers\kosarController;
+use Controllers\orszagController;
 use Controllers\popupController;
 use Controllers\termekfaController;
 use Controllers\termekmenuController;
@@ -26,6 +28,7 @@ class store
     private static $em;
     private static $config;
     private static $setup;
+    private static $input;
     /**
      *
      * @var \mkw\session_namespace
@@ -74,6 +77,9 @@ class store
     {
         if ($mire === false) {
             $mire = 2;
+        }
+        if (!$mit) {
+            $mit = 0;
         }
         return number_format($mit, $mire, ',', ' ');
     }
@@ -280,6 +286,16 @@ class store
         if (self::$setup['barion'] && self::$setup['stripe']) {
             self::$setup['stripe'] = false;
         }
+    }
+
+    public static function getInput()
+    {
+        return self::$input;
+    }
+
+    public static function setInput($input)
+    {
+        self::$input = $input;
     }
 
     public static function getIntParameter($par, $default = null)
@@ -599,11 +615,11 @@ class store
      * Main sablonokhoz kell
      *
      * @param $v
+     * @param $params
      * @param bool|true $needmenu
      */
     public static function fillTemplate($v, $needmenu = true)
     {
-        $tf = new \Controllers\termekfaController(null);
         $v->setVar('developer', self::isDeveloper());
         $v->setVar('GAFollow', self::getParameter('GAFollow'));
         $v->setVar('seodescription', self::getParameter('seodescription'));
@@ -617,15 +633,16 @@ class store
         if ($needmenu) {
             switch (true) {
                 case self::isMugenrace2026():
-                    $tmc = new termekmenuController(null);
+                    $tmc = new termekmenuController(self::getInput());
                     $v->setVar('menu1', $tmc->getTreeAsArray());
                     break;
                 default:
+                    $tf = new termekfaController(self::getInput());
                     $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
                     break;
             }
         }
-        $kc = new \Controllers\kosarController(null);
+        $kc = new kosarController(self::getInput());
         $minidata = $kc->getMiniData();
         $v->setVar('kosar', $minidata);
         if ($minidata && array_key_exists('termekdb', $minidata)) {
@@ -633,8 +650,7 @@ class store
         }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
-        $p = new \mkwhelpers\ParameterHandler();
-        $oc = new \Controllers\orszagController($p);
+        $oc = new orszagController(self::getInput());
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
         if (self::isMugenrace() || self::isMugenrace2026()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));

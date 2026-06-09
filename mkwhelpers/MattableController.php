@@ -21,9 +21,9 @@ class MattableController extends Controller
     private $pagetitle;
     private $pluralpagetitle;
 
-    public function __construct($params)
+    public function __construct()
     {
-        parent::__construct($params);
+        parent::__construct();
         $this->setTemplateFactory(\mkw\store::getTemplateFactory());
     }
 

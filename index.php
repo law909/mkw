@@ -82,8 +82,9 @@ function callTheController($target, $params)
         $path = explode('/', str_replace('\\', '/', $classname . '.php'));
         $inc = ltrim(implode('/', $path), '/');
         if (file_exists($inc) && $methodname) {
+            \mkw\store::setInput(new \mkwhelpers\ParameterHandler($params));
             require_once $inc;
-            $instance = new $classname(new \mkwhelpers\ParameterHandler($params));
+            $instance = new $classname(\mkw\store::getInput());
             $instance->$methodname();
             return true;
         }

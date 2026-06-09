@@ -33,11 +33,11 @@ abstract class Controller
     private $em;
     private $entityName;
 
-    public function __construct($params)
+    public function __construct()
     {
         $this->setTemplateFactory(\mkw\store::getTemplateFactory());
         $this->generalDataLoader = \mkw\store::getGdl();
-        $this->params = $params;
+        $this->params = \mkw\store::getInput();
         $this->em = \mkw\store::getEm();
         if ($this->entityName) {
             $this->repo = $this->em->getRepository($this->entityName);
