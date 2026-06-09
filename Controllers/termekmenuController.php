@@ -272,7 +272,7 @@ class termekmenuController extends \mkwhelpers\MattableController
 
         /** @var \Entities\TermekRepository $termekrepo */
         $termekrepo = $this->getRepo(Termek::class);
-        $tc = new TermekController($this->params);
+        $tc = new termekController($this->params);
         $tck = new termekcimkekatController($this->params);
 
         $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
