@@ -1142,14 +1142,11 @@ class partnerController extends \mkwhelpers\MattableController
 
     public function login($puser, $pass = null)
     {
-        \mkw\store::writelog('1: ' . $pass);
-        \mkw\store::writelog('1 sys: ' . \mkw\store::getSysadminPassword());
         $ok = false;
         if ($puser instanceof \Entities\Partner) {
             $user = $puser;
             $ok = true;
         } elseif (\mkw\store::getSysadminPassword() && \mkw\store::getSysadminPassword() === $pass) {
-            \mkw\store::writelog('2: ' . \mkw\store::getSysadminPassword());
             $users = $this->getRepo()->findByEmail($puser);
             if (count($users) > 0) {
                 $user = $users[0];
@@ -1163,12 +1160,10 @@ class partnerController extends \mkwhelpers\MattableController
                 $ok = true;
             }
         }
-        \mkw\store::writelog('3');
         if ($ok && $user) {
             if ($user->getVendeg()) {
                 return false;
             }
-            \mkw\store::writelog('4');
             if (\mkw\store::isMultiShop()) {
                 if ($user->getPartnertipus()) {
                     if (!$user->getPartnertipus()->getXBelephet()) {
@@ -1176,7 +1171,6 @@ class partnerController extends \mkwhelpers\MattableController
                     }
                 }
             }
-            \mkw\store::writelog('5');
             $kc = new kosarController();
             $kc->clear($user->getId()); // csak partner alapján
             $oldid = \mkw\session::getId();
