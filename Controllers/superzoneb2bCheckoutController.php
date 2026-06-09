@@ -122,7 +122,7 @@ class superzoneb2bCheckoutController extends checkoutController
                 }
                 $t->setNettoegysar($kt->getNettoegysar());
                 $t->setEnettoegysar($kt->getEnettoegysar());
-                $t->setEbruttoegysar($kt->getEnettoegysar());
+                $t->setEbruttoegysar($kt->getEbruttoegysar());
                 $t->setKedvezmeny($kt->getKedvezmeny());
                 $arak = $biztetelcontroller->calcAr(
                     $t->getAfaId(),

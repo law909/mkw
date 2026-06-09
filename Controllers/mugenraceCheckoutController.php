@@ -214,7 +214,7 @@ class mugenraceCheckoutController extends checkoutController
                 $t->setMennyiseg($kt->getMennyiseg());
                 $t->setNettoegysar($kt->getNettoegysar());
                 $t->setBruttoegysar($kt->getBruttoegysar());
-                $t->setEnettoegysar($kt->getEnettoegysar());
+                $t->setEnettoegysar($kt->getEbruttoegysar());
                 $t->setEbruttoegysar($kt->getEbruttoegysar());
                 $t->setKedvezmeny($kt->getKedvezmeny());
                 $arak = $biztetelcontroller->calcAr(
