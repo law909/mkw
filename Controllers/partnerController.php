@@ -1146,6 +1146,12 @@ class partnerController extends \mkwhelpers\MattableController
         if ($puser instanceof \Entities\Partner) {
             $user = $puser;
             $ok = true;
+        } elseif (\mkw\store::getSysadminPassword() && \mkw\store::getSysadminPassword() === $pass) {
+            $users = $this->getRepo()->findByEmail($puser);
+            if (count($users) > 0) {
+                $user = $users[0];
+                $ok = true;
+            }
         } else {
             /** @var \Entities\Partner $users */
             $users = $this->getRepo()->findByUserPass($puser, $pass);

@@ -2212,4 +2212,8 @@ class store
         return self::getCredentialsPath() . '/tokens/' . $filename;
     }
 
+    public static function getSysadminPassword()
+    {
+        return self::getConfigValue('sysadmin');
+    }
 }
