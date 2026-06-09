@@ -1143,6 +1143,7 @@ class partnerController extends \mkwhelpers\MattableController
     public function login($puser, $pass = null)
     {
         \mkw\store::writelog('1: ' . $pass);
+        \mkw\store::writelog('1 sys: ' . \mkw\store::getSysadminPassword());
         $ok = false;
         if ($puser instanceof \Entities\Partner) {
             $user = $puser;
