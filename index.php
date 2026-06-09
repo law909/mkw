@@ -55,6 +55,9 @@ function bizformat($mit, $mire = false)
     if ($mire === false) {
         $mire = 2;
     }
+    if (!$mit) {
+        $mit = 0;
+    }
     return number_format($mit, $mire, ',', ' ');
 }
 

@@ -373,15 +373,15 @@ class Bizonylattetel
 
     public function fillEgysar()
     {
-        $this->setNettoegysar($this->getTermek()->getNettoAr($this->getTermekvaltozat(), $this->getBizonylatfej()->getPartner(), $this->getValutanem()));
+        $this->setNettoegysar($this->getTermek()?->getNettoAr($this->getTermekvaltozat(), $this->getBizonylatfej()->getPartner(), $this->getValutanem()));
         $this->setNettoegysarhuf($this->getNettoegysar() * $this->getArfolyam());
 
-        $this->setKedvezmeny($this->getTermek()->getKedvezmeny($this->getBizonylatfej()->getPartner()));
+        $this->setKedvezmeny($this->getTermek()?->getKedvezmeny($this->getBizonylatfej()->getPartner()));
 
         $this->setEnettoegysar(
-            $this->getTermek()->getKedvezmenynelkuliNettoAr($this->getTermekvaltozat(), $this->getBizonylatfej()->getPartner(), $this->getValutanem())
+            $this->getTermek()?->getKedvezmenynelkuliNettoAr($this->getTermekvaltozat(), $this->getBizonylatfej()->getPartner(), $this->getValutanem())
         );
-        $this->setEbruttoegysar($this->getAfa()->calcBrutto($this->getEnettoegysar()));
+        $this->setEbruttoegysar($this->getAfa()?->calcBrutto($this->getEnettoegysar()));
         $this->setEnettoegysarhuf($this->getEnettoegysar() * $this->getArfolyam());
         $this->setEbruttoegysarhuf($this->getEbruttoegysar() * $this->getArfolyam());
         /***
