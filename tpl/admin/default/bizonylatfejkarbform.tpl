@@ -418,6 +418,7 @@
         <input name="quick" type="hidden" value="{$quick}">
         <input name="oper" type="hidden" value="{$oper}">
         <input name="id" type="hidden" value="{$egyed.id}">
+        <input id="AfaellenorzesnemkellEdit" name="afaellenorzesnemkell" type="hidden" value="{if ($egyed.afaellenorzesnemkell|default)}1{else}0{/if}">
         {if ($egyed.parentid|default)}
             <input name="parentid" type="hidden" value="{$egyed.parentid}">
         {/if}

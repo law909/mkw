@@ -134,6 +134,12 @@
                 <td>{at('Módosítva')}:</td>
                 <td>{$_egyed.updatedby} {$_egyed.lastmodstr}</td>
             </tr>
+            {if ($_egyed.afaellenorzesnemkell)}
+                <tr>
+                    <td class="guestpartner">{at('ÁFA ellen. kikapcsolva')}:</td>
+                    <td class="guestpartner">{$_egyed.afaellenorzesnemkellby} {$_egyed.afaellenorzesnemkellon}</td>
+                </tr>
+            {/if}
             {if ($_egyed.partnerfeketelistas)}
                 <tr>
                     <td colspan="5">

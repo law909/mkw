@@ -3545,9 +3545,6 @@ class Partner
                 return false;
             }
         }
-        if (\mkw\store::isMagyarorszag($afaorszag)) {
-            return false;
-        }
         if ($afaorszag->getEu() && $euadoszam || // EU-n belüli B2B
             (!$afaorszag->getEu())) { // EU-n kívüli B2B és B2C
             return \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));

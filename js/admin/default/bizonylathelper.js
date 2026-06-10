@@ -1378,7 +1378,10 @@ let bizonylathelper = function ($) {
                     return false;
                 }
                 // ÁFA eltérés esetén a felhasználó dönt: így menti, vagy javítja az ÁFA kulcsokat.
-                if (!tetelek.afaegyezik && !afaEllenorzesAtlepes) {
+                // Ha a bizonylaton már korábban jóváhagyták az ÁFA-ellenőrzés átlépését
+                // (afaellenorzesnemkell), akkor többé nem kell az ÁFA kulcsokat ellenőrizni.
+                let afaEllenorzesNemKell = $('#AfaellenorzesnemkellEdit').val() == '1';
+                if (!tetelek.afaegyezik && !afaEllenorzesAtlepes && !afaEllenorzesNemKell) {
                     $('#dialogcenter').html('Egy vagy több tétel ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól (pirossal jelölve). Így menti a bizonylatot, vagy javítja az ÁFA kulcsokat?').dialog({
                         resizable: false,
                         width: 460,
@@ -1386,6 +1389,8 @@ let bizonylathelper = function ($) {
                         buttons: {
                             'Mentés így': function () {
                                 afaEllenorzesAtlepes = true;
+                                // jelezzük a szervernek, hogy ezen a bizonylaton többé nem kell ÁFA-ellenőrzés
+                                $('#AfaellenorzesnemkellEdit').val('1');
                                 $(this).dialog('close');
                                 $('#mattkarb-form').submit();
                             },

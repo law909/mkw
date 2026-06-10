@@ -371,6 +371,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
         $x['hibas'] = $t->getHibas();
         $x['hibauzenetek'] = $t->getHibauzenetek();
+        $x['afaellenorzesnemkell'] = $t->getAfaellenorzesnemkell();
+        $x['afaellenorzesnemkellon'] = $t->getAfaellenorzesnemkellonStr();
+        $x['afaellenorzesnemkellby'] = $t->getAfaellenorzesnemkellbyNev();
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
         $x['rontott'] = $t->getRontott();
@@ -767,6 +770,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv', \mkw\store::getAdminDataLocale()));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
+
+        if (!$obj->getAfaellenorzesnemkell() && $this->params->getBoolRequestParam('afaellenorzesnemkell', false)) {
+            $obj->setAfaellenorzesnemkell(true);
+            $obj->setAfaellenorzesnemkellby(\mkw\store::getLoggedInDolgozo());
+            $obj->setAfaellenorzesnemkellon(new \DateTime());
+        }
 
         $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
         if ($ck) {

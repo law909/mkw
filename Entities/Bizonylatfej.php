@@ -84,6 +84,16 @@ class Bizonylatfej
     private $nyomtatva = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $afaellenorzesnemkell = false;
+    /**
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="afaellenorzesnemkellby", referencedColumnName="id")
+     */
+    private $afaellenorzesnemkellby;
+    /** @ORM\Column(type="datetime",nullable=true) */
+    private $afaellenorzesnemkellon;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $storno = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -839,7 +849,9 @@ class Bizonylatfej
             }
 
             // 5. A tétel ÁFA kulcsa egyezzen meg a partnernél előírt (szükséges) ÁFA kulccsal.
-            if ($szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
+            //    Ha a bizonylaton jóváhagyták az ÁFA-ellenőrzés átlépését (afaellenorzesnemkell),
+            //    ezt az ellenőrzést szerveroldalon is kihagyjuk.
+            if (!$this->getAfaellenorzesnemkell() && $szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
                 $hibak[] = $cimke . ' ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól.';
             }
 
@@ -1266,6 +1278,9 @@ class Bizonylatfej
         $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['programnev'] = $this->getProgramnev();
         $ret['nyomtatva'] = $this->getNyomtatva();
+        $ret['afaellenorzesnemkell'] = $this->getAfaellenorzesnemkell();
+        $ret['afaellenorzesnemkellon'] = $this->getAfaellenorzesnemkellonStr();
+        $ret['afaellenorzesnemkellby'] = $this->getAfaellenorzesnemkellbyNev();
         $ret['raktarnev'] = $this->getRaktarnev();
         $ret['kelt'] = $this->getKeltStr();
         $ret['keltstr'] = $this->getKeltStr();
@@ -2334,6 +2349,53 @@ class Bizonylatfej
     {
         $this->nyomtatva = $val;
     }
+
+    public function getAfaellenorzesnemkell()
+    {
+        return $this->afaellenorzesnemkell;
+    }
+
+    public function setAfaellenorzesnemkell($val)
+    {
+        $this->afaellenorzesnemkell = $val;
+    }
+
+    public function getAfaellenorzesnemkellby()
+    {
+        return $this->afaellenorzesnemkellby;
+    }
+
+    public function setAfaellenorzesnemkellby($val)
+    {
+        $this->afaellenorzesnemkellby = $val;
+    }
+
+    public function getAfaellenorzesnemkellbyNev()
+    {
+        if ($this->afaellenorzesnemkellby) {
+            return $this->afaellenorzesnemkellby->getNev();
+        }
+        return null;
+    }
+
+    public function getAfaellenorzesnemkellon()
+    {
+        return $this->afaellenorzesnemkellon;
+    }
+
+    public function setAfaellenorzesnemkellon($val)
+    {
+        $this->afaellenorzesnemkellon = $val;
+    }
+
+    public function getAfaellenorzesnemkellonStr()
+    {
+        if ($this->getAfaellenorzesnemkellon()) {
+            return $this->getAfaellenorzesnemkellon()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
+
 
     public function getStorno()
     {
