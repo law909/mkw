@@ -547,6 +547,53 @@ class Termek
         return $k;
     }
 
+    /**
+     * @param int|null $valtozatid csak az adott változat azonosítói
+     * @param string $term LIKE szűrő az azonosítóra (autocomplete)
+     * @param int|null $raktarid csak az adott raktár készlete
+     * @param int $limit max. találat (0 = nincs korlát)
+     *
+     * @return string[]
+     */
+    public function getEgyediazonositoKeszlet($valtozatid = null, $term = '', $raktarid = null, $limit = 0)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('azonosito', 'azonosito');
+
+        $sql = 'SELECT bt.termekegyediazonosito AS azonosito'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . ' WHERE bt.termek_id = :termekid'
+            . ' AND bt.mozgat = 1'
+            . ' AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
+            . ' AND bt.termekegyediazonosito IS NOT NULL'
+            . " AND bt.termekegyediazonosito <> ''"
+            . ' AND bt.termekegyediazonosito LIKE :term';
+        $params = [
+            'termekid' => $this->getId(),
+            'term' => '%' . $term . '%',
+        ];
+        if ($valtozatid) {
+            $sql .= ' AND bt.termekvaltozat_id = :valtozatid';
+            $params['valtozatid'] = $valtozatid;
+        }
+        if ($raktarid) {
+            $sql .= ' AND bf.raktar_id = :raktarid';
+            $params['raktarid'] = $raktarid;
+        }
+        $sql .= ' GROUP BY bt.termekegyediazonosito'
+            . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0'
+            . ' ORDER BY bt.termekegyediazonosito ASC';
+
+        $q = \mkw\store::getEm()->createNativeQuery($sql, $rsm);
+        $q->setParameters($params);
+        $ret = [];
+        foreach ($q->getScalarResult() as $r) {
+            $ret[] = $r['azonosito'];
+        }
+        return $ret;
+    }
+
     public function getFoglaltMennyiseg($kivevebiz = null, $datum = null, $raktarid = null)
     {
         if (\mkw\store::isFoglalas()) {

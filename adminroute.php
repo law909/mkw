@@ -292,6 +292,7 @@ $router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelCo
 
 $router->map('GET', '/admin/bizonylatfej/checkkelt', 'bizonylatfejController#checkKelt', 'adminbizonylatfejcheckkelt');
 $router->map('GET', '/admin/bizonylatfej/calcesedekesseg', 'bizonylatfejController#calcesedekesseg', 'adminbizonylatfejcalcesedekesseg');
+$router->map('GET', '/admin/bizonylatfej/egyediazonositokeszlet', 'bizonylatfejController#egyediAzonositoKeszlet', 'adminbizonylatfejegyediazonositokeszlet');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatfej/setstatusz', 'bizonylatfejController#setStatusz', 'adminbizonylatfejsetstatusz');
     $router->map('POST', '/admin/bizonylatfej/setnyomtatva', 'bizonylatfejController#setNyomtatva', 'adminbizonylatfejsetnyomtatva');

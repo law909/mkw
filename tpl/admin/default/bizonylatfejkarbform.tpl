@@ -1,7 +1,7 @@
 {if ($nostorno)}
     <h3>A számla még nincs beküldve a NAV-hoz, nem stornózhatja! Várja meg a beküldés eredményét.</h3>
 {else}
-    <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
+    <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-irany="{$egyed.irany|default:0}">
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
     </div>
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"

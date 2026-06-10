@@ -384,6 +384,43 @@ let bizonylathelper = function ($) {
     // Egy tétel egyedi azonosító mezőjének beállítása aszerint, hogy a kiválasztott
     // termékhez tartozik-e egyedi azonosító. Ha igen, a mező megjelenik és kötelező lesz,
     // valamint a mennyiség 1-re áll (egyedi azonosítónál a mennyiség csak 1 vagy -1 lehet).
+    // Negatív irányú (kimenő) bizonylat-e: ilyenkor az egyedi azonosítót a készleten lévők közül
+    // választjuk autocomplete-tel, nem szabad szövegként visszük be (szemben a bevételező bizonylattal).
+    function isNegativIrany() {
+        return ($('#mattkarb-header').data('irany') * 1) < 0;
+    }
+
+    // Az adott tételsor egyedi azonosító mezőjére ráteszi a "készleten lévő azonosítók" autocomplete-et
+    // (csak negatív irányú bizonylaton, és soronként csak egyszer).
+    function initEgyediAzonositoAutocomplete(sorid) {
+        if (!isNegativIrany()) {
+            return;
+        }
+        let input = $('input[name="teteltermekegyediazonosito_' + sorid + '"]');
+        if (!input.length || input.data('uiAutocomplete')) {
+            return;
+        }
+        input.autocomplete({
+            minLength: 0,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/admin/bizonylatfej/egyediazonositokeszlet',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        termekid: $('[name="teteltermek_' + sorid + '"]').val(),
+                        valtozatid: $('select[name="tetelvaltozat_' + sorid + '"]').val(),
+                        raktarid: $('#RaktarEdit').val(),
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            }
+        });
+    }
+
     function setEgyediAzonositoMezo(sorid, kell) {
         let row = $('.js-egyediazonositorow_' + sorid),
             input = $('input[name="teteltermekegyediazonosito_' + sorid + '"]'),
@@ -392,6 +429,7 @@ let bizonylathelper = function ($) {
         if (kell) {
             row.show();
             input.prop('required', true);
+            initEgyediAzonositoAutocomplete(sorid);
             let menny = $('input[name="tetelmennyiseg_' + sorid + '"]'),
                 mval = menny.val() * 1;
             if (mval !== 1 && mval !== -1) {
@@ -1308,6 +1346,14 @@ let bizonylathelper = function ($) {
                 //valutanemChange(true);
 
                 calcOsszesen();
+
+                // A már mentett tételek egyedi azonosító mezőire is rátesszük az autocomplete-et
+                // (negatív irányú bizonylaton), mert ezekre nem fut le a setEgyediAzonositoMezo().
+                if (isNegativIrany()) {
+                    $('input.js-egyediazonositoinput').each(function () {
+                        initEgyediAzonositoAutocomplete($(this).attr('name').replace('teteltermekegyediazonosito_', ''));
+                    });
+                }
 
                 if (!$.browser.mobile && $.fn.flyout) {
                     $('.js-toflyout').flyout();

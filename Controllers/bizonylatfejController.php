@@ -374,6 +374,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['afaellenorzesnemkell'] = $t->getAfaellenorzesnemkell();
         $x['afaellenorzesnemkellon'] = $t->getAfaellenorzesnemkellonStr();
         $x['afaellenorzesnemkellby'] = $t->getAfaellenorzesnemkellbyNev();
+        $x['irany'] = $t->getIrany();
+        // Új bizonylatnál a fejen még nincs irány – ilyenkor a bizonylattípus iránya a mérvadó
+        // (hogy az egyedi azonosító autocomplete új, negatív irányú bizonylaton is működjön).
+        if (!$x['irany'] && $this->biztipus) {
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            if ($biztip) {
+                $x['irany'] = $biztip->getIrany();
+            }
+        }
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
         $x['rontott'] = $t->getRontott();
@@ -1088,6 +1097,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $o->sendStatuszEmail($emailtpl);
             }
         }
+    }
+
+    /**
+     * A negatív irányú bizonylatok egyedi azonosító autocomplete-jének forrása: a termékhez (és
+     * választott változatához / raktárához) tartozó, készleten lévő egyedi azonosítók.
+     */
+    public function egyediAzonositoKeszlet()
+    {
+        $termekid = $this->params->getIntRequestParam('termekid');
+        $valtozatid = $this->params->getIntRequestParam('valtozatid');
+        $raktarid = $this->params->getIntRequestParam('raktarid');
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if ($termekid) {
+            /** @var \Entities\Termek $termek */
+            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            if ($termek) {
+                $ret = $termek->getEgyediazonositoKeszlet($valtozatid, $term, $raktarid);
+            }
+        }
+        echo json_encode($ret);
     }
 
     public function checkKelt()
