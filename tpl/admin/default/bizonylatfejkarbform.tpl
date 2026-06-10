@@ -433,19 +433,19 @@
             {if (!$egyed.hibas && $egyed.nemrossz)}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
-                       target="_blank">{at('Számla')}</a>
+                    >{at('Számla')}</a>
                 {/if}
                 {if ($showkeziszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit"
-                       title="{at('Kézi számla')}" target="_blank">{at('Kézi számla')}</a>
+                       title="{at('Kézi számla')}">{at('Kézi számla')}</a>
                 {/if}
                 {if ($showkivetbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{at('Kivét')}"
-                       target="_blank">{at('Kivét')}</a>
+                    >{at('Kivét')}</a>
                 {/if}
                 {if ($showbevetbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
-                       target="_blank">{at('Bevét')}</a>
+                    >{at('Bevét')}</a>
                 {/if}
             {/if}
         </div>

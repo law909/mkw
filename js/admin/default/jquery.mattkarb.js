@@ -55,8 +55,9 @@
             return setup.independent && window.location.pathname.indexOf('/viewkarb') !== -1;
         };
 
-        // Visszatérés az előző URL-re (a lista nézetre) a mentés után.
-        var returnToPreviousUrl = function () {
+        // Visszatérés az előző URL-re (a lista nézetre) a karb bezárásakor. A showSuccess csak
+        // tényleges mentés után igaz – Mégsem esetén nem jelenítjük meg a "A mentés sikerült" üzenetet.
+        var returnToPreviousUrl = function (showSuccess) {
             var origin = window.location.origin,
                 ref = document.referrer,
                 internalRef = !!ref && ref.indexOf(origin + '/') === 0,
@@ -67,27 +68,32 @@
                 window.history.back();
             } else if (internalRef) {
                 // másik bizonylatról ÚJ FÜLÖN nyílt meg (pl. "Számla"/"Bevét" gomb vagy stornó) –
-                // a sikeres mentésről visszajelzünk, majd az OK után csukjuk be a fület
-                // (ha a böngésző nem engedi, essünk vissza a lista nézetre)
+                // becsukjuk a fület (ha a böngésző nem engedi, essünk vissza a lista nézetre)
                 if ($.unblockUI) {
                     $.unblockUI();
                 }
-                $('<div>A mentés sikerült.</div>').dialog({
-                    title: 'Mentés',
-                    resizable: false,
-                    modal: true,
-                    buttons: {
-                        'OK': function () {
-                            $(this).dialog('close');
-                        }
-                    },
-                    close: function () {
-                        window.close();
-                        setTimeout(function () {
-                            window.location.href = listUrl;
-                        }, 200);
-                    }
-                });
+                var closeTab = function () {
+                    window.close();
+                    setTimeout(function () {
+                        window.location.href = listUrl;
+                    }, 200);
+                };
+                if (showSuccess) {
+                    // mentés után előbb visszajelzünk a sikerről, és az OK (vagy bezárás) után csukunk
+                    $('<div>A mentés sikerült.</div>').dialog({
+                        title: 'Mentés',
+                        resizable: false,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        },
+                        close: closeTab
+                    });
+                } else {
+                    closeTab();
+                }
             } else {
                 // közvetlen megnyitás (könyvjelző/megosztott link): a lista nézetre lépünk
                 window.location.href = listUrl;
@@ -126,9 +132,9 @@
                         setup.onSubmit.call(this, data);
                     }
                     // Önálló (saját URL-es / viewkarb) karb oldalon a mentés után
-                    // visszatérünk az előző URL-re (a lista nézetre).
+                    // visszatérünk az előző URL-re (a lista nézetre), sikerüzenettel.
                     if (isStandaloneKarbPage()) {
-                        returnToPreviousUrl();
+                        returnToPreviousUrl(true);
                     }
                 }
             });
@@ -158,7 +164,8 @@
                     setup.onCancel.call(this);
                 }
                 if (isStandaloneKarbPage()) {
-                    returnToPreviousUrl();
+                    // Mégsem: nincs mentés, ezért sikerüzenet nélkül zárunk/lépünk vissza.
+                    returnToPreviousUrl(false);
                 }
             }).button();
             $(setup.tab).tabs();
