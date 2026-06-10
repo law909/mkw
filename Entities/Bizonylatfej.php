@@ -4137,6 +4137,9 @@ class Bizonylatfej
                 }
             }
         }
+        $this->setAfaellenorzesnemkell(false);
+        $this->setAfaellenorzesnemkellby(null);
+        $this->setAfaellenorzesnemkellon(null);
         $this->duplication = false;
         /**
          * foreach($entityB->getBizonylattetelek() as $bt) {

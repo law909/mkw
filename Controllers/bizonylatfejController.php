@@ -523,6 +523,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
             $x['fakekifizetesdatumstr'] = '';
+            $x['afaellenorzesnemkell'] = false;
+            $x['afaellenorzesnemkellon'] = '';
+            $x['afaellenorzesnemkellby'] = '';
         } else {
             $x['fakekintlevoseg'] = $t->getFakekintlevoseg();
             $x['fakekifizetve'] = $t->getFakekifizetve();
