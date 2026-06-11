@@ -792,7 +792,7 @@ class termekController extends \mkwhelpers\MattableController
                 . ' OR _xx.vonalkod LIKE ' . $lit
                 . ' OR _xx.idegencikkszam LIKE ' . $lit
                 . ' OR EXISTS (SELECT vnf.id FROM Entities\\TermekValtozat vnf'
-                . ' WHERE IDENTITY(vnf.termek) = _xx.id AND vnf.cikkszam LIKE ' . $lit . ')'
+                . ' WHERE IDENTITY(vnf.termek) = _xx.id AND (vnf.cikkszam LIKE ' . $lit . ') OR (vnf.vonalkod LIKE ' . $lit . '))'
             );
         }
         if (!is_null($this->params->getRequestParam('kepurlfilter', null))) {
