@@ -210,6 +210,7 @@ class mugenraceCheckoutController extends checkoutController
                 $t->setPersistentData();
                 $t->setTermek($kt->getTermek());
                 $t->setTermekvaltozat($kt->getTermekvaltozat());
+                $t->setAfa($kt->getAfa());
                 $t->setMennyiseg($kt->getMennyiseg());
                 $t->setNettoegysar($kt->getNettoegysar());
                 $t->setBruttoegysar($kt->getBruttoegysar());

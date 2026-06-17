@@ -181,16 +181,16 @@ class KosarRepository extends \mkwhelpers\Repository
         if ($partner) {
             $partnerid = $partner->getId();
             $afaoverride = $partner->getAfaOverride();
+        } elseif ($orszag = \mkw\store::getOrszag()) {
+            $afaoverride = $orszag->getAfa();
         }
         $valutanem = \mkw\store::getWebshopValutanem();
 
+        /** @var \Entities\Kosar $k */
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanem?->getId());
         if (\mkw\store::isSzallitasiKtgTermek($termekid) || \mkw\store::isUtanvetKtgTermek($termekid) || $egymennyiseg) {
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                }
                 $k->setBruttoegysar($bruttoegysar);
             } else {
                 $termek = $this->getRepo(Termek::class)->find($termekid);
@@ -200,12 +200,35 @@ class KosarRepository extends \mkwhelpers\Repository
                     $k->setSessionid($sessionid);
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
-                    if ($afaoverride) {
-                        $k->setAfa($afaoverride);
+                    switch (true) {
+                        case \mkw\store::isMugenrace2026():
+                        case \mkw\store::isMugenrace():
+                            if ($afaoverride) {
+                                $k->setAfa($afaoverride);
+                            }
+                            $k->setNettoegysar(
+                                $termek->getNettoAr(
+                                    null,
+                                    $partner,
+                                    $valutanem->getId(),
+                                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
+                                )
+                            );
+                            $k->setEnettoegysar(
+                                $termek->getKedvezmenynelkuliNettoAr(
+                                    null,
+                                    $partner,
+                                    $valutanem->getId(),
+                                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
+                                )
+                            );
+                            $k->setEbruttoegysar($k->getEnettoegysar());
+                            break;
+                        default:
+                            $k->setBruttoegysar($bruttoegysar);
+                            $k->setEbruttoegysar($k->getBruttoegysar());
+                            $k->setEnettoegysar($k->getNettoegysar());
                     }
-                    $k->setBruttoegysar($bruttoegysar);
-                    $k->setEbruttoegysar($k->getBruttoegysar());
-                    $k->setEnettoegysar($k->getNettoegysar());
                     $k->setMennyiseg(1);
                     $k->setSorrend(100);
                 }
@@ -242,7 +265,7 @@ class KosarRepository extends \mkwhelpers\Repository
                                 $termekvaltozat,
                                 $partner,
                                 $valutanem->getId(),
-                                \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
                             )
                         );
                         $k->setEnettoegysar(
@@ -250,22 +273,15 @@ class KosarRepository extends \mkwhelpers\Repository
                                 $termekvaltozat,
                                 $partner,
                                 $valutanem->getId(),
-                                \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                                \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
                             )
                         );
                         $k->setEbruttoegysar($k->getEnettoegysar());
                         break;
                     default:
-                        if ($afaoverride) {
-                            $k->setAfa($afaoverride);
-                            $k->setNettoegysar($termek->getNettoAr($termekvaltozat, $partner));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
-                            $k->setEbruttoegysar($k->getEnettoegysar());
-                        } else {
-                            $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
-                            $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
-                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
-                        }
+                        $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                        $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
+                        $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
                         break;
                 }
                 $k->setKedvezmeny($termek->getKedvezmeny($partner));

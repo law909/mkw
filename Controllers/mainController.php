@@ -618,7 +618,7 @@ class mainController extends \mkwhelpers\Controller
         /** @var \Entities\Orszag $orszag */
         $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
         if ($orszag && $orszag->getValutanem()) {
-            \mkw\store::getMainSession()->orszag = (int)$orszagkod;
+            \mkw\store::setOrszagId((int)$orszagkod);
             $kc = new kosarController();
             $kc->recalcPrices();
         }
@@ -626,7 +626,7 @@ class mainController extends \mkwhelpers\Controller
 
     public function clearOrszag()
     {
-        \mkw\store::getMainSession()->orszag = null;
+        \mkw\store::clearOrszagId();
     }
 
     public function setLocale()

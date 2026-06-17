@@ -794,14 +794,19 @@ class Termek
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
-                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->calcSalePrice(
-                    \mkw\store::getMainValutanemId(),
-                    $valtozat
-                );
+                /** @var \Entities\Afa $afa */
+                $afa = \mkw\store::getOrszag()?->getAfa();
+                $valutanem = \mkw\store::getWebshopValutanem();
+                $x['valutanemnev'] = $valutanem?->getNev();
+
+                $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
+                $x['brutto'] = $afa->calcBrutto($nettosale);
                 $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->calcRegularPrice(\mkw\store::getMainValutanemId(), $valtozat);
+
+                $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
+                $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
+
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
                 break;
             default:
@@ -933,13 +938,17 @@ class Termek
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['brutto'] = $this->calcSalePrice(
-                \mkw\store::getMainSession()->valutanem,
-                $valtozat
-            );
+            /** @var \Entities\Afa $afa */
+            $afa = \mkw\store::getOrszag()?->getAfa();
+            $valutanem = \mkw\store::getWebshopValutanem();
+            $x['valutanemnev'] = $valutanem?->getNev();
+
+            $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
+            $x['brutto'] = $afa->calcBrutto($nettosale);
             $x['bruttohuf'] = $x['brutto'];
-            $x['eredetibrutto'] = $this->calcRegularPrice(\mkw\store::getMainSession()->valutanem, $valtozat);
+
+            $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
+            $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
             $x['eredetibruttohuf'] = $x['eredetibrutto'];
             $x['akcios'] = (boolean)$x['eredetibrutto'];
         } else {
@@ -1003,17 +1012,19 @@ class Termek
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isMugenrace():
-                $x['valutanemnev'] = \mkw\store::getMainValutanemNev();
-                $x['brutto'] = $this->calcSalePrice(
-                    \mkw\store::getMainValutanemId(),
-                    $valtozat
-                );
+                /** @var \Entities\Afa $afa */
+                $afa = \mkw\store::getOrszag()?->getAfa();
+                $valutanem = \mkw\store::getWebshopValutanem();
+                $x['valutanemnev'] = $valutanem?->getNev();
+
+                $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
+                $x['brutto'] = $afa->calcBrutto($nettosale);
                 $x['bruttohuf'] = $x['brutto'];
-                $x['eredetibrutto'] = $this->calcRegularPrice(
-                    \mkw\store::getMainValutanemId(),
-                    $valtozat
-                );
+
+                $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
+                $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
+
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
                 break;
             default:
@@ -1141,17 +1152,19 @@ class Termek
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
         if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            $x['brutto'] = $this->calcSalePrice(
-                \mkw\store::getMainSession()->valutanem,
-                $valtozat
-            );
+            /** @var \Entities\Afa $afa */
+            $afa = \mkw\store::getOrszag()?->getAfa();
+            $valutanem = \mkw\store::getWebshopValutanem();
+            $x['valutanemnev'] = $valutanem?->getNev();
+
+            $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
+            $x['brutto'] = $afa->calcBrutto($nettosale);
             $x['bruttohuf'] = $x['brutto'];
-            $x['eredetibrutto'] = $this->calcRegularPrice(
-                \mkw\store::getMainSession()->valutanem,
-                $valtozat
-            );
+
+            $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
+            $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
             $x['eredetibruttohuf'] = $x['eredetibrutto'];
+
             $x['akcios'] = (boolean)$x['eredetibrutto'];
         } else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -1228,7 +1241,7 @@ class Termek
 
     public function calcRegularPrice($valutanem, $valtozat = null)
     {
-        return $this->getBruttoAr(
+        return $this->getNettoAr(
             $valtozat,
             null,
             $valutanem,
@@ -1238,7 +1251,7 @@ class Termek
 
     public function calcSalePrice($valutanem, $valtozat = null)
     {
-        return $this->getBruttoAr(
+        return $this->getNettoAr(
             $valtozat,
             null,
             $valutanem,

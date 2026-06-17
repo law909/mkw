@@ -116,10 +116,7 @@ class superzoneb2bCheckoutController extends checkoutController
                 $t->setTermek($kt->getTermek());
                 $t->setTermekvaltozat($kt->getTermekvaltozat());
                 $t->setMennyiseg($kt->getMennyiseg());
-                $afaoverride = $partner->getAFAOverride();
-                if ($afaoverride) {
-                    $t->setAfa($afaoverride);
-                }
+                $t->setAfa($kt->getAfa());
                 $t->setNettoegysar($kt->getNettoegysar());
                 $t->setEnettoegysar($kt->getEnettoegysar());
                 $t->setEbruttoegysar($kt->getEbruttoegysar());

@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Afa;
 
 
 if (!\mkw\store::getNAVOnlineEnv()) {
@@ -806,6 +807,16 @@ if ($DBVersion < '0077') {
         $em->flush();
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0077');
+}
+
+if ($DBVersion < '0078') {
+    $afa = \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+    if ($afa) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE orszag SET afa_id="' . $afa->getId() . '" WHERE afa_id IS NULL'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0078');
 }
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

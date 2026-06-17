@@ -2202,4 +2202,24 @@ class store
     {
         return self::getConfigValue('sysadmin');
     }
+
+    public static function setOrszagId(int|null $orszagid)
+    {
+        self::getMainSession()->orszag = $orszagid;
+    }
+
+    public static function clearOrszagId()
+    {
+        self::getMainSession()->orszag = null;
+    }
+
+    public static function getOrszagId()
+    {
+        return self::getMainSession()->orszag;
+    }
+
+    public static function getOrszag()
+    {
+        return self::getEm()->getRepository(Orszag::class)->find(self::getOrszagId());
+    }
 }
