@@ -11,6 +11,7 @@ use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\Orszag;
+use Entities\Parameterek;
 use Entities\Partner;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -309,7 +310,7 @@ class store
 
     public static function getParameter($par, $default = null)
     {
-        $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
+        $p = self::getEm()->getRepository(Parameterek::class)->find($par);
         if ($p) {
             return str_replace(chr(194) . chr(173), '', $p->getErtek());  // adoszam kotojelei ele text mezobe valamiert $C2 $AD-t ir
         } else {
@@ -320,7 +321,7 @@ class store
     public static function setParameter($par, $ertek, $specialchars = false)
     {
         /** @var \Entities\Parameterek $p */
-        $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
+        $p = self::getEm()->getRepository(Parameterek::class)->find($par);
         if ($p) {
             $p->setErtek($ertek);
             $p->setSpecialchars($specialchars);
@@ -662,7 +663,7 @@ class store
         $v->setVar('hidecart', self::getSetupValue('hidecart'));
         $v->setVar('fixszinmode', self::isFixSzinMode());
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
-        $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
+        $v->setVar('valutanemnev', self::getWebshopValutanem()?->getNev());
         $v->setVar('szktgtermek', self::getParameter(\mkw\consts::SzallitasiKtgTermek));
         $v->setVar('utanvetktgtermek', self::getParameter(\mkw\consts::UtanvetKtgTermek));
         $pr = self::getEm()->getRepository(Partner::class);
@@ -1152,6 +1153,15 @@ class store
         $v = self::$valutanemperlocale[$ny];
         $valutanem = self::getEm()->getRepository(Valutanem::class)->findOneBy(['nev' => $v]);
         return $valutanem;
+    }
+
+    public static function getWebshopValutanem()
+    {
+        $valu = self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(self::getWebshopFieldName('webshopvalutanem')));
+        if (!$valu) { // mindentkapni
+            $valu = self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(\mkw\consts::Valutanem));
+        }
+        return $valu;
     }
 
     public static function getLongLocaleList()
@@ -1672,14 +1682,6 @@ class store
         return $orszag;
     }
 
-    public static function getSysValutanem()
-    {
-        if (self::getMainSession()->valutanem) {
-            return self::getMainSession()->valutanem;
-        }
-        return self::getParameter(\mkw\consts::Valutanem);
-    }
-
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg)
     {
         $ma = new \DateTime(self::convDate(date(self::$DateFormat)));
@@ -2110,28 +2112,12 @@ class store
 
     public static function setMainLocale($ny)
     {
-        $ny = self::translateToLongLocaleName($ny);
-        \mkw\store::getMainSession()->locale = $ny;
-        $v = self::getValutanemForLocale($ny);
-        if ($v) {
-            \mkw\store::getMainSession()->valutanem = $v->getId();
-            \mkw\store::getMainSession()->valutanemnev = $v->getNev();
-        }
+        \mkw\store::getMainSession()->locale = self::translateToLongLocaleName($ny);
     }
 
     public static function getMainLocale()
     {
         return \mkw\store::getMainSession()->locale;
-    }
-
-    public static function getMainValutanemNev()
-    {
-        return \mkw\store::getMainSession()->valutanemnev;
-    }
-
-    public static function getMainValutanemId()
-    {
-        return \mkw\store::getMainSession()->valutanem;
     }
 
     public static function quarterRound($mit)

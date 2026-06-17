@@ -136,9 +136,6 @@ class kosarController extends \mkwhelpers\MattableController
                     $osszeg = (float)$m[0][2];
                 }
                 $valutanem = 'Ft';
-                if ($partner) {
-                    $valutanem = $partner->getValutanemnev();
-                }
                 if ($hatar && $osszeg && $osszeg < $hatar) {
                     $megingyeneshez = $hatar - $osszeg;
                 }
@@ -150,16 +147,8 @@ class kosarController extends \mkwhelpers\MattableController
                 ];
             case \mkw\store::isSuperzoneB2B():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
-                $partner = \mkw\store::getLoggedInUser();
-                $valutanem = '';
-                $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
-                $valutanemobj = $this->getRepo(Valutanem::class)->find($valutanemid);
-                if ($valutanemobj) {
-                    $valutanem = $valutanemobj->getNev();
-                }
-                if ($partner && $partner->getValutanem()) {
-                    $valutanem = $partner->getValutanemnev();
-                }
+                $valutanemobj = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $valutanemobj?->getNev();
                 return [
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
@@ -168,20 +157,20 @@ class kosarController extends \mkwhelpers\MattableController
                 ];
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
-
+                /** @var Valutanem $valutanem */
+                $valutanem = \mkw\store::getWebshopValutanem();
                 return [
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
-                    'valutanem' => \mkw\store::getMainSession()->valutanemnev,
+                    'valutanem' => $valutanem?->getNev(),
                 ];
             case \mkw\store::isMugenrace2026():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
 
                 $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
                 $partner = \mkw\store::getLoggedInUser();
-                // $valutanemnev = \mkw\store::getMainValutanemNev();
                 /** @var Valutanem $valutanem */
-                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainValutanemId());
+                $valutanem = \mkw\store::getWebshopValutanem();
                 $s = [];
                 $szallido = 1;
                 /** @var \Entities\Kosar $sor */
@@ -197,7 +186,7 @@ class kosarController extends \mkwhelpers\MattableController
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
-                    'valutanem' => \mkw\store::getMainSession()->valutanemnev,
+                    'valutanem' => $valutanem?->getNev(),
                     'tetellista' => $s
                 ];
             default:
@@ -443,19 +432,10 @@ class kosarController extends \mkwhelpers\MattableController
         }
         $valutanemnev = 'Ft';
         if (\mkw\store::getTheme() !== 'mkwcansas') {
-            if ($partner) {
-                $valutanemnev = $partner->getValutanemnev();
-                $valutanem = $partner->getValutanem();
-            }
-            if (!$valutanem) {
-                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getMainSession()->valutanem);
-                $valutanemnev = \mkw\store::getMainSession()->valutanemnev;
-            }
+            $valutanem = \mkw\store::getWebshopValutanem();
+            $valutanemnev = $valutanem?->getNev();
         }
         $ker = 0;
-        if (!$valutanem) {
-            $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
-        }
         if ($valutanem) {
             $ker = 2;
             if ($valutanem->getKerekit()) {
@@ -530,15 +510,16 @@ class kosarController extends \mkwhelpers\MattableController
             switch (true) {
                 case \mkw\store::isMugenrace2026():
                 case \mkw\store::isMugenrace():
+                    $valutanem = \mkw\store::getWebshopValutanem();
                     $sor->setBruttoegysar(
                         $sor->getTermek()->getBruttoAr(
                             $sor->getTermekvaltozat(),
                             \mkw\store::getLoggedInUser(),
-                            \mkw\store::getMainSession()->valutanem,
-                            \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                            $valutanem,
+                            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                         )
                     );
-                    $sor->setValutanem($this->getRepo(Valutanem::class)->find(\mkw\store::getMainSession()->valutanem));
+                    $sor->setValutanem($valutanem);
                     $this->getEm()->persist($sor);
                     break;
             }

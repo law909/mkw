@@ -182,17 +182,9 @@ class KosarRepository extends \mkwhelpers\Repository
             $partnerid = $partner->getId();
             $afaoverride = $partner->getAfaOverride();
         }
-        switch (true) {
-            case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
-                $valutanemid = \mkw\store::getMainSession()->valutanem;
-                break;
-            default:
-                $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
-                break;
-        }
+        $valutanem = \mkw\store::getWebshopValutanem();
 
-        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanem?->getId());
         if (\mkw\store::isSzallitasiKtgTermek($termekid) || \mkw\store::isUtanvetKtgTermek($termekid) || $egymennyiseg) {
             if ($k) {
                 $k->setMennyiseg(1);
@@ -203,7 +195,6 @@ class KosarRepository extends \mkwhelpers\Repository
             } else {
                 $termek = $this->getRepo(Termek::class)->find($termekid);
                 if ($termek) {
-                    $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
                     $k = new \Entities\Kosar();
                     $k->setTermek($termek);
                     $k->setSessionid($sessionid);
@@ -229,7 +220,6 @@ class KosarRepository extends \mkwhelpers\Repository
             /** @var \Entities\Termek $termek */
             $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
-                $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
                 if ($vid) {
                     $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
                 }
@@ -251,7 +241,7 @@ class KosarRepository extends \mkwhelpers\Repository
                             $termek->getNettoAr(
                                 $termekvaltozat,
                                 $partner,
-                                $valutanemid,
+                                $valutanem->getId(),
                                 \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                             )
                         );
@@ -259,7 +249,7 @@ class KosarRepository extends \mkwhelpers\Repository
                             $termek->getKedvezmenynelkuliNettoAr(
                                 $termekvaltozat,
                                 $partner,
-                                $valutanemid,
+                                $valutanem->getId(),
                                 \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                             )
                         );

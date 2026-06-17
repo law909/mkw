@@ -39,14 +39,9 @@ class checkoutController extends \mkwhelpers\MattableController
         \mkw\store::fillTemplate($view, false);
         $view->setVar('checkout', true);
 
-        $partner = \mkw\store::getLoggedInUser();
-        if ($partner) {
-            $valu = $partner->getValutanemId();
-        } else {
-            $valu = \mkw\store::getMainValutanemId();
-        }
+        $valu = \mkw\store::getWebshopValutanem()?->getId();
         if (!$valu) {
-            $valu = \mkw\store::getSetupValue(\mkw\consts::Valutanem);
+            $valu = \mkw\store::getParameter(\mkw\consts::Valutanem);
         }
 
         $kr = $this->getRepo(Kosar::class);
@@ -170,13 +165,6 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function getSzallmodFizmodList()
     {
-        $partner = \mkw\store::getLoggedInUser();
-        if ($partner) {
-            $valu = $partner->getValutanemId();
-        } else {
-            $valu = \mkw\store::getMainSession()->valutanem;
-        }
-
         $kr = $this->getRepo(Kosar::class);
         $sorok = $kr->getDataBySessionId(\mkw\session::getId());
         $sum = 0;
@@ -189,7 +177,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $fr = $this->getRepo(Fizmod::class);
         $fc = new fizmodController();
         $szm = new szallitasimodController();
-        $szlist = $szm->getSelectList(null, false, $valu, $sum);
+        $szlist = $szm->getSelectList(null, false, \mkw\store::getWebshopValutanem(), $sum);
         foreach ($szlist as $szallmod) {
             $fmlist = explode(',', $szallmod['fizmodok']);
             $fmarr = [];
@@ -312,11 +300,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $sorok = $kr->getDataBySessionId(\mkw\session::getId());
         $s = [];
         $partner = \mkw\store::getLoggedInUser();
-        if ($partner) {
-            $ret['valutanemnev'] = $partner->getValutanemnev();
-        } else {
-            $ret['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-        }
+        $ret['valutanemnev'] = \mkw\store::getWebshopValutanem()?->getNev();
         $szallido = 1;
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {

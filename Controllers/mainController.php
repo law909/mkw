@@ -500,17 +500,18 @@ class mainController extends \mkwhelpers\Controller
 
         $ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
         $ret['minszallitasiido'] = intdiv($ret['szallitasiido'], 2);
+        $valutanem = \mkw\store::getWebshopValutanem();
         $ret['price'] = number_format(
                 $termek->getBruttoAr(
                     $termekvaltozat,
                     \mkw\store::getLoggedInUser(),
-                    \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)
+                    $valutanem,
+                    \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                 ),
                 0,
                 ',',
                 ' '
-            ) . ' ' . \mkw\store::getMainSession()->valutanemnev;
+            ) . ' ' . $valutanem?->getNev();
         if ($termekvaltozat) {
             $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
             $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
@@ -618,8 +619,6 @@ class mainController extends \mkwhelpers\Controller
         $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
         if ($orszag && $orszag->getValutanem()) {
             \mkw\store::getMainSession()->orszag = (int)$orszagkod;
-            \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
-            \mkw\store::getMainSession()->valutanemnev = $orszag->getValutanemNev();
             $kc = new kosarController();
             $kc->recalcPrices();
         }
@@ -628,8 +627,6 @@ class mainController extends \mkwhelpers\Controller
     public function clearOrszag()
     {
         \mkw\store::getMainSession()->orszag = null;
-        \mkw\store::getMainSession()->valutanem = null;
-        \mkw\store::getMainSession()->valutanemnev = null;
     }
 
     public function setLocale()

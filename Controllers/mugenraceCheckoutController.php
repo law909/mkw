@@ -183,8 +183,7 @@ class mugenraceCheckoutController extends checkoutController
 
             $megrendfej->setFizmod($this->getEm()->getRepository(Fizmod::class)->find($fizetesimod));
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
-            $valutanemid = \mkw\store::getMainSession()->valutanem;
-            $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
+            $valutanem = \mkw\store::getWebshopValutanem();
             $megrendfej->setValutanem($valutanem);
             $megrendfej->setWebshopmessage($webshopmessage);
             $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
