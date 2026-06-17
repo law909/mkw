@@ -846,6 +846,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="WebshopValutanemEdit">{at('Valutanem')}:</label></span>
+                            <select id="WebshopValutanemEdit" name="webshopvalutanem">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $webshopvalutanemlist as $_valutanem}
+                                    <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <tbody>
@@ -1225,6 +1234,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="WebshopValutanem2Edit">{at('Valutanem')}:</label></span>
+                                <select id="WebshopValutanem2Edit" name="webshopvalutanem2">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $webshopvalutanem2list as $_valutanem}
+                                        <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1269,6 +1287,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="WebshopValutanem3Edit">{at('Valutanem')}:</label></span>
+                                <select id="WebshopValutanem3Edit" name="webshopvalutanem3">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $webshopvalutanem3list as $_valutanem}
+                                        <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1310,6 +1337,15 @@
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $localelist4 as $_loc}
                                         <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="WebshopValutanem4Edit">{at('Valutanem')}:</label></span>
+                                <select id="WebshopValutanem4Edit" name="webshopvalutanem4">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $webshopvalutanem4list as $_valutanem}
+                                        <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
                                     {/foreach}
                                 </select>
                             </div>
@@ -1360,6 +1396,15 @@
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $localelist5 as $_loc}
                                         <option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="WebshopValutanem5Edit">{at('Valutanem')}:</label></span>
+                                <select id="WebshopValutanem5Edit" name="webshopvalutanem5">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $webshopvalutanem5list as $_valutanem}
+                                        <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
                                     {/foreach}
                                 </select>
                             </div>

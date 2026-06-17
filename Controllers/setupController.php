@@ -514,6 +514,16 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('valutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::ShowTermekArsavValutanem);
         $view->setVar('showtermekarsavvalutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WebshopValutanem);
+        $view->setVar('webshopvalutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WebshopValutanem2);
+        $view->setVar('webshopvalutanem2list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WebshopValutanem3);
+        $view->setVar('webshopvalutanem3list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WebshopValutanem4);
+        $view->setVar('webshopvalutanem4list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::WebshopValutanem5);
+        $view->setVar('webshopvalutanem5list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
@@ -1570,6 +1580,37 @@ class setupController extends \mkwhelpers\Controller
         $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
         if ($valutanem) {
             $this->setObj(\mkw\consts::ShowTermekArsavValutanem, $valutanem->getId());
+        }
+
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('webshopvalutanem', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::WebshopValutanem, $valutanem->getId());
+        } else {
+            $this->setObj(\mkw\consts::WebshopValutanem, null);
+        }
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('webshopvalutanem2', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::WebshopValutanem2, $valutanem->getId());
+        } else {
+            $this->setObj(\mkw\consts::WebshopValutanem2, null);
+        }
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('webshopvalutanem3', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::WebshopValutanem3, $valutanem->getId());
+        } else {
+            $this->setObj(\mkw\consts::WebshopValutanem3, null);
+        }
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('webshopvalutanem4', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::WebshopValutanem4, $valutanem->getId());
+        } else {
+            $this->setObj(\mkw\consts::WebshopValutanem4, null);
+        }
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('webshopvalutanem5', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::WebshopValutanem5, $valutanem->getId());
+        } else {
+            $this->setObj(\mkw\consts::WebshopValutanem5, null);
         }
 
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));

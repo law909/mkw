@@ -14,6 +14,11 @@ class consts
     const DBVersion = 'dbversion';
 
     const Valutanem = 'valutanem';
+    const WebshopValutanem = 'webshopvalutanem';
+    const WebshopValutanem2 = 'webshopvalutanem2';
+    const WebshopValutanem3 = 'webshopvalutanem3';
+    const WebshopValutanem4 = 'webshopvalutanem4';
+    const WebshopValutanem5 = 'webshopvalutanem5';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';
