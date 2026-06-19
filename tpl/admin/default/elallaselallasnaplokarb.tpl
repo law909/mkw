@@ -39,6 +39,10 @@
                             <td><label for="NaploSzovegEdit_{$naplo.id}">{at('Szöveg')}:</label></td>
                             <td><textarea id="NaploSzovegEdit_{$naplo.id}" name="naploszoveg_{$naplo.id}" rows="4" cols="70">{$naplo.szoveg}</textarea></td>
                         </tr>
+                        <tr>
+                            <td><label for="NaploMegjegyzesEdit_{$naplo.id}">{at('Megjegyzés')}:</label></td>
+                            <td><textarea id="NaploMegjegyzesEdit_{$naplo.id}" name="naplomegjegyzes_{$naplo.id}" rows="3" cols="70">{$naplo.megjegyzes}</textarea></td>
+                        </tr>
                     </tbody>
                 </table>
             </td>

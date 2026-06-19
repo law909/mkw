@@ -47,6 +47,10 @@ class Elallasnaplo
      */
     private $szoveg;
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $megjegyzes;
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $esemenyido;
@@ -99,6 +103,16 @@ class Elallasnaplo
     public function setSzoveg($szoveg)
     {
         $this->szoveg = $szoveg;
+    }
+
+    public function getMegjegyzes()
+    {
+        return $this->megjegyzes;
+    }
+
+    public function setMegjegyzes($megjegyzes)
+    {
+        $this->megjegyzes = $megjegyzes;
     }
 
     public function getEsemenyido()

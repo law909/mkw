@@ -7,6 +7,9 @@ if (\mkw\store::isMindentkapni()) {
     $router->map('GET', '/mindentkapni.rss', 'termekController#redirectOldRSSUrl', 'termekredirectoldrssurl');
     $router->map('GET', '/hirek.rss', 'hirController#redirectOldRSSUrl', 'hirredirectoldrssurl');
     $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
+
+    $router->map('GET', '/elallas', 'elallasController#elallasform', 'showelallas');
+    $router->map('POST', '/elallas/ment', 'elallasController#elallasment', 'saveelallas');
 }
 
 if (\mkw\store::isSuperzoneB2B()) {

@@ -28,6 +28,7 @@ class elallasnaploController extends \mkwhelpers\MattableController
         $x['kuldo'] = $t->getKuldo();
         $x['fogado'] = $t->getFogado();
         $x['szoveg'] = $t->getSzoveg();
+        $x['megjegyzes'] = $t->getMegjegyzes();
         $x['esemenyido'] = $t->getEsemenyidoInput();
         $x['irany'] = $t->getIrany();
         $x['created'] = $t->getCreatedStr();
@@ -39,6 +40,7 @@ class elallasnaploController extends \mkwhelpers\MattableController
         $obj->setKuldo($this->params->getStringRequestParam('kuldo'));
         $obj->setFogado($this->params->getStringRequestParam('fogado'));
         $obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setEsemenyido($this->params->getStringRequestParam('esemenyido'));
         $obj->setIrany($this->params->getIntRequestParam('irany', 1));
         return $obj;
