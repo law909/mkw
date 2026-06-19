@@ -839,6 +839,19 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/feketelista/add', 'feketelistaController#add', 'adminfeketelistaadd');
 }
 
+$router->map('GET', '/admin/elallas/viewlist', 'elallasController#viewlist', 'adminelallasviewlist');
+$router->map('GET', '/admin/elallas/getlistbody', 'elallasController#getlistbody', 'adminelallasgetlistbody');
+$router->map('GET', '/admin/elallas/getkarb', 'elallasController#getkarb', 'adminelallasgetkarb');
+$router->map('GET', '/admin/elallas/viewkarb', 'elallasController#viewkarb', 'adminelallasviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/elallas/save', 'elallasController#save', 'adminelallassave');
+}
+
+$router->map('GET', '/admin/elallasnaplo/getemptyrow', 'elallasnaploController#getemptyrow', 'adminelallasnaplogetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/elallasnaplo/del', 'elallasnaploController#del', 'adminelallasnaplodel');
+}
+
 $router->map('GET', '/admin/leltarfej/viewlist', 'leltarfejController#viewlist', 'adminleltarfejviewlist');
 $router->map('GET', '/admin/leltarfej/getlistbody', 'leltarfejController#getlistbody', 'adminleltarfejgetlistbody');
 $router->map('GET', '/admin/leltarfej/getkarb', 'leltarfejController#getkarb', 'adminleltarfejgetkarb');

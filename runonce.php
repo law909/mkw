@@ -818,6 +818,16 @@ if ($DBVersion < '0078') {
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0078');
 }
+
+if ($DBVersion < '0079') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(3, "Elállások","/admin/elallas/viewlist","/admin/elallas",40,1,950, "")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0079');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
