@@ -208,6 +208,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="BoltivevoEdit">{at('Bolti vevő')}:</label></span>
+                            <select id="BoltivevoEdit" name="boltivevo">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $boltivevolist as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="RaktarEdit">{at('Raktár')}:</label></span>
                             <select id="RaktarEdit" name="raktar">
                                 <option value="">{at('válasszon')}</option>

@@ -139,6 +139,11 @@ class Bizonylattipus
         return $this->id;
     }
 
+    public function setId($val)
+    {
+        $this->id = $val;
+    }
+
     public function getNev()
     {
         return $this->nev;

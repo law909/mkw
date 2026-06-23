@@ -396,6 +396,7 @@ class consts
 
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
+    const Boltivevo = 'boltivevo';
 
     const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';
     const MPTNGYSzimpoziumEloadasTipus = 'mptngyszimpoziumeloadastipus';

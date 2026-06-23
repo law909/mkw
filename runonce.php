@@ -828,6 +828,40 @@ if ($DBVersion < '0079') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0079');
 }
 
+if ($DBVersion < '0080') {
+    $bt = \mkw\store::getEm()->getRepository(\Entities\Bizonylattipus::class)->find('boltieladas');
+    if (!$bt) {
+        $bt = new \Entities\Bizonylattipus();
+        $bt->setId('boltieladas');
+        $bt->setNev('Bolti eladás');
+        $bt->setIrany(-1);
+        $bt->setNyomtatni(false);
+        $bt->setAzonosito('BO');
+        $bt->setKezdosorszam(1);
+        $bt->setPeldanyszam(1);
+        $bt->setMozgat(true);
+        $bt->setPenztmozgat(true);
+        $bt->setShowteljesites(true);
+        $bt->setShowesedekesseg(true);
+
+        \mkw\store::getEm()->persist($bt);
+        \mkw\store::getEm()->flush();
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0080');
+}
+
+if ($DBVersion < '0081') {
+    // "Bolti eladások" admin menüpont a bolti eladás bizonylatok CRUD-jához. Csak azoknál a
+    // deploymenteknél látható alapból, ahol a bolti eladás funkció él (galad, superzoneb2b).
+    $lathato = (\mkw\store::isGalad() || \mkw\store::isSuperzoneB2B()) ? 1 : 0;
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Bolti eladások","/admin/boltieladasfej/viewlist","/admin/boltieladasfej",15,' . $lathato . ',860, "")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0081');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

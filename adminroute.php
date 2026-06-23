@@ -290,8 +290,15 @@ $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#get
 $router->map('GET', '/admin/bizonylattetel/valtozatlist', 'bizonylattetelController#valtozathtmllist', 'adminvaltozatlist');
 $router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelController#quickvaltozathtmllist', 'adminquickvaltozatlist');
 
+$router->map('GET', '/admin/boltieladas/getkarb', 'boltieladasController#getkarb', 'adminboltieladasgetkarb');
+$router->map('GET', '/admin/boltieladas/findtermek', 'boltieladasController#findtermek', 'adminboltieladasfindtermek');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/boltieladas/save', 'boltieladasController#save', 'adminboltieladassave');
+}
+
 $router->map('GET', '/admin/bizonylatfej/checkkelt', 'bizonylatfejController#checkKelt', 'adminbizonylatfejcheckkelt');
 $router->map('GET', '/admin/bizonylatfej/calcesedekesseg', 'bizonylatfejController#calcesedekesseg', 'adminbizonylatfejcalcesedekesseg');
+$router->map('POST', '/admin/bizonylatfej/calcosszesen', 'bizonylatfejController#calcosszesen', 'adminbizonylatfejcalcosszesen');
 $router->map('GET', '/admin/bizonylatfej/egyediazonositokeszlet', 'bizonylatfejController#egyediAzonositoKeszlet', 'adminbizonylatfejegyediazonositokeszlet');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatfej/setstatusz', 'bizonylatfejController#setStatusz', 'adminbizonylatfejsetstatusz');
@@ -400,6 +407,17 @@ if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 }
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
+
+$router->map('GET', '/admin/boltieladasfej/viewlist', 'boltieladasfejController#viewlist', 'adminboltieladasfejviewlist');
+$router->map('GET', '/admin/boltieladasfej/getlistbody', 'boltieladasfejController#getlistbody', 'adminboltieladasfejgetlistbody');
+$router->map('GET', '/admin/boltieladasfej/getkarb', 'boltieladasfejController#getkarb', 'adminboltieladasfejgetkarb');
+$router->map('GET', '/admin/boltieladasfej/viewkarb', 'boltieladasfejController#viewkarb', 'adminboltieladasfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/boltieladasfej/save', 'boltieladasfejController#save', 'adminboltieladasfejsave');
+    $router->map('POST', '/admin/boltieladasfej/fejexport', 'boltieladasfejController#fejexport', 'adminboltieladasfejfejexport');
+    $router->map('POST', '/admin/boltieladasfej/tetelexport', 'boltieladasfejController#tetelexport', 'adminboltieladasfejtetelexport');
+}
+$router->map('GET', '/admin/boltieladasfej/print', 'boltieladasfejController#doPrint', 'adminboltieladasfejprint');
 
 $router->map('GET', '/admin/esetiszamlafej/viewlist', 'esetiszamlafejController#viewlist', 'adminesetiszamlafejviewlist');
 $router->map('GET', '/admin/esetiszamlafej/getlistbody', 'esetiszamlafejController#getlistbody', 'adminesetiszamlafejgetlistbody');

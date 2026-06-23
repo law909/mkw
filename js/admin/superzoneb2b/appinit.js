@@ -1,6 +1,9 @@
 $(document).ready(
 	function(){
 
+	    // Bolti eladás (POS) gyorsrögzítő külön dobozban (a garancialevél-rögzítő marad a #mattkarb-ban).
+	    boltieladas.init('#boltieladaskarb');
+
 	    function getForm() {
             $.ajax({
                 url: '/admin/garancialevelfej/getkarb',

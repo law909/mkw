@@ -194,6 +194,7 @@ class fizmodController extends \mkwhelpers\MattableController
                 'fizhatido' => $sor->getHaladek(),
                 'leiras' => $sor->getLeiras(),
                 'bank' => ($sor->getTipus() == 'B' ? '1' : '0'),
+                'keszpenz' => ($sor->getTipus() == 'P' ? '1' : '0'),
                 'szepkartya' => $sor->getId() == $szepfm,
                 'sportkartya' => $sor->getId() == $sportfm,
                 'aycm' => $sor->getId() == $aycmfm,

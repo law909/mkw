@@ -1176,6 +1176,60 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         echo json_encode(['esedekesseg' => \mkw\store::calcEsedekesseg($kelt, $fm, $partner)]);
     }
 
+    /**
+     * Az összesítők (nettó, áfa, bruttó, fizetendő, kerekítési különbözet) kiszámítása a kliensről
+     * kapott tételértékekből, a Bizonylatfej entitásfüggetlen összegzőjével
+     * (Bizonylatfej::calcOsszesenFromTetelek) – kliensoldali összegző/kerekítő nélkül. A megjelenítendő
+     * nettó/bruttó összeget a bruttó kerekítése szerint, formázva is visszaadja.
+     *
+     * Bemenet: netto[], brutto[] (tételsoronkénti értékek), fizmod, opcionálisan valutanem.
+     */
+    public function calcosszesen()
+    {
+        $defavaluta = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $valutanem = $defavaluta;
+        $vid = $this->params->getIntRequestParam('valutanem');
+        if ($vid) {
+            $v = $this->getRepo(Valutanem::class)->find($vid);
+            if ($v) {
+                $valutanem = $v;
+            }
+        }
+        $kerekit = $valutanem ? (bool)$valutanem->getKerekit() : false;
+        $mincimlet = $valutanem ? (float)$valutanem->getMincimlet() : 0;
+        $defakerekit = $defavaluta ? (bool)$defavaluta->getKerekit() : false;
+
+        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $keszpenz = $fizmod ? ($fizmod->getTipus() == 'P') : false;
+
+        $nettok = $this->params->getArrayRequestParam('netto');
+        $bruttok = $this->params->getArrayRequestParam('brutto');
+        $tetelek = [];
+        foreach ($nettok as $i => $n) {
+            $lnetto = (float)str_replace(',', '.', $n);
+            $lbrutto = isset($bruttok[$i]) ? (float)str_replace(',', '.', $bruttok[$i]) : $lnetto;
+            $tetelek[] = ['netto' => $lnetto, 'afaertek' => $lbrutto - $lnetto];
+        }
+
+        $o = Bizonylatfej::calcOsszesenFromTetelek($tetelek, [
+            'kerekit' => $kerekit,
+            'mincimlet' => $mincimlet,
+            'keszpenz' => $keszpenz,
+            'defakerekit' => $defakerekit,
+        ]);
+
+        $egesz = $kerekit || ($mincimlet && $keszpenz);
+        $nettoKerekitett = Bizonylatfej::kerekitBrutto($o['netto'], $kerekit, $mincimlet, $keszpenz);
+        echo json_encode([
+            'netto' => $o['netto'],
+            'brutto' => $o['brutto'],
+            'fizetendo' => $o['fizetendo'],
+            'kerkul' => $o['kerkul'],
+            'nettosum' => number_format($nettoKerekitett, $egesz ? 0 : 2, '.', ' '),
+            'bruttosum' => number_format($o['brutto'], $egesz ? 0 : 2, '.', ' '),
+        ]);
+    }
+
     public function ront()
     {
         $id = $this->params->getStringRequestParam('id');

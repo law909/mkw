@@ -905,6 +905,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::DefaultPartner);
         $view->setVar('defaultpartnerlist', $partner->getSelectList(($p ? $p->getErtek() : '')));
 
+        $p = $repo->find(\mkw\consts::Boltivevo);
+        $view->setVar('boltivevolist', $partner->getSelectList(($p ? $p->getErtek() : '')));
+
         $tc = $repo->find(\mkw\consts::DefaultTermek);
         $termek = new termekController();
         $view->setVar('defaulttermeklist', $termek->getSelectList(($tc ? $tc->getErtek() : 0)));
@@ -1002,6 +1005,14 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::DefaultPartner, $partner->getId());
         } else {
             $this->setObj(\mkw\consts::DefaultPartner, '');
+        }
+
+        $x = $this->params->getIntRequestParam('boltivevo', 0);
+        $partner = $tulajpartner->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::Boltivevo, $partner->getId());
+        } else {
+            $this->setObj(\mkw\consts::Boltivevo, '');
         }
 
         if ($this->params->getStringRequestParam('tulajcrc')) {

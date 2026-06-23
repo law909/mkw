@@ -206,6 +206,17 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function setId($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$val]);
+
+        return parent::setId($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getNev()
     {
 
