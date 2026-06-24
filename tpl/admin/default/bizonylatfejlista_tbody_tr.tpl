@@ -281,12 +281,20 @@
             {if (!$_egyed.parbizonylat)}<strong>{at('nincs')}</strong>{/if}
             {if ($_egyed.parbizonylat)}
                 <table>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>{at('Kelt')}</th>
+                        <th>{at('Létrehozva')}</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     <tr>
                         <td>{$_egyed.parbizonylat.id}</td>
                         <td>{$_egyed.parbizonylat.tipusnev}</td>
-                        <td>{at('Kelt')}: {$_egyed.parbizonylat.keltstr}</td>
-                        <td>{at('Létrehozva')}: {$_egyed.parbizonylat.createdstr}</td>
+                        <td>{$_egyed.parbizonylat.keltstr}</td>
+                        <td>{$_egyed.parbizonylat.createdstr}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -297,13 +305,21 @@
             {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
             {if ($_egyed.szarmazobizonylatcount > 0)}
                 <table>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>{at('Kelt')}</th>
+                        <th>{at('Létrehozva')}</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     {foreach $_egyed.szarmazobizonylatok as $_sb}
                         <tr>
                             <td>{$_sb.id}</td>
                             <td>{$_sb.tipusnev}</td>
-                            <td>{at('Kelt')}: {$_sb.keltstr}</td>
-                            <td>{at('Létrehozva')}: {$_sb.createdstr}</td>
+                            <td>{$_sb.keltstr}</td>
+                            <td>{$_sb.createdstr}</td>
                         </tr>
                     {/foreach}
                     </tbody>
