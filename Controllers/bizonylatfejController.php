@@ -585,8 +585,28 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             } else {
                 $x['penzugyistatusz'] = \mkw\store::getPenzugyiStatusz($t->getEsedekesseg(), $x['egyenleg']);
             }
+            $x['parbizonylat'] = $this->bizonylatReferencia($t->getParbizonylatfej());
+            $szarmazok = [];
+            foreach ($t->getSzulobizonylatfejek() as $gyerek) {
+                $szarmazok[] = $this->bizonylatReferencia($gyerek);
+            }
+            $x['szarmazobizonylatok'] = $szarmazok;
+            $x['szarmazobizonylatcount'] = count($szarmazok);
         }
         return $x;
+    }
+
+    private function bizonylatReferencia(\Entities\Bizonylatfej|null $b): array|null
+    {
+        if (!$b) {
+            return null;
+        }
+        return [
+            'id' => $b->getId(),
+            'tipusnev' => $b->getBizonylattipus() ? $b->getBizonylattipus()->getNev() : $b->getBizonylatnev(),
+            'keltstr' => $b->getKeltStr(),
+            'createdstr' => $b->getCreatedStr(),
+        ];
     }
 
     protected function setFields(\Entities\Bizonylatfej $obj, $parancs)

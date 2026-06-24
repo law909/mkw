@@ -205,10 +205,11 @@
                     <th>NAV állapot</th>
                 {/if}
                 {if ($showbizonylatstatuszeditor)}
-                    <th></th>
+                    <th>Állapot</th>
                 {/if}
                 <th></th>
                 <th></th>
+                <th>{at('Kapcsolódó bizonylatok')}</th>
                 <th class="js-sumcol"></th>
                 {if ($setup.osztottfizmod)}
                     <th></th>

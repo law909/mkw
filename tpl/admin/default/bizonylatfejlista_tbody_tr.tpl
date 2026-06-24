@@ -276,6 +276,42 @@
         </table>
     </td>
     <td class="cell">
+        <div class="kapcsbiz-szulo">
+            <spam>{at('Szülő bizonylat')}:</spam>
+            {if (!$_egyed.parbizonylat)}<strong>{at('nincs')}</strong>{/if}
+            {if ($_egyed.parbizonylat)}
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>{$_egyed.parbizonylat.id}</td>
+                        <td>{$_egyed.parbizonylat.tipusnev}</td>
+                        <td>{at('Kelt')}: {$_egyed.parbizonylat.keltstr}</td>
+                        <td>{at('Létrehozva')}: {$_egyed.parbizonylat.createdstr}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            {/if}
+        </div>
+        <div class="kapcsbiz-szarmazo">
+            <span>{at('Keletkezett bizonylatok')}:</span>
+            {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
+            {if ($_egyed.szarmazobizonylatcount > 0)}
+                <table>
+                    <tbody>
+                    {foreach $_egyed.szarmazobizonylatok as $_sb}
+                        <tr>
+                            <td>{$_sb.id}</td>
+                            <td>{$_sb.tipusnev}</td>
+                            <td>{at('Kelt')}: {$_sb.keltstr}</td>
+                            <td>{at('Létrehozva')}: {$_sb.createdstr}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {/if}
+        </div>
+    </td>
+    <td class="cell">
         <table>
             <tbody>
             {if ($_egyed.fizetve)}
