@@ -281,14 +281,6 @@
             {if (!$_egyed.parbizonylat)}<strong>{at('nincs')}</strong>{/if}
             {if ($_egyed.parbizonylat)}
                 <table>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th>{at('Kelt')}</th>
-                        <th>{at('Létrehozva')}</th>
-                    </tr>
-                    </thead>
                     <tbody>
                     <tr>
                         <td>{$_egyed.parbizonylat.id}</td>
@@ -305,14 +297,6 @@
             {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
             {if ($_egyed.szarmazobizonylatcount > 0)}
                 <table>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th>{at('Kelt')}</th>
-                        <th>{at('Létrehozva')}</th>
-                    </tr>
-                    </thead>
                     <tbody>
                     {foreach $_egyed.szarmazobizonylatok as $_sb}
                         <tr>
