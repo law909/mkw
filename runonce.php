@@ -872,9 +872,9 @@ if ($DBVersion < '0082') {
 }
 
 if ($DBVersion < '0083') {
-    $afa = $em->getRepository(\Entities\Afa::class)->findOneBy(['ertek' => 27]);
+    $afa = \mkw\store::getEm()->getRepository(\Entities\Afa::class)->findOneBy(['ertek' => 27]);
     if ($afa) {
-        $orszag = $em->getRepository(\Entities\Orszag::class)->findOneBy(['iso3166' => 'HU']);
+        $orszag = \mkw\store::getEm()->getRepository(\Entities\Orszag::class)->findOneBy(['iso3166' => 'HU']);
         if ($orszag) {
             $orszag->setAfa($afa);
             $orszag->setEu(1);
