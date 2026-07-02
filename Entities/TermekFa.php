@@ -292,6 +292,21 @@ class TermekFa
         return false;
     }
 
+    /**
+     * A szülő nélküli főkategória (a termékfa gyökere), vagy null, ha nincs ilyen.
+     * Több gyökér esetén a legkisebb id-jűt adja vissza.
+     */
+    public static function getRoot()
+    {
+        $res = store::getEm()->createQueryBuilder()
+            ->select('tf')->from(self::class, 'tf')
+            ->where('tf.parent IS NULL')
+            ->orderBy('tf.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()->getResult();
+        return $res ? $res[0] : null;
+    }
+
     public function getParent()
     {
         return $this->parent;

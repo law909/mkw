@@ -18,14 +18,16 @@ use Entities\Vtsz;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
- * Galád termékimport az oxford-formátumú (megtisztított) XLSX-ből.
+ * Galád termékimport a CGM-formátumú (megtisztított) XLSX-ből.
  *
- * Oszlopok: A=termékkód (csoportosítási kulcs), B=duplikált(0/1), C=változat cikkszám,
- * D=cikkszám alap (termék cikkszám), E=megnevezés, F=szín, G=méret, H=típus,
- * I=kisker ár, J=akciós ár, K=vonalkód.
- * Az azonos termékkódú sorok — akár nem összefüggő blokkokban is — egy termékhez tartoznak.
+ * Oszlopok: A=többszörös (0/1 – változatos-e a termék), B=változat cikkszám,
+ * C=közös cikkszám (a termék cikkszáma ÉS a változatokat összekötő csoportkulcs),
+ * D=méret, E=megnevezés, F=Codice Variante (nem használt), G=vonalkód, H=szín,
+ * I=kategória (termékfa), J=Prezzo Riservato (nem használt), K=KISKERÁR (bruttó).
+ *
+ * Az azonos közös cikkszámú (C oszlop) sorok egy termékhez tartoznak.
  */
-class galadOxfordImportController extends \mkwhelpers\Controller
+class galadCGMImportController extends \mkwhelpers\Controller
 {
 
     private $galadSzinCache = [];
@@ -41,13 +43,13 @@ class galadOxfordImportController extends \mkwhelpers\Controller
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
      *
-     * - Az ár nélküli (üres I oszlop) sorokat is importálja, csak árat nem állít be hozzájuk.
-     * - Az azonos termékkódú (A oszlop) sorok egy termékhez tartoznak; ha duplikált (B) == 1,
-     *   ezekből szín/méret változatok jönnek létre.
-     * - A típus (H oszlop) szövegével hasonló nevű termékfa csomópontot keres, ahhoz
+     * - Az ár nélküli (üres K oszlop) sorokat is importálja, csak árat nem állít be hozzájuk.
+     * - A közös cikkszám (C oszlop) köti össze egy termék sorait.
+     * - Ha a többszörös (A oszlop) == 1, a termék sorai szín/méret változatok.
+     *   A változat cikkszáma a B oszlop + "-" + méret (D), hogy terméken belül egyedi legyen.
+     * - A kategória (I oszlop) szövegével hasonló nevű termékfa csomópontot keres, ahhoz
      *   kapcsolja a terméket (termekfa1).
-     * - A kisker árat (I) a "Kisker.ár", az akciós árat (J) az "Akciós ár" ársávba tölti
-     *   (mindkét ársávot létrehozza, ha még nincs).
+     * - A kisker árat (K) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
      */
     public function import()
     {
@@ -80,8 +82,8 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         // VTSZ ('-' szám és név) a 27%-os ÁFА-val, ha még nincs ilyen
         $vtsz = $this->getOrCreateVtsz('-', '-', $afa);
 
-        // gyártó partner ("Oxford"), ha még nincs (szállító = 1)
-        $gyarto = $this->getOrCreatePartner('OXFORD PRODUCT');
+        // gyártó partner ("CGM"), ha még nincs (szállító = 1)
+        $gyarto = $this->getOrCreatePartner('CGMITALIA S.R.L.');
 
         // alapértelmezett valutanem
         $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)
@@ -90,9 +92,8 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         // mennyiségi egység (db)
         $me = $this->getOrCreateMe('db');
 
-        // ársávok létrehozása, ha még nincsenek
+        // ársáv létrehozása, ha még nincs
         $kiskerArsav = $this->galadGetOrCreateArsav('Kisker.ár');
-        $akciosArsav = $this->galadGetOrCreateArsav('Akciós ár');
 
         // változat adattípusok fix színmódhoz (szín / méret): ha nincsenek, létrehozzuk,
         // és az ID-jukat a paraméterek közé is beírjuk
@@ -102,33 +103,29 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         $termekdb = 0;
         $valtozatdb = 0;
 
-        // A sorokat a termékkód (A oszlop) szerint csoportosítjuk: ugyanaz a termékkód
-        // ugyanahhoz a termékhez tartozik akkor is, ha a sorok NEM összefüggőek
-        // (pl. 4 db 28-as, majd 3 db 29-es, majd megint 4 db 28-as). Ezért az egész
-        // fájlt beolvassuk egy kulcs szerinti tömbbe, és csak utána dolgozzuk fel.
-        // Az üres sorok nem zavarnak be (egyszerűen kimaradnak a csoportokból).
+        // A sorokat a közös cikkszám (C oszlop) szerint csoportosítjuk: ugyanaz a közös
+        // cikkszám ugyanahhoz a termékhez tartozik akkor is, ha a sorok NEM összefüggőek.
+        // Ezért az egész fájlt beolvassuk egy kulcs szerinti tömbbe, és csak utána
+        // dolgozzuk fel. Az üres sorok nem zavarnak be (kimaradnak a csoportokból).
         $groups = [];
 
         for ($row = $dbtol; $row <= $hardMax; ++$row) {
-            $termekkod = trim((string)$sheet->getCell('A' . $row)->getValue());
-            $duplikalt = trim((string)$sheet->getCell('B' . $row)->getValue());
-            $vcikkszam = trim((string)$sheet->getCell('C' . $row)->getValue());
-            $tcikkszam = trim((string)$sheet->getCell('D' . $row)->getValue());
+            $tobbszoros = trim((string)$sheet->getCell('A' . $row)->getValue());
+            $vcikkszambase = trim((string)$sheet->getCell('B' . $row)->getValue());
+            $cikkszam = trim((string)$sheet->getCell('C' . $row)->getValue());
+            $meret = trim((string)$sheet->getCell('D' . $row)->getValue());
             $megnevezes = trim((string)$sheet->getCell('E' . $row)->getValue());
-            $szin = trim((string)$sheet->getCell('F' . $row)->getValue());
-            $meret = trim((string)$sheet->getCell('G' . $row)->getValue());
-            $tipus = trim((string)$sheet->getCell('H' . $row)->getValue());
-            $kiskerAr = $sheet->getCell('I' . $row)->getValue();
-            $akciosAr = $sheet->getCell('J' . $row)->getValue();
-            $vonalkod = trim((string)$sheet->getCell('K' . $row)->getValue());
+            $vonalkod = trim((string)$sheet->getCell('G' . $row)->getValue());
+            $szin = trim((string)$sheet->getCell('H' . $row)->getValue());
+            $kategoria = trim((string)$sheet->getCell('I' . $row)->getValue());
+            $kiskerAr = $sheet->getCell('K' . $row)->getValue();
 
-            $iUres = ($kiskerAr === null || trim((string)$kiskerAr) === '');
-            $jUres = ($akciosAr === null || trim((string)$akciosAr) === '');
+            $kUres = ($kiskerAr === null || trim((string)$kiskerAr) === '');
 
             // teljesen üres sor: az adatok végét egy hosszabb üres sorozat jelzi
-            if ($termekkod === '' && $duplikalt === '' && $vcikkszam === '' && $tcikkszam === ''
-                && $megnevezes === '' && $szin === '' && $meret === '' && $tipus === ''
-                && $iUres && $jUres && $vonalkod === '') {
+            if ($tobbszoros === '' && $vcikkszambase === '' && $cikkszam === '' && $meret === ''
+                && $megnevezes === '' && $vonalkod === '' && $szin === '' && $kategoria === ''
+                && $kUres) {
                 if (!$dbig && ++$emptyRun >= $emptyLimit) {
                     break;
                 }
@@ -136,40 +133,35 @@ class galadOxfordImportController extends \mkwhelpers\Controller
             }
             $emptyRun = 0;
 
-            // az E oszlop (megnevezés) nélküli sorokat nem importáljuk
+            // a megnevezés (E oszlop) nélküli sorokat nem importáljuk
             if ($megnevezes === '') {
                 continue;
             }
 
-            // azonosító hiányában nem tudjuk csoportosítani / felvenni a sort
-            if ($termekkod === '' && $tcikkszam === '') {
+            // közös cikkszám nélkül nem tudjuk csoportosítani / felvenni a sort
+            if ($cikkszam === '') {
                 continue;
             }
 
-            // csoportosítási kulcs: elsődlegesen a termékkód (A), hiányában a cikkszám alap (D)
-            $kulcs = $termekkod !== '' ? 'k:' . $termekkod : 'c:' . $tcikkszam;
-
-            $groups[$kulcs][] = [
-                'termekkod' => $termekkod,
-                'valtozatos' => $duplikalt,
-                'vcikkszam' => $vcikkszam,
-                'tcikkszam' => $tcikkszam,
-                'megnevezes' => $megnevezes,
-                'szin' => $szin,
+            $groups['k:' . $cikkszam][] = [
+                'valtozatos' => $tobbszoros,
+                'vcikkszambase' => $vcikkszambase,
+                'cikkszam' => $cikkszam,
                 'meret' => $meret,
-                'tipus' => $tipus,
-                'kisker' => $kiskerAr,
-                'akcios' => $akciosAr,
+                'megnevezes' => $megnevezes,
                 'vonalkod' => $vonalkod,
+                'szin' => $szin,
+                'kategoria' => $kategoria,
+                'kisker' => $kiskerAr,
             ];
         }
 
         // a soronkénti findOneBy-ok kiváltása: egyszerre betöltjük a fájlban előforduló,
-        // már létező vonalkódokat és termékkódokat (idegenkod) memóriába
+        // már létező vonalkódokat és termék-cikkszámokat memóriába
         $mindenVonalkod = [];
         $mindenTermekKulcs = [];
         foreach ($groups as $group) {
-            $mindenTermekKulcs[] = $group[0]['termekkod'];
+            $mindenTermekKulcs[] = $group[0]['cikkszam'];
             foreach ($group as $sor) {
                 if ($sor['vonalkod'] !== '') {
                     $mindenVonalkod[] = $sor['vonalkod'];
@@ -178,7 +170,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         }
         $this->galadLetezoValtozatVonalkod = $this->galadLetezoHalmaz(TermekValtozat::class, 'vonalkod', $mindenVonalkod);
         $this->galadLetezoTermekVonalkod = $this->galadLetezoHalmaz(Termek::class, 'vonalkod', $mindenVonalkod);
-        $this->galadLetezoTermekKulcs = $this->galadLetezoHalmaz(Termek::class, 'idegenkod', $mindenTermekKulcs);
+        $this->galadLetezoTermekKulcs = $this->galadLetezoHalmaz(Termek::class, 'cikkszam', $mindenTermekKulcs);
 
         // kötegelt mentés: 200 termékenként flush + clear, hogy a Unit of Work ne nőjön
         // korlátlanul (a soronkénti flush négyzetes lassulást okozott). A clear() minden
@@ -190,13 +182,12 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         $meId = $me ? $me->getId() : null;
         $valutanemId = $valutanem ? $valutanem->getId() : null;
         $kiskerArsavId = $kiskerArsav ? $kiskerArsav->getId() : null;
-        $akciosArsavId = $akciosArsav ? $akciosArsav->getId() : null;
         $szinAdatTipusId = $szinAdatTipus ? $szinAdatTipus->getId() : null;
         $meretAdatTipusId = $meretAdatTipus ? $meretAdatTipus->getId() : null;
 
         $koteg = 0;
         foreach ($groups as $group) {
-            $res = $this->galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $akciosArsav, $szinAdatTipus, $meretAdatTipus);
+            $res = $this->galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus);
             $termekdb += $res['termek'];
             $valtozatdb += $res['valtozat'];
             if (++$koteg % 200 === 0) {
@@ -208,7 +199,6 @@ class galadOxfordImportController extends \mkwhelpers\Controller
                 $me = $meId ? $em->getReference(ME::class, $meId) : null;
                 $valutanem = $valutanemId ? $em->getReference(Valutanem::class, $valutanemId) : null;
                 $kiskerArsav = $kiskerArsavId ? $em->getReference(Arsav::class, $kiskerArsavId) : null;
-                $akciosArsav = $akciosArsavId ? $em->getReference(Arsav::class, $akciosArsavId) : null;
                 $szinAdatTipus = $szinAdatTipusId ? $em->getReference(TermekValtozatAdatTipus::class, $szinAdatTipusId) : null;
                 $meretAdatTipus = $meretAdatTipusId ? $em->getReference(TermekValtozatAdatTipus::class, $meretAdatTipusId) : null;
                 $this->galadReattachCaches($em);
@@ -220,40 +210,37 @@ class galadOxfordImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Egy termékhez tartozó (azonos termékkódú) sorok feldolgozása.
+     * Egy termékhez tartozó (azonos közös cikkszámú) sorok feldolgozása.
      */
-    private function galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $akciosArsav, $szinAdatTipus, $meretAdatTipus)
+    private function galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus)
     {
         if (!$group) {
             return ['termek' => 0, 'valtozat' => 0];
         }
         $first = $group[0];
-        $tcikkszam = $first['tcikkszam'];
-        if ($tcikkszam === '') {
+        $cikkszam = $first['cikkszam'];
+        if ($cikkszam === '') {
             return ['termek' => 0, 'valtozat' => 0];
         }
 
-        // változatos termék-e (az azonos termékkódú sorokból változatok jönnek létre);
-        // sima terméknél a vonalkód magára a termékre kerül
-        $valtozatos = count($group) > 1;
+        // változatos termék-e (A oszlop == 1); sima terméknél a vonalkód a termékre kerül
+        $valtozatos = ((string)$first['valtozatos'] === '1');
         $termekVonalkod = (!$valtozatos && $first['vonalkod'] !== '') ? $first['vonalkod'] : '';
 
         $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
         /** @var Termek $termek */
-        $termek = ($first['termekkod'] === '' || isset($this->galadLetezoTermekKulcs[$first['termekkod']]))
-            ? $termekrepo->findOneBy(['idegenkod' => $first['termekkod']])
+        $termek = isset($this->galadLetezoTermekKulcs[$cikkszam])
+            ? $termekrepo->findOneBy(['cikkszam' => $cikkszam])
             : null;
         if (!$termek) {
             // vonalkóddal felvitt terméket csak akkor, ha még nincs ilyen vonalkódú termék
             if ($termekVonalkod !== '' && isset($this->galadLetezoTermekVonalkod[$termekVonalkod])) {
                 return ['termek' => 0, 'valtozat' => 0];
             }
-            if ($first['termekkod'] !== '') {
-                $this->galadLetezoTermekKulcs[$first['termekkod']] = true;
-            }
+            $this->galadLetezoTermekKulcs[$cikkszam] = true;
             $termek = new \Entities\Termek();
-            $termek->setIdegenkod($first['termekkod']);
-            $termek->setCikkszam($tcikkszam);
+            $termek->setCikkszam($cikkszam);
+            $termek->setIdegenkod($cikkszam);
             $termek->setNev($first['megnevezes']);
             $termek->setLathato(true);
             $termek->setInaktiv(false);
@@ -270,7 +257,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
             if (!$termek->getAfa() && $afa) {
                 $termek->setAfa($afa);
             }
-            $kategoria = $this->galadFindTermekfaByNev($first['tipus']);
+            $kategoria = $this->galadFindTermekfaByNev($first['kategoria']);
             if (!$kategoria) {
                 // ha nincs kategória-találat, a szülő nélküli főkategóriába kerül
                 if ($this->galadRootTermekfa === false) {
@@ -284,12 +271,10 @@ class galadOxfordImportController extends \mkwhelpers\Controller
             \mkw\store::getEm()->persist($termek);
 
             $this->galadSetArsavAr($termek, $valutanem, $kiskerArsav, $first['kisker']);
-            if ($first['akcios'] !== null && trim((string)$first['akcios']) !== '') {
-                $this->galadSetArsavAr($termek, $valutanem, $akciosArsav, $first['akcios']);
-            }
         }
 
         $valtozatdb = 0;
+        // változatos termék: A oszlop == 1
         if ($valtozatos) {
             foreach ($group as $sor) {
                 if ($this->galadImportValtozat($termek, $sor, $szinAdatTipus, $meretAdatTipus)) {
@@ -344,9 +329,16 @@ class galadOxfordImportController extends \mkwhelpers\Controller
 
     /**
      * Egy változat (TermekValtozat) létrehozása/frissítése szín + méret alapján.
+     * A változat cikkszáma a B oszlop + "-" + méret, hogy terméken belül egyedi legyen.
+     * Az azonosítás elsődlegesen a (mindig egyedi) vonalkód alapján történik.
      */
     private function galadImportValtozat($termek, $sor, $szinAdatTipus, $meretAdatTipus)
     {
+        $vcikkszam = $sor['vcikkszambase'];
+        if ($sor['meret'] !== '') {
+            $vcikkszam .= '-' . $sor['meret'];
+        }
+
         $tvr = \mkw\store::getEm()->getRepository(TermekValtozat::class);
         // ha van vonalkód: csak akkor importáljuk a változatot, ha még nincs ilyen vonalkódú változat
         if ($sor['vonalkod'] !== '') {
@@ -359,16 +351,16 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         } else {
             // nincs vonalkód: minden úgy mint eddig (cikkszám alapú azonosítás)
             $valtozat = null;
-            if ($termek->getId() && $sor['vcikkszam'] !== '') {
-                $valtozat = $tvr->findOneBy(['termek' => $termek->getId(), 'cikkszam' => $sor['vcikkszam']]);
+            if ($termek->getId() && $vcikkszam !== '') {
+                $valtozat = $tvr->findOneBy(['termek' => $termek->getId(), 'cikkszam' => $vcikkszam]);
             }
             if (!$valtozat) {
                 $valtozat = new \Entities\TermekValtozat();
                 $termek->addValtozat($valtozat);
             }
         }
-        if ($sor['vcikkszam'] !== '') {
-            $valtozat->setCikkszam($sor['vcikkszam']);
+        if ($vcikkszam !== '') {
+            $valtozat->setCikkszam($vcikkszam);
         }
         if ($sor['vonalkod'] !== '') {
             $valtozat->setVonalkod($sor['vonalkod']);
@@ -512,7 +504,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Termékfa csomópont keresése név (G/típus oszlop) alapján: pontos egyezés,
+     * Termékfa csomópont keresése név (I/kategória oszlop) alapján: pontos egyezés,
      * majd tartalmazás (LIKE), végül leghasonlóbb név (fuzzy).
      */
     private function galadFindTermekfaByNev($nev)

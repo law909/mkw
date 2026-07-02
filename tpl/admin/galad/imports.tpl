@@ -39,6 +39,9 @@
                     <div class="matt-hseparator"></div>
                     <div>
                         <a href="/admin/import/galadoxfordimport" class="js-galadoxfordimport">Oxford lista</a>
+                        <a href="/admin/import/galadcgmimport" class="js-galadcgmimport">CGM lista</a>
+                        <a href="/admin/import/galadproductimport" class="js-galadproductimport">Termék lista (product export)</a>
+                        <a href="/admin/import/galadsuomyimport" class="js-galadsuomyimport">SUOMY lista</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
