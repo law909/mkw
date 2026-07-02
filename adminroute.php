@@ -295,6 +295,7 @@ $router->map('GET', '/admin/boltieladas/findtermek', 'boltieladasController#find
 $router->map('GET', '/admin/boltieladas/kereses', 'boltieladasController#kereses', 'adminboltieladaskereses');
 $router->map('GET', '/admin/boltieladas/gettermek', 'boltieladasController#gettermek', 'adminboltieladasgettermek');
 $router->map('GET', '/admin/boltieladas/gettetel', 'boltieladasController#gettetel', 'adminboltieladasgettetel');
+$router->map('POST', '/admin/boltieladas/szamlaelokeszit', 'boltieladasController#szamlaelokeszit', 'adminboltieladasszamlaelokeszit');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/boltieladas/save', 'boltieladasController#save', 'adminboltieladassave');
 }

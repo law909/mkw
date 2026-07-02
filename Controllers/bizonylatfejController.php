@@ -1424,6 +1424,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return $ret;
     }
 
+    /**
+     * Ha be van állítva, a getkarb ezt a (nem feltétlenül mentett) bizonylatot használja a
+     * findWithJoins($id) helyett. Így pl. a bolti eladásból mentés nélkül nyitható számla:
+     * egy memóriában felépített forrásbizonylatot adunk át az inherit prefillnek.
+     */
+    protected $prebuiltRecord = null;
+
     public function viewkarb()
     {
         $this->getkarb($this->getKarbTplName());
@@ -1455,7 +1462,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         //       $this->setVars($view);
 
         /** @var \Entities\Bizonylatfej $record */
-        $record = $this->getRepo()->findWithJoins($id);
+        $record = $this->prebuiltRecord ? $this->prebuiltRecord : $this->getRepo()->findWithJoins($id);
         $mehet = true;
         if ($oper === 'storno') {
             if ($record->getNaveredmeny() != '' && $record->getNaveredmeny() !== 'DONE') {

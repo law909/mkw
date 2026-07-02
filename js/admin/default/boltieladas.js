@@ -7,6 +7,8 @@ var boltieladas = (function ($) {
     const URL_GETTETEL = '/admin/boltieladas/gettetel';
     const URL_CALCOSSZESEN = '/admin/bizonylatfej/calcosszesen';
     const URL_SAVE = '/admin/boltieladas/save';
+    const URL_SZAMLAELOKESZIT = '/admin/boltieladas/szamlaelokeszit';
+    const URL_SZAMLAKARB = '/admin/szamlafej/viewkarb?boltiszamla=1';
 
     // Jelzi, hogy az utolsó Enter az autocomplete listából való választás volt-e (ilyenkor
     // nem vonalkódozunk).
@@ -173,10 +175,8 @@ var boltieladas = (function ($) {
         });
     }
 
-    function save($cont) {
-        var $uzenet = $cont.find('.js-boltieladas-uzenet');
-        $uzenet.removeClass('boltieladas-hiba').text('');
-
+    // A kosár sorainak összegyűjtése párhuzamos tömbökbe (a mentés és a számla is ezt küldi).
+    function collectData($cont) {
         var data = {
             fizmod: $cont.find('.js-boltieladas-fizmod').val(),
             termekid: [],
@@ -199,6 +199,14 @@ var boltieladas = (function ($) {
             data.nettoegysar.push(num($r.find('.js-be-nettoegysar').val()));
             data.bruttoegysar.push(num($r.find('.js-be-bruttoegysar').val()));
         });
+        return data;
+    }
+
+    function save($cont) {
+        var $uzenet = $cont.find('.js-boltieladas-uzenet');
+        $uzenet.removeClass('boltieladas-hiba').text('');
+
+        var data = collectData($cont);
 
         if (!data.termekid.length) {
             $uzenet.addClass('boltieladas-hiba').text('Nincs tétel a bizonylaton!');
@@ -222,6 +230,54 @@ var boltieladas = (function ($) {
             },
             error: function () {
                 $uzenet.addClass('boltieladas-hiba').text('Hiba a rögzítés közben.');
+            }
+        });
+    }
+
+    // "Számla" gomb: a kosarat mentés nélkül átadjuk a session-nek, és új ablakban megnyitjuk
+    // a számlaszerkesztőt a tételekkel. A bolti eladás bizonylat NEM jön létre.
+    function szamla($cont) {
+        var $uzenet = $cont.find('.js-boltieladas-uzenet');
+        $uzenet.removeClass('boltieladas-hiba').text('');
+
+        var data = collectData($cont);
+        if (!data.termekid.length) {
+            $uzenet.addClass('boltieladas-hiba').text('Nincs tétel a bizonylaton!');
+            return;
+        }
+
+        // Az ablakot még a kattintás eseményében megnyitjuk (popup-blokkoló elkerülése),
+        // majd az AJAX válasz után irányítjuk a számlaszerkesztőre.
+        var w = window.open('', '_blank');
+        $.ajax({
+            url: URL_SZAMLAELOKESZIT,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function (res) {
+                if (res && res.ok) {
+                    if (w) {
+                        w.location = URL_SZAMLAKARB;
+                    } else {
+                        window.location = URL_SZAMLAKARB;
+                    }
+                    // A számla megnyílt: a POS kosarát ürítjük.
+                    $cont.find('.js-boltieladas-tetelek').empty();
+                    recalcTotals($cont);
+                    $cont.find('.js-boltieladas-vonalkod').val('').focus();
+                    $uzenet.removeClass('boltieladas-hiba').text('Számla megnyitva.');
+                } else {
+                    if (w) {
+                        w.close();
+                    }
+                    $uzenet.addClass('boltieladas-hiba').text((res && res.error) ? res.error : 'Hiba a számla előkészítésekor.');
+                }
+            },
+            error: function () {
+                if (w) {
+                    w.close();
+                }
+                $uzenet.addClass('boltieladas-hiba').text('Hiba a számla előkészítésekor.');
             }
         });
     }
@@ -316,6 +372,11 @@ var boltieladas = (function ($) {
         $cont.on('click', '.js-boltieladas-rogzit', function (e) {
             e.preventDefault();
             save($cont);
+        });
+
+        $cont.on('click', '.js-boltieladas-szamla', function (e) {
+            e.preventDefault();
+            szamla($cont);
         });
 
         //$cont.find('.js-boltieladas-rogzit').button();

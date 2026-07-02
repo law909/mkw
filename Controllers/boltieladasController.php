@@ -318,4 +318,50 @@ class boltieladasController extends \mkwhelpers\Controller
 
         echo json_encode(['ok' => true, 'id' => $fej->getId()]);
     }
+
+    /**
+     * A "Számla" gomb hívja: a kliensoldali kosarat NEM menti bizonylatként, csak beteszi az
+     * admin session-be. Innen a szamlafejController egy mentés nélküli számlaablakot nyit a
+     * tételekkel (a bolti eladás bizonylat nem jön létre).
+     */
+    public function szamlaelokeszit()
+    {
+        $termekids = $this->params->getArrayRequestParam('termekid');
+        if (!$termekids) {
+            echo json_encode(['ok' => false, 'error' => t('Nincs tétel a bizonylaton!')]);
+            return;
+        }
+        $valtozatids = $this->params->getArrayRequestParam('valtozatid');
+        $mennyisegek = $this->params->getArrayRequestParam('mennyiseg');
+        $kedvezmenyek = $this->params->getArrayRequestParam('kedvezmeny');
+        $enettok = $this->params->getArrayRequestParam('enettoegysar');
+        $nettok = $this->params->getArrayRequestParam('nettoegysar');
+        $bruttok = $this->params->getArrayRequestParam('bruttoegysar');
+        $afaids = $this->params->getArrayRequestParam('afaid');
+
+        $tetelek = [];
+        foreach ($termekids as $i => $termekid) {
+            if (!$termekid) {
+                continue;
+            }
+            $tetelek[] = [
+                'termekid' => (int)$termekid,
+                'valtozatid' => !empty($valtozatids[$i]) ? (int)$valtozatids[$i] : 0,
+                'afaid' => !empty($afaids[$i]) ? (int)$afaids[$i] : 0,
+                'mennyiseg' => isset($mennyisegek[$i]) ? (float)str_replace(',', '.', $mennyisegek[$i]) : 1,
+                'kedvezmeny' => isset($kedvezmenyek[$i]) ? (float)str_replace(',', '.', $kedvezmenyek[$i]) : 0,
+                'enettoegysar' => isset($enettok[$i]) ? (float)str_replace(',', '.', $enettok[$i]) : 0,
+                'nettoegysar' => isset($nettok[$i]) ? (float)str_replace(',', '.', $nettok[$i]) : 0,
+                'bruttoegysar' => isset($bruttok[$i]) ? (float)str_replace(',', '.', $bruttok[$i]) : 0,
+            ];
+        }
+        if (!$tetelek) {
+            echo json_encode(['ok' => false, 'error' => t('Nincs érvényes tétel a bizonylaton!')]);
+            return;
+        }
+
+        \mkw\store::getAdminSession()->boltiszamlatetelek = $tetelek;
+        \mkw\store::getAdminSession()->boltiszamlafizmod = $this->params->getIntRequestParam('fizmod');
+        echo json_encode(['ok' => true]);
+    }
 }

@@ -57,6 +57,9 @@
             <button class="js-boltieladas-rogzit ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only">
                 <span class="ui-button-text">{t('Rögzít')}</span>
             </button>
+            <button class="js-boltieladas-szamla ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only">
+                <span class="ui-button-text">{t('Számla')}</span>
+            </button>
             <span class="js-boltieladas-uzenet boltieladas-uzenet"></span>
         </div>
     </div>
