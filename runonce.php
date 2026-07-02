@@ -878,8 +878,8 @@ if ($DBVersion < '0083') {
         if ($orszag) {
             $orszag->setAfa($afa);
             $orszag->setEu(1);
-            $em->persist($orszag);
-            $em->flush();
+            \mkw\store::getEm()->persist($orszag);
+            \mkw\store::getEm()->flush();
         }
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0083');
