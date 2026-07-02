@@ -35,6 +35,14 @@ body {
     text-align: right;
 }
 
+.boltieladas-tetelek thead th {
+    text-align: left;
+}
+
+.boltieladas-osszesenlabel {
+    text-align: right;
+}
+
 .egyebadat-grid {
     margin-bottom: 5px;
 }

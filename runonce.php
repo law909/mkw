@@ -862,6 +862,15 @@ if ($DBVersion < '0081') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0081');
 }
 
+if ($DBVersion < '0082') {
+    // A termékfa gyökér elemének (parent_id IS NULL) nevét egységesen "Termék kategóriák"-ra állítjuk.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE termekfa SET nev = ? WHERE parent_id IS NULL',
+        ['Termék kategóriák']
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0082');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

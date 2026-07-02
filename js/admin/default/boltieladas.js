@@ -2,8 +2,15 @@ var boltieladas = (function ($) {
 
     const URL_GETKARB = '/admin/boltieladas/getkarb';
     const URL_FINDTERMEK = '/admin/boltieladas/findtermek';
+    const URL_KERESES = '/admin/boltieladas/kereses';
+    const URL_GETTERMEK = '/admin/boltieladas/gettermek';
+    const URL_GETTETEL = '/admin/boltieladas/gettetel';
     const URL_CALCOSSZESEN = '/admin/bizonylatfej/calcosszesen';
     const URL_SAVE = '/admin/boltieladas/save';
+
+    // Jelzi, hogy az utolsó Enter az autocomplete listából való választás volt-e (ilyenkor
+    // nem vonalkódozunk).
+    var productSelected = false;
 
     function num(v) {
         if (v === null || v === undefined) {
@@ -84,27 +91,84 @@ var boltieladas = (function ($) {
         recalcRow($row);
     }
 
-    function loadTetel($cont, kod) {
+    // A keresés eredményének kezelése: kész tételsor a táblázatba, változatválasztó a táblázat
+    // alatti dobozba, semmi találat esetén hibaüzenet.
+    function handleResult($cont, res) {
         var $hiba = $cont.find('.js-boltieladas-kereshiba');
+        if (!res || !res.mode || res.mode === 'none') {
+            $hiba.text('Nincs találat.');
+            return;
+        }
         $hiba.text('');
+        if (res.mode === 'valtozat') {
+            // Változatválasztó a tétel táblázat alatt; a tételt a változat kiválasztása után adjuk hozzá.
+            $cont.find('.js-boltieladas-valtozatvalaszto').html(res.html);
+            $cont.find('.js-be-valtozatvalaszto').focus();
+            return;
+        }
+        // mode === 'tetel'
+        addTetelRow($cont, res.html);
+    }
+
+    // Kész tételsor hozzáadása a táblázathoz, a változatválasztó doboz ürítése, fókusz vissza a keresőre.
+    function addTetelRow($cont, html) {
+        var $row = $(html);
+        $cont.find('.js-boltieladas-tetelek').append($row);
+        recalcRow($row);
+        recalcTotals($cont);
+        $cont.find('.js-boltieladas-valtozatvalaszto').empty();
+        $cont.find('.js-boltieladas-vonalkod').val('').focus();
+    }
+
+    // Enter a keresőben: vonalkódnak tekintjük, azzal keresünk változatot vagy terméket.
+    function loadByVonalkod($cont, kod) {
+        $cont.find('.js-boltieladas-kereshiba').text('');
         $.ajax({
             url: URL_FINDTERMEK,
             data: {vonalkod: kod},
-            dataType: 'html',
-            success: function (html) {
-                // A szerver a kész tételsor HTML-jét adja vissza; üres válasz = nincs találat.
-                html = $.trim(html || '');
-                if (html === '') {
-                    $hiba.text('Nincs találat a vonalkódra: ' + kod);
-                    return;
-                }
-                var $row = $(html);
-                $cont.find('.js-boltieladas-tetelek').append($row);
-                recalcRow($row);
-                recalcTotals($cont);
+            dataType: 'json',
+            success: function (res) {
+                handleResult($cont, res);
             },
             error: function () {
-                $hiba.text('Hiba a keresés közben.');
+                $cont.find('.js-boltieladas-kereshiba').text('Hiba a keresés közben.');
+            }
+        });
+    }
+
+    // Termék kiválasztása az autocomplete listából: ha van változata, változatválasztó jön,
+    // egyébként egyből a tételsor.
+    function loadTermek($cont, termekid) {
+        if (!termekid) {
+            return;
+        }
+        $.ajax({
+            url: URL_GETTERMEK,
+            data: {termekid: termekid},
+            dataType: 'json',
+            success: function (res) {
+                handleResult($cont, res);
+            }
+        });
+    }
+
+    // A változat kiválasztása után betölti a tételsort; a változatválasztó doboz ürül (eltűnik).
+    function loadValtozatTetel($cont, $block) {
+        var valtozatid = $block.find('.js-be-valtozatvalaszto').val();
+        if (!valtozatid) {
+            return;
+        }
+        $.ajax({
+            url: URL_GETTETEL,
+            data: {
+                termekid: $block.data('termekid'),
+                valtozatid: valtozatid
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res && res.ok && res.html) {
+                    addTetelRow($cont, res.html);
+                }
             }
         });
     }
@@ -163,16 +227,43 @@ var boltieladas = (function ($) {
     }
 
     function wire($cont) {
-        // Vonalkód: Enterre betölti a tételt, majd ürül és visszakapja a fókuszt.
+        // Kereső: 4 karaktertől név/cikkszám autocomplete (termékválasztás), Enterre vonalkódos keresés.
+        $cont.find('.js-boltieladas-vonalkod').autocomplete({
+            minLength: 4,
+            delay: 200,
+            autoFocus: false,
+            source: URL_KERESES,
+            focus: function () {
+                // Navigáláskor ne írja felül a beírt szöveget (maradjon a vonalkód/keresőkifejezés).
+                return false;
+            },
+            select: function (event, ui) {
+                // Termék kiválasztva a listából → változatválasztó vagy tételsor.
+                productSelected = true;
+                $(this).val('');
+                loadTermek($cont, ui.item.id);
+                return false;
+            }
+        });
+
         $cont.on('keydown', '.js-boltieladas-vonalkod', function (e) {
             if (e.which === 13) {
                 e.preventDefault();
+                // Ha az Entert az autocomplete listás választás váltotta ki, azt a select már kezelte.
+                if (productSelected) {
+                    productSelected = false;
+                    return;
+                }
                 var $inp = $(this);
                 var kod = $.trim($inp.val());
-                if (kod !== '') {
-                    loadTetel($cont, kod);
-                }
+                $inp.autocomplete('close');
                 $inp.val('');
+                if (kod !== '') {
+                    loadByVonalkod($cont, kod);
+                }
+            } else {
+                // Új gépelés kezdődik: töröljük a listás választás jelzőt.
+                productSelected = false;
             }
         });
 
@@ -202,6 +293,18 @@ var boltieladas = (function ($) {
         // címlet-kerekítés miatt).
         $cont.on('change', '.js-boltieladas-fizmod', function () {
             recalcTotals($cont);
+        });
+
+        // Változatválasztás: a kiválasztott változat tételsora bekerül a táblázatba, a doboz ürül.
+        $cont.on('change', '.js-be-valtozatvalaszto', function () {
+            loadValtozatTetel($cont, $(this).closest('.js-boltieladas-valtozatsor'));
+        });
+
+        // Változatválasztó elvetése.
+        $cont.on('click', '.js-be-valtozatmegse', function (e) {
+            e.preventDefault();
+            $cont.find('.js-boltieladas-valtozatvalaszto').empty();
+            $cont.find('.js-boltieladas-vonalkod').val('').focus();
         });
 
         $cont.on('click', '.js-be-del', function (e) {

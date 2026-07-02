@@ -936,6 +936,55 @@ $(document).ready(function () {
 
                         });
                         break;
+                    case 'kategoriaset':
+                        // Termék kategória fa felugró ablakban; a kiválasztott faágba tesszük a kipipált termékeket.
+                        dialogcenter.empty().jstree({
+                            core: {animation: 100},
+                            plugins: ['themeroller', 'json_data', 'ui'],
+                            themeroller: {item: ''},
+                            json_data: {
+                                ajax: {url: '/admin/termekfa/jsonlist'}
+                            },
+                            ui: {select_limit: 1}
+                        })
+                            .bind('loaded.jstree', function () {
+                                dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                            });
+                        dialogcenter.dialog({
+                            title: 'Termék kategória módosítás',
+                            resizable: true,
+                            height: 400,
+                            width: 400,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    var dia = $(this),
+                                        faid = 0;
+                                    dialogcenter.jstree('get_selected').each(function () {
+                                        faid = $(this).children('a').attr('id').split('_')[1];
+                                    });
+                                    if (!faid) {
+                                        return;
+                                    }
+                                    $.ajax({
+                                        url: '/admin/termek/kategoriaset',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb,
+                                            fa: faid
+                                        },
+                                        success: function () {
+                                            dia.dialog('close');
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Mégsem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
                 }
             } else {
                 dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({

@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Entities\Afa;
 use Entities\Bizonylatfej;
+use Entities\Bizonylatstatusznaplo;
 use Entities\Bizonylattetel;
 use Entities\Feketelista;
 use Entities\Folyoszamla;
@@ -24,6 +25,7 @@ class BizonylatfejListener
     private $bizonylattetelmd;
     private $folyoszamlamd;
     private $kuponmd;
+    private $bizonylatstatusznaplomd;
 
     /**
      * @param \Entities\Bizonylatfej $bizonylat
@@ -242,25 +244,27 @@ class BizonylatfejListener
         }
 
         $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        // $bruttoegysar csak vatera megrendeles importkor van megadva, ilyenkor mindegy, hogy milyen szall.mod van
-        if ($szamol || $bruttoegysar) {
-            if ($bizsum->cnt != 0) {
-                if (!$bruttoegysar) {
-                    $ktg = $this->em->getRepository(Szallitasimod::class)->getSzallitasiKoltseg(
-                        $szallmod,
-                        $bizfej->getPartner()->getOrszag(),
-                        $bizfej->getValutanem(),
-                        $bizsum->brutto
-                    );
+        if ($termekid) {
+            // $bruttoegysar csak vatera megrendeles importkor van megadva, ilyenkor mindegy, hogy milyen szall.mod van
+            if ($szamol || $bruttoegysar) {
+                if ($bizsum->cnt != 0) {
+                    if (!$bruttoegysar) {
+                        $ktg = $this->em->getRepository(Szallitasimod::class)->getSzallitasiKoltseg(
+                            $szallmod,
+                            $bizfej->getPartner()->getOrszag(),
+                            $bizfej->getValutanem(),
+                            $bizsum->brutto
+                        );
+                    } else {
+                        $ktg = $bruttoegysar;
+                    }
+                    $this->createBiztetel($ktg, $bizfej, $termekid);
                 } else {
-                    $ktg = $bruttoegysar;
+                    $this->removeBiztetel($bizfej, $termekid);
                 }
-                $this->createBiztetel($ktg, $bizfej, $termekid);
             } else {
                 $this->removeBiztetel($bizfej, $termekid);
             }
-        } else {
-            $this->removeBiztetel($bizfej, $termekid);
         }
     }
 
@@ -440,6 +444,73 @@ class BizonylatfejListener
         }
     }
 
+    /**
+     * Naplózza a bizonylatstátusz beállítását/változását (ki, mikor, miről mire).
+     * Új bizonylatnál a kezdő státuszt rögzíti üres "miről" értékkel; meglévő
+     * bizonylatnál csak a valódi státuszváltást.
+     *
+     * @param \Entities\Bizonylatfej[] $insertedentities
+     * @param \Entities\Bizonylatfej[] $updatedentities
+     */
+    private function logStatuszValtozasok($insertedentities, $updatedentities)
+    {
+        $dolgozo = \mkw\store::getLoggedInDolgozo();
+
+        // Új bizonylat: a kezdő státusz rögzítése, üres "miről".
+        foreach ($insertedentities as $entity) {
+            if (!($entity instanceof \Entities\Bizonylatfej)) {
+                continue;
+            }
+            $uj = $entity->getBizonylatstatusz();
+            if (!$uj) {
+                continue;
+            }
+            $this->createStatuszNaplo($entity, null, $uj, $dolgozo);
+        }
+
+        // Meglévő bizonylat: csak akkor, ha a státusz ténylegesen megváltozott.
+        foreach ($updatedentities as $entity) {
+            if (!($entity instanceof \Entities\Bizonylatfej)) {
+                continue;
+            }
+            $changeset = $this->uow->getEntityChangeSet($entity);
+            if (!isset($changeset['bizonylatstatusz'])) {
+                continue;
+            }
+            [$regi, $uj] = $changeset['bizonylatstatusz'];
+            if ($regi === $uj) {
+                continue;
+            }
+            $this->createStatuszNaplo(
+                $entity,
+                $regi instanceof \Entities\Bizonylatstatusz ? $regi : null,
+                $uj instanceof \Entities\Bizonylatstatusz ? $uj : null,
+                $dolgozo
+            );
+        }
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $entity
+     * @param \Entities\Bizonylatstatusz|null $regi
+     * @param \Entities\Bizonylatstatusz|null $uj
+     * @param \Entities\Dolgozo|null $dolgozo
+     */
+    private function createStatuszNaplo($entity, $regi, $uj, $dolgozo)
+    {
+        $naplo = new Bizonylatstatusznaplo();
+        $naplo->setBizonylatfej($entity);
+        $naplo->setCreated(new \DateTime());
+        $naplo->setDolgozo($dolgozo);
+        // A setterek a nevet is elmentik pillanatképként – ha később átnevezik
+        // a státuszt vagy a dolgozót, a napló nem változik.
+        $naplo->setRegistatusz($regi);
+        $naplo->setUjstatusz($uj);
+
+        $this->em->persist($naplo);
+        $this->uow->computeChangeSet($this->bizonylatstatusznaplomd, $naplo);
+    }
+
     public function prePersist(LifecycleEventArgs $args)
     {
         $this->em = $args->getObjectManager();
@@ -466,10 +537,16 @@ class BizonylatfejListener
         $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
+        $this->bizonylatstatusznaplomd = $this->em->getClassMetadata(Bizonylatstatusznaplo::class);
 
+        $insertedentities = $this->uow->getScheduledEntityInsertions();
         $updatedentities = $this->uow->getScheduledEntityUpdates();
+
+        // A státuszbeállítást/-változást még a bizonylat feldolgozása (recompute) előtt naplózzuk.
+        $this->logStatuszValtozasok($insertedentities, $updatedentities);
+
         $entities = array_merge(
-            $this->uow->getScheduledEntityInsertions(),
+            $insertedentities,
             $updatedentities,
         );
 

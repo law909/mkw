@@ -28,11 +28,10 @@
             <tr>
                 <th>{t('Cikkszám')}</th>
                 <th>{t('Termék')}</th>
+                <th>{t('Raktáron')}</th>
                 <th>{t('Mennyiség')}</th>
                 <th>{t('Kedvezmény')} %</th>
-                <th>{t('Nettó egységár')}</th>
                 <th>{t('Bruttó egységár')}</th>
-                <th>{t('Nettó')}</th>
                 <th>{t('Bruttó')}</th>
                 <th></th>
             </tr>
@@ -41,7 +40,6 @@
             <tfoot>
             <tr>
                 <td colspan="6" class="boltieladas-osszesenlabel">{t('Összesen')}:</td>
-                <td class="js-boltieladas-nettosum boltieladas-num">0</td>
                 <td class="js-boltieladas-bruttosum boltieladas-num">0</td>
                 <td></td>
             </tr>
@@ -49,10 +47,11 @@
         </table>
 
         <div class="boltieladas-vonalkodsor">
-            <label for="BoltieladasVonalkodEdit">{t('Vonalkód')}:</label>
+            <label for="BoltieladasVonalkodEdit">{t('Vonalkód / keresés')}:</label>
             <input id="BoltieladasVonalkodEdit" class="js-boltieladas-vonalkod" type="text" autocomplete="off">
             <span class="js-boltieladas-kereshiba boltieladas-hiba"></span>
         </div>
+        <div class="js-boltieladas-valtozatvalaszto boltieladas-valtozatvalaszto"></div>
         <div class="matt-hseparator"></div>
         <div class="boltieladas-muvelet">
             <button class="js-boltieladas-rogzit ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only">

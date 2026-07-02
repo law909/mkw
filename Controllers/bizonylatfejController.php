@@ -2175,6 +2175,25 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    public function getStatuszNaplo()
+    {
+        $bizszam = $this->params->getStringRequestParam('bizszam');
+        /** @var \Entities\Bizonylatstatusznaplo[] $naplok */
+        $naplok = $this->getRepo('Entities\Bizonylatstatusznaplo')->getByBizonylatfej($bizszam);
+        $adat = [];
+        foreach ($naplok as $naplo) {
+            $adat[] = [
+                'datum' => $naplo->getCreatedStr(),
+                'dolgozonev' => $naplo->getDolgozonev(),
+                'regi' => $naplo->getRegistatusznev(),
+                'uj' => $naplo->getUjstatusznev(),
+            ];
+        }
+        $view = $this->createView('bizonylatstatusznaploreszletezo.tpl');
+        $view->setVar('lista', $adat);
+        $view->printTemplateResult();
+    }
+
     public function sendToNAV($bizszam)
     {
         /** @var \Entities\Bizonylatfej $biz */

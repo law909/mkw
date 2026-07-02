@@ -54,32 +54,119 @@ class boltieladasController extends \mkwhelpers\Controller
     {
         $kod = trim($this->params->getStringRequestParam('vonalkod'));
         if ($kod === '') {
+            echo json_encode(['mode' => 'none']);
             return;
         }
 
-        /** @var Termek|null $termek */
-        $termek = null;
-        /** @var TermekValtozat|null $valtozat */
-        $valtozat = null;
-
+        // 1) Változat keresése cikkszám/vonalkód alapján (névre változatban nem keresünk).
+        //    Ha megtaláljuk, közvetlenül ezt a változatot vesszük fel tételként.
         $valtozat = $this->getRepo(TermekValtozat::class)->findOneBy(['vonalkod' => $kod]);
         if (!$valtozat) {
             $valtozat = $this->getRepo(TermekValtozat::class)->findOneBy(['cikkszam' => $kod]);
         }
         if ($valtozat) {
-            $termek = $valtozat->getTermek();
-        } else {
-            // 3) termék vonalkód, 4) termék cikkszám
-            $termek = $this->getRepo(Termek::class)->findOneBy(['vonalkod' => $kod]);
-            if (!$termek) {
-                $termek = $this->getRepo(Termek::class)->findOneBy(['cikkszam' => $kod]);
-            }
-        }
-
-        if (!$termek) {
+            echo json_encode(['mode' => 'tetel', 'html' => $this->renderTetelRow($valtozat->getTermek(), $valtozat)]);
             return;
         }
 
+        // 2) Termék pontos keresése vonalkód / cikkszám alapján. Ha van változata, változatválasztó jön.
+        /** @var Termek|null $termek */
+        $termek = $this->getRepo(Termek::class)->getBoltieladasTermekPontos($kod);
+        if ($termek) {
+            echo json_encode($this->termekResponse($termek));
+            return;
+        }
+
+        echo json_encode(['mode' => 'none']);
+    }
+
+    /**
+     * Az autocomplete kereső forrása: 4 karaktertől név és cikkszám alapján listáz termékeket.
+     */
+    public function kereses()
+    {
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if (mb_strlen($term) >= 4) {
+            $termekek = $this->getRepo(Termek::class)->getBoltieladasTermekLista($term);
+            foreach ($termekek as $t) {
+                $nev = $t->getKiirtnev() ?: $t->getNev();
+                $ret[] = [
+                    'id' => $t->getId(),
+                    'label' => trim($t->getCikkszam() . ' ' . $nev),
+                    'value' => $nev,
+                ];
+            }
+        }
+        echo json_encode($ret);
+    }
+
+    /**
+     * Egy kiválasztott termék tételsorát vagy (ha vannak változatai) a változatválasztóját adja
+     * vissza – a névszerinti termékválasztó után hívjuk.
+     */
+    public function gettermek()
+    {
+        /** @var Termek|null $termek */
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termekid'));
+        if (!$termek) {
+            echo json_encode(['mode' => 'none']);
+            return;
+        }
+        echo json_encode($this->termekResponse($termek));
+    }
+
+    /**
+     * Termékszintű találat feldolgozása: ha vannak változatai, változatválasztót,
+     * egyébként kész tételsort adunk vissza (mode + html).
+     *
+     * @param Termek $termek
+     * @return array
+     */
+    private function termekResponse($termek)
+    {
+        $valtozatok = $termek->getValtozatok();
+        if ($valtozatok && count($valtozatok)) {
+            $tc = new termekController();
+            $raktar = $this->getDefaultRaktar();
+            $view = $this->createView('boltieladasvaltozatselect.tpl');
+            $view->setVar('termekid', $termek->getId());
+            $view->setVar('termekcikkszam', $termek->getCikkszam());
+            $view->setVar('termeknev', $termek->getKiirtnev() ?: $termek->getNev());
+            $view->setVar('valtozatlist', $tc->getValtozatList($termek->getId(), 0, $raktar ? $raktar->getId() : 0));
+            return ['mode' => 'valtozat', 'html' => $view->getTemplateResult()];
+        }
+        return ['mode' => 'tetel', 'html' => $this->renderTetelRow($termek, null)];
+    }
+
+    /**
+     * Egy adott termék + változat tételsorát adja vissza (a változatválasztó után hívjuk).
+     */
+    public function gettetel()
+    {
+        /** @var Termek|null $termek */
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termekid'));
+        if (!$termek) {
+            echo json_encode(['ok' => false]);
+            return;
+        }
+        $valtozat = null;
+        $valtozatid = $this->params->getIntRequestParam('valtozatid');
+        if ($valtozatid) {
+            $valtozat = $this->getRepo(TermekValtozat::class)->find($valtozatid);
+        }
+        echo json_encode(['ok' => true, 'html' => $this->renderTetelRow($termek, $valtozat)]);
+    }
+
+    /**
+     * Egy tételsor (boltieladastetel.tpl) HTML-je adott termékhez/változathoz.
+     *
+     * @param Termek $termek
+     * @param TermekValtozat|null $valtozat
+     * @return string
+     */
+    private function renderTetelRow($termek, $valtozat)
+    {
         $partner = $this->getBoltivevo();
         $valutanem = $this->getDefaultValutanem();
 
@@ -98,6 +185,11 @@ class boltieladasController extends \mkwhelpers\Controller
         }
         $cikkszam = ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam();
 
+        // Raktárkészlet a bolti eladás alapraktárában – "van-e raktáron".
+        $raktar = $this->getDefaultRaktar();
+        $raktarid = $raktar ? $raktar->getId() : null;
+        $keszlet = $valtozat ? $valtozat->getKeszlet(null, $raktarid) : $termek->getKeszlet(null, $raktarid);
+
         $view = $this->createView('boltieladastetel.tpl');
         $view->setVar('termekid', $termek->getId());
         $view->setVar('valtozatid', $valtozat ? $valtozat->getId() : 0);
@@ -105,11 +197,13 @@ class boltieladasController extends \mkwhelpers\Controller
         $view->setVar('afakulcs', $afakulcs);
         $view->setVar('nev', $nev);
         $view->setVar('cikkszam', $cikkszam);
+        $view->setVar('raktaron', ($keszlet > 0));
+        $view->setVar('keszlet', (float)$keszlet);
         $view->setVar('enettoegysar', number_format((float)$enetto, 2, '.', ''));
         $view->setVar('nettoegysar', number_format((float)$netto, 2, '.', ''));
         $view->setVar('bruttoegysar', number_format((float)$brutto, 2, '.', ''));
         $view->setVar('kedvezmeny', number_format((float)$kedvezmeny, 2, '.', ''));
-        echo $view->getTemplateResult();
+        return $view->getTemplateResult();
     }
 
     /**

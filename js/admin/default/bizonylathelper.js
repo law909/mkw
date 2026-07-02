@@ -2141,6 +2141,28 @@ let bizonylathelper = function ($) {
                         }
                     });
                 })
+                .on('click', '.js-statusznaplobtn', function (e) {
+                    let $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/bizonylatfej/getstatusznaplo',
+                        data: {
+                            bizszam: $this.data('id')
+                        },
+                        success: function (data) {
+                            dialogcenter.html(data).dialog({
+                                title: 'Státusz napló',
+                                width: 600,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        dialogcenter.dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                })
                 .on('click', '.js-printbizonylat, .js-pdf', function (e) {
                     let $this = $(this);
                     e.preventDefault();

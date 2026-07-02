@@ -24,6 +24,7 @@ class TermekRepository extends \mkwhelpers\Repository
             'colorexport' => 'Szín export',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'tcsset' => 'Termékcsoport módosítás',
+            'kategoriaset' => 'Termék kategória módosítás',
         ]);
     }
 
@@ -787,6 +788,39 @@ class TermekRepository extends \mkwhelpers\Repository
         $q->setParameters($this->getQueryParameters($filter));
         $res = $q->getResult();
         return $res;
+    }
+
+    /**
+     * Bolti eladás termékszintű pontos keresése: vonalkód, majd cikkszám szerinti pontos egyezés.
+     *
+     * @param string $kod
+     * @return \Entities\Termek|null
+     */
+    public function getBoltieladasTermekPontos($kod)
+    {
+        $termek = $this->findOneBy(['vonalkod' => $kod]);
+        if (!$termek) {
+            $termek = $this->findOneBy(['cikkszam' => $kod]);
+        }
+        return $termek;
+    }
+
+    /**
+     * Bolti eladás autocomplete keresője: név vagy cikkszám szerinti részleges egyezés.
+     *
+     * @param string $term
+     * @return \Entities\Termek[]
+     */
+    public function getBoltieladasTermekLista($term)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx FROM Entities\Termek _xx'
+            . ' WHERE _xx.nev LIKE :term OR _xx.cikkszam LIKE :term'
+            . ' ORDER BY _xx.nev ASC'
+        );
+        $q->setParameter('term', '%' . $term . '%');
+        $q->setMaxResults(50);
+        return $q->getResult();
     }
 
     public function getUjTermekId()

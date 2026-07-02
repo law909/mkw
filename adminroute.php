@@ -292,6 +292,9 @@ $router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelCo
 
 $router->map('GET', '/admin/boltieladas/getkarb', 'boltieladasController#getkarb', 'adminboltieladasgetkarb');
 $router->map('GET', '/admin/boltieladas/findtermek', 'boltieladasController#findtermek', 'adminboltieladasfindtermek');
+$router->map('GET', '/admin/boltieladas/kereses', 'boltieladasController#kereses', 'adminboltieladaskereses');
+$router->map('GET', '/admin/boltieladas/gettermek', 'boltieladasController#gettermek', 'adminboltieladasgettermek');
+$router->map('GET', '/admin/boltieladas/gettetel', 'boltieladasController#gettetel', 'adminboltieladasgettetel');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/boltieladas/save', 'boltieladasController#save', 'adminboltieladassave');
 }
@@ -313,6 +316,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/bizonylatfej/getpartnerlist', 'partnerController#getBizonylatfejSelectList', 'adminbizonylatfejgetpartnerlist');
 $router->map('GET', '/admin/bizonylatfej/pdf', 'bizonylatfejController#doPDF', 'adminbizonylatfejpdf');
 $router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejController#getFolyoszamla', 'admingetfolyoszamla');
+$router->map('GET', '/admin/bizonylatfej/getstatusznaplo', 'bizonylatfejController#getStatuszNaplo', 'admingetstatusznaplo');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');
@@ -626,6 +630,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termek/save', 'termekController#save', 'admintermeksave');
     $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admintermeksetflag');
     $router->map('POST', '/admin/termek/tcsset', 'termekController#setTermekcsoport', 'admintermektcsset');
+    $router->map('POST', '/admin/termek/kategoriaset', 'termekController#setKategoria', 'admintermekkategoriaset');
     $router->map('POST', '/admin/nepszeruseg/clear', 'termekController#clearNepszeruseg', 'adminclearnepszeruseg');
 }
 

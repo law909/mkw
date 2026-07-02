@@ -2122,6 +2122,33 @@ class termekController extends \mkwhelpers\MattableController
         }
     }
 
+    public function setKategoria()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        if ($ids) {
+            $faid = $this->params->getIntRequestParam('fa');
+            /** @var \Entities\TermekFa $fa */
+            $fa = $this->getRepo('Entities\TermekFa')->find($faid);
+
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('id', 'IN', $ids);
+            $termekek = $this->getRepo()->getAll($filter, []);
+            $termekdb = 0;
+            $batchsize = 20;
+            /** @var Termek $termek */
+            foreach ($termekek as $termek) {
+                $termekdb++;
+                $termek->setTermekfa1($fa ?: null);
+                $this->getEm()->persist($termek);
+                if (($termekdb % $batchsize) === 0) {
+                    $this->getEm()->flush();
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+        }
+    }
+
     public function createTermekKepekFromFields()
     {
         $termekek = $this->getRepo()->getAll();
