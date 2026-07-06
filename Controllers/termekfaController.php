@@ -247,11 +247,16 @@ class termekfaController extends \mkwhelpers\MattableController
                 $partner = \mkw\store::getLoggedInUser();
                 if ($partner) {
                     $cimkek = $partner->getCimkek();
-                    // TODO b2b beegetve ideiglenesen: kulf.nagyker, spanyol ugynok, ugynok
-                    $cimke1 = $this->getRepo(Partnercimketorzs::class)->find(2);
-                    $cimke2 = $this->getRepo(Partnercimketorzs::class)->find(14);
-                    $cimke3 = $this->getRepo(Partnercimketorzs::class)->find(32);
-                    $kulfoldi = $cimkek->contains($cimke1) || $cimkek->contains($cimke2) || $cimkek->contains($cimke3);
+                    // Külföldi partnert jelölő partnercímke id-k a beállításokból (vesszővel elválasztva, pl. "2,14,32").
+                    // Lehet több vagy kevesebb is; ha bármelyik címkéje megvan a partnernek, külföldinek számít.
+                    $kulfoldicimkeidk = array_filter(array_map('intval', explode(',', \mkw\store::getParameter(\mkw\consts::KulfoldiPartnerCimkek, ''))));
+                    foreach ($kulfoldicimkeidk as $cimkeid) {
+                        $cimke = $this->getRepo(Partnercimketorzs::class)->find($cimkeid);
+                        if ($cimke && $cimkek->contains($cimke)) {
+                            $kulfoldi = true;
+                            break;
+                        }
+                    }
                 }
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());

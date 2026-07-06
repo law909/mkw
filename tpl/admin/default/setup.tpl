@@ -645,6 +645,11 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KulfoldiPartnerCimkekEdit">{at('Külföldi partner címkék')}:</label></span>
+                                <input id="KulfoldiPartnerCimkekEdit" name="kulfoldipartnercimkek" type="text" size="75"
+                                       value="{$kulfoldipartnercimkek}" placeholder="{at('partnercímke id-k vesszővel, pl. 2,14,32')}">
+                            </div>
                         {/if}
                         {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace" || $maintheme === "mugenrace2026")}
                             <div class="setuprow">

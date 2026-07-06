@@ -885,6 +885,13 @@ if ($DBVersion < '0083') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0083');
 }
 
+if ($DBVersion < '0084') {
+    if (\mkw\store::isSuperzoneB2B()) {
+        \mkw\store::setParameter(\mkw\consts::KulfoldiPartnerCimkek, '2,14,32');
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0084');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

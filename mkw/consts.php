@@ -42,6 +42,7 @@ class consts
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';
     const SpanyolCimke = 'spanyolcimke';
+    const KulfoldiPartnerCimkek = 'kulfoldipartnercimkek';
     const Spanyolorszag = 'spanyolorszag';
     const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
     const BelsoUzletkoto = 'belsouzletkoto';
