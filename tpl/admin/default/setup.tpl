@@ -645,11 +645,6 @@
                                     {/foreach}
                                 </select>
                             </div>
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="KulfoldiPartnerCimkekEdit">{at('Külföldi partner címkék')}:</label></span>
-                                <input id="KulfoldiPartnerCimkekEdit" name="kulfoldipartnercimkek" type="text" size="75"
-                                       value="{$kulfoldipartnercimkek}" placeholder="{at('partnercímke id-k vesszővel, pl. 2,14,32')}">
-                            </div>
                         {/if}
                         {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace" || $maintheme === "mugenrace2026")}
                             <div class="setuprow">
@@ -875,6 +870,15 @@
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $webshopvalutanemlist as $_valutanem}
                                     <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="KezdoTermekKategoriaEdit">{at('Kezdő termék kategória')}:</label></span>
+                            <select id="KezdoTermekKategoriaEdit" name="kezdotermekkategoria">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $kezdotermekkategorialist as $_kat}
+                                    <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -1266,6 +1270,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KezdoTermekKategoria2Edit">{at('Kezdő termék kategória')}:</label></span>
+                                <select id="KezdoTermekKategoria2Edit" name="kezdotermekkategoria2">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $kezdotermekkategoria2list as $_kat}
+                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1319,6 +1332,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KezdoTermekKategoria3Edit">{at('Kezdő termék kategória')}:</label></span>
+                                <select id="KezdoTermekKategoria3Edit" name="kezdotermekkategoria3">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $kezdotermekkategoria3list as $_kat}
+                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
@@ -1369,6 +1391,15 @@
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $webshopvalutanem4list as $_valutanem}
                                         <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KezdoTermekKategoria4Edit">{at('Kezdő termék kategória')}:</label></span>
+                                <select id="KezdoTermekKategoria4Edit" name="kezdotermekkategoria4">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $kezdotermekkategoria4list as $_kat}
+                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
                                     {/foreach}
                                 </select>
                             </div>
@@ -1428,6 +1459,15 @@
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $webshopvalutanem5list as $_valutanem}
                                         <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KezdoTermekKategoria5Edit">{at('Kezdő termék kategória')}:</label></span>
+                                <select id="KezdoTermekKategoria5Edit" name="kezdotermekkategoria5">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $kezdotermekkategoria5list as $_kat}
+                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
                                     {/foreach}
                                 </select>
                             </div>

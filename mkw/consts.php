@@ -19,6 +19,11 @@ class consts
     const WebshopValutanem3 = 'webshopvalutanem3';
     const WebshopValutanem4 = 'webshopvalutanem4';
     const WebshopValutanem5 = 'webshopvalutanem5';
+    const KezdoTermekKategoria = 'kezdotermekkategoria';
+    const KezdoTermekKategoria2 = 'kezdotermekkategoria2';
+    const KezdoTermekKategoria3 = 'kezdotermekkategoria3';
+    const KezdoTermekKategoria4 = 'kezdotermekkategoria4';
+    const KezdoTermekKategoria5 = 'kezdotermekkategoria5';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';
@@ -42,7 +47,6 @@ class consts
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';
     const SpanyolCimke = 'spanyolcimke';
-    const KulfoldiPartnerCimkek = 'kulfoldipartnercimkek';
     const Spanyolorszag = 'spanyolorszag';
     const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
     const BelsoUzletkoto = 'belsouzletkoto';

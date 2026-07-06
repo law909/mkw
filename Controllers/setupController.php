@@ -529,6 +529,18 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::WebshopValutanem5);
         $view->setVar('webshopvalutanem5list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $termekfac = new termekfaController();
+        $p = $repo->find(\mkw\consts::KezdoTermekKategoria);
+        $view->setVar('kezdotermekkategorialist', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::KezdoTermekKategoria2);
+        $view->setVar('kezdotermekkategoria2list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::KezdoTermekKategoria3);
+        $view->setVar('kezdotermekkategoria3list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::KezdoTermekKategoria4);
+        $view->setVar('kezdotermekkategoria4list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::KezdoTermekKategoria5);
+        $view->setVar('kezdotermekkategoria5list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -739,8 +751,6 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::ValtozatSorrend);
         $view->setVar(\mkw\consts::ValtozatSorrend, ($p ? $p->getErtek() : ''));
-        $p = $repo->find(\mkw\consts::KulfoldiPartnerCimkek);
-        $view->setVar(\mkw\consts::KulfoldiPartnerCimkek, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::BizonylatMennyiseg);
         $view->setVar(\mkw\consts::BizonylatMennyiseg, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::TeljesitmenyKezdoEv);
@@ -1637,6 +1647,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::WebshopValutanem5, null);
         }
 
+        $this->setObj(\mkw\consts::KezdoTermekKategoria, $this->params->getStringRequestParam('kezdotermekkategoria'));
+        $this->setObj(\mkw\consts::KezdoTermekKategoria2, $this->params->getStringRequestParam('kezdotermekkategoria2'));
+        $this->setObj(\mkw\consts::KezdoTermekKategoria3, $this->params->getStringRequestParam('kezdotermekkategoria3'));
+        $this->setObj(\mkw\consts::KezdoTermekKategoria4, $this->params->getStringRequestParam('kezdotermekkategoria4'));
+        $this->setObj(\mkw\consts::KezdoTermekKategoria5, $this->params->getStringRequestParam('kezdotermekkategoria5'));
+
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {
             $this->setObj(\mkw\consts::Arsav, $this->params->getIntRequestParam('arsav'));
@@ -1830,7 +1846,6 @@ class setupController extends \mkwhelpers\Controller
         }
 
         $this->setObj(\mkw\consts::ValtozatSorrend, $this->params->getStringRequestParam('valtozatsorrend'));
-        $this->setObj(\mkw\consts::KulfoldiPartnerCimkek, $this->params->getStringRequestParam('kulfoldipartnercimkek'));
         $this->setObj(\mkw\consts::BizonylatMennyiseg, $this->params->getStringRequestParam(\mkw\consts::BizonylatMennyiseg));
         $this->setObj(\mkw\consts::TeljesitmenyKezdoEv, $this->params->getStringRequestParam(\mkw\consts::TeljesitmenyKezdoEv));
 

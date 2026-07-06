@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Blogposzt;
-use Entities\Partnercimketorzs;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
@@ -26,6 +25,19 @@ class termekfaController extends \mkwhelpers\MattableController
         $this->setKarbFormTplName('termekfakarbform.tpl');
         $this->setKarbTplName('termekfakarb.tpl');
         parent::__construct();
+    }
+
+    public function getSelectList($selid = null)
+    {
+        $res = [];
+        foreach ($this->getRepo()->getAll([], ['karkod' => 'ASC']) as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev() . ' (' . $sor->getKarkod() . ')',
+                'selected' => ($sor->getId() == $selid),
+            ];
+        }
+        return $res;
     }
 
     /**
@@ -243,27 +255,19 @@ class termekfaController extends \mkwhelpers\MattableController
                 }
                 return $t;
             case \mkw\store::isSuperzoneB2B():
-                $kulfoldi = false;
-                $partner = \mkw\store::getLoggedInUser();
-                if ($partner) {
-                    $cimkek = $partner->getCimkek();
-                    // Külföldi partnert jelölő partnercímke id-k a beállításokból (vesszővel elválasztva, pl. "2,14,32").
-                    // Lehet több vagy kevesebb is; ha bármelyik címkéje megvan a partnernek, külföldinek számít.
-                    $kulfoldicimkeidk = array_filter(array_map('intval', explode(',', \mkw\store::getParameter(\mkw\consts::KulfoldiPartnerCimkek, ''))));
-                    foreach ($kulfoldicimkeidk as $cimkeid) {
-                        $cimke = $this->getRepo(Partnercimketorzs::class)->find($cimkeid);
-                        if ($cimke && $cimkek->contains($cimke)) {
-                            $kulfoldi = true;
-                            break;
-                        }
-                    }
+                // Az aktuális webshophoz beállított "Kezdő termék kategória" karkódja (ha van).
+                $kezdokarkod = '';
+                $kezdokatid = \mkw\store::getParameter(\mkw\store::getWebshopFieldName(\mkw\consts::KezdoTermekKategoria));
+                if ($kezdokatid) {
+                    $kezdokarkod = $this->getRepo()->getKarkod($kezdokatid);
                 }
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());
                 $x = [];
                 foreach ($f as $o) {
-                    // TODO
-                    if (!$kulfoldi || ($kulfoldi && (strncmp($o['karkod'], '0000100032', strlen('0000100032')) === 0))) {
+                    // Ha nincs beállítva kezdő kategória, mindet mutatjuk; egyébként csak
+                    // azokat, amelyek karkódja a beállított kategória karkódjával kezdődik.
+                    if (empty($kezdokarkod) || strncmp($o['karkod'], $kezdokarkod, strlen($kezdokarkod)) === 0) {
                         $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
                         $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
                         $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
