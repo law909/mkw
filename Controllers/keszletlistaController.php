@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Arsav;
 use Entities\Raktar;
 use Entities\Termek;
+use Entities\TermekAr;
 use Entities\TermekFa;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -195,30 +196,61 @@ class keszletlistaController extends \mkwhelpers\MattableController
         if ($valutaobj) {
             $this->arsavstr .= ' ' . $valutaobj->getNev();
         }
+        // Utolsó beszár esetén egyetlen kötegelt lekérdezéssel számoljuk ki az összes
+        // változat árát (a korábbi soronkénti getNettoUtolsoBeszar/getBruttoUtolsoBeszar
+        // hívások N+1 problémáját elkerülve).
+        $beszarmap = [];
+        if ($arsav === '---utolsobeszar' && ($nettobrutto === 'netto' || $nettobrutto === 'brutto')) {
+            $beszarmap = $this->getRepo(Termek::class)->getUtolsoBeszarByValtozat(
+                array_column($d, 'id'),
+                $this->datumstr,
+                true,
+                $nettobrutto === 'brutto'
+            );
+        }
+
+        // Ársávos ár esetén (ársávos deployment) szintén egyetlen kötegelt lekérdezéssel
+        // töltjük be az összes érintett termék árát (a getNettoAr/getBruttoAr -> getArsavAr
+        // soronkénti N+1 hívása helyett). Ársávnál az ár termékenként (nem változatonként) jön.
+        $arsavarmap = [];
+        if ($arsav !== '---utolsobeszar' && \mkw\store::isArsavok()
+            && ($nettobrutto === 'netto' || $nettobrutto === 'brutto')) {
+            $arsavarmap = $this->getRepo(TermekAr::class)->getArsavArByTermek(
+                array_column($d, 'termek_id'),
+                $valutanem,
+                $arsavobj
+            );
+        }
+
         $ret = [];
         foreach ($d as $sor) {
-            if ($as) {
-                /** @var \Entities\Termek $t */
-                $t = $this->getRepo(Termek::class)->find($sor['termek_id']);
-                if ($t) {
-                    if ($arsav === '---utolsobeszar') {
-                        switch ($nettobrutto) {
-                            case 'netto':
-                                $_x = $t->getNettoUtolsoBeszar($sor['id'], $this->datumstr, true);
-                                $sor['ar'] = $_x['ertek'];
-                                $sor['bizid'] = $_x['id'];
-                                break;
-                            case 'brutto':
-                                $_x = $t->getBruttoUtolsoBeszar($sor['id'], $this->datumstr, true);
-                                $sor['ar'] = $_x['ertek'];
-                                $sor['bizid'] = $_x['id'];
-                                break;
-                            default:
-                                $sor['ar'] = 0;
-                                break;
-                        }
-                    } else {
-                        $sor['bizid'] = '';
+            if ($arsav === '---utolsobeszar') {
+                if (isset($beszarmap[$sor['id']])) {
+                    $sor['ar'] = $beszarmap[$sor['id']]['ertek'];
+                    $sor['bizid'] = $beszarmap[$sor['id']]['id'];
+                } else {
+                    $sor['ar'] = 0;
+                    $sor['bizid'] = null;
+                }
+            } else {
+                $sor['bizid'] = '';
+                if (\mkw\store::isArsavok()) {
+                    $ta = isset($arsavarmap[$sor['termek_id']]) ? $arsavarmap[$sor['termek_id']] : null;
+                    switch ($nettobrutto) {
+                        case 'netto':
+                            $sor['ar'] = $ta ? $ta->getNetto() : 0;
+                            break;
+                        case 'brutto':
+                            $sor['ar'] = $ta ? $ta->getBrutto() : 0;
+                            break;
+                        default:
+                            $sor['ar'] = 0;
+                            break;
+                    }
+                } else {
+                    /** @var \Entities\Termek $t */
+                    $t = $this->getRepo(Termek::class)->find($sor['termek_id']);
+                    if ($t) {
                         switch ($nettobrutto) {
                             case 'netto':
                                 $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsavobj);

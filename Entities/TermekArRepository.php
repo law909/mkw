@@ -72,4 +72,60 @@ class TermekArRepository extends \mkwhelpers\Repository
         return $sav;
     }
 
+    /**
+     * Kötegelt ársávos ár sok termékre egyetlen lekérdezéssel — a getArsavAr() soronkénti
+     * (N+1) hívása helyett (pl. a keszletlista számára). Termékenként az adott ársáv+valutanem
+     * TermekAr sorát adja vissza. A getArsavAr null-feloldását (paraméter-alapértelmezés) tükrözi.
+     *
+     * @param int[] $termekids termék id-k
+     * @param \Entities\Valutanem | int | null $valutanem
+     * @param \Entities\Arsav | int | null $arsav
+     *
+     * @return array [ termek_id => \Entities\TermekAr ]
+     */
+    public function getArsavArByTermek(array $termekids, $valutanem = null, $arsav = null)
+    {
+        $result = [];
+
+        if (!$arsav) {
+            $arsav = \mkw\store::getParameter(\mkw\consts::Arsav);
+        }
+        if (!is_a($arsav, Arsav::class)) {
+            $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($arsav);
+        }
+        if (!$valutanem) {
+            $valutanem = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        }
+        if (!is_a($valutanem, Valutanem::class)) {
+            $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($valutanem);
+        }
+        if (!$arsav || !$valutanem) {
+            return $result;
+        }
+
+        $ids = array_values(array_unique(array_map('intval', array_filter($termekids))));
+        if (empty($ids)) {
+            return $result;
+        }
+
+        $q = $this->_em->createQuery(
+            'SELECT _xx FROM Entities\TermekAr _xx'
+            . ' JOIN _xx.termek t'
+            . ' WHERE _xx.valutanem = :valutanem AND _xx.arsav = :arsav AND t.id IN (:ids)'
+            . ' ORDER BY _xx.id ASC'
+        );
+        $q->setParameter('valutanem', $valutanem);
+        $q->setParameter('arsav', $arsav);
+        $q->setParameter('ids', $ids);
+        foreach ($q->getResult() as $ta) {
+            $tid = $ta->getTermek()->getId();
+            // egy termékre több sor esetén az elsőt (legkisebb id) tartjuk meg, mint a getArsavAr()[0]
+            if (!isset($result[$tid])) {
+                $result[$tid] = $ta;
+            }
+        }
+
+        return $result;
+    }
+
 }

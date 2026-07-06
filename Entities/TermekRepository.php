@@ -442,6 +442,74 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /**
+     * Kötegelt "utolsó beszár" számítás sok termékváltozatra egyetlen lekérdezéssel.
+     * A Termek::getNettoUtolsoBeszar() / getBruttoUtolsoBeszar() metódusok soronkénti (N+1)
+     * hívása helyett — a keszletlista számára. Változatonként a legfrissebb beszerzés árát adja.
+     *
+     * @param int[] $valtozatids termékváltozat id-k
+     * @param string|null $datum csak eddig a teljesítési dátumig
+     * @param bool $csakszallito csak szállító partnerek bizonylatai
+     * @param bool $brutto false = nettó (getNettoUtolsoBeszar), true = bruttó (getBruttoUtolsoBeszar) logika
+     *
+     * @return array [ valtozatid => ['id' => bizonylatfej_id, 'ertek' => ar] ]
+     */
+    public function getUtolsoBeszarByValtozat(array $valtozatids, $datum = null, $csakszallito = false, $brutto = false)
+    {
+        $result = [];
+        $ids = array_values(array_unique(array_map('intval', array_filter($valtozatids))));
+        if (empty($ids)) {
+            return $result;
+        }
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('ertek', 'ertek');
+
+        $where = [];
+        $params = [];
+        if ($brutto) {
+            // getBruttoUtolsoBeszar szűrése
+            $where[] = 'bf.irany > 0';
+            $ertek = 'IF(COALESCE(bt.bruttoegysarhuf,0)=0, bt.bruttoegysar*bf.arfolyam, bt.bruttoegysarhuf)';
+        } else {
+            // getNettoUtolsoBeszar szűrése
+            $where[] = "bf.bizonylattipus_id = 'bevet'";
+            $ertek = 'IF(COALESCE(bt.nettoegysarhuf,0)=0, bt.nettoegysar*bf.arfolyam, bt.nettoegysarhuf)';
+        }
+        if ($csakszallito) {
+            $where[] = 'bf.partner_id IN (SELECT ptr.id FROM partner ptr WHERE ptr.szallito=1)';
+        }
+        $where[] = 'bf.rontott = 0';
+        $where[] = 'bf.storno = 0';
+        $where[] = 'bf.stornozott = 0';
+        if ($datum) {
+            $where[] = 'bf.teljesites <= :datum';
+            $params['datum'] = $datum;
+        }
+        $where[] = 'bt.termekvaltozat_id IN (' . implode(',', $ids) . ')';
+
+        $q = $this->_em->createNativeQuery(
+            'SELECT x.termekvaltozat_id, x.id, x.ertek FROM ('
+            . 'SELECT bt.termekvaltozat_id AS termekvaltozat_id, bf.id AS id, ' . $ertek . ' AS ertek, '
+            . 'ROW_NUMBER() OVER (PARTITION BY bt.termekvaltozat_id ORDER BY bf.teljesites DESC, bf.id DESC) AS rn '
+            . 'FROM bizonylattetel bt '
+            . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id) '
+            . 'WHERE ' . implode(' AND ', $where)
+            . ') x WHERE x.rn = 1',
+            $rsm
+        );
+        if ($params) {
+            $q->setParameters($params);
+        }
+        foreach ($q->getScalarResult() as $row) {
+            $result[$row['termekvaltozat_id']] = ['id' => $row['id'], 'ertek' => $row['ertek']];
+        }
+
+        return $result;
+    }
+
     public function getTermekIds($filter, $order = [])
     {
         $this->addAktivLathatoFilter($filter);
@@ -794,6 +862,7 @@ class TermekRepository extends \mkwhelpers\Repository
      * Bolti eladás termékszintű pontos keresése: vonalkód, majd cikkszám szerinti pontos egyezés.
      *
      * @param string $kod
+     *
      * @return \Entities\Termek|null
      */
     public function getBoltieladasTermekPontos($kod)
@@ -809,6 +878,7 @@ class TermekRepository extends \mkwhelpers\Repository
      * Bolti eladás autocomplete keresője: név vagy cikkszám szerinti részleges egyezés.
      *
      * @param string $term
+     *
      * @return \Entities\Termek[]
      */
     public function getBoltieladasTermekLista($term)

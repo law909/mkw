@@ -2131,23 +2131,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNettoUtolsoBeszar($valtozatid = NULL, $datum = NULL)
+    public function getNettoUtolsoBeszar($valtozatid = NULL, $datum = NULL, $csakszallito = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoUtolsoBeszar', [$valtozatid, $datum]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoUtolsoBeszar', [$valtozatid, $datum, $csakszallito]);
 
-        return parent::getNettoUtolsoBeszar($valtozatid, $datum);
+        return parent::getNettoUtolsoBeszar($valtozatid, $datum, $csakszallito);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getBruttoUtolsoBeszar($valtozatid = NULL, $datum = NULL)
+    public function getBruttoUtolsoBeszar($valtozatid = NULL, $datum = NULL, $csakszallito = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoUtolsoBeszar', [$valtozatid, $datum]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoUtolsoBeszar', [$valtozatid, $datum, $csakszallito]);
 
-        return parent::getBruttoUtolsoBeszar($valtozatid, $datum);
+        return parent::getBruttoUtolsoBeszar($valtozatid, $datum, $csakszallito);
     }
 
     /**

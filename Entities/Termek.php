@@ -2487,7 +2487,7 @@ class Termek
             . 'FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
-            . ' ORDER BY bf.teljesites DESC',
+            . ' ORDER BY bf.teljesites DESC LIMIT 1',
             $rsm
         );
         $q->setParameters($filter->getQueryParameters());
@@ -2538,7 +2538,7 @@ class Termek
             . 'FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
-            . ' ORDER BY bf.teljesites DESC',
+            . ' ORDER BY bf.teljesites DESC LIMIT 1',
             $rsm
         );
         $q->setParameters($filter->getQueryParameters());
