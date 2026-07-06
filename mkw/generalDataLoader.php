@@ -3,6 +3,7 @@
 namespace mkw;
 
 use Controllers\bizonylatfejController;
+use Controllers\bizonylattipusController;
 
 class generalDataLoader
 {
@@ -49,6 +50,8 @@ class generalDataLoader
         $view->setVar('menu', $menuc->getMenu());
         $jelenc = new \Controllers\jelenletiivController(null);
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
+        $btc = new BizonylattipusController();
+        $view->setVar('bizonylattipuslist', array_column($btc->getSelectList(), null, 'id'));
         $bizc = new bizonylatfejController(null);
         $bizcnt = $bizc->calcNavEredmenyRiasztas();
         $view->setVar('abortedszamlacnt', $bizcnt['aborted']);

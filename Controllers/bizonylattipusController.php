@@ -21,6 +21,7 @@ class bizonylattipusController extends \mkwhelpers\MattableController
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
+                'azonosito' => $sor->getAzonosito(),
                 'selected' => ($sor->getId() == $selid)
             ];
         }

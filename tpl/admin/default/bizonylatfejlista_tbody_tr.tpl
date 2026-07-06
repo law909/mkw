@@ -51,27 +51,27 @@
                 {/if}
                 {if ($showszallitobutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallitofej" data-oper="inherit"
-                       title="{at('Szállítólevél')}"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                       title="{at('Szállítólevél')}"><span{if (!$bizonylattipuslist['szallito'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['szallito']['azonosito']}</span></a>
                 {/if}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit"
-                       title="{at('Számla')}"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                       title="{at('Számla')}"><span{if (!$bizonylattipuslist['szamla'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['szamla']['azonosito']}</span></a>
                 {/if}
                 {if ($showkeziszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit"
-                       title="{at('Kézi számla')}"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                       title="{at('Kézi számla')}"><span{if (!$bizonylattipuslist['keziszamla'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['keziszamla']['azonosito']}</span></a>
                 {/if}
                 {if ($showkivetbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{at('Kivét')}"
-                    ><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                    ><span{if (!$bizonylattipuslist['kivet'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['kivet']['azonosito']}</span></a>
                 {/if}
                 {if ($showbevetbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
-                    ><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                    ><span{if (!$bizonylattipuslist['bevet'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['bevet']['azonosito']}</span></a>
                 {/if}
                 {if ($showcsomagbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
-                    ><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                    ><span{if (!$bizonylattipuslist['csomag'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['csomag']['azonosito']}</span></a>
                 {/if}
                 {if ($showfeketelistabutton)}
                     <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}"
