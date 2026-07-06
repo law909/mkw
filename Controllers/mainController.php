@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\Kapcsolatfelveteltema;
 use Entities\Orszag;
 use Entities\Statlap;
+use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekMenu;
@@ -318,51 +319,31 @@ class mainController extends \mkwhelpers\Controller
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
                     $t = [];
                     $vtt = [];
-                    $t['caption'] = $termek->getNev();
+                    $t['caption'] = $termek->getLocalizedFieldValue('nev');
                     $t['cikkszam'] = $termek->getCikkszam();
                     $valtozatok = $termek->getValtozatok();
                     $ma = new \DateTime();
                     /** @var TermekValtozat $valt */
                     foreach ($valtozatok as $valt) {
                         if ($valt->getXElerheto() && $valt->getXLathato()) {
-                            if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                                $vtt[$valt->getErtek1()]['id'] = $valt->getErtek1();
-                                $vtt[$valt->getErtek1()]['caption'] = $valt->getErtek1();
-                                $vtt[$valt->getErtek1()]['kepurlmini'] = $valt->getKepurlMini();
-                                $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
-                                $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
-                                $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek1()]['keszlet'] += max(
+                            if ($valt->getSzin()) {
+                                $vtt[$valt->getSzinId()]['id'] = $valt->getSzinId();
+                                $vtt[$valt->getSzinId()]['caption'] = $valt->getSzinNev();
+                                $vtt[$valt->getSzinId()]['kepurlmini'] = $valt->getKepurlMini();
+                                $vtt[$valt->getSzinId()]['kepurlsmall'] = $valt->getKepurlSmall();
+                                $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
+                                $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
+                                $vtt[$valt->getSzinId()]['keszlet'] += max(
                                     $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(),
                                     0
                                 );
-                                $vtt[$valt->getErtek1()]['bejon'] = $vtt[$valt->getErtek1()]['bejon'] || (($valt->getBeerkezesdatumStr(
+                                $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || (($valt->getBeerkezesdatumStr(
                                     )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
-                                $vtt[$valt->getErtek1()]['link'] = \mkw\store::getRouter()->generate(
+                                $vtt[$valt->getSzinId()]['link'] = \mkw\store::getRouter()->generate(
                                     'showtermekm',
                                     false,
                                     ['slug' => $com],
-                                    ['szin' => urlencode($valt->getErtek1())]
-                                );
-                            }
-                            if ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
-                                $vtt[$valt->getErtek2()]['id'] = $valt->getErtek2();
-                                $vtt[$valt->getErtek2()]['caption'] = $valt->getErtek2();
-                                $vtt[$valt->getErtek2()]['kepurlmini'] = $valt->getKepurlMini();
-                                $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
-                                $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
-                                $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek2()]['keszlet'] += max(
-                                    $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(),
-                                    0
-                                );
-                                $vtt[$valt->getErtek2()]['bejon'] = $vtt[$valt->getErtek2()]['bejon'] || (($valt->getBeerkezesdatumStr(
-                                    )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
-                                $vtt[$valt->getErtek2()]['link'] = \mkw\store::getRouter()->generate(
-                                    'showtermekm',
-                                    false,
-                                    ['slug' => $com],
-                                    ['szin' => urlencode($valt->getErtek2())]
+                                    ['szin' => $valt->getSzinId()]
                                 );
                             }
                         }
@@ -381,7 +362,8 @@ class mainController extends \mkwhelpers\Controller
     public function termekm()
     {
         $com = $this->params->getStringParam('slug');
-        $szin = $this->params->getStringRequestParam('szin');
+        $szinid = $this->params->getIntRequestParam('szin');
+        $szinobj = $this->getRepo(Szin::class)->find($szinid);
         $tc = new termekController();
         /** @var \Entities\Termek $termek */
         $termek = $tc->getRepo()->findOneBySlug($com);
@@ -393,10 +375,10 @@ class mainController extends \mkwhelpers\Controller
             $t = [];
             $vtt = [];
             $t['id'] = $termek->getId();
-            $t['caption'] = $termek->getNev();
+            $t['caption'] = $termek->getLocalizedFieldValue('nev');
             $t['cikkszam'] = $termek->getCikkszam();
-            $t['leiras'] = $termek->getLeiras();
-            $t['szin'] = $szin;
+            $t['leiras'] = $termek->getLocalizedFieldValue('leiras');
+            $t['szin'] = $szinobj?->getNev();
             $partner = \mkw\store::getLoggedInUser();
             if ($partner) {
                 $this->view->setVar('showkeszlet', $partner->isMennyisegetlathat());
@@ -425,25 +407,16 @@ class mainController extends \mkwhelpers\Controller
             /** @var TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto() && $valt->getXLathato()) {
-                    $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
-                    if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
+                    if ($valt->getSzinId() == $szinid) {
+                        $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
                         $t['kepurllarge'] = $valt->getKepurlLarge();
                         $t['kepurlmedium'] = $valt->getKepurlMedium();
                         $vtt[] = [
                             'id' => $valt->getId(),
-                            'caption' => $valt->getErtek2(),
+                            'caption' => $valt->getMeretNev(),
                             'keszlet' => $valtkeszlet,
                             'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
-                        ];
-                    }
-                    if (($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
-                        $vtt[] = [
-                            'id' => $valt->getId(),
-                            'caption' => $valt->getErtek1(),
-                            'keszlet' => $valtkeszlet,
-                            'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
+                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma)) ? true : false
                         ];
                     }
                 }
