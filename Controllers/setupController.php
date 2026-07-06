@@ -284,10 +284,10 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
         $termek = new termekController();
-        $view->setVar('szallitasiktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setTermekAutocompleteVars($view, 'szallitasiktgtermek', ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::UtanvetKtgTermek);
-        $view->setVar('utanvetktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setTermekAutocompleteVars($view, 'utanvetktgtermek', ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController();
@@ -465,8 +465,7 @@ class setupController extends \mkwhelpers\Controller
 
 
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
-//        $termek = new termekController();
-        $view->setVar('vasarlasiutalvanytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setTermekAutocompleteVars($view, 'vasarlasiutalvanytermek', ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::JogaOrajegyTermek);
         $view->setVar('jogaorajegytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaBerlet4Termek);
@@ -913,16 +912,14 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::MugenraceFooldalSzoveg);
         $view->setVar(\mkw\consts::MugenraceFooldalSzoveg, ($p ? $p->getErtek() : ''));
 
-        $partner = new partnerController();
         $p = $repo->find(\mkw\consts::DefaultPartner);
-        $view->setVar('defaultpartnerlist', $partner->getSelectList(($p ? $p->getErtek() : '')));
+        $this->setPartnerAutocompleteVars($view, 'defaultpartner', ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::Boltivevo);
-        $view->setVar('boltivevolist', $partner->getSelectList(($p ? $p->getErtek() : '')));
+        $this->setPartnerAutocompleteVars($view, 'boltivevo', ($p ? $p->getErtek() : ''));
 
         $tc = $repo->find(\mkw\consts::DefaultTermek);
-        $termek = new termekController();
-        $view->setVar('defaulttermeklist', $termek->getSelectList(($tc ? $tc->getErtek() : 0)));
+        $this->setTermekAutocompleteVars($view, 'defaulttermek', ($tc ? $tc->getErtek() : ''));
 
         $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'kreativ']));
         $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, ['impname' => 'delton']));
@@ -957,6 +954,23 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('repaircopydepokeszletimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, ['impname' => 'copydepokeszlet']));
 
         $view->printTemplateResult();
+    }
+
+    // Termék autocomplete mezőhöz: a rejtett input id-je + a szövegmező prefill-neve.
+    private function setTermekAutocompleteVars($view, $namebase, $termekid)
+    {
+        $view->setVar($namebase . 'id', $termekid ?: '');
+        $t = $termekid ? \mkw\store::getEm()->getRepository(Termek::class)->find($termekid) : null;
+        $view->setVar($namebase . 'nev', $t ? $t->getNev() : '');
+    }
+
+    // Partner autocomplete mezőhöz: a rejtett input id-je + a szövegmező prefill-neve
+    // (a getpartnerlist végpont 'value' formátumát tükrözve).
+    private function setPartnerAutocompleteVars($view, $namebase, $partnerid)
+    {
+        $view->setVar($namebase . 'id', $partnerid ?: '');
+        $p = $partnerid ? \mkw\store::getEm()->getRepository(Partner::class)->find($partnerid) : null;
+        $view->setVar($namebase . 'nev', $p ? ($p->getNev() . ' ' . $p->getCim() . ' (' . $p->getEmail() . ')') : '');
     }
 
     private function setObj($par, $value, $specialchars = false)

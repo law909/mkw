@@ -53,6 +53,38 @@ $(document).ready(function() {
                     $('#TulajirszamEdit').val(ui.item.szam);
                 }
             });
+            // Termék / partner autocomplete a setup mezőkhöz (select helyett).
+            // A kiválasztott elem neve a szövegmezőbe, id-je a data-target nevű rejtett inputba kerül.
+            $('.js-setuptermekselect').autocomplete({
+                minLength: 4,
+                autoFocus: true,
+                source: '/admin/bizonylattetel/gettermeklist',
+                select: function(event, ui) {
+                    if (ui.item) {
+                        $(this).val(ui.item.value);
+                        $('input[name="' + $(this).data('target') + '"]').val(ui.item.id);
+                    }
+                    return false;
+                }
+            });
+            $('.js-setuppartnerselect').autocomplete({
+                minLength: 4,
+                autoFocus: true,
+                source: '/admin/bizonylatfej/getpartnerlist',
+                select: function(event, ui) {
+                    if (ui.item) {
+                        $(this).val(ui.item.value);
+                        $('input[name="' + $(this).data('target') + '"]').val(ui.item.id);
+                    }
+                    return false;
+                }
+            });
+            // A szövegmező kiürítésekor a rejtett id is törlődjön (a mező üresre állítható).
+            $('.js-setuptermekselect, .js-setuppartnerselect').on('input', function() {
+                if ($(this).val() === '') {
+                    $('input[name="' + $(this).data('target') + '"]').val('');
+                }
+            });
             $('.js-importnewkatid').on('click', function(e) {
                 dialogcenter.jstree({
                     core: {animation: 100},

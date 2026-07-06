@@ -191,30 +191,21 @@
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultTermekEdit">{at('Termék')}:</label></span>
-                            <select id="defaultTermekEdit" name="defaulttermek">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $defaulttermeklist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
+                            <input id="defaultTermekEdit" type="text" class="js-setuptermekselect" data-target="defaulttermek"
+                                   value="{$defaulttermeknev}" size="60" autocomplete="off">
+                            <input name="defaulttermek" type="hidden" value="{$defaulttermekid}">
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultpartnerEdit">{at('Partner')}:</label></span>
-                            <select id="DefaultpartnerEdit" name="defaultpartner">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $defaultpartnerlist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
+                            <input id="DefaultpartnerEdit" type="text" class="js-setuppartnerselect" data-target="defaultpartner"
+                                   value="{$defaultpartnernev}" size="60" autocomplete="off">
+                            <input name="defaultpartner" type="hidden" value="{$defaultpartnerid}">
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="BoltivevoEdit">{at('Bolti vevő')}:</label></span>
-                            <select id="BoltivevoEdit" name="boltivevo">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $boltivevolist as $_gyarto}
-                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                                {/foreach}
-                            </select>
+                            <input id="BoltivevoEdit" type="text" class="js-setuppartnerselect" data-target="boltivevo"
+                                   value="{$boltivevonev}" size="60" autocomplete="off">
+                            <input name="boltivevo" type="hidden" value="{$boltivevoid}">
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="RaktarEdit">{at('Raktár')}:</label></span>
@@ -747,12 +738,9 @@
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="VasarlasiUtalvanyTermekEdit">{at('Vásárlási utalvány termék')}:</label></span>
-                            <select id="VasarlasiUtalvanyTermekEdit" name="vasarlasiutalvanytermek">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $vasarlasiutalvanytermeklist as $_role}
-                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
-                                {/foreach}
-                            </select>
+                            <input id="VasarlasiUtalvanyTermekEdit" type="text" class="js-setuptermekselect" data-target="vasarlasiutalvanytermek"
+                                   value="{$vasarlasiutalvanytermeknev}" size="60" autocomplete="off">
+                            <input name="vasarlasiutalvanytermek" type="hidden" value="{$vasarlasiutalvanytermekid}">
                         </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1224,23 +1212,15 @@
                         </tr>
                         <tr>
                             <td><label for="SzallitasiKtgTermekEdit">{at('Szállítási költség')}:</label></td>
-                            <td colspan="2"><select id="SzallitasiKtgTermekEdit" name="szallitasiktgtermek">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $szallitasiktgtermeklist as $_szallitasiktgtermek}
-                                        <option
-                                            value="{$_szallitasiktgtermek.id}"{if ($_szallitasiktgtermek.selected)} selected="selected"{/if}>{$_szallitasiktgtermek.caption}</option>
-                                    {/foreach}
-                                </select></td>
+                            <td colspan="2"><input id="SzallitasiKtgTermekEdit" type="text" class="js-setuptermekselect"
+                                                   data-target="szallitasiktgtermek" value="{$szallitasiktgtermeknev}" size="60" autocomplete="off">
+                                <input name="szallitasiktgtermek" type="hidden" value="{$szallitasiktgtermekid}"></td>
                         </tr>
                         <tr>
                             <td><label for="UtanvetKtgTermekEdit">{at('Utánvét költség')}:</label></td>
-                            <td colspan="2"><select id="UtanvetKtgTermekEdit" name="utanvetktgtermek">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $utanvetktgtermeklist as $_utanvetktgtermek}
-                                        <option
-                                            value="{$_utanvetktgtermek.id}"{if ($_utanvetktgtermek.selected)} selected="selected"{/if}>{$_utanvetktgtermek.caption}</option>
-                                    {/foreach}
-                                </select></td>
+                            <td colspan="2"><input id="UtanvetKtgTermekEdit" type="text" class="js-setuptermekselect"
+                                                   data-target="utanvetktgtermek" value="{$utanvetktgtermeknev}" size="60" autocomplete="off">
+                                <input name="utanvetktgtermek" type="hidden" value="{$utanvetktgtermekid}"></td>
                         </tr>
                         </tbody>
                     </table>
