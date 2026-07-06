@@ -504,11 +504,34 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function recalcPrices()
     {
+        $valutanem = \mkw\store::getWebshopValutanem();
+        $user = \mkw\store::getLoggedInUser();
+        $afaoverride = false;
+        if ($user) {
+            $afaoverride = $user->getAFAOverride();
+        } elseif ($orszag = \mkw\store::getOrszag()) {
+            $afaoverride = $orszag->getAfa();
+        }
         $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
             switch (true) {
                 case \mkw\store::isMugenrace2026():
+                    if ($afaoverride) {
+                        $sor->setAfa($afaoverride);
+                    }
+                    // A nettó ár a fix; a bruttó az (ország szerinti) ÁFA-ból derivál.
+                    $sor->setNettoegysar(
+                        $sor->getTermek()->getNettoAr(
+                            $sor->getTermekvaltozat(),
+                            $user,
+                            $valutanem,
+                            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                        )
+                    );
+                    $sor->setValutanem($valutanem);
+                    $this->getEm()->persist($sor);
+                    break;
                 case \mkw\store::isMugenrace():
                     $valutanem = \mkw\store::getWebshopValutanem();
                     $sor->setBruttoegysar(

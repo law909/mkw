@@ -590,7 +590,7 @@ class mainController extends \mkwhelpers\Controller
         }
         /** @var \Entities\Orszag $orszag */
         $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
-        if ($orszag && $orszag->getValutanem()) {
+        if ($orszag && ($orszag->getValutanem())) {
             \mkw\store::setOrszagId((int)$orszagkod);
             $kc = new kosarController();
             $kc->recalcPrices();

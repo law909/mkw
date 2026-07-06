@@ -48,16 +48,20 @@
                                                             <h5>{t('Új vásárló')}</h5>
                                                             <div class="  flex-col gap-base">
                                                                 <label class="radio">
-                                                                    <input name="regkell" id="regkell" type="radio" value="1" {if ($regkell==1)}checked="checked"{/if}>
+                                                                    <input name="regkell" id="regkell" type="radio" value="1"
+                                                                           {if ($regkell==1)}checked="checked"{/if}>
                                                                     {t('Vásárlás vendégként (regisztráció nélkül)')}
                                                                 </label>
                                                                 <label class="radio">
-                                                                    <input name="regkell" id="regkell" type="radio" value="2" {if ($regkell==2)}checked="checked"{/if}>
+                                                                    <input name="regkell" id="regkell" type="radio" value="2"
+                                                                           {if ($regkell==2)}checked="checked"{/if}>
                                                                     {t('Vásárlás regisztrációval')}
                                                                     • </label>
                                                             </div>
-                                                            <div class="row chk-actionrow span"><a href="#block2" class="button bordered okbtn pull-right js-chkopenbtn"
-                                                                                                data-datagroupheader=".js-chkszallitasiadatokgh">{t('Tovább')}</a></div>
+                                                            <div class="row chk-actionrow span"><a href="#block2"
+                                                                                                   class="button bordered okbtn pull-right js-chkopenbtn"
+                                                                                                   data-datagroupheader=".js-chkszallitasiadatokgh">{t('Tovább')}</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="flex-col gap-base checkout-form__section">
@@ -68,7 +72,8 @@
                                                         <div class="row">
                                                             <div class="controls chk-controloffset">
                                                                 <label class=" nomargin">{t('Email')}</label>
-                                                                <input name="email" type="text" form="LoginForm" class=" nomargin" value="{$user.email|default}">
+                                                                <input name="email" type="text" form="LoginForm" class=" nomargin"
+                                                                       value="{$user.email|default}">
                                                             </div>
                                                             <div class="controls chk-controloffset">
                                                                 <label class=" nomargin">{t('Jelszó')}</label>
@@ -77,7 +82,8 @@
                                                         </div>
                                                         <div class="row chk-actionrow span">
                                                             <input name="c" type="hidden" form="LoginForm" value="c">
-                                                            <input type="submit" form="LoginForm" class="button bordered okbtn pull-right js-chkloginbtn" value="{t('Belépés')}">
+                                                            <input type="submit" form="LoginForm" class="button bordered okbtn pull-right js-chkloginbtn"
+                                                                   value="{t('Belépés')}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -87,9 +93,10 @@
                                     <div class="row">
                                         <div class="">
                                             <div id="block2" class="form-header chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh"
-                                                data-container=".js-chkszallitasiadatok">
+                                                 data-container=".js-chkszallitasiadatok">
                                                 <h3 class="title-header">
-                                                    <span>{$sorszam++}. {t('Szállítási és számlázási adatok')}<a class="button bordered small">{t('Módosít')}</a></span>
+                                                    <span>{$sorszam++}. {t('Szállítási és számlázási adatok')}<a
+                                                            class="button bordered small">{t('Módosít')}</a></span>
                                                 </h3>
                                             </div>
                                             <div class="js-chkszallitasiadatok js-chkdatacontainer checkout-form__section">
@@ -98,24 +105,24 @@
                                                     <div class=" nomargin">
                                                         <label class=" nomargin">{t('Vezetéknév')} *</label>
                                                         <input name="vezeteknev" type="text" class=" nomargin js-chkrefresh" value="{$vezeteknev|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                     <div class="">
                                                         <label class=" nomargin">{t('Keresztnév')} *</label>
                                                         <input name="keresztnev" type="text" class=" nomargin js-chkrefresh" value="{$keresztnev|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                 </div>
                                                 <div class="controls controls-row chk-controloffset">
                                                     <div class=" nomargin chk-relative">
                                                         <label class=" nomargin">{t('Telefon')} *</label>
                                                         <input name="telefon" type="text" class=" nomargin js-chkrefresh" value="{$telefon|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                     <div class="">
                                                         <label class=" nomargin">{t('Email')} *</label>
                                                         <input name="kapcsemail" type="text" class=" nomargin js-chkrefresh" value="{$email|default}"
-                                                            {if ($user.loggedin)}readonly {/if} data-container=".js-chkszallitasiadatok">
+                                                               {if ($user.loggedin)}readonly {/if} data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                 </div>
                                                 {if (!$user.loggedin)}
@@ -124,14 +131,14 @@
                                                             <div class=" nomargin">
                                                                 <label class=" nomargin">{t('Jelszó')} 1 *</label>
                                                                 <input name="jelszo1" type="password" class=" nomargin" value=""
-                                                                    data-container=".js-chkszallitasiadatok">
+                                                                       data-container=".js-chkszallitasiadatok">
                                                             </div>
                                                             <div class=" chk-relative">
                                                                 <label class=" nomargin">{t('Jelszó')} 2 *</label>
                                                                 <input name="jelszo2" type="password" class=" nomargin" value=""
-                                                                    data-container=".js-chkszallitasiadatok">
+                                                                       data-container=".js-chkszallitasiadatok">
                                                                 <i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn"
-                                                                title="{t('Adja meg kétszer jelszavát, így elkerülheti az elgépelést')}"></i>
+                                                                   title="{t('Adja meg kétszer jelszavát, így elkerülheti az elgépelést')}"></i>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -151,25 +158,25 @@
                                                     <div class=" nomargin">
                                                         <label class=" nomargin">{t('Szállítási név')}</label>
                                                         <input name="szallnev" type="text" class=" js-chkrefresh" value="{$szallnev|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                 </div>
                                                 <div class="controls controls-row chk-controloffset">
                                                     <div class=" nomargin">
                                                         <label class=" nomargin">{t('Ir.szám')} *</label>
                                                         <input name="szallirszam" type="text" class=" nomargin js-chkrefresh" value="{$szallirszam|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                     <div class="">
                                                         <label class=" nomargin">{t('Város')} *</label>
                                                         <input name="szallvaros" type="text" class=" nomargin js-chkrefresh" value="{$szallvaros|default}"
-                                                            data-container=".js-chkszallitasiadatok">
+                                                               data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                 </div>
                                                 <div class="controls chk-controloffset">
                                                     <label class=" nomargin">{t('Utca')} *</label>
                                                     <input name="szallutca" type="text" class=" nomargin js-chkrefresh" value="{$szallutca|default}"
-                                                        data-container=".js-chkszallitasiadatok">
+                                                           data-container=".js-chkszallitasiadatok">
                                                 </div>
 
                                                 <h5 class="clearboth">{t('Számlázási adatok')}</h5>
@@ -179,22 +186,25 @@
                                                         {t('Megegyezik a szállítási adatokkal')}
                                                     </label>
                                                 </div>
-                                                <div class="controls chk-controloffset">
-                                                    <div class=" nomargin">
-                                                        <label class=" nomargin">{t('Számlázási ország')} *</label>
-                                                        <select name="orszag" class="js-chkrefresh" required="required">
-                                                            {foreach $szallorszaglist as $f}
-                                                                <option value="{$f.id}"{if ($orszag == $f.id)} selected="selected"{/if}>{$f.caption}</option>
-                                                            {/foreach}
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="js-chkszamlaadatok{if ($szamlaeqszall|default)} notvisible{/if}  flex-col gap-base">
                                                     <div class="controls chk-controloffset">
                                                         <div class=" nomargin">
+                                                            <label class=" nomargin">{t('Számlázási ország')} *</label>
+                                                            <select name="orszag" class="js-chkrefresh js-todisable"
+                                                                    required="required"{if ($szamlaeqszall|default)} disabled{/if}>
+                                                                {foreach $orszaglist as $f}
+                                                                    <option
+                                                                        value="{$f.id}"{if ($orszag == $f.id)} selected="selected"{/if}>{$f.caption}</option>
+                                                                {/foreach}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="controls chk-controloffset">
+                                                        <div class=" nomargin">
                                                             <label class=" nomargin">{t('Számlázási név')}</label>
-                                                            <input name="szamlanev" type="text" class=" nomargin js-chkrefresh" value="{$szamlanev|default}"
-                                                                {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                                            <input name="szamlanev" type="text" class="nomargin js-chkrefresh js-todisable"
+                                                                   value="{$szamlanev|default}"
+                                                                   {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                                                         </div>
                                                     </div>
                                                     <!-- Radio gombok -->
@@ -203,30 +213,15 @@
                                                             <label class="nomargin">{t('Vásárló típusa')}</label>
                                                             <div class="vasarlo-tipus-wrapper">
                                                                 <label>
-                                                                    <input type="radio" name="vasarlo_tipus" value="ceg" {if (!isset($vasarlotipus) || $vasarlotipus == 'ceg')}checked {/if}> {t('Cégként vásárolok')}
+                                                                    <input type="radio" name="vasarlo_tipus" value="ceg"
+                                                                           {if (!isset($vasarlotipus) || $vasarlotipus == 'ceg')}checked {/if}> {t('Cégként vásárolok')}
                                                                 </label>
                                                                 <label>
-                                                                    <input type="radio" name="vasarlo_tipus" value="maganszemely" {if (isset($vasarlotipus) && $vasarlotipus == 'maganszemely')}checked {/if}> {t('Magánszemélyként vásárolok')}
+                                                                    <input type="radio" name="vasarlo_tipus" value="maganszemely"
+                                                                           {if (isset($vasarlotipus) && $vasarlotipus == 'maganszemely')}checked {/if}> {t('Magánszemélyként vásárolok')}
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="controls controls-row chk-controloffset">
-                                                        <div class=" nomargin">
-                                                            <label class=" nomargin">{t('Ir.szám')} *</label>
-                                                            <input name="szamlairszam" type="text" class=" nomargin js-chkrefresh" value="{$szamlairszam|default}"
-                                                                {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-                                                        </div>
-                                                        <div class="">
-                                                            <label class=" nomargin">{t('Város')} *</label>
-                                                            <input name="szamlavaros" type="text" class=" nomargin js-chkrefresh" value="{$szamlavaros|default}"
-                                                                {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-                                                        </div>
-                                                    </div>
-                                                    <div class="controls chk-controloffset">
-                                                        <label class=" nomargin">{t('Utca')} *</label>
-                                                        <input name="szamlautca" type="text" class=" nomargin js-chkrefresh" value="{$szamlautca|default}"
-                                                            {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                                                     </div>
                                                     <div class="controls controls-row chk-controloffset controls-row-adoszam">
                                                         <div class=" nomargin chk-relative">
@@ -234,16 +229,36 @@
                                                             <input name="adoszam" type="text" class=" nomargin js-chkrefresh" value="{$adoszam|default}">
                                                         </div>
                                                     </div>
+                                                    <div class="controls controls-row chk-controloffset">
+                                                        <div class=" nomargin">
+                                                            <label class=" nomargin">{t('Ir.szám')} *</label>
+                                                            <input name="szamlairszam" type="text" class="nomargin js-chkrefresh js-todisable"
+                                                                   value="{$szamlairszam|default}"
+                                                                   {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                                        </div>
+                                                        <div class="">
+                                                            <label class=" nomargin">{t('Város')} *</label>
+                                                            <input name="szamlavaros" type="text" class="nomargin js-chkrefresh js-todisable"
+                                                                   value="{$szamlavaros|default}"
+                                                                   {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                                        </div>
+                                                    </div>
+                                                    <div class="controls chk-controloffset">
+                                                        <label class=" nomargin">{t('Utca')} *</label>
+                                                        <input name="szamlautca" type="text" class="nomargin js-chkrefresh js-todisable"
+                                                               value="{$szamlautca|default}"
+                                                               {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                                    </div>
                                                 </div>
                                                 <div class="row chk-actionrow"><a href="#block3" class="button bordered okbtn pull-right js-chkopenbtn"
-                                                                                data-datagroupheader=".js-chkszallmoddgh">{t('Tovább')}</a></div>
+                                                                                  data-datagroupheader=".js-chkszallmoddgh">{t('Tovább')}</a></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div id="block3" class="form-header chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh"
-                                                data-container=".js-chkszallmod">
+                                                 data-container=".js-chkszallmod">
                                                 <h3 class="title-header">
                                                     <span>{$sorszam++}. {t('Szállítás és fizetés')}<a class="button bordered small">{t('Módosít')}</a></span>
                                                 </h3>
@@ -255,9 +270,9 @@
                                                         {foreach $szallitasimodlist as $szallitasimod}
                                                             <label class="radio">
                                                                 <input type="radio" name="szallitasimod"
-                                                                    class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}"
-                                                                    value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if}
-                                                                    data-caption="{$szallitasimod.caption}">
+                                                                       class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}"
+                                                                       value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if}
+                                                                       data-caption="{$szallitasimod.caption}">
                                                                 {$szallitasimod.caption}
                                                             </label>
                                                             {if ($szallitasimod.leiras)}
@@ -282,16 +297,18 @@
                                                 <div class="row">
                                                     <div class="col flex-col">
                                                         <label for="WebshopMessageEdit" class="bold">{t('Üzenet a webáruháznak')}:</label>
-                                                        <textarea id="WebshopMessageEdit" class=" js-chkrefresh" name="webshopmessage" rows="2">{$webshopmessage}</textarea>
+                                                        <textarea id="WebshopMessageEdit" class=" js-chkrefresh" name="webshopmessage"
+                                                                  rows="2">{$webshopmessage}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row ">
                                                     <div class="col flex-col">
                                                         <label for="CourierMessageEdit" class="bold">{t('Üzenet a futár részére')}:</label>
-                                                        <textarea id="CourierMessageEdit" class=" js-chkrefresh" name="couriermessage" rows="2">{$couriermessage}</textarea>
+                                                        <textarea id="CourierMessageEdit" class=" js-chkrefresh" name="couriermessage"
+                                                                  rows="2">{$couriermessage}</textarea>
                                                     </div>
                                                 </div>
-                                                
+
                                                 {* <div class="row chk-actionrow"><a href="#block4" class="button bordered okbtn pull-right js-chkopenbtn"
                                                                                 data-datagroupheader=".js-chkattekintesdgh">{t('Tovább')}</a></div> *}
 
@@ -321,7 +338,8 @@
                                                                 {/if}
                                                             </label>
                                                         </div>
-                                                        <div><input type="submit" class="button primary large full-width cartbtn chk-sendorderbtn js-chksendorderbtn"
+                                                        <div><input type="submit"
+                                                                    class="button primary large full-width cartbtn chk-sendorderbtn js-chksendorderbtn"
                                                                     value="{t('Megrendelés elküldése')}"></div>
                                                     </div>
                                                 </div>
@@ -337,7 +355,7 @@
                                     <div class="row">
                                         <div class="">
                                             <div id="block4" class="form-header chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh"
-                                                data-container=".js-chkattekintes">
+                                                 data-container=".js-chkattekintes">
                                                 <h3 class="title-header">
                                                     <span>{$sorszam++}. {t('Megrendelés áttekintése')}</span>
                                                 </h3>
@@ -349,6 +367,7 @@
                                                             <div class="chk-colheader">{t('Számlázási adatok')}</div>
                                                             <div class="js-chkszamlanev"></div>
                                                             <div class="chk-coldatabottom js-chkadoszam"></div>
+                                                            <div><span class="js-chkorszag"></span></div>
                                                             <div><span class="js-chkszamlairszam"></span>&nbsp;<span class="js-chkszamlavaros"></span></div>
                                                             <div class="js-chkszamlautca"></div>
                                                             <div class="chk-colheader">{t('Kapcsolati adatok')}</div>
@@ -359,7 +378,7 @@
                                                         <div class="col col30percent chk-colleftborder chk-colmargin">
                                                             <div class="chk-colheader">{t('Szállítási adatok')}</div>
                                                             <div class="chk-coldatabottom js-chkszallnev"></div>
-                                                            <div><span class="js-chkorszag"></span></div>
+                                                            <div><span class="js-chkszallorszag"></span></div>
                                                             <div><span class="js-chkszallirszam"></span>&nbsp;<span class="js-chkszallvaros"></span></div>
                                                             <div class="chk-coldatabottom js-chkszallutca"></div>
                                                         </div>
@@ -378,16 +397,15 @@
                                                 <div class="js-chktetellist checkout-order-list flex-col">
                                                 </div>
 
-                                                
+
                                             </div>
                                         </div>
-                                    </div>                        
-                                </div>                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        
-                        
+
                     </fieldset>
                 </form>
             </div>
