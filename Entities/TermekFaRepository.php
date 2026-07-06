@@ -90,49 +90,24 @@ class TermekFaRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' AND (f.lathato' . $webshopnum . '=1) ';
             }
         }
-        // TODO locale
-        if (!\mkw\store::isMultilang()) {
-            $rsm = new ResultSetMapping();
-            $rsm->addScalarResult('id', 'id');
-            $rsm->addScalarResult('nev', 'caption');
-            $rsm->addScalarResult('slug', 'slug');
-            $rsm->addScalarResult('leiras', 'leiras');
-            $rsm->addScalarResult('rovidleiras', 'rovidleiras');
-            $rsm->addScalarResult('kepurl', 'kepurl');
-            $rsm->addScalarResult('kepleiras', 'kepleiras');
-            //		$rsm->addScalarResult('termekdarab', 'termekdarab');
-            $rsm->addScalarResult('karkod', 'karkod');
-            $rsm->addScalarResult('sorrend', 'sorrend');
-            $q = $this->_em->createNativeQuery(
-                'SELECT id,nev,slug,leiras,rovidleiras,kepurl,kepleiras,karkod,'
-                //			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
-                . 'sorrend '
-                . 'FROM termekfa f '
-                . 'WHERE menu' . $menunum . 'lathato=1 ' . $webshopfilter
-                . 'ORDER BY sorrend,nev',
-                $rsm
-            );
-            return $q->getScalarResult();
-        } else {
-            $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
-            $res = $q->getResult();
-            $ret = [];
-            /** @var TermekFa $r */
-            foreach ($res as $r) {
-                $ret[] = [
-                    'id' => $r->getId(),
-                    'caption' => $r->getNev(),
-                    'slug' => $r->getSlug(),
-                    'leiras' => $r->getLeiras(),
-                    'rovidleiras' => $r->getRovidleiras(),
-                    'kepurl' => $r->getKepurl(),
-                    'kepleiras' => $r->getKepleiras(),
-                    'sorrend' => $r->getSorrend(),
-                    'karkod' => $r->getKarkod()
-                ];
-            }
-            return $ret;
+        $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
+        $res = $q->getResult();
+        $ret = [];
+        /** @var TermekFa $r */
+        foreach ($res as $r) {
+            $ret[] = [
+                'id' => $r->getId(),
+                'caption' => $r->getLocalizedFieldValue('nev'),
+                'slug' => $r->getSlug(),
+                'leiras' => $r->getLocalizedFieldValue('leiras'),
+                'rovidleiras' => $r->getLocalizedFieldValue('rovidleiras'),
+                'kepurl' => $r->getKepurl(),
+                'kepleiras' => $r->getKepleiras(),
+                'sorrend' => $r->getSorrend(),
+                'karkod' => $r->getKarkod()
+            ];
         }
+        return $ret;
     }
 
     public function getForFilter($webshopnum = null)
@@ -145,7 +120,6 @@ class TermekFaRepository extends \mkwhelpers\Repository
                 $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
             }
         }
-        // TODO locale
         $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend,f.nev');
         $res = $q->getResult();
         $ret = [];
@@ -153,10 +127,10 @@ class TermekFaRepository extends \mkwhelpers\Repository
         foreach ($res as $r) {
             $ret[] = [
                 'id' => $r->getId(),
-                'caption' => $r->getNev(),
+                'caption' => $r->getLocalizedFieldValue('nev'),
                 'slug' => $r->getSlug(),
-                'leiras' => $r->getLeiras(),
-                'rovidleiras' => $r->getRovidleiras(),
+                'leiras' => $r->getLocalizedFieldValue('leiras'),
+                'rovidleiras' => $r->getLocalizedFieldValue('rovidleiras'),
                 'kepurl' => $r->getKepurl(),
                 'kepleiras' => $r->getKepleiras(),
                 'sorrend' => $r->getSorrend(),
@@ -189,20 +163,19 @@ class TermekFaRepository extends \mkwhelpers\Repository
         if ($menunum > 0) {
             $filterstr = ' AND menu' . $menunum . 'lathato=1';
         }
-        // TODO locale
+        $nevfieldname = \mkw\store::getLocalizedFieldName('nev');
+        $leirasfieldname = \mkw\store::getLocalizedFieldName('leiras');
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('nev', 'caption');
+        $rsm->addScalarResult($nevfieldname, 'caption');
         $rsm->addScalarResult('slug', 'slug');
         $rsm->addScalarResult('karkod', 'karkod');
-        $rsm->addScalarResult('leiras', 'leiras');
+        $rsm->addScalarResult($leirasfieldname, 'leiras');
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
-//		$rsm->addScalarResult('termekdarab', 'termekdarab');
         $rsm->addScalarResult('sorrend', 'sorrend');
         $q = $this->_em->createNativeQuery(
-            'SELECT id,nev,slug,karkod,leiras,kepurl,kepleiras,'
-//			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
+            'SELECT id,' . $nevfieldname . ',slug,karkod,' . $leirasfieldname . ',kepurl,kepleiras,'
             . 'sorrend '
             . 'FROM termekfa f '
             . 'WHERE parent_id=' . $parentid . $filterstr . ' '
