@@ -528,17 +528,16 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::WebshopValutanem5);
         $view->setVar('webshopvalutanem5list', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $termekfac = new termekfaController();
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria);
-        $view->setVar('kezdotermekkategorialist', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria', ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria2);
-        $view->setVar('kezdotermekkategoria2list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria2', ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria3);
-        $view->setVar('kezdotermekkategoria3list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria3', ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria4);
-        $view->setVar('kezdotermekkategoria4list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria4', ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria5);
-        $view->setVar('kezdotermekkategoria5list', $termekfac->getSelectList(($p ? $p->getErtek() : 0)));
+        $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria5', ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
@@ -971,6 +970,14 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar($namebase . 'id', $partnerid ?: '');
         $p = $partnerid ? \mkw\store::getEm()->getRepository(Partner::class)->find($partnerid) : null;
         $view->setVar($namebase . 'nev', $p ? ($p->getNev() . ' ' . $p->getCim() . ' (' . $p->getEmail() . ')') : '');
+    }
+
+    // Kezdő termék kategória gombhoz: a rejtett input id-je + a gomb felirata (kategórianév).
+    private function setKezdoKategoriaVars($view, $namebase, $katid)
+    {
+        $view->setVar($namebase . 'id', $katid ?: '');
+        $kat = $katid ? \mkw\store::getEm()->getRepository(\Entities\TermekFa::class)->find($katid) : null;
+        $view->setVar($namebase . 'nev', $kat ? $kat->getNev() : '');
     }
 
     private function setObj($par, $value, $specialchars = false)

@@ -862,13 +862,9 @@
                             </select>
                         </div>
                         <div class="setuprow">
-                            <span class="setuplabel"><label for="KezdoTermekKategoriaEdit">{at('Kezdő termék kategória')}:</label></span>
-                            <select id="KezdoTermekKategoriaEdit" name="kezdotermekkategoria">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $kezdotermekkategorialist as $_kat}
-                                    <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
-                                {/foreach}
-                            </select>
+                            <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
+                            <span class="js-kezdokatbutton" data-target="kezdotermekkategoria">{$kezdotermekkategorianev|default:'nincs megadva'}</span>
+                            <input name="kezdotermekkategoria" type="hidden" value="{$kezdotermekkategoriaid}">
                         </div>
                     </div>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1251,13 +1247,9 @@
                                 </select>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="KezdoTermekKategoria2Edit">{at('Kezdő termék kategória')}:</label></span>
-                                <select id="KezdoTermekKategoria2Edit" name="kezdotermekkategoria2">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $kezdotermekkategoria2list as $_kat}
-                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
-                                    {/foreach}
-                                </select>
+                                <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
+                                <span class="js-kezdokatbutton" data-target="kezdotermekkategoria2">{$kezdotermekkategoria2nev|default:'nincs megadva'}</span>
+                                <input name="kezdotermekkategoria2" type="hidden" value="{$kezdotermekkategoria2id}">
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1313,13 +1305,9 @@
                                 </select>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="KezdoTermekKategoria3Edit">{at('Kezdő termék kategória')}:</label></span>
-                                <select id="KezdoTermekKategoria3Edit" name="kezdotermekkategoria3">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $kezdotermekkategoria3list as $_kat}
-                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
-                                    {/foreach}
-                                </select>
+                                <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
+                                <span class="js-kezdokatbutton" data-target="kezdotermekkategoria3">{$kezdotermekkategoria3nev|default:'nincs megadva'}</span>
+                                <input name="kezdotermekkategoria3" type="hidden" value="{$kezdotermekkategoria3id}">
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1375,13 +1363,9 @@
                                 </select>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="KezdoTermekKategoria4Edit">{at('Kezdő termék kategória')}:</label></span>
-                                <select id="KezdoTermekKategoria4Edit" name="kezdotermekkategoria4">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $kezdotermekkategoria4list as $_kat}
-                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
-                                    {/foreach}
-                                </select>
+                                <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
+                                <span class="js-kezdokatbutton" data-target="kezdotermekkategoria4">{$kezdotermekkategoria4nev|default:'nincs megadva'}</span>
+                                <input name="kezdotermekkategoria4" type="hidden" value="{$kezdotermekkategoria4id}">
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -1443,13 +1427,9 @@
                                 </select>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="KezdoTermekKategoria5Edit">{at('Kezdő termék kategória')}:</label></span>
-                                <select id="KezdoTermekKategoria5Edit" name="kezdotermekkategoria5">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $kezdotermekkategoria5list as $_kat}
-                                        <option value="{$_kat.id}"{if ($_kat.selected)} selected="selected"{/if}>{$_kat.caption}</option>
-                                    {/foreach}
-                                </select>
+                                <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
+                                <span class="js-kezdokatbutton" data-target="kezdotermekkategoria5">{$kezdotermekkategoria5nev|default:'nincs megadva'}</span>
+                                <input name="kezdotermekkategoria5" type="hidden" value="{$kezdotermekkategoria5id}">
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

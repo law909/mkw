@@ -217,6 +217,46 @@ $(document).ready(function() {
                 });
                 return false;
             }).button();
+            // Kezdő termék kategória gombok (webshoponként) - a js-importnewkatid mintájára.
+            $('.js-kezdokatbutton').on('click', function(e) {
+                e.preventDefault();
+                var $button = $(this),
+                    target = $button.data('target');
+                dialogcenter.jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
+                })
+                    .bind('loaded.jstree', function(event, data) {
+                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                    });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var sel = dialogcenter.jstree('get_selected').children('a');
+                            if (sel.length) {
+                                var caption = sel.text(),
+                                    ideid = sel.attr('id').split('_')[1],
+                                    $txt = $button.find('span');
+                                ($txt.length ? $txt : $button).text(caption);
+                                $('input[name="' + target + '"]').val(ideid);
+                            }
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+                return false;
+            }).button();
             $('.js-kepbrowsebutton').on('click', function(e) {
                 e.preventDefault();
                 var finder = new CKFinder(),
