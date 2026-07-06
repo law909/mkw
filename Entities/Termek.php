@@ -2454,7 +2454,7 @@ class Termek
         }
     }
 
-    public function getNettoUtolsoBeszar($valtozatid = null, $datum = null)
+    public function getNettoUtolsoBeszar($valtozatid = null, $datum = null, $csakszallito = false)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
@@ -2468,6 +2468,9 @@ class Termek
         $filter = new FilterDescriptor();
         $filter->addFilter('bf.bizonylattipus_id', '=', 'bevet');
         $filter->addSql('bf.partner_id NOT IN (8390,12291)');
+        if ($csakszallito) {
+            $filter->addSql('bf.partner_id IN (SELECT ptr.id FROM partner ptr WHERE ptr.szallito=1)');
+        }
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bf.storno', '=', false);
         $filter->addFilter('bf.stornozott', '=', false);
@@ -2489,6 +2492,9 @@ class Termek
         );
         $q->setParameters($filter->getQueryParameters());
         $res = $q->getScalarResult();
+        if (empty($res)) {
+            return ['id' => null, 'ertek' => 0];
+        }
         $ret = [
             'id' => $res[0]['id']
         ];
@@ -2500,7 +2506,7 @@ class Termek
         return $ret;
     }
 
-    public function getBruttoUtolsoBeszar($valtozatid = null, $datum = null)
+    public function getBruttoUtolsoBeszar($valtozatid = null, $datum = null, $csakszallito = false)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
@@ -2513,6 +2519,9 @@ class Termek
 
         $filter = new FilterDescriptor();
         $filter->addFilter('bf.irany', '>', 0);
+        if ($csakszallito) {
+            $filter->addSql('bf.partner_id IN (SELECT ptr.id FROM partner ptr WHERE ptr.szallito=1)');
+        }
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bf.storno', '=', false);
         $filter->addFilter('bf.stornozott', '=', false);
@@ -2534,6 +2543,9 @@ class Termek
         );
         $q->setParameters($filter->getQueryParameters());
         $res = $q->getScalarResult();
+        if (empty($res)) {
+            return ['id' => null, 'ertek' => 0];
+        }
         $ret = [
             'id' => $res[0]['id']
         ];

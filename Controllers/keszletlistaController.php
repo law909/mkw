@@ -4,6 +4,10 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Arsav;
+use Entities\Raktar;
+use Entities\Termek;
+use Entities\TermekFa;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -49,7 +53,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $this->raktarnev = t('Minden raktár');
         $raktar = $this->params->getIntRequestParam('raktar');
         if ($raktar) {
-            $r = $this->getRepo('Entities\Raktar')->find($raktar);
+            $r = $this->getRepo(Raktar::class)->find($raktar);
             if ($r) {
                 $this->raktarnev = $r->getNev();
             }
@@ -87,7 +91,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
             $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
@@ -186,7 +190,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $arsav = $as[0];
         $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
         $valutanem = $as[1];
-        $valutaobj = $this->getRepo('Entities\Valutanem')->find($valutanem);
+        $valutaobj = $this->getRepo(Valutanem::class)->find($valutanem);
         $this->arsavstr = $arsav;
         if ($valutaobj) {
             $this->arsavstr .= ' ' . $valutaobj->getNev();
@@ -195,17 +199,17 @@ class keszletlistaController extends \mkwhelpers\MattableController
         foreach ($d as $sor) {
             if ($as) {
                 /** @var \Entities\Termek $t */
-                $t = $this->getRepo('Entities\Termek')->find($sor['termek_id']);
+                $t = $this->getRepo(Termek::class)->find($sor['termek_id']);
                 if ($t) {
                     if ($arsav === '---utolsobeszar') {
                         switch ($nettobrutto) {
                             case 'netto':
-                                $_x = $t->getNettoUtolsoBeszar($sor['id'], $this->datumstr);
+                                $_x = $t->getNettoUtolsoBeszar($sor['id'], $this->datumstr, true);
                                 $sor['ar'] = $_x['ertek'];
                                 $sor['bizid'] = $_x['id'];
                                 break;
                             case 'brutto':
-                                $_x = $t->getBruttoUtolsoBeszar($sor['id'], $this->datumstr);
+                                $_x = $t->getBruttoUtolsoBeszar($sor['id'], $this->datumstr, true);
                                 $sor['ar'] = $_x['ertek'];
                                 $sor['bizid'] = $_x['id'];
                                 break;
