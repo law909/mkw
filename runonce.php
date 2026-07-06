@@ -885,14 +885,6 @@ if ($DBVersion < '0083') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0083');
 }
 
-if ($DBVersion < '0085') {
-    // A korábbi "Külföldi partner címkék" beállítás megszűnt (a webshoponkénti
-    // "Kezdő termék kategória" váltotta ki); a maradék paramétert eltakarítjuk azon
-    // deploymenteken is, ahol a korábbi 0084 verzió már beírta.
-    \mkw\store::getEm()->getConnection()->executeUpdate("DELETE FROM parameterek WHERE id='kulfoldipartnercimkek'");
-    \mkw\store::setParameter(\mkw\consts::DBVersion, '0085');
-}
-
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
