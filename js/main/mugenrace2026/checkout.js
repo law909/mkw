@@ -410,7 +410,7 @@ var checkout = (function ($, guid) {
                     szallutcainput.removeClass('hibas');
                 }
 
-                if (vasarlo_tipusinput.val() === 'ceg') {
+                if (vasarlo_tipusinput.filter(':checked').val() === 'ceg') {
                     if (!adoszaminput.val()) {
                         adoszaminput.addClass('hibas');
                         if (!hibas) {

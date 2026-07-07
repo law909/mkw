@@ -579,7 +579,7 @@ var checkout = (function ($, guid) {
         vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput, vasarlo_tipusinput,
         szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
         szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
-        checkoutform,
+        checkoutform, szallorszagselect,
         webshopmessageinput, couriermessageinput,
         szamlaeqszall,
         kosarhash,
@@ -683,11 +683,12 @@ var checkout = (function ($, guid) {
         $('.js-chkkeresztnev').text(keresztnevinput.val());
         $('.js-chktelefon').text(telefoninput.val());
         $('.js-chkkapcsemail').text(kapcsemailinput.val());
-        $('.js-chkorszag').text(orszagselect.text());
+        $('.js-chkorszag').text(orszagselect.find('option:selected').text());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
         $('.js-chkszallvaros').text(szallvarosinput.val());
         $('.js-chkszallutca').text(szallutcainput.val());
+        $('.js-chkszallorszag').text(szallorszagselect.find('option:selected').text());
 
         $('.js-chkadoszam').text(adoszaminput.val());
         if (szamlaeqszall.prop('checked')) {
@@ -695,16 +696,19 @@ var checkout = (function ($, guid) {
             $('.js-chkszamlairszam').text(szallirszaminput.val());
             $('.js-chkszamlavaros').text(szallvarosinput.val());
             $('.js-chkszamlautca').text(szallutcainput.val());
+            $('.js-chkorszag').text(szallorszagselect.find('option:selected').text());
             $('input[name="szamlanev"]').val(szallnevinput.val());
             $('input[name="szamlairszam"]').val(szallirszaminput.val());
             $('input[name="szamlavaros"]').val(szallvarosinput.val());
             $('input[name="szamlautca"]').val(szallutcainput.val());
+            orszagselect.val(szallorszagselect.val());
 
         } else {
             $('.js-chkszamlanev').text(szamlanevinput.val());
             $('.js-chkszamlairszam').text(szamlairszaminput.val());
             $('.js-chkszamlavaros').text(szamlavarosinput.val());
             $('.js-chkszamlautca').text(szamlautcainput.val());
+            $('.js-chkorszag').text(orszagselect.find('option:selected').text());
         }
         $('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
         $('.js-chkfoxpostterminal').text($('select[name="foxpostterminal"] option:selected').text());
@@ -753,7 +757,8 @@ var checkout = (function ($, guid) {
             szamlautcainput = $('input[name="szamlautca"]');
             adoszaminput = $('input[name="adoszam"]');
             vasarlo_tipusinput = $('input[name="vasarlo_tipus"]');
-            orszagselect = $('select[name="orszag"] option:selected');
+            orszagselect = $('select[name="orszag"]');
+            szallorszagselect = $('select[name="szallorszag"]');
             szallnevinput = $('input[name="szallnev"]');
             szallirszaminput = $('input[name="szallirszam"]');
             szallvarosinput = $('input[name="szallvaros"]');
@@ -795,18 +800,24 @@ var checkout = (function ($, guid) {
                         szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
                     }
                 })
-                .on('change', 'select[name="orszag"]', function () {
+                .on('change', 'select[name="szallorszag"]', function () {
                     $.ajax({
                         url: '/setorszag',
                         type: 'POST',
                         data: {
-                            orszag: $('select[name="orszag"] option:selected').val()
+                            orszag: $('select[name="szallorszag"] option:selected').val()
                         },
                         success: function () {
                             loadTetelList();
+                            refreshAttekintes();
                         }
                     });
-                });
+                })
+                .on('change', 'input[name="vasarlo_tipus"]', function () {
+                    let val = $('input[name="vasarlo_tipus"]:checked').val();
+                    adoszaminput.prop('disabled', val !== 'ceg');
+                    adoszaminput.prop('required', val === 'ceg');
+                })
 
             $('input[name="regkell"]').change();
 
@@ -814,9 +825,9 @@ var checkout = (function ($, guid) {
                 var obj = $('.js-chkszamlaadatok');
                 obj.toggleClass('notvisible');
                 if (obj.hasClass('notvisible')) {
-                    $('input', obj).attr('disabled', 'disabled');
+                    $('.js-todisable', obj).attr('disabled', 'disabled');
                 } else {
-                    $('input', obj).attr('disabled', null);
+                    $('.js-todisable', obj).attr('disabled', null);
                 }
                 refreshAttekintes();
             });
@@ -915,6 +926,18 @@ var checkout = (function ($, guid) {
                     szallnevinput.removeClass('hibas');
                 }
 
+                if (!szallorszagselect.val()) {
+                    szallorszagselect.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szallorszagselect);
+                        tofocus = szallorszagselect;
+                    }
+                    hibas = true;
+                    hibauzenet = hibauzenet + '<br />szallorszag';
+                } else {
+                    szallorszagselect.removeClass('hibas');
+                }
+
                 if (!szallirszaminput.val()) {
                     szallirszaminput.addClass('hibas');
                     if (!hibas) {
@@ -948,6 +971,20 @@ var checkout = (function ($, guid) {
                     szallutcainput.removeClass('hibas');
                 }
 
+                if (vasarlo_tipusinput.filter(':checked').val() === 'ceg') {
+                    if (!adoszaminput.val()) {
+                        adoszaminput.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(adoszaminput);
+                            tofocus = adoszaminput;
+                        }
+                        hibas = true;
+                        hibauzenet = hibauzenet + '<br />adoszam';
+                    } else {
+                        adoszaminput.removeClass('hibas');
+                    }
+                }
+
                 if (!szamlaeqszall.prop('checked')) {
                     if (!szamlanevinput.val()) {
                         szamlanevinput.addClass('hibas');
@@ -958,6 +995,18 @@ var checkout = (function ($, guid) {
                         hibas = true;
                     } else {
                         szamlanevinput.removeClass('hibas');
+                    }
+
+                    if (!orszagselect.val()) {
+                        orszagselect.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(orszagselect);
+                            tofocus = orszagselect;
+                        }
+                        hibas = true;
+                        hibauzenet = hibauzenet + '<br />orszag';
+                    } else {
+                        orszagselect.removeClass('hibas');
                     }
 
                     if (!szamlairszaminput.val()) {
@@ -991,19 +1040,6 @@ var checkout = (function ($, guid) {
                         hibas = true;
                     } else {
                         szamlautcainput.removeClass('hibas');
-                    }
-
-                    if (vasarlo_tipusinput.val() === 'ceg') {
-                        if (!adoszaminput.val()) {
-                            adoszaminput.addClass('hibas');
-                            if (!hibas) {
-                                openDataContainer(adoszaminput);
-                                tofocus = adoszaminput;
-                            }
-                            hibas = true;
-                        } else {
-                            adoszaminput.removeClass('hibas');
-                        }
                     }
                 }
 
@@ -1755,7 +1791,7 @@ $(document).ready(function () {
     }
     var $loginform = $('#Loginform');
     if ($loginform.length > 0) {
-        H5F.setup($loginform);
+        /*
         $('#EmailEdit')
             .on('input', function (e) {
                 mkwcheck.loginEmailCheck();
@@ -1765,9 +1801,11 @@ $(document).ready(function () {
                 mkwcheck.wasinteraction.email = true;
                 mkwcheck.loginEmailCheck();
             })
-            .each(function (i, ez) {
-                mkwcheck.loginEmailCheck();
-            });
+        //.each(function (i, ez) {
+        //    mkwcheck.loginEmailCheck();
+        //});
+
+         */
         $('.js-passreminder').on('click', function () {
             var email = $('input[name="email"]', $loginform).val();
             if (!email) {
