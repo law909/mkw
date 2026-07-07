@@ -1188,7 +1188,7 @@ class store
     public static function getLoggedInUser()
     {
         if (!self::$loggedinuser) {
-            $pr = self::getEm()->getRepository('Entities\Partner');
+            $pr = self::getEm()->getRepository(Partner::class);
             self::$loggedinuser = $pr->getLoggedInUser();
         }
         return self::$loggedinuser;
@@ -1200,7 +1200,7 @@ class store
     public static function getLoggedInUK()
     {
         if (!self::$loggedinuk) {
-            $ur = self::getEm()->getRepository('Entities\Uzletkoto');
+            $ur = self::getEm()->getRepository(Uzletkoto::class);
             self::$loggedinuk = $ur->getLoggedInUK();
         }
         return self::$loggedinuk;
@@ -1380,7 +1380,7 @@ class store
             return false;
         }
         $i = $szm;
-        if (is_a($szm, 'Entities\Szallitasimod')) {
+        if (is_a($szm, Szallitasimod::class)) {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
@@ -1392,7 +1392,7 @@ class store
             return false;
         }
         $i = $szm;
-        if (is_a($szm, 'Entities\Szallitasimod')) {
+        if (is_a($szm, Szallitasimod::class)) {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::TOFSzallitasiMod);
@@ -1404,7 +1404,7 @@ class store
             return false;
         }
         $i = $szm;
-        if (is_a($szm, 'Entities\Szallitasimod')) {
+        if (is_a($szm, Szallitasimod::class)) {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
@@ -1660,13 +1660,13 @@ class store
             $valutanem = $partner->getValutanem();
         }
         if (!$valutanem) {
-            $orszag = self::getEm()->getRepository('Entities\Orszag')->find(self::getMainSession()->orszag);
+            $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
             if ($orszag) {
                 $valutanem = $orszag->getValutanem();
             }
         }
         if (!$valutanem) {
-            $valutanem = self::getEm()->getRepository('Entities\Valutanem')->find(self::getParameter(\mkw\consts::Valutanem));
+            $valutanem = self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(\mkw\consts::Valutanem));
         }
         return $valutanem;
     }
@@ -1677,7 +1677,7 @@ class store
             $orszag = $partner->getOrszag();
         }
         if (!$orszag) {
-            $orszag = self::getEm()->getRepository('Entities\Orszag')->find(self::getMainSession()->orszag);
+            $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
         }
         return $orszag;
     }
