@@ -1654,32 +1654,31 @@ class store
     }
 
 
-    public static function getPartnerValutanem($partner)
+    public static function getPartnerValutanem(Partner $partner = null)
     {
         if ($partner) {
-            $valutanem = $partner->getValutanem();
-        }
-        if (!$valutanem) {
-            $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
-            if ($orszag) {
-                $valutanem = $orszag->getValutanem();
+            if ($partner->getValutanem()) {
+                return $partner->getValutanem();
             }
         }
-        if (!$valutanem) {
-            $valutanem = self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(\mkw\consts::Valutanem));
+        $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
+        if ($orszag) {
+            return $orszag->getValutanem();
         }
-        return $valutanem;
+        return self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(\mkw\consts::Valutanem));
     }
 
-    public static function getPartnerOrszag($partner)
+    public static function getPartnerOrszag(Partner $partner = null)
     {
         if ($partner) {
-            $orszag = $partner->getOrszag();
+            if ($partner->getSzallorszag()) {
+                return $partner->getSzallorszag();
+            }
+            if ($partner->getOrszag()) {
+                return $partner->getOrszag();
+            }
         }
-        if (!$orszag) {
-            $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
-        }
-        return $orszag;
+        return self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
     }
 
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg)

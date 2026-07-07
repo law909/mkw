@@ -533,7 +533,7 @@ class KosarRepository extends \mkwhelpers\Repository
                     $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                         $szallmod,
                         \mkw\store::getPartnerOrszag($partner),
-                        \mkw\store::getPartnerValutanem($partner),
+                        \mkw\store::getWebshopValutanem(),
                         $ertek
                     );
                     if ($ktg) {
