@@ -214,11 +214,11 @@
                                                             <div class="vasarlo-tipus-wrapper">
                                                                 <label>
                                                                     <input type="radio" name="vasarlo_tipus" value="ceg"
-                                                                           {if (!isset($vasarlotipus) || $vasarlotipus == 'ceg')}checked {/if}> {t('Cégként vásárolok')}
+                                                                           {if (!isset($vasarlo_tipus) || $vasarlo_tipus == 'ceg')}checked {/if}> {t('Cégként vásárolok')}
                                                                 </label>
                                                                 <label>
                                                                     <input type="radio" name="vasarlo_tipus" value="maganszemely"
-                                                                           {if (isset($vasarlotipus) && $vasarlotipus == 'maganszemely')}checked {/if}> {t('Magánszemélyként vásárolok')}
+                                                                           {if (isset($vasarlo_tipus) && $vasarlo_tipus == 'maganszemely')}checked {/if}> {t('Magánszemélyként vásárolok')}
                                                                 </label>
                                                             </div>
                                                         </div>

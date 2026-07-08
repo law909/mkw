@@ -100,7 +100,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $user['varos'] = '';
             $user['utca'] = '';
             $user['adoszam'] = '';
-            $user['vasarlo_tipus'] = '';
+            $user['vasarlo_tipus'] = 'maganszemely';
             $user['szallnev'] = '';
             $user['szallirszam'] = '';
             $user['szallvaros'] = '';
