@@ -39,6 +39,10 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
 
     public function getSzallitasiKoltseg($szallmod, $orszag, $valutanem, $ertek)
     {
+        \mkw\store::writelog('X1. ' . \mkw\store::getSzallitasiKoltsegMode());
+        \mkw\store::writelog('X2. ' . $orszag->getNev());
+        \mkw\store::writelog('X3. ' . $valutanem->getNev());
+        \mkw\store::writelog('X4. ' . $ertek);
         $ktg = 0;
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
