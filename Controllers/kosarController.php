@@ -294,7 +294,7 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function clear($partnerid = false)
     {
-        $this->getRepo()->clear($partnerid);
+        $this->getRepo()->clearKosar($partnerid);
     }
 
     public function add()

@@ -676,4 +676,26 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
         parent::setLeiras_l1($leiras_l1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getFieldValue($fieldName)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFieldValue', [$fieldName]);
+
+        return parent::getFieldValue($fieldName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocalizedFieldValue($fieldname, $locale = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValue', [$fieldname, $locale]);
+
+        return parent::getLocalizedFieldValue($fieldname, $locale);
+    }
+
 }

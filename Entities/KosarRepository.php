@@ -291,9 +291,9 @@ class KosarRepository extends \mkwhelpers\Repository
             $afaoverride = $partner->getAFAOverride();
         }
 
-        $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        $valutanem = \mkw\store::getWebshopValutanem();
 
-        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanem?->getId());
         if (\mkw\store::isSzallitasiKtgTermek($termekid) || \mkw\store::isUtanvetKtgTermek($termekid)) {
             if ($k) {
                 $k->setMennyiseg(1);
@@ -304,7 +304,6 @@ class KosarRepository extends \mkwhelpers\Repository
             } else {
                 $termek = $this->getRepo(Termek::class)->find($termekid);
                 if ($termek) {
-                    $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
                     $k = new \Entities\Kosar();
                     $k->setTermek($termek);
                     $k->setSessionid($sessionid);
@@ -326,7 +325,6 @@ class KosarRepository extends \mkwhelpers\Repository
             /** @var \Entities\Termek $termek */
             $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
-                $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
                 if ($vid) {
                     $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
                 }
@@ -372,19 +370,11 @@ class KosarRepository extends \mkwhelpers\Repository
     public function remove($termekid, $vid = null)
     {
         if ($termekid) {
-            $sessionid = \mkw\session::getId();
-
-            $partnerid = null;
             $partner = $this->getRepo(Partner::class)->getLoggedInUser();
-            if ($partner) {
-                $partnerid = $partner->getId();
-            }
+            $valutanemid = \mkw\store::getWebshopValutanem()?->getId();
 
-            $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
-
-            $sor = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+            $sor = $this->getTetelsor(\mkw\session::getId(), $partner?->getId(), $termekid, $vid, $valutanemid);
             if ($sor) {
-//            $termekid = $sor->getTermekId();
                 $this->_em->remove($sor);
                 $this->_em->flush();
             }
@@ -393,9 +383,8 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function del($id)
     {
-        $sessionid = \mkw\session::getId();
         $sor = $this->find($id);
-        if ($sor && $sor->getSessionid() == $sessionid) {
+        if ($sor && $sor->getSessionid() == \mkw\session::getId()) {
             $this->_em->remove($sor);
             $this->_em->flush();
             return true;
@@ -405,10 +394,9 @@ class KosarRepository extends \mkwhelpers\Repository
 
     public function edit($id, $mennyiseg, $kedvezmeny = false)
     {
-        $sessionid = \mkw\session::getId();
         /** @var \Entities\Kosar $sor */
         $sor = $this->find($id);
-        if ($sor && $sor->getSessionid() == $sessionid) {
+        if ($sor && $sor->getSessionid() == \mkw\session::getId()) {
             if ($kedvezmeny !== false) {
                 $sor->setKedvezmeny($kedvezmeny);
                 $sor->setBruttoegysar($sor->getEbruttoegysar() * (100 - $kedvezmeny) / 100);
@@ -423,7 +411,7 @@ class KosarRepository extends \mkwhelpers\Repository
         return false;
     }
 
-    public function clear($partnerid = false)
+    public function clearKosar($partnerid = false)
     {
         if ($partnerid) {
             $partner = $this->getRepo(Partner::class)->find($partnerid);
