@@ -1568,6 +1568,7 @@ class store
     public static function getSzallitasiKoltsegMode()
     {
         $szm = self::getSetupValue('szallitasikoltsegmode');
+        self::writelog('setupban: ' . $szm);
         switch ($szm) {
             case 'orszagonkent':
                 return $szm;
