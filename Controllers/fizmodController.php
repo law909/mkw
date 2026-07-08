@@ -190,9 +190,9 @@ class fizmodController extends \mkwhelpers\MattableController
         foreach ($rec as $sor) {
             $r = [
                 'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
+                'caption' => $sor->getLocalizedFieldValue('nev'),
                 'fizhatido' => $sor->getHaladek(),
-                'leiras' => $sor->getLeiras(),
+                'leiras' => $sor->getLocalizedFieldValue('leiras'),
                 'bank' => ($sor->getTipus() == 'B' ? '1' : '0'),
                 'keszpenz' => ($sor->getTipus() == 'P' ? '1' : '0'),
                 'szepkartya' => $sor->getId() == $szepfm,
@@ -219,7 +219,7 @@ class fizmodController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getLocalizedFieldValue('nev') . '</option>';
         }
         $ret .= '</select>';
         echo $ret;

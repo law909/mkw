@@ -221,6 +221,7 @@ class consts
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';
     const GLSFutarSzallitasmod = 'glsfutarszallitasimod';
+    const FedexSzallitasiMod = 'fedexszallitasimod';
 
     const ArukeresoExportSzallmod = 'arukeresoexportszallmod';
 

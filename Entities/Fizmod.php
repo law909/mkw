@@ -4,6 +4,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Traits\GetsFieldValue;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\FizmodRepository")
@@ -12,10 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Fizmod
 {
 
-    private static $translatedFields = [
-        'nev' => ['caption' => 'Név', 'type' => 1],
-        'leiras' => ['caption' => 'Leírás', 'type' => 2]
-    ];
+    use GetsFieldValue;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -68,11 +66,6 @@ class Fizmod
     private $migrid;
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = false;
-
-    public static function getTranslatedFields()
-    {
-        return self::$translatedFields;
-    }
 
     public function __construct()
     {

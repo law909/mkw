@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\CsomagTerminal;
+use Entities\Szallitasimod;
 use mkw\consts;
 
 class csomagterminalController extends \mkwhelpers\MattableController
@@ -96,7 +97,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
             $db = 0;
             foreach ($res as $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r->operator_id, 'tipus' => 'foxpost']);
+                $terminal = $this->getRepo(CsomagTerminal::class)->findOneBy(['idegenid' => $r->operator_id, 'tipus' => 'foxpost']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -128,7 +129,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('tipus', '=', 'foxpost');
-            $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+            $terminalok = $this->getRepo(CsomagTerminal::class)->getAll($filter);
             /** @var \Entities\CsomagTerminal $terminal */
             foreach ($terminalok as $terminal) {
                 $megvan = false;
@@ -156,7 +157,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
             $db = 0;
             foreach ($res as $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r->place_id, 'tipus' => 'foxpost']);
+                $terminal = $this->getRepo(CsomagTerminal::class)->findOneBy(['idegenid' => $r->place_id, 'tipus' => 'foxpost']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -181,7 +182,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('tipus', '=', 'foxpost');
-            $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+            $terminalok = $this->getRepo(CsomagTerminal::class)->getAll($filter);
             /** @var \Entities\CsomagTerminal $terminal */
             foreach ($terminalok as $terminal) {
                 $megvan = false;
@@ -386,7 +387,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
             $db = 0;
             foreach ($pontok as $i => $r) {
                 $db++;
-                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(['idegenid' => $r[\mkw\store::n('a')], 'tipus' => 'gls']);
+                $terminal = $this->getRepo(CsomagTerminal::class)->findOneBy(['idegenid' => $r[\mkw\store::n('a')], 'tipus' => 'gls']);
                 if (!$terminal) {
                     $terminal = new \Entities\CsomagTerminal();
                 }
@@ -408,7 +409,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('tipus', '=', 'gls');
-            $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+            $terminalok = $this->getRepo(CsomagTerminal::class)->getAll($filter);
             /** @var \Entities\CsomagTerminal $terminal */
             foreach ($terminalok as $terminal) {
                 $megvan = false;
@@ -428,7 +429,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
     public function getCsoportok()
     {
         $szmid = $this->params->getIntRequestParam('szmid');
-        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $szm = $this->getRepo(Szallitasimod::class)->find($szmid);
         $tipus = null;
 
         if ($szm) {
@@ -438,7 +439,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
         $key = 'lscsoport' . $szmid;
         $elozocsoport = \mkw\store::getMainSession()->$key;
 
-        $rec = $this->getRepo('Entities\CsomagTerminal')->getCsoportok($tipus);
+        $rec = $this->getRepo(CsomagTerminal::class)->getCsoportok($tipus);
         $res = [];
         foreach ($rec as $sor) {
             $r = [
@@ -462,7 +463,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
     public function getTerminalok()
     {
         $szmid = $this->params->getIntRequestParam('szmid');
-        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $szm = $this->getRepo(Szallitasimod::class)->find($szmid);
         $tipus = null;
 
         if ($szm) {
@@ -472,7 +473,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
         $key = 'lsterminal' . $this->params->getStringRequestParam('cs');
         $elozoterminal = \mkw\store::getMainSession()->$key;
 
-        $rec = $this->getRepo('Entities\CsomagTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus, ['nev' => 'ASC']);
+        $rec = $this->getRepo(CsomagTerminal::class)->getByCsoport($this->params->getStringRequestParam('cs'), $tipus, ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
             $r = [
@@ -517,7 +518,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
     public function getHTMLList()
     {
         $szmid = $this->params->getIntRequestParam('szmid');
-        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $szm = $this->getRepo(Szallitasimod::class)->find($szmid);
         $tipus = null;
 
         if ($szm) {
@@ -557,6 +558,6 @@ class csomagterminalController extends \mkwhelpers\MattableController
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
         }
-        echo json_encode(array('id' => $obj->getId()));
+        echo json_encode(['id' => $obj->getId()]);
     }
 }

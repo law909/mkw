@@ -1415,6 +1415,18 @@ class store
         return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
     }
 
+    public static function isFedexSzallitasimod($szm)
+    {
+        if (!self::getParameter(\mkw\consts::FedexSzallitasiMod)) {
+            return false;
+        }
+        $i = $szm;
+        if (is_a($szm, Szallitasimod::class)) {
+            $i = $szm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::FedexSzallitasiMod);
+    }
+
     public static function isGLSFutarSzallitasimod($szm)
     {
         if (!self::getParameter(\mkw\consts::GLSFutarSzallitasmod)) {

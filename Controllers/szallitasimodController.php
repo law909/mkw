@@ -249,9 +249,6 @@ class szallitasimodController extends \mkwhelpers\MattableController
 
     public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0)
     {
-        $foxpostid = \mkw\store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
-        $tofid = \mkw\store::getParameter(\mkw\consts::TOFSzallitasiMod);
-        $glsid = \mkw\store::getParameter(\mkw\consts::GLSSzallitasiMod);
         if ($mind) {
             $rec = $this->getRepo()->getAll([], ['sorrend' => 'ASC', 'nev' => 'ASC']);
         } else {
@@ -264,11 +261,12 @@ class szallitasimodController extends \mkwhelpers\MattableController
         foreach ($rec as $sor) {
             $r = [
                 'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'leiras' => $sor->getLeiras(),
-                'foxpost' => ($sor->getId() == $foxpostid),
-                'tof' => ($sor->getId() == $tofid),
-                'gls' => ($sor->getId() == $glsid),
+                'caption' => $sor->getLocalizedFieldValue('nev'),
+                'leiras' => $sor->getLocalizedFieldValue('leiras'),
+                'foxpost' => \mkw\store::isFoxpostSzallitasimod($sor->getId()),
+                'tof' => \mkw\store::isTOFSzallitasimod($sor->getId()),
+                'gls' => \mkw\store::isGLSSzallitasimod($sor->getId()),
+                'fedex' => \mkw\store::isFedexSzallitasimod($sor->getId()),
                 'terminaltipus' => $sor->getTerminaltipus(),
                 'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, $valutanem, $ertek),
                 'fizmodok' => $sor->getFizmodok()

@@ -4,6 +4,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Traits\GetsFieldValue;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\SzallitasimodRepository")
@@ -12,10 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Szallitasimod
 {
 
-    private static $translatedFields = [
-        'nev' => ['caption' => 'Név', 'type' => 1],
-        'leiras' => ['caption' => 'Leírás', 'type' => 3]
-    ];
+    use GetsFieldValue;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -61,11 +59,6 @@ class Szallitasimod
      * @var \Entities\Termek
      */
     private $termek;
-
-    public static function getTranslatedFields()
-    {
-        return self::$translatedFields;
-    }
 
     public function __construct()
     {

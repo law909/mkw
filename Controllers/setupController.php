@@ -296,6 +296,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::GLSSzallitasiMod);
         $view->setVar('glsszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::FedexSzallitasiMod);
+        $view->setVar('fedexszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::GLSFutarSzallitasmod);
         $view->setVar('glsfutarszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::ArukeresoExportSzallmod);
@@ -1121,6 +1123,13 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::GLSSzallitasiMod, $szm->getId());
         } else {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, '');
+        }
+
+        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('fedexszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::FedexSzallitasiMod, $szm->getId());
+        } else {
+            $this->setObj(\mkw\consts::FedexSzallitasiMod, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('glsfutarszallmod', 0));
