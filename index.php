@@ -297,12 +297,20 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
     }
 
     if (!$redirected) {
+        // Full-page cache (main storefront). Serves cached HTML and exits on a
+        // hit; otherwise $pckey is the key to store the rendered page under, or
+        // '' when this request is not cacheable. OFF unless config pagecache=1.
+        $pckey = \mkw\pagecache::begin($match);
         try {
             if ($match && !callTheController($match['target'], $match)) {
+                \mkw\pagecache::discard();
                 header('HTTP/1.1 404 Not found');
                 callTheController('mainController#show404', []);
+            } elseif ($pckey !== '') {
+                \mkw\pagecache::commit($pckey);
             }
         } catch (\Doctrine\ORM\Query\QueryException $e) {
+            \mkw\pagecache::discard();
             error_log($e->getMessage());
             throw $e;
         }

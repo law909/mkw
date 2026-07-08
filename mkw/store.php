@@ -734,7 +734,12 @@ class store
         $v->setVar('dologoutlink', $rut->generate('dologout'));
         $v->setVar('kosargetlink', $rut->generate('kosarget'));
         $v->setVar('showcheckoutlink', $rut->generate('showcheckout'));
-        $v->setVar('prevuri', self::getMainSession()->prevuri ? self::getMainSession()->prevuri : '/');
+        $v->setVar(
+            'prevuri',
+            \mkw\pagecache::isCapturing()
+                ? ($_SERVER['REQUEST_URI'] ?? '/')
+                : (self::getMainSession()->prevuri ? self::getMainSession()->prevuri : '/')
+        );
         $v->setVar('ujtermekjelolourl', self::getParameter(\mkw\consts::UjtermekJelolo));
         $v->setVar('akciosjelolourl', self::getParameter(\mkw\consts::AkcioJelolo));
         $v->setVar('top10jelolourl', self::getParameter(\mkw\consts::Top10Jelolo));

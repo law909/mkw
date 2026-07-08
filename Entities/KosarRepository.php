@@ -77,6 +77,13 @@ class KosarRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    public function isEmptyBySessionId($sessionid)
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $sessionid);
+        return $this->getCount($filter) == 0;
+    }
+
     public function getDataBySessionId($sessionid)
     {
         $filter = new FilterDescriptor();
