@@ -885,6 +885,15 @@ if ($DBVersion < '0083') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0083');
 }
 
+if ($DBVersion < '0084') {
+    // Seed the full-page cache allow-list (comma-separated route names) so it is
+    // editable from the parameters table. Don't clobber an existing value.
+    if (\mkw\store::getParameter(\mkw\consts::PagecacheRoutes, null) === null) {
+        \mkw\store::setParameter(\mkw\consts::PagecacheRoutes, \mkw\pagecache::defaultRoutesCsv());
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0084');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

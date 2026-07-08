@@ -19,16 +19,25 @@ namespace mkw;
  * bump the global version (purges everything at once) on deploy via
  * \mkw\pagecache::bumpVersion() or by deleting that directory.
  *
+ * The allow-list of cacheable GET routes is read from the `pagecacheroutes`
+ * parameter (comma-separated route names, seeded by runonce from
+ * self::DEFAULT_ROUTES); edit that parameter to add/remove routes per deployment
+ * without a code change. An empty parameter caches nothing.
+ *
  * Logged-in visitors and non-empty carts always bypass the cache and render
  * live, so per-partner pricing / B2B deployments are never at risk. Product
  * detail pages ARE cached; if a deployment's mainController::termek() branch
- * increments per-product view counters, either drop the product routes from
- * self::ROUTES or add a client-side beacon (a v1 item).
+ * increments per-product view counters, either remove the product routes from
+ * the `pagecacheroutes` parameter or add a client-side beacon (a v1 item).
  */
 final class pagecache
 {
-    /** GET route names (see mainroute.php) that are safe to full-page cache. */
-    private const ROUTES = [
+    /**
+     * Default cacheable GET route names (see mainroute.php). Only the fallback:
+     * the effective list comes from the `pagecacheroutes` parameter, which
+     * runonce seeds from this constant. Exposed so runonce can write the CSV.
+     */
+    public const DEFAULT_ROUTES = [
         'home',
         'showtermek',
         'showtermekszin',
@@ -139,7 +148,24 @@ final class pagecache
             && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET'
             && is_array($match)
             && isset($match['name'])
-            && in_array($match['name'], self::ROUTES, true);
+            && in_array($match['name'], self::routes(), true);
+    }
+
+    /** The effective allow-list: from the `pagecacheroutes` parameter, or the
+     *  built-in default until runonce writes it. */
+    private static function routes(): array
+    {
+        $raw = store::getParameter(\mkw\consts::PagecacheRoutes, null);
+        if ($raw === null) {
+            return self::DEFAULT_ROUTES; // not seeded yet
+        }
+        return array_values(array_filter(array_map('trim', explode(',', $raw)), 'strlen'));
+    }
+
+    /** Comma-separated default route names (used by runonce to seed the param). */
+    public static function defaultRoutesCsv(): string
+    {
+        return implode(',', self::DEFAULT_ROUTES);
     }
 
     private static function cartIsEmpty(): bool

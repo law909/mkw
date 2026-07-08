@@ -34,6 +34,7 @@ class consts
     const ShowTermekArsavValutanem = 'showtermekarsavvalutanem';
     const Esedekessegalap = 'esedekessegalap';
     const Autologoutmin = 'autologoutmin';
+    const PagecacheRoutes = 'pagecacheroutes';
     const ImportNewKatId = 'importnewkatid';
     const Logo = 'logo';
     const Locale = 'locale';

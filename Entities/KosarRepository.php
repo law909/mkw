@@ -410,7 +410,6 @@ class KosarRepository extends \mkwhelpers\Repository
         /** @var \Entities\Kosar $sor */
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
-            $termekid = $sor->getTermekId();
             if ($kedvezmeny !== false) {
                 $sor->setKedvezmeny($kedvezmeny);
                 $sor->setBruttoegysar($sor->getEbruttoegysar() * (100 - $kedvezmeny) / 100);
