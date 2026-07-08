@@ -1571,6 +1571,7 @@ class store
         self::writelog('setupban: ' . $szm);
         switch ($szm) {
             case 'orszagonkent':
+                self::writelog('fuckme: ' . $szm);
                 return $szm;
             default:
                 return 'normal';
