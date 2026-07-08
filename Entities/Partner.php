@@ -3385,6 +3385,17 @@ class Partner
         }
     }
 
+    public function getSzallorszagOrOrszag()
+    {
+        if ($this->szallorszag) {
+            return $this->szallorszag;
+        }
+        if ($this->orszag) {
+            return $this->orszag;
+        }
+        return false;
+    }
+
     /**
      * @return mixed
      */

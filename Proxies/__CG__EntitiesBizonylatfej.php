@@ -4265,6 +4265,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getPartnerSzallorszagOrOrszag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerSzallorszagOrOrszag', []);
+
+        return parent::getPartnerSzallorszagOrOrszag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setPartnerszallorszag($val)
     {
 

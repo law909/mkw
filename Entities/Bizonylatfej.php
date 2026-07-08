@@ -4899,6 +4899,17 @@ class Bizonylatfej
         return '';
     }
 
+    public function getPartnerSzallorszagOrOrszag()
+    {
+        if ($this->getPartnerszallorszag()) {
+            return $this->getPartnerszallorszag();
+        }
+        if ($this->getPartnerorszag()) {
+            return $this->getPartnerorszag();
+        }
+        return false;
+    }
+
     /**
      * @param \Entities\Orszag $val
      */

@@ -183,8 +183,8 @@ class BizonylatfejListener
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
-                    $k->setNettoegysar($ktg);
-                    $k->setNettoegysarhuf($ktg * $k->getArfolyam());
+                    $k->setBruttoegysar($ktg);
+                    $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 } else {
                     $k->setAfa($termek->getAfa());
                     $k->setBruttoegysar($ktg);
@@ -251,7 +251,7 @@ class BizonylatfejListener
                     if (!$bruttoegysar) {
                         $ktg = $this->em->getRepository(Szallitasimod::class)->getSzallitasiKoltseg(
                             $szallmod,
-                            $bizfej->getPartner()->getOrszag(),
+                            $bizfej->getPartnerSzallorszagOrOrszag(),
                             $bizfej->getValutanem(),
                             $bizsum->brutto
                         );

@@ -536,10 +536,9 @@ class KosarRepository extends \mkwhelpers\Repository
 
             if ($szamol) {
                 if ($cnt != 0) {
-                    $partner = \mkw\store::getLoggedInUser();
                     $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                         $szallmod,
-                        \mkw\store::getPartnerOrszag($partner),
+                        \mkw\store::getOrszagId(),
                         \mkw\store::getWebshopValutanem(),
                         $ertek
                     );

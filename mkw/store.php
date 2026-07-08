@@ -1658,34 +1658,6 @@ class store
         return $ertek;
     }
 
-
-    public static function getPartnerValutanem(Partner $partner = null)
-    {
-        if ($partner) {
-            if ($partner->getValutanem()) {
-                return $partner->getValutanem();
-            }
-        }
-        $orszag = self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
-        if ($orszag) {
-            return $orszag->getValutanem();
-        }
-        return self::getEm()->getRepository(Valutanem::class)->find(self::getParameter(\mkw\consts::Valutanem));
-    }
-
-    public static function getPartnerOrszag(Partner $partner = null)
-    {
-        if ($partner) {
-            if ($partner->getSzallorszag()) {
-                return $partner->getSzallorszag();
-            }
-            if ($partner->getOrszag()) {
-                return $partner->getOrszag();
-            }
-        }
-        return self::getEm()->getRepository(Orszag::class)->find(self::getMainSession()->orszag);
-    }
-
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg)
     {
         $ma = new \DateTime(self::convDate(date(self::$DateFormat)));
