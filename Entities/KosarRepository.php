@@ -207,35 +207,9 @@ class KosarRepository extends \mkwhelpers\Repository
                     $k->setSessionid($sessionid);
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
-                    switch (true) {
-                        case \mkw\store::isMugenrace2026():
-                        case \mkw\store::isMugenrace():
-                            if ($afaoverride) {
-                                $k->setAfa($afaoverride);
-                            }
-                            $k->setNettoegysar(
-                                $termek->getNettoAr(
-                                    null,
-                                    $partner,
-                                    $valutanem->getId(),
-                                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
-                                )
-                            );
-                            $k->setEnettoegysar(
-                                $termek->getKedvezmenynelkuliNettoAr(
-                                    null,
-                                    $partner,
-                                    $valutanem->getId(),
-                                    \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
-                                )
-                            );
-                            $k->setEbruttoegysar($k->getEnettoegysar());
-                            break;
-                        default:
-                            $k->setBruttoegysar($bruttoegysar);
-                            $k->setEbruttoegysar($k->getBruttoegysar());
-                            $k->setEnettoegysar($k->getNettoegysar());
-                    }
+                    $k->setBruttoegysar($bruttoegysar);
+                    $k->setEbruttoegysar($k->getBruttoegysar());
+                    $k->setEnettoegysar($k->getNettoegysar());
                     $k->setMennyiseg(1);
                     $k->setSorrend(100);
                 }
