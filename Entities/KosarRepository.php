@@ -499,7 +499,6 @@ class KosarRepository extends \mkwhelpers\Repository
         $termek = $this->getRepo(Termek::class)->find($termekid);
 
         if ($termekid && $termek) {
-            \mkw\store::writelog('1. van termék');
             $e = $this->calcSumBySessionId(\mkw\session::getId());
             $ertek = $e['sum'];
             $cnt = $e['count'];
@@ -510,7 +509,6 @@ class KosarRepository extends \mkwhelpers\Repository
             }
 
             if ($szamol) {
-                \mkw\store::writelog('2. kell számolni');
                 if ($cnt != 0) {
                     $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
                         $szallmod,
@@ -518,7 +516,6 @@ class KosarRepository extends \mkwhelpers\Repository
                         \mkw\store::getWebshopValutanem(),
                         $ertek
                     );
-                    \mkw\store::writelog('3. ktg = ' . $ktg);
                     if ($ktg) {
                         $this->add($termekid, null, $ktg);
                     } else {

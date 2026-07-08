@@ -42,17 +42,21 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
         $ktg = 0;
         switch (\mkw\store::getSzallitasiKoltsegMode()) {
             case 'normal':
-                $ktg = \mkw\store::getEm()->getRepository(SzallitasimodHatar::class)->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
-                $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                $ktgrec = \mkw\store::getEm()->getRepository(SzallitasimodHatar::class)->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
+                $ktg = $ktgrec ? $ktgrec->getOsszeg() : 0;
                 break;
             case 'orszagonkent':
-                $ktg = \mkw\store::getEm()->getRepository(SzallitasimodOrszag::class)->getBySzallitasimodOrszagValutanemHatar(
+                $ktgrec = \mkw\store::getEm()->getRepository(SzallitasimodOrszag::class)->getBySzallitasimodOrszagValutanemHatar(
                     $szallmod,
                     $orszag,
                     $valutanem,
                     $ertek
                 );
-                $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                $ktg = $ktgrec ? $ktgrec->getOsszeg() : 0;
+                if ($ktg == 0) {
+                    $ktgrec = \mkw\store::getEm()->getRepository(SzallitasimodHatar::class)->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
+                    $ktg = $ktgrec ? $ktgrec->getOsszeg() : 0;
+                }
                 break;
         }
         return $ktg;
