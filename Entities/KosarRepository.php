@@ -181,7 +181,6 @@ class KosarRepository extends \mkwhelpers\Repository
     {
         $sessionid = \mkw\session::getId();
 
-
         $partnerid = null;
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
         $afaoverride = false;
