@@ -3536,30 +3536,37 @@ class Partner
 
     public static function calcAFAOverride($szallorszag, $orszag, $szamlatipus, $euadoszam)
     {
+        \mkw\store::writelog('szamlatipus: ' . $szamlatipus);
+        \mkw\store::writelog('euadoszam: ' . $euadoszam);
         if (!is_a($szallorszag, Orszag::class)) {
             $afaorszag = store::getEm()->getRepository(Orszag::class)->find($szallorszag);
         } else {
             $afaorszag = $szallorszag;
         }
+        \mkw\store::writelog('afaorszag: ' . $afaorszag?->getNev() . ' | ' . $afaorszag?->getAfaNev());
         if (!$afaorszag) {
             if (!is_a($orszag, Orszag::class)) {
                 $afaorszag = store::getEm()->getRepository(Orszag::class)->find($orszag);
             } else {
                 $afaorszag = $orszag;
             }
+            \mkw\store::writelog('afaorszag2: ' . $afaorszag?->getNev() . ' | ' . $afaorszag?->getAfaNev());
             if (!$afaorszag) {
                 // ha nincs se szállítási se székhely ország megadva, akkor fallback döntés az ÁFA kulcsról
                 if (($szamlatipus == 1 && $euadoszam) || // EU-n belüli B2B
                     ($szamlatipus == 2)) { // EU-n kívüli B2B és B2C
+                    \mkw\store::writelog('szamlatipusXXX: ' . $szamlatipus);
                     return \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 }
                 return false;
             }
         }
+        \mkw\store::writelog('afaorszag->geteu(): ' . $afaorszag->getEu());
         if ($afaorszag->getEu() && $euadoszam || // EU-n belüli B2B
             (!$afaorszag->getEu())) { // EU-n kívüli B2B és B2C
             return \mkw\store::getEm()->getRepository(Afa::class)->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
         }
+        \mkw\store::writelog('afaorszag->getafa(): ' . $afaorszag->getAfaNev());
         $orszagafa = $afaorszag->getAfa();
         if (!$orszagafa) {
             return false;
