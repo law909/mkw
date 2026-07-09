@@ -832,7 +832,7 @@ class Bizonylattetel
     public function setMekod($mekod)
     {
         if (!is_object($mekod)) {
-            $mekod = \mkw\store::getEm()->getRepository('Entities\ME')->find($mekod);
+            $mekod = \mkw\store::getEm()->getRepository(ME::class)->find($mekod);
         }
         if (!$mekod) {
             $this->removeMekod();

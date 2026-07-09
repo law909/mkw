@@ -3,18 +3,26 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Bankszamla;
 use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
+use Entities\Bizonylatstatusznaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
+use Entities\CsomagTerminal;
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
+use Entities\Folyoszamla;
+use Entities\Jogcim;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Szallitasimod;
+use Entities\Termek;
+use Entities\Uzletkoto;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -616,7 +624,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($partnerkod == -1) {
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(['email' => $partneremail]);
+                $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
                 if (!$partnerobj) {
                     $partnerobj = new \Entities\Partner();
                 }
@@ -671,7 +679,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
             $this->getEm()->persist($partnerobj);
         } else {
-            $partnerobj = $this->getRepo('Entities\Partner')->find($partnerkod);
+            $partnerobj = $this->getRepo(Partner::class)->find($partnerkod);
             if ($partnerobj) {
                 $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
                 $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
@@ -705,7 +713,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
         }
 
-        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+        $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find($this->biztipus));
 
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
@@ -718,31 +726,31 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         } else {
             $obj->setPartner($partnerobj);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
+        $ck = \mkw\store::getEm()->getRepository(Raktar::class)->find($this->params->getIntRequestParam('raktar'));
         if ($ck) {
             $obj->setRaktar($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
             $obj->setFizmod($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+        $ck = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod'));
         if ($ck) {
             $obj->setSzallitasimod($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
+        $ck = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('uzletkoto'));
         if ($ck) {
             $obj->setUzletkoto($ck);
         } else {
             $obj->removeUzletkoto();
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('felhasznalo'));
+        $ck = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('felhasznalo'));
         if ($ck) {
             $obj->setFelhasznalo($ck);
         } else {
             $obj->removeFelhasznalo();
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\CsomagTerminal')->find($this->params->getIntRequestParam('csomagterminal'));
+        $ck = \mkw\store::getEm()->getRepository(CsomagTerminal::class)->find($this->params->getIntRequestParam('csomagterminal'));
         if ($ck) {
             $obj->setCsomagterminal($ck);
         } else {
@@ -752,7 +760,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
             $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouzletkoto'));
+        $ck = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouzletkoto'));
         if ($ck) {
             $obj->setBelsouzletkoto($ck);
         } else {
@@ -1132,7 +1140,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $ret = [];
         if ($termekid) {
             /** @var \Entities\Termek $termek */
-            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
                 $ret = $termek->getEgyediazonositoKeszlet($valtozatid, $term, $raktarid);
             }
@@ -1148,7 +1156,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $biztipid = $this->params->getStringRequestParam('biztipus');
         $bizszam = $this->params->getStringRequestParam('bizszam');
         /** @var \Entities\Bizonylattipus $bt */
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($biztipid);
         if ($bt) {
             if ($bt->getCheckkelt()) {
                 if (!$bizszam) {
@@ -1191,8 +1199,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     public function calcEsedekesseg()
     {
         $kelt = $this->params->getStringRequestParam('kelt');
-        $fm = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
-        $partner = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+        $fm = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner'));
         echo json_encode(['esedekesseg' => \mkw\store::calcEsedekesseg($kelt, $fm, $partner)]);
     }
 
@@ -1274,7 +1282,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $this->loadFilters($filter);
 
-        $filter->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+        $filter->addFilter('bizonylattipus', '=', $this->getRepo(Bizonylattipus::class)->find($this->biztipus));
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -1357,7 +1365,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $this->biztipus = $o->getBizonylattipusId();
                 $email = $o->getPartneremail();
                 if ($email) {
-                    $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
+                    $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
                     $html = $this->getBizonylatHTML($id);
                     $pdf = \mkw\store::getPDFEngine($html);
                     if ($email && $emailtpl) {
@@ -1392,11 +1400,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
-            ->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+            ->addFilter('bizonylattipus', '=', $this->getRepo(Bizonylattipus::class)->find($this->biztipus));
         $filter->addFilter('rontott', '=', false);
 
         if ($forfouk) {
-            $ukrepo = $this->getRepo('Entities\Uzletkoto');
+            $ukrepo = $this->getRepo(Uzletkoto::class);
             $ukid = $ukrepo->getLoggedInUK();
             if ($ukid) {
                 $uk = $ukrepo->find($ukid);
@@ -1412,7 +1420,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $filter->addSql('1=0');
             }
         } else {
-            $filter->addFilter('partner', '=', $this->getRepo('Entities\Partner')->getLoggedInUser());
+            $filter->addFilter('partner', '=', $this->getRepo(Partner::class)->getLoggedInUser());
         }
 
         $l = $this->getRepo()->getWithJoins($filter, ['kelt' => 'DESC']);
@@ -1474,7 +1482,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($mehet) {
             $egyed = $this->loadVars($record, true, $oper);
 
-            $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
             $bt->setTemplateVars($view);
 
             if (!\mkw\store::isPartnerAutocomplete()) {
@@ -1519,7 +1527,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if ($record && $record->getBankszamlaId()) {
                 $bankszlaid = $record->getBankszamlaId();
             } else {
-                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
+                $valutanem = $this->getRepo(Valutanem::class)->find($valutaid);
                 if ($valutanem && $valutanem->getBankszamlaId()) {
                     $bankszlaid = $valutanem->getBankszamlaId();
                 }
@@ -1551,7 +1559,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
             $csomagctrl = new csomagterminalController();
-            $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
+            $szallitasimodobj = $this->getRepo(Szallitasimod::class)->find($szallmodid);
             $view->setVar(
                 'csomagterminallist',
                 $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null))
@@ -1880,19 +1888,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         switch ($biztipus) {
             case 'szamla':
-                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('szamla'));
+                $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('szamla'));
                 $penzirany = 1;
                 break;
             case 'egyeb':
-                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('egyeb'));
+                $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('egyeb'));
                 $penzirany = 1;
                 break;
             case 'koltsegszamla':
-                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('koltsegszamla'));
+                $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('koltsegszamla'));
                 $penzirany = -1;
                 break;
             case 'bevet':
-                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('bevet'));
+                $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bevet'));
                 $penzirany = -1;
                 break;
         }
@@ -1902,7 +1910,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $partnerkod = $this->params->getIntRequestParam('partner');
         if ($partnerkod > 0) {
             /** @var \Entities\Partner $partnerobj */
-            $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find($partnerkod);
             if ($partnerobj) {
                 $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
                 $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
@@ -1932,7 +1940,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
                 /** @var \Entities\Partner $partnerobj */
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(['email' => $partneremail]);
+                $partnerobj = $this->getRepo(Partner::class)->findOneBy(['email' => $partneremail]);
             }
             if (!$partnerobj) {
                 $partnerobj = new \Entities\Partner();
@@ -1994,7 +2002,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->setEsedekesseg($this->params->getStringRequestParam('kelt'));
         }
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $ck = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         if ($ck) {
             $obj->setValutanem($ck);
         }
@@ -2009,7 +2017,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
 
         if (($this->params->getIntRequestParam('termek') > 0)) {
-            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+            $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
             if ($termek) {
                 $tetel = new Bizonylattetel();
                 $obj->addBizonylattetel($tetel);
@@ -2055,17 +2063,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     $pbfej->setPartner($partnerobj);
                     $pbfej->setValutanem($obj->getValutanem());
 
-                    $ck = \mkw\store::getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
+                    $ck = \mkw\store::getEm()->getRepository(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
                     if ($ck) {
                         $pbfej->setPenztar($ck);
                     }
 
-                    $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
+                    $bt = $this->getRepo(Bizonylattipus::class)->find('penztar');
                     $pbfej->setBizonylattipus($bt);
                     $pbfej->setIrany($penzirany);
 
                     if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
-                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
+                        $jogcim = $this->getEm()->getRepository(Jogcim::class)->find($this->params->getIntRequestParam('teteljogcim'));
                         if ($jogcim) {
                             $pbtetel = new \Entities\Penztarbizonylattetel();
                             $pbfej->addBizonylattetel($pbtetel);
@@ -2093,16 +2101,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     $bbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
                     $bbfej->setValutanem($obj->getValutanem());
 
-                    $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+                    $ck = \mkw\store::getEm()->getRepository(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
                     if ($ck) {
                         $bbfej->setBankszamla($ck);
                     }
 
-                    $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+                    $bt = $this->getRepo(Bizonylattipus::class)->find('bank');
                     $bbfej->setBizonylattipus($bt);
 
                     if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
-                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
+                        $jogcim = $this->getEm()->getRepository(Jogcim::class)->find($this->params->getIntRequestParam('teteljogcim'));
                         if ($jogcim) {
                             $bbtetel = new \Entities\Bankbizonylattetel();
                             $bbfej->addBizonylattetel($bbtetel);
@@ -2158,7 +2166,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $bizszam = $this->params->getStringRequestParam('bizszam');
         /** @var \Entities\Folyoszamla $folyoszamlak */
-        $folyoszamlak = $this->getRepo('Entities\Folyoszamla')->getBefizetesByHivatkozottBizonylat($bizszam);
+        $folyoszamlak = $this->getRepo(Folyoszamla::class)->getBefizetesByHivatkozottBizonylat($bizszam);
         $adat = [];
         /** @var \Entities\Folyoszamla $fszla */
         foreach ($folyoszamlak as $fszla) {
@@ -2186,7 +2194,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $bizszam = $this->params->getStringRequestParam('bizszam');
         /** @var \Entities\Bizonylatstatusznaplo[] $naplok */
-        $naplok = $this->getRepo('Entities\Bizonylatstatusznaplo')->getByBizonylatfej($bizszam);
+        $naplok = $this->getRepo(Bizonylatstatusznaplo::class)->getByBizonylatfej($bizszam);
         $adat = [];
         foreach ($naplok as $naplo) {
             $adat[] = [

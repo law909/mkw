@@ -4,6 +4,7 @@ namespace Listeners;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Entities\JogaBerlet;
 
 class JogareszvetelListener
 {
@@ -18,7 +19,7 @@ class JogareszvetelListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->jogaberletmd = $this->em->getClassMetadata('Entities\JogaBerlet');
+        $this->jogaberletmd = $this->em->getClassMetadata(JogaBerlet::class);
 
         $ujak = $this->uow->getScheduledEntityInsertions();
         foreach ($ujak as $entity) {

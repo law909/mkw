@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\Entity(repositoryClass="Entities\BankbizonylatfejRepository")
  * @ORM\Table(name="bankbizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * */
-class Bankbizonylatfej {
+class Bankbizonylatfej
+{
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -138,26 +139,31 @@ class Bankbizonylatfej {
     /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bankbizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function setId($val) {
+    public function setId($val)
+    {
         if (!$this->id) {
             $this->id = $val;
         }
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function getBizonylattetelek() {
+    public function getBizonylattetelek()
+    {
         return $this->bizonylattetelek;
     }
 
-    public function addBizonylattetel(Bankbizonylattetel $val) {
+    public function addBizonylattetel(Bankbizonylattetel $val)
+    {
         if (!$this->bizonylattetelek->contains($val)) {
             $val->setIrany($this->getIrany());
             $this->bizonylattetelek->add($val);
@@ -165,7 +171,8 @@ class Bankbizonylatfej {
         }
     }
 
-    public function removeBizonylattetel(Bankbizonylattetel $val) {
+    public function removeBizonylattetel(Bankbizonylattetel $val)
+    {
         if ($this->bizonylattetelek->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -173,22 +180,26 @@ class Bankbizonylatfej {
         return false;
     }
 
-    public function clearBizonylattetelek() {
+    public function clearBizonylattetelek()
+    {
         $this->bizonylattetelek->clear();
     }
 
-    public function getFolyoszamlak() {
+    public function getFolyoszamlak()
+    {
         return $this->folyoszamlak;
     }
 
-    public function addFolyoszamla(Folyoszamla $val) {
+    public function addFolyoszamla(Folyoszamla $val)
+    {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
             $val->setBizonylatfej($this);
         }
     }
 
-    public function removeFolyoszamla(Folyoszamla $val) {
+    public function removeFolyoszamla(Folyoszamla $val)
+    {
         if ($this->folyoszamlak->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -196,26 +207,31 @@ class Bankbizonylatfej {
         return false;
     }
 
-    public function clearFolyoszamlak() {
+    public function clearFolyoszamlak()
+    {
         $this->folyoszamlak->clear();
     }
 
-    public function getIrany() {
+    public function getIrany()
+    {
         return $this->irany;
     }
 
-    public function setIrany($val) {
+    public function setIrany($val)
+    {
         $this->irany = $val;
     }
 
     /**
      * @return \Entities\Bizonylattipus
      */
-    public function getBizonylattipus() {
+    public function getBizonylattipus()
+    {
         return $this->bizonylattipus;
     }
 
-    public function getBizonylattipusId() {
+    public function getBizonylattipusId()
+    {
         if ($this->bizonylattipus) {
             return $this->bizonylattipus->getId();
         }
@@ -225,43 +241,46 @@ class Bankbizonylatfej {
     /**
      * @param \Entities\Bizonylattipus $val
      */
-    public function setBizonylattipus($val) {
+    public function setBizonylattipus($val)
+    {
         if ($this->bizonylattipus !== $val) {
             if (!$val) {
                 $this->removeBizonylattipus();
-            }
-            else {
+            } else {
                 $this->bizonylattipus = $val;
                 $this->setIrany($val->getIrany());
             }
         }
     }
 
-    public function removeBizonylattipus() {
+    public function removeBizonylattipus()
+    {
         if ($this->bizonylattipus !== null) {
             $this->bizonylattipus = null;
         }
     }
 
-    public function getKelt() {
+    public function getKelt()
+    {
         if (!$this->id && !$this->kelt) {
             $this->kelt = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->kelt;
     }
 
-    public function getKeltStr() {
+    public function getKeltStr()
+    {
         if ($this->getKelt()) {
             return $this->getKelt()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setKelt($adat = '') {
+    public function setKelt($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->kelt = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -269,45 +288,54 @@ class Bankbizonylatfej {
         }
     }
 
-    public function getNetto() {
+    public function getNetto()
+    {
         return $this->netto;
     }
 
-    public function setNetto($val) {
+    public function setNetto($val)
+    {
         $this->netto = $val;
     }
 
-    public function getAfa() {
+    public function getAfa()
+    {
         return $this->afa;
     }
 
-    public function setAfa($val) {
+    public function setAfa($val)
+    {
         $this->afa = $val;
     }
 
-    public function getBrutto() {
+    public function getBrutto()
+    {
         return $this->brutto;
     }
 
-    public function setBrutto($val) {
+    public function setBrutto($val)
+    {
         $this->brutto = $val;
     }
 
     /**
      * @return \Entities\Valutanem
      */
-    public function getValutanem() {
+    public function getValutanem()
+    {
         if (!$this->id && !$this->valutanem) {
             $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
 
-    public function getValutanemnev() {
+    public function getValutanemnev()
+    {
         return $this->valutanemnev;
     }
 
-    public function getValutanemId() {
+    public function getValutanemId()
+    {
         $vn = $this->getValutanem();
         if ($vn) {
             return $vn->getId();
@@ -318,22 +346,23 @@ class Bankbizonylatfej {
     /**
      * @param \Entities\Valutanem $val
      */
-    public function setValutanem($val) {
+    public function setValutanem($val)
+    {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Valutanem::class)->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
                 $this->removeValutanem();
-            }
-            else {
+            } else {
                 $this->valutanem = $val;
                 $this->valutanemnev = $val->getNev();
             }
         }
     }
 
-    public function removeValutanem() {
+    public function removeValutanem()
+    {
         if ($this->valutanem !== null) {
             $this->valutanem = null;
             $this->valutanemnev = '';
@@ -343,18 +372,21 @@ class Bankbizonylatfej {
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
+    public function getPartnerId()
+    {
         if ($this->partner) {
             return $this->partner->getId();
         }
         return '';
     }
 
-    public function setPartnerLeiroadat($val) {
+    public function setPartnerLeiroadat($val)
+    {
         $this->setPartnernev($val->getNev());
         $this->setPartnervezeteknev($val->getVezeteknev());
         $this->setPartnerkeresztnev($val->getKeresztnev());
@@ -368,27 +400,27 @@ class Bankbizonylatfej {
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if ($this->partner !== $val) {
             if (!$val) {
                 $this->removePartner();
-            }
-            else {
+            } else {
                 $this->partner = $val;
                 $this->setPartnerLeiroadat($val);
 
                 $v = $val->getValutanem();
                 if ($v) {
                     $this->setValutanem($v);
-                }
-                else {
+                } else {
                     $this->removeValutanem();
                 }
             }
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
             $this->partnernev = '';
@@ -403,82 +435,101 @@ class Bankbizonylatfej {
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         return $this->partnernev;
     }
 
-    public function setPartnernev($val) {
+    public function setPartnernev($val)
+    {
         $this->partnernev = $val;
     }
 
-    public function getPartnervezeteknev() {
+    public function getPartnervezeteknev()
+    {
         return $this->partnervezeteknev;
     }
 
-    public function setPartnervezeteknev($val) {
+    public function setPartnervezeteknev($val)
+    {
         $this->partnervezeteknev = $val;
     }
 
-    public function getPartnerkeresztnev() {
+    public function getPartnerkeresztnev()
+    {
         return $this->partnerkeresztnev;
     }
 
-    public function setPartnerkeresztnev($val) {
+    public function setPartnerkeresztnev($val)
+    {
         $this->partnerkeresztnev = $val;
     }
 
-    public function getPartneradoszam() {
+    public function getPartneradoszam()
+    {
         return $this->partneradoszam;
     }
 
-    public function setPartneradoszam($val) {
+    public function setPartneradoszam($val)
+    {
         $this->partneradoszam = $val;
     }
 
-    public function getPartnereuadoszam() {
+    public function getPartnereuadoszam()
+    {
         return $this->partnereuadoszam;
     }
 
-    public function setPartnereuadoszam($val) {
+    public function setPartnereuadoszam($val)
+    {
         $this->partnereuadoszam = $val;
     }
 
-    public function getPartnerirszam() {
+    public function getPartnerirszam()
+    {
         return $this->partnerirszam;
     }
 
-    public function setPartnerirszam($val) {
+    public function setPartnerirszam($val)
+    {
         $this->partnerirszam = $val;
     }
 
-    public function getPartnerutca() {
+    public function getPartnerutca()
+    {
         return $this->partnerutca;
     }
 
-    public function setPartnerutca($val) {
+    public function setPartnerutca($val)
+    {
         $this->partnerutca = $val;
     }
 
-    public function getPartnervaros() {
+    public function getPartnervaros()
+    {
         return $this->partnervaros;
     }
 
-    public function setPartnervaros($val) {
+    public function setPartnervaros($val)
+    {
         $this->partnervaros = $val;
     }
 
     /**
      * @return \Entities\Bankszamla
      */
-    public function getBankszamla() {
+    public function getBankszamla()
+    {
         return $this->bankszamla;
     }
 
-    public function getTulajbankszamlaszam() {
+    public function getTulajbankszamlaszam()
+    {
         return $this->tulajbankszamlaszam;
     }
 
-    public function getBankszamlaId() {
+    public function getBankszamlaId()
+    {
         if ($this->bankszamla) {
             return $this->bankszamla->getId();
         }
@@ -488,12 +539,12 @@ class Bankbizonylatfej {
     /**
      * @param \Entities\Bankszamla|null $val
      */
-    public function setBankszamla($val = null) {
+    public function setBankszamla($val = null)
+    {
         if ($this->bankszamla !== $val) {
             if (!$val) {
                 $this->removeBankszamla();
-            }
-            else {
+            } else {
                 $this->bankszamla = $val;
                 $this->tulajbanknev = $val->getBanknev();
                 $this->tulajbankszamlaszam = $val->getSzamlaszam();
@@ -503,7 +554,8 @@ class Bankbizonylatfej {
         }
     }
 
-    public function removeBankszamla() {
+    public function removeBankszamla()
+    {
         if ($this->bankszamla !== null) {
             $this->bankszamla = null;
             $this->tulajbanknev = '';
@@ -513,55 +565,68 @@ class Bankbizonylatfej {
         }
     }
 
-    public function getTulajswift() {
+    public function getTulajswift()
+    {
         return $this->tulajswift;
     }
 
-    public function getTulajbanknev() {
+    public function getTulajbanknev()
+    {
         return $this->tulajbanknev;
     }
 
-    public function getTulajiban() {
+    public function getTulajiban()
+    {
         return $this->tulajiban;
     }
 
-    public function getErbizonylatszam() {
+    public function getErbizonylatszam()
+    {
         return $this->erbizonylatszam;
     }
 
-    public function setErbizonylatszam($val) {
+    public function setErbizonylatszam($val)
+    {
         $this->erbizonylatszam = $val;
     }
 
-    public function getMegjegyzes() {
+    public function getMegjegyzes()
+    {
         return $this->megjegyzes;
     }
 
-    public function setMegjegyzes($val) {
+    public function setMegjegyzes($val)
+    {
         $this->megjegyzes = $val;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
-    public function getRontott() {
+    public function getRontott()
+    {
         return $this->rontott;
     }
 
-    public function setRontott($adat) {
+    public function setRontott($adat)
+    {
         $this->rontott = $adat;
         foreach ($this->bizonylattetelek as $bt) {
             $bt->setRontott($adat);
@@ -572,18 +637,21 @@ class Bankbizonylatfej {
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -593,32 +661,37 @@ class Bankbizonylatfej {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
         return null;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }

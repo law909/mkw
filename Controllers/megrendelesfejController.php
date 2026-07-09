@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekValtozat;
@@ -43,7 +44,7 @@ class megrendelesfejController extends bizonylatfejController
     {
         $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
             if ($biztip) {
                 if (\mkw\store::isSuperzoneB2B()) {
                     $view = $this->createView('biz_elolegbekero_eng.tpl');

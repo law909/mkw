@@ -182,7 +182,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             $redirected = true;
                             header('Location: ' . $router->generate('adminshowlogin'));
                         }
-                        \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
+                        \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($linuser));
                     }
                 } else {
                     $redirected = true;
@@ -198,7 +198,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             $redirected = true;
                             header('Location: ' . $router->generate('pubadminshowlogin'));
                         }
-                        \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
+                        \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository(\Entities\Dolgozo::class)->find($linuser));
                     }
                 } else {
                     $redirected = true;

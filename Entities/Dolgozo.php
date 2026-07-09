@@ -504,7 +504,7 @@ class Dolgozo
     public function setFizmod($val)
     {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Fizmod::class)->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {
@@ -554,7 +554,7 @@ class Dolgozo
     public function setAlapertelmezettRaktar($val)
     {
         if (!($val instanceof \Entities\Raktar)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Raktar::class)->find($val);
         }
         if ($this->alapertelmezettRaktar !== $val) {
             if (!$val) {

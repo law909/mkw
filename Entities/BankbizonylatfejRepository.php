@@ -10,7 +10,7 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Bankbizonylatfej');
+        $this->setEntityname(Bankbizonylatfej::class);
         $this->setOrders([
             '1' => ['caption' => 'biz.szám szerint csökkenő', 'order' => ['_xx.id' => 'DESC']],
             '2' => ['caption' => 'biz.szám szerint növekvő', 'order' => ['_xx.id' => 'ASC']],

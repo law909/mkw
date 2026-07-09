@@ -367,7 +367,7 @@ class BizonylatfejListener
     private function rontPenztarBizonylat($bizfej)
     {
         /** @var \Entities\PenztarbizonylatfejRepository $prep */
-        $pfrep = $this->em->getRepository('Entities\Penztarbizonylatfej');
+        $pfrep = $this->em->getRepository(Penztarbizonylatfej::class);
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId());
         $pbizek = $pfrep->getAllByHivatkozottBizonylat($filter);
@@ -392,7 +392,7 @@ class BizonylatfejListener
         $bruttoegysar = $kupon->getOsszeg() * -1;
 
         $termekid = \mkw\store::getParameter(\mkw\consts::VasarlasiUtalvanyTermek);
-        $termek = $this->em->getRepository('Entities\Termek')->find($termekid);
+        $termek = $this->em->getRepository(Termek::class)->find($termekid);
 
         if ($termek && $bruttoegysar != 0) {
             $afaoverride = false;

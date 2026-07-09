@@ -8,7 +8,7 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Bizonylattetel');
+        $this->setEntityname(Bizonylattetel::class);
         $this->setOrders([
             '1' => ['caption' => 'biz.szám szerint', 'order' => ['_xx.id' => 'ASC']]
         ]);

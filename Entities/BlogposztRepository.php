@@ -5,38 +5,48 @@ namespace Entities;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-class BlogposztRepository extends \mkwhelpers\Repository {
+class BlogposztRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Blogposzt');
-        $this->setOrders(array(
-            '1' => array('caption' => 'megjelenés szerint csökkenő', 'order' => array('_xx.megjelenesdatum' => 'DESC','_xx.id' => 'ASC')),
-            '2' => array('caption' => 'megjelenés szerint növekvő', 'order' => array('_xx.megjelenesdatum' => 'ASC','_xx.id' => 'ASC'))
-        ));
+        $this->setEntityname(Blogposzt::class);
+        $this->setOrders([
+            '1' => ['caption' => 'megjelenés szerint csökkenő', 'order' => ['_xx.megjelenesdatum' => 'DESC', '_xx.id' => 'ASC']],
+            '2' => ['caption' => 'megjelenés szerint növekvő', 'order' => ['_xx.megjelenesdatum' => 'ASC', '_xx.id' => 'ASC']]
+        ]);
     }
 
-    public function findWithJoins($id) {
+    public function findWithJoins($id)
+    {
         return parent::findWithJoins((string)$id);
     }
 
-    public function getForSitemapXml() {
+    public function getForSitemapXml()
+    {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('slug', 'slug');
         $rsm->addScalarResult('lastmod', 'lastmod');
-        $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod'
+        $q = $this->_em->createNativeQuery(
+            'SELECT id,slug,lastmod'
             . ' FROM blogposzt '
-            . ' ORDER BY id', $rsm);
+            . ' ORDER BY id',
+            $rsm
+        );
         return $q->getScalarResult();
     }
 
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Blogposzt _xx'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -47,30 +57,35 @@ class BlogposztRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Blogposzt _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
-    public function getFeedBlogposztok() {
+    public function getFeedBlogposztok()
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('lathato', '=', true);
 
-        $order = array('_xx.megjelenesdatum' => 'DESC', '_xx.id' => 'DESC');
+        $order = ['_xx.megjelenesdatum' => 'DESC', '_xx.id' => 'DESC'];
 
         $res = $this->getAll($filter, $order, 0, \mkw\store::getParameter(\mkw\consts::Feedblogdb, 20));
         return $res;
     }
 
-    public function getByTermekfa($parent) {
+    public function getByTermekfa($parent)
+    {
         if ($parent) {
             $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter(array('_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'), '=', $parent->getId());
+            $filter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $parent->getId());
             $filter->addFilter('lathato', '=', true);
-            $order = array('_xx.megjelenesdatum' => 'DESC');
+            $order = ['_xx.megjelenesdatum' => 'DESC'];
 
             $res = $this->getAll($filter, $order);
             return $res;

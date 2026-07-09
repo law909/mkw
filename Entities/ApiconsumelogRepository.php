@@ -1,10 +1,13 @@
 <?php
+
 namespace Entities;
 
-class ApiconsumelogRepository extends \mkwhelpers\Repository {
+class ApiconsumelogRepository extends \mkwhelpers\Repository
+{
 
-	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
-		parent::__construct($em,$class);
-		$this->setEntityname('Entities\Apiconsumelog');
-	}
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
+        parent::__construct($em, $class);
+        $this->setEntityname(Apiconsumelog::class);
+    }
 }

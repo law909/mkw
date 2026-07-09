@@ -4,6 +4,10 @@ namespace Listeners;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
+use Entities\Bizonylatfej;
+use Entities\Folyoszamla;
 
 class BankbizonylatfejListener
 {
@@ -94,7 +98,7 @@ class BankbizonylatfejListener
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
                 /** @var \Entities\Bizonylatfej $bf */
-                $bf = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->find($tetel->getHivatkozottbizonylat());
+                $bf = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($tetel->getHivatkozottbizonylat());
             }
             $fszla = new \Entities\Folyoszamla();
             $fszla->setDatum($tetel->getDatum());
@@ -155,9 +159,9 @@ class BankbizonylatfejListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bankbizonylatfej');
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bankbizonylattetel');
-        $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
+        $this->bizonylatfejmd = $this->em->getClassMetadata(Bankbizonylatfej::class);
+        $this->bizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
+        $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
         $entity = $args->getObject();
         if ($entity instanceof \Entities\Bankbizonylatfej) {
@@ -170,9 +174,9 @@ class BankbizonylatfejListener
         $this->em = $args->getObjectManager();
         $this->uow = $this->em->getUnitOfWork();
 
-        $this->bizonylatfejmd = $this->em->getClassMetadata('Entities\Bankbizonylatfej');
-        $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bankbizonylattetel');
-        $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
+        $this->bizonylatfejmd = $this->em->getClassMetadata(Bankbizonylatfej::class);
+        $this->bizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
+        $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
