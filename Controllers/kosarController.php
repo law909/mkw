@@ -147,13 +147,12 @@ class kosarController extends \mkwhelpers\MattableController
                 ];
             case \mkw\store::isSuperzoneB2B():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
-                $valutanemobj = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
-                $valutanem = $valutanemobj?->getNev();
+                $valutanem = \mkw\store::getWebshopValutanem();
                 return [
                     'termekdb' => $m[0][1],
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
-                    'valutanem' => $valutanem
+                    'valutanem' => $valutanem?->getNev(),
                 ];
             case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
