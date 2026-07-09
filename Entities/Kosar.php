@@ -375,6 +375,10 @@ class Kosar
     public function setEbruttoegysar($ebruttoegysar)
     {
         $this->ebruttoegysar = $ebruttoegysar;
+        $afa = $this->getAfa();
+        if ($afa) {
+            $this->enettoegysar = $afa->calcNetto($ebruttoegysar);
+        }
     }
 
     /**
@@ -391,6 +395,10 @@ class Kosar
     public function setEnettoegysar($enettoegysar)
     {
         $this->enettoegysar = $enettoegysar;
+        $afa = $this->getAfa();
+        if ($afa) {
+            $this->ebruttoegysar = $afa->calcBrutto($enettoegysar);
+        }
     }
 
     /**

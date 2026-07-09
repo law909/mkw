@@ -338,13 +338,8 @@ class KosarRepository extends \mkwhelpers\Repository
                 $k->setValutanem($valutanem);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
-                    $eredetinetto = $termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner);
-                    $k->setEnettoegysar($eredetinetto);
-                    //$k->setEbruttoegysar($eredetinetto);
-                } else {
-                    $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
-                    $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
                 }
+                $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
 
                 if (!$kedvezmeny) {
                     $kedvezmeny = $termek->getKedvezmeny($partner);
