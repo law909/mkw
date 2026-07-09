@@ -894,6 +894,27 @@ if ($DBVersion < '0084') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0084');
 }
 
+if ($DBVersion < '0085') {
+    // superzoneb2b: a "Retail Price" és "FCMOTO" nevű ársávok termékárainál a bruttóba a nettó
+    // értéket írjuk. A settert használjuk, így a setBrutto() a bruttóból visszaszámolja a nettót is.
+    if (\mkw\store::isSuperzoneB2B()) {
+        $em = \mkw\store::getEm();
+        $arsavok = $em->getRepository(\Entities\Arsav::class)->findBy(['nev' => ['Retail Price', 'FCMOTO', 'eurar']]);
+        foreach ($arsavok as $arsav) {
+            $termekarak = $em->getRepository(\Entities\TermekAr::class)->findBy(['arsav' => $arsav]);
+            foreach ($termekarak as $termekar) {
+                if ($termekar->getNetto() === null || !$termekar->getTermek() || !$termekar->getTermek()->getAfa()) {
+                    continue;
+                }
+                $termekar->setBrutto($termekar->getNetto());
+                $em->persist($termekar);
+            }
+        }
+        $em->flush();
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0085');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
