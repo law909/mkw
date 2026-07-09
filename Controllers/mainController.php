@@ -393,14 +393,8 @@ class mainController extends \mkwhelpers\Controller
             } else {
                 $t['valutanemnev'] = 'X';
             }
-            // TODO: ÁFA
-            if ($partner && $partner->getSzamlatipus()) {
-                $t['ar'] = $termek->getNettoAr(null, $partner);
-                $t['eredetiar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-            } else {
-                $t['ar'] = $termek->getBruttoAr(null, $partner);
-                $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
-            }
+            $t['ar'] = $termek->getBruttoAr(null, $partner);
+            $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
             $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
             $ma = new \DateTime();
