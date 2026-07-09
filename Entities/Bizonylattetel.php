@@ -403,6 +403,12 @@ class Bizonylattetel
         $this->setAfaertekhuf($this->getBruttohuf() - $this->getNettohuf());
     }
 
+    public function kerekitBrutto()
+    {
+        $this->setBrutto(round($this->getBrutto()));
+        $this->setBruttohuf(round($this->getBruttohuf()));
+    }
+
     public function getId()
     {
         return $this->id;

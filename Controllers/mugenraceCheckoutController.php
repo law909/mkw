@@ -110,6 +110,13 @@ class mugenraceCheckoutController extends checkoutController
             $partner->setSzallirszam($szallirszam);
             $partner->setSzallvaros($szallvaros);
             $partner->setSzallutca($szallutca);
+
+            /*
+            albania jön be valamiert, szaszbalazs34@gmail.com - 123456
+            NAV statuszt be kell allitan
+            kisker cimket beallitani ha nem cég
+            */
+
             $szallorszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
             if ($szallorszag) {
                 $partner->setSzallorszag($szallorszag);
@@ -227,6 +234,7 @@ class mugenraceCheckoutController extends checkoutController
                 $t->setNettoegysarhuf($arak['nettoegysarhuf']);
                 $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);
                 $t->calc();
+                $t->kerekitBrutto();
                 $lasttermeknevek[] = $t->getTermeknev();
                 $lasttermekids[] = $t->getTermekId();
                 $this->getEm()->persist($t);

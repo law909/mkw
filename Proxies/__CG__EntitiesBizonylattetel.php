@@ -235,6 +235,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function kerekitBrutto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'kerekitBrutto', []);
+
+        return parent::kerekitBrutto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
