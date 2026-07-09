@@ -111,12 +111,6 @@ class mugenraceCheckoutController extends checkoutController
             $partner->setSzallvaros($szallvaros);
             $partner->setSzallutca($szallutca);
 
-            /*
-            albania jön be valamiert, szaszbalazs34@gmail.com - 123456
-            NAV statuszt be kell allitan
-            kisker cimket beallitani ha nem cég
-            */
-
             $szallorszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
             if ($szallorszag) {
                 $partner->setSzallorszag($szallorszag);
