@@ -526,7 +526,7 @@ class kosarController extends \mkwhelpers\MattableController
                             $sor->getTermekvaltozat(),
                             $user,
                             $valutanem,
-                            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
+                            \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
                         )
                     );
                     $sor->setValutanem($valutanem);
