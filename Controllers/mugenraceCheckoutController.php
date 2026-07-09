@@ -233,8 +233,8 @@ class mugenraceCheckoutController extends checkoutController
                 );
                 $t->setNettoegysarhuf($arak['nettoegysarhuf']);
                 $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);
+                $t->kerekitBruttoegysar();
                 $t->calc();
-                $t->kerekitBrutto();
                 $lasttermeknevek[] = $t->getTermeknev();
                 $lasttermekids[] = $t->getTermekId();
                 $this->getEm()->persist($t);
