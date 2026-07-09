@@ -340,7 +340,7 @@ class KosarRepository extends \mkwhelpers\Repository
                     $k->setAfa($afaoverride);
                     $eredetinetto = $termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner);
                     $k->setEnettoegysar($eredetinetto);
-                    $k->setEbruttoegysar($eredetinetto);
+                    //$k->setEbruttoegysar($eredetinetto);
                 } else {
                     $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
                     $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
