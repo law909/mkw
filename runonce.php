@@ -908,6 +908,25 @@ if ($DBVersion < '0087') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0087');
 }
 
+if ($DBVersion < '0088') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET '
+        . 'showesedekesseg=1, showhatarido=1,showszamlabutton=1,showszallitobutton=1,showkivetbutton=1,showuzenet=1,showbackorder=1,'
+        . 'showcsomagbutton=1,showkupon=1,showeddigimegrendeleseiurl=1,tplname_l1="biz_webshopbiz_eng.tpl"'
+        . ' WHERE id="webshopbiz"'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0088');
+}
+
+if ($DBVersion < '0089') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET showkeziszamlabutton=0'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0089');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

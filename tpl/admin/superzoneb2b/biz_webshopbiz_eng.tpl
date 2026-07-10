@@ -3,18 +3,18 @@
 {block "body"}
     {$summennyiseg = 0}
     {$tetelperpage = 18}
-    {$utolsooldalmaxtetel = 14}
+    {$utolsooldalmaxtetel = 13}
     {$maxoldalszam = floor(count($egyed.tetellista) / 17) + 1}
     {if (count($egyed.tetellista) % $tetelperpage > $utolsooldalmaxtetel)}
         {$maxoldalszam = $maxoldalszam + 1}
     {/if}
     {for $oldal = 1 to $maxoldalszam}
         <div class="fullwidth">
-            <div class="biznev pull-left">{$egyed.bizonylatnev}{if ($egyed.allapotnev)} ({$egyed.allapotnev}){/if}</div>
-            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal</div>
+            <div class="biznev pull-left">Megrendelés / Order{if ($egyed.allapotnev)} ({$egyed.allapotnev}){/if}</div>
+            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal / page(s)</div>
         </div>
         <div class="topline topbottommargin clear"></div>
-        {include "biz_headboxki.tpl"}
+        {include "biz_headboxki_eng.tpl"}
         <div class="topline topbottommargin clear"></div>
         <table class="fullwidth">
             <tbody>
@@ -24,7 +24,15 @@
                 <td class="textaligncenter bold">Fiz.határidő</td>
                 <td class="textaligncenter bold">Fizetési mód</td>
                 <td class="textaligncenter bold">Pénznem</td>
-                <td class="textaligncenter bold">Biz. száma</td>
+                <td class="textaligncenter bold">Számla száma</td>
+            </tr>
+            <tr>
+                <td class="textaligncenter bold">Issue</td>
+                <td class="textaligncenter bold">Fulfillment</td>
+                <td class="textaligncenter bold">Payment due</td>
+                <td class="textaligncenter bold">Payment method</td>
+                <td class="textaligncenter bold">Currency</td>
+                <td class="textaligncenter bold">Invoice number</td>
             </tr>
             <tr>
                 <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
@@ -58,14 +66,29 @@
                     <th class="textalignright bold">Mennyiség</th>
                     <th class="bold">ME</th>
                     {if ($egyed.kedvezmenycount > 0)}
-                        <th class="textalignright bold">Eredeti br.e.ár</th>
+                        <th class="textalignright bold">Eredeti net.e.ár</th>
                         <th class="textalignright bold">Kedvezmény %</th>
                     {/if}
-                    <th class="textalignright bold">Nettó egységár</th>
+                    <th class="textalignright bold">Egységár</th>
                     <th class="textalignright bold">Nettó érték</th>
                     <th class="textalignright bold">ÁFA</th>
                     <th class="textalignright bold">ÁFA érték</th>
                     <th class="textalignright bold">Bruttó érték</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th class="bold">Product</th>
+                    <th class="textalignright bold">Quantity</th>
+                    <th class="bold">Unit</th>
+                    {if ($egyed.kedvezmenycount > 0)}
+                        <th class="textalignright bold">Original net.u.price</th>
+                        <th class="textalignright bold">Discount %</th>
+                    {/if}
+                    <th class="textalignright bold">Unit price</th>
+                    <th class="textalignright bold">Net value</th>
+                    <th class="textalignright bold">VAT</th>
+                    <th class="textalignright bold">VAT value</th>
+                    <th class="textalignright bold">Gross value</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,7 +107,7 @@
                         <td class="textalignright dashedline">{bizformat($tetel.mennyiseg)}</td>
                         <td class="dashedline">{$tetel.me}</td>
                         {if ($egyed.kedvezmenycount > 0)}
-                            <td class="textalignright dashedline">{bizformat($tetel.ebruttoegysar)}</td>
+                            <td class="textalignright dashedline">{bizformat($tetel.enettoegysar)}</td>
                             <td class="textalignright dashedline">{bizformat($tetel.kedvezmeny)}</td>
                         {/if}
                         <td class="textalignright dashedline">{bizformat($tetel.nettoegysar)}</td>
@@ -101,5 +124,5 @@
             <div class="page-break"></div>
         {/if}
     {/for}
-    {include "biz_summary.tpl"}
+    {include "biz_summary_eng.tpl"}
 {/block}
