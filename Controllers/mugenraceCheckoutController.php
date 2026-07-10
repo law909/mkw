@@ -96,6 +96,9 @@ class mugenraceCheckoutController extends checkoutController
         }
 
         if ($ok) {
+            $orszagobj = $this->getRepo(Orszag::class)->find($orszag);
+            $szallorszagobj = $this->getRepo(Orszag::class)->find($szallorszag);
+
             switch ($regkell) {
                 case 1: // vendég
                     $pc = new \Controllers\partnerController();
@@ -112,7 +115,7 @@ class mugenraceCheckoutController extends checkoutController
                     $partner = $this->getRepo(Partner::class)->getLoggedInUser();
                     break;
             }
-            if (\mkw\store::isMagyarorszag($partner->getOrszag())) {
+            if (\mkw\store::isMagyarorszag($orszag)) {
                 switch ($vasarlotipus) {
                     case 'ceg':
                         $partner->setVatstatus(1); // belfőldi adóalany
@@ -131,37 +134,35 @@ class mugenraceCheckoutController extends checkoutController
                         break;
                 }
             }
+            if (\mkw\store::isMagyarorszag($orszag)) {
+                $partner->setAdoszam($adoszam);
+            } elseif ($orszagobj->getEu()) {
+                $partner->setEuadoszam($adoszam);
+            } else {
+                $partner->setThirdadoszam($adoszam);
+            }
             $partner->setSzallnev($szallnev);
             $partner->setSzallirszam($szallirszam);
             $partner->setSzallvaros($szallvaros);
             $partner->setSzallutca($szallutca);
+            if ($szallorszagobj) {
+                $partner->setSzallorszag($szallorszagobj);
+            }
 
-            $szallorszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
-            if ($szallorszag) {
-                $partner->setSzallorszag($szallorszag);
+            $partner->setNev($szamlanev);
+            $partner->setIrszam($szamlairszam);
+            $partner->setVaros($szamlavaros);
+            $partner->setUtca($szamlautca);
+            if ($orszagobj) {
+                $partner->setOrszag($orszagobj);
             }
-            $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszag', 0));
-            if ($orszag) {
-                $partner->setOrszag($orszag);
-            }
-            if ($szamlaeqszall) {
-                $partner->setNev($szallnev);
-                $partner->setIrszam($szallirszam);
-                $partner->setVaros($szallvaros);
-                $partner->setUtca($szallutca);
-            } else {
-                $partner->setNev($szamlanev);
-                $partner->setIrszam($szamlairszam);
-                $partner->setVaros($szamlavaros);
-                $partner->setUtca($szamlautca);
-            }
+
             $partner->setTelefon($telefon);
             $partner->setAkcioshirlevelkell($akciohirlevel);
             $partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
             $this->getEm()->persist($partner);
 
             $biztetelcontroller = new bizonylattetelController();
-            //$valutanem =
 
             $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
             $megrendfej = new \Entities\Bizonylatfej();
@@ -169,15 +170,12 @@ class mugenraceCheckoutController extends checkoutController
             switch ($regkell) {
                 case 1:
                     $megrendfej->setRegmode(1);
-                    $regmodenev = 'vendég';
                     break;
                 case 2:
                     $megrendfej->setRegmode(2);
-                    $regmodenev = 'regisztrált';
                     break;
                 default:
                     $megrendfej->setRegmode(3);
-                    $regmodenev = 'bejelentkezett';
                     break;
             }
 
@@ -190,35 +188,23 @@ class mugenraceCheckoutController extends checkoutController
 
             $megrendfej->setPartner($partner);
 
-            $megrendfej->setPartnernev($szamlanev);
-            $megrendfej->setPartnerirszam($szamlairszam);
-            $megrendfej->setPartnervaros($szamlavaros);
-            $megrendfej->setPartnerutca($szamlautca);
-            $orszagobj = $this->getRepo(Orszag::class)->find($orszag);
-            if ($orszagobj) {
-                $megrendfej->setPartnerorszag($orszagobj);
-            }
-            $megrendfej->setSzallnev($szallnev);
-            $megrendfej->setSzallirszam($szallirszam);
-            $megrendfej->setSzallvaros($szallvaros);
-            $megrendfej->setSzallutca($szallutca);
-            $orszagobj = $this->getRepo(Orszag::class)->find($szallorszag);
-            if ($orszagobj) {
-                $megrendfej->setPartnerszallorszag($orszagobj);
-            }
-
             $megrendfej->setFizmod($this->getEm()->getRepository(Fizmod::class)->find($fizetesimod));
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
+            $megrendfej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
+
+            $megrendfej->setWebshopmessage($webshopmessage);
+            $megrendfej->setCouriermessage($couriermessage);
+
             $valutanem = \mkw\store::getWebshopValutanem();
             $megrendfej->setValutanem($valutanem);
-            $megrendfej->setWebshopmessage($webshopmessage);
+
             $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
             $megrendfej->setArfolyam($arf->getArfolyam());
-            $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
-            $megrendfej->setRaktar($this->getRepo(Raktar::class)->find($raktarid));
+
             if ($valutanem) {
                 $megrendfej->setBankszamla($valutanem->getBankszamla());
             }
+
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
                 $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
             } elseif (\mkw\store::isStripeFizmod($fizetesimod)) {
