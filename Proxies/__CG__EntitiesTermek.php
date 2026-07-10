@@ -558,7 +558,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getAfa()
+    public function getAfa(): ?\Entities\Afa
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
