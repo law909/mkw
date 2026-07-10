@@ -729,7 +729,9 @@ class store
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
-        $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isMugenrace()) {
+            $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
+        }
         $v->setVar('showaccountlink', $rut->generate('showaccount'));
         $v->setVar('dologoutlink', $rut->generate('dologout'));
         $v->setVar('kosargetlink', $rut->generate('kosarget'));
