@@ -250,7 +250,7 @@ class KosarRepository extends \mkwhelpers\Repository
                             $termek->getNettoAr(
                                 $termekvaltozat,
                                 $partner,
-                                $valutanem->getId(),
+                                $valutanem,
                                 \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
                             )
                         );
@@ -258,7 +258,7 @@ class KosarRepository extends \mkwhelpers\Repository
                             $termek->getNettoAr(
                                 $termekvaltozat,
                                 $partner,
-                                $valutanem->getId(),
+                                $valutanem,
                                 \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                             )
                         );
@@ -344,8 +344,8 @@ class KosarRepository extends \mkwhelpers\Repository
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
                 }
-                $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
-                $k->setNettoegysar($termek->getNettoAr($termekvaltozat, $partner));
+                $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner, $valutanem));
+                $k->setNettoegysar($termek->getNettoAr($termekvaltozat, $partner, $valutanem));
 
                 if (!$kedvezmeny) {
                     $kedvezmeny = $termek->getKedvezmeny($partner);
