@@ -183,13 +183,13 @@ class KosarRepository extends \mkwhelpers\Repository
 
         $partnerid = null;
         $partner = $this->getRepo(Partner::class)->getLoggedInUser();
-        $afaoverride = false;
         if ($partner) {
             $partnerid = $partner->getId();
-            $afaoverride = $partner->getAfaOverride();
-        } elseif ($orszag = \mkw\store::getOrszag()) {
-            $afaoverride = $orszag->getAfa();
         }
+
+        $orszag = \mkw\store::getOrszag();
+        $afaoverride = $orszag->getAfa();
+
         $valutanem = \mkw\store::getWebshopValutanem();
 
         /** @var \Entities\Kosar $k */
