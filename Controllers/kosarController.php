@@ -521,13 +521,20 @@ class kosarController extends \mkwhelpers\MattableController
                     if ($afaoverride) {
                         $sor->setAfa($afaoverride);
                     }
-                    // A nettó ár a fix; a bruttó az (ország szerinti) ÁFA-ból derivál.
                     $sor->setNettoegysar(
                         $sor->getTermek()->getNettoAr(
                             $sor->getTermekvaltozat(),
                             $user,
                             $valutanem,
                             \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst())
+                        )
+                    );
+                    $sor->setEnettoegysar(
+                        $sor->getTermek()->getNettoAr(
+                            $sor->getTermekvaltozat(),
+                            $user,
+                            $valutanem,
+                            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                         )
                     );
                     $sor->setValutanem($valutanem);
