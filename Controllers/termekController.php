@@ -1517,7 +1517,7 @@ class termekController extends \mkwhelpers\MattableController
 
         $ret = [];
 
-        if (\mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
             $tf = new termekmenuController();
             if ($termek->getTermekmenu1()) {
                 $ret['navigator'] = $tf->getNavigator($termek->getTermekmenu1(), true);

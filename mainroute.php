@@ -23,7 +23,7 @@ if (\mkw\store::isB2B()) {
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
 } else {
     $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-    if (!\mkw\store::isMugenrace2026()) {
+    if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
         $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
     }
@@ -41,7 +41,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
 }
 
-if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
     $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
     $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
     $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
@@ -152,7 +152,7 @@ switch (true) {
         $router->map('POST', '/checkout/ment', 'superzoneb2bCheckoutController#save', 'checkoutment');
         break;
     case \mkw\store::isMugenrace2026():
-    case \mkw\store::isMugenrace():
+    case \mkw\store::isSuperzoneHu():
         $router->map('POST', '/checkout/ment', 'mugenraceCheckoutController#save', 'checkoutment');
         break;
 }

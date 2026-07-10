@@ -242,7 +242,7 @@ class KosarRepository extends \mkwhelpers\Repository
                 $k->setValutanem($valutanem);
                 switch (true) {
                     case \mkw\store::isMugenrace2026():
-                    case \mkw\store::isMugenrace():
+                    case \mkw\store::isSuperzoneHu():
                         if ($afaoverride) {
                             $k->setAfa($afaoverride);
                         }

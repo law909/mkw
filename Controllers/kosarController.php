@@ -154,16 +154,8 @@ class kosarController extends \mkwhelpers\MattableController
                     'brutto' => $m[0][2],
                     'valutanem' => $valutanem?->getNev(),
                 ];
-            case \mkw\store::isMugenrace():
-                $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
-                /** @var Valutanem $valutanem */
-                $valutanem = \mkw\store::getWebshopValutanem();
-                return [
-                    'netto' => $m[0][3],
-                    'brutto' => $m[0][2],
-                    'valutanem' => $valutanem?->getNev(),
-                ];
             case \mkw\store::isMugenrace2026():
+            case \mkw\store::isSuperzoneHu():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
 
                 $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
@@ -518,6 +510,7 @@ class kosarController extends \mkwhelpers\MattableController
         foreach ($sorok as $sor) {
             switch (true) {
                 case \mkw\store::isMugenrace2026():
+                case \mkw\store::isSuperzoneHu():
                     if ($afaoverride) {
                         $sor->setAfa($afaoverride);
                     }
@@ -533,19 +526,6 @@ class kosarController extends \mkwhelpers\MattableController
                         $sor->getTermek()->getNettoAr(
                             $sor->getTermekvaltozat(),
                             $user,
-                            $valutanem,
-                            \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
-                        )
-                    );
-                    $sor->setValutanem($valutanem);
-                    $this->getEm()->persist($sor);
-                    break;
-                case \mkw\store::isMugenrace():
-                    $valutanem = \mkw\store::getWebshopValutanem();
-                    $sor->setBruttoegysar(
-                        $sor->getTermek()->getBruttoAr(
-                            $sor->getTermekvaltozat(),
-                            \mkw\store::getLoggedInUser(),
                             $valutanem,
                             \mkw\store::getParameter(\mkw\consts::getWebshopPriceConst())
                         )

@@ -793,7 +793,7 @@ class Termek
         $x['uj'] = $this->getUj();
         switch (true) {
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 /** @var \Entities\Afa $afa */
                 $afa = \mkw\store::getOrszag()?->getAfa();
                 $valutanem = \mkw\store::getWebshopValutanem();
@@ -867,52 +867,50 @@ class Termek
                 }
             }
             $x['valtozatok']['data'] = $adatt;
-        } else {
-            if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
-                $vtt = [];
-                $valtozatok = $this->getValtozatok();
-                /** @var TermekValtozat $valt */
-                foreach ($valtozatok as $valt) {
-                    if ($valt->getXElerheto()) {
-                        $szinnev = $valt->getSzinNev();
-                        if ($szinnev) {
-                            $vtt[$valt->getSzinId()] = $szinnev;
-                        }
+        } elseif (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+            $vtt = [];
+            $valtozatok = $this->getValtozatok();
+            /** @var TermekValtozat $valt */
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    $szinnev = $valt->getSzinNev();
+                    if ($szinnev) {
+                        $vtt[$valt->getSzinId()] = $szinnev;
                     }
                 }
-                $x['szinek'] = $vtt;
-            } else {
-                $vtt = [];
-                $valtozatok = $this->getValtozatok();
-                $db = 0;
-                foreach ($valtozatok as $valt) {
-                    if ($valt->getXElerheto()) {
-                        $db++;
-                    }
-                }
-                foreach ($valtozatok as $valt) {
-                    if ($valt->getXElerheto()) {
-                        if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
-                            $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
-                            $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
-                            $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
-                            $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
-                        }
-                        if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
-                            $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
-                            $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
-                            $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
-                            $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
-                        }
-                        if ($db === 1) {
-                            if ($valt->getKeszlet() > 0) {
-                                $x['szallitasiido'] = 1;
-                            }
-                        }
-                    }
-                }
-                $x['mindenvaltozat'] = $vtt;
             }
+            $x['szinek'] = $vtt;
+        } else {
+            $vtt = [];
+            $valtozatok = $this->getValtozatok();
+            $db = 0;
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    $db++;
+                }
+            }
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
+                        $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
+                        $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
+                        $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
+                        $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
+                    }
+                    if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
+                        $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
+                        $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
+                        $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                        $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
+                    }
+                    if ($db === 1) {
+                        if ($valt->getKeszlet() > 0) {
+                            $x['szallitasiido'] = 1;
+                        }
+                    }
+                }
+            }
+            $x['mindenvaltozat'] = $vtt;
         }
         return $x;
     }
@@ -937,7 +935,7 @@ class Termek
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
         $x['minboltikeszlet'] = $this->getMinboltikeszlet();
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
             /** @var \Entities\Afa $afa */
             $afa = \mkw\store::getOrszag()?->getAfa();
             $valutanem = \mkw\store::getWebshopValutanem();
@@ -1011,7 +1009,7 @@ class Termek
         $x['ertekelesek'] = $erts;
         switch (true) {
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 /** @var \Entities\Afa $afa */
                 $afa = \mkw\store::getOrszag()?->getAfa();
                 $valutanem = \mkw\store::getWebshopValutanem();
@@ -1095,7 +1093,7 @@ class Termek
         }
         $x['valtozatok'] = $vtt;
 
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
             $vtt = [];
             $valtozatok = $this->getValtozatok();
             /** @var TermekValtozat $valt */
@@ -1151,7 +1149,7 @@ class Termek
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
             /** @var \Entities\Afa $afa */
             $afa = \mkw\store::getOrszag()?->getAfa();
             $valutanem = \mkw\store::getWebshopValutanem();
@@ -2165,7 +2163,7 @@ class Termek
             case \mkw\store::isGalad():
                 return $this->valtozatok;
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
             case \mkw\store::isSuperzoneB2B():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);

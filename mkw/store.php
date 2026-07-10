@@ -104,10 +104,12 @@ class store
 
     public static function getJSVersion()
     {
-        switch (self::getTheme()) {
-            case 'mkwcansas':
+        switch (true) {
+            case self::isMindentkapni():
                 return 36;
-            case 'mugenrace2026':
+            case self::isMugenrace2026():
+                return 1;
+            case self::isSuperzoneHu():
                 return 1;
         }
     }
@@ -634,6 +636,7 @@ class store
         if ($needmenu) {
             switch (true) {
                 case self::isMugenrace2026():
+                case self::isSuperzoneHu():
                     $tmc = new termekmenuController();
                     $v->setVar('menu1', $tmc->getTreeAsArray());
                     break;
@@ -653,7 +656,7 @@ class store
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $oc = new orszagController();
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
-        if (self::isMugenrace() || self::isMugenrace2026()) {
+        if (self::isSuperzoneHu() || self::isMugenrace2026()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
             $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
@@ -729,7 +732,7 @@ class store
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
-        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isMugenrace()) {
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
             $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
         }
         $v->setVar('showaccountlink', $rut->generate('showaccount'));
@@ -1528,19 +1531,14 @@ class store
         return self::getTheme() === 'mkwcansas';
     }
 
-    public static function isVarganyomda()
-    {
-        return self::getTheme() === 'varganyomda';
-    }
-
-    public static function isMugenrace()
-    {
-        return self::getTheme() === 'mugenrace';
-    }
-
     public static function isMugenrace2026()
     {
         return self::getTheme() === 'mugenrace2026';
+    }
+
+    public static function isSuperzoneHu()
+    {
+        return self::getTheme() === 'superzonehu';
     }
 
     public static function isKisszamlazo()

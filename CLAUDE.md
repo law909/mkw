@@ -68,7 +68,7 @@ Everything reaches global state through the static `mkw\store` class (`mkw/store
 - Sessions: `getMainSession()`, `getAdminSession()`, `getPubAdminSession()` (each is a `session_namespace`)
 - Router, template factory, sanitizer, translation listener
 - Feature flags: `isB2B()`, `isMultilang()`, `isMultiValuta()`, `isBankpenztar()`, `isArsavok()`, `isFoglalas()`, `isOsztottFizmod()`, `mustLogin()`, …
-- Theme flags: `isDarshan()`, `isMugenrace()`, `isMugenrace2026()`, `isMPT()`, `isMPTNGY()`, `isMindentkapni()`, `isSuperzoneB2B()`, `isGalad()`,
+- Theme flags: `isDarshan()`, `isSuperzoneHu()`, `isMugenrace2026()`, `isMPT()`, `isMPTNGY()`, `isMindentkapni()`, `isSuperzoneB2B()`, `isGalad()`,
   `isKisszamlazo()`, `isVarganyomda()`
 - Logged-in user accessors and the `BlameableListener` user setter
 

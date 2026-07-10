@@ -223,7 +223,7 @@ class termekfaController extends \mkwhelpers\MattableController
                 }
                 return $t;
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum, \mkw\store::getWebshopNum());
                 $t = [];
@@ -529,7 +529,7 @@ class termekfaController extends \mkwhelpers\MattableController
                 return $ret;
 
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $arfilter = new FilterDescriptor();
                 $cimkefilter = new FilterDescriptor();
                 $akciosfilter = new FilterDescriptor();

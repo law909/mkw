@@ -257,6 +257,7 @@ class termekmenuController extends \mkwhelpers\MattableController
     {
         return match (true) {
             \mkw\store::isMugenrace2026() => $this->termeklistaMugenrace2026($parent, $caller),
+            \mkw\store::isSuperzoneHu() => $this->termeklistaMugenrace2026($parent, $caller),
             \mkw\store::isSuperzoneB2B() => $this->termeklistaSuperzoneB2B($parent),
             default => throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme()),
         };

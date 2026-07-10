@@ -82,7 +82,7 @@ class mainController extends \mkwhelpers\Controller
                 break;
 
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $csapatc = new csapatController();
                 $riderc = new versenyzoController();
                 $blokkc = new blokkController();
@@ -230,7 +230,7 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->persist($log);
                 \mkw\store::getEm()->flush();
 
-                if (\mkw\store::isMugenrace2026()) {
+                if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
                     $tf = new termekmenuController();
                     $t = $tf->gettermeklistaforparent(null, 'search');
                 } else {
@@ -263,7 +263,7 @@ class mainController extends \mkwhelpers\Controller
         switch (true) {
             case \mkw\store::isMindentkapni():
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $com = $this->params->getStringParam('slug');
                 $szin_id = $this->params->getIntParam('szin_id');
                 $tc = new termekController();

@@ -182,7 +182,7 @@ if ($DBVersion < '0038') {
 
 if ($DBVersion < '0039') {
     $lathato = '0';
-    if (\mkw\store::isSuperzoneB2B() || \mkw\store::isMugenrace() || \mkw\store::isMugenrace()) {
+    if (\mkw\store::isSuperzoneB2B()) {
         $lathato = '1';
     }
     \mkw\store::getEm()->getConnection()->executeStatement(

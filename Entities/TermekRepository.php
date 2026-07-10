@@ -314,7 +314,7 @@ class TermekRepository extends \mkwhelpers\Repository
                 return $q->getScalarResult();
 
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
                 $rsm->addScalarResult('szin_id', 'szin_id');
@@ -359,7 +359,7 @@ class TermekRepository extends \mkwhelpers\Repository
     {
         switch (true) {
             case \mkw\store::isMugenrace2026():
-            case \mkw\store::isMugenrace():
+            case \mkw\store::isSuperzoneHu():
                 $this->addAktivLathatoFilter($filter);
                 if ($listVariations) {
                     $q = $this->_em->createQuery(
@@ -553,7 +553,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addFilter('ajanlott', '=', true);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -589,7 +589,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
         $filter->addSQL($this->getAkciosFilterSQL());
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -625,7 +625,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $this->addAktivLathatoFilter($kiemeltfilter);
         $filter->addFilter('nemkaphato', '=', false);
         $kiemeltfilter->addFilter('kiemelt', '=', true);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -675,7 +675,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -694,7 +694,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -715,7 +715,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
             if ($webshopnum == 1) {
                 $mezonev = 'lathato';
@@ -783,7 +783,7 @@ class TermekRepository extends \mkwhelpers\Repository
             $filter = new FilterDescriptor();
             $this->addAktivLathatoFilter($filter);
             $filter->addFilter('nemkaphato', '=', 'false');
-            if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+            if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
                 $webshopnum = \mkw\store::getSetupValue('webshopnum', 1);
                 if ($webshopnum == 1) {
                     $mezonev = 'lathato';
@@ -898,7 +898,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        if (\mkw\store::isMugenrace() || \mkw\store::isMugenrace2026()) {
+        if (\mkw\store::isSuperzoneHu() || \mkw\store::isMugenrace2026()) {
             $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
             if ($karkod) {
                 $filter->addFilter(['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'], 'LIKE', $karkod . '%'); // Mugenrace

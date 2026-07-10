@@ -75,6 +75,7 @@ class adminController extends mkwhelpers\Controller
         $lista = new listaController();
         switch (true) {
             case \mkw\store::isMugenrace2026():
+            case \mkw\store::isSuperzoneHu():
             case \mkw\store::isSuperzoneB2B():
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
@@ -86,8 +87,6 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('felhasznalolist', $felh->getSelectList());
                 $apierrorlog = new apierrorlogController();
                 $view->setVar('apierrorlog', $apierrorlog->getList());
-                break;
-            case \mkw\store::isMindentkapni():
                 break;
             case \mkw\store::isKisszamlazo():
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
