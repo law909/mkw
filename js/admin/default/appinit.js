@@ -249,7 +249,7 @@ $(document).ready(
         })
             .button();
 
-        $(document).on('click', '.js-backorder', function (e) {
+        $(document).on('click', '.js-teljesithetobackorderek .js-backorder', function (e) {
             e.preventDefault();
             $.ajax({
                 url: '/admin/megrendelesfej/backorder',
