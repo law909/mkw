@@ -1355,7 +1355,7 @@ class Termek
         }
     }
 
-    public function getAfa()
+    public function getAfa(): ?Afa
     {
         return $this->afa;
     }
@@ -2632,7 +2632,14 @@ class Termek
             $brutto = 0;
             $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav);
             if ($arsavAr) {
-                $brutto = $arsavAr->getBrutto();
+                if ($partner) {
+                    $afaoverride = $partner->getAFAOverride();
+                    if ($afaoverride) {
+                        $brutto = $afaoverride->calcBrutto($arsavAr->getNetto());
+                    }
+                } else {
+                    $brutto = $arsavAr->getBrutto();
+                }
             }
 
             return $brutto * 1;
