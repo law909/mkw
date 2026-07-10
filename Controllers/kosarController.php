@@ -505,12 +505,10 @@ class kosarController extends \mkwhelpers\MattableController
     {
         $valutanem = \mkw\store::getWebshopValutanem();
         $user = \mkw\store::getLoggedInUser();
-        $afaoverride = false;
-        if ($user) {
-            $afaoverride = $user->getAFAOverride();
-        } elseif ($orszag = \mkw\store::getOrszag()) {
-            $afaoverride = $orszag->getAfa();
-        }
+
+        $orszag = \mkw\store::getOrszag();
+        $afaoverride = $orszag->getAfa();
+
         $sorok = $this->getRepo()->getDataBySessionId(\mkw\session::getId());
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
