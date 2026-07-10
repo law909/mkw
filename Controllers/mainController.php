@@ -577,27 +577,32 @@ class mainController extends \mkwhelpers\Controller
         }
     }
 
-    public function setOrszag($orszagkod = null, $adoszam = null)
+    public function setOrszag()
     {
-        if (!$orszagkod) {
-            $orszagkod = $this->params->getIntRequestParam('orszag');
-        }
-        if (!$adoszam) {
-            $adoszam = $this->params->getStringRequestParam('adoszam');
-        }
+        $this->setOrszagFunc(
+            $this->params->getIntRequestParam('orszag'),
+            $this->params->getStringRequestParam('adoszam')
+        );
+    }
+
+    public function setOrszagFunc($orszagkod = null, $adoszam = null)
+    {
         /** @var \Entities\Orszag $orszag */
         $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
         if ($orszag) {
             \mkw\store::setOrszagId((int)$orszagkod);
-            \mkw\store::setAdoszam($adoszam);
-            $kc = new kosarController();
-            $kc->recalcPrices();
         }
+        if ($adoszam !== false) {
+            \mkw\store::setAdoszam($adoszam);
+        }
+        $kc = new kosarController();
+        $kc->recalcPrices();
     }
 
     public function clearOrszag()
     {
         \mkw\store::clearOrszagId();
+        \mkw\store::setAdoszam(null);
     }
 
     public function setLocale()

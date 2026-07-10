@@ -214,7 +214,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                         $mc = new \Controllers\mainController(null);
                         $orszag = \mkw\store::getParameter(\mkw\consts::Orszag);
                         if ($orszag) {
-                            $mc->setOrszag($orszag);
+                            $mc->setOrszagFunc($orszag, false);
                         }
                     }
 

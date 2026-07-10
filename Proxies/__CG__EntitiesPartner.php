@@ -4526,4 +4526,15 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
         return parent::getAFAOverride();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getAdoszamFilled()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdoszamFilled', []);
+
+        return parent::getAdoszamFilled();
+    }
+
 }

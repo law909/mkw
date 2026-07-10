@@ -1182,7 +1182,7 @@ class partnerController extends \mkwhelpers\MattableController
             $this->getEm()->persist($user);
             \mkw\store::getMainSession()->pk = $user->getId();
             $mc = new mainController();
-            $mc->setOrszag($user->getOrszagId());
+            $mc->setOrszagFunc($user->getOrszagId(), $user->getAdoszamFilled());
             if (\mkw\store::isB2B()) {
                 if ($user->getEzuzletkoto()) {
                     $uk = $this->getRepo(Uzletkoto::class)->find($user->getUzletkotoId());
@@ -1367,7 +1367,7 @@ class partnerController extends \mkwhelpers\MattableController
             $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
             if ($partnerobj) {
                 $mc = new mainController();
-                $mc->setOrszag($partnerobj->getOrszagId());
+                $mc->setOrszagFunc($partnerobj->getOrszagId(), $partnerobj->getAdoszamFilled());
             }
             header('Location: ' . $route);
         } else {

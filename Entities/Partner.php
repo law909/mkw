@@ -3575,4 +3575,17 @@ class Partner
     {
         return self::calcAFAOverride($this->getSzallorszag(), $this->getOrszag(), $this->getSzamlatipus(), $this->getEuadoszam());
     }
+
+    public function getAdoszamFilled()
+    {
+        if ($this->getAdoszam()) {
+            return $this->getAdoszam();
+        }
+        if ($this->getEuadoszam()) {
+            return $this->getEuadoszam();
+        }
+        if ($this->getThirdadoszam()) {
+            return $this->getThirdadoszam();
+        }
+    }
 }

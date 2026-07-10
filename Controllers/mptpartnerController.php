@@ -77,7 +77,7 @@ class mptpartnerController extends partnerController
                 $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {
                     $mc = new mainController();
-                    $mc->setOrszag($partnerobj->getOrszagId());
+                    $mc->setOrszagFunc($partnerobj->getOrszagId(), $partnerobj->getAdoszamFilled());
                 }
             } else {
                 \mkw\store::clearLoggedInUser();
