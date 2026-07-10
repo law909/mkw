@@ -23,8 +23,10 @@ if (\mkw\store::isB2B()) {
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
 } else {
     $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-    $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-    $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
+    if (!\mkw\store::isMugenrace2026()) {
+        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+        $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
+    }
 }
 
 if (\mkw\store::isDarshan()) {
