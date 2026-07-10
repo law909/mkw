@@ -739,7 +739,7 @@ var checkout = (function ($, guid) {
     }
 
     function initUI() {
-        var $checkout = $('.js-checkout');
+        let $checkout = $('.js-checkout');
 
         if ($checkout.length) {
 
@@ -814,12 +814,13 @@ var checkout = (function ($, guid) {
                         szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
                     }
                 })
-                .on('change', 'select[name="szallorszag"]', function () {
+                .on('change', 'select[name="szallorszag"],input[name="adoszam"]', function () {
                     $.ajax({
                         url: '/setorszag',
                         type: 'POST',
                         data: {
-                            orszag: $('select[name="szallorszag"] option:selected').val()
+                            orszag: $('select[name="szallorszag"] option:selected').val(),
+                            adoszam: adoszaminput.val()
                         },
                         success: function () {
                             loadTetelList();
