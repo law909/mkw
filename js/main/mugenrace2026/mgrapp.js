@@ -575,7 +575,7 @@ var guid = (function () {
 var checkout = (function ($, guid) {
 
     let checkoutpasswordrow,
-        checkoutpasswordcontainer,
+        checkoutpasswordcontainer, loginblock,
         vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput, vasarlo_tipusinput,
         szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
         szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
@@ -732,6 +732,12 @@ var checkout = (function ($, guid) {
         return re.test(email);
     }
 
+    function hideLoginblock() {
+        loginblock.hide();
+        loginblock.find('input[name="jelszo"]').val('');
+        loginblock.find('input[name="email"]').val('');
+    }
+
     function initUI() {
         var $checkout = $('.js-checkout');
 
@@ -746,6 +752,7 @@ var checkout = (function ($, guid) {
             checkoutform = $('#CheckoutForm');
             checkoutpasswordcontainer = $('.js-checkoutpasswordcontainer');
             checkoutpasswordrow = $('.js-checkoutpasswordrow').remove();
+            loginblock = $('.js-loginblock');
 
             vezeteknevinput = $('input[name="vezeteknev"]');
             keresztnevinput = $('input[name="keresztnev"]');
@@ -782,14 +789,21 @@ var checkout = (function ($, guid) {
                     loadTetelList();
                 })
                 .on('change', 'input[name="regkell"]', function () {
+                    const regkell = $('input[name="regkell"]:checked').val() * 1;
                     checkoutpasswordcontainer.empty();
-                    if ($('input[name="regkell"]:checked').val() * 1 === 2) {
-                        checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
-                        $('.js-chktooltipbtn').tooltip({
-                            html: false,
-                            placement: 'right',
-                            container: 'body'
-                        });
+                    hideLoginblock();
+                    switch (regkell) {
+                        case 2:
+                            checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
+                            $('.js-chktooltipbtn').tooltip({
+                                html: false,
+                                placement: 'right',
+                                container: 'body'
+                            });
+                            break;
+                        case 9:
+                            loginblock.show();
+                            break;
                     }
                 })
                 .on('change', '.js-chkrefresh', function () {
@@ -831,11 +845,6 @@ var checkout = (function ($, guid) {
                 }
                 refreshAttekintes();
             });
-
-            mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-            mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-            mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-            mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
             $('.js-chkaszf, .js-chkhelp').magnificPopup({
                 type: 'ajax',
