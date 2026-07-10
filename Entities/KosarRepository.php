@@ -187,8 +187,12 @@ class KosarRepository extends \mkwhelpers\Repository
             $partnerid = $partner->getId();
         }
 
-        $orszag = \mkw\store::getOrszag();
-        $afaoverride = $orszag->getAfa();
+        $afaoverride = Partner::calcAFAOverride(
+            \mkw\store::getOrszag(),
+            \mkw\store::getOrszag(),
+            null,
+            \mkw\store::getAdoszam()
+        );
 
         $valutanem = \mkw\store::getWebshopValutanem();
 

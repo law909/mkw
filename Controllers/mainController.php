@@ -577,15 +577,19 @@ class mainController extends \mkwhelpers\Controller
         }
     }
 
-    public function setOrszag($orszagkod = null)
+    public function setOrszag($orszagkod = null, $adoszam = null)
     {
         if (!$orszagkod) {
             $orszagkod = $this->params->getIntRequestParam('orszag');
+        }
+        if (!$adoszam) {
+            $adoszam = $this->params->getStringRequestParam('adoszam');
         }
         /** @var \Entities\Orszag $orszag */
         $orszag = $this->getEm()->getRepository(Orszag::class)->find($orszagkod);
         if ($orszag) {
             \mkw\store::setOrszagId((int)$orszagkod);
+            \mkw\store::setAdoszam($adoszam);
             $kc = new kosarController();
             $kc->recalcPrices();
         }

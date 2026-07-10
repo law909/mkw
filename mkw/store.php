@@ -2193,6 +2193,16 @@ class store
         return self::getConfigValue('sysadmin');
     }
 
+    public static function setAdoszam(string|null $adoszam)
+    {
+        self::getMainSession()->adoszam = $adoszam;
+    }
+
+    public static function getAdoszam(): string|null
+    {
+        return self::getMainSession()->adoszam;
+    }
+
     public static function setOrszagId(int|null $orszagid)
     {
         self::getMainSession()->orszag = $orszagid;
