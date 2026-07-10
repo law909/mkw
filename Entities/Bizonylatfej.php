@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 use mkw\store;
+use Services\BizonylatCalculatorService;
 use stdClass;
 use Traits\GetsFieldValue;
 
@@ -677,7 +678,7 @@ class Bizonylatfej
                 'afahuf' => $bt->getAfaertekhuf(),
             ];
         }
-        $o = self::calcOsszesenFromTetelek($tetelek, [
+        $o = BizonylatCalculatorService::calcOsszesenFromTetelek($tetelek, [
             'kerekit' => $kerekit,
             'mincimlet' => $mincimlet,
             'keszpenz' => $fizmodtipus == 'P',
@@ -695,71 +696,6 @@ class Bizonylatfej
         if ($mincimlet && ($fizmodtipus == 'P')) {
             $this->kerkul = $o['kerkul'];
         }
-    }
-
-    /**
-     * @param array $tetelek soronként ['netto', 'afaertek', 'nettohuf', 'afahuf'] kulcsokkal
-     *                       (a hiányzó HUF értékek a nem-HUF értékkel egyenlők)
-     * @param array $opts ['kerekit'=>bool, 'mincimlet'=>float, 'keszpenz'=>bool, 'defakerekit'=>bool]
-     *
-     * @return array ['netto','afa','brutto','fizetendo','kerkul','nettohuf','afahuf','bruttohuf']
-     */
-    public static function calcOsszesenFromTetelek(array $tetelek, array $opts = [])
-    {
-        $kerekit = !empty($opts['kerekit']);
-        $mincimlet = isset($opts['mincimlet']) ? (float)$opts['mincimlet'] : 0;
-        $keszpenz = !empty($opts['keszpenz']);
-        $defakerekit = !empty($opts['defakerekit']);
-
-        $netto = 0;
-        $afa = 0;
-        $nettohuf = 0;
-        $afahuf = 0;
-        foreach ($tetelek as $t) {
-            $tnetto = isset($t['netto']) ? (float)$t['netto'] : 0;
-            $tafa = isset($t['afaertek']) ? (float)$t['afaertek'] : 0;
-            $netto += $tnetto;
-            $afa += $tafa;
-            $nettohuf += isset($t['nettohuf']) ? (float)$t['nettohuf'] : $tnetto;
-            $afahuf += isset($t['afahuf']) ? (float)$t['afahuf'] : $tafa;
-        }
-
-        $alapbrutto = self::kerekitBrutto($netto + $afa, $kerekit);
-        $brutto = self::kerekitBrutto($netto + $afa, $kerekit, $mincimlet, $keszpenz);
-        $bruttohuf = self::kerekitBrutto($nettohuf + $afahuf, $defakerekit);
-
-        return [
-            'netto' => $netto,
-            'afa' => $afa,
-            'brutto' => $brutto,
-            'fizetendo' => $brutto,
-            'kerkul' => ($mincimlet && $keszpenz) ? ($brutto - $alapbrutto) : 0,
-            'nettohuf' => $nettohuf,
-            'afahuf' => $afahuf,
-            'bruttohuf' => $bruttohuf,
-        ];
-    }
-
-    /**
-     * Bruttó (fizetendő) érték kerekítése: $kerekit esetén egész értékre, készpénzes fizetésnél
-     * ($keszpenz) a megadott $mincimlet legközelebbi többszörösére. Entitásfüggetlen, statikus.
-     *
-     * @param float $ertek a kerekítendő nyers bruttó (nettó + áfa)
-     * @param bool $kerekit a valuta egész értékre kerekít-e
-     * @param float $mincimlet minimum címlet (0 = nincs címlet-kerekítés)
-     * @param bool $keszpenz készpénzes fizetés-e (csak ekkor érvényes a címlet-kerekítés)
-     *
-     * @return float a kerekített bruttó
-     */
-    public static function kerekitBrutto($ertek, $kerekit, $mincimlet = 0, $keszpenz = false)
-    {
-        if ($kerekit) {
-            $ertek = round($ertek);
-        }
-        if ($mincimlet && $keszpenz) {
-            $ertek = \mkw\store::kerekit($ertek, $mincimlet);
-        }
-        return $ertek;
     }
 
     /**

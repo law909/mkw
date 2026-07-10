@@ -346,11 +346,19 @@ $router->map('GET', '/admin/webshopbizfej/getkarb', 'webshopbizfejController#get
 $router->map('GET', '/admin/webshopbizfej/viewkarb', 'webshopbizfejController#viewkarb', 'adminwebshopbizfejviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/webshopbizfej/save', 'webshopbizfejController#save', 'adminwebshopbizfejsave');
+    $router->map('POST', '/admin/webshopbizfej/sendtofoxpost', 'webshopbizfejController#sendToFoxPost', 'adminwebshopbizsendtofoxpost');
+    $router->map('POST', '/admin/webshopbizfej/generatefoxpostlabel', 'webshopbizfejController#generateFoxpostLabel', 'adminwebshopbizgeneratefoxpostlabel');
+    $router->map('POST', '/admin/webshopbizfej/sendtogls', 'webshopbizfejController#sendToGLS', 'adminwebshopbizsendtogls');
+    $router->map('POST', '/admin/webshopbizfej/delglsparcel', 'webshopbizfejController#delGLSParcel', 'adminwebshopbizdelglsparcel');
     $router->map('POST', '/admin/webshopbizfej/ront', 'webshopbizfejController#ront', 'adminwebshopbizfejront');
+    $router->map('POST', '/admin/webshopbizfej/backorder', 'webshopbizfejController#backOrder', 'adminwebshopbizfejbackorder');
     $router->map('POST', '/admin/webshopbizfej/fejexport', 'webshopbizfejController#fejexport', 'adminwebshopbizfejfejexport');
     $router->map('POST', '/admin/webshopbizfej/tetelexport', 'webshopbizfejController#tetelexport', 'adminwebshopbizfejtetelexport');
+    $router->map('GET', '/admin/webshopbizfej/getszamlakarb', 'webshopbizfejController#getszamlakarb', 'adminwebshopbizfejgetszamlakarb');
+    $router->map('POST', '/admin/webshopbizfej/recalcprice', 'webshopbizfejController#recalcPrice', 'adminwebshopbizrecalcprice');
 }
 $router->map('GET', '/admin/webshopbizfej/print', 'webshopbizfejController#doPrint', 'adminwebshopbizfejprint');
+$router->map('POST', '/admin/webshopbizfej/concat', 'webshopbizfejController#concat', 'adminwebshopbizfejconcat');
 
 $router->map('GET', '/admin/szallitofej/viewlist', 'szallitofejController#viewlist', 'adminszallitofejviewlist');
 $router->map('GET', '/admin/szallitofej/getlistbody', 'szallitofejController#getlistbody', 'adminszallitofejgetlistbody');

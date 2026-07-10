@@ -27,6 +27,7 @@ use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Services\BizonylatCalculatorService;
 
 class bizonylatfejController extends \mkwhelpers\MattableController
 {
@@ -1239,7 +1240,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $tetelek[] = ['netto' => $lnetto, 'afaertek' => $lbrutto - $lnetto];
         }
 
-        $o = Bizonylatfej::calcOsszesenFromTetelek($tetelek, [
+        $o = BizonylatCalculatorService::calcOsszesenFromTetelek($tetelek, [
             'kerekit' => $kerekit,
             'mincimlet' => $mincimlet,
             'keszpenz' => $keszpenz,
@@ -1247,7 +1248,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         ]);
 
         $egesz = $kerekit || ($mincimlet && $keszpenz);
-        $nettoKerekitett = Bizonylatfej::kerekitBrutto($o['netto'], $kerekit, $mincimlet, $keszpenz);
+        $nettoKerekitett = BizonylatCalculatorService::kerekitBrutto($o['netto'], $kerekit, $mincimlet, $keszpenz);
         echo json_encode([
             'netto' => $o['netto'],
             'brutto' => $o['brutto'],
