@@ -38,9 +38,6 @@
                         </div>
                     </fieldset>
                 </form>
-
-                {* <div class="divider"></div> *}
-
             </div>
         </div>
     </div>

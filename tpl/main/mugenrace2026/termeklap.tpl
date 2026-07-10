@@ -26,32 +26,6 @@
 
 {block "kozep"}
     <div class="container whitebg product-datasheet">
-        {* <div class="container morzsa">
-            <div class="row">
-                <div class="col" xmlns:v="http://rdf.data-vocabulary.org/#">
-                    <span class="page-header__breadcrumb flex-lc" itemprop="breadcrumb ">
-                        {if ($navigator|default)}
-                            <a href="/" rel="v:url" property="v:title">
-                                {t('Home')}
-                            </a>
-                            <i class="icon arrow-right"></i>
-                            {foreach $navigator as $_navi}
-                                {if ($_navi.url|default)}
-                                    <span typeof="v:Breadcrumb">
-                                        <a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
-                                            {$_navi.caption|capitalize}
-                                        </a>
-                                    </span>
-                                    <i class="icon arrow-right"></i>
-                                {else}
-                                    {$_navi.caption|capitalize}
-                                {/if}
-                            {/foreach}
-                        {/if}
-                    </span>
-                </div>
-            </div>
-        </div> *}
 
         <article itemtype="http://schema.org/Product" itemscope="">
             <div class="row product-datasheet__content">
@@ -131,14 +105,6 @@
 
 
 
-
-
-
-
-
-
-
-
 {foreach $navigator as $_navi}
                                         {if ($_navi.url|default)}
                                             <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
@@ -153,28 +119,18 @@
                                     {/foreach}
                                     {/if}
                                 </span>
-                                {* Breadcrumb *}
                                 <div class="textaligncenter product-datasheet__title"><h1 itemprop="name"
                                                                                           class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
-                                {* Title  *}
-
-
                                 <div>
                                     <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
                                 </div>
-                                {* SKU  *}
-
                                 {if ($termek.me)}
                                     <div><span class="bold">{t('Kiszerelés')}:</span> {$termek.me}</div>
                                 {/if}
-                                {* Packaging  *}
-
                                 {if ($termek.szallitasiido && (!$termek.nemkaphato))}
                                     <div><span class="bold">{t('Szállítási idő')}:</span> max. <span
                                             id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
                                 {/if}
-                                {* Delivery time  *}
-
                                 <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright" itemprop="offers" itemscope
                                      itemtype="http://schema.org/Offer">
                                     {if (isset($termek.eredetibrutto) && $termek.eredetibrutto>0)}
@@ -188,9 +144,6 @@
                                     {/if}
                                     <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$valutanemnev}</span>
                                 </div>
-                                {* Price  *}
-
-
                                 <div>
                                     <ul class="simalista">
                                         {foreach $termek.cimkeakciodobozban as $_jelzo}
@@ -198,11 +151,7 @@
                                         {/foreach}
                                     </ul>
                                 </div>
-                                {* Labels  *}
-
                                 {$_kosarbaclass="js-kosarba"}
-
-                                {* Colors  *}
                                 {if ($hidecart != 1)}
                                     {$_kosarbaclass="js-kosarbaszinvaltozat"}
                                     <div class="row  product-datasheet__cart-container flex-col">
@@ -227,17 +176,7 @@
                                         </div>
                                     </div>
                                 {/if}
-                                {* Colors *}
-
                                 <div class="kosarbacontainer">
-                                    {* <div id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                        {if ($termek.nemkaphato)}
-                                            <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
-                                        {else}
-                                            <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
-                                        {/if}
-                                        <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} {$valutanemnev}</span>
-                                    </div> *}
                                     {if ($termek.nemkaphato)}
                                         <div class="textalignright">
                                             <a href="#" rel="nofollow" class="js-termekertesitobtn button bordered graybtn" data-termek="{$termek.id}"
@@ -257,8 +196,6 @@
                                         {/if}
                                     {/if}
                                 </div>
-                                {* Add to cart  *}
-
                                 <div class="accordion">
                                     <div class="accordion-item">
                                         <div class="accordion-header">{t('Leírás')}<span class="arrow"></span></div>

@@ -42,7 +42,6 @@
                 {/for}
 
             </div>
-            {* <div class="carousel-dots" id="carouselDots"></div> *}
         </div>
     </section>
 {/if}

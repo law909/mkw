@@ -1,17 +1,6 @@
 {extends "checkoutbase.tpl"}
 
 {block "stonebody"}
-    {* <header class="checkout">
-        <div class="headermid whitebg">
-            <div class="container">
-                <div class="row">
-                    <div class="">
-                        <a href="/"><img src="{$imagepath}{$mugenracelogo}" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header> *}
     <div class="container-full whitebg js-checkout">
         <div class="row">
             <div class="col flex-cc">
@@ -313,10 +302,6 @@
                                                                   rows="2">{$couriermessage}</textarea>
                                                     </div>
                                                 </div>
-
-                                                {* <div class="row chk-actionrow"><a href="#block4" class="button bordered okbtn pull-right js-chkopenbtn"
-                                                                                data-datagroupheader=".js-chkattekintesdgh">{t('Tovább')}</a></div> *}
-
                                                 <div class="flex-col gap-base ">
                                                     <label class="checkbox">
                                                         <input name="akciohirlevel" type="checkbox">
@@ -397,8 +382,6 @@
                                                         <div class="folyoszoveg js-chkcouriermessage"></div>
                                                     </div>
                                                 </div>
-                                                {* <table class="table table-bordered js-chktetellist">
-                                                </table> *}
                                                 <div class="js-chktetellist checkout-order-list flex-col">
                                                 </div>
 

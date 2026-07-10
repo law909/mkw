@@ -28,7 +28,6 @@
                 {foreach $versenyzolista as $_versenyzo}
                     <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}">
                         <div class="kattext sponsored-riders__item-content">
-                            {* <img src="{$imagepath}{$_child.kepurl}" alt="{$_child.cim}" class="sponsored-riders__item-image"> *}
                             <img src="{$imagepath}{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
                             <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
                             <div class="sponsored-riders__item-title"><a href="/riders/{$_versenyzo.slug}/">{$_versenyzo.nev}</a></div>
@@ -38,31 +37,4 @@
             </div>
         </div>
     </div>
-    {* {foreach $versenyzolista as $_versenyzo}
-        <div>
-            <p>{$_versenyzo.nev}</p>
-            {$_versenyzo.id}
-            {$_versenyzo.nev}
-            {$_versenyzo.slug}
-            {$_versenyzo.versenysorozat}
-            {$_versenyzo.rovidleiras}
-            {$_versenyzo.leiras}
-            {$_versenyzo.kepurl}
-            {$_versenyzo.kepurlsmall}
-            {$_versenyzo.kepurlmini}
-            {$_versenyzo.kepleiras}
-            {$_versenyzo.kepurl1}
-            {$_versenyzo.kepurl1small}
-            {$_versenyzo.kepleiras1}
-            {$_versenyzo.kepurl2}
-            {$_versenyzo.kepurl2small}
-            {$_versenyzo.kepleiras2}
-            {$_versenyzo.kepurl3}
-            {$_versenyzo.kepurl3small}
-            {$_versenyzo.kepleiras3}
-            {$_versenyzo.csapatid}
-            {$_versenyzo.csapatnev}
-
-        </div>
-    {/foreach} *}
 {/block}
