@@ -235,12 +235,12 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function kerekitBrutto()
+    public function kerekitBruttoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'kerekitBrutto', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'kerekitBruttoegysar', []);
 
-        return parent::kerekitBrutto();
+        return parent::kerekitBruttoegysar();
     }
 
     /**
@@ -971,17 +971,6 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', []);
 
         return parent::removeAfa();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAfaOverride()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaOverride', []);
-
-        return parent::getAfaOverride();
     }
 
     /**
