@@ -56,7 +56,12 @@
                                                                     <input name="regkell" id="regkell" type="radio" value="2"
                                                                            {if ($regkell==2)}checked="checked"{/if}>
                                                                     {t('Vásárlás regisztrációval')}
-                                                                    • </label>
+                                                                </label>
+                                                                <label class="radio">
+                                                                    <input name="regkell" id="regkell" type="radio" value="9"
+                                                                           {if ($regkell==9)}checked="checked"{/if}>
+                                                                    {t('Bejelentkezés')}
+                                                                </label>
                                                             </div>
                                                             <div class="row chk-actionrow span"><a href="#block2"
                                                                                                    class="button bordered okbtn pull-right js-chkopenbtn"
@@ -64,7 +69,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="flex-col gap-base checkout-form__section">
+                                                    <div class="flex-col gap-base checkout-form__section js-loginblock">
                                                         <h5>{t('Regisztrált vásárló')}</h5>
                                                         {if ($showerror)}
                                                             <h4>{t('A bejelentkezés nem sikerült')}...</h4>

@@ -14,7 +14,7 @@ var guid = (function () {
 var checkout = (function ($, guid) {
 
     let checkoutpasswordrow,
-        checkoutpasswordcontainer,
+        checkoutpasswordcontainer, loginblock,
         vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput, vasarlo_tipusinput,
         szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
         szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
@@ -171,6 +171,12 @@ var checkout = (function ($, guid) {
         return re.test(email);
     }
 
+    function hideLoginblock() {
+        loginblock.hide();
+        loginblock.find('input[name="jelszo"]').val('');
+        loginblock.find('input[name="email"]').val('');
+    }
+
     function initUI() {
         var $checkout = $('.js-checkout');
 
@@ -185,6 +191,7 @@ var checkout = (function ($, guid) {
             checkoutform = $('#CheckoutForm');
             checkoutpasswordcontainer = $('.js-checkoutpasswordcontainer');
             checkoutpasswordrow = $('.js-checkoutpasswordrow').remove();
+            loginblock = $('.js-loginblock');
 
             vezeteknevinput = $('input[name="vezeteknev"]');
             keresztnevinput = $('input[name="keresztnev"]');
@@ -221,14 +228,21 @@ var checkout = (function ($, guid) {
                     loadTetelList();
                 })
                 .on('change', 'input[name="regkell"]', function () {
+                    const regkell = $('input[name="regkell"]:checked').val() * 1;
                     checkoutpasswordcontainer.empty();
-                    if ($('input[name="regkell"]:checked').val() * 1 === 2) {
-                        checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
-                        $('.js-chktooltipbtn').tooltip({
-                            html: false,
-                            placement: 'right',
-                            container: 'body'
-                        });
+                    hideLoginblock();
+                    switch (regkell) {
+                        case 2:
+                            checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
+                            $('.js-chktooltipbtn').tooltip({
+                                html: false,
+                                placement: 'right',
+                                container: 'body'
+                            });
+                            break;
+                        case 9:
+                            loginblock.show();
+                            break;
                     }
                 })
                 .on('change', '.js-chkrefresh', function () {
