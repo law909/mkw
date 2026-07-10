@@ -798,11 +798,11 @@ class partnerController extends \mkwhelpers\MattableController
                 $filter->addFilter('mptngynyugdijas', '=', true);
                 break;
             case 3:
-                $filter->addSql('_xx.mptngydiak=1 OR _xx.mptngynyugdíjas=1');
+                $filter->addSql('_xx.mptngydiak=1 OR _xx.mptngynyugdijas=1');
                 break;
             case 4:
                 $filter->addFilter('mptngydiak', '=', false);
-                $filter->addFilter('mptngynyudijas', '=', false);
+                $filter->addFilter('mptngynyugdijas', '=', false);
                 break;
         }
         $f = $this->params->getStringRequestParam('munkahelynevfilter');
@@ -1809,8 +1809,8 @@ class partnerController extends \mkwhelpers\MattableController
         foreach ($partnerek as $partner) {
             $partner->setArsav($arsav);
             $this->getEm()->persist($partner);
-            $this->getEm()->flush();
         }
+        $this->getEm()->flush();
     }
 
     public function tcskedit()
@@ -1831,10 +1831,10 @@ class partnerController extends \mkwhelpers\MattableController
                 if ($tcsk->getTermekcsoportId() == $tcs) {
                     $tcsk->setKedvezmeny($kedvvalt);
                     $this->getEm()->persist($tcsk);
-                    $this->getEm()->flush();
                 }
             }
         }
+        $this->getEm()->flush();
     }
 
     public function setflag()
