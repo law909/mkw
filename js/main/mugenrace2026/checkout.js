@@ -271,11 +271,6 @@ var checkout = (function ($, guid) {
                 refreshAttekintes();
             });
 
-            mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-            mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-            mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-            mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-
             $('.js-chkaszf, .js-chkhelp').magnificPopup({
                 type: 'ajax',
                 closeBtnInside: false
