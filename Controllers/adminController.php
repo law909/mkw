@@ -7,6 +7,7 @@ use Doctrine\DBAL\Statement;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 use mkwhelpers, Entities;
+use Services\BackorderService;
 
 class adminController extends mkwhelpers\Controller
 {
@@ -143,8 +144,8 @@ class adminController extends mkwhelpers\Controller
     public function refreshTeljesithetoBackorderek()
     {
         $view = $this->createView('teljesithetobackorderekbody.tpl');
-        $megrend = new megrendelesfejController();
-        $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
+        $backorderSvc = new BackorderService();
+        $view->setVar('teljesithetobackorderek', $backorderSvc->getTeljesithetoBackorderLista());
         $view->printTemplateResult();
     }
 

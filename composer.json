@@ -25,7 +25,8 @@
             "Entities\\": "Entities",
             "Controllers\\": "Controllers",
             "Proxies\\": "Proxies",
-            "Traits\\": "Traits"
+            "Traits\\": "Traits",
+            "Services\\": "Services"
         }
     },
     "config": {

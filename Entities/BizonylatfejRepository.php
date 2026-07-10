@@ -1056,10 +1056,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.irany', '>', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
@@ -1103,10 +1101,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $filter->addFilter('bt.irany', '<', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
-        } else {
-            if ($partnerkodok) {
-                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
-            }
+        } elseif ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
