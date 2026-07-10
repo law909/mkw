@@ -830,8 +830,10 @@ var checkout = (function ($, guid) {
                 })
                 .on('change', 'input[name="vasarlo_tipus"]', function () {
                     let val = $('input[name="vasarlo_tipus"]:checked').val();
+                    adoszaminput.val('');
                     adoszaminput.prop('disabled', val !== 'ceg');
                     adoszaminput.prop('required', val === 'ceg');
+                    adoszaminput.change();
                 })
 
             $('input[name="regkell"]').change();
