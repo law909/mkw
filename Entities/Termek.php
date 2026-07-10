@@ -2661,14 +2661,14 @@ class Termek
     {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
-            $brutto = $this->getNetto();
+            $netto = $this->getNetto();
             if (!is_null($valtozat)) {
                 if (!is_a($valtozat, TermekValtozat::class)) {
                     $valtozat = \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat);
                 }
-                return $brutto + $valtozat->getNetto();
+                return $netto + $valtozat->getNetto();
             }
-            return $brutto;
+            return $netto;
         } // Vannak ársávok
         else {
             return 0;
