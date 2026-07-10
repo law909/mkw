@@ -915,6 +915,12 @@ if ($DBVersion < '0085') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0085');
 }
 
+if ($DBVersion < '0086') {
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE bizonylattipus SET showszallitasicim=1 WHERE id="webshopbiz"');
+    
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0086');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
