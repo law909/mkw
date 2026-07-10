@@ -10,6 +10,7 @@ use Entities\Fizmod;
 use Entities\Kosar;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Partnercimketorzs;
 use Entities\Raktar;
 use Entities\Szallitasimod;
 use Entities\Valutanem;
@@ -133,6 +134,10 @@ class mugenraceCheckoutController extends checkoutController
                         $partner->setVatstatus(2); // magánszemély
                         break;
                 }
+            }
+            $kiskercimke = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::KiskerCimke));
+            if ($kiskercimke) {
+                $partner->addCimke($kiskercimke);
             }
             if (\mkw\store::isMagyarorszag($orszag)) {
                 $partner->setAdoszam($adoszam);
