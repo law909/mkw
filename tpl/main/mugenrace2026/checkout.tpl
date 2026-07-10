@@ -149,7 +149,7 @@
                                                         <label class=" nomargin">{t('Szállítási ország')} *</label>
                                                         <select name="szallorszag" class="js-chkrefresh" required="required">
                                                             {foreach $szallorszaglist as $f}
-                                                                <option value="{$f.id}"{if ($orszag == $f.id)} selected="selected"{/if}>{$f.caption}</option>
+                                                                <option value="{$f.id}"{if ($f.selected)} selected="selected"{/if}>{$f.caption}</option>
                                                             {/foreach}
                                                         </select>
                                                     </div>
@@ -194,7 +194,7 @@
                                                                     required="required"{if ($szamlaeqszall|default)} disabled{/if}>
                                                                 {foreach $orszaglist as $f}
                                                                     <option
-                                                                        value="{$f.id}"{if ($orszag == $f.id)} selected="selected"{/if}>{$f.caption}</option>
+                                                                        value="{$f.id}"{if ($f.selected)} selected="selected"{/if}>{$f.caption}</option>
                                                                 {/foreach}
                                                             </select>
                                                         </div>
