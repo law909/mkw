@@ -630,7 +630,7 @@ class partnerController extends \mkwhelpers\MattableController
         if (!$email) {
             $email = $this->params->getStringRequestParam('email');
         }
-        $ps = $this->getRepo()->findVendegByEmail($email);
+        $ps = $this->getRepo()->findByEmail($email);
         if (count($ps) > 0) {
             $t = $ps[0];
         } else {

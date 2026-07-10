@@ -58,6 +58,8 @@ class mugenraceCheckoutController extends checkoutController
         $aszfready = $this->params->getBoolRequestParam('aszfready');
         $akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
         $ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
+        $vasarlotipus = $this->params->getStringRequestParam('vasarlo_tipus');
+        $adoszam = $this->params->getStringRequestParam('adoszam');
 
         if ($szamlaeqszall) {
             $szamlanev = $szallnev;
@@ -69,6 +71,10 @@ class mugenraceCheckoutController extends checkoutController
 
         $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca && $szallorszag &&
             $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $orszag);
+
+        if ($vasarlotipus == 'ceg') {
+            $ok = $ok && (!empty($adoszam));
+        }
 
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
@@ -105,6 +111,25 @@ class mugenraceCheckoutController extends checkoutController
                 default: // be van jelentkezve
                     $partner = $this->getRepo(Partner::class)->getLoggedInUser();
                     break;
+            }
+            if (\mkw\store::isMagyarorszag($partner->getOrszag())) {
+                switch ($vasarlotipus) {
+                    case 'ceg':
+                        $partner->setVatstatus(1); // belfőldi adóalany
+                        break;
+                    case 'maganszemely':
+                        $partner->setVatstatus(2); // magánszemély
+                        break;
+                }
+            } else {
+                switch ($vasarlotipus) {
+                    case 'ceg':
+                        $partner->setVatstatus(3); // egyéb
+                        break;
+                    case 'maganszemely':
+                        $partner->setVatstatus(2); // magánszemély
+                        break;
+                }
             }
             $partner->setSzallnev($szallnev);
             $partner->setSzallirszam($szallirszam);
