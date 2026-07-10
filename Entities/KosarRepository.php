@@ -289,6 +289,7 @@ class KosarRepository extends \mkwhelpers\Repository
         $afaoverride = false;
         if ($partner) {
             $partnerid = $partner->getId();
+            // B2B-n fut, ott pedig a partner ÁFA-ja kell
             $afaoverride = $partner->getAFAOverride();
         }
 

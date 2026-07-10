@@ -11,6 +11,7 @@ use Entities\Bizonylattetel;
 use Entities\Feketelista;
 use Entities\Folyoszamla;
 use Entities\Kupon;
+use Entities\Partner;
 use Entities\Penztarbizonylatfej;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -147,10 +148,12 @@ class BizonylatfejListener
         $ktg = $ktg * 1;
 
         if ($ktg) {
-            $afaoverride = false;
-            if ($bizfej->getPartner()) {
-                $afaoverride = $bizfej->getPartner()->getAFAOverride();
-            }
+            $afaoverride = Partner::calcAFAOverride(
+                $bizfej->getPartnerszallorszag(),
+                $bizfej->getPartnerorszag(),
+                $bizfej->getPartnerSzamlatipus(),
+                $bizfej->getPartnereuadoszam()
+            );
             $termek = $this->em->getRepository(Termek::class)->find($termekid);
 
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
@@ -183,13 +186,11 @@ class BizonylatfejListener
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
-                    $k->setBruttoegysar($ktg);
-                    $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 } else {
                     $k->setAfa($termek->getAfa());
-                    $k->setBruttoegysar($ktg);
-                    $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 }
+                $k->setBruttoegysar($ktg);
+                $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 $k->calc();
                 $this->em->persist($k);
                 $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
@@ -314,10 +315,12 @@ class BizonylatfejListener
         $szallmod = $bizfej->getSzallitasimod();
         $kezktg = $szallmod?->getTermek();
         if ($kezktg) {
-            $afaoverride = false;
-            if ($bizfej->getPartner()) {
-                $afaoverride = $bizfej->getPartner()->getAFAOverride();
-            }
+            $afaoverride = Partner::calcAFAOverride(
+                $bizfej->getPartnerszallorszag(),
+                $bizfej->getPartnerorszag(),
+                $bizfej->getPartnerSzamlatipus(),
+                $bizfej->getPartnereuadoszam()
+            );
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $kezktg->getId()) {
                     $k = $btetel;
@@ -329,6 +332,7 @@ class BizonylatfejListener
                     $k->setAfa($afaoverride);
                 }
                 $k->setBruttoegysar($kezktg->getBruttoAr());
+                $k->setBruttoegysarhuf($kezktg->getBruttoAr() * $k->getArfolyam());
                 $k->calc();
                 $this->em->persist($k);
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
@@ -345,13 +349,11 @@ class BizonylatfejListener
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
-                    $k->setNettoegysar($kezktg->getNettoAr());
-                    $k->setNettoegysarhuf($kezktg->getNettoAr() * $k->getArfolyam());
                 } else {
                     $k->setAfa($kezktg->getAfa());
-                    $k->setBruttoegysar($kezktg->getBruttoAr());
-                    $k->setBruttoegysarhuf($kezktg->getBruttoAr() * $k->getArfolyam());
                 }
+                $k->setBruttoegysar($kezktg->getBruttoAr());
+                $k->setBruttoegysarhuf($kezktg->getBruttoAr() * $k->getArfolyam());
                 $k->calc();
                 $this->em->persist($k);
                 $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
@@ -395,10 +397,12 @@ class BizonylatfejListener
         $termek = $this->em->getRepository(Termek::class)->find($termekid);
 
         if ($termek && $bruttoegysar != 0) {
-            $afaoverride = false;
-            if ($bizfej->getPartner()) {
-                $afaoverride = $bizfej->getPartner()->getAFAOverride();
-            }
+            $afaoverride = Partner::calcAFAOverride(
+                $bizfej->getPartnerszallorszag(),
+                $bizfej->getPartnerorszag(),
+                $bizfej->getPartnerSzamlatipus(),
+                $bizfej->getPartnereuadoszam()
+            );
 
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $termekid) {
@@ -430,13 +434,11 @@ class BizonylatfejListener
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
-                    $k->setNettoegysar($bruttoegysar);
-                    $k->setNettoegysarhuf($bruttoegysar * $k->getArfolyam());
                 } else {
                     $k->setAfa($termek->getAfa());
-                    $k->setBruttoegysar($bruttoegysar);
-                    $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
                 }
+                $k->setBruttoegysar($bruttoegysar);
+                $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
                 $k->calc();
                 $this->em->persist($k);
                 $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
