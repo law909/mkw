@@ -169,7 +169,7 @@ class mugenraceCheckoutController extends checkoutController
 
             $biztetelcontroller = new bizonylattetelController();
 
-            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+            $biztipus = $this->getRepo(Bizonylattipus::class)->find('webshopbiz');
             $megrendfej = new \Entities\Bizonylatfej();
             $megrendfej->setPersistentData();
             switch ($regkell) {
