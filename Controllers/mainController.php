@@ -393,8 +393,21 @@ class mainController extends \mkwhelpers\Controller
             } else {
                 $t['valutanemnev'] = 'X';
             }
-            $t['ar'] = $termek->getBruttoAr(null, $partner);
-            $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
+
+            $afaoverride = false;
+            if ($partner) {
+                $afaoverride = $partner->getAFAOverride();
+            }
+            if ($afaoverride) {
+                $netto = $termek->getNettoAr(null, $partner, $valutanem);
+                $kedvnelkulinetto = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
+                $t['ar'] = $afaoverride->calcBrutto($netto);
+                $t['eredetiar'] = $afaoverride->calcBrutto($kedvnelkulinetto);
+            } else {
+                $t['ar'] = $termek->getBruttoAr(null, $partner, $valutanem);
+                $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
+            }
+
             $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
             $ma = new \DateTime();

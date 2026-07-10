@@ -2632,14 +2632,7 @@ class Termek
             $brutto = 0;
             $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav);
             if ($arsavAr) {
-                if ($partner) {
-                    $afaoverride = $partner->getAFAOverride();
-                    if ($afaoverride) {
-                        $brutto = $afaoverride->calcBrutto($arsavAr->getNetto());
-                    }
-                } else {
-                    $brutto = $arsavAr->getBrutto();
-                }
+                $brutto = $arsavAr->getBrutto();
             }
 
             return $brutto * 1;
