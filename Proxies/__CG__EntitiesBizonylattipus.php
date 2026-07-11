@@ -525,23 +525,23 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getTplname_l1()
+    public function getTplnameL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTplname_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTplnameL1', []);
 
-        return parent::getTplname_l1();
+        return parent::getTplnameL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setTplname_l1($d)
+    public function setTplnameL1($d)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTplname_l1', [$d]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTplnameL1', [$d]);
 
-        return parent::setTplname_l1($d);
+        return parent::setTplnameL1($d);
     }
 
     /**

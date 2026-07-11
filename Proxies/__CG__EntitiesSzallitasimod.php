@@ -217,23 +217,23 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getNev_l1()
+    public function getNevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevL1', []);
 
-        return parent::getNev_l1();
+        return parent::getNevL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNevL1', [$nev]);
 
-        return parent::setNev_l1($nev);
+        return parent::setNevL1($nev);
     }
 
     /**
@@ -283,23 +283,23 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasL1', []);
 
-        return parent::getLeiras_l1();
+        return parent::getLeirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeirasL1', [$leiras]);
 
-        return parent::setLeiras_l1($leiras);
+        return parent::setLeirasL1($leiras);
     }
 
     /**

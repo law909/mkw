@@ -635,45 +635,45 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNev_l1()
+    public function getNevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevL1', []);
 
-        return parent::getNev_l1();
+        return parent::getNevL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNev_l1($nev_l1): void
+    public function setNevL1($nev_l1): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev_l1]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNevL1', [$nev_l1]);
 
-        parent::setNev_l1($nev_l1);
+        parent::setNevL1($nev_l1);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasL1', []);
 
-        return parent::getLeiras_l1();
+        return parent::getLeirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras_l1($leiras_l1): void
+    public function setLeirasL1($leiras_l1): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras_l1]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeirasL1', [$leiras_l1]);
 
-        parent::setLeiras_l1($leiras_l1);
+        parent::setLeirasL1($leiras_l1);
     }
 
     /**

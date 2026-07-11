@@ -1316,10 +1316,10 @@ class Bizonylatfej
         $ret['fizetendokiirva'] = \mkw\store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
         $ret['fizmodnev_locale'] = $this->getLocalizedFieldValue('fizmodnev', $this->getBizonylatnyelv());
-        $ret['fizmodnev_l1'] = $this->getFizmodnev_l1();
+        $ret['fizmodnev_l1'] = $this->getFizmodnevL1();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
         $ret['szallitasimodnev_locale'] = $this->getLocalizedFieldValue('szallitasimodnev', $this->getBizonylatnyelv());
-        $ret['szallitasimodnev_l1'] = $this->getSzallitasimodnev_l1();
+        $ret['szallitasimodnev_l1'] = $this->getSzallitasimodnevL1();
         $ret['tulajbanknev'] = $this->getTulajbanknev();
         $ret['tulajbankszamlaszam'] = $this->getTulajbankszamlaszam();
         $ret['tulajiban'] = $this->getTulajiban();
@@ -2667,7 +2667,7 @@ class Bizonylatfej
         return $this->fizmodnev;
     }
 
-    public function getFizmodnev_l1()
+    public function getFizmodnevL1()
     {
         return $this->fizmodnev_l1;
     }
@@ -2696,7 +2696,7 @@ class Bizonylatfej
                 $this->fizmod = $val;
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
-                    $this->fizmodnev_l1 = $val->getNev_l1();
+                    $this->fizmodnev_l1 = $val->getNevL1();
                     $this->setNincspenzmozgas($val->getNincspenzmozgas());
                 }
             }
@@ -2728,7 +2728,7 @@ class Bizonylatfej
         return $this->szallitasimodnev;
     }
 
-    public function getSzallitasimodnev_l1()
+    public function getSzallitasimodnevL1()
     {
         return $this->szallitasimodnev_l1;
     }
@@ -2756,7 +2756,7 @@ class Bizonylatfej
                 $this->szallitasimod = $val;
                 if (!$this->duplication) {
                     $this->szallitasimodnev = $val->getNev();
-                    $this->szallitasimodnev_l1 = $val->getNev_l1();
+                    $this->szallitasimodnev_l1 = $val->getNevL1();
                 }
             }
         }
@@ -4167,7 +4167,7 @@ class Bizonylatfej
     /**
      * @param mixed $szallitasimodnev
      */
-    public function setSzallitasimodnev_l1($szallitasimodnev)
+    public function setSzallitasimodnevL1($szallitasimodnev)
     {
         $this->szallitasimodnev_l1 = $szallitasimodnev;
     }
@@ -4247,7 +4247,7 @@ class Bizonylatfej
     /**
      * @param mixed $fizmodnev
      */
-    public function setFizmodnev_l1($fizmodnev)
+    public function setFizmodnevL1($fizmodnev)
     {
         $this->fizmodnev_l1 = $fizmodnev;
     }

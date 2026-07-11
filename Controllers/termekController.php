@@ -223,7 +223,7 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setMekod($me);
         }
         $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
+        $obj->setNevL1($this->params->getStringRequestParam('nev_l1'));
         $obj->setKiirtnev($this->params->getStringRequestParam('kiirtnev'));
         $obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
         $obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
@@ -232,9 +232,9 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
         $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setOldalcim_l1($this->params->getStringRequestParam('oldalcim_l1'));
-        $obj->setRovidleiras_l1($this->params->getStringRequestParam('rovidleiras_l1'));
-        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
+        $obj->setOldalcimL1($this->params->getStringRequestParam('oldalcim_l1'));
+        $obj->setRovidleirasL1($this->params->getStringRequestParam('rovidleiras_l1'));
+        $obj->setLeirasL1($this->params->getOriginalStringRequestParam('leiras_l1'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->setFeltoltheto($this->params->getBoolRequestParam('feltoltheto'));
         $obj->setFeltoltheto2($this->params->getBoolRequestParam('feltoltheto2'));

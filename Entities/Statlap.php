@@ -65,7 +65,7 @@ class Statlap
         return $this->oldalcim;
     }
 
-    public function getOldalcim_l1()
+    public function getOldalcimL1()
     {
         return $this->oldalcim_l1;
     }
@@ -80,7 +80,7 @@ class Statlap
         $this->oldalcim = $adat;
     }
 
-    public function setOldalcim_l1($adat)
+    public function setOldalcimL1($adat)
     {
         $this->oldalcim_l1 = $adat;
     }
@@ -105,12 +105,12 @@ class Statlap
         $this->szoveg = $adat;
     }
 
-    public function getSzoveg_l1()
+    public function getSzovegL1()
     {
         return $this->szoveg_l1;
     }
 
-    public function setSzoveg_l1($adat)
+    public function setSzovegL1($adat)
     {
         $this->szoveg_l1 = $adat;
     }

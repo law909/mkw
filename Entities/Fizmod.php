@@ -328,7 +328,7 @@ class Fizmod
     /**
      * @return mixed
      */
-    public function getNev_l1()
+    public function getNevL1()
     {
         return $this->nev_l1;
     }
@@ -336,7 +336,7 @@ class Fizmod
     /**
      * @param mixed $nev_l1
      */
-    public function setNev_l1($nev_l1): void
+    public function setNevL1($nev_l1): void
     {
         $this->nev_l1 = $nev_l1;
     }
@@ -344,7 +344,7 @@ class Fizmod
     /**
      * @return mixed
      */
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
         return $this->leiras_l1;
     }
@@ -352,7 +352,7 @@ class Fizmod
     /**
      * @param mixed $leiras_l1
      */
-    public function setLeiras_l1($leiras_l1): void
+    public function setLeirasL1($leiras_l1): void
     {
         $this->leiras_l1 = $leiras_l1;
     }

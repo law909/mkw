@@ -5990,7 +5990,7 @@ class importController extends \mkwhelpers\Controller
                                 $termek->setNev($text);
                                 break;
                             case 'en_us':
-                                $termek->setNev_l1($text);
+                                $termek->setNevL1($text);
                                 break;
                         }
                     }

@@ -190,20 +190,20 @@ class TermekMenu
         $x = [];
         $x['id'] = $this->getId();
         $x['nev'] = $this->getNev();
-        $x['nev_l1'] = $this->getNev_l1();
-        $x['nev_en'] = $this->getNev_l1();
+        $x['nev_l1'] = $this->getNevL1();
+        $x['nev_en'] = $this->getNevL1();
         $x['rovidleiras'] = $this->getRovidleiras();
-        $x['rovidleiras_l1'] = $this->getRovidleiras_l1();
-        $x['rovidleiras_en'] = $this->getRovidleiras_l1();
+        $x['rovidleiras_l1'] = $this->getRovidleirasL1();
+        $x['rovidleiras_en'] = $this->getRovidleirasL1();
         $x['leiras'] = $this->getLeiras();
-        $x['leiras_l1'] = $this->getLeiras_l1();
-        $x['leiras_en'] = $this->getLeiras_l1();
+        $x['leiras_l1'] = $this->getLeirasL1();
+        $x['leiras_en'] = $this->getLeirasL1();
         $x['leiras2'] = $this->getLeiras2();
-        $x['leiras2_l1'] = $this->getLeiras2_l1();
-        $x['leiras2_en'] = $this->getLeiras2_l1();
+        $x['leiras2_l1'] = $this->getLeiras2L1();
+        $x['leiras2_en'] = $this->getLeiras2L1();
         $x['leiras3'] = $this->getLeiras3();
-        $x['leiras3_l1'] = $this->getLeiras3_l1();
-        $x['leiras3_en'] = $this->getLeiras3_l1();
+        $x['leiras3_l1'] = $this->getLeiras3L1();
+        $x['leiras3_en'] = $this->getLeiras3L1();
         $x['karkod'] = $this->getKarkod();
         $x['sorrend'] = $this->getSorrend();
         if ($this->getKepurl()) {
@@ -228,15 +228,15 @@ class TermekMenu
         $x['id'] = $this->getId();
         $x['slug'] = $this->getSlug();
         $x['nev'] = $this->getNev();
-        $x['nev_l1'] = $this->getNev_l1();
+        $x['nev_l1'] = $this->getNevL1();
         $x['rovidleiras'] = $this->getRovidleiras();
-        $x['rovidleiras_l1'] = $this->getRovidleiras_l1();
+        $x['rovidleiras_l1'] = $this->getRovidleirasL1();
         $x['leiras'] = $this->getLeiras();
-        $x['leiras_l1'] = $this->getLeiras_l1();
+        $x['leiras_l1'] = $this->getLeirasL1();
         $x['leiras2'] = $this->getLeiras2();
-        $x['leiras2_l1'] = $this->getLeiras2_l1();
+        $x['leiras2_l1'] = $this->getLeiras2L1();
         $x['leiras3'] = $this->getLeiras3();
-        $x['leiras3_l1'] = $this->getLeiras3_l1();
+        $x['leiras3_l1'] = $this->getLeiras3L1();
         $x['karkod'] = $this->getKarkod();
         $x['sorrend'] = $this->getSorrend();
         if ($this->getKepurl()) {
@@ -358,12 +358,12 @@ class TermekMenu
         $this->nev = $nev;
     }
 
-    public function getNev_l1()
+    public function getNevL1()
     {
         return $this->nev_l1;
     }
 
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
         $this->nev_l1 = $nev;
     }
@@ -433,12 +433,12 @@ class TermekMenu
         $this->leiras = $leiras;
     }
 
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
         return $this->leiras_l1;
     }
 
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
         $this->leiras_l1 = $leiras;
     }
@@ -453,12 +453,12 @@ class TermekMenu
         $this->leiras2 = $leiras;
     }
 
-    public function getLeiras2_l1()
+    public function getLeiras2L1()
     {
         return $this->leiras2_l1;
     }
 
-    public function setLeiras2_l1($leiras)
+    public function setLeiras2L1($leiras)
     {
         $this->leiras2_l1 = $leiras;
     }
@@ -473,12 +473,12 @@ class TermekMenu
         $this->leiras3 = $leiras;
     }
 
-    public function getLeiras3_l1()
+    public function getLeiras3L1()
     {
         return $this->leiras3_l1;
     }
 
-    public function setLeiras3_l1($leiras)
+    public function setLeiras3L1($leiras)
     {
         $this->leiras3_l1 = $leiras;
     }
@@ -665,12 +665,12 @@ class TermekMenu
         $this->rovidleiras = $rovidleiras;
     }
 
-    public function getRovidleiras_l1()
+    public function getRovidleirasL1()
     {
         return $this->rovidleiras_l1;
     }
 
-    public function setRovidleiras_l1($rovidleiras)
+    public function setRovidleirasL1($rovidleiras)
     {
         $this->rovidleiras_l1 = $rovidleiras;
     }

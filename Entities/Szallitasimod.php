@@ -82,12 +82,12 @@ class Szallitasimod
         $this->nev = $nev;
     }
 
-    public function getNev_l1()
+    public function getNevL1()
     {
         return $this->nev_l1;
     }
 
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
         $this->nev_l1 = $nev;
     }
@@ -112,12 +112,12 @@ class Szallitasimod
         $this->leiras = $leiras;
     }
 
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
         return $this->leiras_l1;
     }
 
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
         $this->leiras_l1 = $leiras;
     }

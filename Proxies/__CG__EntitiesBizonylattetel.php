@@ -690,23 +690,23 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getTermeknev_l1()
+    public function getTermeknevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknevL1', []);
 
-        return parent::getTermeknev_l1();
+        return parent::getTermeknevL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setTermeknev_l1($val)
+    public function setTermeknevL1($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeknev_l1', [$val]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeknevL1', [$val]);
 
-        return parent::setTermeknev_l1($val);
+        return parent::setTermeknevL1($val);
     }
 
     /**

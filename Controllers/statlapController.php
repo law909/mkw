@@ -19,30 +19,19 @@ class statlapController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Statlap();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['oldalcim'] = $t->getOldalcim();
-        $x['oldalcim_l1'] = $t->getOldalcim_l1();
-        $x['slug'] = $t->getSlug();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['szoveg_l1'] = $t->getSzoveg_l1();
-        $x['seodescription'] = $t->getSeodescription();
-        $x['oldurl'] = $t->getOldurl();
+        $x = $this->getEntityFieldsArray($t);
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-        $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
-        $obj->setOldalcim_l1($this->params->getStringRequestParam('oldalcim_l1'));
-        $obj->setSzoveg_l1($this->params->getOriginalStringRequestParam('szoveg_l1'));
-        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-        $obj->setOldurl($this->params->getStringRequestParam('oldurl'));
+        $obj = $this->setEntityFieldsFromRequest($obj, [
+            'raw' => ['szoveg', 'szoveg_l1'],
+        ]);
         return $obj;
     }
 

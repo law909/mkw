@@ -1272,12 +1272,12 @@ class Termek
         $this->nev = $nev;
     }
 
-    public function getNev_l1()
+    public function getNevL1()
     {
         return $this->nev_l1;
     }
 
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
         $this->nev_l1 = $nev;
     }
@@ -1419,12 +1419,12 @@ class Termek
         $this->leiras = $leiras;
     }
 
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
         return $this->leiras_l1;
     }
 
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
         $this->leiras_l1 = $leiras;
     }
@@ -1439,12 +1439,12 @@ class Termek
         $this->rovidleiras = $rovidleiras;
     }
 
-    public function getRovidleiras_l1()
+    public function getRovidleirasL1()
     {
         return $this->rovidleiras_l1;
     }
 
-    public function setRovidleiras_l1($rovidleiras)
+    public function setRovidleirasL1($rovidleiras)
     {
         $this->rovidleiras_l1 = $rovidleiras;
     }
@@ -1478,12 +1478,12 @@ class Termek
         $this->oldalcim = $oldalcim;
     }
 
-    public function getOldalcim_l1()
+    public function getOldalcimL1()
     {
         return $this->oldalcim_l1;
     }
 
-    public function setOldalcim_l1($oldalcim)
+    public function setOldalcimL1($oldalcim)
     {
         $this->oldalcim_l1 = $oldalcim;
     }

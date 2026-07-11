@@ -211,7 +211,7 @@ class TermekFa
         $x = [];
         $x['id'] = $this->getId();
         $x['name'] = $this->getNev();
-        $x['name_en'] = $this->getNev_l1();
+        $x['name_en'] = $this->getNevL1();
         $x['short_description'] = $this->getRovidleiras();
         $x['short_description_en'] = $ford['en_us']['rovidleiras'] ?: '';
         $x['description'] = $this->getLeiras();
@@ -383,12 +383,12 @@ class TermekFa
         $this->nev = $nev;
     }
 
-    public function getNev_l1()
+    public function getNevL1()
     {
         return $this->nev_l1;
     }
 
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
         $this->nev_l1 = $nev;
     }
@@ -458,12 +458,12 @@ class TermekFa
         $this->leiras = $leiras;
     }
 
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
         return $this->leiras_l1;
     }
 
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
         $this->leiras_l1 = $leiras;
     }
@@ -478,12 +478,12 @@ class TermekFa
         $this->leiras2 = $leiras;
     }
 
-    public function getLeiras2_l1()
+    public function getLeiras2L1()
     {
         return $this->leiras2_l1;
     }
 
-    public function setLeiras2_l1($leiras)
+    public function setLeiras2L1($leiras)
     {
         $this->leiras2_l1 = $leiras;
     }
@@ -498,12 +498,12 @@ class TermekFa
         $this->leiras3 = $leiras;
     }
 
-    public function getLeiras3_l1()
+    public function getLeiras3L1()
     {
         return $this->leiras3_l1;
     }
 
-    public function setLeiras3_l1($leiras)
+    public function setLeiras3L1($leiras)
     {
         $this->leiras3_l1 = $leiras;
     }
@@ -734,12 +734,12 @@ class TermekFa
         $this->rovidleiras = $rovidleiras;
     }
 
-    public function getRovidleiras_l1()
+    public function getRovidleirasL1()
     {
         return $this->rovidleiras_l1;
     }
 
-    public function setRovidleiras_l1($rovidleiras)
+    public function setRovidleirasL1($rovidleiras)
     {
         $this->rovidleiras_l1 = $rovidleiras;
     }

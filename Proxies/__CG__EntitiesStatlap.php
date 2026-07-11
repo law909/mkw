@@ -206,12 +206,12 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getOldalcim_l1()
+    public function getOldalcimL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcimL1', []);
 
-        return parent::getOldalcim_l1();
+        return parent::getOldalcimL1();
     }
 
     /**
@@ -239,12 +239,12 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setOldalcim_l1($adat)
+    public function setOldalcimL1($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim_l1', [$adat]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcimL1', [$adat]);
 
-        return parent::setOldalcim_l1($adat);
+        return parent::setOldalcimL1($adat);
     }
 
     /**
@@ -294,23 +294,23 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getSzoveg_l1()
+    public function getSzovegL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzovegL1', []);
 
-        return parent::getSzoveg_l1();
+        return parent::getSzovegL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setSzoveg_l1($adat)
+    public function setSzovegL1($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg_l1', [$adat]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzovegL1', [$adat]);
 
-        return parent::setSzoveg_l1($adat);
+        return parent::setSzovegL1($adat);
     }
 
     /**

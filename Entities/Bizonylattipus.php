@@ -11,7 +11,7 @@ use Traits\GetsFieldValue;
 class Bizonylattipus
 {
     use GetsFieldValue;
-    
+
     /**
      * @ORM\Id @ORM\Column(type="string",length=30)
      */
@@ -295,12 +295,12 @@ class Bizonylattipus
         $this->tplname = $d;
     }
 
-    public function getTplname_l1()
+    public function getTplnameL1()
     {
         return $this->tplname_l1;
     }
 
-    public function setTplname_l1($d)
+    public function setTplnameL1($d)
     {
         $this->tplname_l1 = $d;
     }

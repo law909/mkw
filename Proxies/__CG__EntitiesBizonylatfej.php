@@ -1207,12 +1207,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFizmodnev_l1()
+    public function getFizmodnevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnevL1', []);
 
-        return parent::getFizmodnev_l1();
+        return parent::getFizmodnevL1();
     }
 
     /**
@@ -1273,12 +1273,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getSzallitasimodnev_l1()
+    public function getSzallitasimodnevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodnev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodnevL1', []);
 
-        return parent::getSzallitasimodnev_l1();
+        return parent::getSzallitasimodnevL1();
     }
 
     /**
@@ -3396,12 +3396,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setSzallitasimodnev_l1($szallitasimodnev)
+    public function setSzallitasimodnevL1($szallitasimodnev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimodnev_l1', [$szallitasimodnev]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimodnevL1', [$szallitasimodnev]);
 
-        return parent::setSzallitasimodnev_l1($szallitasimodnev);
+        return parent::setSzallitasimodnevL1($szallitasimodnev);
     }
 
     /**
@@ -3506,12 +3506,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setFizmodnev_l1($fizmodnev)
+    public function setFizmodnevL1($fizmodnev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmodnev_l1', [$fizmodnev]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmodnevL1', [$fizmodnev]);
 
-        return parent::setFizmodnev_l1($fizmodnev);
+        return parent::setFizmodnevL1($fizmodnev);
     }
 
     /**

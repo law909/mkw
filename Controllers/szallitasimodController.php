@@ -35,13 +35,13 @@ class szallitasimodController extends \mkwhelpers\MattableController
         }
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
-        $x['nev_l1'] = $t->getNev_l1();
+        $x['nev_l1'] = $t->getNevL1();
         $x['webes'] = $t->getWebes();
         $x['webes2'] = $t->getWebes2();
         $x['webes3'] = $t->getWebes3();
         $x['webes4'] = $t->getWebes4();
         $x['leiras'] = $t->getLeiras();
-        $x['leiras_l1'] = $t->getLeiras_l1();
+        $x['leiras_l1'] = $t->getLeirasL1();
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
@@ -87,13 +87,13 @@ class szallitasimodController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1', $obj->getNev_l1()));
+        $obj->setNevL1($this->params->getStringRequestParam('nev_l1', $obj->getNevL1()));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
         $obj->setWebes3($this->params->getBoolRequestParam('webes3'));
         $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeiras_l1($this->params->getOriginalStringRequestParam('leiras_l1'));
+        $obj->setLeirasL1($this->params->getOriginalStringRequestParam('leiras_l1'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));

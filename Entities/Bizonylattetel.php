@@ -684,7 +684,7 @@ class Bizonylattetel
                     } else {
                         $this->setTermeknev($val->getNev());
                     }
-                    $this->setTermeknev_l1($val->getNev_l1());
+                    $this->setTermeknevL1($val->getNevL1());
                     $this->setCikkszam($val->getCikkszam());
                     $this->setHosszusag($val->getHosszusag());
                     $this->setEhparany($val->getHparany());
@@ -775,12 +775,12 @@ class Bizonylattetel
         $this->termeknev = $val;
     }
 
-    public function getTermeknev_l1()
+    public function getTermeknevL1()
     {
         return $this->termeknev_l1;
     }
 
-    public function setTermeknev_l1($val)
+    public function setTermeknevL1($val)
     {
         $this->termeknev_l1 = $val;
     }

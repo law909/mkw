@@ -28,28 +28,9 @@ class fizmodController extends \mkwhelpers\MattableController
             $t = new \Entities\Fizmod();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['nev_l1'] = $t->getNev_l1();
-        $x['tipus'] = $t->getTipus();
-        $x['navtipus'] = $t->getNavtipus();
-        $x['haladek'] = $t->getHaladek();
-        $x['webes'] = $t->getWebes();
-        $x['leiras'] = $t->getLeiras();
-        $x['leiras_l1'] = $t->getLeiras_l1();
-        $x['sorrend'] = $t->getSorrend();
-        $x['osztotthaladek1'] = $t->getOsztotthaladek1();
-        $x['osztottszazalek1'] = $t->getOsztottszazalek1();
-        $x['osztotthaladek2'] = $t->getOsztotthaladek2();
-        $x['osztottszazalek2'] = $t->getOsztottszazalek2();
-        $x['osztotthaladek3'] = $t->getOsztotthaladek3();
-        $x['osztottszazalek3'] = $t->getOsztottszazalek3();
-        $x['osztotthaladek4'] = $t->getOsztotthaladek4();
-        $x['osztottszazalek4'] = $t->getOsztottszazalek4();
-        $x['osztotthaladek5'] = $t->getOsztotthaladek5();
-        $x['osztottszazalek5'] = $t->getOsztottszazalek5();
-        $x['rugalmas'] = $t->getRugalmas();
-        $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
+        $x = $this->getEntityFieldsArray($t);
+        $x['nev_l1'] = $t->getNevL1();
+        $x['leiras_l1'] = $t->getLeirasL1();
 
         if ($forKarb) {
             if ($letezik) {
@@ -73,13 +54,13 @@ class fizmodController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNev_l1($this->params->getStringRequestParam('nev_l1'));
+        $obj->setNevL1($this->params->getStringRequestParam('nev_l1'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
         $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
         $obj->setHaladek($this->params->getIntRequestParam('haladek'));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeiras_l1($this->params->getStringRequestParam('leiras_l1'));
+        $obj->setLeirasL1($this->params->getStringRequestParam('leiras_l1'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setOsztotthaladek1($this->params->getIntRequestParam('osztotthaladek1'));
         $obj->setOsztottszazalek1($this->params->getNumRequestParam('osztottszazalek1'));

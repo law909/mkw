@@ -458,11 +458,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['fizmod'] = $t->getFizmodId();
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['fizmodnev_locale'] = $t->getLocalizedFieldValue('fizmodnev', $t->getBizonylatnyelv());
-        $x['fizmodnev_l1'] = $t->getFizmodnev_l1();
+        $x['fizmodnev_l1'] = $t->getFizmodnevL1();
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         $x['szallitasimodnev_locale'] = $t->getLocalizedFieldValue('szallitasimodnev', $t->getBizonylatnyelv());
-        $x['szallitasimodnev_l1'] = $t->getSzallitasimodnev_l1();
+        $x['szallitasimodnev_l1'] = $t->getSzallitasimodnevL1();
         $x['felhasznalo'] = $t->getFelhasznaloId();
         $x['felhasznalonev'] = $t->getFelhasznalonev();
         $x['valutanem'] = $t->getValutanemId();

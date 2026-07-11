@@ -426,23 +426,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNev_l1()
+    public function getNevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevL1', []);
 
-        return parent::getNev_l1();
+        return parent::getNevL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNevL1', [$nev]);
 
-        return parent::setNev_l1($nev);
+        return parent::setNevL1($nev);
     }
 
     /**
@@ -690,23 +690,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasL1', []);
 
-        return parent::getLeiras_l1();
+        return parent::getLeirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeirasL1', [$leiras]);
 
-        return parent::setLeiras_l1($leiras);
+        return parent::setLeirasL1($leiras);
     }
 
     /**
@@ -734,23 +734,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getRovidleiras_l1()
+    public function getRovidleirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleirasL1', []);
 
-        return parent::getRovidleiras_l1();
+        return parent::getRovidleirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setRovidleiras_l1($rovidleiras)
+    public function setRovidleirasL1($rovidleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleiras_l1', [$rovidleiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleirasL1', [$rovidleiras]);
 
-        return parent::setRovidleiras_l1($rovidleiras);
+        return parent::setRovidleirasL1($rovidleiras);
     }
 
     /**
@@ -789,23 +789,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getOldalcim_l1()
+    public function getOldalcimL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcimL1', []);
 
-        return parent::getOldalcim_l1();
+        return parent::getOldalcimL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setOldalcim_l1($oldalcim)
+    public function setOldalcimL1($oldalcim)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim_l1', [$oldalcim]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcimL1', [$oldalcim]);
 
-        return parent::setOldalcim_l1($oldalcim);
+        return parent::setOldalcimL1($oldalcim);
     }
 
     /**

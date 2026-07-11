@@ -360,23 +360,23 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getNev_l1()
+    public function getNevL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevL1', []);
 
-        return parent::getNev_l1();
+        return parent::getNevL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNev_l1($nev)
+    public function setNevL1($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev_l1', [$nev]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNevL1', [$nev]);
 
-        return parent::setNev_l1($nev);
+        return parent::setNevL1($nev);
     }
 
     /**
@@ -525,23 +525,23 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getLeiras_l1()
+    public function getLeirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeirasL1', []);
 
-        return parent::getLeiras_l1();
+        return parent::getLeirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras_l1($leiras)
+    public function setLeirasL1($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras_l1', [$leiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeirasL1', [$leiras]);
 
-        return parent::setLeiras_l1($leiras);
+        return parent::setLeirasL1($leiras);
     }
 
     /**
@@ -569,23 +569,23 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getLeiras2_l1()
+    public function getLeiras2L1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras2_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras2L1', []);
 
-        return parent::getLeiras2_l1();
+        return parent::getLeiras2L1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras2_l1($leiras)
+    public function setLeiras2L1($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras2_l1', [$leiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras2L1', [$leiras]);
 
-        return parent::setLeiras2_l1($leiras);
+        return parent::setLeiras2L1($leiras);
     }
 
     /**
@@ -613,23 +613,23 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getLeiras3_l1()
+    public function getLeiras3L1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras3_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras3L1', []);
 
-        return parent::getLeiras3_l1();
+        return parent::getLeiras3L1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLeiras3_l1($leiras)
+    public function setLeiras3L1($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras3_l1', [$leiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras3L1', [$leiras]);
 
-        return parent::setLeiras3_l1($leiras);
+        return parent::setLeiras3L1($leiras);
     }
 
     /**
@@ -899,23 +899,23 @@ class TermekMenu extends \Entities\TermekMenu implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getRovidleiras_l1()
+    public function getRovidleirasL1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleiras_l1', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleirasL1', []);
 
-        return parent::getRovidleiras_l1();
+        return parent::getRovidleirasL1();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setRovidleiras_l1($rovidleiras)
+    public function setRovidleirasL1($rovidleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleiras_l1', [$rovidleiras]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleirasL1', [$rovidleiras]);
 
-        return parent::setRovidleiras_l1($rovidleiras);
+        return parent::setRovidleirasL1($rovidleiras);
     }
 
     /**
