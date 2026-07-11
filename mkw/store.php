@@ -418,7 +418,7 @@ class store
         return $ret;
     }
 
-    public static function getExcelCoordinate($o, $sor)
+    public static function getExcelCoordinate($o, $sor = null)
     {
         if ($o < 26) {
             return chr(65 + $o) . (string)$sor;
@@ -1558,7 +1558,7 @@ class store
     {
         $x = $bekuldetlencnt;
         if ($bekuldetlencnt === null) {
-            $bizc = new bizonylatfejController(null);
+            $bizc = new bizonylatfejController();
             $bizcnt = $bizc->calcNavEredmenyRiasztas();
             $x = $bizcnt['null'];
         }

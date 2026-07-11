@@ -12,6 +12,7 @@ trait PartnerAuth
     public function apiLogin($puser, $pass)
     {
         $ok = false;
+        $user = null;
         if ($puser instanceof Partner) {
             $user = $puser;
             $ok = true;
@@ -31,6 +32,7 @@ trait PartnerAuth
     public function login($puser, $pass = null)
     {
         $ok = false;
+        $user = null;
         if ($puser instanceof Partner) {
             $user = $puser;
             $ok = true;

@@ -1,25 +1,31 @@
 <?php
+
 namespace Entities;
 
-class TeendoRepository extends \mkwhelpers\Repository {
+class TeendoRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Teendo');
-        $this->setOrders(array(
-            '1' => array('caption' => 'teendő szerint növekvő', 'order' => array('_xx.bejegyzes' => 'ASC')),
-            '2' => array('caption' => 'partner szerint növekvő', 'order' => array('a.nev' => 'ASC')),
-            '3' => array('caption' => 'esedékesség növekvő', 'order' => array('_xx.esedekes' => 'ASC')),
-            '4' => array('caption' => 'állapot növekvő', 'order' => array('_xx.elvegezve' => 'ASC'))
-        ));
+        $this->setOrders([
+            '1' => ['caption' => 'teendő szerint növekvő', 'order' => ['_xx.bejegyzes' => 'ASC']],
+            '2' => ['caption' => 'partner szerint növekvő', 'order' => ['a.nev' => 'ASC']],
+            '3' => ['caption' => 'esedékesség növekvő', 'order' => ['_xx.esedekes' => 'ASC']],
+            '4' => ['caption' => 'állapot növekvő', 'order' => ['_xx.elvegezve' => 'ASC']]
+        ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Teendo _xx'
             . ' LEFT JOIN _xx.partner a'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         if ($offset > 0) {
             $q->setFirstResult($offset);
         }
@@ -30,11 +36,14 @@ class TeendoRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Teendo _xx'
             . ' LEFT JOIN _xx.partner a'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }

@@ -106,6 +106,7 @@ class MattableController extends Controller
 
     protected function saveData()
     {
+        $obj = null;
         $parancs = $this->params->getRequestParam($this->operationName, '');
         $id = $this->params->getRequestParam($this->idName, 0);
         try {
@@ -158,7 +159,7 @@ class MattableController extends Controller
                 case $this->delOperation:
                     echo $ret['id'];
             }
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
 //            echo json_encode(array('error' => $ex->getMessage()));
         }
     }

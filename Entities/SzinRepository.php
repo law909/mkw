@@ -14,8 +14,8 @@ class SzinRepository extends \mkwhelpers\Repository
             '2' => ['caption' => 'név szerint', 'order' => ['nev' => 'ASC']],
         ]);
     }
-    
-    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0)
+
+    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         return $this->getAll($filter, $order, $offset, $elemcount);
     }

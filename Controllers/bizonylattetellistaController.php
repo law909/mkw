@@ -445,6 +445,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                 $view = $this->createView('rep_bizonylattetellistatetelpartner.tpl');
                 break;
             case 3:
+            default:
                 $view = $this->createView('rep_bizonylattetellistatetelukpartner.tpl');
                 break;
         }

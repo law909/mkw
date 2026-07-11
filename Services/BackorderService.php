@@ -24,6 +24,7 @@ class BackorderService
             try {
                 $ujdb = 0;
                 $regidb = 0;
+                $keszlet = 0;
                 /** @var \Entities\Bizonylattetel $regitetel */
                 foreach ($regibiz->getBizonylattetelek() as $regitetel) {
                     /** @var \Entities\Termek $t */

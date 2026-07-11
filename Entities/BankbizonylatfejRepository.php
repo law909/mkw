@@ -26,7 +26,7 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository
         return parent::findWithJoins((string)$id);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
             'SELECT _xx'

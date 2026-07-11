@@ -1691,11 +1691,6 @@ class termekController extends \mkwhelpers\MattableController
 
     public function arexport()
     {
-        function x($o)
-        {
-            return \mkw\store::getExcelCoordinate($o, '');
-        }
-
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
 
@@ -1713,7 +1708,7 @@ class termekController extends \mkwhelpers\MattableController
                 $nettobrutto = 'netto';
             }
             $excel->setActiveSheetIndex(0)
-                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
+                ->setCellValue(\mkw\store::getExcelCoordinate($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
             $oszlop++;
         }
 
@@ -1723,9 +1718,9 @@ class termekController extends \mkwhelpers\MattableController
         $sor = 2;
         foreach ($termekek as $termek) {
             $excel->setActiveSheetIndex(0)
-                ->setCellValue(x(0) . $sor, $termek->getId())
-                ->setCellValue(x(1) . $sor, $termek->getCikkszam())
-                ->setCellValue(x(2) . $sor, $termek->getNev());
+                ->setCellValue(\mkw\store::getExcelCoordinate(0) . $sor, $termek->getId())
+                ->setCellValue(\mkw\store::getExcelCoordinate(1) . $sor, $termek->getCikkszam())
+                ->setCellValue(\mkw\store::getExcelCoordinate(2) . $sor, $termek->getNev());
             $arak = $termek->getTermekArak();
             foreach ($arak as $ar) {
                 $i = array_search(
@@ -1744,7 +1739,7 @@ class termekController extends \mkwhelpers\MattableController
                         $nettobrutto = $ar->getNetto();
                     }
                     $excel->setActiveSheetIndex(0)
-                        ->setCellValue(x(3 + $i) . $sor, $nettobrutto);
+                        ->setCellValue(\mkw\store::getExcelCoordinate(3 + $i) . $sor, $nettobrutto);
                 }
             }
             $sor++;
@@ -2023,11 +2018,6 @@ class termekController extends \mkwhelpers\MattableController
 
     public function cikkszamosexport()
     {
-        function x($o)
-        {
-            return \mkw\store::getExcelCoordinate($o, '');
-        }
-
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
 
@@ -2053,23 +2043,23 @@ class termekController extends \mkwhelpers\MattableController
                 /** @var TermekValtozat $valtozat */
                 foreach ($termek->getValtozatok() as $valtozat) {
                     $excel->setActiveSheetIndex(0)
-                        ->setCellValue(x(0) . $sor, $termek->getId())
-                        ->setCellValue(x(1) . $sor, $termek->getNev())
-                        ->setCellValue(x(2) . $sor, $termek->getCikkszam())
-                        ->setCellValue(x(3) . $sor, $termek->getIdegencikkszam())
-                        ->setCellValue(x(4) . $sor, $valtozat->getId())
-                        ->setCellValue(x(5) . $sor, $valtozat->getAdatTipus1Nev())
-                        ->setCellValue(x(6) . $sor, $valtozat->getAdatTipus2Nev())
-                        ->setCellValue(x(7) . $sor, $valtozat->getCikkszam())
-                        ->setCellValue(x(8) . $sor, $valtozat->getIdegencikkszam());
+                        ->setCellValue(\mkw\store::getExcelCoordinate(0) . $sor, $termek->getId())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(1) . $sor, $termek->getNev())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(2) . $sor, $termek->getCikkszam())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(3) . $sor, $termek->getIdegencikkszam())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(4) . $sor, $valtozat->getId())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(5) . $sor, $valtozat->getAdatTipus1Nev())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(6) . $sor, $valtozat->getAdatTipus2Nev())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(7) . $sor, $valtozat->getCikkszam())
+                        ->setCellValue(\mkw\store::getExcelCoordinate(8) . $sor, $valtozat->getIdegencikkszam());
                     $sor++;
                 }
             } else {
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x(0) . $sor, $termek->getId())
-                    ->setCellValue(x(1) . $sor, $termek->getNev())
-                    ->setCellValue(x(2) . $sor, $termek->getCikkszam())
-                    ->setCellValue(x(3) . $sor, $termek->getIdegencikkszam());
+                    ->setCellValue(\mkw\store::getExcelCoordinate(0) . $sor, $termek->getId())
+                    ->setCellValue(\mkw\store::getExcelCoordinate(1) . $sor, $termek->getNev())
+                    ->setCellValue(\mkw\store::getExcelCoordinate(2) . $sor, $termek->getCikkszam())
+                    ->setCellValue(\mkw\store::getExcelCoordinate(3) . $sor, $termek->getIdegencikkszam());
                 $sor++;
             }
         }

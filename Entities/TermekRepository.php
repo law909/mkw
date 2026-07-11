@@ -170,7 +170,7 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
-    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0)
+    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
             'SELECT _xx,vtsz,afa,fa1,fa2,fa3'
@@ -895,6 +895,7 @@ class TermekRepository extends \mkwhelpers\Repository
 
     public function getUjTermekId()
     {
+        $ret = null;
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
@@ -922,6 +923,7 @@ class TermekRepository extends \mkwhelpers\Repository
 
     public function getTop10Mennyiseg()
     {
+        $ret = null;
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);

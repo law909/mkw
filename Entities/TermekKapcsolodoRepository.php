@@ -1,19 +1,25 @@
 <?php
+
 namespace Entities;
 
-class TermekKapcsolodoRepository extends \mkwhelpers\Repository {
+class TermekKapcsolodoRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\TermekKapcsolodo');
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,termek '
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,termek '
             . ' FROM Entities\TermekKapcsolodo _xx'
             . ' LEFT JOIN _xx.altermek termek '
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -24,10 +30,13 @@ class TermekKapcsolodoRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\TermekKapcsolodo _xx'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }

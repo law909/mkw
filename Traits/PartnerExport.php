@@ -7,13 +7,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 trait PartnerExport
 {
+    private function x($o, $sor)
+    {
+        return \mkw\store::getExcelCoordinate($o, $sor);
+    }
+
     public function megjegyzesExport()
     {
-        function x($o, $sor)
-        {
-            return \mkw\store::getExcelCoordinate($o, $sor);
-        }
-
         $ids = $this->params->getStringRequestParam('ids');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -26,13 +26,13 @@ trait PartnerExport
         $o = 0;
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue(x($o++, 1), 'Név')
-            ->setCellValue(x($o++, 1), 'Vezetéknév')
-            ->setCellValue(x($o++, 1), 'Keresztnév')
-            ->setCellValue(x($o++, 1), 'Nyelv')
-            ->setCellValue(x($o++, 1), 'Email')
-            ->setCellValue(x($o++, 1), 'Telefon')
-            ->setCellValue(x($o++, 1), 'Megjegyzés');
+            ->setCellValue($this->x($o++, 1), 'Név')
+            ->setCellValue($this->x($o++, 1), 'Vezetéknév')
+            ->setCellValue($this->x($o++, 1), 'Keresztnév')
+            ->setCellValue($this->x($o++, 1), 'Nyelv')
+            ->setCellValue($this->x($o++, 1), 'Email')
+            ->setCellValue($this->x($o++, 1), 'Telefon')
+            ->setCellValue($this->x($o++, 1), 'Megjegyzés');
 
         if ($partnerek) {
             $sor = 2;
@@ -40,13 +40,13 @@ trait PartnerExport
             foreach ($partnerek as $partner) {
                 $o = 0;
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x($o++, $sor), $partner->getNev())
-                    ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
-                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
-                    ->setCellValue(x($o++, $sor), $partner->getBizonylatnyelv())
-                    ->setCellValue(x($o++, $sor), $partner->getEmail())
-                    ->setCellValue(x($o++, $sor), $partner->getTelefon())
-                    ->setCellValue(x($o++, $sor), $partner->getMegjegyzes());
+                    ->setCellValue($this->x($o++, $sor), $partner->getNev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getVezeteknev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getKeresztnev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getBizonylatnyelv())
+                    ->setCellValue($this->x($o++, $sor), $partner->getEmail())
+                    ->setCellValue($this->x($o++, $sor), $partner->getTelefon())
+                    ->setCellValue($this->x($o++, $sor), $partner->getMegjegyzes());
 
                 $sor++;
             }
@@ -71,11 +71,6 @@ trait PartnerExport
 
     public function hirlevelExport()
     {
-        function x($o, $sor)
-        {
-            return \mkw\store::getExcelCoordinate($o, $sor);
-        }
-
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('akcioshirlevelkell', '=', true);
         $filter->addFilter('ujdonsaghirlevelkell', '=', true);
@@ -85,12 +80,12 @@ trait PartnerExport
         $o = 0;
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue(x($o++, 1), 'Vezetéknév')
-            ->setCellValue(x($o++, 1), 'Keresztnév')
-            ->setCellValue(x($o++, 1), 'Név')
-            ->setCellValue(x($o++, 1), 'Email')
-            ->setCellValue(x($o++, 1), 'Akciós hírlevél')
-            ->setCellValue(x($o++, 1), 'Újdonság hírlevél');
+            ->setCellValue($this->x($o++, 1), 'Vezetéknév')
+            ->setCellValue($this->x($o++, 1), 'Keresztnév')
+            ->setCellValue($this->x($o++, 1), 'Név')
+            ->setCellValue($this->x($o++, 1), 'Email')
+            ->setCellValue($this->x($o++, 1), 'Akciós hírlevél')
+            ->setCellValue($this->x($o++, 1), 'Újdonság hírlevél');
 
         if ($partnerek) {
             $sor = 2;
@@ -98,12 +93,12 @@ trait PartnerExport
             foreach ($partnerek as $partner) {
                 $o = 0;
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
-                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
-                    ->setCellValue(x($o++, $sor), $partner->getNev())
-                    ->setCellValue(x($o++, $sor), $partner->getEmail())
-                    ->setCellValue(x($o++, $sor), $partner->getAkcioshirlevelkell())
-                    ->setCellValue(x($o++, $sor), $partner->getUjdonsaghirlevelkell());
+                    ->setCellValue($this->x($o++, $sor), $partner->getVezeteknev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getKeresztnev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getNev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getEmail())
+                    ->setCellValue($this->x($o++, $sor), $partner->getAkcioshirlevelkell())
+                    ->setCellValue($this->x($o++, $sor), $partner->getUjdonsaghirlevelkell());
 
                 $sor++;
             }
@@ -128,11 +123,6 @@ trait PartnerExport
 
     public function mptngyszamlazasExport()
     {
-        function x($o, $sor)
-        {
-            return \mkw\store::getExcelCoordinate($o, $sor);
-        }
-
         $ids = $this->params->getStringRequestParam('ids');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -145,18 +135,18 @@ trait PartnerExport
         $o = 0;
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue(x($o++, 1), 'Név')
-            ->setCellValue(x($o++, 1), 'Telefon')
-            ->setCellValue(x($o++, 1), 'Email')
-            ->setCellValue(x($o++, 1), 'Számlázási név')
-            ->setCellValue(x($o++, 1), 'Számlázási cím')
-            ->setCellValue(x($o++, 1), 'Munkahely')
-            ->setCellValue(x($o++, 1), 'Csoportos fizetés')
-            ->setCellValue(x($o++, 1), 'Kapcsolat név')
-            ->setCellValue(x($o++, 1), 'Nem vesz részt, csak szerző')
-            ->setCellValue(x($o++, 1), 'MPT tag')
-            ->setCellValue(x($o++, 1), 'Diák')
-            ->setCellValue(x($o++, 1), 'Nyugdíjas');
+            ->setCellValue($this->x($o++, 1), 'Név')
+            ->setCellValue($this->x($o++, 1), 'Telefon')
+            ->setCellValue($this->x($o++, 1), 'Email')
+            ->setCellValue($this->x($o++, 1), 'Számlázási név')
+            ->setCellValue($this->x($o++, 1), 'Számlázási cím')
+            ->setCellValue($this->x($o++, 1), 'Munkahely')
+            ->setCellValue($this->x($o++, 1), 'Csoportos fizetés')
+            ->setCellValue($this->x($o++, 1), 'Kapcsolat név')
+            ->setCellValue($this->x($o++, 1), 'Nem vesz részt, csak szerző')
+            ->setCellValue($this->x($o++, 1), 'MPT tag')
+            ->setCellValue($this->x($o++, 1), 'Diák')
+            ->setCellValue($this->x($o++, 1), 'Nyugdíjas');
 
         if ($partnerek) {
             $sor = 2;
@@ -164,18 +154,18 @@ trait PartnerExport
             foreach ($partnerek as $partner) {
                 $o = 0;
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x($o++, $sor), $partner->getNev())
-                    ->setCellValue(x($o++, $sor), $partner->getTelefon())
-                    ->setCellValue(x($o++, $sor), $partner->getEmail())
-                    ->setCellValue(x($o++, $sor), $partner->getSzlanev())
-                    ->setCellValue(x($o++, $sor), $partner->getCim())
-                    ->setCellValue(x($o++, $sor), $partner->getMptMunkahelynev())
-                    ->setCellValue(x($o++, $sor), $partner->getMptngycsoportosfizetes())
-                    ->setCellValue(x($o++, $sor), $partner->getMptngykapcsolatnev())
-                    ->setCellValue(x($o++, $sor), $partner->isMptngynemveszreszt())
-                    ->setCellValue(x($o++, $sor), $partner->isMptngympttag())
-                    ->setCellValue(x($o++, $sor), $partner->isMptngydiak())
-                    ->setCellValue(x($o++, $sor), $partner->isMptngynyugdijas());
+                    ->setCellValue($this->x($o++, $sor), $partner->getNev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getTelefon())
+                    ->setCellValue($this->x($o++, $sor), $partner->getEmail())
+                    ->setCellValue($this->x($o++, $sor), $partner->getSzlanev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getCim())
+                    ->setCellValue($this->x($o++, $sor), $partner->getMptMunkahelynev())
+                    ->setCellValue($this->x($o++, $sor), $partner->getMptngycsoportosfizetes())
+                    ->setCellValue($this->x($o++, $sor), $partner->getMptngykapcsolatnev())
+                    ->setCellValue($this->x($o++, $sor), $partner->isMptngynemveszreszt())
+                    ->setCellValue($this->x($o++, $sor), $partner->isMptngympttag())
+                    ->setCellValue($this->x($o++, $sor), $partner->isMptngydiak())
+                    ->setCellValue($this->x($o++, $sor), $partner->isMptngynyugdijas());
 
                 $sor++;
             }

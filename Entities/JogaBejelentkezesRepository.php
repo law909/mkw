@@ -1,26 +1,32 @@
 <?php
+
 namespace Entities;
 
 use mkwhelpers\FilterDescriptor;
 
-class JogaBejelentkezesRepository extends \mkwhelpers\Repository {
+class JogaBejelentkezesRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
         $this->setEntityname(JogaBejelentkezes::class);
-        $this->setOrders(array(
-            '1' => array('caption' => 'dátum és tanár szerint csökkenő', 'order' => array('_xx.datum' => 'DESC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
-            '2' => array('caption' => 'dátum és tanár szerint növekvő', 'order' => array('_xx.datum' => 'ASC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
-            '3' => array('caption' => 'tanár és dátum szerint növekvő', 'order' => array('ta.nev' => 'ASC', '_xx.datum' => 'ASC', 'pa.nev' => 'ASC'))
-        ));
+        $this->setOrders([
+            '1' => ['caption' => 'dátum és tanár szerint csökkenő', 'order' => ['_xx.datum' => 'DESC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC']],
+            '2' => ['caption' => 'dátum és tanár szerint növekvő', 'order' => ['_xx.datum' => 'ASC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC']],
+            '3' => ['caption' => 'tanár és dátum szerint növekvő', 'order' => ['ta.nev' => 'ASC', '_xx.datum' => 'ASC', 'pa.nev' => 'ASC']]
+        ]);
     }
 
-    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,o '
+    public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,o '
             . ' FROM Entities\JogaBejelentkezes _xx'
             . ' LEFT JOIN _xx.orarend o'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -31,16 +37,20 @@ class JogaBejelentkezesRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\JogaBejelentkezes _xx'
             . ' LEFT JOIN _xx.orarend o'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
-    public function getAdottOraCount($nap, $orarend) {
+    public function getAdottOraCount($nap, $orarend)
+    {
         $hf = new FilterDescriptor();
         $hf->addFilter('datum', '=', $nap);
         $hf->addFilter('orarend', '=', $orarend);

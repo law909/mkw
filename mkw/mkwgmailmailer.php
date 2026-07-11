@@ -140,13 +140,6 @@ class mkwgmailmailer
         $subject = mb_encode_mimeheader($this->getSubject(), 'UTF-8', 'Q');
         $message = $this->getMessage();
 
-        if ($this->getAttachment()) {
-            $filePath = $this->getAttachment();
-            $fileName = basename($filePath);
-            $encodedData = chunk_split(base64_encode(file_get_contents($filePath)));
-            $fileMimeType = mime_content_type($filePath);
-        }
-
         $rawMessage = "From: $fromName <$fromAddress>\r\n";
         $rawMessage .= "To: $to\r\n";
         if ($bcc) {
@@ -160,7 +153,12 @@ class mkwgmailmailer
         $rawMessage .= "X-Mailer: Billy v1\r\n";
         $rawMessage .= "MIME-Version: 1.0\r\n";
 
-        if ($this->attachment) {
+        if ($this->getAttachment()) {
+            $filePath = $this->getAttachment();
+            $fileName = basename($filePath);
+            $encodedData = chunk_split(base64_encode(file_get_contents($filePath)));
+            $fileMimeType = mime_content_type($filePath);
+
             $rawMessage .= "Content-Type: multipart/mixed; boundary=\"$boundaryMixed\"\r\n";
             $rawMessage .= "\r\n";
             $rawMessage .= "--$boundaryMixed\r\n";

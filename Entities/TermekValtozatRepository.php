@@ -18,7 +18,7 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
         ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
             'SELECT _xx '
@@ -44,7 +44,7 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
      * termeknel nincs pontos talalat es tobb valtozat is csak reszben illeszkedik, akkor ahhoz
      * a termekhez nem adunk vissza valtozatot (a felhasznalo valasszon a valtozat selectbol).
      *
-     * @param int[]  $termekids
+     * @param int[] $termekids
      * @param string $keresett
      *
      * @return array  termekid => valtozatid

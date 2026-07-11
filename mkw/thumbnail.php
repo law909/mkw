@@ -40,6 +40,7 @@ class Thumbnail
 
         //self::setMemoryForImage($sourceImageWidth, $sourceImageHeight, $sourceImageBits, $sourceImageChannels);
 
+        $oImage = false;
         switch ($sourceImageAttr['mime']) {
             case 'image/gif':
                 {
@@ -94,7 +95,6 @@ class Thumbnail
                 break;
             default:
                 $ermsg = $sourceImageAttr['mime'] . ' images are not supported';
-                $oImage = false;
                 break;
         }
 

@@ -21,7 +21,7 @@ class MPTNGYSzakmaianyagRepository extends \mkwhelpers\Repository
         $this->setBatches($btch);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
     {
         $a = $this->alias;
         $q = $this->_em->createQuery(

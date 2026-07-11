@@ -46,13 +46,13 @@ class generalDataLoader
         $view->setVar('maintheme', \mkw\store::getTheme());
         $view->setVar('noversion', \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion));
         $view->setVar('today', date(\mkw\store::$DateFormat));
-        $menuc = new \Controllers\menuController(null);
+        $menuc = new \Controllers\menuController();
         $view->setVar('menu', $menuc->getMenu());
-        $jelenc = new \Controllers\jelenletiivController(null);
+        $jelenc = new \Controllers\jelenletiivController();
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
         $btc = new BizonylattipusController();
         $view->setVar('bizonylattipuslist', array_column($btc->getSelectList(), null, 'id'));
-        $bizc = new bizonylatfejController(null);
+        $bizc = new bizonylatfejController();
         $bizcnt = $bizc->calcNavEredmenyRiasztas();
         $view->setVar('abortedszamlacnt', $bizcnt['aborted']);
         $view->setVar('bekuldetlenszamlacnt', $bizcnt['null']);

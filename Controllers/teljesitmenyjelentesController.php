@@ -18,18 +18,18 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    private function per($a, $b)
+    {
+        $a = (float)$a;
+        $b = (float)$b;
+        if ($b) {
+            return $a / $b;
+        }
+        return 0;
+    }
+
     public function getData($tol = null, $ig = null)
     {
-        function per($a, $b)
-        {
-            $a = (float)$a;
-            $b = (float)$b;
-            if ($b) {
-                return $a / $b;
-            }
-            return 0;
-        }
-
         /** @var \Entities\BizonylatfejRepository $bfrepo */
         $bfrepo = $this->getRepo(Bizonylatfej::class);
 
@@ -84,14 +84,14 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController
             $a = [];
             $a['ev'] = $ev;
             $a['megrendelesdb'] = (int)$sor['db'];
-            $a['megrendelesdbpernap'] = per($sor['db'], $nap);
+            $a['megrendelesdbpernap'] = $this->per($sor['db'], $nap);
             $a['megrendelesnetto'] = (float)$sor['netto'];
-            $a['megrendelesnettopernap'] = per($sor['netto'], $nap);
-            $a['megrendelesnettoperdb'] = per($sor['netto'], $sor['db']);
+            $a['megrendelesnettopernap'] = $this->per($sor['netto'], $nap);
+            $a['megrendelesnettoperdb'] = $this->per($sor['netto'], $sor['db']);
             if (array_key_exists($ev - 1, $adat)) {
-                $a['megrendelesdbvalt'] = per($a['megrendelesdb'], $adat[$ev - 1]['megrendelesdb']) * 100;
-                $a['megrendelesnettovalt'] = per($a['megrendelesnetto'], $adat[$ev - 1]['megrendelesnetto']) * 100;
-                $a['megrendelesnettoperdbvalt'] = per($a['megrendelesnettoperdb'], $adat[$ev - 1]['megrendelesnettoperdb']) * 100;
+                $a['megrendelesdbvalt'] = $this->per($a['megrendelesdb'], $adat[$ev - 1]['megrendelesdb']) * 100;
+                $a['megrendelesnettovalt'] = $this->per($a['megrendelesnetto'], $adat[$ev - 1]['megrendelesnetto']) * 100;
+                $a['megrendelesnettoperdbvalt'] = $this->per($a['megrendelesnettoperdb'], $adat[$ev - 1]['megrendelesnettoperdb']) * 100;
             } else {
                 $a['megrendelesdbvalt'] = 0;
                 $a['megrendelesnettovalt'] = 0;
@@ -106,17 +106,17 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController
         foreach ($sorok as $sor) {
             $ev = $sor['ev'] * 1;
             $adat[$ev]['szamladb'] = $sor['db'] * 1;
-            $adat[$ev]['teljratadb'] = per($adat[$ev]['szamladb'], $adat[$ev]['megrendelesdb']) * 100;
-            $adat[$ev]['szamladbpernap'] = per($sor['db'], $nap);
+            $adat[$ev]['teljratadb'] = $this->per($adat[$ev]['szamladb'], $adat[$ev]['megrendelesdb']) * 100;
+            $adat[$ev]['szamladbpernap'] = $this->per($sor['db'], $nap);
             $adat[$ev]['szamlanetto'] = $sor['netto'] * 1;
-            $adat[$ev]['teljratanetto'] = per($adat[$ev]['szamlanetto'], $adat[$ev]['megrendelesnetto']) * 100;
-            $adat[$ev]['szamlanettopernap'] = per($sor['netto'], $nap);
-            $adat[$ev]['szamlanettoperdb'] = per($sor['netto'], $sor['db']);
-            $adat[$ev]['teljratanettoperdb'] = per($adat[$ev]['szamlanettoperdb'], $adat[$ev]['megrendelesnettoperdb']) * 100;
+            $adat[$ev]['teljratanetto'] = $this->per($adat[$ev]['szamlanetto'], $adat[$ev]['megrendelesnetto']) * 100;
+            $adat[$ev]['szamlanettopernap'] = $this->per($sor['netto'], $nap);
+            $adat[$ev]['szamlanettoperdb'] = $this->per($sor['netto'], $sor['db']);
+            $adat[$ev]['teljratanettoperdb'] = $this->per($adat[$ev]['szamlanettoperdb'], $adat[$ev]['megrendelesnettoperdb']) * 100;
             if (array_key_exists($ev - 1, $adat)) {
-                $adat[$ev]['szamladbvalt'] = per($adat[$ev]['szamladb'], $adat[$ev - 1]['szamladb']) * 100;
-                $adat[$ev]['szamlanettovalt'] = per($adat[$ev]['szamlanetto'], $adat[$ev - 1]['szamlanetto']) * 100;
-                $adat[$ev]['szamlanettoperdbvalt'] = per($adat[$ev]['szamlanettoperdb'], $adat[$ev - 1]['szamlanettoperdb']) * 100;
+                $adat[$ev]['szamladbvalt'] = $this->per($adat[$ev]['szamladb'], $adat[$ev - 1]['szamladb']) * 100;
+                $adat[$ev]['szamlanettovalt'] = $this->per($adat[$ev]['szamlanetto'], $adat[$ev - 1]['szamlanetto']) * 100;
+                $adat[$ev]['szamlanettoperdbvalt'] = $this->per($adat[$ev]['szamlanettoperdb'], $adat[$ev - 1]['szamlanettoperdb']) * 100;
             } else {
                 $adat[$ev]['szamladbvalt'] = 0;
                 $adat[$ev]['szamlanettovalt'] = 0;
@@ -152,12 +152,12 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController
             }
         }
         $adat['LB']['ev'] = 'Last/Best';
-        $adat['LB']['megrendelesdbvalt'] = per($adat[$keys[$len]]['megrendelesdb'], $bestmegrendelesdb) * 100;
-        $adat['LB']['megrendelesnettovalt'] = per($adat[$keys[$len]]['megrendelesnetto'], $bestmegrendelesnetto) * 100;
-        $adat['LB']['megrendelesnettoperdbvalt'] = per($adat[$keys[$len]]['megrendelesnettoperdb'], $bestmegrendelesnettoperdb) * 100;
-        $adat['LB']['szamladbvalt'] = per($adat[$keys[$len]]['szamladb'], $bestszamladb) * 100;
-        $adat['LB']['szamlanettovalt'] = per($adat[$keys[$len]]['szamlanetto'], $bestszamlanetto) * 100;
-        $adat['LB']['szamlanettoperdbvalt'] = per($adat[$keys[$len]]['szamlanettoperdb'], $bestszamlanettoperdb) * 100;
+        $adat['LB']['megrendelesdbvalt'] = $this->per($adat[$keys[$len]]['megrendelesdb'], $bestmegrendelesdb) * 100;
+        $adat['LB']['megrendelesnettovalt'] = $this->per($adat[$keys[$len]]['megrendelesnetto'], $bestmegrendelesnetto) * 100;
+        $adat['LB']['megrendelesnettoperdbvalt'] = $this->per($adat[$keys[$len]]['megrendelesnettoperdb'], $bestmegrendelesnettoperdb) * 100;
+        $adat['LB']['szamladbvalt'] = $this->per($adat[$keys[$len]]['szamladb'], $bestszamladb) * 100;
+        $adat['LB']['szamlanettovalt'] = $this->per($adat[$keys[$len]]['szamlanetto'], $bestszamlanetto) * 100;
+        $adat['LB']['szamlanettoperdbvalt'] = $this->per($adat[$keys[$len]]['szamlanettoperdb'], $bestszamlanettoperdb) * 100;
         return $adat;
     }
 

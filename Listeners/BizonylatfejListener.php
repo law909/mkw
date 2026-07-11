@@ -155,7 +155,7 @@ class BizonylatfejListener
                 $bizfej->getPartnereuadoszam()
             );
             $termek = $this->em->getRepository(Termek::class)->find($termekid);
-
+            $k = null;
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $termekid) {
                     $k = $btetel;
@@ -321,6 +321,7 @@ class BizonylatfejListener
                 $bizfej->getPartnerSzamlatipus(),
                 $bizfej->getPartnereuadoszam()
             );
+            $k = null;
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $kezktg->getId()) {
                     $k = $btetel;
@@ -403,7 +404,7 @@ class BizonylatfejListener
                 $bizfej->getPartnerSzamlatipus(),
                 $bizfej->getPartnereuadoszam()
             );
-
+            $k = null;
             foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() == $termekid) {
                     $k = $btetel;
@@ -573,7 +574,7 @@ class BizonylatfejListener
                         $this->createVasarlasiUtalvany($entity, $kupon);
                         $this->createSzallitasiKtg($entity, $kupon);
                         $this->createUtanvetKtg($entity, $kupon);
-                        $this->createKezelesiKoltseg($entity, $kupon);
+                        $this->createKezelesiKoltseg($entity);
                     }
                     $entity->calcOsszesen();
                     $entity->calcRugalmasFizmod();
