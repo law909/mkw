@@ -42,9 +42,6 @@ if (\mkw\store::isDarshan()) {
 }
 
 if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
-    $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
-    $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
-    $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
     $router->map('GET', '/teams', 'csapatController#index', 'csapatindex');
     $router->map('GET', '/teams/[:slug]', 'csapatController#show', 'csapat');
     $router->map('GET', '/riders', 'versenyzoController#index', 'versenyzoindex');
