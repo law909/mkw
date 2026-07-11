@@ -62,6 +62,7 @@ class FilterDescriptor implements \Countable
 
     public function merge($masik)
     {
+        $m = null;
         if ($masik instanceof FilterDescriptor) {
             $m = $masik->getArray();
         } elseif (is_array($masik)) {

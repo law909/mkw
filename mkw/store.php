@@ -208,8 +208,6 @@ class store
             return new mkwphpmailer();
         } elseif (self::isMailerGmail()) {
             return new mkwgmailmailer();
-        } elseif (self::getConfigValue('mail.smtp', 0)) {
-            return new mkwzendmailer();
         }
         return new mkwmailer();
     }
@@ -749,7 +747,7 @@ class store
         $v->setVar('akciosjelolourl', self::getParameter(\mkw\consts::AkcioJelolo));
         $v->setVar('top10jelolourl', self::getParameter(\mkw\consts::Top10Jelolo));
         $v->setVar('ingyenszallitasjelolourl', self::getParameter(\mkw\consts::IngyenszallitasJelolo));
-        $popupc = new popupController(null);
+        $popupc = new popupController();
         $v->setVar('popups', $popupc->getForShow());
     }
 
@@ -790,10 +788,10 @@ class store
         \mkw\store::getMainSession()->prevuri = $_SERVER['REQUEST_URI'];
     }
 
-    public static function redirectTo404($keresendo, $params)
+    public static function redirectTo404($keresendo)
     {
         $view = self::getTemplateFactory()->createMainView('404.tpl');
-        $tc = new \Controllers\termekController($params);
+        $tc = new \Controllers\termekController();
         $view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
         \mkw\store::fillTemplate($view);
         $view->setVar('seodescription', t('Sajnos nem találjuk: ') . $keresendo);
@@ -1844,6 +1842,7 @@ class store
         if ($watermark) {
             $watermark_width = imagesx($watermark);
             $watermark_height = imagesy($watermark);
+            $image = null;
             switch (strtolower($ext)) {
                 case 'jpg':
                 case 'jpeg':
@@ -1922,7 +1921,8 @@ class store
             }
             return $d->modify('last monday');
         } else {
-            if ($date == '') {
+            $d = $date;
+            if ($d == '') {
                 $d = date(\mkw\store::$DateFormat);
             }
             $d = new \DateTime(\mkw\store::convDate($d));
@@ -1942,7 +1942,8 @@ class store
             }
             return $d->modify('next sunday');
         } else {
-            if ($date == '') {
+            $d = $date;
+            if ($d == '') {
                 $d = date(\mkw\store::$DateFormat);
             }
             $d = new \DateTime(\mkw\store::convDate($d));

@@ -4,28 +4,34 @@ namespace mkwhelpers;
 
 use \Doctrine\ORM\EntityRepository;
 
-class Repository extends EntityRepository {
+class Repository extends EntityRepository
+{
 
     protected $alias = '_xx';
     protected $entityname;
     protected $orders;
     protected $batches;
 
-    public function getRepo($entityname) {
+    public function getRepo($entityname)
+    {
         return $this->_em->getRepository($entityname);
     }
 
-    public function find($id, $lockMode = null, $lockVersion = null) {
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
         if (isset($id)) {
             return parent::find($id, $lockMode, $lockVersion);
         }
         return null;
     }
 
-    public function getAll($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+    public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -36,10 +42,13 @@ class Repository extends EntityRepository {
         return $q->getResult();
     }
 
-    public function getAllSQL($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+    public function getAllSQL($filter = [], $order = [], $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -50,25 +59,35 @@ class Repository extends EntityRepository {
         return $q->getSQL();
     }
 
-    public function findWithJoins($id) {
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
+    {
+        return null;
+    }
+
+    public function findWithJoins($id)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', '=', $id);
-        $res = $this->getWithJoins($filter, array());
+        $res = $this->getWithJoins($filter, []);
         if (count($res)) {
             return $res[0];
         }
         return null;
     }
 
-    public function getCount($filter) {
+    public function getCount($filter)
+    {
         $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
-                . $this->getFilterString($filter));
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
-    public function getFilterString($filter) {
+    public function getFilterString($filter)
+    {
         if ($filter instanceof FilterDescriptor) {
             return $filter->getFilterString($this->alias);
         }
@@ -82,7 +101,8 @@ class Repository extends EntityRepository {
         return $f->getFilterString($this->alias);
     }
 
-    public function getQueryParameters($filter) {
+    public function getQueryParameters($filter)
+    {
         if ($filter instanceof FilterDescriptor) {
             return $filter->getQueryParameters();
         }
@@ -96,20 +116,19 @@ class Repository extends EntityRepository {
         return $f->getQueryParameters();
     }
 
-    public function getOrderString($order) {
+    public function getOrderString($order)
+    {
         // TODO SQLINJECTION
-        $orderarr = array();
+        $orderarr = [];
         $orderstring = '';
         if ($order) {
             foreach ($order as $field => $irany) {
                 if (strpos($field, '.') === false && strpos($field, '(') === false) {
                     $orderarr[] = $this->alias . '.' . $field . ' ' . $irany;
-                }
-                else {
+                } else {
                     if (strpos($field, '.') === 0 && strpos($field, '(') === false) {
                         $orderarr[] = substr($field, 1) . ' ' . $irany;
-                    }
-                    else {
+                    } else {
                         $orderarr[] = $field . ' ' . $irany;
                     }
                 }
@@ -122,75 +141,84 @@ class Repository extends EntityRepository {
         return $orderstring;
     }
 
-    public function getLimitString($offset, $limit) {
+    public function getLimitString($offset, $limit)
+    {
         if ($offset && $limit) {
             return ' LIMIT ' . $offset . ', ' . $limit;
-        }
-        elseif ($limit) {
+        } elseif ($limit) {
             return ' LIMIT ' . $limit;
         }
         return '';
     }
 
-    public function getOrder($id) {
+    public function getOrder($id)
+    {
         if (!is_array($this->orders)) {
-            return array();
+            return [];
         }
         return $this->orders[$id]['order'];
     }
 
-    public function getBatchesForTpl() {
-        $batchtpl = array();
+    public function getBatchesForTpl()
+    {
+        $batchtpl = [];
         if ($this->batches) {
             foreach ($this->batches as $bid => $bcaption) {
-                $batchtpl[] = array('id' => $bid, 'caption' => $bcaption);
+                $batchtpl[] = ['id' => $bid, 'caption' => $bcaption];
             }
         }
         return $batchtpl;
     }
 
-    public function getOrdersForTpl($rendezendo = 1) {
+    public function getOrdersForTpl($rendezendo = 1)
+    {
         $orders = $this->getOrders();
-        $ordertpl = array();
+        $ordertpl = [];
         foreach ($orders as $oid => $odata) {
-            $ordertpl[] = array(
+            $ordertpl[] = [
                 'id' => $oid,
                 'caption' => $odata['caption'],
                 'selected' => $oid == $rendezendo
-            );
+            ];
         }
         return $ordertpl;
     }
 
-    public function getOrders() {
+    public function getOrders()
+    {
         return $this->orders;
     }
 
-    public function setOrders($orders) {
+    public function setOrders($orders)
+    {
         $this->orders = $orders;
     }
 
-    public function getEntityname() {
+    public function getEntityname()
+    {
         return $this->entityname;
     }
 
-    public function setEntityname($entityname) {
+    public function setEntityname($entityname)
+    {
         $this->entityname = $entityname;
     }
 
-    public function getBatches() {
+    public function getBatches()
+    {
         return $this->batches;
     }
 
-    public function setBatches($batches) {
+    public function setBatches($batches)
+    {
         $this->batches = $batches;
     }
 
-    public function addToBatches($batches) {
+    public function addToBatches($batches)
+    {
         if (!is_array($this->batches)) {
             $this->batches = $batches;
-        }
-        else {
+        } else {
             $this->batches = array_merge($this->batches, $batches);
         }
     }

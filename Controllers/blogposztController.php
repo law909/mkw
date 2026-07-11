@@ -233,7 +233,7 @@ class blogposztController extends \mkwhelpers\MattableController
             $view->setVar('blogposzt', $blogposzt->convertToArray());
             $view->printTemplateResult(false);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 

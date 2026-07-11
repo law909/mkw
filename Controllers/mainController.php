@@ -134,7 +134,7 @@ class mainController extends \mkwhelpers\Controller
             $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
             $this->view->printTemplateResult(true);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 
@@ -162,7 +162,7 @@ class mainController extends \mkwhelpers\Controller
             $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
             $this->view->printTemplateResult(true);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 
@@ -200,7 +200,7 @@ class mainController extends \mkwhelpers\Controller
 
             $this->view->printTemplateResult(true);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 
@@ -303,7 +303,7 @@ class mainController extends \mkwhelpers\Controller
                     }
                     $this->view->printTemplateResult(true);
                 } else {
-                    \mkw\store::redirectTo404($com, $this->params);
+                    \mkw\store::redirectTo404($com);
                 }
                 break;
 
@@ -352,7 +352,7 @@ class mainController extends \mkwhelpers\Controller
                     $this->view->setVar('termek', $t);
                     $this->view->printTemplateResult(true);
                 } else {
-                    \mkw\store::redirectTo404($com, $this->params);
+                    \mkw\store::redirectTo404($com);
                 }
                 break;
         }
@@ -432,7 +432,7 @@ class mainController extends \mkwhelpers\Controller
             $this->view->setVar('termek', $t);
             $this->view->printTemplateResult(true);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 

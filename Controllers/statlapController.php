@@ -109,7 +109,7 @@ class statlapController extends \mkwhelpers\MattableController
             $view->setVar('statlap', $this->getstatlap($statlap));
             $view->printTemplateResult(true);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 

@@ -134,7 +134,7 @@ class hirController extends \mkwhelpers\MattableController
             $view->setVar('hir', $hir->convertToArray());
             $view->printTemplateResult(false);
         } else {
-            \mkw\store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com);
         }
     }
 

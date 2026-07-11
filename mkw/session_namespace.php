@@ -6,7 +6,7 @@ class session_namespace
 {
     private string $namespace;
 
-    public function __construct(string $namespace = 'Default', bool $singleInstance = false)
+    public function __construct(string $namespace = 'Default')
     {
         \mkw\session::start();
 
