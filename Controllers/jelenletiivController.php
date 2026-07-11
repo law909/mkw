@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
 use Entities\Jelenletiiv;
+use Entities\Jelenlettipus;
 
 class jelenletiivController extends \mkwhelpers\MattableController
 {
@@ -19,25 +21,18 @@ class jelenletiivController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Jelenletiiv();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['datum'] = $t->getDatum();
+        $x = $this->getEntityFieldsArray($t);
         $x['datumstr'] = $t->getDatumStr();
-        $x['munkaido'] = $t->getMunkaido();
         $x['dolgozo'] = $t->getDolgozoId();
         $x['dolgozonev'] = $t->getDolgozoNev();
         $x['jelenlettipus'] = $t->getJelenlettipusId();
         $x['jelenlettipusnev'] = $t->getJelenlettipusNev();
-        $x['belepes'] = $t->getBelepes();
-        $x['kilepes'] = $t->getKilepes();
         $x['belepesstr'] = $t->getBelepesStr();
         $x['kilepesstr'] = $t->getKilepesStr();
-        $x['beip'] = $t->getBeip();
-        $x['kiip'] = $t->getKiip();
         return $x;
     }
 
@@ -45,11 +40,11 @@ class jelenletiivController extends \mkwhelpers\MattableController
     {
         $obj->setDatum($this->params->getStringRequestParam('datum'));
         $obj->setMunkaido($this->params->getIntRequestParam('munkaido'));
-        $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo', 0));
+        $ck = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo', 0));
         if ($ck) {
             $obj->setDolgozo($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jelenlettipus', 0));
+        $ck = \mkw\store::getEm()->getRepository(Jelenlettipus::class)->find($this->params->getIntRequestParam('jelenlettipus', 0));
         if ($ck) {
             $obj->setJelenlettipus($ck);
         }
@@ -132,8 +127,8 @@ class jelenletiivController extends \mkwhelpers\MattableController
     public function generatenapi()
     {
         $nap = $this->params->getStringRequestParam('datum', '');
-        $jt = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jt', 0));
-        $egyedek = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins([], []);
+        $jt = \mkw\store::getEm()->getRepository(Jelenlettipus::class)->find($this->params->getIntRequestParam('jt', 0));
+        $egyedek = \mkw\store::getEm()->getRepository(Dolgozo::class)->getWithJoins([], []);
         foreach ($egyedek as $egyed) {
             if ($this->getRepo()->getCount('(_xx.datum=\'' . $nap . '\') AND (d.id=' . $egyed->getId() . ') AND (j.id=' . $jt->getId() . ')') == 0) {
                 $jelen = new Jelenletiiv();
@@ -163,13 +158,13 @@ class jelenletiivController extends \mkwhelpers\MattableController
 
     public function createBelepes()
     {
-        $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
+        $dolgozo = $this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {
             $jelenlet = new \Entities\Jelenletiiv();
             $jelenlet->setDolgozo($dolgozo);
             $jelenlet->setDatum(date(\mkw\store::$SQLDateFormat));
             $jelenlet->setBelepes(date(\mkw\store::$TimeFormat));
-            $jelenlet->setJelenlettipus($this->getRepo('Entities\Jelenlettipus')->find(\mkw\store::getParameter(\mkw\consts::MunkaJelenlet)));
+            $jelenlet->setJelenlettipus($this->getRepo(Jelenlettipus::class)->find(\mkw\store::getParameter(\mkw\consts::MunkaJelenlet)));
             $jelenlet->setBeip($_SERVER['REMOTE_ADDR']);
             $this->getEm()->persist($jelenlet);
             $this->getEm()->flush();
@@ -178,7 +173,7 @@ class jelenletiivController extends \mkwhelpers\MattableController
 
     public function createKilepes()
     {
-        $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
+        $dolgozo = $this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {
             $jelenlet = null;
             $jelenletek = $this->getRepo()->findBy(['dolgozo' => $dolgozo, 'datum' => new \DateTime(\mkw\store::convDate(date(\mkw\store::$SQLDateFormat)))]);

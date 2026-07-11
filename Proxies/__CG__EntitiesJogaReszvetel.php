@@ -338,17 +338,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner($val)
     {
 
@@ -448,17 +437,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTanarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTanarId', []);
-
-        return parent::getTanarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTanar($val)
     {
 
@@ -481,17 +459,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTanarnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTanarnev', []);
-
-        return parent::getTanarnev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getJogaterem()
     {
 
@@ -503,34 +470,12 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getJogateremNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremNev', []);
-
-        return parent::getJogateremNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getJogateremOrarendclass()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremOrarendclass', []);
 
         return parent::getJogateremOrarendclass();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getJogateremId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremId', []);
-
-        return parent::getJogateremId();
     }
 
     /**
@@ -558,28 +503,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getJogaoratipusNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaoratipusNev', []);
-
-        return parent::getJogaoratipusNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getJogaoratipusId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaoratipusId', []);
-
-        return parent::getJogaoratipusId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setJogaoratipus($jogaoratipus)
     {
 
@@ -602,17 +525,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTermek($val)
     {
 
@@ -630,17 +542,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermeknev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknev', []);
-
-        return parent::getTermeknev();
     }
 
     /**
@@ -745,28 +646,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getFizmodnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev', []);
-
-        return parent::getFizmodnev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizmodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
-
-        return parent::getFizmodId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setFizmod($val)
     {
 
@@ -800,17 +679,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getPenztarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarId', []);
-
-        return parent::getPenztarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPenztar($val = NULL)
     {
 
@@ -828,17 +696,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePenztar', []);
 
         return parent::removePenztar();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPenztarnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarnev', []);
-
-        return parent::getPenztarnev();
     }
 
     /**
@@ -927,17 +784,6 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaberlet', []);
 
         return parent::getJogaberlet();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getJogaberletId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaberletId', []);
-
-        return parent::getJogaberletId();
     }
 
     /**

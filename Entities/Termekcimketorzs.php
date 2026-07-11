@@ -57,43 +57,27 @@ class Termekcimketorzs extends Cimketorzs
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['kiskepurl'] = $this->getKepUrlSmall();
-        $x['kategorianev'] = $this->getKategoria()->getNev();
+        $x['kategorianev'] = $this->getKategoria()?->getNev();
         $mk = \mkw\store::getParameter(\mkw\consts::MarkaCs);
-        $x['dontshowcaption'] = $mk == $this->getKategoriaId();
-        $x['ismarka'] = $mk == $this->getKategoriaId();
+        $x['dontshowcaption'] = $mk == $this->getKategoria()?->getId();
+        $x['ismarka'] = $mk == $this->getKategoria()?->getId();
         $x['kiemelt'] = $this->getKiemelt();
         $x['termekfilter'] = $this->getTermekFilter();
         $x['termeklisturl'] = \mkw\store::getRouter()->generate('showmarka', true, ['slug' => $x['slug']]);
         $x['leiras'] = $this->getLeiras();
         $x['szinkod'] = $this->getSzinkod();
-        $x['gyartonev'] = $this->getGyartoNev();
+        $x['gyartonev'] = $this->getGyarto()?->getNev();
         return $x;
     }
 
     public function getTermekFilter()
     {
-        return 'szuro_' . $this->getKategoriaId() . '_' . $this->getId();
+        return 'szuro_' . $this->getKategoria()?->getId() . '_' . $this->getId();
     }
 
     public function getKategoria()
     {
         return $this->kategoria;
-    }
-
-    public function getKategoriaId()
-    {
-        if ($this->kategoria) {
-            return $this->kategoria->getId();
-        }
-        return '';
-    }
-
-    public function getKategoriaNev()
-    {
-        if ($this->kategoria) {
-            return $this->kategoria->getNev();
-        }
-        return '';
     }
 
     public function setKategoria(Cimkekat $kategoria)
@@ -169,22 +153,6 @@ class Termekcimketorzs extends Cimketorzs
     public function getGyarto()
     {
         return $this->gyarto;
-    }
-
-    public function getGyartoNev()
-    {
-        if ($this->gyarto) {
-            return $this->gyarto->getNev();
-        }
-        return '';
-    }
-
-    public function getGyartoId()
-    {
-        if ($this->gyarto) {
-            return $this->gyarto->getId();
-        }
-        return '';
     }
 
     public function setGyarto($gyarto)

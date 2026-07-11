@@ -26,12 +26,11 @@ class szallitasimodfizmodnoveloController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['fizmodnev'] = $t->getFizmodNev();
-        $x['osszeg'] = $t->getOsszeg();
-        $x['maxhatar'] = $t->getMaxhatar();
-        $x['ertekszazalek'] = $t->getErtekszazalek();
+        $x = $this->getEntityFieldsArray($t, $x);
+
+        $x['fizmodnev'] = $t->getFizmod()?->getNev();
         if ($forKarb) {
-            $x['fizmodlist'] = $oc->getSelectList($t->getFizmod() ? $t->getFizmodId() : 0);
+            $x['fizmodlist'] = $oc->getSelectList($t->getFizmod()?->getId());
         }
         return $x;
     }

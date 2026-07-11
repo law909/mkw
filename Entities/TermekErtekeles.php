@@ -63,14 +63,14 @@ class TermekErtekeles
     {
         return [
             'id' => $this->getId(),
-            'termeknev' => $this->getTermekNev(),
-            'termekid' => $this->getTermekId(),
-            'termekslug' => $this->getTermekSlug(),
+            'termeknev' => $this->getTermek()?->getNev(),
+            'termekid' => $this->getTermek()?->getId(),
+            'termekslug' => $this->getTermek()?->getSlug(),
             'termekminikepurl' => $this->getTermek()?->getKepurlMini(),
             'termekkiskepurl' => $this->getTermek()?->getKepurlSmall(),
-            'termeklink' => \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getTermekSlug()]),
-            'partnernev' => $this->isAnonim() ? $this->getPartner()?->getMonogram() : $this->getPartnerNev(),
-            'partnerid' => $this->getPartnerId(),
+            'termeklink' => \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getTermek()?->getSlug()]),
+            'partnernev' => $this->isAnonim() ? $this->getPartner()?->getMonogram() : $this->getPartner()?->getNev(),
+            'partnerid' => $this->getPartner()?->getId(),
             'ertekeles' => $this->getErtekeles(),
             'elony' => $this->getElony(),
             'hatrany' => $this->getHatrany(),
@@ -124,22 +124,6 @@ class TermekErtekeles
         return $this->partner;
     }
 
-    public function getPartnerId()
-    {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
-    }
-
-    public function getPartnerNev()
-    {
-        if ($this->partner) {
-            return $this->partner->getNev();
-        }
-        return '';
-    }
-
     public function setPartner(Partner $val)
     {
         if ($this->partner !== $val) {
@@ -160,30 +144,6 @@ class TermekErtekeles
     public function getTermek()
     {
         return $this->termek;
-    }
-
-    public function getTermekId()
-    {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
-    }
-
-    public function getTermekNev()
-    {
-        if ($this->termek) {
-            return $this->termek->getNev();
-        }
-        return '';
-    }
-
-    public function getTermekSlug()
-    {
-        if ($this->termek) {
-            return $this->termek->getSlug();
-        }
-        return '';
     }
 
     public function setTermek(Termek $val)

@@ -20,19 +20,14 @@ class kuponController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Kupon();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['lejart'] = $t->getLejart();
+        $x = $this->getEntityFieldsArray($t);
         $x['lejartstr'] = $t->getLejartStr();
-        $x['tipus'] = $t->getTipus();
         $x['tipusstr'] = $t->getTipusStr();
         $x['createdstr'] = $t->getCreatedStr();
-        $x['osszeg'] = $t->getOsszeg();
-        $x['minimumosszeg'] = $t->getMinimumosszeg();
         return $x;
     }
 
@@ -43,12 +38,8 @@ class kuponController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $obj->setId($this->params->getStringRequestParam('xid'));
-        $obj->setLejart($this->params->getIntRequestParam('lejart'));
-        $obj->setTipus($this->params->getIntRequestParam('tipus'));
-        $obj->setOsszeg($this->params->getNumRequestParam('osszeg'));
-        $obj->setMinimumosszeg($this->params->getNumRequestParam('minimumosszeg'));
-        \mkw\store::writelog('setfields' . $obj->getId());
         return $obj;
     }
 

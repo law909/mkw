@@ -232,11 +232,11 @@ class RendezvenyJelentkezes
         $x['id'] = $this->getId();
         $x['megjegyzes'] = $this->getMegjegyzes();
         $x['datum'] = $this->getDatumStr();
-        $x['rendezvenynev'] = $this->getRendezvenyNev();
+        $x['rendezvenynev'] = $this->getRendezveny()?->getNev();
         $x['rendezvenyteljesnev'] = $this->getRendezveny()?->getTeljesNev();
-        $x['rendezvenykezdodatum'] = $this->getRendezvenyDatumStr();
+        $x['rendezvenykezdodatum'] = $this->getRendezveny()?->getKezdodatumStr();
         $x['rendezvenykezdoido'] = $this->getRendezveny()?->getKezdoido();
-        $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
+        $x['rendezvenytanarnev'] = $this->getRendezveny()?->getTanar()?->getNev();
         if ($this->getRendezveny()->getEarlybirdvege() >= $this->getDatum() && $this->getRendezveny()->getEarlybirdar()) {
             $x['rendezvenyar'] = $this->getRendezveny()->getEarlybirdar();
         } else {
@@ -244,26 +244,26 @@ class RendezvenyJelentkezes
         }
         $x['kellszamlazasiadat'] = $this->getRendezveny()?->getKellszamlazasiadat();
         $x['csomag'] = $this->getRendezveny()?->isCsomag();
-        $x['partnerid'] = $this->getPartnerId();
+        $x['partnerid'] = $this->getPartner()?->getId();
         $x['partnernev'] = $this->getPartnernev();
-        $x['partnercim'] = $this->getPartnerCim();
+        $x['partnercim'] = $this->getPartner()?->getCim();
         $x['partneremail'] = $this->getPartneremail();
         $x['partnertelefon'] = $this->getPartnertelefon();
-        $x['partnervezeteknev'] = $this->getPartnerVezeteknev();
-        $x['partnerkeresztnev'] = $this->getPartnerKeresztnev();
-        $x['partnerirszam'] = $this->getPartnerIrszam();
-        $x['partnervaros'] = $this->getPartnerVaros();
-        $x['partnerutca'] = $this->getPartnerUtca();
-        $x['partnerhazszam'] = $this->getPartnerHazszam();
+        $x['partnervezeteknev'] = $this->getPartner()?->getVezeteknev();
+        $x['partnerkeresztnev'] = $this->getPartner()?->getKeresztnev();
+        $x['partnerirszam'] = $this->getPartner()?->getIrszam();
+        $x['partnervaros'] = $this->getPartner()?->getVaros();
+        $x['partnerutca'] = $this->getPartner()?->getUtca();
+        $x['partnerhazszam'] = $this->getPartner()?->getHazszam();
 
         $x['fizetve'] = $this->getFizetve();
         $x['fizetesdatum'] = $this->getFizetesdatumStr();
-        $x['fizetvepenztarnev'] = $this->getFizetvepenztarNev();
+        $x['fizetvepenztarnev'] = $this->getFizetvepenztar()?->getNev();
         $x['fizetvepenztarbizonylatszam'] = $this->getFizetvepenztarbizonylatszam();
-        $x['fizetvebankszamlaszam'] = $this->getFizetvebankszamlaSzam();
+        $x['fizetvebankszamlaszam'] = $this->getFizetvebankszamla()?->getSzamlaszam();
         $x['fizetvebankbizonylatszam'] = $this->getFizetvebankbizonylatszam();
         $x['fizetveosszeghuf'] = $this->getFizetveosszeghuf();
-        $x['fizmodnev'] = $this->getFizmodNev();
+        $x['fizmodnev'] = $this->getFizmod()?->getNev();
 
         $x['szamlazva'] = $this->getSzamlazva();
         $x['szamlazasdatum'] = $this->getSzamlazasdatumStr();
@@ -278,12 +278,12 @@ class RendezvenyJelentkezes
 
         $x['visszautalva'] = $this->getVisszautalva();
         $x['visszautalasdatum'] = $this->getVisszautalasdatumStr();
-        $x['visszautalaspenztarnev'] = $this->getVisszautalaspenztarNev();
+        $x['visszautalaspenztarnev'] = $this->getVisszautalaspenztar()?->getNev();
         $x['visszautalaspenztarbizonylatszam'] = $this->getVisszautalaspenztarbizonylatszam();
-        $x['visszautalasbankszamlaszam'] = $this->getVisszautalasbankszamlaSzam();
+        $x['visszautalasbankszamlaszam'] = $this->getVisszautalasbankszamla()?->getSzamlaszam();
         $x['visszautalasbankbizonylatszam'] = $this->getVisszautalasbankbizonylatszam();
         $x['visszautalasosszeghuf'] = $this->getVisszautalasosszeghuf();
-        $x['visszautalasfizmodnev'] = $this->getVisszautalasfizmodNev();
+        $x['visszautalasfizmodnev'] = $this->getVisszautalasfizmod()?->getNev();
 
         $x['emailregkoszono'] = $this->getEmailregkoszono();
         $x['emaildijbekero'] = $this->getEmaildijbekero();
@@ -513,14 +513,6 @@ class RendezvenyJelentkezes
         return $this->partner;
     }
 
-    public function getPartnerId()
-    {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -558,93 +550,12 @@ class RendezvenyJelentkezes
         return $this->partneremail;
     }
 
-    public function getPartnerCim()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getCim();
-        }
-        return null;
-    }
-
-    public function getPartnerKeresztnev()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getKeresztnev();
-        }
-        return null;
-    }
-
-    public function getPartnerVezeteknev()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getVezeteknev();
-        }
-        return null;
-    }
-
-    public function getPartnerIrszam()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getIrszam();
-        }
-        return null;
-    }
-
-    public function getPartnerVaros()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getVaros();
-        }
-        return null;
-    }
-
-    public function getPartnerUtca()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getUtca();
-        }
-        return null;
-    }
-
-    public function getPartnerHazszam()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getHazszam();
-        }
-        return null;
-    }
-
-    public function getPartnerAdoszam()
-    {
-        if ($this->getPartner()) {
-            return $this->getPartner()->getAdoszam();
-        }
-        return null;
-    }
-
     /**
      * @return \Entities\Fizmod
      */
     public function getFizmod()
     {
         return $this->fizmod;
-    }
-
-    public function getFizmodNev()
-    {
-        if ($this->getFizmod()) {
-            return $this->getFizmod()->getNev();
-        }
-        return null;
-    }
-
-    public function getFizmodId()
-    {
-        $fm = $this->getFizmod();
-        if ($fm) {
-            return $fm->getId();
-        }
-        return null;
     }
 
     /**
@@ -764,44 +675,12 @@ class RendezvenyJelentkezes
         return $this->fizetesbejegyzo;
     }
 
-    public function getFizetesbejegyzoId()
-    {
-        if ($this->fizetesbejegyzo) {
-            return $this->fizetesbejegyzo->getId();
-        }
-        return null;
-    }
-
-    public function getFizetesbejegyzoNev()
-    {
-        if ($this->fizetesbejegyzo) {
-            return $this->fizetesbejegyzo->getNev();
-        }
-        return null;
-    }
-
     /**
      * @return mixed
      */
     public function getSzamlazasbejegyzo()
     {
         return $this->szamlazasbejegyzo;
-    }
-
-    public function getSzamlazasbejegyzoId()
-    {
-        if ($this->szamlazasbejegyzo) {
-            return $this->szamlazasbejegyzo->getId();
-        }
-        return null;
-    }
-
-    public function getSzamlazasbejegyzoNev()
-    {
-        if ($this->szamlazasbejegyzo) {
-            return $this->szamlazasbejegyzo->getNev();
-        }
-        return null;
     }
 
     /**
@@ -812,44 +691,12 @@ class RendezvenyJelentkezes
         return $this->lemondasbejegyzo;
     }
 
-    public function getLemondasbejegyzoId()
-    {
-        if ($this->lemondasbejegyzo) {
-            return $this->lemondasbejegyzo->getId();
-        }
-        return null;
-    }
-
-    public function getLemondasbejegyzoNev()
-    {
-        if ($this->lemondasbejegyzo) {
-            return $this->lemondasbejegyzo->getNev();
-        }
-        return null;
-    }
-
     /**
      * @return mixed
      */
     public function getVisszautalasbejegyzo()
     {
         return $this->visszautalasbejegyzo;
-    }
-
-    public function getVisszautalasbejegyzoId()
-    {
-        if ($this->visszautalasbejegyzo) {
-            return $this->visszautalasbejegyzo->getId();
-        }
-        return null;
-    }
-
-    public function getVisszautalasbejegyzoNev()
-    {
-        if ($this->visszautalasbejegyzo) {
-            return $this->visszautalasbejegyzo->getNev();
-        }
-        return null;
     }
 
     /**
@@ -879,46 +726,6 @@ class RendezvenyJelentkezes
         if ($this->rendezveny !== null) {
             $this->rendezveny = null;
         }
-    }
-
-    public function getRendezvenyId()
-    {
-        if ($this->getRendezveny()) {
-            return $this->getRendezveny()->getId();
-        }
-        return null;
-    }
-
-    public function getRendezvenyNev()
-    {
-        if ($this->getRendezveny()) {
-            return $this->getRendezveny()->getNev();
-        }
-        return null;
-    }
-
-    public function getRendezvenyTeljesNev()
-    {
-        if ($this->getRendezveny()) {
-            return $this->getRendezveny()->getTeljesNev();
-        }
-        return null;
-    }
-
-    public function getRendezvenyDatumStr()
-    {
-        if ($this->getRendezveny()) {
-            return $this->getRendezveny()->getKezdodatumStr();
-        }
-        return null;
-    }
-
-    public function getRendezvenyTanarNev()
-    {
-        if ($this->getRendezveny()) {
-            return $this->getRendezveny()->getTanarNev();
-        }
-        return null;
     }
 
     /**
@@ -980,7 +787,7 @@ class RendezvenyJelentkezes
     public function getSzamlazvabizonylattipusNev()
     {
         /** @var \Entities\Bizonylattipus $bt */
-        $bt = \mkw\store::getEm()->getRepository('\Entities\Bizonylattipus')->find($this->szamlazvabizonylattipus);
+        $bt = \mkw\store::getEm()->getRepository(Bizonylattipus::class)->find($this->szamlazvabizonylattipus);
         if ($bt) {
             return $bt->getNev();
         }
@@ -1067,14 +874,6 @@ class RendezvenyJelentkezes
         return $this->fizetvepenztar;
     }
 
-    public function getFizetvepenztarId()
-    {
-        if ($this->fizetvepenztar) {
-            return $this->fizetvepenztar->getId();
-        }
-        return null;
-    }
-
     /**
      * @param \Entities\Penztar|null $val
      */
@@ -1096,36 +895,12 @@ class RendezvenyJelentkezes
         }
     }
 
-    public function getFizetvepenztarNev()
-    {
-        if ($this->getFizetvepenztar()) {
-            return $this->getFizetvepenztar()->getNev();
-        }
-        return null;
-    }
-
     /**
      * @return \Entities\Bankszamla
      */
     public function getFizetvebankszamla()
     {
         return $this->fizetvebankszamla;
-    }
-
-    public function getFizetvebankszamlaId()
-    {
-        if ($this->fizetvebankszamla) {
-            return $this->fizetvebankszamla->getId();
-        }
-        return '';
-    }
-
-    public function getFizetvebankszamlaSzam()
-    {
-        if ($this->getFizetvebankszamla()) {
-            return $this->getFizetvebankszamla()->getSzamlaszam();
-        }
-        return '';
     }
 
     /**
@@ -1157,14 +932,6 @@ class RendezvenyJelentkezes
         return $this->visszautalaspenztar;
     }
 
-    public function getVisszautalaspenztarId()
-    {
-        if ($this->visszautalaspenztar) {
-            return $this->visszautalaspenztar->getId();
-        }
-        return null;
-    }
-
     /**
      * @param \Entities\Penztar|null $val
      */
@@ -1186,36 +953,12 @@ class RendezvenyJelentkezes
         }
     }
 
-    public function getVisszautalaspenztarNev()
-    {
-        if ($this->getVisszautalaspenztar()) {
-            return $this->getVisszautalaspenztar()->getNev();
-        }
-        return null;
-    }
-
     /**
      * @return \Entities\Bankszamla
      */
     public function getVisszautalasbankszamla()
     {
         return $this->visszautalasbankszamla;
-    }
-
-    public function getVisszautalasbankszamlaId()
-    {
-        if ($this->visszautalasbankszamla) {
-            return $this->visszautalasbankszamla->getId();
-        }
-        return '';
-    }
-
-    public function getVisszautalasbankszamlaSzam()
-    {
-        if ($this->getVisszautalasbankszamla()) {
-            return $this->getVisszautalasbankszamla()->getSzamlaszam();
-        }
-        return '';
     }
 
     /**
@@ -1245,23 +988,6 @@ class RendezvenyJelentkezes
     public function getVisszautalasfizmod()
     {
         return $this->visszautalasfizmod;
-    }
-
-    public function getVisszautalasfizmodNev()
-    {
-        if ($this->getVisszautalasfizmod()) {
-            return $this->getVisszautalasfizmod()->getNev();
-        }
-        return null;
-    }
-
-    public function getVisszautalasfizmodId()
-    {
-        $fm = $this->getVisszautalasfizmod();
-        if ($fm) {
-            return $fm->getId();
-        }
-        return null;
     }
 
     /**

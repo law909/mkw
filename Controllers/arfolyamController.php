@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Arfolyam;
+use Entities\Valutanem;
 
 class arfolyamController extends \mkwhelpers\JQGridController
 {
@@ -23,7 +24,7 @@ class arfolyamController extends \mkwhelpers\JQGridController
     {
         $obj->setDatum(new \DateTime(str_replace('.', '-', $this->params->getStringRequestParam('datum'))));
         $obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
-        $valutanem = \mkw\store::getEm()->getReference('Entities\Valutanem', $this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = \mkw\store::getEm()->getReference(Valutanem::class, $this->params->getIntRequestParam('valutanem', 0));
         try {
             $valutanem->getId();
             $obj->setValutanem($valutanem);
@@ -83,7 +84,7 @@ class arfolyamController extends \mkwhelpers\JQGridController
         $datum = \mkw\store::convDate($this->params->getStringRequestParam('datum'));
         $datum = date(\mkw\store::$DateFormat, strtotime($datum));
         $rvaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
-        $vr = \mkw\store::getEm()->getRepository('Entities\Valutanem');
+        $vr = \mkw\store::getEm()->getRepository(Valutanem::class);
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', '<>', $rvaluta);

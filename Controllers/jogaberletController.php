@@ -31,29 +31,22 @@ class jogaberletController extends \mkwhelpers\MattableController
     protected function loadVars($t)
     {
         $uj = false;
-        $x = [];
         if (!$t) {
             $uj = true;
             $t = new \Entities\JogaBerlet();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['termeknev'] = $t->getTermeknev();
-        $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
-        $x['partneremail'] = $t->getPartneremail();
+        $x = $this->getEntityFieldsArray($t);
+        $x['partner'] = $t->getPartner()?->getId();
+        $x['partnernev'] = $t->getPartner()?->getNev();
+        $x['partneremail'] = $t->getPartner()?->getEmail();
         $x['vasarlasnapja'] = $t->getVasarlasnapjaStr();
         $x['lejaratdatum'] = $t->getLejaratdatumStr();
-        $x['lejart'] = $t->isLejart();
-        $x['elfogyottalkalom'] = $t->getElfogyottalkalom();
-        $x['offlineelfogyottalkalom'] = $t->getOfflineelfogyottalkalom();
-        $x['nincsfizetve'] = $t->isNincsfizetve();
         $x['bruttoar'] = $t->getBruttoegysar();
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
-        $x['szamlazva'] = $t->isSzamlazva();
         if (!$uj) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('jogaberlet', '=', $t);
@@ -64,8 +57,8 @@ class jogaberletController extends \mkwhelpers\MattableController
                 $l[] = [
                     'datum' => $latog->getDatumStr(),
                     'nap' => $latog->getDatumNapnev(),
-                    'tanar' => $latog->getTanarnev(),
-                    'oratipus' => $latog->getJogaoratipusNev()
+                    'tanar' => $latog->getTanar()?->getNev(),
+                    'oratipus' => $latog->getJogaoratipus()?->getNev(),
                 ];
             }
             $x['latogatasok'] = $l;
@@ -76,6 +69,8 @@ class jogaberletController extends \mkwhelpers\MattableController
     /** @param \Entities\JogaBerlet $obj */
     protected function setFields($obj)
     {
+        $oldlejart = $obj->isLejart();
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $ck = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
         if ($ck) {
             $obj->setTermek($ck);
@@ -88,14 +83,7 @@ class jogaberletController extends \mkwhelpers\MattableController
         } else {
             $obj->removePartner();
         }
-        $obj->setVasarlasnapja($this->params->getStringRequestParam('vasarlasnapja'));
-        $obj->setLejaratdatum($this->params->getStringRequestParam('lejaratdatum'));
-        $obj->setElfogyottalkalom($this->params->getIntRequestParam('elfogyottalkalom'));
-        $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
-        $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
-        $obj->setSzamlazva($this->params->getBoolRequestParam('szamlazva', false));
         $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
-        $oldlejart = $obj->isLejart();
         $obj->setLejart($this->params->getBoolRequestParam('lejart'));
         if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
             $obj->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletDatumLejartSablon));
@@ -212,11 +200,11 @@ class jogaberletController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController();
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartner()?->getId() : 0)));
         }
         if (!\mkw\store::isTermekAutocomplete()) {
             $termek = new termekController();
-            $view->setVar('termeklist', $termek->getEladhatoSelectList(($record ? $record->getTermekId() : 0)));
+            $view->setVar('termeklist', $termek->getEladhatoSelectList(($record ? $record->getTermek()?->getId() : 0)));
         }
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();
@@ -236,7 +224,7 @@ class jogaberletController extends \mkwhelpers\MattableController
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getFullNev(),
-                'termekid' => $sor->getTermekId(),
+                'termekid' => $sor->getTermek()?->getId(),
                 'selected' => ($sor->getId() == $selid)
             ];
         }
@@ -261,7 +249,6 @@ class jogaberletController extends \mkwhelpers\MattableController
                 $termek = $berlet->getTermek();
                 if ($termek) {
                     $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
-                    $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
                     $valtozat = null;
                     if ($this->params->getIntRequestParam('valtozat')) {
                         $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
@@ -277,23 +264,21 @@ class jogaberletController extends \mkwhelpers\MattableController
                             'ebrutto' => 0,
                         ];
                         echo json_encode($r);
-                    } else {
-                        if ($termek) {
-                            $o = $termek->getJogaalkalom();
-                            if (!$o) {
-                                $o = 1;
-                            }
-                            $r = [
-                                'netto' => $termek->getNettoAr($valtozat) / $o,
-                                'brutto' => $termek->getBruttoAr($valtozat) / $o,
-                                'nettofull' => $termek->getNettoAr($valtozat),
-                                'bruttofull' => $termek->getBruttoAr($valtozat),
-                                'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
-                                'enetto' => 0,
-                                'ebrutto' => 0,
-                            ];
-                            echo json_encode($r);
+                    } elseif ($termek) {
+                        $o = $termek->getJogaalkalom();
+                        if (!$o) {
+                            $o = 1;
                         }
+                        $r = [
+                            'netto' => $termek->getNettoAr($valtozat) / $o,
+                            'brutto' => $termek->getBruttoAr($valtozat) / $o,
+                            'nettofull' => $termek->getNettoAr($valtozat),
+                            'bruttofull' => $termek->getBruttoAr($valtozat),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
+                            'enetto' => 0,
+                            'ebrutto' => 0,
+                        ];
+                        echo json_encode($r);
                     }
                 }
             }
@@ -373,15 +358,15 @@ class jogaberletController extends \mkwhelpers\MattableController
                 }
                 if ($berlet) {
                     $res[] = [
-                        'partnerid' => $reszvetel->getPartnerId(),
-                        'partner' => $reszvetel->getPartnernev(),
+                        'partnerid' => $reszvetel->getPartner()?->getId(),
+                        'partner' => $reszvetel->getPartner()?->getNev(),
                         'berlet' => $berlet->getNev(),
                         'elhasznalt' => $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()
                     ];
                 } else {
                     $res[] = [
-                        'partnerid' => $reszvetel->getPartnerId(),
-                        'partner' => $reszvetel->getPartnernev(),
+                        'partnerid' => $reszvetel->getPartner()?->getId(),
+                        'partner' => $reszvetel->getPartner()?->getNev(),
                         'berlet' => 'nincs bérlete',
                         'elhasznalt' => ''
                     ];
@@ -465,8 +450,8 @@ class jogaberletController extends \mkwhelpers\MattableController
             \mkw\store::writelog(
                 $berlet->getId() . ': '
                 . $berlet->getNev() . ' | '
-                . $berlet->getPartnernev()
-                . ' (' . $berlet->getPartneremail() . ') | '
+                . $berlet->getPartner()?->getNev()
+                . ' (' . $berlet->getPartner()?->getEmail() . ') | '
                 . $berlet->getVasarlasnapjaStr() . ' | '
                 . $berlet->getElfogyottalkalom() . ' elfogyott alkalom'
                 ,

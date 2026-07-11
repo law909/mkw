@@ -20,17 +20,11 @@ class emailtemplateController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Emailtemplate();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['targy'] = $t->getTargy();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['aszfcsatolaskell'] = $t->isAszfcsatolaskell();
-        return $x;
+        return $this->getEntityFieldsArray($t);
     }
 
     /**
@@ -40,11 +34,7 @@ class emailtemplateController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
-        $obj->setTargy($this->params->getStringRequestParam('targy'));
-        $obj->setAszfcsatolaskell($this->params->getBoolRequestParam('aszfcsatolaskell'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj, ['raw' => ['szoveg']]);
     }
 
     public function getlistbody()

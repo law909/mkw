@@ -107,16 +107,6 @@ class TermekAr
         return $this->valutanem;
     }
 
-    public function getValutanemnev()
-    {
-        return $this->valutanem?->getNev();
-    }
-
-    public function getValutanemId()
-    {
-        return $this->valutanem->getId();
-    }
-
     public function setValutanem($val)
     {
         if (!($val instanceof \Entities\Valutanem)) {

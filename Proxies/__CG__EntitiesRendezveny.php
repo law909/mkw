@@ -316,39 +316,6 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTanarNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTanarNev', []);
-
-        return parent::getTanarNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTanarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTanarId', []);
-
-        return parent::getTanarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTanarUrl()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTanarUrl', []);
-
-        return parent::getTanarUrl();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTanar($tanar)
     {
 
@@ -366,28 +333,6 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
-
-        return parent::getTermekNev();
     }
 
     /**
@@ -558,28 +503,6 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getRendezvenyallapotNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyallapotNev', []);
-
-        return parent::getRendezvenyallapotNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyallapotId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyallapotId', []);
-
-        return parent::getRendezvenyallapotId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setRendezvenyallapot($ra)
     {
 
@@ -602,39 +525,6 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getJogateremNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremNev', []);
-
-        return parent::getJogateremNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getJogateremOrarendclass()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremOrarendclass', []);
-
-        return parent::getJogateremOrarendclass();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getJogateremId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremId', []);
-
-        return parent::getJogateremId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setJogaterem($ra)
     {
 
@@ -652,28 +542,6 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHelyszin', []);
 
         return parent::getHelyszin();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getHelyszinNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHelyszinNev', []);
-
-        return parent::getHelyszinNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getHelyszinId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHelyszinId', []);
-
-        return parent::getHelyszinId();
     }
 
     /**

@@ -4,11 +4,7 @@ namespace Controllers;
 
 use Entities\Termek;
 use Entities\TermekAr;
-use Entities\TermekFa;
-use Entities\TermekMenu;
-use Entities\Valutanem;
 use mkw\store;
-use mkwhelpers\FilterDescriptor;
 
 class termekarController extends \mkwhelpers\MattableController
 {
@@ -33,13 +29,9 @@ class termekarController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['termek'] = $t->getTermek();
-        $x['valutanem'] = $t->getValutanem();
-        $x['arsav'] = $t->getArsav();
-        $x['netto'] = $t->getNetto();
-        $x['brutto'] = $t->getBrutto();
+        $x = $this->getEntityFieldsArray($t, $x);
         if ($forKarb) {
-            $x['valutanemlist'] = $valutanem->getSelectList(($t->getValutanem() ? $t->getValutanemId() : 0));
+            $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanem()?->getId());
             $x['arsavlist'] = $arsav->getSelectList($t->getArsav()?->getId());
         }
         return $x;
@@ -47,7 +39,7 @@ class termekarController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
-        $ck = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('altermek'));
+        $ck = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('altermek'));
         if ($ck) {
             $obj->setAlTermek($ck);
         }

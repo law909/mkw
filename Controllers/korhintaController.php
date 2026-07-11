@@ -20,34 +20,18 @@ class korhintaController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Korhinta();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['url'] = $t->getUrl();
-        $x['kepurl'] = $t->getKepurl();
+        $x = $this->getEntityFieldsArray($t);
         $x['kepurlsmall'] = $t->getKepurlSmall();
-        $x['kepleiras'] = $t->getKepleiras();
-        $x['lathato'] = $t->getLathato();
-        $x['sorrend'] = $t->getSorrend();
-
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setUrl($this->params->getStringRequestParam('url'));
-        $obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
-        $obj->setKepUrl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend', 0));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getlistbody()

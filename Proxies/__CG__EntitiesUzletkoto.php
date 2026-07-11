@@ -580,28 +580,6 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getPartnervalutanemnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemnev', []);
-
-        return parent::getPartnervalutanemnev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnervalutanemId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemId', []);
-
-        return parent::getPartnervalutanemId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartnervalutanem($val)
     {
 
@@ -630,28 +608,6 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimod', []);
 
         return parent::getPartnerszallitasimod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerszallitasimodNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodNev', []);
-
-        return parent::getPartnerszallitasimodNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerszallitasimodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodId', []);
-
-        return parent::getPartnerszallitasimodId();
     }
 
     /**
@@ -707,28 +663,6 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmod', []);
 
         return parent::getPartnerfizmod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerfizmodNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodNev', []);
-
-        return parent::getPartnerfizmodNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerfizmodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodId', []);
-
-        return parent::getPartnerfizmodId();
     }
 
     /**
@@ -795,17 +729,6 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFouzletkoto', []);
 
         return parent::getFouzletkoto();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFouzletkotoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFouzletkotoId', []);
-
-        return parent::getFouzletkotoId();
     }
 
     /**

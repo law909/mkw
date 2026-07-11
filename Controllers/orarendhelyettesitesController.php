@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
+use Entities\Emailtemplate;
 use Entities\JogaBejelentkezes;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
@@ -34,12 +36,10 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
             $t = new Orarendhelyettesites();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
+        $x = $this->getEntityFieldsArray($t);
         $x['helyettesitonev'] = $t->getHelyettesitoNev();
         $x['oranev'] = $t->getOrarendNev();
         $x['datum'] = $t->getDatumStr();
-        $x['inaktiv'] = $t->getInaktiv();
-        $x['elmarad'] = $t->getElmarad();
         return $x;
     }
 
@@ -52,7 +52,7 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
     {
         switch ($this->params->getStringRequestParam('oper')) {
             case 'edit':
-                $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
+                $helyettesito = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('helyettesito'));
                 if ($helyettesito) {
                     $obj->setHelyettesito($helyettesito);
                 } else {
@@ -66,11 +66,11 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
                 }
                 break;
             default:
-                $orarend = \mkw\store::getEm()->getRepository('Entities\Orarend')->find($this->params->getIntRequestParam('orarend'));
+                $orarend = \mkw\store::getEm()->getRepository(Orarend::class)->find($this->params->getIntRequestParam('orarend'));
                 if ($orarend) {
                     $obj->setOrarend($orarend);
                 }
-                $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
+                $helyettesito = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('helyettesito'));
                 if ($helyettesito) {
                     $obj->setHelyettesito($helyettesito);
                 } else {
@@ -83,7 +83,6 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
                     $this->sendErtesitoEmail($obj);
                 }
         }
-//		$obj->doStuffOnPrePersist();
         return $obj;
     }
 
@@ -99,7 +98,7 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
             /** @var \Entities\JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
                 $email = $resztvevo->getPartneremail();
-                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasErtesitoSablon));
+                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasErtesitoSablon));
                 if ($email && $emailtpl) {
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $body = \mkw\store::getTemplateFactory()->createMainView(
@@ -137,7 +136,7 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
         $dolgozo = $o->getOrarend()->getDolgozo();
         if ($parancs !== $this->delOperation && ($o->getElmarad() || $o->getHelyettesitoId()) && $dolgozo->isOraelmaradaskonyvelonek()) {
             $email = \mkw\store::getParameter(\mkw\consts::KonyveloEmail);
-            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasKonyvelonekSablon));
+            $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasKonyvelonekSablon));
             if ($email && $emailtpl) {
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $body = \mkw\store::getTemplateFactory()->createMainView(

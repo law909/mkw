@@ -126,7 +126,7 @@ class exportController extends \mkwhelpers\Controller
                 $cszoveg = '';
                 /** @var \Entities\Termekcimketorzs $c */
                 foreach ($cimkek as $c) {
-                    $cszoveg = $cszoveg . '<br>' . $c->getKategoriaNev() . ': ' . $c->getNev();
+                    $cszoveg = $cszoveg . '<br>' . $c->getKategoria()?->getNev() . ': ' . $c->getNev();
                 }
                 if ($cszoveg) {
                     $leiras = $leiras . '<p>' . $cszoveg . '</p>';
@@ -254,7 +254,7 @@ class exportController extends \mkwhelpers\Controller
                 $cszoveg = '';
                 /** @var \Entities\Termekcimketorzs $c */
                 foreach ($cimkek as $c) {
-                    $cszoveg = $cszoveg . '<br>' . $c->getKategoriaNev() . ': ' . $c->getNev();
+                    $cszoveg = $cszoveg . '<br>' . $c->getKategoria()?->getNev() . ': ' . $c->getNev();
                 }
                 if ($cszoveg) {
                     $leiras = $leiras . '<p>' . $cszoveg . '</p>';

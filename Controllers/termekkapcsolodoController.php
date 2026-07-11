@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Termek;
 use Entities\TermekKapcsolodo;
 use mkw\store;
 
@@ -20,7 +21,6 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $termek = new termekController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekKapcsolodo();
@@ -31,21 +31,19 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
+        $x = $this->getEntityFieldsArray($t, $x);
         $x['termek'] = $t->getTermek();
         $x['termeknev'] = $t->getTermekNev();
         $x['altermek'] = $t->getAlTermek();
         $x['altermekid'] = ($t->getAlTermek() ? $t->getAlTermek()->getId() : 0);
         $x['altermeknev'] = $t->getAlTermekNev();
         $x['altermekkepurl'] = $t->getAlTermek() ? $t->getAlTermek()->getKepUrlSmall() : '';
-        if ($forKarb) {
-//            $x['termeklist'] = $termek->getSelectList(($t->getAlTermek() ? $t->getAlTermek()->getId() : 0));
-        }
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $ck = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('altermek'));
+        $ck = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('altermek'));
         if ($ck) {
             $obj->setAlTermek($ck);
         }

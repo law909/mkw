@@ -756,28 +756,6 @@ class Versenyzo extends \Entities\Versenyzo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getCsapatNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsapatNev', []);
-
-        return parent::getCsapatNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getCsapatId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsapatId', []);
-
-        return parent::getCsapatId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setCsapat($csapat)
     {
 

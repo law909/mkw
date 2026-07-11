@@ -4,9 +4,14 @@ namespace Controllers;
 
 use Entities\Bankbizonylatfej;
 use Entities\Bankbizonylattetel;
+use Entities\Bankszamla;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\Fizmod;
+use Entities\Jogcim;
+use Entities\Partner;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -67,19 +72,19 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
 
-        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
         }
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        $ck = \mkw\store::getEm()->getRepository(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
         if ($ck) {
             $obj->setBankszamla($ck);
         }
 
         switch ($type) {
             case 'b':
-                $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+                $bt = $this->getRepo(Bizonylattipus::class)->find('bank');
                 $obj->setBizonylattipus($bt);
                 break;
             case 'p':
@@ -93,8 +98,8 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
                     if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
                         $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
                         $irany = $this->params->getIntRequestParam('tetelirany_' . $tetelid);
-                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
-                        $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('tetelpartner_' . $tetelid));
+                        $jogcim = $this->getEm()->getRepository(Jogcim::class)->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
+                        $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tetelpartner_' . $tetelid));
                         if ($jogcim && $partner) {
                             switch ($oper) {
                                 case $this->addOperation:
@@ -122,7 +127,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
                                     break;
                                 case $this->editOperation:
                                     /** @var \Entities\Bankbizonylattetel $tetel */
-                                    $tetel = $this->getEm()->getRepository('Entities\Bankbizonylattetel')->find($tetelid);
+                                    $tetel = $this->getEm()->getRepository(Bankbizonylattetel::class)->find($tetelid);
                                     if ($tetel) {
                                         $tetel->setJogcim($jogcim);
                                         if ($irany < 0) {
@@ -156,7 +161,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
 
     protected function setVars($view)
     {
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+        $bt = $this->getRepo(Bizonylattipus::class)->find('bank');
         if ($bt) {
             $bt->setTemplateVars($view);
         }
@@ -180,12 +185,12 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
-        $v = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanemfilter'));
+        $v = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanemfilter'));
         if ($v) {
             $filter->addFilter('valutanem', '=', $v);
         }
 
-        $b = $this->getRepo('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamlafilter'));
+        $b = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamlafilter'));
         if ($b) {
             $filter->addFilter('bankszamla', '=', $b);
         }
@@ -283,7 +288,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         if ($record && $record->getBankszamlaId()) {
             $bankszlaid = $record->getBankszamlaId();
         } else {
-            $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
+            $valutanem = $this->getRepo(Valutanem::class)->find($valutaid);
             if ($valutanem && $valutanem->getBankszamlaId()) {
                 $bankszlaid = $valutanem->getBankszamlaId();
             }

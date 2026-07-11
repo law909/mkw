@@ -39,78 +39,54 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $t = new \Entities\MPTNGYSzakmaianyag();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['cim'] = $t->getCim();
+        $x = $this->getEntityFieldsArray($t);
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
-        $x['tartalom'] = $t->getTartalom();
-        $x['tulajdonos'] = $t->getTulajdonosId();
+        $x['tulajdonos'] = $t->getTulajdonos()?->getId();
         $x['tulajdonosnev'] = $t->getTulajdonos()?->getNev();
-        $x['opponens'] = $t->getOpponensId();
-        $x['opponensnev'] = $t->getOpponensNev();
-        $x['opponensemail'] = $t->getOpponensemail();
-        $x['szerzo1'] = $t->getSzerzo1Id();
-        $x['szerzo1nev'] = $t->getSzerzo1Nev();
-        $x['szerzo1email'] = $t->getSzerzo1email();
-        $x['szerzo2'] = $t->getSzerzo2Id();
-        $x['szerzo2nev'] = $t->getSzerzo2Nev();
-        $x['szerzo2email'] = $t->getSzerzo2email();
-        $x['szerzo3'] = $t->getSzerzo3Id();
-        $x['szerzo3nev'] = $t->getSzerzo3Nev();
-        $x['szerzo3email'] = $t->getSzerzo3email();
-        $x['szerzo4'] = $t->getSzerzo4Id();
-        $x['szerzo4nev'] = $t->getSzerzo4Nev();
-        $x['szerzo4email'] = $t->getSzerzo4email();
-        $x['szerzo5'] = $t->getSzerzo5Id();
-        $x['szerzo5nev'] = $t->getSzerzo5Nev();
-        $x['szerzo5email'] = $t->getSzerzo5email();
-        $x['szerzo6'] = $t->getSzerzo6Id();
-        $x['szerzo6nev'] = $t->getSzerzo6Nev();
-        $x['szerzo6email'] = $t->getSzerzo6email();
-        $x['szerzo7'] = $t->getSzerzo7Id();
-        $x['szerzo7nev'] = $t->getSzerzo7Nev();
-        $x['szerzo7email'] = $t->getSzerzo7email();
-        $x['szerzo8'] = $t->getSzerzo8Id();
-        $x['szerzo8nev'] = $t->getSzerzo8Nev();
-        $x['szerzo8email'] = $t->getSzerzo8email();
-        $x['szerzo9'] = $t->getSzerzo9Id();
-        $x['szerzo9nev'] = $t->getSzerzo9Nev();
-        $x['szerzo9email'] = $t->getSzerzo9email();
-        $x['szerzo10'] = $t->getSzerzo10Id();
-        $x['szerzo10nev'] = $t->getSzerzo10Nev();
-        $x['szerzo10email'] = $t->getSzerzo10email();
-        $x['beszelgetopartner'] = $t->getBeszelgetopartnerId();
-        $x['beszelgetopartnernev'] = $t->getBeszelgetopartnerNev();
-        $x['beszelgetopartneremail'] = $t->getBeszelgetopartneremail();
-        $x['kezdodatum'] = $t->getKezdodatum();
-        $x['kezdoido'] = $t->getKezdoido();
+        $x['opponens'] = $t->getOpponens()?->getId();
+        $x['opponensnev'] = $t->getOpponens()?->getNev();
+        $x['szerzo1'] = $t->getSzerzo1()?->getId();
+        $x['szerzo1nev'] = $t->getSzerzo1()?->getNev();
+        $x['szerzo2'] = $t->getSzerzo2()?->getId();
+        $x['szerzo2nev'] = $t->getSzerzo2()?->getNev();
+        $x['szerzo3'] = $t->getSzerzo3()?->getId();
+        $x['szerzo3nev'] = $t->getSzerzo3()?->getNev();
+        $x['szerzo4'] = $t->getSzerzo4()?->getId();
+        $x['szerzo4nev'] = $t->getSzerzo4()?->getNev();
+        $x['szerzo5'] = $t->getSzerzo5()?->getId();
+        $x['szerzo5nev'] = $t->getSzerzo5()?->getNev();
+        $x['szerzo6'] = $t->getSzerzo6()?->getId();
+        $x['szerzo6nev'] = $t->getSzerzo6()?->getNev();
+        $x['szerzo7'] = $t->getSzerzo7()?->getId();
+        $x['szerzo7nev'] = $t->getSzerzo7()?->getNev();
+        $x['szerzo8'] = $t->getSzerzo8()?->getId();
+        $x['szerzo8nev'] = $t->getSzerzo8()?->getNev();
+        $x['szerzo9'] = $t->getSzerzo9()?->getId();
+        $x['szerzo9nev'] = $t->getSzerzo9()?->getNev();
+        $x['szerzo10'] = $t->getSzerzo10()?->getId();
+        $x['szerzo10nev'] = $t->getSzerzo10()?->getNev();
+        $x['beszelgetopartner'] = $t->getBeszelgetopartner()?->getId();
+        $x['beszelgetopartnernev'] = $t->getBeszelgetopartner()?->getNev();
         $x['kezdodatumstr'] = $t->getKezdodatumStr();
-        $x['vegido'] = $t->getVegido();
-        $x['tipus'] = $t->getTipusId();
+        $x['tipus'] = $t->getTipus()?->getId();
         $x['tipusnev'] = $t->getTipus()?->getNev();
-        $x['eloadas1'] = $t->getEloadas1Id();
-        $x['eloadas1cim'] = $t->getEloadas1() ? '1. ' . $t->getEloadas1Cim() : '';
-        $x['eloadas2'] = $t->getEloadas2Id();
-        $x['eloadas2cim'] = $t->getEloadas2() ? '2. ' . $t->getEloadas2Cim() : '';
-        $x['eloadas3'] = $t->getEloadas3Id();
-        $x['eloadas3cim'] = $t->getEloadas3() ? '3. ' . $t->getEloadas3Cim() : '';
-        $x['eloadas4'] = $t->getEloadas4Id();
-        $x['eloadas4cim'] = $t->getEloadas4() ? '4. ' . $t->getEloadas4Cim() : '';
-        $x['eloadas5'] = $t->getEloadas5Id();
-        $x['eloadas5cim'] = $t->getEloadas5() ? '5. ' . $t->getEloadas5Cim() : '';
-        $x['kulcsszo1'] = $t->getKulcsszo1();
-        $x['kulcsszo2'] = $t->getKulcsszo2();
-        $x['kulcsszo3'] = $t->getKulcsszo3();
-        $x['kulcsszo4'] = $t->getKulcsszo4();
-        $x['kulcsszo5'] = $t->getKulcsszo5();
-        $x['biralatkesz'] = $t->isBiralatkesz();
-        $x['konferencianszerepelhet'] = $t->isKonferencianszerepelhet();
-        $x['biralo1'] = $t->getBiralo1Id();
-        $x['biralo1nev'] = $t->getBiralo1Nev();
-        $x['biralo2'] = $t->getBiralo2Id();
-        $x['biralo2nev'] = $t->getBiralo2Nev();
-        $x['biralo3'] = $t->getBiralo3Id();
-        $x['biralo3nev'] = $t->getBiralo3Nev();
+        $x['eloadas1'] = $t->getEloadas1()?->getId();
+        $x['eloadas1cim'] = $t->getEloadas1() ? '1. ' . $t->getEloadas1()?->getCim() : '';
+        $x['eloadas2'] = $t->getEloadas2()?->getId();
+        $x['eloadas2cim'] = $t->getEloadas2() ? '2. ' . $t->getEloadas2()?->getCim() : '';
+        $x['eloadas3'] = $t->getEloadas3()?->getId();
+        $x['eloadas3cim'] = $t->getEloadas3() ? '3. ' . $t->getEloadas3()?->getCim() : '';
+        $x['eloadas4'] = $t->getEloadas4()?->getId();
+        $x['eloadas4cim'] = $t->getEloadas4() ? '4. ' . $t->getEloadas4()?->getCim() : '';
+        $x['eloadas5'] = $t->getEloadas5()?->getId();
+        $x['eloadas5cim'] = $t->getEloadas5() ? '5. ' . $t->getEloadas5()?->getCim() : '';
+        $x['biralo1'] = $t->getBiralo1()?->getId();
+        $x['biralo1nev'] = $t->getBiralo1()?->getNev();
+        $x['biralo2'] = $t->getBiralo2()?->getId();
+        $x['biralo2nev'] = $t->getBiralo2()?->getNev();
+        $x['biralo3'] = $t->getBiralo3()?->getId();
+        $x['biralo3nev'] = $t->getBiralo3()?->getNev();
         $x['allszerzoregistered'] = $t->isAllSzerzoRegistered();
         $x['szerzo1registered'] = $t->isSzerzoRegistered(1);
         $x['szerzo2registered'] = $t->isSzerzoRegistered(2);
@@ -124,51 +100,25 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['szerzo10registered'] = $t->isSzerzoRegistered(10);
         $x['beszelgetopartnerregistered'] = $t->isSzerzoRegistered(0);
         $x['opponensregistered'] = $t->isSzerzoRegistered(-1);
-        $x['szimpozium'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
-        $x['konyvbemutato'] = ($t->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus));
-        $x['vegleges'] = $t->isVegleges();
+        $x['szimpozium'] = ($t->getTipus()?->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus));
+        $x['konyvbemutato'] = ($t->getTipus()?->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus));
         $x['temakor1'] = $t->getTemakor1()?->getId();
         $x['temakor1nev'] = $t->getTemakor1()?->getNev();
         $x['temakor2'] = $t->getTemakor2()?->getId();
         $x['temakor2nev'] = $t->getTemakor2()?->getNev();
         $x['temakor3'] = $t->getTemakor3()?->getId();
         $x['temakor3nev'] = $t->getTemakor3()?->getNev();
-        $x['konyvkiadasho'] = $t->getKonyvkiadasho();
-        $x['egyebszerzok'] = $t->getEgyebszerzok();
-        $x['egyebszerzokorg'] = $t->getEgyebszerzokorg();
-        $x['b1szempont1'] = $t->getB1szempont1();
-        $x['b1szempont2'] = $t->getB1szempont2();
-        $x['b1szempont3'] = $t->getB1szempont3();
-        $x['b1szempont4'] = $t->getB1szempont4();
-        $x['b1szempont5'] = $t->getB1szempont5();
-        $x['b1szovegesertekeles'] = $t->getB1szovegesertekeles();
-        $x['b2szempont1'] = $t->getB2szempont1();
-        $x['b2szempont2'] = $t->getB2szempont2();
-        $x['b2szempont3'] = $t->getB2szempont3();
-        $x['b2szempont4'] = $t->getB2szempont4();
-        $x['b2szempont5'] = $t->getB2szempont5();
-        $x['b2szovegesertekeles'] = $t->getB2szovegesertekeles();
-        $x['b3szempont1'] = $t->getB3szempont1();
-        $x['b3szempont2'] = $t->getB3szempont2();
-        $x['b3szempont3'] = $t->getB3szempont3();
-        $x['b3szempont4'] = $t->getB3szempont4();
-        $x['b3szempont5'] = $t->getB3szempont5();
-        $x['b3szovegesertekeles'] = $t->getB3szovegesertekeles();
-        $x['b1biralatkesz'] = $t->isB1biralatkesz();
-        $x['b2biralatkesz'] = $t->isB2biralatkesz();
-        $x['b3biralatkesz'] = $t->isB3biralatkesz();
 
         $x['biralo1pont'] = $t->calcB1pont();
         $x['biralo2pont'] = $t->calcB2pont();
         $x['biralo3pont'] = $t->calcB3pont();
         $x['osszespont'] = $t->calcPont();
-        $x['pluszbiralokell'] = $t->isPluszbiralokell();
 
-        $x['terem'] = $t->getTeremId();
-        $x['teremnev'] = $t->getTeremNev();
+        $x['terem'] = $t->getTerem()?->getId();
+        $x['teremnev'] = $t->getTerem()?->getNev();
 
-        $x['tema'] = $t->getTema();
-        $x['temanev'] = $t->getTemaNev();
+        $x['tema'] = $t->getTema()?->getId();
+        $x['temanev'] = $t->getTema()?->getNev();
         return $x;
     }
 
@@ -179,36 +129,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
      */
     public function setFields($obj, $oper, $pub = false)
     {
-        $obj->setCim($this->params->getStringRequestParam('cim'));
-        $obj->setTartalom($this->params->getStringRequestParam('tartalom'));
-        $obj->setKezdodatum($this->params->getIntRequestParam('kezdodatum'));
-        $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
-        $obj->setVegido($this->params->getStringRequestParam('vegido'));
-        $obj->setKulcsszo1($this->params->getStringRequestParam('kulcsszo1'));
-        $obj->setKulcsszo2($this->params->getStringRequestParam('kulcsszo2'));
-        $obj->setKulcsszo3($this->params->getStringRequestParam('kulcsszo3'));
-        $obj->setKulcsszo4($this->params->getStringRequestParam('kulcsszo4'));
-        $obj->setKulcsszo5($this->params->getStringRequestParam('kulcsszo5'));
-        $obj->setKonyvkiadasho($this->params->getStringRequestParam('konyvkiadasho'));
-        $obj->setEgyebszerzok($this->params->getStringRequestParam('egyebszerzok'));
-        $obj->setB1szempont1($this->params->getIntRequestParam('b1szempont1'));
-        $obj->setB1szempont2($this->params->getIntRequestParam('b1szempont2'));
-        $obj->setB1szempont3($this->params->getIntRequestParam('b1szempont3'));
-        $obj->setB1szempont4($this->params->getIntRequestParam('b1szempont4'));
-        $obj->setB1szempont5($this->params->getIntRequestParam('b1szempont5'));
-        $obj->setB1szovegesertekeles($this->params->getStringRequestParam('b1szovegesertekeles'));
-        $obj->setB2szempont1($this->params->getIntRequestParam('b2szempont1'));
-        $obj->setB2szempont2($this->params->getIntRequestParam('b2szempont2'));
-        $obj->setB2szempont3($this->params->getIntRequestParam('b2szempont3'));
-        $obj->setB2szempont4($this->params->getIntRequestParam('b2szempont4'));
-        $obj->setB2szempont5($this->params->getIntRequestParam('b2szempont5'));
-        $obj->setB2szovegesertekeles($this->params->getStringRequestParam('b2szovegesertekeles'));
-        $obj->setB3szempont1($this->params->getIntRequestParam('b3szempont1'));
-        $obj->setB3szempont2($this->params->getIntRequestParam('b3szempont2'));
-        $obj->setB3szempont3($this->params->getIntRequestParam('b3szempont3'));
-        $obj->setB3szempont4($this->params->getIntRequestParam('b3szempont4'));
-        $obj->setB3szempont5($this->params->getIntRequestParam('b3szempont5'));
-        $obj->setB3szovegesertekeles($this->params->getStringRequestParam('b3szovegesertekeles'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
         if (!$pub) {
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
@@ -228,10 +149,8 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $obj->setSzerzo10email($this->params->getStringRequestParam('szerzo10email'));
             $obj->setOpponensemail($this->params->getStringRequestParam('opponensemail'));
             $obj->setBeszelgetopartneremail($this->params->getStringRequestParam('beszelgetopartneremail'));
-        } else {
-            if ($this->params->getBoolRequestParam('vegleges')) {
-                $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
-            }
+        } elseif ($this->params->getBoolRequestParam('vegleges')) {
+            $obj->setVegleges($this->params->getBoolRequestParam('vegleges'));
         }
 
         $tipus = \mkw\store::getEm()->getRepository(MPTNGYSzakmaianyagtipus::class)->find($this->params->getIntRequestParam('tipus'));
@@ -599,35 +518,35 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $anyag = $this->getRepo()->findWithJoins($id);
         // loadVars utan nem abc sorrendben adja vissza
         $tc = new mptngyszakmaianyagtipusController();
-        $view->setVar('tipuslist', $tc->getSelectList($anyag?->getTipusId()));
+        $view->setVar('tipuslist', $tc->getSelectList($anyag?->getTipus()?->getId()));
 
         $jt = new jogateremController();
-        $view->setVar('teremlist', $jt->getSelectList($anyag?->getTeremId()));
+        $view->setVar('teremlist', $jt->getSelectList($anyag?->getTerem()?->getId()));
 
         $xt = new mptngytemaController();
         $view->setVar('temalist', $xt->getSelectList($anyag?->getTema()?->getId()));
 
         $pc = new partnerController();
-        $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonosId()));
-        $view->setVar('opponenslist', $pc->getSelectList($anyag?->getOpponensId()));
-        $view->setVar('szerzo1list', $pc->getSelectList($anyag?->getSzerzo1Id()));
-        $view->setVar('szerzo2list', $pc->getSelectList($anyag?->getSzerzo2Id()));
-        $view->setVar('szerzo3list', $pc->getSelectList($anyag?->getSzerzo3Id()));
-        $view->setVar('szerzo4list', $pc->getSelectList($anyag?->getSzerzo4Id()));
-        $view->setVar('szerzo5list', $pc->getSelectList($anyag?->getSzerzo5Id()));
-        $view->setVar('szerzo6list', $pc->getSelectList($anyag?->getSzerzo6Id()));
-        $view->setVar('szerzo7list', $pc->getSelectList($anyag?->getSzerzo7Id()));
-        $view->setVar('szerzo8list', $pc->getSelectList($anyag?->getSzerzo8Id()));
-        $view->setVar('szerzo9list', $pc->getSelectList($anyag?->getSzerzo9Id()));
-        $view->setVar('szerzo10list', $pc->getSelectList($anyag?->getSzerzo10Id()));
-        $view->setVar('beszelgetopartnerlist', $pc->getSelectList($anyag?->getBeszelgetopartnerId()));
+        $view->setVar('tulajdonoslist', $pc->getSelectList($anyag?->getTulajdonos()?->getId()));
+        $view->setVar('opponenslist', $pc->getSelectList($anyag?->getOpponens()?->getId()));
+        $view->setVar('szerzo1list', $pc->getSelectList($anyag?->getSzerzo1()?->getId()));
+        $view->setVar('szerzo2list', $pc->getSelectList($anyag?->getSzerzo2()?->getId()));
+        $view->setVar('szerzo3list', $pc->getSelectList($anyag?->getSzerzo3()?->getId()));
+        $view->setVar('szerzo4list', $pc->getSelectList($anyag?->getSzerzo4()?->getId()));
+        $view->setVar('szerzo5list', $pc->getSelectList($anyag?->getSzerzo5()?->getId()));
+        $view->setVar('szerzo6list', $pc->getSelectList($anyag?->getSzerzo6()?->getId()));
+        $view->setVar('szerzo7list', $pc->getSelectList($anyag?->getSzerzo7()?->getId()));
+        $view->setVar('szerzo8list', $pc->getSelectList($anyag?->getSzerzo8()?->getId()));
+        $view->setVar('szerzo9list', $pc->getSelectList($anyag?->getSzerzo9()?->getId()));
+        $view->setVar('szerzo10list', $pc->getSelectList($anyag?->getSzerzo10()?->getId()));
+        $view->setVar('beszelgetopartnerlist', $pc->getSelectList($anyag?->getBeszelgetopartner()?->getId()));
 
         $ac = new mptngyszakmaianyagController();
-        $view->setVar('eloadas1list', $ac->getSelectList($anyag?->getEloadas1Id()));
-        $view->setVar('eloadas2list', $ac->getSelectList($anyag?->getEloadas2Id()));
-        $view->setVar('eloadas3list', $ac->getSelectList($anyag?->getEloadas3Id()));
-        $view->setVar('eloadas4list', $ac->getSelectList($anyag?->getEloadas4Id()));
-        $view->setVar('eloadas5list', $ac->getSelectList($anyag?->getEloadas5Id()));
+        $view->setVar('eloadas1list', $ac->getSelectList($anyag?->getEloadas1()?->getId()));
+        $view->setVar('eloadas2list', $ac->getSelectList($anyag?->getEloadas2()?->getId()));
+        $view->setVar('eloadas3list', $ac->getSelectList($anyag?->getEloadas3()?->getId()));
+        $view->setVar('eloadas4list', $ac->getSelectList($anyag?->getEloadas4()?->getId()));
+        $view->setVar('eloadas5list', $ac->getSelectList($anyag?->getEloadas5()?->getId()));
 
         $bc = new dolgozoController();
         // biralo temakore kozt szerepel temakor1,2,3
@@ -660,7 +579,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $birafilter->addSql("((_xx.biralo1 = $bid) OR (_xx.biralo2 = $bid) OR (_xx.biralo3 = $bid))");
             $birafilter->addFilter('id', '<>', $anyag->getId());
             $cnt = $this->getRepo(MPTNGYSzakmaianyag::class)->getCount($birafilter);
-            if ($anyag?->getBiralo1Id() == $bid || $anyag?->getBiralo2Id() == $bid || $anyag?->getBiralo3Id() == $bid) {
+            if ($anyag?->getBiralo1()?->getId() == $bid || $anyag?->getBiralo2()?->getId() == $bid || $anyag?->getBiralo3()?->getId() == $bid) {
                 $cnt--;
             }
             if ($bira->getMptngymaxdb() > $cnt) {
@@ -673,9 +592,9 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         } else {
             $birafilter->addSql('(1=0)');
         }
-        $view->setVar('biralo1list', $bc->getSelectList($anyag?->getBiralo1Id(), true, $birafilter));
-        $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2Id(), true, $birafilter));
-        $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3Id(), true, $birafilter));
+        $view->setVar('biralo1list', $bc->getSelectList($anyag?->getBiralo1()?->getId(), true, $birafilter));
+        $view->setVar('biralo2list', $bc->getSelectList($anyag?->getBiralo2()?->getId(), true, $birafilter));
+        $view->setVar('biralo3list', $bc->getSelectList($anyag?->getBiralo3()?->getId(), true, $birafilter));
 
         $tk = new mptngytemakorController();
         $view->setVar('temakor1list', $tk->getSelectList($anyag?->getTemakor1()?->getId()));
@@ -772,7 +691,7 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             /** @var MPTNGYSzakmaianyag $anyag */
             foreach ($anyagok as $anyag) {
                 $x = $this->loadVars($anyag);
-                $x['editable'] = $anyag->getTulajdonosId() === $partner->getId();
+                $x['editable'] = $anyag->getTulajdonos()?->getId() === $partner->getId();
                 $res[] = $x;
             }
         }
@@ -793,13 +712,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             foreach ($anyagok as $anyag) {
                 $x = $this->loadVars($anyag);
                 switch (true) {
-                    case $anyag->getBiralo1Id() == $did:
+                    case $anyag->getBiralo1()?->getId() == $did:
                         $x['biralosorszam'] = 1;
                         break;
-                    case $anyag->getBiralo2Id() == $did:
+                    case $anyag->getBiralo2()?->getId() == $did:
                         $x['biralosorszam'] = 2;
                         break;
-                    case $anyag->getBiralo3Id() == $did:
+                    case $anyag->getBiralo3()?->getId() == $did:
                         $x['biralosorszam'] = 3;
                         break;
                     default:
@@ -991,13 +910,13 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 $szempont5 = $this->params->getIntRequestParam('szempont5');
                 $szoveges = $this->params->getStringRequestParam('szovegesertekeles');
                 switch (true) {
-                    case $anyag->getBiralo1Id() == $biralo->getId():
+                    case $anyag->getBiralo1()?->getId() == $biralo->getId():
                         $bn = 'B1';
                         break;
-                    case $anyag->getBiralo2Id() == $biralo->getId():
+                    case $anyag->getBiralo2()?->getId() == $biralo->getId():
                         $bn = 'B2';
                         break;
-                    case $anyag->getBiralo3Id() == $biralo->getId():
+                    case $anyag->getBiralo3()?->getId() == $biralo->getId():
                         $bn = 'B3';
                         break;
                 }

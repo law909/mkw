@@ -20,19 +20,11 @@ class helyszinController extends \mkwhelpers\MattableController
 
     protected function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Helyszin();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['emailsablon'] = $t->getEmailsablon();
-        $x['ar'] = $t->getAr();
-
-        if ($forKarb) {
-        }
-        return $x;
+        return $this->getEntityFieldsArray($t);
     }
 
     /**
@@ -43,10 +35,7 @@ class helyszinController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj, $oper)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setEmailsablon($this->params->getOriginalStringRequestParam('emailsablon'));
-        $obj->setAr($this->params->getNumRequestParam('ar'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj, ['raw' => ['emailsablon']]);
     }
 
     public function getlistbody()

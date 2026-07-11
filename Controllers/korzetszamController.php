@@ -31,10 +31,7 @@ class korzetszamController extends \mkwhelpers\JQGridController
      */
     protected function setFields($obj)
     {
-        $obj->setId($this->params->getStringRequestParam('id', $obj->getId()));
-        $obj->setHossz($this->params->getIntRequestParam('hossz', $obj->getHossz()));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend', $obj->getSorrend()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

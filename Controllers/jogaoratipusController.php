@@ -31,12 +31,7 @@ class jogaoratipusController extends \mkwhelpers\JQGridController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setArnovelo($this->params->getNumRequestParam('arnovelo', $obj->getArnovelo()));
-        $obj->setSzin($this->params->getStringRequestParam('szin', $obj->getSzin()));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', $obj->getInaktiv()));
-        $obj->setUrl($this->params->getStringRequestParam('url', $obj->getUrl()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

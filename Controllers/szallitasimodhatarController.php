@@ -26,11 +26,10 @@ class szallitasimodhatarController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['valutanemnev'] = $t->getValutanemNev();
-        $x['hatarertek'] = $t->getHatarertek();
-        $x['osszeg'] = $t->getOsszeg();
+        $x = $this->getEntityFieldsArray($t, $x);
+        $x['valutanemnev'] = $t->getValutanem()?->getNev();
         if ($forKarb) {
-            $x['valutanemlist'] = $valutanem->getSelectList(($t->getValutanem() ? $t->getValutanemId() : 0));
+            $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanem()?->getId());
         }
         return $x;
     }

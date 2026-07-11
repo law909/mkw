@@ -21,40 +21,26 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\MPTFolyoszamla();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['tipus'] = $t->getTipus();
-        $x['tipusnev'] = $t->getTipusnev();
-        $x['irany'] = $t->getIrany();
-        $x['bizonylatszam'] = $t->getBizonylatszam();
-        $x['megjegyzes'] = $t->getMegjegyzes();
-        $x['osszeg'] = $t->getOsszeg();
-        $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
+        $x = $this->getEntityFieldsArray($t);
+        $x['tipusnev'] = $t->getTipusNev();
+        $x['partner'] = $t->getPartner()?->getId();
+        $x['partnernev'] = $t->getPartner()?->getNev();
         $x['datum'] = $t->getDatumStr();
-        $x['vonatkozoev'] = $t->getVonatkozoev();
-
-        if ($forKarb) {
-        }
         return $x;
     }
 
     /**
      * @param \Entities\Helyszin $obj
-     * @param $oper
      *
      * @return mixed
      */
-    protected function setFields($obj, $oper)
+    protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setEmailsablon($this->params->getOriginalStringRequestParam('emailsablon'));
-        $obj->setAr($this->params->getNumRequestParam('ar'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj, ['raw' => ['emailsablon']]);
     }
 
     public function getlistbody()

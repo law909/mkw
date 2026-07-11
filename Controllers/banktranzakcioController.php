@@ -46,8 +46,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setBizonylatszamok($this->params->getStringRequestParam('bizonylatszamok'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($partner) {
             $obj->setPartner($partner);

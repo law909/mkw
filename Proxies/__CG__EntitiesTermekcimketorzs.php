@@ -213,28 +213,6 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
-    public function getKategoriaId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaId', []);
-
-        return parent::getKategoriaId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getKategoriaNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaNev', []);
-
-        return parent::getKategoriaNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setKategoria(\Entities\Cimkekat $kategoria)
     {
 
@@ -362,28 +340,6 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyarto', []);
 
         return parent::getGyarto();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getGyartoNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoNev', []);
-
-        return parent::getGyartoNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getGyartoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoId', []);
-
-        return parent::getGyartoId();
     }
 
     /**

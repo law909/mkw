@@ -508,23 +508,7 @@ class Versenyzo
     {
         return $this->csapat;
     }
-
-    public function getCsapatNev()
-    {
-        if ($this->csapat) {
-            return $this->csapat->getNev();
-        }
-        return '';
-    }
-
-    public function getCsapatId()
-    {
-        if ($this->csapat) {
-            return $this->csapat->getId();
-        }
-        return 0;
-    }
-
+    
     public function setCsapat($csapat)
     {
         $this->csapat = $csapat;

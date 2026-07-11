@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Partnercimkekat;
 use Entities\Partnercimketorzs;
 use mkw\store;
 
@@ -20,40 +21,22 @@ class partnercimkeController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Partnercimketorzs();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['leiras'] = $t->getLeiras();
-        $x['oldalcim'] = $t->getOldalcim();
-        if ($kat = $t->getKategoria()) {
-            $x['cimkekatnev'] = $kat->getNev();
-        } else {
-            $x['cimkekatnev'] = '';
-        }
-        $x['menu1lathato'] = $t->getMenu1lathato();
-        $x['menu2lathato'] = $t->getMenu2lathato();
-        $x['menu3lathato'] = $t->getMenu3lathato();
-        $x['menu4lathato'] = $t->getMenu4lathato();
+        $x = $this->getEntityFieldsArray($t);
+        $x['cimkekatnev'] = $t->getKategoria()?->getNev();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $ck = store::getEm()->getRepository('Entities\Partnercimkekat')->find($this->params->getIntRequestParam('cimkecsoport', 0));
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['leiras']]);
+        $ck = store::getEm()->getRepository(Partnercimkekat::class)->find($this->params->getIntRequestParam('cimkecsoport', 0));
         if ($ck) {
             $obj->setKategoria($ck);
         }
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-        $obj->setMenu1Lathato($this->params->getBoolRequestParam('menu1lathato'));
-        $obj->setMenu2Lathato($this->params->getBoolRequestParam('menu2lathato'));
-        $obj->setMenu3Lathato($this->params->getBoolRequestParam('menu3lathato'));
-        $obj->setMenu4Lathato($this->params->getBoolRequestParam('menu4lathato'));
         return $obj;
     }
 

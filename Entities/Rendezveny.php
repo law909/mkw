@@ -205,8 +205,8 @@ class Rendezveny
             if ($this->getKezdoido()) {
                 $r .= ' ' . $this->getKezdoido();
             }
-            if ($this->getTanarNev()) {
-                $r .= ' (' . $this->getTanarNev() . ')';
+            if ($this->getTanar()?->getNev()) {
+                $r .= ' (' . $this->getTanar()?->getNev() . ')';
             }
         }
         return $r;
@@ -256,30 +256,6 @@ class Rendezveny
         return $this->tanar;
     }
 
-    public function getTanarNev()
-    {
-        if ($this->tanar) {
-            return $this->tanar->getNev();
-        }
-        return '';
-    }
-
-    public function getTanarId()
-    {
-        if ($this->tanar) {
-            return $this->tanar->getId();
-        }
-        return '';
-    }
-
-    public function getTanarUrl()
-    {
-        if ($this->tanar) {
-            return $this->tanar->getUrl();
-        }
-        return '';
-    }
-
     public function setTanar($tanar)
     {
         $this->tanar = $tanar;
@@ -288,23 +264,6 @@ class Rendezveny
     public function getTermek()
     {
         return $this->termek;
-    }
-
-    public function getTermekId()
-    {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
-    }
-
-
-    public function getTermekNev()
-    {
-        if ($this->termek) {
-            return $this->termek->getNev();
-        }
-        return '';
     }
 
     /**
@@ -417,22 +376,6 @@ class Rendezveny
         return $this->rendezvenyallapot;
     }
 
-    public function getRendezvenyallapotNev()
-    {
-        if ($this->rendezvenyallapot) {
-            return $this->rendezvenyallapot->getNev();
-        }
-        return '';
-    }
-
-    public function getRendezvenyallapotId()
-    {
-        if ($this->rendezvenyallapot) {
-            return $this->rendezvenyallapot->getId();
-        }
-        return '';
-    }
-
     public function setRendezvenyallapot($ra)
     {
         $this->rendezvenyallapot = $ra;
@@ -443,30 +386,6 @@ class Rendezveny
         return $this->jogaterem;
     }
 
-    public function getJogateremNev()
-    {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getNev();
-        }
-        return '';
-    }
-
-    public function getJogateremOrarendclass()
-    {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getOrarendclass();
-        }
-        return '';
-    }
-
-    public function getJogateremId()
-    {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getId();
-        }
-        return '';
-    }
-
     public function setJogaterem($ra)
     {
         $this->jogaterem = $ra;
@@ -475,22 +394,6 @@ class Rendezveny
     public function getHelyszin()
     {
         return $this->helyszin;
-    }
-
-    public function getHelyszinNev()
-    {
-        if ($this->helyszin) {
-            return $this->helyszin->getNev();
-        }
-        return '';
-    }
-
-    public function getHelyszinId()
-    {
-        if ($this->helyszin) {
-            return $this->helyszin->getId();
-        }
-        return '';
     }
 
     public function setHelyszin($ra)

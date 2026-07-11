@@ -114,11 +114,11 @@ class JogaBerlet
         if ($emailtpl) {
             \mkw\store::writelog($emailtpl->getId());
         }
-        \mkw\store::writelog($this->getPartneremail());
-        if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
+        \mkw\store::writelog($this->getPartner()?->getEmail());
+        if (\mkw\store::isSendableEmail($this->getPartner()?->getEmail()) && $emailtpl) {
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
-            $body->setVar('partnernev', $this->getPartnernev());
+            $body->setVar('partnernev', $this->getPartner()?->getNev());
             $body->setVar('datum', $this->getVasarlasnapjaStr());
             $body->setVar('berlet', $this->getNev());
             $body->setVar('ar', $this->getBruttoegysar());
@@ -126,7 +126,7 @@ class JogaBerlet
 
             $mailer = \mkw\store::getMailer();
 
-            $mailer->addTo($this->getPartneremail());
+            $mailer->addTo($this->getPartner()?->getEmail());
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());
 
@@ -144,7 +144,7 @@ class JogaBerlet
 
     public function getNev()
     {
-        return $this->getTermeknev();
+        return $this->getTermek()?->getNev();
     }
 
     public function getFullNev()
@@ -244,14 +244,6 @@ class JogaBerlet
         return $this->termek;
     }
 
-    public function getTermekId()
-    {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Termek $val
      */
@@ -282,28 +274,12 @@ class JogaBerlet
         }
     }
 
-    public function getTermeknev()
-    {
-        if ($this->termek) {
-            return $this->termek->getNev();
-        }
-        return '';
-    }
-
     /**
      * @return \Entities\Partner
      */
     public function getPartner()
     {
         return $this->partner;
-    }
-
-    public function getPartnerId()
-    {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
     }
 
     /**
@@ -325,22 +301,6 @@ class JogaBerlet
         if ($this->partner !== null) {
             $this->partner = null;
         }
-    }
-
-    public function getPartnernev()
-    {
-        if ($this->partner) {
-            return $this->partner->getNev();
-        }
-        return '';
-    }
-
-    public function getPartneremail()
-    {
-        if ($this->partner) {
-            return $this->partner->getEmail();
-        }
-        return '';
     }
 
     public function getVasarlasnapja()

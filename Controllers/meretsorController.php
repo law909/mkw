@@ -21,20 +21,17 @@ class meretsorController extends MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new Meretsor();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
+        $x = $this->getEntityFieldsArray($t);
         $x['meretids'] = $t->getMeretIds();
         $meretnevek = [];
         foreach ($t->getMeretek() as $meret) {
             $meretnevek[] = $meret->getNev();
         }
         $x['meretek'] = implode(', ', $meretnevek);
-
         return $x;
     }
 
@@ -59,7 +56,7 @@ class meretsorController extends MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
 
         $meretIds = $this->params->getArrayRequestParam('meretek', []);
         $obj->removeAllMeret();

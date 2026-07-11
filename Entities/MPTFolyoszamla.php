@@ -68,7 +68,7 @@ class MPTFolyoszamla
         return $this->tipus;
     }
 
-    public function getTipusnev()
+    public function getTipusNev()
     {
         switch ($this->tipus) {
             case 'E':
@@ -160,14 +160,6 @@ class MPTFolyoszamla
         return $this->partner;
     }
 
-    public function getPartnerId()
-    {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -187,30 +179,6 @@ class MPTFolyoszamla
         if ($this->partner !== null) {
             $this->partner = null;
         }
-    }
-
-    public function getPartnernev()
-    {
-        if ($this->partner) {
-            return $this->partner->getNev();
-        }
-        return '';
-    }
-
-    public function getPartnervezeteknev()
-    {
-        if ($this->partner) {
-            return $this->partner->getVezeteknev();
-        }
-        return '';
-    }
-
-    public function getPartnerkeresztnev()
-    {
-        if ($this->partner) {
-            return $this->partner->getKeresztnev();
-        }
-        return '';
     }
 
     public function getDatum()

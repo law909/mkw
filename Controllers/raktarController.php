@@ -31,11 +31,7 @@ class raktarController extends \mkwhelpers\JQGridController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
-        $obj->setArchiv($this->params->getBoolRequestParam('archiv'));
-        $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod', $obj->getIdegenkod()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

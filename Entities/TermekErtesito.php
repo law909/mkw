@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\HasLifecycleCallbacks
  */
-class TermekErtesito {
+class TermekErtesito
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -48,55 +49,49 @@ class TermekErtesito {
     /** @ORM\Column(type="datetime",nullable=true) */
     private $sent;
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
     }
 
-    public function getPartnerId() {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
-    }
-
-    public function getPartnerNev() {
-        if ($this->partner) {
-            return $this->partner->getNev();
-        }
-        return '';
-    }
-
-    public function setPartner(Partner $val) {
+    public function setPartner(Partner $val)
+    {
         if ($this->partner !== $val) {
             $this->partner = $val;
 //			$val->addBizonylatfej($this);
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
 //			$val=$this->partner;
             $this->partner = null;
@@ -104,32 +99,21 @@ class TermekErtesito {
         }
     }
 
-    public function getTermek() {
+    public function getTermek()
+    {
         return $this->termek;
     }
 
-    public function getTermekId() {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
-    }
-
-    public function getTermekNev() {
-        if ($this->termek) {
-            return $this->termek->getNev();
-        }
-        return '';
-    }
-
-    public function setTermek(Termek $val) {
+    public function setTermek(Termek $val)
+    {
         if ($this->termek !== $val) {
             $this->termek = $val;
 //			$val->addBizonylattetelek($this);
         }
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
 //			$val=$this->termek;
             $this->termek = null;
@@ -137,18 +121,21 @@ class TermekErtesito {
         }
     }
 
-    public function getSent() {
+    public function getSent()
+    {
         return $this->sent;
     }
 
-    public function getSentStr() {
+    public function getSentStr()
+    {
         if ($this->getSent()) {
             return $this->getSent()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setSent($adat) {
+    public function setSent($adat)
+    {
         if ($adat == '') {
             $adat = date(\mkw\store::$DateFormat);
         }

@@ -35,7 +35,6 @@ class blogposztController extends \mkwhelpers\MattableController
         $x['termekfa1'] = $t->getTermekfa1Id();
         $x['termekfa2'] = $t->getTermekfa2Id();
         $x['termekfa3'] = $t->getTermekfa3Id();
-        $x['kepurl'] = $t->getKepurl();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();

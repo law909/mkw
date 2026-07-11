@@ -2,8 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
+use Entities\JogaBejelentkezes;
+use Entities\Jogaoratipus;
+use Entities\Jogaterem;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
+use Entities\Rendezveny;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -33,25 +38,13 @@ class orarendController extends \mkwhelpers\MattableController
             $t = new \Entities\Orarend();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
+        $x = $this->getEntityFieldsArray($t);
         $x['dolgozonev'] = $t->getDolgozoNev();
         $x['jogateremnev'] = $t->getJogateremNev();
         $x['jogaoratipusnev'] = $t->getJogaoratipusNev();
-        $x['maxferohely'] = $t->getMaxferohely();
         $x['napnev'] = $t->getNapNev();
         $x['kezdet'] = $t->getKezdetStr();
         $x['veg'] = $t->getVegStr();
-        $x['inaktiv'] = $t->getInaktiv();
-        $x['atlagresztvevoszam'] = $t->getAtlagresztvevoszam();
-        $x['multilang'] = $t->getMultilang();
-        $x['onlineurl'] = $t->getOnlineurl();
-        $x['bejelentkezeskell'] = $t->isBejelentkezeskell();
-        $x['minbejelentkezes'] = $t->getMinbejelentkezes();
-        $x['lemondhato'] = $t->getLemondhato();
-        $x['jutalekszazalek'] = $t->getJutalekszazalek();
-        $x['orarendbennincs'] = $t->isOrarendbennincs();
-        $x['bejelentkezesertesitokell'] = $t->isBejelentkezesertesitokell();
         return $x;
     }
 
@@ -62,40 +55,26 @@ class orarendController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $dolgozo = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['onlineurl']]);
+
+        $dolgozo = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {
             $obj->setDolgozo($dolgozo);
         } else {
             $obj->setDolgozo(null);
         }
-        $jogaterem = \mkw\store::getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem'));
+        $jogaterem = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
         if ($jogaterem) {
             $obj->setJogaterem($jogaterem);
         } else {
             $obj->setJogaterem(null);
         }
-        $jogaoratipus = \mkw\store::getEm()->getRepository('Entities\Jogaoratipus')->find($this->params->getIntRequestParam('jogaoratipus'));
+        $jogaoratipus = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus'));
         if ($jogaoratipus) {
             $obj->setJogaoratipus($jogaoratipus);
         } else {
             $obj->setJogaoratipus(null);
         }
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setMaxferohely($this->params->getIntRequestParam('maxferohely'));
-        $obj->setNap($this->params->getIntRequestParam('nap'));
-        $obj->setKezdet($this->params->getStringRequestParam('kezdet'));
-        $obj->setVeg($this->params->getStringRequestParam('veg'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setAtlagresztvevoszam($this->params->getIntRequestParam('atlagresztvevoszam'));
-        $obj->setMultilang($this->params->getBoolRequestParam('multilang'));
-        $obj->setOnlineurl($this->params->getOriginalStringRequestParam('onlineurl'));
-        $obj->setBejelentkezeskell($this->params->getBoolRequestParam('bejelentkezeskell'));
-        $obj->setMinbejelentkezes($this->params->getIntRequestParam('minbejelentkezes'));
-        $obj->setLemondhato($this->params->getBoolRequestParam('lemondhato'));
-        $obj->setJutalekszazalek($this->params->getIntRequestParam('jutalekszazalek'));
-        $obj->setOrarendbennincs($this->params->getBoolRequestParam('orarendbennincs'));
-        $obj->setBejelentkezesertesitokell($this->params->getBoolRequestParam('bejelentkezesertesitokell'));
-//		$obj->doStuffOnPrePersist();
         return $obj;
     }
 
@@ -311,7 +290,7 @@ class orarendController extends \mkwhelpers\MattableController
             $xdatum = clone $startdatum;
             $napdatum = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'));
             $orak['datum'] = $napdatum->format(\mkw\store::$SQLDateFormat);
-            $orak['bejelentkezesdb'] = $this->getRepo('Entities\JogaBejelentkezes')->getAdottOraCount($napdatum, $item->getId());
+            $orak['bejelentkezesdb'] = $this->getRepo(JogaBejelentkezes::class)->getAdottOraCount($napdatum, $item->getId());
             $orak['maxbejelentkezes'] = $item->getMaxferohely();
             $orak['szabadhely'] = $orak['maxbejelentkezes'] - $orak['bejelentkezesdb'];
             if ($orak['maxbejelentkezes'] <= 0) {
@@ -344,7 +323,7 @@ class orarendController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('orarendbenszerepel', '=', true);
         $filter->addFilter('ra.orarendbenszerepel', '=', true);
-        $rec = $this->getRepo('Entities\Rendezveny')->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
+        $rec = $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
         /** @var \Entities\Rendezveny $item */
         foreach ($rec as $item) {
             $orak = [
@@ -353,13 +332,13 @@ class orarendController extends \mkwhelpers\MattableController
                 'veg' => '',
                 'oranev' => $item->getTeljesNev(),
                 'oraurl' => $item->getUrl(),
-                'tanar' => $item->getTanarNev(),
-                'tanarurl' => $item->getTanarUrl(),
+                'tanar' => $item->getTanar()?->getNev(),
+                'tanarurl' => $item->getTanar()?->getUrl(),
                 'teremclass' => '',
                 'helyettesito' => '',
                 'helyettesitourl' => '',
-                'terem' => $item->getJogateremNev(),
-                'class' => $item->getJogateremOrarendclass(),
+                'terem' => $item->getJogaterem()?->getNev(),
+                'class' => $item->getJogaterem()?->getOrarendclass(),
                 'delelott' => false,
                 'elmarad' => false,
                 'multilang' => false,

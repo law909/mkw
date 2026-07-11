@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Bankszamla;
 use Entities\Valutanem;
 use mkw\store;
 
@@ -28,11 +29,8 @@ class valutanemController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setKerekit($this->params->getBoolRequestParam('kerekit'));
-        $obj->setHivatalos($this->params->getBoolRequestParam('hivatalos'));
-        $obj->setMincimlet($this->params->getIntRequestParam('mincimlet'));
-        $bankszla = $this->getRepo('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $bankszla = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
         if ($bankszla) {
             $obj->setBankszamla($bankszla);
         } else {

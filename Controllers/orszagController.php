@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Afa;
 use Entities\Orszag;
 use Entities\Valutanem;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -21,34 +22,15 @@ class orszagController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Orszag();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['iso3166'] = $t->getIso3166();
+        $x = $this->getEntityFieldsArray($t);
         $x['valutanemnev'] = $t->getValutanemNev();
         $x['valutanemid'] = $t->getValutanemId();
         $x['afanev'] = $t->getAfaNev();
         $x['afaid'] = $t->getAfaId();
-        $x['eu'] = $t->getEu();
-        $x['lathato'] = $t->getLathato();
-        $x['lathato2'] = $t->getLathato2();
-        $x['lathato3'] = $t->getLathato3();
-        $x['lathato4'] = $t->getLathato4();
-        $x['lathato5'] = $t->getLathato5();
-        $x['lathato6'] = $t->getLathato6();
-        $x['lathato7'] = $t->getLathato7();
-        $x['lathato8'] = $t->getLathato8();
-        $x['lathato9'] = $t->getLathato9();
-        $x['lathato10'] = $t->getLathato10();
-        $x['lathato11'] = $t->getLathato11();
-        $x['lathato12'] = $t->getLathato12();
-        $x['lathato13'] = $t->getLathato13();
-        $x['lathato14'] = $t->getLathato14();
-        $x['lathato15'] = $t->getLathato15();
         if ($forKarb) {
             $valutanem = new valutanemController();
             $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanemId());
@@ -65,24 +47,7 @@ class orszagController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setIso3166($this->params->getStringRequestParam('iso3166', $obj->getIso3166()));
-        $obj->setEu($this->params->getBoolRequestParam('eu'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
-        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
-        $obj->setLathato4($this->params->getBoolRequestParam('lathato4'));
-        $obj->setLathato5($this->params->getBoolRequestParam('lathato5'));
-        $obj->setLathato6($this->params->getBoolRequestParam('lathato6'));
-        $obj->setLathato7($this->params->getBoolRequestParam('lathato7'));
-        $obj->setLathato8($this->params->getBoolRequestParam('lathato8'));
-        $obj->setLathato9($this->params->getBoolRequestParam('lathato9'));
-        $obj->setLathato10($this->params->getBoolRequestParam('lathato10'));
-        $obj->setLathato11($this->params->getBoolRequestParam('lathato11'));
-        $obj->setLathato12($this->params->getBoolRequestParam('lathato12'));
-        $obj->setLathato13($this->params->getBoolRequestParam('lathato13'));
-        $obj->setLathato14($this->params->getBoolRequestParam('lathato14'));
-        $obj->setLathato15($this->params->getBoolRequestParam('lathato15'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
 
         $valutanem = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
@@ -91,7 +56,7 @@ class orszagController extends \mkwhelpers\MattableController
             $obj->setValutanem(null);
         }
 
-        $afa = $this->getRepo(\Entities\Afa::class)->find($this->params->getIntRequestParam('afa', 0));
+        $afa = $this->getRepo(Afa::class)->find($this->params->getIntRequestParam('afa', 0));
         if ($afa) {
             $obj->setAfa($afa);
         } else {

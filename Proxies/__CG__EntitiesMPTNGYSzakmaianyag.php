@@ -349,17 +349,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getTulajdonosId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajdonosId', []);
-
-        return parent::getTulajdonosId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTulajdonos($val)
     {
 
@@ -388,28 +377,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo1', []);
 
         return parent::getSzerzo1();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo1Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo1Id', []);
-
-        return parent::getSzerzo1Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo1Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo1Nev', []);
-
-        return parent::getSzerzo1Nev();
     }
 
     /**
@@ -448,28 +415,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getSzerzo2Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo2Id', []);
-
-        return parent::getSzerzo2Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo2Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo2Nev', []);
-
-        return parent::getSzerzo2Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setSzerzo2($val)
     {
 
@@ -498,28 +443,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo3', []);
 
         return parent::getSzerzo3();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo3Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo3Id', []);
-
-        return parent::getSzerzo3Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo3Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo3Nev', []);
-
-        return parent::getSzerzo3Nev();
     }
 
     /**
@@ -558,28 +481,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getSzerzo4Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo4Id', []);
-
-        return parent::getSzerzo4Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo4Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo4Nev', []);
-
-        return parent::getSzerzo4Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setSzerzo4($val)
     {
 
@@ -608,28 +509,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo5', []);
 
         return parent::getSzerzo5();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo5Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo5Id', []);
-
-        return parent::getSzerzo5Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo5Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo5Nev', []);
-
-        return parent::getSzerzo5Nev();
     }
 
     /**
@@ -668,17 +547,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getTipusId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipusId', []);
-
-        return parent::getTipusId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTipus($val)
     {
 
@@ -707,28 +575,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas1', []);
 
         return parent::getEloadas1();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas1Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas1Id', []);
-
-        return parent::getEloadas1Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas1Cim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas1Cim', []);
-
-        return parent::getEloadas1Cim();
     }
 
     /**
@@ -767,28 +613,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getEloadas2Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas2Id', []);
-
-        return parent::getEloadas2Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas2Cim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas2Cim', []);
-
-        return parent::getEloadas2Cim();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setEloadas2($val)
     {
 
@@ -817,28 +641,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas3', []);
 
         return parent::getEloadas3();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas3Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas3Id', []);
-
-        return parent::getEloadas3Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas3Cim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas3Cim', []);
-
-        return parent::getEloadas3Cim();
     }
 
     /**
@@ -877,28 +679,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getEloadas4Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas4Id', []);
-
-        return parent::getEloadas4Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas4Cim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas4Cim', []);
-
-        return parent::getEloadas4Cim();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setEloadas4($val)
     {
 
@@ -927,28 +707,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas5', []);
 
         return parent::getEloadas5();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas5Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas5Id', []);
-
-        return parent::getEloadas5Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEloadas5Cim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEloadas5Cim', []);
-
-        return parent::getEloadas5Cim();
     }
 
     /**
@@ -1031,28 +789,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getBiralo1Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo1Id', []);
-
-        return parent::getBiralo1Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBiralo1Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo1Nev', []);
-
-        return parent::getBiralo1Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setBiralo1($val)
     {
 
@@ -1086,28 +822,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getBiralo2Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo2Id', []);
-
-        return parent::getBiralo2Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBiralo2Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo2Nev', []);
-
-        return parent::getBiralo2Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setBiralo2($val)
     {
 
@@ -1136,28 +850,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo3', []);
 
         return parent::getBiralo3();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBiralo3Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo3Id', []);
-
-        return parent::getBiralo3Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBiralo3Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBiralo3Nev', []);
-
-        return parent::getBiralo3Nev();
     }
 
     /**
@@ -1631,28 +1323,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeszelgetopartner', []);
 
         return parent::getBeszelgetopartner();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBeszelgetopartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeszelgetopartnerId', []);
-
-        return parent::getBeszelgetopartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBeszelgetopartnerNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeszelgetopartnerNev', []);
-
-        return parent::getBeszelgetopartnerNev();
     }
 
     /**
@@ -2241,28 +1911,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getTeremNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeremNev', []);
-
-        return parent::getTeremNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTeremId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeremId', []);
-
-        return parent::getTeremId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTerem($terem)
     {
 
@@ -2313,17 +1961,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTema', []);
 
         return parent::getTema();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTemaNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTemaNev', []);
-
-        return parent::getTemaNev();
     }
 
     /**
@@ -2384,28 +2021,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getSzerzo6Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6Id', []);
-
-        return parent::getSzerzo6Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo6Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo6Nev', []);
-
-        return parent::getSzerzo6Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setSzerzo6($val)
     {
 
@@ -2434,28 +2049,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7', []);
 
         return parent::getSzerzo7();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo7Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7Id', []);
-
-        return parent::getSzerzo7Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo7Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo7Nev', []);
-
-        return parent::getSzerzo7Nev();
     }
 
     /**
@@ -2494,28 +2087,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getSzerzo8Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8Id', []);
-
-        return parent::getSzerzo8Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo8Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo8Nev', []);
-
-        return parent::getSzerzo8Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setSzerzo8($val)
     {
 
@@ -2544,28 +2115,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9', []);
 
         return parent::getSzerzo9();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo9Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9Id', []);
-
-        return parent::getSzerzo9Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo9Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo9Nev', []);
-
-        return parent::getSzerzo9Nev();
     }
 
     /**
@@ -2604,28 +2153,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getSzerzo10Id()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10Id', []);
-
-        return parent::getSzerzo10Id();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzerzo10Nev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzerzo10Nev', []);
-
-        return parent::getSzerzo10Nev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setSzerzo10($val)
     {
 
@@ -2654,28 +2181,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponens', []);
 
         return parent::getOpponens();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOpponensId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponensId', []);
-
-        return parent::getOpponensId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOpponensNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOpponensNev', []);
-
-        return parent::getOpponensNev();
     }
 
     /**
@@ -2846,28 +2351,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getEgyetemId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEgyetemId', []);
-
-        return parent::getEgyetemId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEgyetemNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEgyetemNev', []);
-
-        return parent::getEgyetemNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setEgyetem($val)
     {
 
@@ -2896,28 +2379,6 @@ class MPTNGYSzakmaianyag extends \Entities\MPTNGYSzakmaianyag implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKar', []);
 
         return parent::getKar();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getKarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKarId', []);
-
-        return parent::getKarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getKarNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKarNev', []);
-
-        return parent::getKarNev();
     }
 
     /**

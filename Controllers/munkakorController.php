@@ -21,9 +21,7 @@ class MunkakorController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setJog($this->params->getIntRequestParam('jog', 0));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

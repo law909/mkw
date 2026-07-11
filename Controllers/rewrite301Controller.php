@@ -21,9 +21,7 @@ class rewrite301Controller extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setFromurl($this->params->getStringRequestParam('fromurl', $obj->getFromurl()));
-        $obj->setTourl($this->params->getStringRequestParam('tourl', $obj->getTourl()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

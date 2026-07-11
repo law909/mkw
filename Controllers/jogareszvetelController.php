@@ -43,40 +43,34 @@ class jogareszvetelController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
+        $x = $this->getEntityFieldsArray($t, $x);
+
         $x['datum'] = $t->getDatumStr();
         $x['napnev'] = $t->getDatumNapnev();
 
-        $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
-        $x['partneremail'] = $t->getPartneremail();
+        $x['partner'] = $t->getPartner()?->getId();
         $x['partnertelefon'] = ($t->getPartner() ? $t->getPartner()->getTelefon() : '');
 
-        $x['tanar'] = $t->getTanarId();
-        $x['tanarnev'] = $t->getTanarnev();
+        $x['tanar'] = $t->getTanar()?->getId();
+        $x['tanarnev'] = $t->getTanar()?->getNev();
 
-        $x['jogaterem'] = $t->getJogateremId();
-        $x['jogateremnev'] = $t->getJogateremNev();
+        $x['jogaterem'] = $t->getJogaterem()?->getId();
+        $x['jogateremnev'] = $t->getJogaterem()?->getNev();
 
-        $x['jogaoratipus'] = $t->getJogaoratipusId();
-        $x['jogaoratipusnev'] = $t->getJogaoratipusNev();
+        $x['jogaoratipus'] = $t->getJogaoratipus()?->getId();
+        $x['jogaoratipusnev'] = $t->getJogaoratipus()?->getNev();
 
-        $x['fizmod'] = $t->getFizmodId();
-        $x['fizmodnev'] = $t->getFizmodNev();
+        $x['fizmod'] = $t->getFizmod()?->getId();
+        $x['fizmodnev'] = $t->getFizmod()?->getNev();
 
-        $x['penztar'] = $t->getPenztarId();
-        $x['penztarnev'] = $t->getPenztarnev();
+        $x['penztar'] = $t->getPenztar()?->getId();
+        $x['penztarnev'] = $t->getPenztar()?->getNev();
 
-        $x['termek'] = $t->getTermekId();
-        $x['termeknev'] = $t->getTermeknev();
-        $x['nettoegysar'] = $t->getNettoegysar();
-        $x['bruttoegysar'] = $t->getBruttoegysar();
-        $x['jutalek'] = $t->getJutalek();
+        $x['termek'] = $t->getTermek()?->getId();
+        $x['termeknev'] = $t->getTermek()?->getNev();
 
-        $x['jogaberlet'] = $t->getJogaberletId();
-        $x['jogaberletnev'] = $t->getJogaberlet() ? $t->getJogaberlet()->getFullNev() : '';
-
-        $x['tisztaznikell'] = $t->isTisztaznikell();
-        $x['online'] = $t->getOnline();
+        $x['jogaberlet'] = $t->getJogaberlet()?->getId();
+        $x['jogaberletnev'] = $t->getJogaberlet()?->getFullNev();
 
         if ($forKarb) {
             $fizmod = new fizmodController();
@@ -291,10 +285,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController();
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController();
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList());
         $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
         $tanarc = new dolgozoController();
@@ -327,10 +321,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($record));
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController();
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartner()?->getId() : 0)));
         }
         $fizmod = new fizmodController();
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmod()?->getId() : 0)));
 
         return $view->getTemplateResult();
     }
@@ -576,7 +570,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                 $bt->setNetto($osszeg);
                 $bt->setAfa(0);
                 $bt->setBrutto($osszeg);
-                $bt->setSzoveg($r->getRendezvenyTeljesNev());
+                $bt->setSzoveg($r->getRendezveny()?->getTeljesNev());
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
 
                 $this->getEm()->persist($biz);

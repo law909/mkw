@@ -471,7 +471,7 @@ class Dolgozo
         return $this->fizmod;
     }
 
-    public function getFizmodnev()
+    public function getFizmodNev()
     {
         $fm = $this->getFizmod();
         if ($fm) {

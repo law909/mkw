@@ -29,18 +29,13 @@ class termekdokController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['url'] = $t->getUrl();
-        $x['leiras'] = $t->getLeiras();
-        $x['path'] = $t->getPath();
+        $x = $this->getEntityFieldsArray($t, $x);
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setUrl(\mkw\store::addHttp($this->params->getStringRequestParam('url')));
-        $obj->setPath($this->params->getBoolRequestParam('path'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getemptyrow()

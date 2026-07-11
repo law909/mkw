@@ -89,7 +89,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository
         /** @var Szallitasimod $szm */
         foreach ($szms as $szm) {
             if ($szm->getTermek()) {
-                $termekek[$szm->getTermekId()] = $szm->getTermekId();
+                $termekek[$szm->getTermek()?->getId()] = $szm->getTermek()?->getId();
             }
         }
         return $termekek;

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bankszamla;
+use Entities\Valutanem;
 use mkw\store;
 
 class bankszamlaController extends \mkwhelpers\JQGridController
@@ -29,12 +30,8 @@ class bankszamlaController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setBanknev($this->params->getStringRequestParam('banknev'));
-        $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
-        $obj->setSzamlaszam($this->params->getStringRequestParam('szamlaszam'));
-        $obj->setSwift($this->params->getStringRequestParam('swift'));
-        $obj->setIban($this->params->getStringRequestParam('iban'));
-        $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $valutanem = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
         } else {
@@ -50,19 +47,19 @@ class bankszamlaController extends \mkwhelpers\JQGridController
             if (!is_null($this->params->getRequestParam('banknev', null))) {
                 $filter->addFilter('banknev', 'LIKE', '%' . $this->params->getStringRequestParam('banknev') . '%');
             }
-            if (!is_null($this->getParam('bankcim', null))) {
+            if (!is_null($this->params->getStringRequestParam('bankcim', null))) {
                 $filter->addFilter('bankcim', 'LIKE', '%' . $this->params->getStringRequestParam('bankcim') . '%');
             }
-            if (!is_null($this->getParam('szamlaszam', null))) {
+            if (!is_null($this->params->getStringRequestParam('szamlaszam', null))) {
                 $filter->addFilter('szamlaszam', 'LIKE', '%' . $this->params->getStringRequestParam('szamlaszam') . '%');
             }
-            if (!is_null($this->getParam('swift', null))) {
+            if (!is_null($this->params->getStringRequestParam('swift', null))) {
                 $filter->addFilter('swift', 'LIKE', '%' . $this->params->getStringRequestParam('swift') . '%');
             }
-            if (!is_null($this->getParam('iban', null))) {
+            if (!is_null($this->params->getStringRequestParam('iban', null))) {
                 $filter->addFilter('iban', 'LIKE', '%' . $this->params->getStringRequestParam('iban') . '%');
             }
-            if (!is_null($this->getParam('valutanem', null))) {
+            if (!is_null($this->params->getStringRequestParam('valutanem', null))) {
                 $filter->addFilter('v.nev', 'LIKE', '%' . $this->params->getStringRequestParam('valutanem') . '%');
             }
         }

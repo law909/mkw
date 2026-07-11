@@ -756,12 +756,12 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFizmodnev()
+    public function getFizmodNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', []);
 
-        return parent::getFizmodnev();
+        return parent::getFizmodNev();
     }
 
     /**

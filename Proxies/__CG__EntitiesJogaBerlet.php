@@ -371,17 +371,6 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTermek($val)
     {
 
@@ -404,34 +393,12 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTermeknev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknev', []);
-
-        return parent::getTermeknev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getPartner()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
     }
 
     /**
@@ -454,28 +421,6 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnernev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnernev', []);
-
-        return parent::getPartnernev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartneremail()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartneremail', []);
-
-        return parent::getPartneremail();
     }
 
     /**

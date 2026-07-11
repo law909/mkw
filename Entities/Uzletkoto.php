@@ -332,24 +332,6 @@ class Uzletkoto
         return $this->partnervalutanem;
     }
 
-    public function getPartnervalutanemnev()
-    {
-        $vn = $this->getPartnervalutanem();
-        if ($vn) {
-            return $vn->getNev();
-        }
-        return '';
-    }
-
-    public function getPartnervalutanemId()
-    {
-        $vn = $this->getPartnervalutanem();
-        if ($vn) {
-            return $vn->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Valutanem $val
      */
@@ -373,22 +355,6 @@ class Uzletkoto
     public function getPartnerszallitasimod()
     {
         return $this->partnerszallitasimod;
-    }
-
-    public function getPartnerszallitasimodNev()
-    {
-        if ($this->partnerszallitasimod) {
-            return $this->partnerszallitasimod->getNev();
-        }
-        return '';
-    }
-
-    public function getPartnerszallitasimodId()
-    {
-        if ($this->partnerszallitasimod) {
-            return $this->partnerszallitasimod->getId();
-        }
-        return '';
     }
 
     public function setPartnerszallitasimod($val)
@@ -422,22 +388,6 @@ class Uzletkoto
     public function getPartnerfizmod()
     {
         return $this->partnerfizmod;
-    }
-
-    public function getPartnerfizmodNev()
-    {
-        if ($this->partnerfizmod) {
-            return $this->partnerfizmod->getNev();
-        }
-        return '';
-    }
-
-    public function getPartnerfizmodId()
-    {
-        if ($this->partnerfizmod) {
-            return $this->partnerfizmod->getId();
-        }
-        return '';
     }
 
     public function setPartnerfizmod(Fizmod $fizmod)
@@ -483,14 +433,6 @@ class Uzletkoto
     public function getFouzletkoto()
     {
         return $this->fouzletkoto;
-    }
-
-    public function getFouzletkotoId()
-    {
-        if ($this->fouzletkoto) {
-            return $this->fouzletkoto->getId();
-        }
-        return '';
     }
 
     /**

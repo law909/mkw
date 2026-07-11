@@ -226,14 +226,6 @@ class Szallitasimod
         return $this->termek;
     }
 
-    public function getTermekId()
-    {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Termek $val
      */

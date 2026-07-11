@@ -10,7 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="jogareszvetel",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class JogaReszvetel {
+class JogaReszvetel
+{
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -130,55 +131,65 @@ class JogaReszvetel {
     /** @ORM\Column(type="integer",nullable=true) */
     private $online = 0;
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -188,18 +199,21 @@ class JogaReszvetel {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
@@ -209,26 +223,20 @@ class JogaReszvetel {
     /**
      * @return \Entities\Partner
      */
-    public function getPartner() {
+    public function getPartner()
+    {
         return $this->partner;
-    }
-
-    public function getPartnerId() {
-        if ($this->partner) {
-            return $this->partner->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\Partner $val
      */
-    public function setPartner($val) {
+    public function setPartner($val)
+    {
         if ($this->partner !== $val) {
             if (!$val) {
                 $this->removePartner();
-            }
-            else {
+            } else {
                 $this->partner = $val;
                 $this->setPartnernev($val->getNev());
                 $this->setPartnervezeteknev($val->getVezeteknev());
@@ -238,7 +246,8 @@ class JogaReszvetel {
         }
     }
 
-    public function removePartner() {
+    public function removePartner()
+    {
         if ($this->partner !== null) {
             $this->partner = null;
             $this->partnernev = '';
@@ -248,148 +257,114 @@ class JogaReszvetel {
         }
     }
 
-    public function getPartnernev() {
+    public function getPartnernev()
+    {
         return $this->partnernev;
     }
 
-    public function setPartnernev($val) {
+    public function setPartnernev($val)
+    {
         $this->partnernev = $val;
     }
 
-    public function getPartnervezeteknev() {
+    public function getPartnervezeteknev()
+    {
         return $this->partnervezeteknev;
     }
 
-    public function setPartnervezeteknev($val) {
+    public function setPartnervezeteknev($val)
+    {
         $this->partnervezeteknev = $val;
     }
 
-    public function getPartnerkeresztnev() {
+    public function getPartnerkeresztnev()
+    {
         return $this->partnerkeresztnev;
     }
 
-    public function setPartnerkeresztnev($val) {
+    public function setPartnerkeresztnev($val)
+    {
         $this->partnerkeresztnev = $val;
     }
 
     /**
      * @return \Entities\Dolgozo
      */
-    public function getTanar() {
+    public function getTanar()
+    {
         return $this->tanar;
-    }
-
-    public function getTanarId() {
-        if ($this->tanar) {
-            return $this->tanar->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\Dolgozo $val
      */
-    public function setTanar($val) {
+    public function setTanar($val)
+    {
         if ($this->tanar !== $val) {
             if (!$val) {
                 $this->removeTanar();
-            }
-            else {
+            } else {
                 $this->tanar = $val;
             }
         }
     }
 
-    public function removeTanar() {
+    public function removeTanar()
+    {
         if ($this->tanar !== null) {
             $this->tanar = null;
         }
     }
 
-    public function getTanarnev() {
-        if ($this->tanar) {
-            return $this->tanar->getNev();
-        }
-        return '';
-    }
-
-    public function getJogaterem() {
+    public function getJogaterem()
+    {
         return $this->jogaterem;
     }
 
-    public function getJogateremNev() {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getNev();
-        }
-        return '';
-    }
-
-    public function getJogateremOrarendclass() {
+    public function getJogateremOrarendclass()
+    {
         if ($this->jogaterem) {
             return $this->jogaterem->getOrarendclass();
         }
         return '';
     }
 
-    public function getJogateremId() {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getId();
-        }
-        return '';
-    }
-
-    public function setJogaterem($jogaterem) {
+    public function setJogaterem($jogaterem)
+    {
         $this->jogaterem = $jogaterem;
     }
 
-    public function getJogaoratipus() {
+    public function getJogaoratipus()
+    {
         return $this->jogaoratipus;
     }
 
-    public function getJogaoratipusNev() {
-        if ($this->jogaoratipus) {
-            return $this->jogaoratipus->getNev();
-        }
-        return '';
-    }
-
-    public function getJogaoratipusId() {
-        if ($this->jogaoratipus) {
-            return $this->jogaoratipus->getId();
-        }
-        return '';
-    }
-
-    public function setJogaoratipus($jogaoratipus) {
+    public function setJogaoratipus($jogaoratipus)
+    {
         $this->jogaoratipus = $jogaoratipus;
     }
 
-    public function getTermek() {
+    public function getTermek()
+    {
         return $this->termek;
-    }
-
-    public function getTermekId() {
-        if ($this->termek) {
-            return $this->termek->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\Termek $val
      */
-    public function setTermek($val) {
+    public function setTermek($val)
+    {
         if ($this->termek !== $val) {
             if (!$val) {
                 $this->removeTermek();
-            }
-            else {
+            } else {
                 $this->termek = $val;
             }
         }
     }
 
-    public function removeTermek() {
+    public function removeTermek()
+    {
         if ($this->termek !== null) {
             $this->termek = null;
             $this->setNettoegysar(0);
@@ -397,98 +372,85 @@ class JogaReszvetel {
         }
     }
 
-    public function getTermeknev() {
-        if ($this->termek) {
-            return $this->termek->getNev();
-        }
-        return '';
-    }
-
-    public function getNettoegysar() {
+    public function getNettoegysar()
+    {
         return $this->nettoegysar;
     }
 
-    public function setNettoegysar($val) {
+    public function setNettoegysar($val)
+    {
         $this->nettoegysar = $val;
     }
 
-    public function getBruttoegysar() {
+    public function getBruttoegysar()
+    {
         return $this->bruttoegysar;
     }
 
-    public function setBruttoegysar($val) {
+    public function setBruttoegysar($val)
+    {
         $this->bruttoegysar = $val;
     }
 
     /**
      * @return mixed
      */
-    public function getJutalek() {
+    public function getJutalek()
+    {
         return $this->jutalek;
     }
 
     /**
      * @param mixed $jutalek
      */
-    public function setJutalek($jutalek) {
+    public function setJutalek($jutalek)
+    {
         $this->jutalek = $jutalek;
     }
 
     /**
      * @return mixed
      */
-    public function getPartneremail() {
+    public function getPartneremail()
+    {
         return $this->partneremail;
     }
 
     /**
      * @param mixed $partneremail
      */
-    public function setPartneremail($partneremail) {
+    public function setPartneremail($partneremail)
+    {
         $this->partneremail = $partneremail;
     }
 
     /**
      * @return \Entities\Fizmod
      */
-    public function getFizmod() {
+    public function getFizmod()
+    {
         return $this->fizmod;
-    }
-
-    public function getFizmodnev() {
-        $fm = $this->getFizmod();
-        if ($fm) {
-            return $fm->getNev();
-        }
-        return '';
-    }
-
-    public function getFizmodId() {
-        $fm = $this->getFizmod();
-        if ($fm) {
-            return $fm->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\Fizmod $val
      */
-    public function setFizmod($val) {
+    public function setFizmod($val)
+    {
         if (!($val instanceof \Entities\Fizmod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {
                 $this->removeFizmod();
-            }
-            else {
+            } else {
                 $this->fizmod = $val;
             }
         }
     }
 
-    public function removeFizmod() {
+    public function removeFizmod()
+    {
         if ($this->fizmod !== null) {
             $this->fizmod = null;
         }
@@ -497,67 +459,58 @@ class JogaReszvetel {
     /**
      * @return \Entities\Penztar
      */
-    public function getPenztar() {
+    public function getPenztar()
+    {
         return $this->penztar;
-    }
-
-    public function getPenztarId() {
-        if ($this->penztar) {
-            return $this->penztar->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\Penztar|null $val
      */
-    public function setPenztar($val = null) {
+    public function setPenztar($val = null)
+    {
         if ($this->penztar !== $val) {
             if (!$val) {
                 $this->removePenztar();
-            }
-            else {
+            } else {
                 $this->penztar = $val;
             }
         }
     }
 
-    public function removePenztar() {
+    public function removePenztar()
+    {
         if ($this->penztar !== null) {
             $this->penztar = null;
         }
     }
 
-    public function getPenztarnev() {
-        if ($this->penztar) {
-            return $this->penztar->getNev();
-        }
-        return '';
-    }
-
-    public function getDatum() {
+    public function getDatum()
+    {
         return $this->datum;
     }
 
-    public function getDatumStr() {
+    public function getDatumStr()
+    {
         if ($this->getDatum()) {
             return $this->getDatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function getDatumNapnev() {
+    public function getDatumNapnev()
+    {
         if ($this->getDatum()) {
             return \mkw\store::getDayname($this->getDatum()->format('N'));
         }
         return '';
     }
 
-    public function setDatum($adat = '') {
+    public function setDatum($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->datum = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -568,61 +521,55 @@ class JogaReszvetel {
     /**
      * @return mixed
      */
-    public function getUresterem() {
+    public function getUresterem()
+    {
         return $this->uresterem;
     }
 
     /**
      * @param mixed $uresterem
      */
-    public function setUresterem($uresterem) {
+    public function setUresterem($uresterem)
+    {
         $this->uresterem = $uresterem;
     }
 
-    public function calcJutalek($jutalekszazalek = null) {
+    public function calcJutalek($jutalekszazalek = null)
+    {
         if ($this->getUresterem()) {
             $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaUresTeremJutalek, 3000));
-        }
-        else {
-            if ($this->getFizmodId() && \mkw\store::isAYCMFizmod($this->getFizmodId())) {
-                $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
+        } elseif ($this->getFizmod()?->getId() && \mkw\store::isAYCMFizmod($this->getFizmod()?->getId())) {
+            $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
+        } else {
+            $jutalekszaz = $jutalekszazalek;
+            if (!$jutalekszaz) {
+                $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
             }
-            else {
-                $jutalekszaz = $jutalekszazalek;
-                if (!$jutalekszaz) {
-                    $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
-                }
-                $this->setJutalek($this->getBruttoegysar() * $jutalekszaz / 100);
-            }
+            $this->setJutalek($this->getBruttoegysar() * $jutalekszaz / 100);
         }
     }
 
-    public function getJogaberlet() {
+    public function getJogaberlet()
+    {
         return $this->jogaberlet;
-    }
-
-    public function getJogaberletId() {
-        if ($this->jogaberlet) {
-            return $this->jogaberlet->getId();
-        }
-        return '';
     }
 
     /**
      * @param \Entities\JogaBerlet $val
      */
-    public function setJogaberlet($val) {
+    public function setJogaberlet($val)
+    {
         if ($this->jogaberlet !== $val) {
             if (!$val) {
                 $this->removeJogaberlet();
-            }
-            else {
+            } else {
                 $this->jogaberlet = $val;
             }
         }
     }
 
-    public function removeJogaberlet() {
+    public function removeJogaberlet()
+    {
         if ($this->jogaberlet !== null) {
             $this->jogaberlet = null;
         }
@@ -631,28 +578,32 @@ class JogaReszvetel {
     /**
      * @return bool
      */
-    public function isTisztaznikell() {
+    public function isTisztaznikell()
+    {
         return $this->tisztaznikell;
     }
 
     /**
      * @param bool $tisztaznikell
      */
-    public function setTisztaznikell($tisztaznikell) {
+    public function setTisztaznikell($tisztaznikell)
+    {
         $this->tisztaznikell = $tisztaznikell;
     }
 
     /**
      * @return int
      */
-    public function getOnline() {
+    public function getOnline()
+    {
         return $this->online;
     }
 
     /**
      * @param int $online
      */
-    public function setOnline($online): void {
+    public function setOnline($online): void
+    {
         $this->online = $online;
     }
 

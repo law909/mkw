@@ -490,10 +490,8 @@ class MPTNGYSzakmaianyag
     {
         if ($this->getBiralo3()) {
             return $this->calcPont() >= 25;
-        } else {
-            if ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
-                return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
-            }
+        } elseif ($this->isB1biralatkesz() && $this->isB2biralatkesz()) {
+            return ($this->calcPont() >= 25) and (abs($this->calcB1pont() - $this->calcB2pont()) < 10);
         }
         return false;
     }
@@ -552,10 +550,10 @@ class MPTNGYSzakmaianyag
             $this->isSzerzoRegistered(9) &&
             $this->isSzerzoRegistered(10);
 
-        if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)) {
+        if ($this->getTipus()?->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYSzimpoziumTipus)) {
             $ret = $ret && $this->isSzerzoRegistered(-1);
         }
-        if ($this->getTipusId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus)) {
+        if ($this->getTipus()?->getId() == \mkw\store::getParameter(\mkw\consts::MPTNGYKonyvbemutatoTipus)) {
             $ret = $ret && $this->isSzerzoRegistered(0);
         }
         return $ret;
@@ -600,14 +598,6 @@ class MPTNGYSzakmaianyag
         return $this->tulajdonos;
     }
 
-    public function getTulajdonosId()
-    {
-        if ($this->tulajdonos) {
-            return $this->tulajdonos->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -633,22 +623,6 @@ class MPTNGYSzakmaianyag
     public function getSzerzo1()
     {
         return $this->szerzo1;
-    }
-
-    public function getSzerzo1Id()
-    {
-        if ($this->szerzo1) {
-            return $this->szerzo1->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo1Nev()
-    {
-        if ($this->szerzo1) {
-            return $this->szerzo1->getNev();
-        }
-        return '';
     }
 
     /**
@@ -678,22 +652,6 @@ class MPTNGYSzakmaianyag
         return $this->szerzo2;
     }
 
-    public function getSzerzo2Id()
-    {
-        if ($this->szerzo2) {
-            return $this->szerzo2->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo2Nev()
-    {
-        if ($this->szerzo2) {
-            return $this->szerzo2->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -719,22 +677,6 @@ class MPTNGYSzakmaianyag
     public function getSzerzo3()
     {
         return $this->szerzo3;
-    }
-
-    public function getSzerzo3Id()
-    {
-        if ($this->szerzo3) {
-            return $this->szerzo3->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo3Nev()
-    {
-        if ($this->szerzo3) {
-            return $this->szerzo3->getNev();
-        }
-        return '';
     }
 
     /**
@@ -764,22 +706,6 @@ class MPTNGYSzakmaianyag
         return $this->szerzo4;
     }
 
-    public function getSzerzo4Id()
-    {
-        if ($this->szerzo4) {
-            return $this->szerzo4->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo4Nev()
-    {
-        if ($this->szerzo4) {
-            return $this->szerzo4->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -805,22 +731,6 @@ class MPTNGYSzakmaianyag
     public function getSzerzo5()
     {
         return $this->szerzo5;
-    }
-
-    public function getSzerzo5Id()
-    {
-        if ($this->szerzo5) {
-            return $this->szerzo5->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo5Nev()
-    {
-        if ($this->szerzo5) {
-            return $this->szerzo5->getNev();
-        }
-        return '';
     }
 
     /**
@@ -850,14 +760,6 @@ class MPTNGYSzakmaianyag
         return $this->tipus;
     }
 
-    public function getTipusId()
-    {
-        if ($this->tipus) {
-            return $this->tipus->getId();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\MPTNGYSzakmaianyagtipus $val
      */
@@ -883,22 +785,6 @@ class MPTNGYSzakmaianyag
     public function getEloadas1()
     {
         return $this->eloadas1;
-    }
-
-    public function getEloadas1Id()
-    {
-        if ($this->eloadas1) {
-            return $this->eloadas1->getId();
-        }
-        return '';
-    }
-
-    public function getEloadas1Cim()
-    {
-        if ($this->eloadas1) {
-            return $this->eloadas1->getCim();
-        }
-        return '';
     }
 
     /**
@@ -928,22 +814,6 @@ class MPTNGYSzakmaianyag
         return $this->eloadas2;
     }
 
-    public function getEloadas2Id()
-    {
-        if ($this->eloadas2) {
-            return $this->eloadas2->getId();
-        }
-        return '';
-    }
-
-    public function getEloadas2Cim()
-    {
-        if ($this->eloadas2) {
-            return $this->eloadas2->getCim();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -969,22 +839,6 @@ class MPTNGYSzakmaianyag
     public function getEloadas3()
     {
         return $this->eloadas3;
-    }
-
-    public function getEloadas3Id()
-    {
-        if ($this->eloadas3) {
-            return $this->eloadas3->getId();
-        }
-        return '';
-    }
-
-    public function getEloadas3Cim()
-    {
-        if ($this->eloadas3) {
-            return $this->eloadas3->getCim();
-        }
-        return '';
     }
 
     /**
@@ -1014,22 +868,6 @@ class MPTNGYSzakmaianyag
         return $this->eloadas4;
     }
 
-    public function getEloadas4Id()
-    {
-        if ($this->eloadas4) {
-            return $this->eloadas4->getId();
-        }
-        return '';
-    }
-
-    public function getEloadas4Cim()
-    {
-        if ($this->eloadas4) {
-            return $this->eloadas4->getCim();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -1055,22 +893,6 @@ class MPTNGYSzakmaianyag
     public function getEloadas5()
     {
         return $this->eloadas5;
-    }
-
-    public function getEloadas5Id()
-    {
-        if ($this->eloadas5) {
-            return $this->eloadas5->getId();
-        }
-        return '';
-    }
-
-    public function getEloadas5Cim()
-    {
-        if ($this->eloadas5) {
-            return $this->eloadas5->getCim();
-        }
-        return '';
     }
 
     /**
@@ -1132,22 +954,6 @@ class MPTNGYSzakmaianyag
         return $this->biralo1;
     }
 
-    public function getBiralo1Id()
-    {
-        if ($this->biralo1) {
-            return $this->biralo1->getId();
-        }
-        return '';
-    }
-
-    public function getBiralo1Nev()
-    {
-        if ($this->biralo1) {
-            return $this->biralo1->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Dolgozo $val
      */
@@ -1175,22 +981,6 @@ class MPTNGYSzakmaianyag
         return $this->biralo2;
     }
 
-    public function getBiralo2Id()
-    {
-        if ($this->biralo2) {
-            return $this->biralo2->getId();
-        }
-        return '';
-    }
-
-    public function getBiralo2Nev()
-    {
-        if ($this->biralo2) {
-            return $this->biralo2->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Dolgozo $val
      */
@@ -1216,22 +1006,6 @@ class MPTNGYSzakmaianyag
     public function getBiralo3()
     {
         return $this->biralo3;
-    }
-
-    public function getBiralo3Id()
-    {
-        if ($this->biralo3) {
-            return $this->biralo3->getId();
-        }
-        return '';
-    }
-
-    public function getBiralo3Nev()
-    {
-        if ($this->biralo3) {
-            return $this->biralo3->getNev();
-        }
-        return '';
     }
 
     /**
@@ -1585,22 +1359,6 @@ class MPTNGYSzakmaianyag
     public function getBeszelgetopartner()
     {
         return $this->beszelgetopartner;
-    }
-
-    public function getBeszelgetopartnerId()
-    {
-        if ($this->beszelgetopartner) {
-            return $this->beszelgetopartner->getId();
-        }
-        return '';
-    }
-
-    public function getBeszelgetopartnerNev()
-    {
-        if ($this->beszelgetopartner) {
-            return $this->beszelgetopartner->getNev();
-        }
-        return '';
     }
 
     /**
@@ -2027,22 +1785,6 @@ class MPTNGYSzakmaianyag
         return $this->terem;
     }
 
-    public function getTeremNev()
-    {
-        if ($this->terem) {
-            return $this->terem->getNev();
-        }
-        return '';
-    }
-
-    public function getTeremId()
-    {
-        if ($this->terem) {
-            return $this->terem->getId();
-        }
-        return '';
-    }
-
     public function setTerem($terem)
     {
         $this->terem = $terem;
@@ -2075,11 +1817,6 @@ class MPTNGYSzakmaianyag
     public function getTema()
     {
         return $this->tema;
-    }
-
-    public function getTemaNev()
-    {
-        return $this->tema?->getNev();
     }
 
     /**
@@ -2125,22 +1862,6 @@ class MPTNGYSzakmaianyag
         return $this->szerzo6;
     }
 
-    public function getSzerzo6Id()
-    {
-        if ($this->szerzo6) {
-            return $this->szerzo6->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo6Nev()
-    {
-        if ($this->szerzo6) {
-            return $this->szerzo6->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -2166,22 +1887,6 @@ class MPTNGYSzakmaianyag
     public function getSzerzo7()
     {
         return $this->szerzo7;
-    }
-
-    public function getSzerzo7Id()
-    {
-        if ($this->szerzo7) {
-            return $this->szerzo7->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo7Nev()
-    {
-        if ($this->szerzo7) {
-            return $this->szerzo7->getNev();
-        }
-        return '';
     }
 
     /**
@@ -2211,22 +1916,6 @@ class MPTNGYSzakmaianyag
         return $this->szerzo8;
     }
 
-    public function getSzerzo8Id()
-    {
-        if ($this->szerzo8) {
-            return $this->szerzo8->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo8Nev()
-    {
-        if ($this->szerzo8) {
-            return $this->szerzo8->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -2252,22 +1941,6 @@ class MPTNGYSzakmaianyag
     public function getSzerzo9()
     {
         return $this->szerzo9;
-    }
-
-    public function getSzerzo9Id()
-    {
-        if ($this->szerzo9) {
-            return $this->szerzo9->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo9Nev()
-    {
-        if ($this->szerzo9) {
-            return $this->szerzo9->getNev();
-        }
-        return '';
     }
 
     /**
@@ -2297,22 +1970,6 @@ class MPTNGYSzakmaianyag
         return $this->szerzo10;
     }
 
-    public function getSzerzo10Id()
-    {
-        if ($this->szerzo10) {
-            return $this->szerzo10->getId();
-        }
-        return '';
-    }
-
-    public function getSzerzo10Nev()
-    {
-        if ($this->szerzo10) {
-            return $this->szerzo10->getNev();
-        }
-        return '';
-    }
-
     /**
      * @param \Entities\Partner $val
      */
@@ -2338,22 +1995,6 @@ class MPTNGYSzakmaianyag
     public function getOpponens()
     {
         return $this->opponens;
-    }
-
-    public function getOpponensId()
-    {
-        if ($this->opponens) {
-            return $this->opponens->getId();
-        }
-        return '';
-    }
-
-    public function getOpponensNev()
-    {
-        if ($this->opponens) {
-            return $this->opponens->getNev();
-        }
-        return '';
     }
 
     /**
@@ -2479,16 +2120,6 @@ class MPTNGYSzakmaianyag
         return $this->egyetem;
     }
 
-    public function getEgyetemId()
-    {
-        return $this->egyetem?->getId();
-    }
-
-    public function getEgyetemNev()
-    {
-        return $this->egyetem?->getNev();
-    }
-
     /**
      * @param \Entities\MPTNGYEgyetem $val
      */
@@ -2514,16 +2145,6 @@ class MPTNGYSzakmaianyag
     public function getKar()
     {
         return $this->kar;
-    }
-
-    public function getKarId()
-    {
-        return $this->kar?->getId();
-    }
-
-    public function getKarNev()
-    {
-        return $this->kar?->getNev();
     }
 
     /**

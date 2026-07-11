@@ -272,28 +272,6 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getValutanemnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
-
-        return parent::getValutanemnev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValutanemId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
-
-        return parent::getValutanemId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setValutanem($val)
     {
 

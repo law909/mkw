@@ -35,13 +35,7 @@ class termekcimkekatController extends \mkwhelpers\JQGridController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setTermeklaponlathato($this->params->getBoolRequestParam('termeklaponlathato'));
-        $obj->setTermekszurobenlathato($this->params->getBoolRequestParam('termekszurobenlathato'));
-        $obj->setTermeklistabanlathato($this->params->getBoolRequestParam('termeklistabanlathato'));
-        $obj->setTermekakciodobozbanlathato($this->params->getBoolRequestParam('termekakciodobozbanlathato'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

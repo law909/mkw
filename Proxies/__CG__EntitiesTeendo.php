@@ -246,28 +246,6 @@ class Teendo extends \Entities\Teendo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
-
-        return parent::getPartnerNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner(\Entities\Partner $partner)
     {
 

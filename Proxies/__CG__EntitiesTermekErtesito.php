@@ -250,28 +250,6 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
-
-        return parent::getPartnerNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner(\Entities\Partner $val)
     {
 
@@ -300,28 +278,6 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
-
-        return parent::getTermekNev();
     }
 
     /**

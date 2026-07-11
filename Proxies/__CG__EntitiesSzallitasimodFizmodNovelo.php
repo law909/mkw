@@ -250,28 +250,6 @@ class SzallitasimodFizmodNovelo extends \Entities\SzallitasimodFizmodNovelo impl
     /**
      * {@inheritDoc}
      */
-    public function getFizmodNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', []);
-
-        return parent::getFizmodNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizmodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
-
-        return parent::getFizmodId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setFizmod($val)
     {
 

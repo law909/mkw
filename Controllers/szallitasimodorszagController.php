@@ -27,13 +27,12 @@ class szallitasimodorszagController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['orszagnev'] = $t->getOrszagNev();
-        $x['valutanemnev'] = $t->getValutanemNev();
-        $x['hatarertek'] = $t->getHatarertek();
-        $x['osszeg'] = $t->getOsszeg();
+        $x = $this->getEntityFieldsArray($t, $x);
+        $x['orszagnev'] = $t->getOrszag()?->getNev();
+        $x['valutanemnev'] = $t->getValutanem()?->getNev();
         if ($forKarb) {
-            $x['valutanemlist'] = $valutanem->getSelectList(($t->getValutanem() ? $t->getValutanemId() : 0));
-            $x['orszaglist'] = $oc->getSelectList($t->getOrszag() ? $t->getOrszagId() : 0, true);
+            $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanem()?->getId());
+            $x['orszaglist'] = $oc->getSelectList($t->getOrszag()?->getId(), true);
         }
         return $x;
     }

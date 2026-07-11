@@ -31,35 +31,16 @@ class dolgozoController extends \mkwhelpers\MattableController
             $t = new \Entities\Dolgozo();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['irszam'] = $t->getIrszam();
-        $x['varos'] = $t->getVaros();
-        $x['utca'] = $t->getUtca();
-        $x['telefon'] = $t->getTelefon();
-        $x['email'] = $t->getEmail();
-        $x['szulido'] = $t->getSzulido();
+        $x = $this->getEntityFieldsArray($t);
         $x['szulidostr'] = $t->getSzulidoStr();
-        $x['szulhely'] = $t->getSzulhely();
-        $x['evesmaxszabi'] = $t->getEvesmaxszabi();
-        $x['munkaviszonykezdete'] = $t->getMunkaviszonykezdete();
         $x['munkaviszonykezdetestr'] = $t->getMunkaviszonykezdeteStr();
         $x['munkakornev'] = $t->getMunkakorNev();
-        $x['url'] = $t->getUrl();
-        $x['havilevonas'] = $t->getHavilevonas();
-        $x['napilevonas'] = $t->getNapilevonas();
-        $x['szamlatad'] = $t->getSzamlatad();
-        $x['inaktiv'] = $t->isInaktiv();
-        $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
         $x['alapertelmezettraktarnev'] = $t->getAlapertelmezettRaktarNev();
         $x['fizmodnev'] = $t->getFizmodNev();
-        $x['mptngymaxdb'] = $t->getMptngymaxdb();
         $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
-        $x['jelszotext'] = $t->getJelszotext();
         $x['mptngykiosztottdb'] = $t->getMptngyszakmaianyagok1()->count()
             + $t->getMptngyszakmaianyagok2()->count()
             + $t->getMptngyszakmaianyagok3()->count();
-        $x['autoszamla'] = $t->isAutoszamla();
         return $x;
     }
 
@@ -71,35 +52,15 @@ class dolgozoController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj, $oper)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setIrszam($this->params->getStringRequestParam('irszam'));
-        $obj->setVaros($this->params->getStringRequestParam('varos'));
-        $obj->setUtca($this->params->getStringRequestParam('utca'));
-        $obj->setTelefon($this->params->getStringRequestParam('telefon'));
-        $obj->setEmail($this->params->getStringRequestParam('email'));
-        $obj->setSzulido($this->params->getStringRequestParam('szulido'));
-        $obj->setSzulhely($this->params->getStringRequestParam('szulhely'));
-        $obj->setEvesmaxszabi($this->params->getIntRequestParam('evesmaxszabi'));
-        $obj->setMunkaviszonykezdete($this->params->getStringRequestParam('munkaviszonykezdete'));
-        $obj->setUrl($this->params->getStringRequestParam('url'));
-        $obj->setHavilevonas($this->params->getFloatRequestParam('havilevonas'));
-        $obj->setNapilevonas($this->params->getFloatRequestParam('napilevonas'));
-        $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
-        $obj->setMptngymaxdb($this->params->getIntRequestParam('mptngymaxdb'));
-        $obj->setJelszotext($this->params->getStringRequestParam('jelszotext'));
-        $obj->setAutoszamla($this->params->getBoolRequestParam('autoszamla'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
             if ($pass1 && ($pass1 === $pass2)) {
                 $obj->setJelszo($pass1);
             }
-        } else {
-            if ($pass1 && ($pass1 === $pass2)) {
-                $obj->setJelszo($pass1);
-            }
+        } elseif ($pass1 && ($pass1 === $pass2)) {
+            $obj->setJelszo($pass1);
         }
         $ck = \mkw\store::getEm()->getRepository(Munkakor::class)->find($this->params->getIntRequestParam('munkakor', 0));
         if ($ck) {

@@ -28,10 +28,7 @@ class rendezvenyallapotController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend', $obj->getSorrend()));
-        $obj->setOrarendbenszerepel($this->params->getBoolRequestParam('orarendbenszerepel', $obj->isOrarendbenszerepel()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

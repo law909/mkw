@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Penztar;
+use Entities\Valutanem;
 use mkw\store;
 
 class penztarController extends \mkwhelpers\JQGridController
@@ -23,7 +24,7 @@ class penztarController extends \mkwhelpers\JQGridController
     protected function setFields($obj)
     {
         $obj->setNev($this->params->getStringRequestParam('nev'));
-        $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
         } else {
@@ -39,7 +40,7 @@ class penztarController extends \mkwhelpers\JQGridController
             if (!is_null($this->params->getRequestParam('nev', null))) {
                 $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
-            if (!is_null($this->getParam('valutanem', null))) {
+            if (!is_null($this->params->getStringRequestParam('valutanem', null))) {
                 $filter->addFilter('v.nev', 'LIKE', '%' . $this->params->getStringRequestParam('valutanem') . '%');
             }
         }

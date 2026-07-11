@@ -33,20 +33,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
             $t = new \Entities\Szallitasimod();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['nev_l1'] = $t->getNevL1();
-        $x['webes'] = $t->getWebes();
-        $x['webes2'] = $t->getWebes2();
-        $x['webes3'] = $t->getWebes3();
-        $x['webes4'] = $t->getWebes4();
-        $x['leiras'] = $t->getLeiras();
-        $x['leiras_l1'] = $t->getLeirasL1();
-        $x['fizmodok'] = $t->getFizmodok();
-        $x['sorrend'] = $t->getSorrend();
-        $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
-        $x['terminaltipus'] = $t->getTerminaltipus();
-        $x['termek'] = $t->getTermekId();
+        $x = $this->getEntityFieldsArray($t);
+        $x['termek'] = $t->getTermek()?->getId();
         $x['termeknev'] = $t->getTermek()?->getNev();
 
         if ($forKarb) {
@@ -86,18 +74,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setNevL1($this->params->getStringRequestParam('nev_l1', $obj->getNevL1()));
-        $obj->setWebes($this->params->getBoolRequestParam('webes'));
-        $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
-        $obj->setWebes3($this->params->getBoolRequestParam('webes3'));
-        $obj->setWebes4($this->params->getBoolRequestParam('webes4'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeirasL1($this->params->getOriginalStringRequestParam('leiras_l1'));
-        $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
-        $obj->setTerminaltipus($this->params->getStringRequestParam('terminaltipus'));
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['leiras', 'leiras_l1']]);
+
         $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
         if ($termek) {
             $obj->setTermek($termek);

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Esemeny;
+use Entities\Partner;
 use mkw\store;
 
 class esemenyController extends \mkwhelpers\MattableController
@@ -20,16 +21,11 @@ class esemenyController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Esemeny();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['bejegyzes'] = $t->getBejegyzes();
-        $x['leiras'] = $t->getLeiras();
-        $x['letrehozva'] = $t->getLetrehozva();
-        $x['esedekes'] = $t->getEsedekes();
+        $x = $this->getEntityFieldsArray($t);
         $x['esedekesstr'] = $t->getEsedekesStr();
         $x['partnernev'] = $t->getPartnerNev();
         return $x;
@@ -37,13 +33,11 @@ class esemenyController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
-        $ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner', 0));
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $ck = store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner', 0));
         if ($ck) {
             $obj->setPartner($ck);
         }
-        $obj->setBejegyzes($this->params->getStringRequestParam('bejegyzes'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setEsedekes($this->params->getStringRequestParam('esedekes'));
         return $obj;
     }
 

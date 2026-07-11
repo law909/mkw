@@ -26,63 +26,43 @@ class versenyzoController extends \mkwhelpers\MattableController
             $t = new Versenyzo();
             $this->getEm()->detach($t);
         }
-        $v['id'] = $t->getId();
-        $v['nev'] = $t->getNev();
-        $v['slug'] = $t->getSlug();
-        $v['versenysorozat'] = $t->getVersenysorozat();
-        $v['rovidleiras'] = $t->getRovidleiras();
-        $v['leiras'] = $t->getLeiras();
-        $v['kepurl'] = $t->getKepurl();
+        $v = $this->getEntityFieldsArray($t);
         $v['kepurllarge'] = $t->getKepurlLarge();
         $v['kepurlmedium'] = $t->getKepurlMedium();
         $v['kepurlsmall'] = $t->getKepurlSmall();
         $v['kepurlmini'] = $t->getKepurlMini();
         $v['kepurl400'] = $t->getKepurl400();
         $v['kepurl2000'] = $t->getKepurl2000();
-        $v['kepleiras'] = $t->getKepleiras();
-        $v['kepurl1'] = $t->getKepurl1();
+
         $v['kepurl1small'] = $t->getKepurl1Small();
         $v['kepurl1medium'] = $t->getKepurl1Medium();
         $v['kepurl1large'] = $t->getKepurl1Large();
         $v['kepurl1mini'] = $t->getKepurl1Mini();
         $v['kepurl1400'] = $t->getKepurl1400();
         $v['kepurl12000'] = $t->getKepurl12000();
-        $v['kepleiras1'] = $t->getKepleiras1();
-        $v['kepurl2'] = $t->getKepurl2();
+
         $v['kepurl2small'] = $t->getKepurl2Small();
         $v['kepurl2medium'] = $t->getKepurl2Medium();
         $v['kepurl2large'] = $t->getKepurl2Large();
         $v['kepurl2mini'] = $t->getKepurl2Mini();
         $v['kepurl2400'] = $t->getKepurl2400();
         $v['kepurl22000'] = $t->getKepurl22000();
-        $v['kepleiras2'] = $t->getKepleiras2();
-        $v['kepurl3'] = $t->getKepurl3();
+
         $v['kepurl3small'] = $t->getKepurl3Small();
         $v['kepurl3medium'] = $t->getKepurl3Medium();
         $v['kepurl3large'] = $t->getKepurl3Large();
         $v['kepurl3mini'] = $t->getKepurl3Mini();
         $v['kepurl3400'] = $t->getKepurl3400();
         $v['kepurl32000'] = $t->getKepurl32000();
-        $v['kepleiras3'] = $t->getKepleiras3();
-        $v['csapatid'] = $t->getCsapatId();
-        $v['csapatnev'] = $t->getCsapatNev();
+        
+        $v['csapatid'] = $t->getCsapat()?->getId();
+        $v['csapatnev'] = $t->getCsapat()?->getNev();
         return $v;
     }
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setVersenysorozat($this->params->getStringRequestParam('versenysorozat'));
-        $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
-        $obj->setKepurl1($this->params->getStringRequestParam('kepurl1'));
-        $obj->setKepleiras1($this->params->getStringRequestParam('kepleiras1'));
-        $obj->setKepurl2($this->params->getStringRequestParam('kepurl2'));
-        $obj->setKepleiras2($this->params->getStringRequestParam('kepleiras2'));
-        $obj->setKepurl3($this->params->getStringRequestParam('kepurl3'));
-        $obj->setKepleiras3($this->params->getStringRequestParam('kepleiras3'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $csapat = $this->getEm()->getRepository(Csapat::class)->find($this->params->getIntRequestParam('csapat', 0));
         if ($csapat) {
             $obj->setCsapat($csapat);

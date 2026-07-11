@@ -44,62 +44,21 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $x['id'] = $t->getId();
             $x['keplista'] = $tkepc->getSelectList($t->getTermek(), $t->getKepid());
         }
+        $x = $this->getEntityFieldsArray($t, $x);
         $x['adattipus1id'] = $t->getAdatTipus1Id();
         $x['adattipus1nev'] = $t->getAdatTipus1Nev();
         $x['adattipus1lista'] = $tvatc->getSelectList(
             \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin) : $t->getAdatTipus1Id()
         );
-        $x['ertek1'] = $t->getErtek1();
         $x['adattipus2id'] = $t->getAdatTipus2Id();
         $x['adattipus2nev'] = $t->getAdatTipus2Nev();
         $x['adattipus2lista'] = $tvatc->getSelectList(
             \mkw\store::isFixSzinMode() && $x['oper'] == 'add' ? \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret) : $t->getAdatTipus2Id()
         );
-        $x['ertek2'] = $t->getErtek2();
-        $x['lathato'] = $t->getLathato();
-        $x['lathato2'] = $t->getLathato2();
-        $x['lathato3'] = $t->getLathato3();
-        $x['lathato4'] = $t->getLathato4();
-        $x['lathato5'] = $t->getLathato5();
-        $x['lathato6'] = $t->getLathato6();
-        $x['lathato7'] = $t->getLathato7();
-        $x['lathato8'] = $t->getLathato8();
-        $x['lathato9'] = $t->getLathato9();
-        $x['lathato10'] = $t->getLathato10();
-        $x['lathato11'] = $t->getLathato11();
-        $x['lathato12'] = $t->getLathato12();
-        $x['lathato13'] = $t->getLathato13();
-        $x['lathato14'] = $t->getLathato14();
-        $x['lathato15'] = $t->getLathato15();
-        $x['elerheto'] = $t->getElerheto();
-        $x['elerheto2'] = $t->getElerheto2();
-        $x['elerheto3'] = $t->getElerheto3();
-        $x['elerheto4'] = $t->getElerheto4();
-        $x['elerheto5'] = $t->getElerheto5();
-        $x['elerheto6'] = $t->getElerheto6();
-        $x['elerheto7'] = $t->getElerheto7();
-        $x['elerheto8'] = $t->getElerheto8();
-        $x['elerheto9'] = $t->getElerheto9();
-        $x['elerheto10'] = $t->getElerheto10();
-        $x['elerheto11'] = $t->getElerheto11();
-        $x['elerheto12'] = $t->getElerheto12();
-        $x['elerheto13'] = $t->getElerheto13();
-        $x['elerheto14'] = $t->getElerheto14();
-        $x['elerheto15'] = $t->getElerheto15();
-        $x['termekfokep'] = $t->getTermekfokep();
-        $x['kepurl'] = $t->getKepurl();
-        $x['kepleiras'] = $t->getKepleiras();
         $x['kepid'] = $t->getKepId();
-        $x['netto'] = $t->getNetto();
-        $x['brutto'] = $t->getBrutto();
-        $x['cikkszam'] = $t->getCikkszam();
-        $x['idegencikkszam'] = $t->getIdegencikkszam();
-        $x['vonalkod'] = $t->getVonalkod();
         $x['keszlet'] = $t->getKeszlet();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
-        $x['beerkezesdatum'] = $t->getBeerkezesdatum();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
-        $x['minboltikeszlet'] = $t->getMinboltikeszlet();
         if (\mkw\store::isFixSzinMode()) {
             $x['szinid'] = $t->getSzinId();
             $x['meretid'] = $t->getMeretId();
@@ -114,12 +73,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj->setLathato($this->params->getBoolRequestParam('lathato', false));
-        /* MINTA ha nem kell, dobd ki
-          $ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntRequestParam('cimkecsoport'));
-          if ($ck) {
-          $obj->setKategoria($ck);
-          }
-         */
         return $obj;
     }
 

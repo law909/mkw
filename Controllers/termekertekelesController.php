@@ -30,23 +30,16 @@ class termekertekelesController extends \mkwhelpers\MattableController
             $t = new \Entities\TermekErtekeles();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['elony'] = $t->getElony();
-        $x['hatrany'] = $t->getHatrany();
-        $x['valasz'] = $t->getValasz();
-        $x['ertekeles'] = $t->getErtekeles();
+        $x = $this->getEntityFieldsArray($t);
         $x['created'] = $t->getCreatedStr();
         $x['lastmod'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
         $x['lastmodstr'] = $t->getLastmodStr();
-        $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnerNev();
-        $x['termek'] = $t->getTermekId();
-        $x['termeknev'] = $t->getTermekNev();
-        $x['termekslug'] = $t->getTermekSlug();
-        $x['elutasitva'] = $t->isElutasitva();
-        $x['anonim'] = $t->isAnonim();
+        $x['partner'] = $t->getPartner()?->getId();
+        $x['partnernev'] = $t->getPartner()?->getNev();
+        $x['termek'] = $t->getTermek()?->getId();
+        $x['termeknev'] = $t->getTermek()?->getNev();
+        $x['termekslug'] = $t->getTermek()?->getSlug();
         return $x;
     }
 
@@ -57,6 +50,7 @@ class termekertekelesController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
@@ -69,13 +63,6 @@ class termekertekelesController extends \mkwhelpers\MattableController
         } else {
             $obj->setTermek(null);
         }
-        $obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
-        $obj->setElony($this->params->getStringRequestParam('elony'));
-        $obj->setHatrany($this->params->getStringRequestParam('hatrany'));
-        $obj->setValasz($this->params->getStringRequestParam('valasz'));
-        $obj->setErtekeles($this->params->getIntRequestParam('ertekeles'));
-        $obj->setElutasitva($this->params->getBoolRequestParam('elutasitva'));
-        $obj->setAnonim($this->params->getBoolRequestParam('anonim'));
         return $obj;
     }
 
@@ -125,10 +112,10 @@ class termekertekelesController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($te, true));
 
         $partner = new partnerController();
-        $view->setVar('partnerlist', $partner->getSelectList(($te ? $te->getPartnerId() : 0)));
+        $view->setVar('partnerlist', $partner->getSelectList($te?->getPartner()?->getId()));
 
         $csoport = new termekController();
-        $view->setVar('termeklist', $csoport->getSelectList(($te ? $te->getTermekId() : 0)));
+        $view->setVar('termeklist', $csoport->getSelectList($te?->getTermek()?->getId()));
 
         $view->printTemplateResult();
     }

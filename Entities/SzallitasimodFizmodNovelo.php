@@ -87,24 +87,6 @@ class SzallitasimodFizmodNovelo
         return $this->fizmod;
     }
 
-    public function getFizmodNev()
-    {
-        $v = $this->getFizmod();
-        if ($v) {
-            return $v->getNev();
-        }
-        return '';
-    }
-
-    public function getFizmodId()
-    {
-        $v = $this->getFizmod();
-        if ($v) {
-            return $v->getId();
-        }
-        return 0;
-    }
-
     /**
      * @param \Entities\Fizmod $val
      */
@@ -147,5 +129,5 @@ class SzallitasimodFizmodNovelo
     {
         $this->ertekszazalek = $ertekszazalek;
     }
-    
+
 }

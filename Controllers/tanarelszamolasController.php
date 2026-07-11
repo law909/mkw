@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\JogaReszvetel;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -92,7 +93,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         }
         $filter->addFilter('_xx.tanar', '=', $tanarid);
 
-        $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter, array('datum' => 'ASC'));
+        $adat = $this->getRepo(JogaReszvetel::class)->getWithJoins($filter, ['datum' => 'ASC']);
 
         $excel = new Spreadsheet();
 
@@ -112,12 +113,12 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             if ($fm && \mkw\store::isAYCMFizmod($fm)) {
                 $termeknev = 'AYCM';
             } else {
-                $termeknev = $item->getTermekNev();
+                $termeknev = $item->getTermek()?->getNev();
             }
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, $item->getDatumStr())
                 ->setCellValue('B' . $sor, $item->getDatumNapnev())
-                ->setCellValue('C' . $sor, $item->getPartnerNev())
+                ->setCellValue('C' . $sor, $item->getPartnernev())
                 ->setCellValue('D' . $sor, $termeknev)
                 ->setCellValue('E' . $sor, $item->getJutalek());
 
@@ -234,7 +235,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             $body->setVar('fizmodtipus', $tanar->getFizmodTipus());
 
             /** @var \Entities\Valutanem $defavaluta */
-            $defavaluta = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            $defavaluta = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             $defakerekit = true;
             $mincimlet = 0;
             if ($defavaluta) {

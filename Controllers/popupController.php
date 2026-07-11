@@ -26,27 +26,7 @@ class popupController extends \mkwhelpers\MattableController
             $t = new \Entities\Popup();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['displaytime'] = $t->getDisplaytime();
-        $x['backgroundimageurl'] = $t->getBackgroundimageurl();
-        $x['overlaybackgroundcolor'] = $t->getOverlaybackgroundcolor();
-        $x['overlayopacity'] = $t->getOverlayopacity();
-        $x['headertext'] = $t->getHeadertext();
-        $x['bodytext'] = $t->getBodytext();
-        $x['closebuttontext'] = $t->getClosebuttontext();
-        $x['popuporder'] = $t->getPopuporder();
-        $x['triggerafterprevious'] = $t->isTriggerafterprevious();
-        $x['inaktiv'] = $t->isInaktiv();
-        $x['contentwidth'] = $t->getContentwidth();
-        $x['contentheight'] = $t->getContentheight();
-        $x['closebuttoncolor'] = $t->getClosebuttoncolor();
-        $x['closebuttonbackgroundcolor'] = $t->getClosebuttonbackgroundcolor();
-        $x['contenttop'] = $t->getContenttop();
-        $x['kepurl'] = $t->getBackgroundimageurl();
-        if ($forKarb) {
-        }
-        return $x;
+        return $this->getEntityFieldsArray($t);
     }
 
     /**
@@ -56,23 +36,7 @@ class popupController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setDisplaytime($this->params->getIntRequestParam('displaytime'));
-        $obj->setOverlaybackgroundcolor($this->params->getStringRequestParam('overlaybackgroundcolor'));
-        $obj->setOverlayopacity($this->params->getFloatRequestParam('overlayopacity'));
-        $obj->setHeadertext($this->params->getStringRequestParam('headertext'));
-        $obj->setBodytext($this->params->getOriginalStringRequestParam('bodytext'));
-        $obj->setClosebuttontext($this->params->getStringRequestParam('closebuttontext'));
-        $obj->setPopuporder($this->params->getIntRequestParam('popuporder'));
-        $obj->setTriggerafterprevious($this->params->getBoolRequestParam('triggerafterprevious'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setContentwidth($this->params->getStringRequestParam('contentwidth'));
-        $obj->setContentheight($this->params->getStringRequestParam('contentheight'));
-        $obj->setClosebuttoncolor($this->params->getStringRequestParam('closebuttoncolor'));
-        $obj->setClosebuttonbackgroundcolor($this->params->getStringRequestParam('closebuttonbackgroundcolor'));
-        $obj->setContenttop($this->params->getStringRequestParam('contenttop'));
-        $obj->setBackgroundimageurl($this->params->getStringRequestParam('kepurl'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getlistbody()

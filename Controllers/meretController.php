@@ -24,20 +24,14 @@ class meretController extends MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Meret();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['sorrend'] = $t->getSorrend();
-
-        $x['kepurl'] = $t->getKepurl();
+        $x = $this->getEntityFieldsArray($t);
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
-        $x['kepleiras'] = $t->getKepleiras();
         return $x;
     }
 
@@ -48,11 +42,7 @@ class meretController extends MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getlistbody()

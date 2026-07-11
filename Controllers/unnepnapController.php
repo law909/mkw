@@ -20,8 +20,7 @@ class unnepnapController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setDatum(new \DateTime(str_replace('.', '-', $this->params->getStringRequestParam('datum'))));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

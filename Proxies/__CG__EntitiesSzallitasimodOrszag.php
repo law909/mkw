@@ -250,28 +250,6 @@ class SzallitasimodOrszag extends \Entities\SzallitasimodOrszag implements \Doct
     /**
      * {@inheritDoc}
      */
-    public function getValutanemNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
-
-        return parent::getValutanemNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValutanemId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
-
-        return parent::getValutanemId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setValutanem($val)
     {
 
@@ -311,28 +289,6 @@ class SzallitasimodOrszag extends \Entities\SzallitasimodOrszag implements \Doct
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrszag', []);
 
         return parent::getOrszag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrszagNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrszagNev', []);
-
-        return parent::getOrszagNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrszagId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrszagId', []);
-
-        return parent::getOrszagId();
     }
 
     /**

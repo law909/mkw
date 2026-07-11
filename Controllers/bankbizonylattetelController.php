@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bankbizonylattetel;
+use Entities\Bizonylattipus;
 use mkw\store;
 
 class bankbizonylattetelController extends \mkwhelpers\MattableController
@@ -66,7 +67,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
         $tetel = $this->loadVars(null, true);
         $view->setVar('tetel', $tetel);
 
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($biztipus);
         $bt->setTemplateVars($view);
 
         $res = [

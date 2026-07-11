@@ -22,15 +22,12 @@ class fizmodController extends \mkwhelpers\MattableController
     public function loadVars($t, $forKarb = false)
     {
         $letezik = true;
-        $x = [];
         if (!$t) {
             $letezik = false;
             $t = new \Entities\Fizmod();
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
-        $x['nev_l1'] = $t->getNevL1();
-        $x['leiras_l1'] = $t->getLeirasL1();
 
         if ($forKarb) {
             if ($letezik) {
@@ -53,27 +50,9 @@ class fizmodController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setNevL1($this->params->getStringRequestParam('nev_l1'));
-        $obj->setTipus($this->params->getStringRequestParam('tipus'));
-        $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
-        $obj->setHaladek($this->params->getIntRequestParam('haladek'));
-        $obj->setWebes($this->params->getBoolRequestParam('webes'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setLeirasL1($this->params->getStringRequestParam('leiras_l1'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setOsztotthaladek1($this->params->getIntRequestParam('osztotthaladek1'));
-        $obj->setOsztottszazalek1($this->params->getNumRequestParam('osztottszazalek1'));
-        $obj->setOsztotthaladek2($this->params->getIntRequestParam('osztotthaladek2'));
-        $obj->setOsztottszazalek2($this->params->getNumRequestParam('osztottszazalek2'));
-        $obj->setOsztotthaladek3($this->params->getIntRequestParam('osztotthaladek3'));
-        $obj->setOsztottszazalek3($this->params->getNumRequestParam('osztottszazalek3'));
-        $obj->setOsztotthaladek4($this->params->getIntRequestParam('osztotthaladek4'));
-        $obj->setOsztottszazalek4($this->params->getNumRequestParam('osztottszazalek4'));
-        $obj->setOsztotthaladek5($this->params->getIntRequestParam('osztotthaladek5'));
-        $obj->setOsztottszazalek5($this->params->getNumRequestParam('osztottszazalek5'));
-        $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
-        $obj->setNincspenzmozgas($this->params->getBoolRequestParam('nincspenzmozgas'));
+        $obj = $this->setEntityFieldsFromRequest($obj, [
+            'raw' => ['leiras', 'leiras_l1'],
+        ]);
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);

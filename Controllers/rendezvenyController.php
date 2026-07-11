@@ -32,40 +32,18 @@ class rendezvenyController extends \mkwhelpers\MattableController
     {
         $dokCtrl = new rendezvenydokController();
         $dok = [];
-        $x = [];
         if (!$t) {
             $t = new \Entities\Rendezveny();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['termeknev'] = $t->getTermekNev();
-        $x['ar'] = $t->getAr();
-        $x['tanarnev'] = $t->getTanarNev();
+        $x = $this->getEntityFieldsArray($t);
+        $x['termeknev'] = $t->getTermek()?->getNev();
+        $x['tanarnev'] = $t->getTanar()?->getNev();
         $x['kezdodatum'] = $t->getKezdodatumStr();
-        $x['kezdoido'] = $t->getKezdoido();
-        $x['jogateremnev'] = $t->getJogateremNev();
-        $x['helyszinnev'] = $t->getHelyszinNev();
-        $x['rendezvenyallapotnev'] = $t->getRendezvenyallapotNev();
-        $x['todoplakat'] = $t->getTodoplakat();
-        $x['todofbevent'] = $t->getTodofbevent();
-        $x['todofbhirdetes'] = $t->getTodofbhirdetes();
-        $x['todofotobe'] = $t->getTodofotobe();
-        $x['todoleirasbe'] = $t->getTodoleirasbe();
-        $x['todonaptar'] = $t->getTodonaptar();
-        $x['todourlap'] = $t->getTodourlap();
-        $x['todowebposzt'] = $t->getTodowebposzt();
-        $x['todowebslider'] = $t->getTodowebslider();
-        $x['kellszamlazasiadat'] = $t->getKellszamlazasiadat();
-        $x['orarendbenszerepel'] = $t->getOrarendbenszerepel();
-        $x['uid'] = $t->getUid();
-        $x['url'] = $t->getUrl();
-        $x['onlineurl'] = $t->getOnlineurl();
-        $x['maxferohely'] = $t->getMaxferohely();
-        $x['varolistavan'] = $t->isVarolistavan();
-        $x['csomag'] = $t->isCsomag();
+        $x['jogateremnev'] = $t->getJogaterem()?->getNev();
+        $x['helyszinnev'] = $t->getHelyszin()?->getNev();
+        $x['rendezvenyallapotnev'] = $t->getRendezvenyallapot()?->getNev();
         $x['earlybirdvege'] = $t->getEarlybirdvegeStr();
-        $x['earlybirdar'] = $t->getEarlybirdar();
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue(
                 'main.theme'
             ) . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';

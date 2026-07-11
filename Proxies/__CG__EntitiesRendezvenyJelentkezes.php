@@ -514,17 +514,6 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner($val)
     {
 
@@ -569,122 +558,12 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getPartnerCim()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerCim', []);
-
-        return parent::getPartnerCim();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerKeresztnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerKeresztnev', []);
-
-        return parent::getPartnerKeresztnev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerVezeteknev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerVezeteknev', []);
-
-        return parent::getPartnerVezeteknev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerIrszam()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerIrszam', []);
-
-        return parent::getPartnerIrszam();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerVaros()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerVaros', []);
-
-        return parent::getPartnerVaros();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerUtca()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerUtca', []);
-
-        return parent::getPartnerUtca();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerHazszam()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerHazszam', []);
-
-        return parent::getPartnerHazszam();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerAdoszam()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerAdoszam', []);
-
-        return parent::getPartnerAdoszam();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getFizmod()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
 
         return parent::getFizmod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizmodNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', []);
-
-        return parent::getFizmodNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizmodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
-
-        return parent::getFizmodId();
     }
 
     /**
@@ -855,56 +734,12 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getFizetesbejegyzoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesbejegyzoId', []);
-
-        return parent::getFizetesbejegyzoId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizetesbejegyzoNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesbejegyzoNev', []);
-
-        return parent::getFizetesbejegyzoNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getSzamlazasbejegyzo()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlazasbejegyzo', []);
 
         return parent::getSzamlazasbejegyzo();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzamlazasbejegyzoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlazasbejegyzoId', []);
-
-        return parent::getSzamlazasbejegyzoId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSzamlazasbejegyzoNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlazasbejegyzoNev', []);
-
-        return parent::getSzamlazasbejegyzoNev();
     }
 
     /**
@@ -921,56 +756,12 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getLemondasbejegyzoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasbejegyzoId', []);
-
-        return parent::getLemondasbejegyzoId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLemondasbejegyzoNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasbejegyzoNev', []);
-
-        return parent::getLemondasbejegyzoNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getVisszautalasbejegyzo()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbejegyzo', []);
 
         return parent::getVisszautalasbejegyzo();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasbejegyzoId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbejegyzoId', []);
-
-        return parent::getVisszautalasbejegyzoId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasbejegyzoNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbejegyzoNev', []);
-
-        return parent::getVisszautalasbejegyzoNev();
     }
 
     /**
@@ -1004,61 +795,6 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRendezveny', []);
 
         return parent::removeRendezveny();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyId', []);
-
-        return parent::getRendezvenyId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyNev', []);
-
-        return parent::getRendezvenyNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyTeljesNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyTeljesNev', []);
-
-        return parent::getRendezvenyTeljesNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyDatumStr()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyDatumStr', []);
-
-        return parent::getRendezvenyDatumStr();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRendezvenyTanarNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyTanarNev', []);
-
-        return parent::getRendezvenyTanarNev();
     }
 
     /**
@@ -1262,17 +998,6 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getFizetvepenztarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvepenztarId', []);
-
-        return parent::getFizetvepenztarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setFizetvepenztar($val = NULL)
     {
 
@@ -1295,45 +1020,12 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getFizetvepenztarNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvepenztarNev', []);
-
-        return parent::getFizetvepenztarNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getFizetvebankszamla()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebankszamla', []);
 
         return parent::getFizetvebankszamla();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizetvebankszamlaId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebankszamlaId', []);
-
-        return parent::getFizetvebankszamlaId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFizetvebankszamlaSzam()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebankszamlaSzam', []);
-
-        return parent::getFizetvebankszamlaSzam();
     }
 
     /**
@@ -1372,17 +1064,6 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getVisszautalaspenztarId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalaspenztarId', []);
-
-        return parent::getVisszautalaspenztarId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setVisszautalaspenztar($val = NULL)
     {
 
@@ -1405,45 +1086,12 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     /**
      * {@inheritDoc}
      */
-    public function getVisszautalaspenztarNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalaspenztarNev', []);
-
-        return parent::getVisszautalaspenztarNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getVisszautalasbankszamla()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbankszamla', []);
 
         return parent::getVisszautalasbankszamla();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasbankszamlaId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbankszamlaId', []);
-
-        return parent::getVisszautalasbankszamlaId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasbankszamlaSzam()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbankszamlaSzam', []);
-
-        return parent::getVisszautalasbankszamlaSzam();
     }
 
     /**
@@ -1477,28 +1125,6 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasfizmod', []);
 
         return parent::getVisszautalasfizmod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasfizmodNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasfizmodNev', []);
-
-        return parent::getVisszautalasfizmodNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getVisszautalasfizmodId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasfizmodId', []);
-
-        return parent::getVisszautalasfizmodId();
     }
 
     /**

@@ -481,17 +481,6 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setTermek($val)
     {
 

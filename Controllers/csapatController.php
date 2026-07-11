@@ -23,31 +23,23 @@ class csapatController extends \mkwhelpers\MattableController
     {
         $kepCtrl = new csapatkepController();
         $kep = [];
-        $v = [];
         if (!$t) {
             $t = new Csapat();
             $this->getEm()->detach($t);
         }
-        $v['id'] = $t->getId();
-        $v['nev'] = $t->getNev();
-        $v['slug'] = $t->getSlug();
-        $v['logourl'] = $t->getLogourl();
+        $v = $this->getEntityFieldsArray($t);
         $v['logourlsmall'] = $t->getLogourlSmall();
         $v['logourlmini'] = $t->getLogourlMini();
         $v['logourlmedium'] = $t->getLogourlMedium();
         $v['logourllarge'] = $t->getLogourlLarge();
         $v['logourl400'] = $t->getLogourl400();
         $v['logourl2000'] = $t->getLogourl2000();
-        $v['logoleiras'] = $t->getLogoleiras();
-        $v['leiras'] = $t->getLeiras();
-        $v['kepurl'] = $t->getKepurl();
         $v['kepurlsmall'] = $t->getKepurlSmall();
         $v['kepurlmini'] = $t->getKepurlMini();
         $v['kepurlmedium'] = $t->getKepurlMedium();
         $v['kepurllarge'] = $t->getKepurlLarge();
         $v['kepurl400'] = $t->getKepurl400();
         $v['kepurl2000'] = $t->getKepurl2000();
-        $v['kepleiras'] = $t->getKepleiras();
         foreach ($t->getCsapatKepek() as $kepje) {
             $kep[] = $kepCtrl->loadVars($kepje);
         }
@@ -64,12 +56,7 @@ class csapatController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setLogourl($this->params->getStringRequestParam('logourl'));
-        $obj->setLogoleiras($this->params->getStringRequestParam('logoleiras'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
+        $obj = $this->setEntityFieldsFromRequest($obj);
         $kepids = $this->params->getArrayRequestParam('kepid');
         foreach ($kepids as $kepid) {
             if ($this->params->getStringRequestParam('kepurl_' . $kepid, '') !== '') {

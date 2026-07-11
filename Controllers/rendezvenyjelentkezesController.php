@@ -30,64 +30,41 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\RendezvenyJelentkezes();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['megjegyzes'] = $t->getMegjegyzes();
+        $x = $this->getEntityFieldsArray($t);
         $x['datum'] = $t->getDatumStr();
-        $x['rendezvenynev'] = $t->getRendezvenyNev();
-        $x['rendezvenykezdodatum'] = $t->getRendezvenyDatumStr();
-        $x['rendezvenytanarnev'] = $t->getRendezvenyTanarNev();
-        $x['partnerid'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
-        $x['partnercim'] = $t->getPartnerCim();
-        $x['partneremail'] = $t->getPartneremail();
-        $x['partnertelefon'] = $t->getPartnertelefon();
-        $x['partnervezeteknev'] = $t->getPartnerVezeteknev();
-        $x['partnerkeresztnev'] = $t->getPartnerKeresztnev();
-        $x['partnerirszam'] = $t->getPartnerIrszam();
-        $x['partnervaros'] = $t->getPartnerVaros();
-        $x['partnerutca'] = $t->getPartnerUtca();
-        $x['partnerhazszam'] = $t->getPartnerHazszam();
+        $x['rendezvenynev'] = $t->getRendezveny()?->getNev();
+        $x['rendezvenykezdodatum'] = $t->getRendezveny()?->getKezdodatumStr();
+        $x['rendezvenytanarnev'] = $t->getRendezveny()?->getTanar()?->getNev();
+        $x['partnerid'] = $t->getPartner()?->getId();
+        $x['partnercim'] = $t->getPartner()?->getCim();
+        $x['partnervezeteknev'] = $t->getPartner()?->getVezeteknev();
+        $x['partnerkeresztnev'] = $t->getPartner()?->getKeresztnev();
+        $x['partnerirszam'] = $t->getPartner()?->getIrszam();
+        $x['partnervaros'] = $t->getPartner()?->getVaros();
+        $x['partnerutca'] = $t->getPartner()?->getUtca();
+        $x['partnerhazszam'] = $t->getPartner()?->getHazszam();
 
-        $x['fizetve'] = $t->getFizetve();
         $x['fizetesdatum'] = $t->getFizetesdatumStr();
-        $x['fizetvepenztarnev'] = $t->getFizetvepenztarNev();
-        $x['fizetvepenztarbizonylatszam'] = $t->getFizetvepenztarbizonylatszam();
-        $x['fizetvebankszamlaszam'] = $t->getFizetvebankszamlaSzam();
-        $x['fizetvebankbizonylatszam'] = $t->getFizetvebankbizonylatszam();
-        $x['fizetveosszeghuf'] = $t->getFizetveosszeghuf();
-        $x['fizmodnev'] = $t->getFizmodNev();
+        $x['fizetvepenztarnev'] = $t->getFizetvepenztar()?->getNev();
+        $x['fizetvebankszamlaszam'] = $t->getFizetvebankszamla()?->getSzamlaszam();
+        $x['fizmodnev'] = $t->getFizmod()?->getNev();
 
-        $x['szamlazva'] = $t->getSzamlazva();
         $x['szamlazasdatum'] = $t->getSzamlazasdatumStr();
-        $x['szamlaszam'] = $t->getSzamlaszam();
         $x['szamlazvakelt'] = $t->getSzamlazvakeltStr();
         $x['szamlazvateljesites'] = $t->getSzamlazvateljesitesStr();
-        $x['szamlazvaosszeghuf'] = $t->getSzamlazvaosszeghuf();
 
-        $x['lemondva'] = $t->getLemondva();
         $x['lemondasdatum'] = $t->getLemondasdatumStr();
-        $x['lemondasoka'] = $t->getLemondasoka();
 
-        $x['visszautalva'] = $t->getVisszautalva();
         $x['visszautalasdatum'] = $t->getVisszautalasdatumStr();
-        $x['visszautalaspenztarnev'] = $t->getVisszautalaspenztarNev();
-        $x['visszautalaspenztarbizonylatszam'] = $t->getVisszautalaspenztarbizonylatszam();
-        $x['visszautalasbankszamlaszam'] = $t->getVisszautalasbankszamlaSzam();
-        $x['visszautalasbankbizonylatszam'] = $t->getVisszautalasbankbizonylatszam();
-        $x['visszautalasosszeghuf'] = $t->getVisszautalasosszeghuf();
-        $x['visszautalasfizmodnev'] = $t->getVisszautalasfizmodNev();
+        $x['visszautalaspenztarnev'] = $t->getVisszautalaspenztar()?->getNev();
+        $x['visszautalasbankszamlaszam'] = $t->getVisszautalasbankszamla()?->getSzamlaszam();
+        $x['visszautalasfizmodnev'] = $t->getVisszautalasfizmod()?->getNev();
 
-        $x['emailregkoszono'] = $t->getEmailregkoszono();
-        $x['emaildijbekero'] = $t->getEmaildijbekero();
         $x['emaildijbekerodatum'] = $t->getEmaildijbekerodatumStr();
-        $x['emailrendezvenykezdes'] = $t->getEmailrendezvenykezdes();
-
-        $x['varolistas'] = $t->isVarolistas();
         return $x;
     }
 
@@ -298,17 +275,17 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($record));
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController();
-            $view->setVar('partnerlist', $partner->getSelectList($record?->getPartnerId()));
+            $view->setVar('partnerlist', $partner->getSelectList($record?->getPartner()?->getId()));
         }
         $fizmod = new fizmodController();
-        $view->setVar('fizmodlist', $fizmod->getSelectList($record?->getFizmodId()));
+        $view->setVar('fizmodlist', $fizmod->getSelectList($record?->getFizmod()?->getId()));
         $jogcim = new jogcimController();
         $view->setVar('jogcimlist', $jogcim->getSelectList());
         $rendezveny = new rendezvenyController();
         $view->setVar(
             'rendezvenylist',
             $rendezveny->getSelectList(
-                $record?->getRendezvenyId(),
+                $record?->getRendezveny()?->getId(),
                 [
                     'kezdodatum' => 'DESC',
                     'nev' => 'ASC'
@@ -419,7 +396,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
                 $bt->setNetto($osszeg);
                 $bt->setAfa(0);
                 $bt->setBrutto($osszeg);
-                $bt->setSzoveg($r->getRendezvenyTeljesNev());
+                $bt->setSzoveg($r->getRendezveny()?->getTeljesNev());
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
 
                 $this->getEm()->persist($biz);

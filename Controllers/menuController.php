@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Menu;
+use Entities\Menucsoport;
 
 class menuController extends \mkwhelpers\MattableController
 {
@@ -19,20 +20,11 @@ class menuController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Menu();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['url'] = $t->getUrl();
-        $x['routename'] = $t->getRoutename();
-        $x['lathato'] = $t->getLathato();
-        $x['jogosultsag'] = $t->getJogosultsag();
-        $x['menucsoportnev'] = $t->getMenucsoportNev();
-        $x['class'] = $t->getClass();
-        return $x;
+        return $this->getEntityFieldsArray($t);
     }
 
     /**
@@ -42,13 +34,8 @@ class menuController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setUrl($this->params->getOriginalStringRequestParam('url'));
-        $obj->setRoutename($this->params->getStringRequestParam('routename'));
-        $obj->setJogosultsag($this->params->getIntRequestParam('jogosultsag'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setClass($this->params->getStringRequestParam('class'));
-        $ck = $this->getRepo('Entities\Menucsoport')->find($this->params->getIntRequestParam('menucsoport'));
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['url']]);
+        $ck = $this->getRepo(Menucsoport::class)->find($this->params->getIntRequestParam('menucsoport'));
         if ($ck) {
             $obj->setMenucsoport($ck);
         }

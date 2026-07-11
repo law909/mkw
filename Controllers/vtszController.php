@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Afa;
+use Entities\Csk;
 use Entities\Vtsz;
 use mkw\store;
 
@@ -30,15 +32,14 @@ class vtszController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setSzam($this->params->getStringRequestParam('szam', $obj->getSzam()));
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $afa = store::getEm()->getReference('Entities\Afa', $this->params->getIntRequestParam('afa', $obj->getAfa()));
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $afa = store::getEm()->getReference(Afa::class, $this->params->getIntRequestParam('afa', $obj->getAfa()));
         $obj->setAfa($afa);
-        $csk = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('csk', $obj->getCsk()));
+        $csk = store::getEm()->getReference(Csk::class, $this->params->getIntRequestParam('csk', $obj->getCsk()));
         if ($this->params->getIntRequestParam('csk', $obj->getCsk()) && $csk) {
             $obj->setCsk($csk);
         }
-        $kt = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('kt', $obj->getKt()));
+        $kt = store::getEm()->getReference(Csk::class, $this->params->getIntRequestParam('kt', $obj->getKt()));
         if ($this->params->getIntRequestParam('kt', $obj->getKt()) && $kt) {
             $obj->setKt($kt);
         }

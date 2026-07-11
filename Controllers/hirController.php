@@ -24,48 +24,22 @@ class hirController extends \mkwhelpers\MattableController
             $t = new \Entities\Hir();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['cim'] = $t->getCim();
-        $x['slug'] = $t->getSlug();
-        $x['sorrend'] = $t->getSorrend();
-        $x['forras'] = $t->getForras();
-        $x['lead'] = $t->getLead();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['datum'] = $t->getDatum();
+        $x = $this->getEntityFieldsArray($t);
         $x['datumstr'] = $t->getDatumStr();
-        $x['elsodatum'] = $t->getElsodatum();
         $x['elsodatumstr'] = $t->getElsodatumStr();
-        $x['utolsodatum'] = $t->getUtolsodatum();
         $x['utolsodatumstr'] = $t->getUtolsodatumStr();
-        $x['lathato'] = $t->getLathato();
-        $x['seodescription'] = $t->getSeodescription();
-        $x['kepurl'] = $t->getKepurl();
         $x['kepurlmini'] = $t->getKepurlMini();
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
         $x['kepurl400'] = $t->getKepurl400();
         $x['kepurl2000'] = $t->getKepurl2000();
-        $x['kepleiras'] = $t->getKepleiras();
-        $x['link'] = $t->getLink();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setCim($this->params->getStringRequestParam('cim'));
-        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
-        $obj->setForras($this->params->getStringRequestParam('forras'));
-        $obj->setLead($this->params->getOriginalStringRequestParam('lead'));
-        $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
-        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setDatum($this->params->getStringRequestParam('datum'));
-        $obj->setElsodatum($this->params->getStringRequestParam('elsodatum'));
-        $obj->setUtolsodatum($this->params->getStringRequestParam('utolsodatum'));
-        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-        $obj->setKepurl($this->params->getStringRequestParam('kepurl'));
-        $obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj, ['raw' => ['lead', 'szoveg']]);
     }
 
     public function getlistbody()

@@ -8,13 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="SzallitasimodHatarRepository")
  * @Doctrine\ORM\Mapping\Table(name="szallitasimod_hatar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class SzallitasimodHatar {
+class SzallitasimodHatar
+{
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     */private $id;
+     */
+    private $id;
     /**
      * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="hatarok")
      * @ORM\JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -35,35 +37,40 @@ class SzallitasimodHatar {
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return mixed
      */
-    public function getHatarertek() {
+    public function getHatarertek()
+    {
         return $this->hatarertek;
     }
 
     /**
      * @param mixed $hatarertek
      */
-    public function setHatarertek($hatarertek) {
+    public function setHatarertek($hatarertek)
+    {
         $this->hatarertek = $hatarertek;
     }
 
     /**
      * @return Szallitasimod
      */
-    public function getSzallitasimod() {
+    public function getSzallitasimod()
+    {
         return $this->szallitasimod;
     }
 
     /**
      * @param \Entities\Szallitasimod $val
      */
-    public function setSzallitasimod($val) {
+    public function setSzallitasimod($val)
+    {
         if (!($val instanceof \Entities\Szallitasimod)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
         }
@@ -73,30 +80,16 @@ class SzallitasimodHatar {
     /**
      * @return Valutanem
      */
-    public function getValutanem() {
+    public function getValutanem()
+    {
         return $this->valutanem;
-    }
-
-    public function getValutanemNev() {
-        $v = $this->getValutanem();
-        if ($v) {
-            return $v->getNev();
-        }
-        return '';
-    }
-
-    public function getValutanemId() {
-        $v = $this->getValutanem();
-        if ($v) {
-            return $v->getId();
-        }
-        return 0;
     }
 
     /**
      * @param \Entities\Valutanem $val
      */
-    public function setValutanem($val) {
+    public function setValutanem($val)
+    {
         if (!($val instanceof \Entities\Valutanem)) {
             $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
@@ -106,14 +99,16 @@ class SzallitasimodHatar {
     /**
      * @return mixed
      */
-    public function getOsszeg() {
+    public function getOsszeg()
+    {
         return $this->osszeg;
     }
 
     /**
      * @param mixed $osszeg
      */
-    public function setOsszeg($osszeg) {
+    public function setOsszeg($osszeg)
+    {
         $this->osszeg = $osszeg;
     }
 

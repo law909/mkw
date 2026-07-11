@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
+use Entities\Partner;
+use Entities\Termek;
 use Entities\TermekErtesito;
 
 class termekertesitoController extends \mkwhelpers\MattableController
@@ -15,18 +18,14 @@ class termekertesitoController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\TermekErtesito();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
+        $x = $this->getEntityFieldsArray($t);
         $x['createdstr'] = $t->getCreatedStr();
         $x['sentstr'] = $t->getSentStr();
-        $termek = $t->getTermek();
-        if ($termek) {
-            $x['termek'] = $termek->toKosar(null);
-        }
+        $x['termek'] = $t->getTermek()?->toKosar(null);
         return $x;
     }
 
@@ -41,10 +40,10 @@ class termekertesitoController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
-        $termek = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termekid'));
         if ($termek) {
             $obj->setTermek($termek);
-            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            $partner = $this->getRepo(Partner::class)->getLoggedInUser();
             if ($partner) {
                 $obj->setPartner($partner);
             }
@@ -66,12 +65,12 @@ class termekertesitoController extends \mkwhelpers\MattableController
     public function sendErtesito($termek)
     {
         $mailer = \mkw\store::getMailer();
-        $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('termekertesito');
+        $emailtpl = $this->getEm()->getRepository(Emailtemplate::class)->findOneByNev('termekertesito');
         if ($emailtpl) {
             $ertesitok = $this->getRepo()->getByTermek($termek);
             foreach ($ertesitok as $ert) {
                 if ($ert->getEmail()) {
-                    $p = $this->getEm()->getRepository('Entities\Partner')->findNemVendegByEmail($ert->getEmail());
+                    $p = $this->getEm()->getRepository(Partner::class)->findNemVendegByEmail($ert->getEmail());
                     if (count($p)) {
                         $p = $p[0];
                         $knev = $p->getKeresztnev();

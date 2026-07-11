@@ -272,28 +272,6 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
-
-        return parent::getPartnerNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner(\Entities\Partner $val)
     {
 
@@ -322,39 +300,6 @@ class TermekErtekeles extends \Entities\TermekErtekeles implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
-
-        return parent::getTermekId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
-
-        return parent::getTermekNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTermekSlug()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekSlug', []);
-
-        return parent::getTermekSlug();
     }
 
     /**

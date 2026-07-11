@@ -31,11 +31,7 @@ class jogateremController extends \mkwhelpers\JQGridController
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setMaxferohely($this->params->getFloatRequestParam('maxferohely', $obj->getMaxferohely()));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', $obj->getInaktiv()));
-        $obj->setOrarendclass($this->params->getStringRequestParam('orarendclass', $obj->getOrarendclass()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

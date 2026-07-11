@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Arsav;
+use Entities\Partner;
 use Entities\Uzletkoto;
 
 class uzletkotoController extends \mkwhelpers\MattableController
@@ -25,29 +26,10 @@ class uzletkotoController extends \mkwhelpers\MattableController
             $t = new \Entities\Uzletkoto();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['nev'] = $t->getNev();
-        $x['cim'] = $t->getCim();
-        $x['irszam'] = $t->getIrszam();
-        $x['varos'] = $t->getVaros();
-        $x['utca'] = $t->getUtca();
-        $x['telefon'] = $t->getTelefon();
-        $x['mobil'] = $t->getMobil();
-        $x['fax'] = $t->getFax();
-        $x['email'] = $t->getEmail();
-        $x['honlap'] = $t->getHonlap();
-        $x['megjegyzes'] = $t->getMegjegyzes();
-        $x['jutalek'] = $t->getJutalek();
-        $x['szamlatipus'] = $t->getPartnerszamlatipus();
-        $x['valutanem'] = $t->getPartnervalutanem();
-        $x['valutanemnev'] = $t->getPartnervalutanemnev();
-        $x['arsav'] = $t->getArsav();
-        $x['szallitasimod'] = $t->getPartnerszallitasimod();
-        $x['szallitasimodnev'] = $t->getPartnerszallitasimodNev();
-        $x['bizonylatnyelv'] = $t->getPartnerbizonylatnyelv();
-        $x['fizmodnev'] = $t->getPartnerfizmodNev();
-        $x['belso'] = $t->getBelso();
-        $x['fo'] = $t->getFo();
+        $x = $this->getEntityFieldsArray($t);
+        $x['valutanemnev'] = $t->getPartnervalutanem()?->getNev();
+        $x['szallitasimodnev'] = $t->getPartnerszallitasimod()?->getNev();
+        $x['fizmodnev'] = $t->getPartnerfizmod()?->getNev();
         $x['fouzletkotonev'] = ($t->getFouzletkoto() ? $t->getFouzletkoto()->getNev() : '');
         return $x;
     }
@@ -58,27 +40,13 @@ class uzletkotoController extends \mkwhelpers\MattableController
 
     protected function setFields(\Entities\Uzletkoto $obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setIrszam($this->params->getStringRequestParam('irszam'));
-        $obj->setVaros($this->params->getStringRequestParam('varos'));
-        $obj->setUtca($this->params->getStringRequestParam('utca'));
-        $obj->setTelefon($this->params->getStringRequestParam('telefon'));
-        $obj->setMobil($this->params->getStringRequestParam('mobil'));
-        $obj->setFax($this->params->getStringRequestParam('fax'));
-        $obj->setEmail($this->params->getStringRequestParam('email'));
-        $obj->setHonlap($this->params->getStringRequestParam('honlap'));
-        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
-        $obj->setJutalek($this->params->getNumRequestParam('jutalek'));
-        $obj->setPartnerszamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
+        $this->setEntityFieldsFromRequest($obj);
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {
             $obj->setArsav($arsav);
         } else {
             $obj->removeArsav();
         }
-        $obj->setPartnerbizonylatnyelv($this->params->getStringRequestParam('partnerbizonylatnyelv'));
-        $obj->setBelso($this->params->getBoolRequestParam('belso'));
-        $obj->setFo($this->params->getBoolRequestParam('fo'));
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
         if ($fizmod) {
             $obj->setPartnerfizmod($fizmod);
@@ -158,26 +126,26 @@ class uzletkotoController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Üzletkötő'));
         $view->setVar('oper', $oper);
 
-        $partnerrepo = $this->getRepo('\Entities\Partner');
+        $partnerrepo = $this->getRepo(Partner::class);
         /** @var \Entities\Uzletkoto $uk */
         $uk = $this->getRepo()->findWithJoins($id);
         // loadVars utan nem abc sorrendben adja vissza
 
         $fizmod = new fizmodController();
-        $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($uk ? $uk->getPartnerfizmodId() : 0)));
+        $view->setVar('partnerfizmodlist', $fizmod->getSelectList($uk?->getPartnerfizmod()?->getId()));
         $valutanem = new valutanemController();
-        $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($uk ? $uk->getPartnervalutanemId() : 0)));
+        $view->setVar('partnervalutanemlist', $valutanem->getSelectList($uk?->getPartnervalutanem()?->getId()));
         $arsav = new arsavController();
-        $view->setVar('arsavlist', $arsav->getSelectList(($uk ? $uk->getArsav()?->getId() : 0)));
+        $view->setVar('arsavlist', $arsav->getSelectList($uk?->getArsav()?->getId()));
 
         $szallmod = new szallitasimodController();
-        $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($uk ? $uk->getPartnerszallitasimodId() : 0)));
-        $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($uk ? $uk->getPartnerszamlatipus() : 0)));
-        $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($uk ? $uk->getPartnerbizonylatnyelv() : ''));
+        $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList($uk?->getPartnerszallitasimod()?->getId()));
+        $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList($uk?->getPartnerszamlatipus()));
+        $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($uk?->getPartnerbizonylatnyelv()));
 
         $fofilter = new \mkwhelpers\FilterDescriptor();
         $fofilter->addFilter('fo', '=', true);
-        $view->setVar('fouzletkotolist', $this->getSelectList(($uk ? $uk->getFouzletkotoId() : 0), $fofilter));
+        $view->setVar('fouzletkotolist', $this->getSelectList($uk?->getFouzletkoto()?->getId(), $fofilter));
 
         $view->setVar('uzletkoto', $this->loadVars($uk));
         $view->printTemplateResult();

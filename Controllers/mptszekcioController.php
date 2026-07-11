@@ -20,8 +20,7 @@ class mptszekcioController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

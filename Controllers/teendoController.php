@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Partner;
 use Entities\Teendo;
 use mkw\store;
 
@@ -25,30 +26,20 @@ class teendoController extends \mkwhelpers\MattableController
             $t = new \Entities\Teendo();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['bejegyzes'] = $t->getBejegyzes();
-        $x['leiras'] = $t->getLeiras();
-        $x['letrehozva'] = $t->getLetrehozva();
-        $x['elvegezve'] = $t->getElvegezve();
-        $x['elvegezve_mikor'] = $t->getElvegezveMikor();
+        $x = $this->getEntityFieldsArray($t);
         $x['elvegezve_mikorstr'] = $t->getElvegezveMikorStr();
-        $x['esedekes'] = $t->getEsedekes();
         $x['esedekesstr'] = $t->getEsedekesStr();
-        $x['partner'] = $t->getPartner();
-        $x['partnernev'] = $t->getPartnerNev();
+        $x['partnernev'] = $t->getPartner()?->getNev();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['leiras']]);
+        $ck = store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
         }
-        $obj->setBejegyzes($this->params->getStringRequestParam('bejegyzes'));
-        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-        $obj->setEsedekes($this->params->getStringRequestParam('esedekes'));
-        $obj->setElvegezve($this->params->getBoolRequestParam('elvegezve'));
         return $obj;
     }
 

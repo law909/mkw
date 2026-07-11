@@ -21,9 +21,7 @@ class szotarController extends \mkwhelpers\JQGridController
 
     protected function setFields($obj)
     {
-        $obj->setMit($this->params->getStringRequestParam('mit', $obj->getMit()));
-        $obj->setMire($this->params->getStringRequestParam('mire', $obj->getMire()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function jsonlist()

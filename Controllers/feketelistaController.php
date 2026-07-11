@@ -20,23 +20,18 @@ class feketelistaController extends \mkwhelpers\MattableController
 
     protected function loadVars($t)
     {
-        $x = [];
         if (!$t) {
             $t = new \Entities\Feketelista();
             $this->getEm()->detach($t);
         }
-        $x['id'] = $t->getId();
-        $x['email'] = $t->getEmail();
-        $x['ok'] = $t->getOk();
+        $x = $this->getEntityFieldsArray($t);
         $x['created'] = $t->getCreatedStr();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setEmail($this->params->getStringRequestParam('email'));
-        $obj->setOk($this->params->getStringRequestParam('ok'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getlistbody()

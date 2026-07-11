@@ -206,12 +206,12 @@ class MPTFolyoszamla extends \Entities\MPTFolyoszamla implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getTipusnev()
+    public function getTipusNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipusnev', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipusNev', []);
 
-        return parent::getTipusnev();
+        return parent::getTipusNev();
     }
 
     /**
@@ -327,17 +327,6 @@ class MPTFolyoszamla extends \Entities\MPTFolyoszamla implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getPartnerId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
-
-        return parent::getPartnerId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPartner($val)
     {
 
@@ -355,39 +344,6 @@ class MPTFolyoszamla extends \Entities\MPTFolyoszamla implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnernev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnernev', []);
-
-        return parent::getPartnernev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnervezeteknev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervezeteknev', []);
-
-        return parent::getPartnervezeteknev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPartnerkeresztnev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerkeresztnev', []);
-
-        return parent::getPartnerkeresztnev();
     }
 
     /**

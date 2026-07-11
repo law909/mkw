@@ -250,28 +250,6 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function getValutanemNev()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
-
-        return parent::getValutanemNev();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValutanemId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
-
-        return parent::getValutanemId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setValutanem($val)
     {
 

@@ -25,24 +25,19 @@ class csapatkepController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['url'] = $t->getUrl();
+        $x = $this->getEntityFieldsArray($t, $x);
         $x['urlsmall'] = $t->getUrlSmall();
         $x['urlmedium'] = $t->getUrlMedium();
         $x['urllarge'] = $t->getUrlLarge();
         $x['urlmini'] = $t->getUrlMini();
         $x['url400'] = $t->getUrl400();
         $x['url2000'] = $t->getUrl2000();
-        $x['leiras'] = $t->getLeiras();
-        $x['rejtett'] = $t->getRejtett();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
-        $obj->setUrl($this->params->getStringRequestParam('url'));
-        $obj->setRejtett($this->params->getBoolRequestParam('rejtett'));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getemptyrow()

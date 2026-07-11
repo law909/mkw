@@ -25,25 +25,15 @@ class elallasnaploController extends \mkwhelpers\MattableController
             $x['oper'] = 'edit';
             $x['id'] = $t->getId();
         }
-        $x['kuldo'] = $t->getKuldo();
-        $x['fogado'] = $t->getFogado();
-        $x['szoveg'] = $t->getSzoveg();
-        $x['megjegyzes'] = $t->getMegjegyzes();
+        $x = $this->getEntityFieldsArray($t, $x);
         $x['esemenyido'] = $t->getEsemenyidoInput();
-        $x['irany'] = $t->getIrany();
         $x['created'] = $t->getCreatedStr();
         return $x;
     }
 
     protected function setFields($obj)
     {
-        $obj->setKuldo($this->params->getStringRequestParam('kuldo'));
-        $obj->setFogado($this->params->getStringRequestParam('fogado'));
-        $obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
-        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
-        $obj->setEsemenyido($this->params->getStringRequestParam('esemenyido'));
-        $obj->setIrany($this->params->getIntRequestParam('irany', 1));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
     public function getemptyrow()
