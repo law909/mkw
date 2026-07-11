@@ -1,1 +1,0 @@
-{include "comp_raktarselect.tpl"}
