@@ -3,9 +3,13 @@
 namespace Controllers;
 
 
-class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
+use Entities\Bizonylatfej;
 
-    public function view() {
+class teljesitmenyjelentesController extends \mkwhelpers\MattableController
+{
+
+    public function view()
+    {
         $view = $this->createView('teljesitmenyjelentes.tpl');
 
         //$view->setVar('toldatum', date(\mkw\store::$DateFormat));
@@ -14,9 +18,10 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getData($tol = null, $ig = null) {
-
-        function per($a, $b) {
+    public function getData($tol = null, $ig = null)
+    {
+        function per($a, $b)
+        {
             $a = (float)$a;
             $b = (float)$b;
             if ($b) {
@@ -26,15 +31,14 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         }
 
         /** @var \Entities\BizonylatfejRepository $bfrepo */
-        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
+        $bfrepo = $this->getRepo(Bizonylatfej::class);
 
         if (!$tol) {
             $evtol = \mkw\store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014);
             $hotol = '01';
             $naptol = '01';
             $tol = new \DateTime($evtol . '-' . $hotol . '-' . $naptol);
-        }
-        else {
+        } else {
             $tol = \mkw\store::toDate($tol);
             $evtol = (int)$tol->format('Y');
             $hotol = $tol->format('m');
@@ -46,27 +50,26 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
             $evig = (int)date('Y');
             $hoig = date('m');
             $napig = date('d');
-        }
-        else {
+        } else {
             $ig = \mkw\store::toDate($ig);
             $evig = (int)$ig->format('Y');
             $hoig = $ig->format('m');
             $napig = $ig->format('d');
         }
 
-        $evek = array();
+        $evek = [];
         for ($ev = $evtol; $ev <= $evig; $ev++) {
-            $evek[] = array(
+            $evek[] = [
                 'eleje' => (string)$ev . '-' . $hotol . '-' . $naptol,
                 'vege' => (string)$ev . '-' . $hoig . '-' . $napig
-            );
+            ];
         }
 
         $elejenaphoz = new \DateTime($evtol . '-' . $hoig . '-' . $napig);
         $nap = $elejenaphoz->diff($tol);
         $nap = $nap->days + 1;
 
-        $sqls = array();
+        $sqls = [];
         foreach ($evek as $ev) {
             $sqls[] = '((_xx.kelt>="' . $ev['eleje'] . '") AND (_xx.kelt<="' . $ev['vege'] . '"))';
         }
@@ -75,10 +78,10 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         $filter->addFilter('bizonylattipus_id', '=', 'megrendeles');
         $filter->addSql(implode(' OR ', $sqls));
         $sorok = $bfrepo->calcTeljesitmeny($filter);
-        $adat = array();
+        $adat = [];
         foreach ($sorok as $sor) {
             $ev = (int)$sor['ev'];
-            $a = array();
+            $a = [];
             $a['ev'] = $ev;
             $a['megrendelesdb'] = (int)$sor['db'];
             $a['megrendelesdbpernap'] = per($sor['db'], $nap);
@@ -89,8 +92,7 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
                 $a['megrendelesdbvalt'] = per($a['megrendelesdb'], $adat[$ev - 1]['megrendelesdb']) * 100;
                 $a['megrendelesnettovalt'] = per($a['megrendelesnetto'], $adat[$ev - 1]['megrendelesnetto']) * 100;
                 $a['megrendelesnettoperdbvalt'] = per($a['megrendelesnettoperdb'], $adat[$ev - 1]['megrendelesnettoperdb']) * 100;
-            }
-            else {
+            } else {
                 $a['megrendelesdbvalt'] = 0;
                 $a['megrendelesnettovalt'] = 0;
                 $a['megrendelesnettoperdbvalt'] = 0;
@@ -115,8 +117,7 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
                 $adat[$ev]['szamladbvalt'] = per($adat[$ev]['szamladb'], $adat[$ev - 1]['szamladb']) * 100;
                 $adat[$ev]['szamlanettovalt'] = per($adat[$ev]['szamlanetto'], $adat[$ev - 1]['szamlanetto']) * 100;
                 $adat[$ev]['szamlanettoperdbvalt'] = per($adat[$ev]['szamlanettoperdb'], $adat[$ev - 1]['szamlanettoperdb']) * 100;
-            }
-            else {
+            } else {
                 $adat[$ev]['szamladbvalt'] = 0;
                 $adat[$ev]['szamlanettovalt'] = 0;
                 $adat[$ev]['szamlanettoperdbvalt'] = 0;
@@ -160,7 +161,8 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
         return $adat;
     }
 
-    public function refresh() {
+    public function refresh()
+    {
         $view = $this->createView('teljesitmenyjelentesbody.tpl');
         $view->setVar('tjlista', $this->getData($this->params->getStringRequestParam('tol'), $this->params->getStringRequestParam('ig')));
         $view->printTemplateResult();

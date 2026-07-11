@@ -3,12 +3,17 @@
 namespace Controllers;
 
 
-class rlbexportController extends \mkwhelpers\MattableController {
+use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
+
+class rlbexportController extends \mkwhelpers\MattableController
+{
 
     private $szovegkorul;
     private $datumformat;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('rlbcsvexport.tpl');
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::RLBCSVUtolsoSzamlaszam));
@@ -16,11 +21,13 @@ class rlbexportController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    private function encstr($str) {
+    private function encstr($str)
+    {
         return mb_convert_encoding($str, 'ISO-8859-2', 'UTF8');
     }
 
-    protected function korbeir($mit) {
+    protected function korbeir($mit)
+    {
         switch ($this->szovegkorul) {
             case 1:
                 return $mit;
@@ -36,13 +43,14 @@ class rlbexportController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function RLBCSVExport() {
+    public function RLBCSVExport()
+    {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $bizrepo = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej');
-        $bt = \mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find('szamla');
+        $bizrepo = \mkw\store::getEm()->getRepository(Bizonylatfej::class);
+        $bt = \mkw\store::getEm()->getRepository(Bizonylattipus::class)->find('szamla');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', $bt);
@@ -52,7 +60,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
             $filter->addFilter('id', '>', $mar);
         }
 
-        $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
+        $r = $bizrepo->getAll($filter, ['id' => 'ASC']);
 
         switch ($this->params->getIntRequestParam('elvalaszto')) {
             case 1:
@@ -90,33 +98,33 @@ class rlbexportController extends \mkwhelpers\MattableController {
         }
 
         /**
-        t.FieldByName('kelt').AsDateTime:=StrToDate(ew(st[cikl],1));
-        t.FieldByName('datum').AsDateTime:=StrToDate(ew(st[cikl],2));
-        t.FieldByName('fizhat').AsDateTime:=StrToDate(ew(st[cikl],3));
-        t.FieldByName('bizszam').AsString:=ew(st[cikl],4);
-        t.FieldByName('partkod').value:=StrToIntZero(ew(st[cikl],5));
-        t.FieldByName('cegnev').AsString:=ew(st[cikl],6);
-        t.FieldByName('irszam').AsString:=ew(st[cikl],7);
-        t.FieldByName('varos').AsString:=ew(st[cikl],8);
-        t.FieldByName('cim').AsString:=ew(st[cikl],9);
-        t.FieldByName('szoveg').AsString:=ew(st[cikl],10);
-        t.FieldByName('fizmod').AsInteger:=StrToIntZero(ew(st[cikl],11));
-        t.FieldByName('afakod1').AsInteger:=StrToIntZero(ew(st[cikl],12));
-        t.FieldByName('netto1').AsFloat:=StrToFloat(nu(ew(st[cikl],13)));
-        t.FieldByName('afa1').AsFloat:=StrToFloat(nu(ew(st[cikl],14)));
-        t.FieldByName('afakod2').AsInteger:=StrToIntZero(ew(st[cikl],15));
-        t.FieldByName('netto2').AsFloat:=StrToFloat(nu(ew(st[cikl],16)));
-        t.FieldByName('afa2').AsFloat:=StrToFloat(nu(ew(st[cikl],17)));
-        t.FieldByName('afakod3').AsInteger:=StrToIntZero(ew(st[cikl],18));
-        t.FieldByName('netto3').AsFloat:=StrToFloat(nu(ew(st[cikl],19)));
-        t.FieldByName('afa3').AsFloat:=StrToFloat(nu(ew(st[cikl],20)));
-        t.FieldByName('afakod4').AsInteger:=StrToIntZero(ew(st[cikl],21));
-        t.FieldByName('netto4').AsFloat:=StrToFloat(nu(ew(st[cikl],22)));
-        t.FieldByName('afa4').AsFloat:=StrToFloat(nu(ew(st[cikl],23)));
-        t.Post;
-        end;
+         * t.FieldByName('kelt').AsDateTime:=StrToDate(ew(st[cikl],1));
+         * t.FieldByName('datum').AsDateTime:=StrToDate(ew(st[cikl],2));
+         * t.FieldByName('fizhat').AsDateTime:=StrToDate(ew(st[cikl],3));
+         * t.FieldByName('bizszam').AsString:=ew(st[cikl],4);
+         * t.FieldByName('partkod').value:=StrToIntZero(ew(st[cikl],5));
+         * t.FieldByName('cegnev').AsString:=ew(st[cikl],6);
+         * t.FieldByName('irszam').AsString:=ew(st[cikl],7);
+         * t.FieldByName('varos').AsString:=ew(st[cikl],8);
+         * t.FieldByName('cim').AsString:=ew(st[cikl],9);
+         * t.FieldByName('szoveg').AsString:=ew(st[cikl],10);
+         * t.FieldByName('fizmod').AsInteger:=StrToIntZero(ew(st[cikl],11));
+         * t.FieldByName('afakod1').AsInteger:=StrToIntZero(ew(st[cikl],12));
+         * t.FieldByName('netto1').AsFloat:=StrToFloat(nu(ew(st[cikl],13)));
+         * t.FieldByName('afa1').AsFloat:=StrToFloat(nu(ew(st[cikl],14)));
+         * t.FieldByName('afakod2').AsInteger:=StrToIntZero(ew(st[cikl],15));
+         * t.FieldByName('netto2').AsFloat:=StrToFloat(nu(ew(st[cikl],16)));
+         * t.FieldByName('afa2').AsFloat:=StrToFloat(nu(ew(st[cikl],17)));
+         * t.FieldByName('afakod3').AsInteger:=StrToIntZero(ew(st[cikl],18));
+         * t.FieldByName('netto3').AsFloat:=StrToFloat(nu(ew(st[cikl],19)));
+         * t.FieldByName('afa3').AsFloat:=StrToFloat(nu(ew(st[cikl],20)));
+         * t.FieldByName('afakod4').AsInteger:=StrToIntZero(ew(st[cikl],21));
+         * t.FieldByName('netto4').AsFloat:=StrToFloat(nu(ew(st[cikl],22)));
+         * t.FieldByName('afa4').AsFloat:=StrToFloat(nu(ew(st[cikl],23)));
+         * t.Post;
+         * end;
          */
-        $sor = array(
+        $sor = [
             'konyvel',
             'kelt',
             'datum',
@@ -172,7 +180,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
             'etelj',
             'enetto',
             'eafa'
-        );
+        ];
         echo implode($elvalaszto, $sor) . "\r\n";
 
         /** @var \Entities\Bizonylatfej $bizonylat */
@@ -180,7 +188,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
             $mar = $bizonylat->getId();
             $fm = $bizonylat->getFizmod();
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
-            $sor = array(
+            $sor = [
                 $this->korbeir(0),
                 $this->korbeir($bizonylat->getKelt()->format($this->datumformat)),
                 $this->korbeir($bizonylat->getTeljesites()->format($this->datumformat)),
@@ -193,7 +201,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
                 $this->korbeir($this->encstr($bizonylat->getPartnerutca())),
                 $this->korbeir($this->encstr('Értékesítés árbevétele')),
                 $this->korbeir(($fm->getTipus() == 'P' ? 1 : 2))
-            );
+            ];
 
             $i = 1;
             foreach ($aossz as $ao) {

@@ -87,7 +87,7 @@ class JogaBejelentkezes
 
     public function createJogaReszvetel()
     {
-        $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
+        $rvpartner = \mkw\store::getEm()->getRepository(Partner::class)->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
             $rvpartner = new Partner();
             $rvpartner->setEmail($this->getPartneremail());
@@ -115,7 +115,7 @@ class JogaBejelentkezes
         switch (true) {
             case $this->getTipus() == 1:
                 /** @var \Entities\Termek $termek */
-                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                $termek = \mkw\store::getEm()->getRepository(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 if ($termek) {
                     $jr->setTermek($termek);
                 }
@@ -126,7 +126,7 @@ class JogaBejelentkezes
                 $filter->addFilter('partner', '=', $rvpartner);
                 $filter->addFilter('lejart', '=', false);
                 $filter->addSql('(_xx.lejaratdatum>=CURDATE())');
-                $berletek = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->getAll($filter, ['id' => 'ASC']);
+                $berletek = \mkw\store::getEm()->getRepository(JogaBerlet::class)->getAll($filter, ['id' => 'ASC']);
                 if (count($berletek)) {
                     /** @var \Entities\JogaBerlet $berlet */
                     $berlet = $berletek[0];
@@ -147,7 +147,7 @@ class JogaBejelentkezes
     public function delJogaReszvetel()
     {
         if ($this->getJogareszvetelid()) {
-            $obj = \mkw\store::getEm()->getRepository('Entities\JogaReszvetel')->find($this->getJogareszvetelid());
+            $obj = \mkw\store::getEm()->getRepository(JogaReszvetel::class)->find($this->getJogareszvetelid());
             if ($obj) {
                 \mkw\store::getEm()->remove($obj);
                 \mkw\store::getEm()->flush();

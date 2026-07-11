@@ -1,24 +1,29 @@
 <?php
+
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 
-class FifoRepository extends \mkwhelpers\Repository {
+class FifoRepository extends \mkwhelpers\Repository
+{
 
     private $be;
     private $ki;
-    private $ujki = array();
+    private $ujki = [];
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Fifo');
-        $this->setOrders(array(
-            '1' => array('caption' => 'név szerint', 'order' => array('_xx.nev' => 'ASC'))
-        ));
+        $this->setEntityname(Fifo::class);
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint', 'order' => ['_xx.nev' => 'ASC']]
+        ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,kibf,kibt,bebf,bebt,r,t,tv'
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx,kibf,kibt,bebf,bebt,r,t,tv'
             . ' FROM Entities\Fifo _xx'
             . ' LEFT JOIN _xx.kibizonylatfej kibf'
             . ' LEFT JOIN _xx.kibizonylattetel kibt'
@@ -28,7 +33,8 @@ class FifoRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.termek t'
             . ' LEFT JOIN _xx.termekvaltozat tv'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -39,30 +45,29 @@ class FifoRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    private function clearData() {
+    private function clearData()
+    {
         $this->_em->getConnection()->executeUpdate('DELETE FROM fifo');
         $this->_em->getConnection()->executeUpdate('DELETE FROM keszlet');
     }
 
-    public function loadData($stornokell, $tid = null, $vid = null, $cikksz = null) {
+    public function loadData($stornokell, $tid = null, $vid = null, $cikksz = null)
+    {
         if ($stornokell) {
             $stornosql = '';
-        }
-        else {
+        } else {
             $stornosql = ' AND ((bf.storno=0) OR (bf.storno IS NULL)) AND ((bf.stornozott=0) OR (bf.stornozott IS NULL)) ';
         }
         $sql1 = '';
         $sql2 = '';
         if ($cikksz) {
-            $tr = $this->_em->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikksz));
+            $tr = $this->_em->getRepository(Termek::class)->findBy(['cikkszam' => $cikksz]);
             if ($tr) {
                 $sql1 = ' AND (bt.termek_id = ' . $tr[0]->getId() . ')';
-            }
-            else {
+            } else {
                 $sql1 = 'AND (1=0)';
             }
-        }
-        else {
+        } else {
             if ($tid) {
                 $sql1 = ' AND (bt.termek_id = ' . $tid . ')';
             }
@@ -86,7 +91,9 @@ class FifoRepository extends \mkwhelpers\Repository {
             '(((bf.irany>0) AND (bt.mennyiseg>0)) OR ((bf.irany<0) AND (bt.mennyiseg<0))) ' .
             $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
-            , $rsm);
+            ,
+            $rsm
+        );
         $this->be = $q->getScalarResult();
         $cikl = 0;
         $db = count($this->be) - 1;
@@ -103,7 +110,9 @@ class FifoRepository extends \mkwhelpers\Repository {
             '(((bf.irany<0) AND (bt.mennyiseg>0)) OR ((bf.irany>0) AND (bt.mennyiseg<0))) ' .
             $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
-            , $rsm);
+            ,
+            $rsm
+        );
         $this->ki = $q->getScalarResult();
         $cikl = 0;
         $db = count($this->ki) - 1;
@@ -113,10 +122,11 @@ class FifoRepository extends \mkwhelpers\Repository {
             $cikl++;
         }
 
-        $this->ujki = array();
+        $this->ujki = [];
     }
 
-    private function bevetKeres($i) {
+    private function bevetKeres($i)
+    {
         $cikl = 0;
         $kilep = false;
         $bedb = count($this->be) - 1;
@@ -127,8 +137,7 @@ class FifoRepository extends \mkwhelpers\Repository {
                 ($this->be[$cikl]['maradek'] != 0)
             ) {
                 $kilep = true;
-            }
-            else {
+            } else {
                 $cikl++;
             }
         }
@@ -138,7 +147,8 @@ class FifoRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    private function bevetKeresDatum($i) {
+    private function bevetKeresDatum($i)
+    {
         $cikl = 0;
         $bedb = count($this->be) - 1;
         $maxdate = 0;
@@ -158,8 +168,9 @@ class FifoRepository extends \mkwhelpers\Repository {
         return $maxkod;
     }
 
-    private function createUjkiadas($c, $bi) {
-        $this->ujki[] = array(
+    private function createUjkiadas($c, $bi)
+    {
+        $this->ujki[] = [
             'id' => $this->ki[$c]['id'],
             'tetelid' => $this->ki[$c]['tetelid'],
             'irany' => $this->ki[$c]['irany'],
@@ -173,10 +184,11 @@ class FifoRepository extends \mkwhelpers\Repository {
             'betetelid' => $this->be[$bi]['tetelid'],
             'beirany' => $this->be[$bi]['irany'],
             'beteljesites' => $this->be[$bi]['teljesites']
-        );
+        ];
     }
 
-    public function calculate() {
+    public function calculate()
+    {
         $c = 0;
         $kidb = count($this->ki) - 1;
         while ($c <= $kidb) {
@@ -197,19 +209,16 @@ class FifoRepository extends \mkwhelpers\Repository {
                                 $this->ki[$c]['mennyiseg'] = -1 * $megkiad;
                                 $this->be[$bi]['maradek'] = $this->be[$bi]['maradek'] - $megkiad;
                                 $megkiad = 0;
-                            }
-                            else {
+                            } else {
                                 $this->createUjkiadas($c, $bi);
                                 $megkiad = $megkiad - $this->be[$bi]['maradek'];
                                 $this->be[$bi]['maradek'] = 0;
                             }
-                        }
-                        else {
+                        } else {
                             $this->ki[$c]['mennyiseg'] = -1 * $megkiad;
                             $megkiad = 0;
                         }
-                    }
-                    else {
+                    } else {
                         $bi = $this->bevetKeresDatum($c);
                         if ($bi !== false) {
                             $this->ki[$c]['beid'] = $this->be[$bi]['id'];
@@ -218,8 +227,7 @@ class FifoRepository extends \mkwhelpers\Repository {
                             $this->ki[$c]['beirany'] = $this->be[$bi]['irany'];
                             $this->be[$bi]['maradek'] = $this->be[$bi]['maradek'] - $megkiad;
                             $megkiad = 0;
-                        }
-                        else {
+                        } else {
                             $megkiad = 0;
                         }
                     }
@@ -229,13 +237,16 @@ class FifoRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function saveData() {
+    public function saveData()
+    {
         $this->clearData();
         $data = $this->getData();
-        $q = $this->_em->getConnection()->prepare('INSERT INTO fifo (raktar_id, termek_id, termekvaltozat_id, kibizonylatfej_id, kibizonylattetel_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
-            'VALUES (:rid, :tid, :tvid, :id, :tetelid, :beid, :betetelid, :mennyiseg)');
+        $q = $this->_em->getConnection()->prepare(
+            'INSERT INTO fifo (raktar_id, termek_id, termekvaltozat_id, kibizonylatfej_id, kibizonylattetel_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
+            'VALUES (:rid, :tid, :tvid, :id, :tetelid, :beid, :betetelid, :mennyiseg)'
+        );
         foreach ($data as $d) {
-            $params = array(
+            $params = [
                 'rid' => $d['raktarid'],
                 'tid' => $d['termekid'],
                 'tvid' => (array_key_exists('valtozatid', $d) ? $d['valtozatid'] : null),
@@ -244,29 +255,32 @@ class FifoRepository extends \mkwhelpers\Repository {
                 'beid' => (array_key_exists('beid', $d) ? $d['beid'] : null),
                 'betetelid' => (array_key_exists('betetelid', $d) ? $d['betetelid'] : null),
                 'mennyiseg' => $d['mennyiseg']
-            );
+            ];
             $q->executeStatement($params);
         }
 
-        $q = $this->_em->getConnection()->prepare('INSERT INTO keszlet (raktar_id, termek_id, termekvaltozat_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
-            'VALUES (:rid, :tid, :tvid, :beid, :betetelid, :mennyiseg)');
+        $q = $this->_em->getConnection()->prepare(
+            'INSERT INTO keszlet (raktar_id, termek_id, termekvaltozat_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
+            'VALUES (:rid, :tid, :tvid, :beid, :betetelid, :mennyiseg)'
+        );
         foreach ($this->be as $d) {
             if ($d['maradek'] != 0) {
-                $params = array(
+                $params = [
                     'rid' => $d['raktarid'],
                     'tid' => $d['termekid'],
                     'tvid' => (array_key_exists('valtozatid', $d) ? $d['valtozatid'] : null),
                     'beid' => (array_key_exists('id', $d) ? $d['id'] : null),
                     'betetelid' => (array_key_exists('tetelid', $d) ? $d['tetelid'] : null),
                     'mennyiseg' => $d['maradek']
-                );
+                ];
                 $q->executeStatement($params);
             }
         }
     }
 
-    public function getDataHeader() {
-        return array(
+    public function getDataHeader()
+    {
+        return [
             'KI biz.szám',
             'KI tétel id',
             'KI irány',
@@ -280,10 +294,11 @@ class FifoRepository extends \mkwhelpers\Repository {
             'BE tétel id',
             'BE teljesítés',
             'BE irány'
-        );
+        ];
     }
 
-    public function getData() {
+    public function getData()
+    {
         foreach ($this->ujki as $u) {
             $this->ki[] = $u;
         }

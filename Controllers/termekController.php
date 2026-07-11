@@ -7,6 +7,7 @@ use Entities\Arsav;
 use Entities\ME;
 use Entities\Meret;
 use Entities\Partner;
+use Entities\Raktar;
 use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
@@ -1673,7 +1674,7 @@ class termekController extends \mkwhelpers\MattableController
         $termekid = $this->params->getIntRequestParam('termekid');
         $termek = $this->getRepo()->find($termekid);
 
-        $raktarak = $this->getRepo('Entities\Raktar')->getAllActive();
+        $raktarak = $this->getRepo(Raktar::class)->getAllActive();
         if ($termek) {
             $klist = [];
             foreach ($raktarak as $raktar) {
@@ -2097,7 +2098,7 @@ class termekController extends \mkwhelpers\MattableController
         //$ids = explode(',', $ids);
         if ($ids) {
             $tcsid = $this->params->getIntRequestParam('tcs');
-            $tcs = $this->getRepo('Entities\Termekcsoport')->find($tcsid);
+            $tcs = $this->getRepo(Termekcsoport::class)->find($tcsid);
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('id', 'IN', $ids);
@@ -2128,7 +2129,7 @@ class termekController extends \mkwhelpers\MattableController
         if ($ids) {
             $faid = $this->params->getIntRequestParam('fa');
             /** @var \Entities\TermekFa $fa */
-            $fa = $this->getRepo('Entities\TermekFa')->find($faid);
+            $fa = $this->getRepo(TermekFa::class)->find($faid);
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('id', 'IN', $ids);

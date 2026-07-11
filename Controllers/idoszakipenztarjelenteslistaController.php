@@ -3,6 +3,8 @@
 namespace Controllers;
 
 
+use Entities\Penztar;
+use Entities\Penztarbizonylatfej;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -43,7 +45,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
             ->addFilter($datummezo, '<=', $this->igstr)
             ->addFilter('rontott', '=', false);
 
-        $pt = $this->getRepo('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
+        $pt = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
         $this->penztarid = null;
         $this->penztarnev = null;
         if ($pt) {
@@ -67,7 +69,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
             ->addFilter($datummezo, '<', $this->tolstr)
             ->addFilter('rontott', '=', false);
 
-        $pt = $this->getRepo('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
+        $pt = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
         $this->penztarid = null;
         $this->penztarnev = null;
         if ($pt) {
@@ -85,7 +87,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $filter = $this->createFilter();
 
         /** @var \Entities\PenztarbizonylatfejRepository $repo */
-        $repo = $this->getRepo('Entities\Penztarbizonylatfej');
+        $repo = $this->getRepo(Penztarbizonylatfej::class);
 
         $nyito = $repo->getSum($nyitofilter);
         $mind = $repo->getWithJoins($filter, ['_xx.kelt' => 'ASC', '_xx.id' => 'ASC']);
@@ -139,7 +141,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $filter = $this->createFilter();
 
         /** @var \Entities\PenztarbizonylatfejRepository $repo */
-        $repo = $this->getRepo('Entities\Penztarbizonylatfej');
+        $repo = $this->getRepo(Penztarbizonylatfej::class);
 
         $nyito = $repo->getSum($nyitofilter);
         $mind = $repo->getWithJoins($filter, ['_xx.kelt' => 'ASC', '_xx.id' => 'ASC']);

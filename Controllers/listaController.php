@@ -3,10 +3,13 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
 use Entities\Raktar;
 use Entities\Termek;
+use Entities\TermekErtesito;
 use Entities\TermekFa;
+use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
 
 class listaController extends \mkwhelpers\Controller
@@ -14,9 +17,9 @@ class listaController extends \mkwhelpers\Controller
 
     public function boltbannincsmasholvan()
     {
-        $rep = $this->getRepo('Entities\TermekValtozat');
-        $raktarrepo = $this->getRepo('Entities\Raktar');
-        $termekrepo = $this->getRepo('Entities\Termek');
+        $rep = $this->getRepo(TermekValtozat::class);
+        $raktarrepo = $this->getRepo(Raktar::class);
+        $termekrepo = $this->getRepo(Termek::class);
 
         $minkeszlet = $this->params->getIntRequestParam('minkeszlet');
 
@@ -26,7 +29,7 @@ class listaController extends \mkwhelpers\Controller
         $termekfaid = $this->params->getIntRequestParam('termekfa');
         $termekfa = false;
         if ($termekfaid) {
-            $termekfa = $this->getRepo('Entities\TermekFa')->find($termekfaid);
+            $termekfa = $this->getRepo(TermekFa::class)->find($termekfaid);
         }
 
         $rsm = new ResultSetMapping();
@@ -194,7 +197,7 @@ class listaController extends \mkwhelpers\Controller
             $filter->addFilter('bf.createdby', '=', $letrehozoid);
         }
 
-        $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
+        $nagykerforg = $this->getRepo(Bizonylatfej::class)->calcNagykerForgalom($filter);
         $ret['nagykerforgalom'] = $nagykerforg;
 
         /*
@@ -205,7 +208,7 @@ class listaController extends \mkwhelpers\Controller
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet', 'garancialevel'));
 
-        $utanvetesforg = $this->getRepo('Entities\Bizonylatfej')->calcUtanvetesForgalom($filter);
+        $utanvetesforg = $this->getRepo(Bizonylatfej::class)->calcUtanvetesForgalom($filter);
         $ret['utanvetesforgalom'] = $utanvetesforg;
         */
 
@@ -220,7 +223,7 @@ class listaController extends \mkwhelpers\Controller
             $filter->addFilter('bf.createdby', '=', $letrehozoid);
         }
 
-        $nemhufforg = $this->getRepo('Entities\Bizonylatfej')->calcNemHUFForgalom($filter);
+        $nemhufforg = $this->getRepo(Bizonylatfej::class)->calcNemHUFForgalom($filter);
         $ret['nemhufforgalom'] = $nemhufforg;
 
         return $ret;
@@ -240,7 +243,7 @@ class listaController extends \mkwhelpers\Controller
                 $order = ['created' => 'ASC'];
                 break;
         }
-        $rep = $this->getRepo('Entities\TermekErtesito');
+        $rep = $this->getRepo(TermekErtesito::class);
         $termekek = $rep->getNemkaphatoTermekek($order);
         $lista = [];
         foreach ($termekek as $termek) {

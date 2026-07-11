@@ -4,6 +4,13 @@ namespace Controllers;
 
 
 use Entities\Bizonylatfej;
+use Entities\Fizmod;
+use Entities\Partner;
+use Entities\Partnercimketorzs;
+use Entities\Raktar;
+use Entities\Termek;
+use Entities\TermekValtozat;
+use Entities\Uzletkoto;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -105,31 +112,31 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         }
 
         if ($partnerid) {
-            $partner = $this->getRepo('Entities\Partner')->find($partnerid);
+            $partner = $this->getRepo(Partner::class)->find($partnerid);
             if ($partner) {
                 $this->partnernev = $partner->getNev();
             }
         } else {
-            $this->cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($partnercimkefilter);
+            $this->cimkenevek = $this->getRepo(Partnercimketorzs::class)->getCimkeNevek($partnercimkefilter);
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
         if ($uzletkotoid) {
-            $uzletkoto = $this->getRepo('Entities\Uzletkoto')->find($uzletkotoid);
+            $uzletkoto = $this->getRepo(Uzletkoto::class)->find($uzletkotoid);
             if ($uzletkoto) {
                 $this->uknev = $uzletkoto->getNev();
             }
         }
 
         if ($raktarid) {
-            $raktar = $this->getRepo('Entities\Raktar')->find($raktarid);
+            $raktar = $this->getRepo(Raktar::class)->find($raktarid);
             if ($raktar) {
                 $this->raktarnev = $raktar->getNev();
             }
         }
 
         if ($fizmodid) {
-            $fizmod = $this->getRepo('Entities\Fizmod')->find($fizmodid);
+            $fizmod = $this->getRepo(Fizmod::class)->find($fizmodid);
             if ($fizmod) {
                 $this->fizmodnev = $fizmod->getNev();
             }
@@ -164,12 +171,12 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                 $raktarfilter->addFilter('archiv', '=', false);
 
                 if ($keszletkell) {
-                    $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
+                    $raktarak = $this->getRepo(Raktar::class)->getAll($raktarfilter);
                     foreach ($tetelek as $key => $tetel) {
                         $termekid = $tetel['termekid'];
                         $tvid = $tetel['termekvaltozat_id'];
                         if ($tvid) {
-                            $tv = $this->getRepo('Entities\TermekValtozat')->find($tvid);
+                            $tv = $this->getRepo(TermekValtozat::class)->find($tvid);
                             if ($tv) {
                                 foreach ($raktarak as $raktar) {
                                     $keszlet = $tv->getKeszlet(null, $raktar->getId());
@@ -178,7 +185,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                             }
                         } else {
                             if ($termekid) {
-                                $tv = $this->getRepo('Entities\Termek')->find($tvid);
+                                $tv = $this->getRepo(Termek::class)->find($tvid);
                                 if ($tv) {
                                     foreach ($raktarak as $raktar) {
                                         $keszlet = $tv->getKeszlet(null, $raktar->getId());
@@ -190,7 +197,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     }
                 }
 
-                $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
+                $raktarak = $this->getRepo(Raktar::class)->getAll($raktarfilter);
                 $raktarlista = [];
                 foreach ($raktarak as $raktar) {
                     $raktarlista[] = $raktar->getNev();

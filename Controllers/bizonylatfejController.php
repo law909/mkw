@@ -18,10 +18,12 @@ use Entities\Folyoszamla;
 use Entities\Jogcim;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Partnercimketorzs;
 use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Szallitasimod;
 use Entities\Termek;
+use Entities\TermekValtozat;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -71,7 +73,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     public function viewlist()
     {
         /** @var \Entities\Bizonylattipus $bt */
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
         if ($bt && $bt->getNavbekuldendo()) {
             $this->NAVEredmenyFeldolgoz();
         }
@@ -88,7 +90,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function setVars($view)
     {
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
         $bt->setTemplateVars($view);
 
         $fmc = new fizmodController();
@@ -239,7 +241,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
         $f = $this->params->getIntRequestParam('bizonylatstatuszfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($f);
+            $bs = $this->getRepo(Bizonylatstatusz::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('bizonylatstatusz', '=', $bs);
             }
@@ -250,35 +252,35 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
         $f = $this->params->getIntRequestParam('fizmodfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
+            $bs = $this->getRepo(Fizmod::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('fizmod', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('szallitasimodfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Szallitasimod')->findOneById($f);
+            $bs = $this->getRepo(Szallitasimod::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('szallitasimod', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('uzletkotofilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Uzletkoto')->findOneById($f);
+            $bs = $this->getRepo(Uzletkoto::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('uzletkoto', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('valutanemfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Valutanem')->findOneById($f);
+            $bs = $this->getRepo(Valutanem::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('valutanem', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('raktarfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Raktar')->findOneById($f);
+            $bs = $this->getRepo(Raktar::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('raktar', '=', $bs);
             }
@@ -387,7 +389,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         // Új bizonylatnál a fejen még nincs irány – ilyenkor a bizonylattípus iránya a mérvadó
         // (hogy az egyedi azonosító autocomplete új, negatív irányú bizonylaton is működjön).
         if (!$x['irany'] && $this->biztipus) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
             if ($biztip) {
                 $x['irany'] = $biztip->getIrany();
             }
@@ -675,7 +677,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
             $kiskercimkeid = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
             if ($kiskercimkeid) {
-                $kiskercimke = $this->getRepo('Entities\Partnercimketorzs')->find($kiskercimkeid);
+                $kiskercimke = $this->getRepo(Partnercimketorzs::class)->find($kiskercimkeid);
                 $partnerobj->addCimke($kiskercimke);
             }
             $this->getEm()->persist($partnerobj);
@@ -818,19 +820,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->setAfaellenorzesnemkellon(new \DateTime());
         }
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        $ck = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
         if ($ck) {
             $obj->setValutanem($ck);
         }
 
         $obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        $ck = \mkw\store::getEm()->getRepository(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
         if ($ck) {
             $obj->setBankszamla($ck);
         }
 
-        $ck = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
+        $ck = \mkw\store::getEm()->getRepository(Bizonylatstatusz)->find($this->params->getIntRequestParam('bizonylatstatusz'));
         if ($ck) {
             $obj->setBizonylatstatusz($ck);
         }
@@ -906,9 +908,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
                 $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
 
-                $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
+                $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
                 if ($termek) {
-                    $termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find(
+                    $termekvaltozat = $this->getEm()->getRepository(TermekValtozat::class)->find(
                         $this->params->getIntRequestParam('tetelvaltozat_' . $tetelid)
                     );
                     switch ($oper) {
@@ -937,7 +939,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                 $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                 $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                 $tetel->setMekod($this->params->getIntRequestParam('tetelme_' . $tetelid));
-                                $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find(
+                                $parenttetel = $this->getRepo(Bizonylattetel::class)->find(
                                     $this->params->getStringRequestParam('tetelparentid_' . $tetelid)
                                 );
                                 if ($parenttetel) {
@@ -1010,7 +1012,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                             $this->getEm()->persist($tetel);
                             break;
                         case $this->editOperation:
-                            $tetel = $this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
+                            $tetel = $this->getEm()->getRepository(Bizonylattetel)->find($tetelid);
                             if ($tetel) {
                                 $tetel->setPersistentData();
                                 if ($termek) {

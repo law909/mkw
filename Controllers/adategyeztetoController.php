@@ -21,7 +21,7 @@ class adategyeztetoController extends \mkwhelpers\Controller
         $email = $this->params->getStringRequestParam('email');
         if ($email) {
             /** @var Partner $partner */
-            $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
+            $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
             if ($partner) {
                 $view->setVar('vezeteknev', $partner->getVezeteknev());
                 $view->setVar('keresztnev', $partner->getKeresztnev());
@@ -50,7 +50,7 @@ class adategyeztetoController extends \mkwhelpers\Controller
         $hirlevelkell = $this->params->getBoolRequestParam('hirlevelkell');
         if ($email) {
             /** @var Partner $partner */
-            $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
+            $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
             if (!$partner) {
                 $partner = new Partner();
                 $partner->setEmail($email);

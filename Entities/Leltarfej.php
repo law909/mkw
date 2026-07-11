@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -8,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM,
 /** @ORM\Entity(repositoryClass="Entities\LeltarfejRepository")
  * @ORM\Table(name="leltarfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class Leltarfej {
+class Leltarfej
+{
 
     /**
      * @ORM\Id @ORM\Column(type = "integer")
@@ -64,20 +66,24 @@ class Leltarfej {
     /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="leltarfej",cascade={"persist"}) */
     private $leltartetelek;
 
-    public function __toString() {
+    public function __toString()
+    {
         return (string)$this->id;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function toLista() {
-        $ret = array();
+    public function toLista()
+    {
+        $ret = [];
         $ret['id'] = $this->getId();
         $ret['nev'] = $this->getNev();
         $ret['lastmodstr'] = $this->getLastmodStr();
@@ -92,51 +98,60 @@ class Leltarfej {
         return $ret;
     }
 
-    public function getLastmod() {
+    public function getLastmod()
+    {
         return $this->lastmod;
     }
 
-    public function getLastmodStr() {
+    public function getLastmodStr()
+    {
         if ($this->getLastmod()) {
             return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearLastmod() {
+    public function clearLastmod()
+    {
         $this->lastmod = null;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
-    public function getCreatedStr() {
+    public function getCreatedStr()
+    {
         if ($this->getCreated()) {
             return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
 
-    public function clearCreated() {
+    public function clearCreated()
+    {
         $this->created = null;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedby() {
+    public function getCreatedby()
+    {
         return $this->createdby;
     }
 
-    public function getCreatedbyId() {
+    public function getCreatedbyId()
+    {
         if ($this->createdby) {
             return $this->createdby->getId();
         }
         return null;
     }
 
-    public function getCreatedbyNev() {
+    public function getCreatedbyNev()
+    {
         if ($this->createdby) {
             return $this->createdby->getNev();
         }
@@ -146,18 +161,21 @@ class Leltarfej {
     /**
      * @return mixed
      */
-    public function getUpdatedby() {
+    public function getUpdatedby()
+    {
         return $this->updatedby;
     }
 
-    public function getUpdatedbyId() {
+    public function getUpdatedbyId()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getId();
         }
         return null;
     }
 
-    public function getUpdatedbyNev() {
+    public function getUpdatedbyNev()
+    {
         if ($this->updatedby) {
             return $this->updatedby->getNev();
         }
@@ -167,18 +185,21 @@ class Leltarfej {
     /**
      * @return \Entities\Raktar
      */
-    public function getRaktar() {
+    public function getRaktar()
+    {
         return $this->raktar;
     }
 
-    public function getRaktarnev() {
+    public function getRaktarnev()
+    {
         if ($this->raktar) {
             return $this->raktar->getNev();
         }
         return '';
     }
 
-    public function getRaktarId() {
+    public function getRaktarId()
+    {
         if ($this->raktar) {
             return $this->raktar->getId();
         }
@@ -188,42 +209,45 @@ class Leltarfej {
     /**
      * @param \Entities\Raktar $val
      */
-    public function setRaktar($val) {
+    public function setRaktar($val)
+    {
         if (!($val instanceof \Entities\Raktar)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Raktar::class)->find($val);
         }
         if ($this->raktar !== $val) {
             if (!$val) {
                 $this->removeRaktar();
-            }
-            else {
+            } else {
                 $this->raktar = $val;
             }
         }
     }
 
-    public function removeRaktar() {
+    public function removeRaktar()
+    {
         if ($this->raktar !== null) {
             $this->raktar = null;
         }
     }
 
-    public function getNyitas() {
+    public function getNyitas()
+    {
         return $this->nyitas;
     }
 
-    public function getNyitasStr() {
+    public function getNyitasStr()
+    {
         if ($this->getNyitas()) {
             return $this->getNyitas()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setNyitas($adat = '') {
+    public function setNyitas($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->nyitas = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -231,22 +255,24 @@ class Leltarfej {
         }
     }
 
-    public function getZaras() {
+    public function getZaras()
+    {
         return $this->zaras;
     }
 
-    public function getZarasStr() {
+    public function getZarasStr()
+    {
         if ($this->getZaras()) {
             return $this->getZaras()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    public function setZaras($adat = '') {
+    public function setZaras($adat = '')
+    {
         if (is_a($adat, 'DateTime')) {
             $this->zaras = $adat;
-        }
-        else {
+        } else {
             if ($adat == '') {
                 $adat = date(\mkw\store::$DateFormat);
             }
@@ -257,29 +283,34 @@ class Leltarfej {
     /**
      * @return mixed
      */
-    public function getZarva() {
+    public function getZarva()
+    {
         return $this->zarva;
     }
 
     /**
      * @param mixed $zarva
      */
-    public function setZarva($zarva) {
+    public function setZarva($zarva)
+    {
         $this->zarva = $zarva;
     }
 
-    public function getLeltartetelek() {
+    public function getLeltartetelek()
+    {
         return $this->leltartetelek;
     }
 
-    public function addLeltartetel(Leltartetel $val) {
+    public function addLeltartetel(Leltartetel $val)
+    {
         if (!$this->leltartetelek->contains($val)) {
             $this->leltartetelek->add($val);
             $val->setLeltarfej($this);
         }
     }
 
-    public function removeLeltartetel(Leltartetel $val) {
+    public function removeLeltartetel(Leltartetel $val)
+    {
         if ($this->leltartetelek->removeElement($val)) {
             $val->removeLeltarfej();
             return true;
@@ -287,21 +318,24 @@ class Leltarfej {
         return false;
     }
 
-    public function clearLeltartetelek() {
+    public function clearLeltartetelek()
+    {
         $this->leltartetelek->clear();
     }
 
     /**
      * @return mixed
      */
-    public function getNev() {
+    public function getNev()
+    {
         return $this->nev;
     }
 
     /**
      * @param mixed $nev
      */
-    public function setNev($nev) {
+    public function setNev($nev)
+    {
         $this->nev = $nev;
     }
 

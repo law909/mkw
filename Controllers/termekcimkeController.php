@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Partner;
+use Entities\Termek;
 use Entities\Termekcimkekat;
 use Entities\Termekcimketorzs;
 use mkw\store;
@@ -185,14 +186,14 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Termékcímkék'));
         $view->setVar('cimketipus', 'termek');
         $view->setVar('controllerscript', 'termekcimke.js');
-        $tc = store::getEm()->getRepository('Entities\Termekcimkekat')->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
+        $tc = store::getEm()->getRepository(Termekcimkekat::class)->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
         $view->setVar('cimkekat', $this->cimkekToArray($tc));
         $view->printTemplateResult();
     }
 
     public function getformenu($menu)
     {
-        $tc = $this->getRepo('Entities\Termekcimkekat')->getAllHasTermek($menu);
+        $tc = $this->getRepo(Termekcimkekat::class)->getAllHasTermek($menu);
         return $this->cimkekToArray($tc);
     }
 
@@ -210,7 +211,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
     {
         $view = $this->getTemplateFactory()->createMainView('markak.tpl');
         store::fillTemplate($view);
-        $termekrepo = $this->getRepo('Entities\Termek');
+        $termekrepo = $this->getRepo(Termek::class);
         $tc = $this->getRepo()->getMarkak();
         $m = [];
         foreach ($tc as $c) {

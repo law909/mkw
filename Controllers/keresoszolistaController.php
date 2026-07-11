@@ -3,12 +3,16 @@
 namespace Controllers;
 
 
-class keresoszolistaController extends \mkwhelpers\MattableController {
+use Entities\Keresoszolog;
+
+class keresoszolistaController extends \mkwhelpers\MattableController
+{
 
     private $tolstr;
     private $igstr;
 
-    public function view() {
+    public function view()
+    {
         $view = $this->createView('keresoszolista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
@@ -17,7 +21,8 @@ class keresoszolistaController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function createFilter() {
+    protected function createFilter()
+    {
         $this->tolstr = $this->params->getStringRequestParam('tol');
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
@@ -34,11 +39,12 @@ class keresoszolistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    public function createLista() {
+    public function createLista()
+    {
         $filter = $this->createFilter();
 
         /** @var \Entities\KeresoszologRepository $repo */
-        $repo = $this->getRepo('Entities\Keresoszolog');
+        $repo = $this->getRepo(Keresoszolog::class);
 
         $mind = $repo->getWithCount($filter);
 

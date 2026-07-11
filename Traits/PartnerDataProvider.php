@@ -2,6 +2,8 @@
 
 namespace Traits;
 
+use Entities\Bizonylatfej;
+use Entities\Folyoszamla;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 
@@ -185,8 +187,8 @@ trait PartnerDataProvider
     {
         $partnerid = $this->params->getIntRequestParam('partner');
         $irany = $this->params->getIntRequestParam('irany', 1);
-        $br = $this->getRepo('Entities\Bizonylatfej');
-        $bizs = $this->getRepo('Entities\Folyoszamla')->getSumByPartner($partnerid, $irany);
+        $br = $this->getRepo(Bizonylatfej::class);
+        $bizs = $this->getRepo(Folyoszamla::class)->getSumByPartner($partnerid, $irany);
         $adat = [];
         foreach ($bizs as $biz) {
             if ($biz['hivatkozottdatum']) {

@@ -107,7 +107,6 @@ class termekcimkekatController extends \mkwhelpers\JQGridController
 
     public function getForTermekSzuro($termekids, $selectedids)
     {
-//		$this->termekcimkek=$this->getEm()->getRepository('Entities\Termekcimketorzs')->getAllNative();
         $sid = [];
         foreach ($selectedids as $sids) {
             foreach ($sids as $ertek) {

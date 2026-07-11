@@ -4,6 +4,9 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Arsav;
+use Entities\Raktar;
+use Entities\Termek;
+use Entities\TermekFa;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -28,7 +31,7 @@ class leltarController extends \mkwhelpers\Controller
     {
         $raktar = $this->params->getIntRequestParam('raktar');
         if ($raktar) {
-            $r = $this->getRepo('Entities\Raktar')->find($raktar);
+            $r = $this->getRepo(Raktar::class)->find($raktar);
         }
 
         $foglalas = $this->params->getBoolRequestParam('foglalasszamit');
@@ -56,7 +59,7 @@ class leltarController extends \mkwhelpers\Controller
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, []);
+            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
             $faszuro = [];
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
@@ -142,7 +145,7 @@ class leltarController extends \mkwhelpers\Controller
         foreach ($d as $sor) {
             if ($as) {
                 /** @var \Entities\Termek $t */
-                $t = $this->getRepo('Entities\Termek')->find($sor['termek_id']);
+                $t = $this->getRepo(Termek::class)->find($sor['termek_id']);
                 if ($t) {
                     switch ($nettobrutto) {
                         case 'netto':

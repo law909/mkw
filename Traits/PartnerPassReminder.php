@@ -3,6 +3,7 @@
 namespace Traits;
 
 use Controllers\kosarController;
+use Entities\Emailtemplate;
 
 trait PartnerPassReminder
 {
@@ -16,7 +17,7 @@ trait PartnerPassReminder
                 $pr = $p->setPasswordreminder();
                 $this->getEm()->persist($p);
                 $this->getEm()->flush();
-                $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('jelszoemlekezteto');
+                $emailtpl = $this->getEm()->getRepository(Emailtemplate::class)->findOneByNev('jelszoemlekezteto');
                 if ($emailtpl) {
                     $tpldata = [
                         'keresztnev' => $p->getKeresztnev(),

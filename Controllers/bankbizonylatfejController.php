@@ -269,7 +269,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record, true));
 
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+        $bt = $this->getRepo(Bizonylattipus::class)->find('bank');
         $bt->setTemplateVars($view);
 
         $partner = new partnerController();

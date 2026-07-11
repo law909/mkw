@@ -3,6 +3,11 @@
 namespace Controllers;
 
 
+use Entities\Bankbizonylattetel;
+use Entities\Bankszamla;
+use Entities\Partner;
+use Entities\Partnercimketorzs;
+
 class penzbelistaController extends \mkwhelpers\MattableController
 {
 
@@ -28,7 +33,7 @@ class penzbelistaController extends \mkwhelpers\MattableController
     public function createLista()
     {
         $bankszamlaid = $this->params->getIntRequestParam('bankszamla');
-        $bsz = $this->getRepo('Entities\Bankszamla')->find($bankszamlaid);
+        $bsz = $this->getRepo(Bankszamla::class)->find($bankszamlaid);
         if ($bsz) {
             $bankszamlaszam = $bsz->getSzamlaszam();
         }
@@ -51,18 +56,18 @@ class penzbelistaController extends \mkwhelpers\MattableController
         if ($selpartner) {
             $filter->addFilter('partner', '=', $selpartner);
         } else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             if ($partnerkodok) {
                 $filter->addFilter('partner', 'IN', $partnerkodok);
             }
-            $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
+            $cimkenevek = $this->getRepo(Partnercimketorzs::class)->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
         }
 
         if ($bankszamlaid) {
             $filter->addFilter('bf.bankszamla', '=', $bankszamlaid);
         }
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
-        $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
+        $btrepo = $this->getRepo(Bankbizonylattetel::class);
 
         $mind = $btrepo->getAllWithFej(
             $filter,

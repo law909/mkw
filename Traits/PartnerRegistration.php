@@ -2,6 +2,7 @@
 
 namespace Traits;
 
+use Entities\Emailtemplate;
 use Services\PartnerWriterService;
 
 trait PartnerRegistration
@@ -132,7 +133,7 @@ trait PartnerRegistration
             $this->getEm()->flush();
             $this->login($email, $jelszo1);
 
-            $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
+            $emailtpl = $this->getEm()->getRepository(Emailtemplate::class)->findOneByNev('regisztracio');
             if ($emailtpl) {
                 $tpldata = [
                     'keresztnev' => $keresztnev,

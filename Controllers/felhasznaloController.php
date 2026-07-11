@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Felhasznalo;
+use Entities\Uzletkoto;
 use mkw\store;
 
 class felhasznaloController extends \mkwhelpers\JQGridController
@@ -24,7 +25,7 @@ class felhasznaloController extends \mkwhelpers\JQGridController
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setFelhasznalonev($this->params->getStringRequestParam('felhasznalonev', $obj->getFelhasznalonev()));
         $obj->setJelszo($this->params->getStringRequestParam('jelszo', $obj->getJelszo()));
-        $ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
+        $ck = store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('uzletkoto', 0));
         if ($ck) {
             $obj->setUzletkoto($ck);
         } else {

@@ -2,6 +2,15 @@
 
 namespace Controllers;
 
+use Entities\Arfolyam;
+use Entities\Bizonylattipus;
+use Entities\Fizmod;
+use Entities\Partner;
+use Entities\Raktar;
+use Entities\Termek;
+use Entities\TermekValtozat;
+use Entities\Valutanem;
+
 class szamlafejController extends bizonylatfejController
 {
 
@@ -29,7 +38,7 @@ class szamlafejController extends bizonylatfejController
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam(
+                        $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam(
                             $egyed['valutanem'],
                             new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
                         );
@@ -136,7 +145,7 @@ class szamlafejController extends bizonylatfejController
 
         $fej = new \Entities\Bizonylatfej();
         $fej->setPersistentData();
-        $fej->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+        $fej->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find($this->biztipus));
         $fej->setKelt('');
         $fej->setTeljesites('');
         $fej->setEsedekesseg('');
@@ -144,30 +153,30 @@ class szamlafejController extends bizonylatfejController
         $fej->setArfolyam(1);
 
         $partnerid = \mkw\store::getParameter(\mkw\consts::Boltivevo);
-        $partner = $partnerid ? $this->getRepo('Entities\Partner')->find($partnerid) : null;
+        $partner = $partnerid ? $this->getRepo(Partner::class)->find($partnerid) : null;
         if ($partner) {
             $fej->setPartner($partner);
         }
-        $fizmod = $fizmodid ? $this->getRepo('Entities\Fizmod')->find($fizmodid) : null;
+        $fizmod = $fizmodid ? $this->getRepo(Fizmod::class)->find($fizmodid) : null;
         if ($fizmod) {
             $fej->setFizmod($fizmod);
         }
-        $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         if ($valutanem) {
             $fej->setValutanem($valutanem);
             $fej->setBankszamla($valutanem->getBankszamla());
         }
-        $raktar = $this->getRepo('Entities\Raktar')->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+        $raktar = $this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar));
         if ($raktar) {
             $fej->setRaktar($raktar);
         }
 
         foreach ($tetelek as $it) {
-            $termek = $this->getRepo('Entities\Termek')->find((int)$it['termekid']);
+            $termek = $this->getRepo(Termek::class)->find((int)$it['termekid']);
             if (!$termek) {
                 continue;
             }
-            $valtozat = !empty($it['valtozatid']) ? $this->getRepo('Entities\TermekValtozat')->find((int)$it['valtozatid']) : null;
+            $valtozat = !empty($it['valtozatid']) ? $this->getRepo(TermekValtozat::class)->find((int)$it['valtozatid']) : null;
             $t = new \Entities\Bizonylattetel();
             $fej->addBizonylattetel($t);
             $t->setPersistentData();

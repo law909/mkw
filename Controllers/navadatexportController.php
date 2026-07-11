@@ -4,6 +4,8 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
+
 class navadatexportController extends \mkwhelpers\MattableController
 {
 
@@ -59,7 +61,7 @@ class navadatexportController extends \mkwhelpers\MattableController
         $filter = $this->createFilter();
 
         /** @var \Entities\BizonylatfejRepository $bfrepo */
-        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
+        $bfrepo = $this->getRepo(Bizonylatfej::class);
 
         $fej = $bfrepo->getWithTetelek($filter, ['id' => 'ASC']);
         $db = 0;
@@ -252,7 +254,7 @@ class navadatexportController extends \mkwhelpers\MattableController
         }
 
         /** @var \Entities\BizonylatfejRepository $rep */
-        $rep = $this->getRepo('Entities\Bizonylatfej');
+        $rep = $this->getRepo(Bizonylatfej::class);
 
         if ($szlasztol != '') {
             $r = $rep->getSzamlaKelt($szlasztol);

@@ -3,6 +3,8 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Dolgozo;
+use Entities\Jelenletiiv;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -36,7 +38,7 @@ class munkaidolistaController extends \mkwhelpers\MattableController
 
         if ($dolgozo) {
             $filter->addFilter('dolgozo', '=', $dolgozo);
-            $d = $this->getRepo('Entities\Dolgozo')->find($dolgozo);
+            $d = $this->getRepo(Dolgozo::class)->find($dolgozo);
             if ($d) {
                 $this->dolgozonev = $d->getNev();
             }
@@ -55,7 +57,7 @@ class munkaidolistaController extends \mkwhelpers\MattableController
         $dolgozo = $this->params->getIntRequestParam('dolgozo');
         $filter = $this->createFilter($tol, $ig, $dolgozo);
 
-        $mind = $this->getRepo('Entities\Jelenletiiv')->getAll($filter, ['datum' => 'ASC', 'belepes' => 'ASC']);
+        $mind = $this->getRepo(Jelenletiiv::class)->getAll($filter, ['datum' => 'ASC', 'belepes' => 'ASC']);
 
         $ret = [];
         /** @var \Entities\Jelenletiiv $m */

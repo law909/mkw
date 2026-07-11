@@ -2,11 +2,15 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatstatusz;
+
 require_once "busvendor/Barion/library/BarionClient.php";
 
-class barionController extends \mkwhelpers\Controller {
+class barionController extends \mkwhelpers\Controller
+{
 
-    private function createClient() {
+    private function createClient()
+    {
         $poskey = \mkw\store::getParameter(\mkw\consts::BarionPOSKey);
         $apiversion = \mkw\store::getParameter(\mkw\consts::BarionAPIVersion);
         switch (\mkw\store::getParameter(\mkw\consts::BarionEnvironment)) {
@@ -23,8 +27,9 @@ class barionController extends \mkwhelpers\Controller {
     /**
      * @param \Entities\Bizonylatfej $biz
      */
-    public function startPayment($biz) {
-        $res = array('result' => false);
+    public function startPayment($biz)
+    {
+        $res = ['result' => false];
         $bc = $this->createClient();
         $x = $biz->toBarionModel();
         $payment = $bc->PreparePayment($biz->toBarionModel());
@@ -38,10 +43,10 @@ class barionController extends \mkwhelpers\Controller {
                 $biz->setBarionpaymentstatus($payment->Status);
                 $this->getEm()->persist($biz);
                 $this->getEm()->flush();
-                $res = array(
+                $res = [
                     'result' => true,
                     'redirecturl' => $payment->PaymentRedirectUrl
-                );
+                ];
             }
         }
         return $res;
@@ -50,8 +55,9 @@ class barionController extends \mkwhelpers\Controller {
     /**
      * @param $biz \Entities\Bizonylatfej
      */
-    public function getPaymentState($biz) {
-        $res = array('result' => false);
+    public function getPaymentState($biz)
+    {
+        $res = ['result' => false];
         $bc = $this->createClient();
         $state = $bc->GetPaymentState($biz->getBarionpaymentid());
 
@@ -71,27 +77,27 @@ class barionController extends \mkwhelpers\Controller {
                 }
             }
             if ($last) {
-                $res = array(
+                $res = [
                     'result' => true,
                     'lastTransaction' => $last
-                );
+                ];
             }
         }
         return $res;
     }
 
-    public function callback() {
+    public function callback()
+    {
         header('HTTP/1.1 200 OK');
         $paymentid = $this->params->getStringRequestParam('PaymentId');
 
         \mkw\store::writelog(print_r('PAYMENTID ' . $paymentid, true));
 
         /** @var \Entities\Bizonylatfej $megrendeles */
-        $megrendeles = $this->getRepo('\Entities\Bizonylatfej')->findOneBy(array('barionpaymentid' => $paymentid));
+        $megrendeles = $this->getRepo('\Entities\Bizonylatfej')->findOneBy(['barionpaymentid' => $paymentid]);
         if ($megrendeles && $paymentid === $megrendeles->getBarionpaymentid()) {
             $state = $this->getPaymentState($megrendeles);
             if ($state['result']) {
-
                 /** @var \TransactionDetailModel $lasttrans */
                 $lasttrans = $state['lastTransaction'];
 
@@ -101,7 +107,7 @@ class barionController extends \mkwhelpers\Controller {
                         if ($lasttrans->Status === \PaymentStatus::Succeeded && $lasttrans->Total == $megrendeles->getBrutto()) {
                             $megrendeles->setSimpleedit(true);
                             $megrendeles->setBarionpaymentstatus('Refunded');
-                            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionRefundedStatusz));
+                            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionRefundedStatusz));
                             if ($bizstatusz) {
                                 $megrendeles->setBizonylatstatusz($bizstatusz);
                             }
@@ -117,7 +123,7 @@ class barionController extends \mkwhelpers\Controller {
                         $megrendeles->setSimpleedit(true);
                         $megrendeles->setBarionpaymentstatus($lasttrans->Status);
                         if ($lasttrans->Status === \PaymentStatus::Succeeded) {
-                            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz));
+                            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz));
                             if ($bizstatusz) {
                                 $megrendeles->setBizonylatstatusz($bizstatusz);
                             }

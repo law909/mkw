@@ -3,6 +3,9 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Partner;
+use Entities\Partnercimketorzs;
+use Entities\Uzletkoto;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -80,7 +83,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         if ($ukkod) {
             $filter->addFilter('bf.uzletkoto_id', '=', $ukkod);
-            $uk = $this->getRepo('Entities\Uzletkoto')->find($ukkod);
+            $uk = $this->getRepo(Uzletkoto::class)->find($ukkod);
             if ($uk) {
                 $this->uknev = $uk->getNev();
             }
@@ -88,16 +91,16 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
-            $partner = $this->getRepo('Entities\Partner')->find($partnerkod);
+            $partner = $this->getRepo(Partner::class)->find($partnerkod);
             if ($partner) {
                 $this->partnernev = $partner->getNev();
             }
         } else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
+            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
             }
-            $this->cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($cimkefilter);
+            $this->cimkenevek = $this->getRepo(Partnercimketorzs::class)->getCimkeNevek($cimkefilter);
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
@@ -126,7 +129,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
         } else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
+            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
             }
@@ -328,7 +331,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         if ($partnerkod) {
             $filter->addFilter('bf.partner_id', '=', $partnerkod);
         } else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             if ($partnerkodok) {
                 $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
             }

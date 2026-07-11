@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Arfolyam;
+
 class esetiszamlafejController extends bizonylatfejController
 {
 
@@ -29,7 +31,7 @@ class esetiszamlafejController extends bizonylatfejController
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam(
+                        $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam(
                             $egyed['valutanem'],
                             new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
                         );

@@ -438,7 +438,7 @@ class JogaReszvetel
     public function setFizmod($val)
     {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Fizmod::class)->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {

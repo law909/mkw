@@ -1,9 +1,15 @@
 <?php
+
 namespace Controllers;
 
-class fifoController extends \mkwhelpers\Controller {
+use Entities\Fifo;
+use Entities\Keszlet;
 
-    public function view() {
+class fifoController extends \mkwhelpers\Controller
+{
+
+    public function view()
+    {
         $view = $this->createView('fifo.tpl');
 
         $view->setVar('pagetitle', t('Készletérték'));
@@ -11,10 +17,11 @@ class fifoController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
-    private function toiso($mit, $kell) {
+    private function toiso($mit, $kell)
+    {
         if ($kell) {
             if (is_array($mit)) {
-                return array_map(function($el) {
+                return array_map(function ($el) {
                     return mb_convert_encoding($el, 'ISO-8859-2', 'UTF8');
                 }, $mit);
             }
@@ -23,23 +30,25 @@ class fifoController extends \mkwhelpers\Controller {
         return $mit;
     }
 
-    private function num2xls($s, $kell) {
+    private function num2xls($s, $kell)
+    {
         if ($kell) {
             return str_replace('.', ',', $s);
         }
         return $s;
     }
 
-    public function teszt() {
+    public function teszt()
+    {
         $id = $this->params->getIntRequestParam('id');
         $vid = $this->params->getIntRequestParam('vid');
         $type = $this->params->getStringRequestParam('type', 'pre');
         $cikksz = $this->params->getStringRequestParam('cikkszam');
         $stornokell = $this->params->getBoolRequestParam('storno', false);
-        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
+        $rep = \mkw\store::getEm()->getRepository(Fifo::class);
         $rep->loadData($stornokell, $id, $vid, $cikksz);
         $rep->calculate();
-        switch($type) {
+        switch ($type) {
             case 'pre':
                 echo '<pre>' . print_r($rep->getData(), true) . '</pre>';
                 break;
@@ -49,28 +58,29 @@ class fifoController extends \mkwhelpers\Controller {
                 header("Expires: 0");
                 echo implode(';', $rep->getDataHeader()) . "\r\n";
                 $d = $rep->getData();
-                foreach($d as $dt) {
+                foreach ($d as $dt) {
                     echo implode(';', $dt) . "\r\n";
                 }
                 break;
         }
     }
 
-    public function calculate() {
+    public function calculate()
+    {
         $stornokell = $this->params->getBoolRequestParam('storno', false);
-        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
+        $rep = \mkw\store::getEm()->getRepository(Fifo::class);
         $rep->loadData($stornokell);
         $rep->calculate();
         $rep->saveData();
     }
 
-    public function getAlapadat() {
+    public function getAlapadat()
+    {
         $toexcel = $this->params->getBoolRequestParam('toexcel', false);
         $iso = $this->params->getBoolRequestParam('toiso', false);
         if ($iso) {
             header("Content-type: text/csv; charset=iso-8859-2");
-        }
-        else {
+        } else {
             header("Content-type: text/csv; charset=utf-8");
         }
         header("Pragma: no-cache");
@@ -78,9 +88,9 @@ class fifoController extends \mkwhelpers\Controller {
 
         $fp = fopen('php://output', 'w');
 
-        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
-        $fifok = $rep->getWithJoins(array(), array());
-        fputcsv($fp, $this->toiso(array(
+        $rep = \mkw\store::getEm()->getRepository(Fifo::class);
+        $fifok = $rep->getWithJoins([], []);
+        fputcsv($fp, $this->toiso([
             'Raktár',
             'Termék id',
             'Változat id',
@@ -104,10 +114,10 @@ class fifoController extends \mkwhelpers\Controller {
             'BE nettó egys.ár',
             'BE bruttó egys.ár',
             'Mennyiség'
-        ), $iso), ';', '"');
+        ], $iso), ';', '"');
         //fseek($fp, -1, SEEK_CUR);
         //fwrite($fp, "\r\n");
-        foreach($fifok as $f) {
+        foreach ($fifok as $f) {
             $raktar = $f->getRaktar();
             $termek = $f->getTermek();
             $valtozat = $f->getTermekvaltozat();
@@ -115,7 +125,7 @@ class fifoController extends \mkwhelpers\Controller {
             $kitetel = $f->getKibizonylattetel();
             $befej = $f->getBebizonylatfej();
             $betetel = $f->getBebizonylattetel();
-            fputcsv($fp, $this->toiso(array(
+            fputcsv($fp, $this->toiso([
                 $raktar->getNev(),
                 $termek->getId(),
                 $valtozat ? $valtozat->getId() : '',
@@ -139,20 +149,20 @@ class fifoController extends \mkwhelpers\Controller {
                 $betetel ? $this->num2xls($betetel->getNettoegysar(), $toexcel) : 0,
                 $betetel ? $this->num2xls($betetel->getBruttoegysar(), $toexcel) : 0,
                 $this->num2xls($f->getMennyiseg() * ($kifej ? $kifej->getIrany() : 1), $toexcel)
-            ), $iso), ';', '"');
+            ], $iso), ';', '"');
             //fseek($fp, -1, SEEK_CUR);
             //fwrite($fp, "\r\n");
         }
         fclose($fp);
     }
 
-    public function getKeszletertek() {
+    public function getKeszletertek()
+    {
         $toexcel = $this->params->getBoolRequestParam('toexcel', false);
         $iso = $this->params->getBoolRequestParam('toiso', false);
         if ($iso) {
             header("Content-type: text/csv; charset=iso-8859-2");
-        }
-        else {
+        } else {
             header("Content-type: text/csv; charset=utf-8");
         }
         header("Pragma: no-cache");
@@ -160,9 +170,9 @@ class fifoController extends \mkwhelpers\Controller {
 
         $fp = fopen('php://output', 'w');
 
-        $rep = \mkw\store::getEm()->getRepository('Entities\Keszlet');
-        $fifok = $rep->getWithJoins(array(), array());
-        fputcsv($fp, $this->toiso(array(
+        $rep = \mkw\store::getEm()->getRepository(Keszlet::class);
+        $fifok = $rep->getWithJoins([], []);
+        fputcsv($fp, $this->toiso([
             'Raktár',
             'Termék id',
             'Változat id',
@@ -178,14 +188,14 @@ class fifoController extends \mkwhelpers\Controller {
             'BE nettó egys.ár',
             'BE bruttó egys.ár',
             'Mennyiség'
-        ), $iso), ';', '"');
-        foreach($fifok as $f) {
+        ], $iso), ';', '"');
+        foreach ($fifok as $f) {
             $raktar = $f->getRaktar();
             $termek = $f->getTermek();
             $valtozat = $f->getTermekvaltozat();
             $befej = $f->getBebizonylatfej();
             $betetel = $f->getBebizonylattetel();
-            fputcsv($fp, $this->toiso(array(
+            fputcsv($fp, $this->toiso([
                 $raktar->getNev(),
                 $termek->getId(),
                 $valtozat ? $valtozat->getId() : '',
@@ -201,7 +211,7 @@ class fifoController extends \mkwhelpers\Controller {
                 $betetel ? $this->num2xls($betetel->getNettoegysar(), $toexcel) : 0,
                 $betetel ? $this->num2xls($betetel->getBruttoegysar(), $toexcel) : 0,
                 $this->num2xls($f->getMennyiseg(), $toexcel)
-            ), $iso), ';', '"');
+            ], $iso), ';', '"');
         }
         fclose($fp);
     }

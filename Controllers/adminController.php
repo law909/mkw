@@ -90,8 +90,8 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
             case \mkw\store::isKisszamlazo():
-                $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
-                $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
+                $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getLejartKintlevosegByValutanem());
+                $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getKintlevosegByValutanem());
                 break;
             case \mkw\store::isDarshan():
                 $partner = new partnerController();
@@ -154,13 +154,13 @@ class adminController extends mkwhelpers\Controller
         $view = $this->createView('kintlevosegbody.tpl');
 
         $lejart = [];
-        $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
+        $r = $this->getRepo(Entities\Folyoszamla::class)->getLejartKintlevosegByValutanem();
         foreach ($r as $_r) {
             $lejart[$_r['nev']] = $_r;
         }
 
         if (\mkw\store::isFakeKintlevoseg()) {
-            $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem();
+            $fake = $this->getRepo(Entities\Folyoszamla::class)->getFakeKintlevosegByValutanem();
             foreach ($fake as $_r) {
                 if (array_key_exists($_r['nev'], $lejart)) {
                     $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
@@ -172,7 +172,7 @@ class adminController extends mkwhelpers\Controller
         $view->setVar('lejartkintlevoseg', $lejart);
 
         $nemlejart = [];
-        $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem();
+        $r = \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getKintlevosegByValutanem();
         foreach ($r as $_r) {
             $nemlejart[$_r['nev']] = $_r;
         }
@@ -193,12 +193,12 @@ class adminController extends mkwhelpers\Controller
     {
         $view = $this->createView('spanyolkintlevosegbody.tpl');
         $lejart = [];
-        $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
+        $r = $this->getRepo(Entities\Folyoszamla::class)->getLejartKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
         foreach ($r as $_r) {
             $lejart[$_r['nev']] = $_r;
         }
         if (\mkw\store::isFakeKintlevoseg()) {
-            $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
+            $fake = $this->getRepo(Entities\Folyoszamla::class)->getFakeKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]);
             foreach ($fake as $_r) {
                 if (array_key_exists($_r['nev'], $lejart)) {
                     $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
@@ -210,7 +210,7 @@ class adminController extends mkwhelpers\Controller
         $view->setVar('spanyollejartkintlevoseg', $lejart);
 
         $nemlejart = [];
-        $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]
+        $r = \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getKintlevosegByValutanem([\mkw\store::getParameter(\mkw\consts::SpanyolCimke)]
         );
         foreach ($r as $_r) {
             $nemlejart[$_r['nev']] = $_r;
@@ -238,7 +238,7 @@ class adminController extends mkwhelpers\Controller
         $view->setVar('idoszakvege', $igstr);
         $view->setVar('ma', date(\mkw\store::$DateFormat));
 
-        $partnerrepo = $this->getRepo('Entities\Partner');
+        $partnerrepo = $this->getRepo(Entities\Partner::class);
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('created', '>=', $tol);
         $filter->addFilter('created', '<=', $ig);
@@ -256,7 +256,7 @@ class adminController extends mkwhelpers\Controller
         $view->setVar('ujpartnerlista', $ujpartnerlista);
         $view->setVar('ujpartnercount', count($ujpartnerlista));
 
-        $reszvetrepo = $this->getRepo('Entities\JogaReszvetel');
+        $reszvetrepo = $this->getRepo(Entities\JogaReszvetel::class);
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('datum', '>=', $tol);
         $filter->addFilter('datum', '<=', $ig);
@@ -302,11 +302,11 @@ class adminController extends mkwhelpers\Controller
         $filter
             ->addFilter('kelt', '<=', date(\mkw\store::$SQLDateFormat))
             ->addFilter('rontott', '=', false);
-        $penztaregyenleg = $this->getRepo('Entities\Penztarbizonylatfej')->getSumByPenztar($filter);
+        $penztaregyenleg = $this->getRepo(Entities\Penztarbizonylatfej::class)->getSumByPenztar($filter);
         $view->setVar('penztaregyenlegek', $penztaregyenleg);
 
         // meg lejaratlan berlet alkalmak szama datumig napon berlet tipus szerint, ertekuk forintban, osszesen db es ertek
-        $megfelhasznalhatoberletalk = $this->getRepo('Entities\JogaBerlet')->calcMegFelhasznalhato();
+        $megfelhasznalhatoberletalk = $this->getRepo(Entities\JogaBerlet::class)->calcMegFelhasznalhato();
         $megfelhasznalhatoberletalk['kifizetendo'] = $megfelhasznalhatoberletalk['ertek'] * \mkw\store::getParameter(\mkw\consts::JogaJutalek) / 100;
         $view->setVar('berletalkalom', $megfelhasznalhatoberletalk);
 
@@ -408,7 +408,7 @@ class adminController extends mkwhelpers\Controller
 
     public function setUITheme()
     {
-        $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\store::getAdminSession()->loggedinuser['id']);
+        $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find(\mkw\store::getAdminSession()->loggedinuser['id']);
         if ($dolgozo) {
             $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
             $dolgozo->setUitheme($theme);
@@ -443,7 +443,7 @@ class adminController extends mkwhelpers\Controller
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('vonalkod', '=', '');
-        $termekek = \mkw\store::getEm()->getRepository('Entities\Termek')->getAll($filter, []);
+        $termekek = \mkw\store::getEm()->getRepository(Entities\Termek::class)->getAll($filter, []);
         foreach ($termekek as $termek) {
             $valtozatok = $termek->getValtozatok();
             $termek->setVonalkod($valtozatok[0]->getVonalkod());
@@ -455,7 +455,7 @@ class adminController extends mkwhelpers\Controller
 
     public function fillBiztetelValtozat()
     {
-        $repo = $this->getRepo('Entities\Bizonylattetel');
+        $repo = $this->getRepo(Entities\Bizonylattetel::class);
         $mind = $repo->getAll();
         foreach ($mind as $bt) {
             if ($bt->getTermekvaltozat()) {
@@ -470,7 +470,7 @@ class adminController extends mkwhelpers\Controller
     public function generateFolyoszamla()
     {
         /*
-        $repo = $this->getRepo('Entities\Bizonylatfej');
+        $repo = $this->getRepo(Entities\Bizonylatfej::class);
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('penztmozgat', '=', true);
         $bfs = $repo->getAll($filter);
@@ -478,7 +478,7 @@ class adminController extends mkwhelpers\Controller
             $repo->createFolyoszamla($bf);
         }
 
-        $bbrepo = $this->getRepo('Entities\Bankbizonylatfej');
+        $bbrepo = $this->getRepo(Entities\Bankbizonylatfej::class);
         $bfs = $bbrepo->getAll();
         foreach ($bfs as $bf) {
             $bbrepo->createFolyoszamla($bf);
@@ -530,7 +530,7 @@ class adminController extends mkwhelpers\Controller
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('foglal', '=', 1);
-        $r = $this->getRepo('Entities\Bizonylatstatusz')->getAll($filter);
+        $r = $this->getRepo(Entities\Bizonylatstatusz::class)->getAll($filter);
         $statuszok = [];
         foreach ($r as $bs) {
             $statuszok[] = $bs->getId();
@@ -539,7 +539,7 @@ class adminController extends mkwhelpers\Controller
         $filter->clear();
         $filter->addSql('_xx.bizonylatstatusz NOT IN (' . implode(',', $statuszok) . ')');
         $filter->addFilter('bizonylattipus', '=', 'megrendeles');
-        $r = $this->getRepo('Entities\Bizonylatfej')->getAll($filter);
+        $r = $this->getRepo(Entities\Bizonylatfej::class)->getAll($filter);
         foreach ($r as $bf) {
             $q = \mkw\store::getEm()->createQuery('UPDATE Entities\Bizonylattetel bt SET bt.foglal=0 WHERE bt.bizonylatfej=\'' . $bf->getId() . '\'');
             $q->Execute();
@@ -641,8 +641,7 @@ class adminController extends mkwhelpers\Controller
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', 'szamla');
         $filter->addFilter('id', '<=', 'SZ2022/000102');
-//        $filter->addFilter('id', '=', 'SZ2020/000001');
-        $r = $this->getRepo('Entities\Bizonylatfej')->getAll($filter);
+        $r = $this->getRepo(Entities\Bizonylatfej::class)->getAll($filter);
         /** @var Entities\Bizonylatfej $bf */
         foreach ($r as $bf) {
             if ($no->getSzamlaContent($bf->getId())) {

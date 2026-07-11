@@ -2,11 +2,13 @@
 
 namespace Entities;
 
-class JogcimRepository extends \mkwhelpers\Repository {
+class JogcimRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Jogcim');
+        $this->setEntityname(Jogcim::class);
     }
 
 }

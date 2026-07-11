@@ -3,6 +3,7 @@
 namespace Controllers;
 
 
+use Entities\Partner;
 use Entities\PartnerTermekcsoportKedvezmeny;
 
 class partnertermekcsoportkedvezmenyController extends \mkwhelpers\MattableController
@@ -52,7 +53,7 @@ class partnertermekcsoportkedvezmenyController extends \mkwhelpers\MattableContr
     public function getFiokList($newpartner = false)
     {
         if (!$newpartner) {
-            $l = $this->getRepo()->getForFiok($this->getRepo('Entities\Partner')->getLoggedInUser());
+            $l = $this->getRepo()->getForFiok($this->getRepo(Partner::class)->getLoggedInUser());
         } else {
             $l = $this->getRepo()->getForFiok();
         }

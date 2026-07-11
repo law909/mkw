@@ -3,8 +3,11 @@
 namespace Controllers;
 
 use Entities\Arsav;
+use Entities\Fizmod;
 use Entities\Partner;
+use Entities\Szallitasimod;
 use Entities\Uzletkoto;
+use Entities\Valutanem;
 
 class uzletkotoController extends \mkwhelpers\MattableController
 {
@@ -47,19 +50,19 @@ class uzletkotoController extends \mkwhelpers\MattableController
         } else {
             $obj->removeArsav();
         }
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('partnerfizmod', 0));
         if ($fizmod) {
             $obj->setPartnerfizmod($fizmod);
         }
-        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('partnervalutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('partnervalutanem', 0));
         if ($valutanem) {
             $obj->setPartnervalutanem($valutanem);
         }
-        $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
+        $szallmod = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
         if ($szallmod) {
             $obj->setPartnerszallitasimod($szallmod);
         }
-        $fouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('fouzletkoto', 0));
+        $fouk = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('fouzletkoto', 0));
         if ($fouk && $fouk->getFo()) {
             $obj->setFouzletkoto($fouk);
         }

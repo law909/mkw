@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylattetel;
+use Entities\Partner;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 
@@ -104,7 +105,7 @@ class termekkartonController extends \mkwhelpers\Controller
             $filter->addFilter('bf.raktar', '=', $raktarid);
         }
 
-        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
+        $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($partnercimkefilter);
         if ($partnerid) {
             $nyitofilter->addFilter('bf.partner', '=', $partnerid);
             $filter->addFilter('bf.partner', '=', $partnerid);
@@ -114,12 +115,12 @@ class termekkartonController extends \mkwhelpers\Controller
         }
 
         if ($datumtolstr) {
-            $nyito = $this->getRepo('Entities\Termek')->calcKeszlet($nyitofilter);
+            $nyito = $this->getRepo(Termek::class)->calcKeszlet($nyitofilter);
             $nyito = $nyito[0];
         } else {
             $nyito = ['mennyiseg' => 0, 'nettohuf' => 0, 'bruttohuf' => 0];
         }
-        $tetelek = $this->getRepo('Entities\Termek')->getKarton($filter, [$datumtipus => 'ASC']);
+        $tetelek = $this->getRepo(Termek::class)->getKarton($filter, [$datumtipus => 'ASC']);
         $kartontetelek = [];
         foreach ($tetelek as $tetel) {
             $r = [

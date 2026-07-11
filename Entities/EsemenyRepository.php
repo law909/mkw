@@ -1,24 +1,30 @@
 <?php
+
 namespace Entities;
 
-class EsemenyRepository extends \mkwhelpers\Repository {
+class EsemenyRepository extends \mkwhelpers\Repository
+{
 
-    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Esemeny');
-        $this->setOrders(array(
-            '1' => array('caption' => 'esemény szerint növekvő', 'order' => array('_xx.bejegyzes' => 'ASC')),
-            '2' => array('caption' => 'partner szerint növekvő', 'order' => array('a.nev' => 'ASC')),
-            '3' => array('caption' => 'esedékesség növekvő', 'order' => array('_xx.esedekes' => 'ASC'))
-        ));
+        $this->setEntityname(Esemeny::class);
+        $this->setOrders([
+            '1' => ['caption' => 'esemény szerint növekvő', 'order' => ['_xx.bejegyzes' => 'ASC']],
+            '2' => ['caption' => 'partner szerint növekvő', 'order' => ['a.nev' => 'ASC']],
+            '3' => ['caption' => 'esedékesség növekvő', 'order' => ['_xx.esedekes' => 'ASC']]
+        ]);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx'
             . ' FROM Entities\Esemeny _xx'
             . ' LEFT JOIN _xx.partner a'
             . $this->getFilterString($filter)
-            . $this->getOrderString($order));
+            . $this->getOrderString($order)
+        );
         if ($offset > 0) {
             $q->setFirstResult($offset);
         }
@@ -29,11 +35,14 @@ class EsemenyRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getCount($filter) {
-        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
             . ' FROM Entities\Esemeny _xx'
             . ' LEFT JOIN _xx.partner a'
-            . $this->getFilterString($filter));
+            . $this->getFilterString($filter)
+        );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }

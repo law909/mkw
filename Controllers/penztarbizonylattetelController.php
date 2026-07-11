@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Bizonylattipus;
 use Entities\Penztarbizonylattetel;
 use mkw\store;
 
@@ -60,7 +61,7 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
         $tetel = $this->loadVars(null, true);
         $view->setVar('tetel', $tetel);
 
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
+        $bt = $this->getRepo(Bizonylattipus::class)->find('penztar');
         $bt->setTemplateVars($view);
 
         $res = [

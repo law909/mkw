@@ -3,9 +3,13 @@
 namespace Controllers;
 
 
-class szepkartyakifizetesController extends \mkwhelpers\MattableController {
+use Entities\Bizonylatfej;
 
-    public function view() {
+class szepkartyakifizetesController extends \mkwhelpers\MattableController
+{
+
+    public function view()
+    {
         $view = $this->createView('szepkartyakifizetes.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -13,8 +17,8 @@ class szepkartyakifizetesController extends \mkwhelpers\MattableController {
             ->addFilter('fizmod', '=', \mkw\store::getParameter(\mkw\consts::SZEPFizmod))
             ->addFilter('szepkartyakifizetve', '=', false);
 
-        $res = $this->getRepo('Entities\Bizonylatfej')->getAll($filter);
-        $arr = array();
+        $res = $this->getRepo(Bizonylatfej::class)->getAll($filter);
+        $arr = [];
         foreach ($res as $o) {
             $arr[] = $o->toLista();
         }
@@ -23,10 +27,11 @@ class szepkartyakifizetesController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function kifizet() {
+    public function kifizet()
+    {
         $id = $this->params->getStringRequestParam('id');
         /** @var \Entities\Bizonylatfej $biz */
-        $biz = $this->getRepo('Entities\Bizonylatfej')->find($id);
+        $biz = $this->getRepo(Bizonylatfej::class)->find($id);
         if ($biz) {
             $biz->setSzepkartyakifizetve(true);
             $biz->setSimpleedit(true);

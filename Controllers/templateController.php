@@ -12,7 +12,6 @@ class templateController extends \mkwhelpers\MattableController
 
     public function __construct()
     {
-//		$this->setEntityName('Entities\?Howto?');
         $this->setKarbFormTplName('templatekarbform.tpl');
         $this->setKarbTplName('templatekarb.tpl');
         $this->setListBodyRowTplName('templatelista_tbody_tr.tpl');

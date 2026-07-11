@@ -11,7 +11,7 @@ class LeltarfejRepository extends \mkwhelpers\Repository
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\Leltarfej');
+        $this->setEntityname(Leltarfej::class);
         $this->setOrders([
             '1' => ['caption' => 'nyitás szerint csökkenő', 'order' => ['_xx.nyitas' => 'DESC', '_xx.id' => 'DESC']],
             '2' => ['caption' => 'nyitás szerint növekvő', 'order' => ['_xx.nyitas' => 'ASC', '_xx.id' => 'DESC']],

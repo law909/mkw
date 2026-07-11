@@ -176,7 +176,7 @@ class partnercimkeController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Partnercímkék'));
         $view->setVar('cimketipus', 'partner');
         $view->setVar('controllerscript', 'partnercimke.js');
-        $tc = store::getEm()->getRepository('Entities\Partnercimkekat')->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
+        $tc = store::getEm()->getRepository(Partnercimkekat::class)->getWithJoins([], ['_xx.nev' => 'asc', 'c.nev' => 'asc']);
         $view->setVar('cimkekat', $this->cimkekToArray($tc));
         $view->printTemplateResult();
     }

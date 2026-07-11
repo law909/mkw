@@ -268,7 +268,6 @@ class mindentkapniCheckoutController extends checkoutController
             $lasttermeknevek = [];
             $lasttermekids = [];
             $lasttermekadat = [];
-            //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\mkw\session::getId());
             foreach ($kosartetelek as $kt) {
                 $t = new \Entities\Bizonylattetel();
                 $t->setBizonylatfej($megrendfej);

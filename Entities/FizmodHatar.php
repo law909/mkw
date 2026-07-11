@@ -1,13 +1,15 @@
 <?php
 
 namespace Entities;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="FizmodHatarRepository")
  * @Doctrine\ORM\Mapping\Table(name="fizmod_hatar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class FizmodHatar {
+class FizmodHatar
+{
 
     /**
      * @ORM\Id
@@ -33,37 +35,42 @@ class FizmodHatar {
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return mixed
      */
-    public function getHatarertek() {
+    public function getHatarertek()
+    {
         return $this->hatarertek;
     }
 
     /**
      * @param mixed $hatarertek
      */
-    public function setHatarertek($hatarertek) {
+    public function setHatarertek($hatarertek)
+    {
         $this->hatarertek = $hatarertek;
     }
 
     /**
      * @return Fizmod
      */
-    public function getFizmod() {
+    public function getFizmod()
+    {
         return $this->fizmod;
     }
 
     /**
      * @param \Entities\Fizmod $val
      */
-    public function setFizmod($val) {
+    public function setFizmod($val)
+    {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Fizmod::class)->find($val);
         }
         $this->fizmod = $val;
     }
@@ -71,11 +78,13 @@ class FizmodHatar {
     /**
      * @return Valutanem
      */
-    public function getValutanem() {
+    public function getValutanem()
+    {
         return $this->valutanem;
     }
 
-    public function getValutanemNev() {
+    public function getValutanemNev()
+    {
         $v = $this->getValutanem();
         if ($v) {
             return $v->getNev();
@@ -83,7 +92,8 @@ class FizmodHatar {
         return '';
     }
 
-    public function getValutanemId() {
+    public function getValutanemId()
+    {
         $v = $this->getValutanem();
         if ($v) {
             return $v->getId();
@@ -94,9 +104,10 @@ class FizmodHatar {
     /**
      * @param \Entities\Valutanem $val
      */
-    public function setValutanem($val) {
+    public function setValutanem($val)
+    {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository(Valutanem::class)->find($val);
         }
         $this->valutanem = $val;
     }
