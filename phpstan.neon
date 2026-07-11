@@ -1,0 +1,12 @@
+parameters:
+    level: 1
+    paths:
+        - Controllers
+        - Entities
+        - Traits
+        - Services
+        - Listeners
+        - mkw
+        - mkwhelpers
+        - index.php
+        - bootstrap.php
