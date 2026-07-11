@@ -854,14 +854,6 @@ if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/popup/getpopupteszt', 'popupController#getpopupteszt', 'adminpopupgetpopupteszt');
 }
 
-$router->map('GET', '/admin/template/viewlist', 'templateController#viewlist', 'admintemplateviewlist');
-$router->map('GET', '/admin/template/getlistbody', 'templateController#getlistbody', 'admintemplategetlistbody');
-$router->map('GET', '/admin/template/getkarb', 'templateController#getkarb', 'admintemplategetkarb');
-$router->map('GET', '/admin/template/viewkarb', 'templateController#viewkarb', 'admintemplateviewkarb');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/template/save', 'templateController#save', 'admintemplatesave');
-}
-
 $router->map('GET', '/admin/feketelista/viewlist', 'feketelistaController#viewlist', 'adminfeketelistaviewlist');
 $router->map('GET', '/admin/feketelista/getlistbody', 'feketelistaController#getlistbody', 'adminfeketelistagetlistbody');
 $router->map('GET', '/admin/feketelista/getkarb', 'feketelistaController#getkarb', 'adminfeketelistagetkarb');

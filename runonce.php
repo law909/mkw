@@ -927,6 +927,14 @@ if ($DBVersion < '0089') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0089');
 }
 
+if ($DBVersion < '0090') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET lathato=0 WHERE routename = "/admin/template"'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0090');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
