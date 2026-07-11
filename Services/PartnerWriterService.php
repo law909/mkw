@@ -78,7 +78,7 @@ class PartnerWriterService
     public function szamlacim(): self
     {
         $this->partner->setAdoszam(substr($this->params->getStringRequestParam('adoszam'), 0, 13));
-        $this->partner->setIrszam($this->params->getStringRequestParam('irszam'));
+        $this->partner->setIrszam(substr($this->params->getStringRequestParam('irszam'), 0, 10));
         $this->partner->setVaros($this->params->getStringRequestParam('varos'));
         $this->partner->setUtca($this->params->getStringRequestParam('utca'));
         $this->partner->setHazszam($this->params->getStringRequestParam('hazszam'));
@@ -94,7 +94,7 @@ class PartnerWriterService
     public function szallcim(): self
     {
         $this->partner->setSzallnev($this->params->getStringRequestParam('szallnev'));
-        $this->partner->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+        $this->partner->setSzallirszam(substr($this->params->getStringRequestParam('szallirszam'), 0, 10));
         $this->partner->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
         $this->partner->setSzallutca($this->params->getStringRequestParam('szallutca'));
         $this->partner->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
