@@ -33,5 +33,9 @@
         "platform": {
             "php": "8.1"
         }
-    }
+    },
+	"require-dev": {
+		"phpstan/phpstan": "^2.2",
+		"phpstan/phpstan-doctrine": "^2.0"
+	}
 }
