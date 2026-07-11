@@ -2220,4 +2220,9 @@ class store
     {
         return self::getEm()->getRepository(Orszag::class)->find(self::getOrszagId());
     }
+
+    public static function snakeToPascalCase(string $value): string
+    {
+        return str_replace('_', '', ucwords(strtolower($value), '_'));
+    }
 }

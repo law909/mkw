@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Emailtemplate;
 use Entities\Partnercimketorzs;
+use Services\PartnerWriterService;
 
 class b2bpartnerController extends partnerController
 {
@@ -31,13 +32,17 @@ class b2bpartnerController extends partnerController
             if ($uk) {
                 $partner = new \Entities\Partner();
                 // emailt az uzletkotonek kell kuldeni es egy kozponti cimre
-                $partner = $this->setFields($partner, 'add', 'adataim');
-                $partner = $this->setFields($partner, 'add', 'bankiadatok');
-                $partner = $this->setFields($partner, 'add', 'szamlaadatok');
-                $partner = $this->setFields($partner, 'add', 'szallitasiadatok');
-                $partner = $this->setFields($partner, 'add', 'discounts');
-                $partner = $this->setFields($partner, 'add', 'jelszo');
-                $partner = $this->setFields($partner, 'add', 'registration');
+                (new PartnerWriterService($partner, $this->params))
+                    ->nev()
+                    ->kapcsolat()
+                    ->munkahely()
+                    ->hirlevel()
+                    ->bank()
+                    ->szamlacim()
+                    ->szallcim()
+                    ->kedvezmenyek()
+                    ->jelszo()
+                    ->regisztracio();
                 $partner->setUzletkoto($uk);
                 //$partner->setBizonylatnyelv($uk->getPartnerbizonylatnyelv());
                 $partner->setBizonylatnyelv(\mkw\store::getWebshopLongLocale());

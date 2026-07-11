@@ -13,6 +13,7 @@ use Entities\RendezvenyDok;
 use Entities\RendezvenyJelentkezes;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
+use Services\PartnerWriterService;
 
 class rendezvenyController extends \mkwhelpers\MattableController
 {
@@ -341,8 +342,8 @@ class rendezvenyController extends \mkwhelpers\MattableController
                     $partner = new \Entities\Partner();
                     $partner->setVatstatus(2);
                 }
-                $partnerctrl = new \Controllers\partnerController();
-                $partner = $partnerctrl->setFields($partner, null, 'pubreg');
+                (new PartnerWriterService($partner, $this->params))->nev()->kapcsolat()->munkahely()->hirlevel()->szamlacim();
+
                 if (!$kellszamlazasiadat) {
                     $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
                 }
@@ -358,14 +359,12 @@ class rendezvenyController extends \mkwhelpers\MattableController
 
                 $this->getEm()->flush();
                 $sendemails = true;
-            } else {
-                if (!$jel->getLemondva() && $jel->isVarolistas()) {
-                    if ($szabadhely > 0) {
-                        $jel->setVarolistas(false);
-                        $this->getEm()->persist($jel);
-                        $this->getEm()->flush();
-                        $sendemails = true;
-                    }
+            } elseif (!$jel->getLemondva() && $jel->isVarolistas()) {
+                if ($szabadhely > 0) {
+                    $jel->setVarolistas(false);
+                    $this->getEm()->persist($jel);
+                    $this->getEm()->flush();
+                    $sendemails = true;
                 }
             }
 

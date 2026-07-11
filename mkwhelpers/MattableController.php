@@ -194,9 +194,9 @@ class MattableController extends Controller
         if ($entity && is_object($entity)) {
             $meta = $this->getEm()->getClassMetadata(get_class($entity));
             foreach ($meta->getFieldNames() as $fieldName) {
-                $getter = 'get' . ucfirst($fieldName);
+                $getter = 'get' . \mkw\store::snakeToPascalCase($fieldName);
                 if (!method_exists($entity, $getter)) {
-                    $getter = 'is' . ucfirst($fieldName);
+                    $getter = 'is' . \mkw\store::snakeToPascalCase($fieldName);
                 }
                 if (method_exists($entity, $getter)) {
                     $result[$fieldName] = $entity->$getter();
@@ -241,13 +241,13 @@ class MattableController extends Controller
         $skip = array_flip(array_merge(['id', 'slug', 'created', 'updated'], $options['skip'] ?? []));
         $meta = $this->getEm()->getClassMetadata(get_class($entity));
         foreach ($meta->getFieldNames() as $fieldName) {
-            if (isset($skip[$fieldName]) || $meta->isIdentifier($fieldName)) {
+            if (isset($skip[$fieldName]) || $meta->isIdentifier($fieldName) || $meta->hasAssociation($fieldName)) {
                 continue;
             }
-            if (!$this->params->existsRequestParam($fieldName)) {
+            if (!$this->params->existsRequestParam($fieldName) && $meta->getTypeOfField($fieldName) !== 'boolean') {
                 continue;
             }
-            $setter = 'set' . ucfirst($fieldName);
+            $setter = 'set' . \mkw\store::snakeToPascalCase($fieldName);
             if (!method_exists($entity, $setter)) {
                 continue;
             }

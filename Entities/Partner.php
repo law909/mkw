@@ -2017,7 +2017,7 @@ class Partner
     /**
      * @return mixed
      */
-    public function getMPTFolyoszamlak()
+    public function getMptfolyoszamlak()
     {
         return $this->mptfolyoszamlak;
     }
@@ -3447,7 +3447,7 @@ class Partner
     /**
      * @return MPTNGYEgyetem
      */
-    public function getMPTNGYEgyetem()
+    public function getMptngyegyetem()
     {
         return $this->mptngyegyetem;
     }
@@ -3465,16 +3465,16 @@ class Partner
     /**
      * @param \Entities\MPTNGYEgyetem $val
      */
-    public function setMPTNGYEgyetem($val)
+    public function setMptngyegyetem($val)
     {
         if (!$val) {
-            $this->removeMPTNGYEgyetem();
+            $this->removeMptngyegyetem();
         } else {
             $this->mptngyegyetem = $val;
         }
     }
 
-    public function removeMPTNGYEgyetem()
+    public function removeMptngyegyetem()
     {
         if ($this->mptngyegyetem !== null) {
             $this->mptngyegyetem = null;
@@ -3484,7 +3484,7 @@ class Partner
     /**
      * @return MPTNGYKar
      */
-    public function getMPTNGYKar()
+    public function getMptngykar()
     {
         return $this->mptngykar;
     }
@@ -3502,16 +3502,16 @@ class Partner
     /**
      * @param \Entities\MPTNGYKar $val
      */
-    public function setMPTNGYKar($val)
+    public function setMptngykar($val)
     {
         if (!$val) {
-            $this->removeMPTNGYKar();
+            $this->removeMptngykar();
         } else {
             $this->mptngykar = $val;
         }
     }
 
-    public function removeMPTNGYKar()
+    public function removeMptngykar()
     {
         if ($this->mptngykar !== null) {
             $this->mptngykar = null;
@@ -3521,7 +3521,7 @@ class Partner
     /**
      * @return mixed
      */
-    public function getMPTNGYEgyetemegyeb()
+    public function getMptngyegyetemegyeb()
     {
         return $this->mptngyegyetemegyeb;
     }
@@ -3529,7 +3529,7 @@ class Partner
     /**
      * @param mixed $egyetemegyeb
      */
-    public function setMPTNGYEgyetemegyeb($egyetemegyeb): void
+    public function setMptngyegyetemegyeb($egyetemegyeb): void
     {
         $this->mptngyegyetemegyeb = $egyetemegyeb;
     }

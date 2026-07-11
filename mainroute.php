@@ -17,7 +17,7 @@ if (\mkw\store::isSuperzoneB2B()) {
 }
 
 if (\mkw\store::isB2B()) {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'b2bpartnerController#saveAccount', 'saveaccount');
+    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'partnerController#saveAccount', 'saveaccount');
     $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
     $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');

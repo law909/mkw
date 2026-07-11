@@ -2,11 +2,8 @@
 
 namespace Controllers;
 
-use Entities\MPTNGYSzakmaianyag;
-use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
-use mkwhelpers\FilterDescriptor;
-use mkwhelpers\ParameterHandler;
+use Services\PartnerWriterService;
 
 class mptpartnerController extends partnerController
 {
@@ -29,7 +26,17 @@ class mptpartnerController extends partnerController
             } else {
                 $t = new \Entities\Partner();
             }
-            $t = $this->setFields($t, 'add', 'minden');
+            (new PartnerWriterService($t, $this->params))
+                ->nev()
+                ->kapcsolat()
+                ->munkahely()
+                ->hirlevel()
+                ->bank()
+                ->szamlacim()
+                ->szallcim()
+                ->kedvezmenyek()
+                ->MPT();
+
             $this->getEm()->persist($t);
             $this->getEm()->flush();
             $this->login($email, $jelszo1);

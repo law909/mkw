@@ -9,6 +9,7 @@ use Controllers\garanciaugyfejController;
 use Controllers\orszagController;
 use Controllers\korzetszamController;
 use Controllers\partnertermekcsoportkedvezmenyController;
+use Services\PartnerWriterService;
 
 trait PartnerFiok
 {
@@ -132,7 +133,23 @@ trait PartnerFiok
         if ($user) {
             $hiba = $this->checkPartnerData($subject);
             if (!$hiba['hibas']) {
-                $user = $this->setFields($user, 'edit', $subject);
+                switch ($subject) {
+                    case 'adataim':
+                        (new PartnerWriterService($user, $this->params))->nev()->kapcsolat()->hirlevel();
+                        break;
+                    case 'szamlaadatok':
+                        (new PartnerWriterService($user, $this->params))->szamlacim();
+                        break;
+                    case 'szallitasiadatok':
+                        (new PartnerWriterService($user, $this->params))->szallcim();
+                        break;
+                    case 'jelszo':
+                        (new PartnerWriterService($user, $this->params))->jelszo();
+                        break;
+                    case 'discounts':
+                        (new PartnerWriterService($user, $this->params))->kedvezmenyek();
+                        break;
+                }
                 $this->getEm()->persist($user);
                 $this->getEm()->flush();
                 if (!$jax) {

@@ -3,14 +3,12 @@
 namespace Controllers;
 
 use Entities\Emailtemplate;
-use Entities\MPTNGYEgyetem;
-use Entities\MPTNGYKar;
 use Entities\MPTNGYSzakmaianyag;
-use Entities\MPTNGYSzerepkor;
 use Entities\Partner;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Services\PartnerWriterService;
 
 class mptngypartnerController extends partnerController
 {
@@ -33,25 +31,10 @@ class mptngypartnerController extends partnerController
             } else {
                 $t = new \Entities\Partner();
             }
-            $t = $this->setFields($t, 'add', 'minden');
-            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
-            if ($egyetem) {
-                $t->setMPTNGYEgyetem($egyetem);
-            } else {
-                $t->removeMPTNGYEgyetem();
-            }
-
-            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
-            if ($kar) {
-                $t->setMPTNGYKar($kar);
-            } else {
-                $t->removeMPTNGYKar();
-            }
-
-            $t->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
-
+            (new PartnerWriterService($t, $this->params))->MPTNGYPublic();
             $this->getEm()->persist($t);
             $this->getEm()->flush();
+
             $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::MPTNGYRegVisszaigSablon));
             if ($emailtpl) {
                 $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -88,53 +71,7 @@ class mptngypartnerController extends partnerController
         /** @var Partner $p */
         $p = $this->getRepo()->getLoggedInUser();
         if ($p) {
-            $p->setNev($this->params->getStringRequestParam('nev'));
-            $p->setNevelotag($this->params->getStringRequestParam('nevelotag'));
-            $p->setSzlanev($this->params->getStringRequestParam('szlanev'));
-            $p->setIrszam($this->params->getStringRequestParam('irszam'));
-            $p->setVaros($this->params->getStringRequestParam('varos'));
-            $p->setUtca($this->params->getStringRequestParam('utca'));
-            $p->setMptngybankszamlaszam($this->params->getStringRequestParam('mptngybankszamlaszam'));
-            $p->setMptngycsoportosfizetes($this->params->getStringRequestParam('mptngycsoportosfizetes'));
-            $p->setMptngykapcsolatnev($this->params->getStringRequestParam('mptngykapcsolatnev'));
-            $p->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
-            $p->setVatstatus($this->params->getIntRequestParam('vatstatus'));
-            $p->setAdoszam(substr($this->params->getStringRequestParam('adoszam'), 0, 13));
-            $p->setCsoportosadoszam($this->params->getStringRequestParam('csoportosadoszam'));
-            $p->setMptngyvipvacsora($this->params->getBoolRequestParam('mptngyvipvacsora'));
-            $p->setMptngybankett($this->params->getBoolRequestParam('mptngybankett'));
-            $p->setMptngynapreszvetel1($this->params->getBoolRequestParam('mptngynapreszvetel1'));
-            $p->setMptngynapreszvetel2($this->params->getBoolRequestParam('mptngynapreszvetel2'));
-            $p->setMptngynapreszvetel3($this->params->getBoolRequestParam('mptngynapreszvetel3'));
-            $p->setMptngynemveszreszt($this->params->getBoolRequestParam('mptngynemveszreszt'));
-            $p->setMptngydiak($this->params->getBoolRequestParam('mptngydiak'));
-            $p->setMptngynyugdijas($this->params->getBoolRequestParam('mptngynyugdijas'));
-            $p->setMptngyphd($this->params->getBoolRequestParam('mptngyphd'));
-            $p->setMptngympttag($this->params->getBoolRequestParam('mptngympttag'));
-            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
-            if ($egyetem) {
-                $p->setMPTNGYEgyetem($egyetem);
-            } else {
-                $p->removeMPTNGYEgyetem();
-            }
-
-            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
-            if ($kar) {
-                $p->setMPTNGYKar($kar);
-            } else {
-                $p->removeMPTNGYKar();
-            }
-
-            $p->setMPTNGYEgyetemegyeb($this->params->getStringRequestParam('mptngyegyetemegyeb'));
-            if ($this->params->getStringRequestParam('jelszo1')) {
-                $p->setJelszo($this->params->getStringRequestParam('jelszo1'));
-            }
-            $mptngyszerepkor = \mkw\store::getEm()->getRepository(MPTNGYSzerepkor::class)->find($this->params->getIntRequestParam('mptngyszerepkor', 0));
-            if ($mptngyszerepkor) {
-                $p->setMptngyszerepkor($mptngyszerepkor);
-            } else {
-                $p->setMptngyszerepkor(null);
-            }
+            (new PartnerWriterService($p, $this->params))->MPTNGYPublic();
             $this->getEm()->persist($p);
             $this->getEm()->flush();
             echo json_encode([

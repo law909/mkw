@@ -2,6 +2,8 @@
 
 namespace Traits;
 
+use Services\PartnerWriterService;
+
 trait PartnerRegistration
 {
     public function saveRegistrationData($vendeg = false)
@@ -16,7 +18,7 @@ trait PartnerRegistration
         } else {
             $t = new \Entities\Partner();
         }
-        $t = $this->setFields($t, null, 'registration');
+        (new PartnerWriterService($t, $this->params))->regisztracio();
         $t->setVendeg($vendeg);
         $this->getEm()->persist($t);
         $this->getEm()->flush();
@@ -100,20 +102,6 @@ trait PartnerRegistration
         echo json_encode($ret);
     }
 
-    public function showPubRegistration()
-    {
-        $view = $this->getTemplateFactory()->createMainView('pubregistration.tpl');
-        \mkw\store::fillTemplate($view);
-        $view->printTemplateResult(true);
-    }
-
-    public function showPubRegistrationThx()
-    {
-        $view = $this->getTemplateFactory()->createMainView('pubregistrationthx.tpl');
-        \mkw\store::fillTemplate($view);
-        $view->printTemplateResult(true);
-    }
-
     public function saveRegistration()
     {
         $hibas = false;
@@ -139,10 +127,11 @@ trait PartnerRegistration
             } else {
                 $t = new \Entities\Partner();
             }
-            $t = $this->setFields($t, 'add', 'registration');
+            (new PartnerWriterService($t, $this->params))->regisztracio();
             $this->getEm()->persist($t);
             $this->getEm()->flush();
             $this->login($email, $jelszo1);
+
             $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
             if ($emailtpl) {
                 $tpldata = [
@@ -180,22 +169,6 @@ trait PartnerRegistration
         $view->setVar('hibak', $hibak);
         \mkw\store::fillTemplate($view);
         $view->printTemplateResult(true);
-    }
-
-    public function savePubRegistration()
-    {
-        $user = new \Entities\Partner();
-        $subject = 'pubreg';
-
-        $hiba = $this->checkPartnerData($subject);
-        if (!$hiba['hibas']) {
-            $user = $this->setFields($user, 'edit', $subject);
-            $this->getEm()->persist($user);
-            $this->getEm()->flush();
-            Header('Location: ' . \mkw\store::getRouter()->generate('pubregistrationthx'));
-        } else {
-            echo $hiba['hibak'];
-        }
     }
 
 }

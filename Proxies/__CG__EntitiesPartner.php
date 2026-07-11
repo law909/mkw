@@ -2461,12 +2461,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getMPTFolyoszamlak()
+    public function getMptfolyoszamlak()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMPTFolyoszamlak', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMptfolyoszamlak', []);
 
-        return parent::getMPTFolyoszamlak();
+        return parent::getMptfolyoszamlak();
     }
 
     /**
@@ -4386,12 +4386,12 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getMPTNGYEgyetem()
+    public function getMptngyegyetem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMPTNGYEgyetem', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMptngyegyetem', []);
 
-        return parent::getMPTNGYEgyetem();
+        return parent::getMptngyegyetem();
     }
 
     /**
@@ -4419,34 +4419,34 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMPTNGYEgyetem($val)
+    public function setMptngyegyetem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMPTNGYEgyetem', [$val]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngyegyetem', [$val]);
 
-        return parent::setMPTNGYEgyetem($val);
+        return parent::setMptngyegyetem($val);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeMPTNGYEgyetem()
+    public function removeMptngyegyetem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMPTNGYEgyetem', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMptngyegyetem', []);
 
-        return parent::removeMPTNGYEgyetem();
+        return parent::removeMptngyegyetem();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getMPTNGYKar()
+    public function getMptngykar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMPTNGYKar', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMptngykar', []);
 
-        return parent::getMPTNGYKar();
+        return parent::getMptngykar();
     }
 
     /**
@@ -4474,45 +4474,45 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMPTNGYKar($val)
+    public function setMptngykar($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMPTNGYKar', [$val]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngykar', [$val]);
 
-        return parent::setMPTNGYKar($val);
+        return parent::setMptngykar($val);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeMPTNGYKar()
+    public function removeMptngykar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMPTNGYKar', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMptngykar', []);
 
-        return parent::removeMPTNGYKar();
+        return parent::removeMptngykar();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getMPTNGYEgyetemegyeb()
+    public function getMptngyegyetemegyeb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMPTNGYEgyetemegyeb', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMptngyegyetemegyeb', []);
 
-        return parent::getMPTNGYEgyetemegyeb();
+        return parent::getMptngyegyetemegyeb();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setMPTNGYEgyetemegyeb($egyetemegyeb): void
+    public function setMptngyegyetemegyeb($egyetemegyeb): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMPTNGYEgyetemegyeb', [$egyetemegyeb]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMptngyegyetemegyeb', [$egyetemegyeb]);
 
-        parent::setMPTNGYEgyetemegyeb($egyetemegyeb);
+        parent::setMptngyegyetemegyeb($egyetemegyeb);
     }
 
     /**

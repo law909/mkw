@@ -114,7 +114,7 @@ trait PartnerDataProvider
                 'mptngyegyetemnev' => $partner->getMPTNGYEgyetemNev(),
                 'mptngykar' => $partner->getMPTNGYKarId(),
                 'mptngykarnev' => $partner->getMPTNGYKarNev(),
-                'mptngyegyetemegyeb' => $partner->getMPTNGYEgyetemegyeb(),
+                'mptngyegyetemegyeb' => $partner->getMptngyegyetemegyeb(),
                 'mptngybankszamlaszam' => $partner->getMptngybankszamlaszam(),
                 'mptngycsoportosfizetes' => $partner->getMptngycsoportosfizetes(),
                 'mptngykapcsolatnev' => $partner->getMptngykapcsolatnev(),
