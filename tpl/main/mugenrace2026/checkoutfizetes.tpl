@@ -28,10 +28,8 @@
                 {if $isStripe && $stripeClientSecret}
                     <div class="row">
                         <div class="span10">
-                            <div id="block1" class="chk-datagroupheader js-chkdatagroupheader js-chkfizetesiadatokgh"
-                                 data-container=".js-chkfizetesiadatok">{$fizmodnev} {t('adatok')}</div>
                             <div class="js-chkfizetesiadatok js-chkdatacontainer">
-                                <h5>{t('Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.')}</h5>
+                                <h2>{t('Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.')}</h2>
                                 <div>{t('Megrendelés szám')}: <span class="bold">{$megrendelesszam}</span></div>
                                 <div>{t('Fizetendő')}: <span class="bold">{number_format($fizetendo,0,',',' ')} {$valutanemnev}</span></div>
                                 <div class="controls controls-row chk-controloffset">
