@@ -161,6 +161,10 @@ class fizmodController extends \mkwhelpers\MattableController
                 'nincspenzmozgas' => $sor->getNincspenzmozgas(),
                 'bankkartyas' => $sor->getNavtipus() == 'CARD'
             ];
+            if (\mkw\store::isAdminMode()) {
+                $r['caption'] = $sor->getNev();
+                $r['leiras'] = $sor->getLeiras();
+            }
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
             } elseif (!$vanvalasztott) {
@@ -179,7 +183,11 @@ class fizmodController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getLocalizedFieldValue('nev') . '</option>';
+            if (\mkw\store::isAdminMode()) {
+                $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            } else {
+                $ret .= '<option value="' . $sor->getId() . '">' . $sor->getLocalizedFieldValue('nev') . '</option>';
+            }
         }
         $ret .= '</select>';
         echo $ret;

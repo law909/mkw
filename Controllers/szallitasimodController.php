@@ -249,6 +249,10 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, $valutanem, $ertek),
                 'fizmodok' => $sor->getFizmodok()
             ];
+            if (\mkw\store::isAdminMode()) {
+                $r['caption'] = $sor->getNev();
+                $r['leiras'] = $sor->getLeiras();
+            }
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
             } elseif (!$mind) {
@@ -270,7 +274,11 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll([], ['nev' => 'asc']);
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            if (\mkw\store::isAdminMode()) {
+                $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            } else {
+                $ret .= '<option value="' . $sor->getId() . '">' . $sor->getLocalizedFieldValue('nev') . '</option>';
+            }
         }
         $ret .= '</select>';
         echo $ret;
