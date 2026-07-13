@@ -43,6 +43,14 @@ class Bizonylatfej
     private $glsparcellabelurl;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $fedextrackingnumber;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $fedexparcellabelurl;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
      */
@@ -1217,6 +1225,133 @@ class Bizonylatfej
             ];
         }
         return $result;
+    }
+
+    /**
+     * A szállítandó csomagok súlya kg-ban, csomagonként egyenlően elosztva.
+     */
+    public function getCsomagSulyai()
+    {
+        $csomagdb = $this->getCsomagcount() ? $this->getCsomagcount() : 1;
+        $suly = 0;
+        /** @var Bizonylattetel $bt */
+        foreach ($this->bizonylattetelek as $bt) {
+            $suly += (float)$bt->getSuly() * (float)$bt->getMennyiseg();
+        }
+        if ($suly <= 0) {
+            $suly = (float)(\mkw\store::getParameter(\mkw\consts::FedexDefaultSuly) ?: 1) * $csomagdb;
+        }
+        $csomagsuly = round($suly / $csomagdb, 2);
+        if ($csomagsuly <= 0) {
+            $csomagsuly = 0.5;
+        }
+        return array_fill(0, $csomagdb, $csomagsuly);
+    }
+
+    public function toFedexAPI()
+    {
+        $accountnumber = \mkw\store::getParameter(\mkw\consts::FedexAccountNumber);
+        $vanszallcim = (bool)$this->getSzallirszam();
+
+        $csomagok = [];
+        foreach ($this->getCsomagSulyai() as $i => $csomagsuly) {
+            $csomagok[] = [
+                'weight' => [
+                    'units' => 'KG',
+                    'value' => $csomagsuly
+                ],
+                'customerReferences' => [
+                    [
+                        'customerReferenceType' => 'CUSTOMER_REFERENCE',
+                        'value' => $this->getId()
+                    ]
+                ]
+            ];
+        }
+
+        $result = [
+            'labelResponseOptions' => 'LABEL',
+            'accountNumber' => [
+                'value' => $accountnumber
+            ],
+            'requestedShipment' => [
+                'shipDatestamp' => date('Y-m-d'),
+                'serviceType' => \mkw\store::getParameter(\mkw\consts::FedexServiceType) ?: 'INTERNATIONAL_PRIORITY',
+                'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
+                'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
+                'blockInsightVisibility' => false,
+                'shipper' => [
+                    'contact' => [
+                        'personName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
+                        'companyName' => $this->getTulajnev(),
+                        'phoneNumber' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
+                        'emailAddress' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
+                    ],
+                    'address' => [
+                        'streetLines' => [$this->getTulajutca()],
+                        'city' => $this->getTulajvaros(),
+                        'postalCode' => $this->getTulajirszam(),
+                        'countryCode' => 'HU'
+                    ]
+                ],
+                'recipients' => [
+                    [
+                        'contact' => [
+                            'personName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
+                            'companyName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
+                            'phoneNumber' => $this->getPartnertelefon(),
+                            'emailAddress' => $this->getPartneremail()
+                        ],
+                        'address' => [
+                            'streetLines' => [($vanszallcim ? $this->getSzallutca() : $this->getPartnerutca())],
+                            'city' => ($vanszallcim ? $this->getSzallvaros() : $this->getPartnervaros()),
+                            'postalCode' => ($vanszallcim ? $this->getSzallirszam() : $this->getPartnerirszam()),
+                            'countryCode' => $this->getFedexOrszagkod()
+                        ]
+                    ]
+                ],
+                'shippingChargesPayment' => [
+                    'paymentType' => 'SENDER',
+                    'payor' => [
+                        'responsibleParty' => [
+                            'accountNumber' => [
+                                'value' => $accountnumber
+                            ]
+                        ]
+                    ]
+                ],
+                'labelSpecification' => [
+                    'imageType' => 'PDF',
+                    'labelFormatType' => 'COMMON2D',
+                    'labelStockType' => \mkw\store::getParameter(\mkw\consts::FedexLabelStockType) ?: 'PAPER_4X6'
+                ],
+                'totalPackageCount' => count($csomagok),
+                'requestedPackageLineItems' => $csomagok
+            ]
+        ];
+
+        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
+            $result['requestedShipment']['shipmentSpecialServices'] = [
+                'specialServiceTypes' => ['COD'],
+                'shipmentCODDetail' => [
+                    'codCollectionType' => 'CASH',
+                    'codCollectionAmount' => [
+                        'amount' => (float)$this->getBruttohuf(),
+                        'currency' => 'HUF'
+                    ]
+                ]
+            ];
+        }
+
+        return $result;
+    }
+
+    private function getFedexOrszagkod()
+    {
+        $orszagkod = $this->getSzallirszam()
+            ? $this->getPartnerszallorszagiso3166()
+            : $this->getPartnerorszagiso3166();
+        return $orszagkod ? $orszagkod : 'HU';
     }
 
     public function toBarionModel()
@@ -5299,6 +5434,63 @@ class Bizonylatfej
     public function setGlsparcellabelurl($glsparcellabelurl)
     {
         $this->glsparcellabelurl = $glsparcellabelurl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFedextrackingnumber()
+    {
+        return $this->fedextrackingnumber;
+    }
+
+    /**
+     * @param mixed $fedextrackingnumber
+     */
+    public function setFedextrackingnumber($fedextrackingnumber)
+    {
+        $this->fedextrackingnumber = $fedextrackingnumber;
+    }
+
+    /**
+     * @return mixed az első csomag címkéje
+     */
+    public function getFedexparcellabelurl($pre = '/')
+    {
+        $urlok = $this->getFedexparcellabelurlek($pre);
+        return $urlok ? $urlok[0] : '';
+    }
+
+    /**
+     * Több csomagos küldeménynél a Fedex csomagonként külön címkét ad, ezeket
+     * soronként egy útvonalként tároljuk.
+     *
+     * @return array
+     */
+    public function getFedexparcellabelurlek($pre = '/')
+    {
+        $result = [];
+        foreach (explode("\n", (string)$this->fedexparcellabelurl) as $url) {
+            $url = trim($url);
+            if ($url) {
+                if ($url[0] !== $pre) {
+                    $url = $pre . $url;
+                }
+                $result[] = $url;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param mixed $fedexparcellabelurl útvonal, vagy több csomag esetén útvonalak tömbje
+     */
+    public function setFedexparcellabelurl($fedexparcellabelurl)
+    {
+        if (is_array($fedexparcellabelurl)) {
+            $fedexparcellabelurl = implode("\n", $fedexparcellabelurl);
+        }
+        $this->fedexparcellabelurl = $fedexparcellabelurl;
     }
 
     /**

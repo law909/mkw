@@ -1650,6 +1650,32 @@ let bizonylathelper = function ($) {
                                 }
                             });
                             break;
+                        case 'fedexsend':
+                            dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function () {
+                                        let dia = $(this);
+                                        $.ajax({
+                                            url: '/admin/' + bizonylattipus + 'fej/sendtofedex',
+                                            type: 'POST',
+                                            data: {
+                                                ids: tomb
+                                            },
+                                            success: function () {
+                                                dia.dialog('close');
+                                                $('.mattable-tablerefresh').click();
+                                            }
+                                        });
+                                    },
+                                    'Nem': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                            break;
                         case 'recalcprice':
                             dialogcenter.html('Biztos, hogy újra számolja a megrendelések árait?').dialog({
                                 resizable: false,
@@ -2218,6 +2244,34 @@ let bizonylathelper = function ($) {
                                 let dia = $(this);
                                 $.ajax({
                                     url: '/admin/' + bizonylattipus + 'fej/delglsparcel',
+                                    type: 'POST',
+                                    data: {
+                                        id: $this.data('egyedid')
+                                    },
+                                    success: function (data) {
+                                        dia.dialog('close');
+                                        $('.mattable-tablerefresh').click();
+                                    }
+                                });
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('click', '.js-delfedexparcel', function (e) {
+                    e.preventDefault();
+                    let $this = $(this);
+                    dialogcenter.html('Biztos, hogy törli a csomagot a Fedexnél?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                let dia = $(this);
+                                $.ajax({
+                                    url: '/admin/' + bizonylattipus + 'fej/delfedexparcel',
                                     type: 'POST',
                                     data: {
                                         id: $this.data('egyedid')

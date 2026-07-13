@@ -406,6 +406,27 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::GLSTerminalURL);
         $view->setVar(\mkw\consts::GLSTerminalURL, ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::FedexApiURL);
+        $view->setVar(\mkw\consts::FedexApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexApiKey);
+        $view->setVar(\mkw\consts::FedexApiKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexSecretKey);
+        $view->setVar(\mkw\consts::FedexSecretKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexAccountNumber);
+        $view->setVar(\mkw\consts::FedexAccountNumber, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexParcelLabelDir);
+        $view->setVar(\mkw\consts::FedexParcelLabelDir, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexServiceType);
+        $view->setVar(\mkw\consts::FedexServiceType, ($p ? $p->getErtek() : 'INTERNATIONAL_PRIORITY'));
+        $p = $repo->find(\mkw\consts::FedexPackagingType);
+        $view->setVar(\mkw\consts::FedexPackagingType, ($p ? $p->getErtek() : 'YOUR_PACKAGING'));
+        $p = $repo->find(\mkw\consts::FedexPickupType);
+        $view->setVar(\mkw\consts::FedexPickupType, ($p ? $p->getErtek() : 'USE_SCHEDULED_PICKUP'));
+        $p = $repo->find(\mkw\consts::FedexLabelStockType);
+        $view->setVar(\mkw\consts::FedexLabelStockType, ($p ? $p->getErtek() : 'PAPER_4X6'));
+        $p = $repo->find(\mkw\consts::FedexDefaultSuly);
+        $view->setVar(\mkw\consts::FedexDefaultSuly, ($p ? $p->getErtek() : 1));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
@@ -1257,6 +1278,18 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::GLSSM2, $this->params->getBoolRequestParam('glssm2'));
         \mkw\store::createDirectoryRecursively($this->params->getStringRequestParam('glsparcellabeldir'));
         $this->setObj(\mkw\consts::GLSTerminalURL, $this->params->getStringRequestParam('glsterminalurl'), true);
+
+        $this->setObj(\mkw\consts::FedexApiURL, $this->params->getStringRequestParam('fedexapiurl'), true);
+        $this->setObj(\mkw\consts::FedexApiKey, $this->params->getStringRequestParam('fedexapikey'));
+        $this->setObj(\mkw\consts::FedexSecretKey, $this->params->getStringRequestParam('fedexsecretkey'));
+        $this->setObj(\mkw\consts::FedexAccountNumber, $this->params->getStringRequestParam('fedexaccountnumber'));
+        $this->setObj(\mkw\consts::FedexParcelLabelDir, $this->params->getStringRequestParam('fedexparcellabeldir'));
+        \mkw\store::createDirectoryRecursively($this->params->getStringRequestParam('fedexparcellabeldir'));
+        $this->setObj(\mkw\consts::FedexServiceType, $this->params->getStringRequestParam('fedexservicetype'));
+        $this->setObj(\mkw\consts::FedexPackagingType, $this->params->getStringRequestParam('fedexpackagingtype'));
+        $this->setObj(\mkw\consts::FedexPickupType, $this->params->getStringRequestParam('fedexpickuptype'));
+        $this->setObj(\mkw\consts::FedexLabelStockType, $this->params->getStringRequestParam('fedexlabelstocktype'));
+        $this->setObj(\mkw\consts::FedexDefaultSuly, $this->params->getNumRequestParam('fedexdefaultsuly'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
         $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
         $this->setObj(\mkw\consts::Off2, $this->params->getBoolRequestParam(\mkw\consts::Off2));

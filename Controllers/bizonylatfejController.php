@@ -412,6 +412,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $t->getFuvarlevelszam();
         } elseif (\mkw\store::isGLSSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = $t->getGlsparcellabelurl();
+        } elseif (\mkw\store::isFedexSzallitasimod($t->getSzallitasimodId())) {
+            $x['csomagkovetolink'] = 'https://www.fedex.com/fedextrack/?trknbr=' . $t->getFedextrackingnumber();
         }
         $x['tobbimegrendeleslink'] = \mkw\store::getRouter()->generate(
             'adminmegrendelesfejviewlist',
@@ -526,7 +528,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['isstripe'] = \mkw\store::isStripeFizmod($t->getFizmod());
         $x['stripepaymentintentid'] = $t->getStripepaymentintentid();
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
-        $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
+        $x['isglsbekuldve'] = (bool)$t->getGlsparcelid();
+        $x['fedexparcellabelurlek'] = $t->getFedexparcellabelurlek();
+        $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();
         $x['forditottadozas'] = $t->isForditottadozas();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&

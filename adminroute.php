@@ -329,6 +329,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/megrendelesfej/generatefoxpostlabel', 'megrendelesfejController#generateFoxpostLabel', 'admingeneratefoxpostlabel');
     $router->map('POST', '/admin/megrendelesfej/sendtogls', 'megrendelesfejController#sendToGLS', 'adminmegrendelessendtogls');
     $router->map('POST', '/admin/megrendelesfej/delglsparcel', 'megrendelesfejController#delGLSParcel', 'adminmegrendelesdelglsparcel');
+    $router->map('POST', '/admin/megrendelesfej/sendtofedex', 'megrendelesfejController#sendToFedex', 'adminmegrendelessendtofedex');
+    $router->map('POST', '/admin/megrendelesfej/delfedexparcel', 'megrendelesfejController#delFedexParcel', 'adminmegrendelesdelfedexparcel');
     $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
     $router->map('POST', '/admin/megrendelesfej/backorder', 'megrendelesfejController#backOrder', 'adminmegrendelesfejbackorder');
     $router->map('POST', '/admin/megrendelesfej/fejexport', 'megrendelesfejController#fejexport', 'adminmegrendelesfejfejexport');
@@ -350,6 +352,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/webshopbizfej/generatefoxpostlabel', 'webshopbizfejController#generateFoxpostLabel', 'adminwebshopbizgeneratefoxpostlabel');
     $router->map('POST', '/admin/webshopbizfej/sendtogls', 'webshopbizfejController#sendToGLS', 'adminwebshopbizsendtogls');
     $router->map('POST', '/admin/webshopbizfej/delglsparcel', 'webshopbizfejController#delGLSParcel', 'adminwebshopbizdelglsparcel');
+    $router->map('POST', '/admin/webshopbizfej/sendtofedex', 'webshopbizfejController#sendToFedex', 'adminwebshopbizsendtofedex');
+    $router->map('POST', '/admin/webshopbizfej/delfedexparcel', 'webshopbizfejController#delFedexParcel', 'adminwebshopbizdelfedexparcel');
     $router->map('POST', '/admin/webshopbizfej/ront', 'webshopbizfejController#ront', 'adminwebshopbizfejront');
     $router->map('POST', '/admin/webshopbizfej/backorder', 'webshopbizfejController#backOrder', 'adminwebshopbizfejbackorder');
     $router->map('POST', '/admin/webshopbizfej/fejexport', 'webshopbizfejController#fejexport', 'adminwebshopbizfejfejexport');

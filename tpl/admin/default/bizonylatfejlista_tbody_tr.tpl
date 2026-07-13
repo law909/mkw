@@ -231,6 +231,7 @@
                             {$_egyed.fuvarlevelszam}
                         {/if}
                         &nbsp;{if ($_egyed.isglsbekuldve)}<a href="#" class="js-delglsparcel" data-egyedid="{$_egyed.id}">GLS csomag törlés</a>{/if}
+                        &nbsp;{if ($_egyed.isfedexbekuldve)}<a href="#" class="js-delfedexparcel" data-egyedid="{$_egyed.id}">Fedex csomag törlés</a>{/if}
                     </td>
                 </tr>
                 {if ($_egyed.foxpostbarcode)}
@@ -245,6 +246,18 @@
                     <tr>
                         <td>{at('Címke')}:</td>
                         <td><a href="{$_egyed.glsparcellabelurl}" target="_blank">{at('letölt')}</a></td>
+                    </tr>
+                {/if}
+                {if ($_egyed.fedexparcellabelurlek)}
+                    <tr>
+                        <td>{at('Címke')}:</td>
+                        <td>
+                            {foreach $_egyed.fedexparcellabelurlek as $_fedexlabelurl}
+                            <a href="{$_fedexlabelurl}" target="_blank">
+                                {at('letölt')}{if (count($_egyed.fedexparcellabelurlek) > 1)}&nbsp;{$_fedexlabelurl@iteration}.{/if}
+                                </a>{if (!$_fedexlabelurl@last)},{/if}
+                            {/foreach}
+                        </td>
                     </tr>
                 {/if}
             {/if}

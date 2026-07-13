@@ -5,6 +5,7 @@ namespace Controllers;
 use Services\BackorderService;
 use Services\BizonylatConcatService;
 use Services\BizonylatCalculatorService;
+use Services\FedexService;
 use Services\FoxpostService;
 use Services\GLSService;
 
@@ -20,6 +21,7 @@ class webshopbizfejController extends bizonylatfejController
         $this->getRepo()->addToBatches(['foxpostsend' => 'Küldés Foxpostnak']);
         $this->getRepo()->addToBatches(['foxpostlabel' => 'Foxpost címke letöltés']);
         $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);
+        $this->getRepo()->addToBatches(['fedexsend' => 'Küldés Fedexnek']);
         $this->getRepo()->addToBatches(['recalcprice' => 'Árak újra számolása']);
         $this->getRepo()->addToBatches(['sendemailek' => 'Email sablon küldés']);
         $this->getRepo()->addToBatches(['rendelesconcat' => 'Megrendelések összevonása']);
@@ -60,6 +62,18 @@ class webshopbizfejController extends bizonylatfejController
     {
         $glssvc = new GLSService();
         $glssvc->delGLSParcel($this->params->getStringRequestParam('id'));
+    }
+
+    public function sendToFedex()
+    {
+        $fedexsvc = new FedexService();
+        $fedexsvc->sendToFedex($this->params->getArrayRequestParam('ids'));
+    }
+
+    public function delFedexParcel()
+    {
+        $fedexsvc = new FedexService();
+        $fedexsvc->delFedexParcel($this->params->getStringRequestParam('id'));
     }
 
     public function backOrder()

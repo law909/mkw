@@ -218,6 +218,18 @@ class consts
     const GLSParcelLabelDir = 'glsparcellabeldir';
     const GLSSM2 = 'glssm2';
 
+    const FedexApiURL = 'fedexapiurl';
+    const FedexApiKey = 'fedexapikey';
+    const FedexSecretKey = 'fedexsecretkey';
+    const FedexAccountNumber = 'fedexaccountnumber';
+    const FedexParcelLabelDir = 'fedexparcellabeldir';
+    const FedexServiceType = 'fedexservicetype';
+    const FedexPackagingType = 'fedexpackagingtype';
+    const FedexPickupType = 'fedexpickuptype';
+    const FedexLabelStockType = 'fedexlabelstocktype';
+    const FedexDefaultSuly = 'fedexdefaultsuly';
+    const FedexToken = 'fedextoken';
+
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';
     const GLSFutarSzallitasmod = 'glsfutarszallitasimod';

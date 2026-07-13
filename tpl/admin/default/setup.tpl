@@ -2065,6 +2065,40 @@
                             <td><label>{at('GLS csomagpont URL')}:</label></td>
                             <td><input name="glsterminalurl" type="text" value="{$glsterminalurl}"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('Fedex API URL')}:</label></td>
+                            <td><input name="fedexapiurl" type="text" value="{$fedexapiurl}"
+                                       title="Éles: https://apis.fedex.com, teszt: https://apis-sandbox.fedex.com"></td>
+                            <td><label>{at('Fedex account number')}:</label></td>
+                            <td><input name="fedexaccountnumber" type="text" value="{$fedexaccountnumber}" autocomplete="off"></td>
+                            <td><label>{at('API key')}:</label></td>
+                            <td><input name="fedexapikey" type="text" value="{$fedexapikey}" autocomplete="off"></td>
+                            <td><label>{at('Secret key')}:</label></td>
+                            <td><input name="fedexsecretkey" type="password" value="{$fedexsecretkey}" autocomplete="off"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Fedex PDF mappa')}:</label></td>
+                            <td><input name="fedexparcellabeldir" type="text" value="{$fedexparcellabeldir}"></td>
+                            <td><label>{at('Fedex csomag alapsúly (kg)')}:</label></td>
+                            <td><input name="fedexdefaultsuly" type="text" value="{$fedexdefaultsuly}"
+                                       title="Ezzel a súllyal megy a csomag, ha a tételeken nincs súly megadva"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Fedex szolgáltatás típus')}:</label></td>
+                            <td><input name="fedexservicetype" type="text" value="{$fedexservicetype}"
+                                       title="pl. INTERNATIONAL_PRIORITY, INTERNATIONAL_ECONOMY, FEDEX_REGIONAL_ECONOMY"></td>
+                            <td><label>{at('Fedex csomagolás típus')}:</label></td>
+                            <td><input name="fedexpackagingtype" type="text" value="{$fedexpackagingtype}"
+                                       title="pl. YOUR_PACKAGING, FEDEX_BOX, FEDEX_ENVELOPE"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Fedex felvétel típus')}:</label></td>
+                            <td><input name="fedexpickuptype" type="text" value="{$fedexpickuptype}"
+                                       title="pl. USE_SCHEDULED_PICKUP, CONTACT_FEDEX_TO_SCHEDULE, DROPOFF_AT_FEDEX_LOCATION"></td>
+                            <td><label>{at('Fedex címke méret')}:</label></td>
+                            <td><input name="fedexlabelstocktype" type="text" value="{$fedexlabelstocktype}"
+                                       title="pl. PAPER_4X6, PAPER_LETTER, PAPER_85X11_TOP_HALF_LABEL"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
