@@ -194,7 +194,8 @@
             </tr>
             <tr>
                 <td></td>
-                <td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}</td>
+                <td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}{if ($_egyed.isstripe)}
+                        <span class="barionstatus">({$_egyed.stripepaymentintentid})</span>{/if}</td>
             </tr>
             <tr>
                 <td></td>
