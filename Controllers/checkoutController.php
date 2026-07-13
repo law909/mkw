@@ -385,9 +385,9 @@ class checkoutController extends \mkwhelpers\MattableController
         $error = false;
         if ($error) {
             \mkw\store::getMainSession()->checkoutfizeteserrors = $error;
-            Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
+            header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
         } else {
-            Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+            header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
         }
     }
 
@@ -407,7 +407,7 @@ class checkoutController extends \mkwhelpers\MattableController
             }
         }
 
-        Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+        header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
     }
 
     public function thanks()

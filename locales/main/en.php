@@ -322,4 +322,6 @@ return [
     'Vásárló típusa' => 'Customer type',
     'Cégként vásárolok' => 'I am buying as a company',
     'Magánszemélyként vásárolok' => 'I am buying as an individual',
+    'Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.' => 'Enter your payment details and press the Pay button.',
+    'Fizetés' => 'Pay',
 ];

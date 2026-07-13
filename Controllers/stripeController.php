@@ -127,6 +127,6 @@ class stripeController extends \mkwhelpers\Controller
                 \mkw\store::writelog('Stripe paymentSuccess error: ' . $e->getMessage());
             }
         }
-        Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+        header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
     }
 }

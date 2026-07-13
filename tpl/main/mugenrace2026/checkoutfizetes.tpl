@@ -83,29 +83,6 @@
                         </fieldset>
                     </form>
                 {/if}
-                <form id="CheckoutFizmodForm" class="" action="/checkout/newfizmod/ment" method="post">
-                    <fieldset>
-                        <div class="row">
-                            <div class="span10">
-                                <div id="block2" class="chk-datagroupheader js-chkdatagroupheader js-chkfizmodadatokgh" data-container=".js-chkfizmodadatok">
-                                    Fizetési módok
-                                </div>
-                                <div class="js-chkfizmodadatok js-chkdatacontainer">
-                                    <h5>Amennyiben mégis más módon szeretne fizetni, válassza ki a fizetési módot és nyomja meg a Mentés gombot.</h5>
-                                    <div class="controls controls-row chk-controloffset">
-                                        {$fizmodlist}
-                                    </div>
-                                    <input name="megrendelesszam" type="hidden" value="{$megrendelesszam}">
-                                </div>
-                                <div class="pull-right">
-                                    <div class="chk-savecontainer">
-                                        <div><input type="submit" class="btn cartbtn chk-sendorderbtn" value="Mentés"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
             </div>
             <div class="span2 chk-helpcontainer">
                 <div class="keret">
