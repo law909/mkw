@@ -2001,106 +2001,128 @@
                 </div>
 
                 <div id="IdTab" class="mattkarb-page" data-visible="visible">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td><label>{at('Google analytics kód')}:</label></td>
-                            <td><input name="gafollow" type="text" value="{$gafollow}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Google Maps API kulcs')}:</label></td>
-                            <td><input name="gmapsapikey" type="text" value="{$gmapsapikey}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Facebook app-id')}:</label></td>
-                            <td><input name="fbappid" type="text" value="{$fbappid}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Árukereső TrustedShop webapi key')}:</label></td>
-                            <td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Foxpost API verzió')}:</label></td>
-                            <td><select name="foxpostapiversion">
-                                    <option value="">válasszon</option>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="GAFollowEdit">{at('Google analytics kód')}:</label></span>
+                            <input id="GAFollowEdit" name="gafollow" type="text" value="{$gafollow}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="GMapsApiKeyEdit">{at('Google Maps API kulcs')}:</label></span>
+                            <input id="GMapsApiKeyEdit" name="gmapsapikey" type="text" value="{$gmapsapikey}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="FBAppIdEdit">{at('Facebook app-id')}:</label></span>
+                            <input id="FBAppIdEdit" name="fbappid" type="text" value="{$fbappid}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="AKTrustedShopApiKeyEdit">{at('Árukereső TrustedShop webapi key')}:</label></span>
+                            <input id="AKTrustedShopApiKeyEdit" name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}">
+                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FoxpostApiVersionEdit">{at('Foxpost API verzió')}:</label></span>
+                                <select id="FoxpostApiVersionEdit" name="foxpostapiversion">
+                                    <option value="">{at('válasszon')}</option>
                                     {foreach $foxpostapiversionlist as $_fpapiversion}
                                         <option
                                             value="{$_fpapiversion.id}"{if ($_fpapiversion.selected)} selected="selected"{/if}>{$_fpapiversion.caption}</option>
                                     {/foreach}
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Foxpost API URL')}:</label></td>
-                            <td><input name="foxpostapiurl" type="text" value="{$foxpostapiurl}"></td>
-                            <td><label>{at('Username')}:</label></td>
-                            <td><input name="foxpostusername" type="text" value="{$foxpostusername}" autocomplete="off"></td>
-                            <td><label>{at('Password')}:</label></td>
-                            <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Foxpost v2 API URL')}:</label></td>
-                            <td><input name="foxpostv2apiurl" type="text" value="{$foxpostv2apiurl}"></td>
-                            <td><label>{at('v2 Username')}:</label></td>
-                            <td><input name="foxpostv2username" type="text" value="{$foxpostv2username}" autocomplete="off"></td>
-                            <td><label>{at('v2 Password')}:</label></td>
-                            <td><input name="foxpostv2password" type="password" value="{$foxpostv2password}" autocomplete="off"></td>
-                            <td><label>{at('v2 API key')}:</label></td>
-                            <td><input name="foxpostv2apikey" type="text" value="{$foxpostv2apikey}" autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('GLS API URL')}:</label></td>
-                            <td><input name="glsapiurl" type="text" value="{$glsapiurl}"></td>
-                            <td><label>{at('Client number')}:</label></td>
-                            <td><input name="glsclientnumber" type="text" value="{$glsclientnumber}" autocomplete="off"></td>
-                            <td><label>{at('Username')}:</label></td>
-                            <td><input name="glsusername" type="text" value="{$glsusername}" autocomplete="off"></td>
-                            <td><label>{at('Password')}:</label></td>
-                            <td><input name="glspassword" type="password" value="{$glspassword}" autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('GLS PDF mappa')}:</label></td>
-                            <td><input name="glsparcellabeldir" type="text" value="{$glsparcellabeldir}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('GLS csomagpont URL')}:</label></td>
-                            <td><input name="glsterminalurl" type="text" value="{$glsterminalurl}"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Fedex API URL')}:</label></td>
-                            <td><input name="fedexapiurl" type="text" value="{$fedexapiurl}"
-                                       title="Éles: https://apis.fedex.com, teszt: https://apis-sandbox.fedex.com"></td>
-                            <td><label>{at('Fedex account number')}:</label></td>
-                            <td><input name="fedexaccountnumber" type="text" value="{$fedexaccountnumber}" autocomplete="off"></td>
-                            <td><label>{at('API key')}:</label></td>
-                            <td><input name="fedexapikey" type="text" value="{$fedexapikey}" autocomplete="off"></td>
-                            <td><label>{at('Secret key')}:</label></td>
-                            <td><input name="fedexsecretkey" type="password" value="{$fedexsecretkey}" autocomplete="off"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Fedex PDF mappa')}:</label></td>
-                            <td><input name="fedexparcellabeldir" type="text" value="{$fedexparcellabeldir}"></td>
-                            <td><label>{at('Fedex csomag alapsúly (kg)')}:</label></td>
-                            <td><input name="fedexdefaultsuly" type="text" value="{$fedexdefaultsuly}"
-                                       title="Ezzel a súllyal megy a csomag, ha a tételeken nincs súly megadva"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Fedex szolgáltatás típus')}:</label></td>
-                            <td><input name="fedexservicetype" type="text" value="{$fedexservicetype}"
-                                       title="pl. INTERNATIONAL_PRIORITY, INTERNATIONAL_ECONOMY, FEDEX_REGIONAL_ECONOMY"></td>
-                            <td><label>{at('Fedex csomagolás típus')}:</label></td>
-                            <td><input name="fedexpackagingtype" type="text" value="{$fedexpackagingtype}"
-                                       title="pl. YOUR_PACKAGING, FEDEX_BOX, FEDEX_ENVELOPE"></td>
-                        </tr>
-                        <tr>
-                            <td><label>{at('Fedex felvétel típus')}:</label></td>
-                            <td><input name="fedexpickuptype" type="text" value="{$fedexpickuptype}"
-                                       title="pl. USE_SCHEDULED_PICKUP, CONTACT_FEDEX_TO_SCHEDULE, DROPOFF_AT_FEDEX_LOCATION"></td>
-                            <td><label>{at('Fedex címke méret')}:</label></td>
-                            <td><input name="fedexlabelstocktype" type="text" value="{$fedexlabelstocktype}"
-                                       title="pl. PAPER_4X6, PAPER_LETTER, PAPER_85X11_TOP_HALF_LABEL"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FoxpostApiUrlEdit">{at('Foxpost API URL')}:</label></span>
+                                <input id="FoxpostApiUrlEdit" name="foxpostapiurl" type="text" value="{$foxpostapiurl}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FoxpostUsernameEdit">{at('Foxpost username')}:</label></span>
+                                <input id="FoxpostUsernameEdit" name="foxpostusername" type="text" value="{$foxpostusername}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FoxpostPasswordEdit">{at('Foxpost password')}:</label></span>
+                                <input id="FoxpostPasswordEdit" name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Foxpostv2ApiUrlEdit">{at('Foxpost v2 API URL')}:</label></span>
+                                <input id="Foxpostv2ApiUrlEdit" name="foxpostv2apiurl" type="text" value="{$foxpostv2apiurl}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Foxpostv2UsernameEdit">{at('Foxpost v2 username')}:</label></span>
+                                <input id="Foxpostv2UsernameEdit" name="foxpostv2username" type="text" value="{$foxpostv2username}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Foxpostv2PasswordEdit">{at('Foxpost v2 password')}:</label></span>
+                                <input id="Foxpostv2PasswordEdit" name="foxpostv2password" type="password" value="{$foxpostv2password}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Foxpostv2ApiKeyEdit">{at('Foxpost v2 API key')}:</label></span>
+                                <input id="Foxpostv2ApiKeyEdit" name="foxpostv2apikey" type="text" value="{$foxpostv2apikey}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="GLSApiUrlEdit">{at('GLS API URL')}:</label></span>
+                                <input id="GLSApiUrlEdit" name="glsapiurl" type="text" value="{$glsapiurl}">
+                                <span class="setuplabel"><label for="GLSClientNumberEdit">{at('GLS client number')}:</label></span>
+                                <input id="GLSClientNumberEdit" name="glsclientnumber" type="text" value="{$glsclientnumber}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="GLSUsernameEdit">{at('GLS username')}:</label></span>
+                                <input id="GLSUsernameEdit" name="glsusername" type="text" value="{$glsusername}" autocomplete="off">
+                                <span class="setuplabel"><label for="GLSPasswordEdit">{at('GLS password')}:</label></span>
+                                <input id="GLSPasswordEdit" name="glspassword" type="password" value="{$glspassword}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="GLSParcelLabelDirEdit">{at('GLS PDF mappa')}:</label></span>
+                                <input id="GLSParcelLabelDirEdit" name="glsparcellabeldir" type="text" value="{$glsparcellabeldir}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="GLSTerminalUrlEdit">{at('GLS csomagpont URL')}:</label></span>
+                                <input id="GLSTerminalUrlEdit" name="glsterminalurl" type="text" value="{$glsterminalurl}">
+                            </div>
+                        </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexApiUrlEdit">{at('Fedex API URL')}:</label></span>
+                                <input id="FedexApiUrlEdit" name="fedexapiurl" type="text" value="{$fedexapiurl}"
+                                       title="Éles: https://apis.fedex.com, teszt: https://apis-sandbox.fedex.com">
+                                <span class="setuplabel"><label for="FedexAccountNumberEdit">{at('Fedex account number')}:</label></span>
+                                <input id="FedexAccountNumberEdit" name="fedexaccountnumber" type="text" value="{$fedexaccountnumber}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexApiKeyEdit">{at('Fedex API key')}:</label></span>
+                                <input id="FedexApiKeyEdit" name="fedexapikey" type="text" value="{$fedexapikey}" autocomplete="off">
+                                <span class="setuplabel"><label for="FedexSecretKeyEdit">{at('Fedex secret key')}:</label></span>
+                                <input id="FedexSecretKeyEdit" name="fedexsecretkey" type="password" value="{$fedexsecretkey}" autocomplete="off">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexParcelLabelDirEdit">{at('Fedex PDF mappa')}:</label></span>
+                                <input id="FedexParcelLabelDirEdit" name="fedexparcellabeldir" type="text" value="{$fedexparcellabeldir}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexDefaultSulyEdit">{at('Fedex csomag alapsúly (kg)')}:</label></span>
+                                <input id="FedexDefaultSulyEdit" name="fedexdefaultsuly" type="text" value="{$fedexdefaultsuly}"
+                                       title="Ezzel a súllyal megy a csomag, ha a tételeken nincs súly megadva">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexServiceTypeEdit">{at('Fedex szolgáltatás típus')}:</label></span>
+                                <input id="FedexServiceTypeEdit" name="fedexservicetype" type="text" value="{$fedexservicetype}"
+                                       title="pl. INTERNATIONAL_PRIORITY, INTERNATIONAL_ECONOMY, FEDEX_REGIONAL_ECONOMY">
+                                <span class="setuplabel"><label for="FedexPackagingTypeEdit">{at('Fedex csomagolás típus')}:</label></span>
+                                <input id="FedexPackagingTypeEdit" name="fedexpackagingtype" type="text" value="{$fedexpackagingtype}"
+                                       title="pl. YOUR_PACKAGING, FEDEX_BOX, FEDEX_ENVELOPE">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexPickupTypeEdit">{at('Fedex felvétel típus')}:</label></span>
+                                <input id="FedexPickupTypeEdit" name="fedexpickuptype" type="text" value="{$fedexpickuptype}"
+                                       title="pl. USE_SCHEDULED_PICKUP, CONTACT_FEDEX_TO_SCHEDULE, DROPOFF_AT_FEDEX_LOCATION">
+                                <span class="setuplabel"><label for="FedexLabelStockTypeEdit">{at('Fedex címke méret')}:</label></span>
+                                <input id="FedexLabelStockTypeEdit" name="fedexlabelstocktype" type="text" value="{$fedexlabelstocktype}"
+                                       title="pl. PAPER_4X6, PAPER_LETTER, PAPER_85X11_TOP_HALF_LABEL">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="EmailTab" class="mattkarb-page" data-visible="visible">
                     <table>

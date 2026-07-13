@@ -276,7 +276,7 @@ table.termekkarton tr:nth-child(even) {
 
 .setuplabel {
     display: inline-block;
-    width: 160px;
+    min-width: 120px;
 }
 
 .setuprow {
