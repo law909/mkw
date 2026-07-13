@@ -123,7 +123,7 @@ return [
     'Nem találjuk, amit keres' => 'Sorry, we don\'t find what you are searching for',
     'adatok' => 'data',
     'Megrendelés szám' => 'Order No.',
-    'Fizetendő' => 'Owing',
+    'Fizetendő' => 'Amount payable',
     'Adataim' => 'My data',
     'Megrendeléseim' => 'My orders',
     'Termékértesítők' => 'Advice notes',
@@ -323,5 +323,5 @@ return [
     'Cégként vásárolok' => 'I am buying as a company',
     'Magánszemélyként vásárolok' => 'I am buying as an individual',
     'Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.' => 'Enter your payment details and press the Pay button.',
-    'Fizetés' => 'Pay',
+    'Fizetés' => 'Pay now',
 ];
