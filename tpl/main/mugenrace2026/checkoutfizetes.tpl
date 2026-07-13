@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="pull-right" style="margin-top:20px;">
                                     <div class="chk-savecontainer">
-                                        <button id="stripe-submit-btn" class="btn cartbtn chk-sendorderbtn" type="button">{t('Fizetés')}</button>
+                                        <button id="stripe-submit-btn" class="cartbtn chk-sendorderbtn" type="button">{t('Fizetés')}</button>
                                     </div>
                                 </div>
                             </div>
