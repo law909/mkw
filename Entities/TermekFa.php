@@ -213,13 +213,13 @@ class TermekFa
         $x['name'] = $this->getNev();
         $x['name_en'] = $this->getNevL1();
         $x['short_description'] = $this->getRovidleiras();
-        $x['short_description_en'] = $ford['en_us']['rovidleiras'] ?: '';
+        $x['short_description_en'] = $this->getLocalizedFieldValue('rovidleiras', 'en_us');
         $x['description'] = $this->getLeiras();
-        $x['description_en'] = $ford['en_us']['leiras'] ?: '';
+        $x['description_en'] = $this->getLocalizedFieldValue('leiras', 'en_us');
         $x['description2'] = $this->getLeiras2();
-        $x['description2_en'] = $ford['en_us']['leiras2'] ?: '';
+        $x['description2_en'] = $this->getLocalizedFieldValue('leiras2', 'en_us');
         $x['description3'] = $this->getLeiras3();
-        $x['description3_en'] = $ford['en_us']['leiras3'] ?: '';
+        $x['description3_en'] = $this->getLocalizedFieldValue('leiras3', 'en_us');
         $x['order'] = $this->getSorrend();
         if ($this->getKepurl()) {
             $x['img_url'] = \mkw\store::getFullUrl($this->getKepurlLarge());
