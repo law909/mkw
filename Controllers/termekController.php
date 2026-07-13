@@ -1765,11 +1765,6 @@ class termekController extends \mkwhelpers\MattableController
 
     public function fcmotoexport()
     {
-        function x($o)
-        {
-            return \mkw\store::getExcelCoordinate($o, '');
-        }
-
         $p = $this->params->getStringRequestParam('p');
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
@@ -1849,7 +1844,7 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
                     ->setCellValue('G' . $sor, implode(';', $kepurlarr))
                     ->setCellValue('J' . $sor, $termek->getVonalkod())
-                    ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $partner))
+                    ->setCellValue('K' . $sor, $termek->getNettoAr(null, $partner))
                     ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
                     ->setCellValue('M' . $sor, 'Pakistan')
                     ->setCellValue('N' . $sor, $termek->getSuly())

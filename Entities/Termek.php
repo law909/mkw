@@ -1781,8 +1781,9 @@ class Termek
     public function getCimkeByCategory($cat)
     {
         $ret = null;
+        /** @var Termekcimketorzs $cimke */
         foreach ($this->getCimkek() as $cimke) {
-            if ($cat == $cimke->getKategoriaId()) {
+            if ($cat == $cimke->getKategoria()?->getId()) {
                 $ret = $cimke;
                 break;
             }

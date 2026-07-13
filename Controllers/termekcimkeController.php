@@ -110,9 +110,9 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('cimke', $this->loadVars($record));
         $ckat = new termekcimkekatController();
-        $view->setVar('cimkecsoportlist', $ckat->getSelectList(($record ? $record->getKategoriaId() : 0)));
+        $view->setVar('cimkecsoportlist', $ckat->getSelectList($record?->getKategoria()?->getId()));
         $gyarto = new partnerController();
-        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($record ? $record->getGyartoId() : 0)));
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList($record?->getGyarto()?->getId()));
         return $view->getTemplateResult();
     }
 
