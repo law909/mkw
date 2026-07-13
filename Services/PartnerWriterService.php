@@ -77,6 +77,9 @@ class PartnerWriterService
 
     public function szamlacim(): self
     {
+        if ($this->params->existsRequestParam('nev')) {
+            $this->partner->setNev($this->params->getStringRequestParam('nev'));
+        }
         $this->partner->setAdoszam(substr($this->params->getStringRequestParam('adoszam'), 0, 13));
         $this->partner->setIrszam(substr($this->params->getStringRequestParam('irszam'), 0, 10));
         $this->partner->setVaros($this->params->getStringRequestParam('varos'));
@@ -85,8 +88,6 @@ class PartnerWriterService
         $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('orszag', 0));
         if ($orszag) {
             $this->partner->setOrszag($orszag);
-        } else {
-            $this->partner->setOrszag(null);
         }
         return $this;
     }
@@ -101,8 +102,6 @@ class PartnerWriterService
         $orszag = \mkw\store::getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('szallorszag', 0));
         if ($orszag) {
             $this->partner->setSzallorszag($orszag);
-        } else {
-            $this->partner->setSzallorszag(null);
         }
         return $this;
     }

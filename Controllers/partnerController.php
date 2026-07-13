@@ -250,17 +250,21 @@ class partnerController extends \mkwhelpers\MattableController
         } else {
             $obj->setMptngyszerepkor(null);
         }
-        $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
-        if ($egyetem) {
-            $obj->setMptngyegyetem($egyetem);
-        } else {
-            $obj->removeMptngyegyetem();
+        if ($this->params->existsRequestParam('mptngyegyetem')) {
+            $egyetem = \mkw\store::getEm()->getRepository(MPTNGYEgyetem::class)->find($this->params->getIntRequestParam('mptngyegyetem'));
+            if ($egyetem) {
+                $obj->setMptngyegyetem($egyetem);
+            } else {
+                $obj->removeMptngyegyetem();
+            }
         }
-        $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
-        if ($kar) {
-            $obj->setMptngykar($kar);
-        } else {
-            $obj->removeMptngykar();
+        if ($this->params->existsRequestParam('mptngykar')) {
+            $kar = \mkw\store::getEm()->getRepository(MPTNGYKar::class)->find($this->params->getIntRequestParam('mptngykar'));
+            if ($kar) {
+                $obj->setMptngykar($kar);
+            } else {
+                $obj->removeMptngykar();
+            }
         }
 
         $obj->removeAllCimke();
