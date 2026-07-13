@@ -46,8 +46,8 @@ class Partner
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $jelszo;
 
-    /** @ORM\Column(type="smallint",nullable=true) */
-    private $inaktiv = 0;
+    /** @ORM\Column(type="boolean",nullable=true) */
+    private $inaktiv = false;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $nev = '';

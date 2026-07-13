@@ -148,73 +148,73 @@ class Termek
     private $slug;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato = 0;
+    private $lathato = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato2 = 0;
+    private $lathato2 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato3 = 0;
+    private $lathato3 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato4 = 0;
+    private $lathato4 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato5 = 0;
+    private $lathato5 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato6 = 0;
+    private $lathato6 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato7 = 0;
+    private $lathato7 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato8 = 0;
+    private $lathato8 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato9 = 0;
+    private $lathato9 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato10 = 0;
+    private $lathato10 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato11 = 0;
+    private $lathato11 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato12 = 0;
+    private $lathato12 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato13 = 0;
+    private $lathato13 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato14 = 0;
+    private $lathato14 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $lathato15 = 0;
+    private $lathato15 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $hozzaszolas = 1;
+    private $hozzaszolas = true;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $ajanlott = 0;
+    private $ajanlott = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $kiemelt = 0;
+    private $kiemelt = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $mozgat = 1;
+    private $mozgat = true;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $inaktiv = 0;
+    private $inaktiv = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $fuggoben = 0;
+    private $fuggoben = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $termekexportbanszerepel = true;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $kellegyediazonosito = 0;
+    private $kellegyediazonosito = false;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $hparany = 0;
@@ -365,13 +365,13 @@ class Termek
     private $termekcsoport;
 
     /** @ORM\Column(type="boolean") */
-    private $kozvetitett = 0;
+    private $kozvetitett = false;
 
     /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $egyprodukcios = 1;
+    private $egyprodukcios = true;
 
     /** @ORM\Column(type="integer", nullable=true) */
     private $valutameszorzo;
@@ -389,7 +389,7 @@ class Termek
     private $jogaervenyessegnap;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $eladhato = 1;
+    private $eladhato = true;
 
     /** @ORM\OneToMany(targetEntity="TermekDok", mappedBy="termek", cascade={"persist", "remove"}) */
     private $termekdokok;
@@ -409,22 +409,22 @@ class Termek
      */
     private $termekertekelesek;
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $feltoltheto = 0;
+    private $feltoltheto = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $feltoltheto2 = 0;
+    private $feltoltheto2 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $feltoltheto3 = 0;
+    private $feltoltheto3 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $feltoltheto4 = 0;
+    private $feltoltheto4 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $feltoltheto5 = 0;
+    private $feltoltheto5 = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $uj = 0;
+    private $uj = false;
 
     public function __toString()
     {
