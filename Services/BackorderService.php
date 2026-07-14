@@ -60,7 +60,7 @@ class BackorderService
                     if ($ujdb == 0) {
                         $regibiz->setBizonylatstatusz($teljesitheto);
                         foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                            $regitetel->fillEgysar();
+                            //$regitetel->fillEgysar();
                             $regitetel->calc();
                             \mkw\store::getEm()->persist($regitetel);
                         }
@@ -115,12 +115,12 @@ class BackorderService
                                 \mkw\store::getEm()->remove($regitetel);
                             } else {
                                 $regitetel->setMennyiseg($keszlet);
-                                $regitetel->fillEgysar();
+                                //$regitetel->fillEgysar();
                                 $regitetel->calc();
                                 \mkw\store::getEm()->persist($regitetel);
                             }
                         } else {
-                            $regitetel->fillEgysar();
+                            //$regitetel->fillEgysar();
                             $regitetel->calc();
                             \mkw\store::getEm()->persist($regitetel);
                         }
