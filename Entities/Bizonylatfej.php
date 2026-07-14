@@ -919,14 +919,23 @@ class Bizonylatfej
         $this->hibauzenetek = $val;
     }
 
+    /**
+     * A költségtételek (szállítási, utánvét, kezelési költség) termékazonosítói.
+     */
+    private function getKoltsegTermekIdk()
+    {
+        $ktgs = \mkw\store::getEm()->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+        $ktgs[] = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ktgs[] = \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek);
+        return $ktgs;
+    }
+
     public function calcBruttoWithoutKtgs()
     {
         $ret = new StdClass();
         $ret->cnt = 0;
         $ret->brutto = 0;
-        $ktgs = \mkw\store::getEm()->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
-        $ktgs[] = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        $ktgs[] = \mkw\store::getParameter(\mkw\consts::UtanvetKtgTermek);
+        $ktgs = $this->getKoltsegTermekIdk();
         foreach ($this->bizonylattetelek as $bt) {
             if (!in_array($bt->getTermekId(), $ktgs)) {
                 $ret->cnt++;
@@ -1274,7 +1283,7 @@ class Bizonylatfej
                 'value' => $accountnumber
             ],
             'requestedShipment' => [
-                'shipDatestamp' => date('Y-m-d'),
+                'shipDatestamp' => $this->getFedexshipdate() ? $this->getFedexshipdate()->format('Y-m-d') : date('Y-m-d'),
                 'serviceType' => \mkw\store::getParameter(\mkw\consts::FedexServiceType) ?: 'INTERNATIONAL_PRIORITY',
                 'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
                 'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
@@ -1303,11 +1312,46 @@ class Bizonylatfej
             ]
         ];
 
+        $specialservices = [];
+        if (!\mkw\store::isMagyarorszag($this->getPartnerSzallorszagOrOrszag())) {
+            $vam = $this->toFedexVam(true);
+            if ($vam) {
+                $result['requestedShipment']['customsClearanceDetail'] = $vam;
+                $specialservices = $this->mergeFedexSpecialServices($specialservices, $this->toFedexETD());
+            }
+        }
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
-            $result['requestedShipment']['shipmentSpecialServices'] = $this->toFedexUtanvet();
+            $specialservices = $this->mergeFedexSpecialServices($specialservices, $this->toFedexUtanvet());
+        }
+        if ($specialservices) {
+            $result['requestedShipment']['shipmentSpecialServices'] = $specialservices;
         }
 
         return $result;
+    }
+
+    private function mergeFedexSpecialServices($eddigi, $uj)
+    {
+        $tipusok = array_unique(
+            array_merge($eddigi['specialServiceTypes'] ?? [], $uj['specialServiceTypes'] ?? [])
+        );
+        $result = array_merge($eddigi, $uj);
+        $result['specialServiceTypes'] = array_values($tipusok);
+        return $result;
+    }
+
+    /**
+     * Elektronikus vámdokumentum (ETD): a számlaképet a feladás után töltjük fel,
+     * ezt a Fedexnek már a címke készítésekor jelezni kell.
+     */
+    private function toFedexETD()
+    {
+        return [
+            'specialServiceTypes' => ['ELECTRONIC_TRADE_DOCUMENTS'],
+            'etdDetail' => [
+                'attributes' => ['POST_SHIPMENT_UPLOAD_REQUESTED']
+            ]
+        ];
     }
 
     /**
@@ -1339,6 +1383,12 @@ class Bizonylatfej
 
         if ($servicetype) {
             $result['requestedShipment']['serviceType'] = $servicetype;
+        }
+        if (!\mkw\store::isMagyarorszag($this->getPartnerSzallorszagOrOrszag())) {
+            $vam = $this->toFedexVam();
+            if ($vam) {
+                $result['requestedShipment']['customsClearanceDetail'] = $vam;
+            }
         }
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
             $result['requestedShipment']['shipmentSpecialServices'] = $this->toFedexUtanvet();
@@ -1379,7 +1429,7 @@ class Bizonylatfej
                 'streetLines' => [($vanszallcim ? $this->getSzallutca() : $this->getPartnerutca())],
                 'city' => ($vanszallcim ? $this->getSzallvaros() : $this->getPartnervaros()),
                 'postalCode' => ($vanszallcim ? $this->getSzallirszam() : $this->getPartnerirszam()),
-                'countryCode' => $this->getFedexOrszagkod()
+                'countryCode' => $this->getPartnerSzallorszagOrOrszag()?->getIso3166(),
             ]
         ];
     }
@@ -1398,6 +1448,79 @@ class Bizonylatfej
         return $csomagok;
     }
 
+    /**
+     * Vámkezelési adatok (customsClearanceDetail) a külföldre menő küldeményhez.
+     * A vámot és az adót a címzett fizeti, az árutételek a bizonylat tételeiből
+     * állnak össze – a költségtételek (szállítás, utánvét, kezelési ktg) nélkül.
+     *
+     * Feladáskor (Ship API) a Fedex a teljes vámértéket és a kereskedelmi számla
+     * adatait is kéri, a díjlekérdezéshez (Rate API) ezek nem kellenek.
+     *
+     * @return array|false
+     */
+    private function toFedexVam($feladas = false)
+    {
+        $ktgs = $this->getKoltsegTermekIdk();
+        $valutanem = $this->getValutanemnev() ?: 'HUF';
+        $vamertek = 0;
+        $arucikkek = [];
+        /** @var Bizonylattetel $bt */
+        foreach ($this->bizonylattetelek as $bt) {
+            if ($bt->getStorno() || $bt->getStornozott() || in_array($bt->getTermekId(), $ktgs)) {
+                continue;
+            }
+            $mennyiseg = (float)$bt->getMennyiseg();
+            if ($mennyiseg <= 0) {
+                continue;
+            }
+            $suly = round((float)$bt->getSuly() * $mennyiseg, 2);
+            $vamertek += round((float)$bt->getNetto(), 2);
+            $arucikk = [
+                'description' => ($bt->getTermeknev() ?: $bt->getCikkszam()),
+                'countryOfManufacture' => 'HU',
+                'quantity' => $mennyiseg,
+                'quantityUnits' => 'PCS',
+                'numberOfPieces' => (int)ceil($mennyiseg),
+                'weight' => [
+                    'units' => 'KG',
+                    'value' => ($suly > 0 ? $suly : 0.5)
+                ],
+                'unitPrice' => [
+                    'amount' => round((float)$bt->getNettoegysar(), 2),
+                    'currency' => $valutanem
+                ],
+                'customsValue' => [
+                    'amount' => round((float)$bt->getNetto(), 2),
+                    'currency' => $valutanem
+                ]
+            ];
+            if ($bt->getVtszszam()) {
+                $arucikk['harmonizedCode'] = $bt->getVtszszam();
+            }
+            $arucikkek[] = $arucikk;
+        }
+        if (!$arucikkek) {
+            return false;
+        }
+        $result = [
+            'dutiesPayment' => [
+                'paymentType' => 'RECIPIENT'
+            ],
+            'commodities' => $arucikkek
+        ];
+        if ($feladas) {
+            $result['isDocumentOnly'] = false;
+            $result['commercialInvoice'] = [
+                'shipmentPurpose' => 'SOLD'
+            ];
+            $result['totalCustomsValue'] = [
+                'amount' => round($vamertek, 2),
+                'currency' => $valutanem
+            ];
+        }
+        return $result;
+    }
+
     private function toFedexUtanvet()
     {
         return [
@@ -1410,14 +1533,6 @@ class Bizonylatfej
                 ]
             ]
         ];
-    }
-
-    public function getFedexOrszagkod()
-    {
-        $orszagkod = $this->getSzallirszam()
-            ? $this->getPartnerszallorszagiso3166()
-            : $this->getPartnerorszagiso3166();
-        return $orszagkod ?: 'HU';
     }
 
     public function toBarionModel()

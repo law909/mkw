@@ -422,17 +422,6 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFedexOrszagkod()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFedexOrszagkod', []);
-
-        return parent::getFedexOrszagkod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function toBarionModel()
     {
 

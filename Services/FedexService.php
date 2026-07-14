@@ -94,6 +94,8 @@ class FedexService
             return false;
         }
 
+        $kuldemeny = $this->getFedexKuldemenyadatok($bizonylatfej);
+
         $fedexapi = $this->getApi();
         $fedexres = $fedexapi->uploadTradeDocument(
             $pdfpath,
@@ -101,11 +103,9 @@ class FedexService
             [
                 'shipdocumenttype' => 'COMMERCIAL_INVOICE',
                 'origincountrycode' => 'HU',
-                'destinationcountrycode' => $bizonylatfej->getFedexOrszagkod(),
-                'trackingnumber' => $bizonylatfej->getFedextrackingnumber(),
-                'shipdate' => ($bizonylatfej->getFedexshipdate()
-                    ? $bizonylatfej->getFedexshipdate()->format('Y-m-d')
-                    : null)
+                'destinationcountrycode' => $bizonylatfej->getPartnerSzallorszagOrOrszag()?->getIso3166(),
+                'trackingnumber' => $kuldemeny['trackingnumber'],
+                'shipdate' => $kuldemeny['shipdate']
             ]
         );
         $fedexerror = $fedexapi->getLasterrors();
@@ -115,6 +115,29 @@ class FedexService
         unlink($pdfpath);
 
         return $fedexres ? $fedexres['docid'] : false;
+    }
+
+    /**
+     * A küldemény Fedex azonosítói. A fuvarlevélszám és a feladási dátum a
+     * megrendelésre kerül, ezért ha a kapott bizonylaton (pl. számlán) nincsenek
+     * meg, a szülő bizonylatról olvassuk ki őket. Enélkül a Fedex nem tudná,
+     * melyik küldeményhez tartozik a dokumentum.
+     */
+    private function getFedexKuldemenyadatok(Bizonylatfej $bizonylatfej)
+    {
+        $forras = $bizonylatfej;
+        if (!$forras->getFedextrackingnumber()) {
+            $par = $bizonylatfej->getParbizonylatfej();
+            if ($par && $par->getFedextrackingnumber()) {
+                $forras = $par;
+            }
+        }
+        return [
+            'trackingnumber' => $forras->getFedextrackingnumber(),
+            'shipdate' => ($forras->getFedexshipdate()
+                ? $forras->getFedexshipdate()->format('Y-m-d')
+                : null)
+        ];
     }
 
     /**
