@@ -50,6 +50,9 @@ class Bizonylatfej
     /** @ORM\Column(type="text",nullable=true) */
     private $fedexparcellabelurl;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $fedexshipdate;
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
@@ -5554,6 +5557,38 @@ class Bizonylatfej
             $fedexparcellabelurl = implode("\n", $fedexparcellabelurl);
         }
         $this->fedexparcellabelurl = $fedexparcellabelurl;
+    }
+
+    /**
+     * A Fedex által visszaadott feladási dátum
+     *
+     * @return \DateTime|null
+     */
+    public function getFedexshipdate()
+    {
+        return $this->fedexshipdate;
+    }
+
+    public function getFedexshipdateStr()
+    {
+        if ($this->fedexshipdate) {
+            return $this->fedexshipdate->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param \DateTime|string|null $adat a Fedex shipDatestamp (Y-m-d), vagy DateTime
+     */
+    public function setFedexshipdate($adat = null)
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->fedexshipdate = $adat;
+        } elseif ($adat) {
+            $this->fedexshipdate = new \DateTime(\mkw\store::convDate($adat));
+        } else {
+            $this->fedexshipdate = null;
+        }
     }
 
     /**

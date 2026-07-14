@@ -216,7 +216,8 @@ class FedexAPI
      * A pdfname a több csomagos küldemény első csomagjának címkéje, a többi
      * csomag címkéje _2, _3 ... postfix-szel kerül mentésre.
      *
-     * @return array|false a csomagonkénti [trackingnumber, pdfname] lista
+     * @return array|false mastertrackingnumber, shipdate (Y-m-d) és a
+     *                     csomagonkénti [trackingnumber, pdfname] lista
      */
     public function createShipment($shipmentdata, $pdfname)
     {
@@ -232,6 +233,7 @@ class FedexAPI
                 $shipment = $response->output->transactionShipments[0];
                 $result = [
                     'mastertrackingnumber' => $shipment->masterTrackingNumber ?? null,
+                    'shipdate' => $shipment->shipDatestamp ?? null,
                     'packages' => []
                 ];
                 $db = 0;

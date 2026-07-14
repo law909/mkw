@@ -211,15 +211,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $ig = $this->params->getStringRequestParam('datumigfilter');
         if ($tip && ($tol || $ig)) {
             switch ($tip) {
-                case 1:
-                    $mezo = 'kelt';
-                    break;
                 case 2:
                     $mezo = 'teljesites';
                     break;
                 case 3:
                     $mezo = 'esedekesseg';
                     break;
+                case 1:
                 default:
                     $mezo = 'kelt';
                     break;
@@ -530,6 +528,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = (bool)$t->getGlsparcelid();
         $x['fedexparcellabelurlek'] = $t->getFedexparcellabelurlek();
+        $x['fedexshipdatestr'] = $t->getFedexshipdateStr();
         $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();
         $x['isfedexszallitas'] = \mkw\store::isFedexSzallitasimod($t->getSzallitasimodId());
         $x['forditottadozas'] = $t->isForditottadozas();

@@ -38,6 +38,7 @@ class FedexService
             $megrendfej->setSimpleedit(true);
             $megrendfej->setFedextrackingnumber($trackingnumber);
             $megrendfej->setFedexparcellabelurl(array_column($fedexres['packages'], 'pdfname'));
+            $megrendfej->setFedexshipdate($fedexres['shipdate']);
             $megrendfej->setFuvarlevelszam($trackingnumber);
             \mkw\store::getEm()->persist($megrendfej);
             \mkw\store::getEm()->flush();
@@ -58,6 +59,7 @@ class FedexService
             if ($fedexres) {
                 $megrendfej->setSimpleedit(true);
                 $megrendfej->setFedexparcellabelurl(null);
+                $megrendfej->setFedexshipdate(null);
                 $megrendfej->setFedextrackingnumber(null);
                 $megrendfej->setFuvarlevelszam(null);
                 \mkw\store::getEm()->persist($megrendfej);

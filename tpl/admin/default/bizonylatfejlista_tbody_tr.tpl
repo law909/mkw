@@ -261,6 +261,12 @@
                         </td>
                     </tr>
                 {/if}
+                {if ($_egyed.fedexshipdatestr)}
+                    <tr>
+                        <td>{at('Fedex szállítás')}:</td>
+                        <td>{$_egyed.fedexshipdatestr}</td>
+                    </tr>
+                {/if}
             {/if}
             {if ($showkupon)}
                 <tr>
