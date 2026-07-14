@@ -285,8 +285,12 @@
                         {/if}
                         {if ($showhatarido)}
                             <td class="mattable-important"><label for="HataridoEdit">{at('Határidő')}:</label></td>
-                            <td><input id="HataridoEdit" name="hatarido" type="text" size="12" data-datum="{$egyed.hataridostr}" class="mattable-important"
-                                       required="required"></td>
+                            <td><input id="HataridoEdit" name="hatarido" type="text" size="12" data-datum="{$egyed.hataridostr}" class="mattable-important">
+                            </td>
+                            <td class="mattable-important"><label for="ShipDateEdit">{at('Feladás')}:</label></td>
+                            <td><input id="ShipDateEdit" name="shipdate" type="text" size="12" data-datum="{$egyed.shipdatestr}"
+                                       class="mattable-important">
+                            </td>
                         {/if}
                     </tr>
                     <tr>

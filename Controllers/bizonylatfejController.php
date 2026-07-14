@@ -528,7 +528,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = (bool)$t->getGlsparcelid();
         $x['fedexparcellabelurlek'] = $t->getFedexparcellabelurlek();
-        $x['fedexshipdatestr'] = $t->getFedexshipdateStr();
+        $x['shipdatestr'] = $t->getShipdateStr();
         $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();
         $x['isfedexszallitas'] = \mkw\store::isFedexSzallitasimod($t->getSzallitasimodId());
         $x['forditottadozas'] = $t->isForditottadozas();

@@ -261,10 +261,10 @@
                         </td>
                     </tr>
                 {/if}
-                {if ($_egyed.fedexshipdatestr)}
+                {if ($_egyed.shipdatestr)}
                     <tr>
                         <td>{at('Fedex szállítás')}:</td>
-                        <td>{$_egyed.fedexshipdatestr}</td>
+                        <td>{$_egyed.shipdatestr}</td>
                     </tr>
                 {/if}
             {/if}
@@ -294,6 +294,10 @@
                 <tr class="mattable-important">
                     <td>{at('Határidő')}:</td>
                     <td>{$_egyed.hataridostr}</td>
+                </tr>
+                <tr class="mattable-important">
+                    <td>{at('Feladás')}:</td>
+                    <td>{$_egyed.shipdatestr}</td>
                 </tr>
             {/if}
             </tbody>

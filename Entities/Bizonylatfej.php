@@ -51,7 +51,7 @@ class Bizonylatfej
     private $fedexparcellabelurl;
 
     /** @ORM\Column(type="date",nullable=true) */
-    private $fedexshipdate;
+    private $shipdate;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -1283,7 +1283,7 @@ class Bizonylatfej
                 'value' => $accountnumber
             ],
             'requestedShipment' => [
-                'shipDatestamp' => $this->getFedexshipdate() ? $this->getFedexshipdate()->format('Y-m-d') : date('Y-m-d'),
+                'shipDatestamp' => $this->getShipdate() ? $this->getShipdate()->format('Y-m-d') : date('Y-m-d'),
                 'serviceType' => \mkw\store::getParameter(\mkw\consts::FedexServiceType) ?: 'INTERNATIONAL_PRIORITY',
                 'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
                 'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
@@ -5674,35 +5674,27 @@ class Bizonylatfej
         $this->fedexparcellabelurl = $fedexparcellabelurl;
     }
 
-    /**
-     * A Fedex által visszaadott feladási dátum
-     *
-     * @return \DateTime|null
-     */
-    public function getFedexshipdate()
+    public function getShipdate(): \DateTime|null
     {
-        return $this->fedexshipdate;
+        return $this->shipdate;
     }
 
-    public function getFedexshipdateStr()
+    public function getShipdateStr(): string
     {
-        if ($this->fedexshipdate) {
-            return $this->fedexshipdate->format(\mkw\store::$DateFormat);
+        if ($this->shipdate) {
+            return $this->shipdate->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
-    /**
-     * @param \DateTime|string|null $adat a Fedex shipDatestamp (Y-m-d), vagy DateTime
-     */
-    public function setFedexshipdate($adat = null)
+    public function setShipdate($adat = null)
     {
         if (is_a($adat, 'DateTime')) {
-            $this->fedexshipdate = $adat;
+            $this->shipdate = $adat;
         } elseif ($adat) {
-            $this->fedexshipdate = new \DateTime(\mkw\store::convDate($adat));
+            $this->shipdate = new \DateTime(\mkw\store::convDate($adat));
         } else {
-            $this->fedexshipdate = null;
+            $this->shipdate = null;
         }
     }
 
