@@ -2287,6 +2287,45 @@ let bizonylathelper = function ($) {
                             }
                         }
                     });
+                })
+                .on('click', '.js-fedexrates', function (e) {
+                    e.preventDefault();
+                    let $this = $(this);
+                    dialogcenter.html('Fedex díj lekérdezése...').dialog({
+                        resizable: false,
+                        width: 480,
+                        modal: true,
+                        buttons: {
+                            'Bezár': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                    $.ajax({
+                        url: '/admin/' + bizonylattipus + 'fej/fedexrates',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: $this.data('egyedid')
+                        },
+                        success: function (data) {
+                            if (!data || data.error) {
+                                dialogcenter.html('Nem sikerült díjat lekérdezni: ' + ((data && data.error) || 'ismeretlen hiba'));
+                                return;
+                            }
+                            let html = '<table class="fedexrates"><thead><tr><th>Szolgáltatás</th><th>Nettó</th><th>Bruttó</th></tr></thead><tbody>';
+                            $.each(data.rates, function (i, rate) {
+                                html += '<tr><td>' + rate.servicename + '</td>'
+                                    + '<td>' + rate.netto + ' ' + (rate.valutanem || '') + '</td>'
+                                    + '<td>' + rate.brutto + ' ' + (rate.valutanem || '') + '</td></tr>';
+                            });
+                            html += '</tbody></table>';
+                            dialogcenter.html(html);
+                        },
+                        error: function () {
+                            dialogcenter.html('Nem sikerült díjat lekérdezni.');
+                        }
+                    });
                 });
 
             $('#cimkefiltercontainer').mattaccord({

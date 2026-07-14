@@ -278,6 +278,51 @@ class FedexAPI
         return false;
     }
 
+    public function getRates($ratedata)
+    {
+        $this->lasterrors = [];
+        $response = $this->callAPI('/rate/v1/rates/quotes', $ratedata);
+        if ($response) {
+            $response = json_decode($response);
+            $this->lasterrors = $this->extractErrors($response);
+            if (!$this->lasterrors && isset($response->output->rateReplyDetails)) {
+                $result = [];
+                foreach ($response->output->rateReplyDetails as $rate) {
+                    $dij = $this->pickRatedShipmentDetail($rate);
+                    if ($dij) {
+                        $result[] = [
+                            'servicetype' => $rate->serviceType ?? null,
+                            'servicename' => $rate->serviceName ?? ($rate->serviceType ?? ''),
+                            'netto' => (float)($dij->totalNetCharge ?? 0),
+                            'brutto' => (float)($dij->totalNetChargeWithDutiesAndTaxes ?? $dij->totalNetCharge ?? 0),
+                            'valutanem' => $dij->currency ?? null,
+                            'ratetype' => $dij->rateType ?? null,
+                            'szallitasiido' => $rate->commit->dateDetail->dayFormat ?? null
+                        ];
+                    }
+                }
+                if ($result) {
+                    return $result;
+                }
+            }
+        }
+        return false;
+    }
+
+    private function pickRatedShipmentDetail($rate)
+    {
+        $elso = false;
+        foreach (($rate->ratedShipmentDetails ?? []) as $dij) {
+            if (!$elso) {
+                $elso = $dij;
+            }
+            if (isset($dij->rateType) && $dij->rateType === 'ACCOUNT') {
+                return $dij;
+            }
+        }
+        return $elso;
+    }
+
     private function postfixPdfname($pdfname, $db)
     {
         $ext = pathinfo($pdfname, PATHINFO_EXTENSION);

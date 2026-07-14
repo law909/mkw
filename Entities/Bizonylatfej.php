@@ -1251,22 +1251,16 @@ class Bizonylatfej
     public function toFedexAPI()
     {
         $accountnumber = \mkw\store::getParameter(\mkw\consts::FedexAccountNumber);
-        $vanszallcim = (bool)$this->getSzallirszam();
 
         $csomagok = [];
-        foreach ($this->getCsomagSulyai() as $i => $csomagsuly) {
-            $csomagok[] = [
-                'weight' => [
-                    'units' => 'KG',
-                    'value' => $csomagsuly
-                ],
-                'customerReferences' => [
-                    [
-                        'customerReferenceType' => 'CUSTOMER_REFERENCE',
-                        'value' => $this->getId()
-                    ]
+        foreach ($this->toFedexCsomagok() as $csomag) {
+            $csomag['customerReferences'] = [
+                [
+                    'customerReferenceType' => 'CUSTOMER_REFERENCE',
+                    'value' => $this->getId()
                 ]
             ];
+            $csomagok[] = $csomag;
         }
 
         $result = [
@@ -1280,35 +1274,9 @@ class Bizonylatfej
                 'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
                 'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
                 'blockInsightVisibility' => false,
-                'shipper' => [
-                    'contact' => [
-                        'personName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
-                        'companyName' => $this->getTulajnev(),
-                        'phoneNumber' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
-                        'emailAddress' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
-                    ],
-                    'address' => [
-                        'streetLines' => [$this->getTulajutca()],
-                        'city' => $this->getTulajvaros(),
-                        'postalCode' => $this->getTulajirszam(),
-                        'countryCode' => 'HU'
-                    ]
-                ],
+                'shipper' => $this->toFedexFelado(),
                 'recipients' => [
-                    [
-                        'contact' => [
-                            'personName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
-                            'companyName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
-                            'phoneNumber' => $this->getPartnertelefon(),
-                            'emailAddress' => $this->getPartneremail()
-                        ],
-                        'address' => [
-                            'streetLines' => [($vanszallcim ? $this->getSzallutca() : $this->getPartnerutca())],
-                            'city' => ($vanszallcim ? $this->getSzallvaros() : $this->getPartnervaros()),
-                            'postalCode' => ($vanszallcim ? $this->getSzallirszam() : $this->getPartnerirszam()),
-                            'countryCode' => $this->getFedexOrszagkod()
-                        ]
-                    ]
+                    $this->toFedexCimzett()
                 ],
                 'shippingChargesPayment' => [
                     'paymentType' => 'SENDER',
@@ -1331,19 +1299,112 @@ class Bizonylatfej
         ];
 
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
-            $result['requestedShipment']['shipmentSpecialServices'] = [
-                'specialServiceTypes' => ['COD'],
-                'shipmentCODDetail' => [
-                    'codCollectionType' => 'CASH',
-                    'codCollectionAmount' => [
-                        'amount' => (float)$this->getBruttohuf(),
-                        'currency' => 'HUF'
-                    ]
-                ]
-            ];
+            $result['requestedShipment']['shipmentSpecialServices'] = $this->toFedexUtanvet();
         }
 
         return $result;
+    }
+
+    /**
+     * Díjlekérdezés (Rate API) kérése ugyanezekre a címekre és csomagokra.
+     * serviceType nélkül a Fedex az összes elérhető szolgáltatásra ad árat.
+     */
+    public function toFedexRateAPI($servicetype = null)
+    {
+        $accountnumber = \mkw\store::getParameter(\mkw\consts::FedexAccountNumber);
+
+        $result = [
+            'accountNumber' => [
+                'value' => $accountnumber
+            ],
+            'rateRequestControlParameters' => [
+                'returnTransitTimes' => true
+            ],
+            'requestedShipment' => [
+                'shipDateStamp' => date('Y-m-d'),
+                'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
+                'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
+                'rateRequestType' => ['ACCOUNT', 'LIST'],
+                'shipper' => $this->toFedexFelado(),
+                'recipient' => $this->toFedexCimzett(),
+                'totalPackageCount' => count($this->getCsomagSulyai()),
+                'requestedPackageLineItems' => $this->toFedexCsomagok()
+            ]
+        ];
+
+        if ($servicetype) {
+            $result['requestedShipment']['serviceType'] = $servicetype;
+        }
+        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
+            $result['requestedShipment']['shipmentSpecialServices'] = $this->toFedexUtanvet();
+        }
+
+        return $result;
+    }
+
+    private function toFedexFelado()
+    {
+        return [
+            'contact' => [
+                'personName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
+                'companyName' => $this->getTulajnev(),
+                'phoneNumber' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
+                'emailAddress' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
+            ],
+            'address' => [
+                'streetLines' => [$this->getTulajutca()],
+                'city' => $this->getTulajvaros(),
+                'postalCode' => $this->getTulajirszam(),
+                'countryCode' => 'HU'
+            ]
+        ];
+    }
+
+    private function toFedexCimzett()
+    {
+        $vanszallcim = (bool)$this->getSzallirszam();
+        return [
+            'contact' => [
+                'personName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
+                'companyName' => ($vanszallcim ? $this->getSzallnev() : $this->getPartnernev()),
+                'phoneNumber' => $this->getPartnertelefon(),
+                'emailAddress' => $this->getPartneremail()
+            ],
+            'address' => [
+                'streetLines' => [($vanszallcim ? $this->getSzallutca() : $this->getPartnerutca())],
+                'city' => ($vanszallcim ? $this->getSzallvaros() : $this->getPartnervaros()),
+                'postalCode' => ($vanszallcim ? $this->getSzallirszam() : $this->getPartnerirszam()),
+                'countryCode' => $this->getFedexOrszagkod()
+            ]
+        ];
+    }
+
+    private function toFedexCsomagok()
+    {
+        $csomagok = [];
+        foreach ($this->getCsomagSulyai() as $csomagsuly) {
+            $csomagok[] = [
+                'weight' => [
+                    'units' => 'KG',
+                    'value' => $csomagsuly
+                ]
+            ];
+        }
+        return $csomagok;
+    }
+
+    private function toFedexUtanvet()
+    {
+        return [
+            'specialServiceTypes' => ['COD'],
+            'shipmentCODDetail' => [
+                'codCollectionType' => 'CASH',
+                'codCollectionAmount' => [
+                    'amount' => (float)$this->getBruttohuf(),
+                    'currency' => 'HUF'
+                ]
+            ]
+        ];
     }
 
     private function getFedexOrszagkod()

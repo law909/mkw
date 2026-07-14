@@ -76,6 +76,14 @@ class webshopbizfejController extends bizonylatfejController
         $fedexsvc->delFedexParcel($this->params->getStringRequestParam('id'));
     }
 
+    public function getFedexRates()
+    {
+        $fedexsvc = new FedexService();
+        echo json_encode(
+            $fedexsvc->getRatesById($this->params->getStringRequestParam('id'))
+        );
+    }
+
     public function backOrder()
     {
         $backorderSvc = new BackorderService();

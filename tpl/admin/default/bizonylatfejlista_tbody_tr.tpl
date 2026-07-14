@@ -232,6 +232,7 @@
                         {/if}
                         &nbsp;{if ($_egyed.isglsbekuldve)}<a href="#" class="js-delglsparcel" data-egyedid="{$_egyed.id}">GLS csomag törlés</a>{/if}
                         &nbsp;{if ($_egyed.isfedexbekuldve)}<a href="#" class="js-delfedexparcel" data-egyedid="{$_egyed.id}">Fedex csomag törlés</a>{/if}
+                        &nbsp;{if ($_egyed.isfedexszallitas)}<a href="#" class="js-fedexrates" data-egyedid="{$_egyed.id}">{at('Fedex díj')}</a>{/if}
                     </td>
                 </tr>
                 {if ($_egyed.foxpostbarcode)}

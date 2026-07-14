@@ -2107,19 +2107,93 @@
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="FedexServiceTypeEdit">{at('Fedex szolgáltatás típus')}:</label></span>
-                                <input id="FedexServiceTypeEdit" name="fedexservicetype" type="text" value="{$fedexservicetype}"
-                                       title="pl. INTERNATIONAL_PRIORITY, INTERNATIONAL_ECONOMY, FEDEX_REGIONAL_ECONOMY">
+                                <select id="FedexServiceTypeEdit" name="fedexservicetype">
+                                    <option value="INTERNATIONAL_PRIORITY"{if ($fedexservicetype=='INTERNATIONAL_PRIORITY')} selected="selected"{/if}>
+                                        INTERNATIONAL_PRIORITY
+                                    </option>
+                                    <option
+                                        value="INTERNATIONAL_PRIORITY_EXPRESS"{if ($fedexservicetype=='INTERNATIONAL_PRIORITY_EXPRESS')} selected="selected"{/if}>
+                                        INTERNATIONAL_PRIORITY_EXPRESS
+                                    </option>
+                                    <option value="INTERNATIONAL_ECONOMY"{if ($fedexservicetype=='INTERNATIONAL_ECONOMY')} selected="selected"{/if}>
+                                        INTERNATIONAL_ECONOMY
+                                    </option>
+                                    <option value="INTERNATIONAL_FIRST"{if ($fedexservicetype=='INTERNATIONAL_FIRST')} selected="selected"{/if}>
+                                        INTERNATIONAL_FIRST
+                                    </option>
+                                    <option
+                                        value="FEDEX_INTERNATIONAL_CONNECT_PLUS"{if ($fedexservicetype=='FEDEX_INTERNATIONAL_CONNECT_PLUS')} selected="selected"{/if}>
+                                        FEDEX_INTERNATIONAL_CONNECT_PLUS
+                                    </option>
+                                    <option value="FEDEX_REGIONAL_ECONOMY"{if ($fedexservicetype=='FEDEX_REGIONAL_ECONOMY')} selected="selected"{/if}>
+                                        FEDEX_REGIONAL_ECONOMY
+                                    </option>
+                                    <option
+                                        value="FEDEX_REGIONAL_ECONOMY_FREIGHT"{if ($fedexservicetype=='FEDEX_REGIONAL_ECONOMY_FREIGHT')} selected="selected"{/if}>
+                                        FEDEX_REGIONAL_ECONOMY_FREIGHT
+                                    </option>
+                                    <option
+                                        value="INTERNATIONAL_PRIORITY_FREIGHT"{if ($fedexservicetype=='INTERNATIONAL_PRIORITY_FREIGHT')} selected="selected"{/if}>
+                                        INTERNATIONAL_PRIORITY_FREIGHT
+                                    </option>
+                                    <option
+                                        value="INTERNATIONAL_ECONOMY_FREIGHT"{if ($fedexservicetype=='INTERNATIONAL_ECONOMY_FREIGHT')} selected="selected"{/if}>
+                                        INTERNATIONAL_ECONOMY_FREIGHT
+                                    </option>
+                                </select>
                                 <span class="setuplabel"><label for="FedexPackagingTypeEdit">{at('Fedex csomagolás típus')}:</label></span>
-                                <input id="FedexPackagingTypeEdit" name="fedexpackagingtype" type="text" value="{$fedexpackagingtype}"
-                                       title="pl. YOUR_PACKAGING, FEDEX_BOX, FEDEX_ENVELOPE">
+                                <select id="FedexPackagingTypeEdit" name="fedexpackagingtype">
+                                    <option value="YOUR_PACKAGING"{if ($fedexpackagingtype=='YOUR_PACKAGING')} selected="selected"{/if}>YOUR_PACKAGING</option>
+                                    <option value="FEDEX_ENVELOPE"{if ($fedexpackagingtype=='FEDEX_ENVELOPE')} selected="selected"{/if}>FEDEX_ENVELOPE</option>
+                                    <option value="FEDEX_PAK"{if ($fedexpackagingtype=='FEDEX_PAK')} selected="selected"{/if}>FEDEX_PAK</option>
+                                    <option value="FEDEX_BOX"{if ($fedexpackagingtype=='FEDEX_BOX')} selected="selected"{/if}>FEDEX_BOX</option>
+                                    <option value="FEDEX_SMALL_BOX"{if ($fedexpackagingtype=='FEDEX_SMALL_BOX')} selected="selected"{/if}>FEDEX_SMALL_BOX
+                                    </option>
+                                    <option value="FEDEX_MEDIUM_BOX"{if ($fedexpackagingtype=='FEDEX_MEDIUM_BOX')} selected="selected"{/if}>FEDEX_MEDIUM_BOX
+                                    </option>
+                                    <option value="FEDEX_LARGE_BOX"{if ($fedexpackagingtype=='FEDEX_LARGE_BOX')} selected="selected"{/if}>FEDEX_LARGE_BOX
+                                    </option>
+                                    <option value="FEDEX_EXTRA_LARGE_BOX"{if ($fedexpackagingtype=='FEDEX_EXTRA_LARGE_BOX')} selected="selected"{/if}>
+                                        FEDEX_EXTRA_LARGE_BOX
+                                    </option>
+                                    <option value="FEDEX_10KG_BOX"{if ($fedexpackagingtype=='FEDEX_10KG_BOX')} selected="selected"{/if}>FEDEX_10KG_BOX</option>
+                                    <option value="FEDEX_25KG_BOX"{if ($fedexpackagingtype=='FEDEX_25KG_BOX')} selected="selected"{/if}>FEDEX_25KG_BOX</option>
+                                    <option value="FEDEX_TUBE"{if ($fedexpackagingtype=='FEDEX_TUBE')} selected="selected"{/if}>FEDEX_TUBE</option>
+                                </select>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="FedexPickupTypeEdit">{at('Fedex felvétel típus')}:</label></span>
-                                <input id="FedexPickupTypeEdit" name="fedexpickuptype" type="text" value="{$fedexpickuptype}"
-                                       title="pl. USE_SCHEDULED_PICKUP, CONTACT_FEDEX_TO_SCHEDULE, DROPOFF_AT_FEDEX_LOCATION">
+                                <select id="FedexPickupTypeEdit" name="fedexpickuptype">
+                                    <option value="USE_SCHEDULED_PICKUP"{if ($fedexpickuptype=='USE_SCHEDULED_PICKUP')} selected="selected"{/if}>
+                                        USE_SCHEDULED_PICKUP
+                                    </option>
+                                    <option value="CONTACT_FEDEX_TO_SCHEDULE"{if ($fedexpickuptype=='CONTACT_FEDEX_TO_SCHEDULE')} selected="selected"{/if}>
+                                        CONTACT_FEDEX_TO_SCHEDULE
+                                    </option>
+                                    <option value="DROPOFF_AT_FEDEX_LOCATION"{if ($fedexpickuptype=='DROPOFF_AT_FEDEX_LOCATION')} selected="selected"{/if}>
+                                        DROPOFF_AT_FEDEX_LOCATION
+                                    </option>
+                                </select>
                                 <span class="setuplabel"><label for="FedexLabelStockTypeEdit">{at('Fedex címke méret')}:</label></span>
-                                <input id="FedexLabelStockTypeEdit" name="fedexlabelstocktype" type="text" value="{$fedexlabelstocktype}"
-                                       title="pl. PAPER_4X6, PAPER_LETTER, PAPER_85X11_TOP_HALF_LABEL">
+                                <select id="FedexLabelStockTypeEdit" name="fedexlabelstocktype">
+                                    <option value="PAPER_4X6"{if ($fedexlabelstocktype=='PAPER_4X6')} selected="selected"{/if}>PAPER_4X6</option>
+                                    <option value="PAPER_4X675"{if ($fedexlabelstocktype=='PAPER_4X675')} selected="selected"{/if}>PAPER_4X675</option>
+                                    <option value="PAPER_4X8"{if ($fedexlabelstocktype=='PAPER_4X8')} selected="selected"{/if}>PAPER_4X8</option>
+                                    <option value="PAPER_4X9"{if ($fedexlabelstocktype=='PAPER_4X9')} selected="selected"{/if}>PAPER_4X9</option>
+                                    <option value="PAPER_7X475"{if ($fedexlabelstocktype=='PAPER_7X475')} selected="selected"{/if}>PAPER_7X475</option>
+                                    <option
+                                        value="PAPER_85X11_TOP_HALF_LABEL"{if ($fedexlabelstocktype=='PAPER_85X11_TOP_HALF_LABEL')} selected="selected"{/if}>
+                                        PAPER_85X11_TOP_HALF_LABEL
+                                    </option>
+                                    <option
+                                        value="PAPER_85X11_BOTTOM_HALF_LABEL"{if ($fedexlabelstocktype=='PAPER_85X11_BOTTOM_HALF_LABEL')} selected="selected"{/if}>
+                                        PAPER_85X11_BOTTOM_HALF_LABEL
+                                    </option>
+                                    <option value="PAPER_LETTER"{if ($fedexlabelstocktype=='PAPER_LETTER')} selected="selected"{/if}>PAPER_LETTER</option>
+                                    <option value="STOCK_4X6"{if ($fedexlabelstocktype=='STOCK_4X6')} selected="selected"{/if}>STOCK_4X6</option>
+                                    <option value="STOCK_4X8"{if ($fedexlabelstocktype=='STOCK_4X8')} selected="selected"{/if}>STOCK_4X8</option>
+                                    <option value="STOCK_4X9"{if ($fedexlabelstocktype=='STOCK_4X9')} selected="selected"{/if}>STOCK_4X9</option>
+                                </select>
                             </div>
                         </div>
                     </div>

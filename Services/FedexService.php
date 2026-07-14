@@ -66,11 +66,33 @@ class FedexService
         }
     }
 
-    /**
-     * Egy kötegre egy példány: így a tokent egyszer kéri le, a többi rendelés
-     * már a példányon cache-elt tokennel megy ki.
-     */
-    private function getApi()
+    public function getRatesById($id)
+    {
+        /** @var Bizonylatfej $megrendfej */
+        $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
+        if (!$megrendfej) {
+            return ['error' => 'Nincs ilyen bizonylat'];
+        }
+        $fedexapi = $this->getApi();
+        $rates = $fedexapi->getRates($megrendfej->toFedexRateAPI());
+        if (!$rates) {
+            $error = $this->getApi()->getLasterrors();
+            \mkw\store::writelog('Fedex rate API error: ' . json_encode($error), 'fedex_api_error.txt');
+            return ['error' => ($error ? $this->errorText($error) : 'A Fedex nem adott díjat erre a küldeményre')];
+        }
+        return ['rates' => $rates];
+    }
+
+    private function errorText($errors)
+    {
+        $result = [];
+        foreach ($errors as $error) {
+            $result[] = trim(($error->code ?? '') . ' ' . ($error->message ?? ''));
+        }
+        return implode(', ', $result);
+    }
+
+    protected function getApi()
     {
         if ($this->fedexapi) {
             return $this->fedexapi;
