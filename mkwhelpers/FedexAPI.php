@@ -184,9 +184,10 @@ class FedexAPI
         $response = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
+        \mkw\store::writelog($response, 'fedex_api_response.txt');
+        \mkw\store::writelog($httpcode, 'fedex_api_response.txt');
         curl_close($curl);
 
-        // a cache-elt token idő előtt érvénytelenné vált: eldobjuk és újrapróbáljuk
         if ($retry && ($httpcode == 401 || $httpcode == 403)) {
             $this->clearToken();
             return $this->callAPI($endpoint, $data, $method, false);
