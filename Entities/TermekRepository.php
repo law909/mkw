@@ -35,6 +35,74 @@ class TermekRepository extends \mkwhelpers\Repository
         $filter->addFilter('fuggoben', '=', false);
     }
 
+    /**
+     * @return array|false valutanemid, arsavid, afaszorzo
+     */
+    protected function getWebshopArsavAdatok()
+    {
+        $valutanemid = \mkw\store::getWebshopValutanem()?->getId();
+        $arsavid = \mkw\store::getParameter(\mkw\consts::getWebshopDiscountConst(\mkw\store::getWebshopNum()));
+        if (!$valutanemid || !$arsavid) {
+            return false;
+        }
+        $afa = \mkw\store::getOrszag()?->getAfa();
+        return [
+            'valutanemid' => (int)$valutanemid,
+            'arsavid' => (int)$arsavid,
+            'afaszorzo' => ($afa ? $afa->calcBrutto(1) : 1)
+        ];
+    }
+
+    public function getArsavosTermekIdsNettoKozzel($minnetto, $maxnetto)
+    {
+        $arsav = $this->getWebshopArsavAdatok();
+        if (!$arsav) {
+            return [];
+        }
+        $q = $this->_em->createQuery(
+            'SELECT IDENTITY(ta.termek) AS id FROM Entities\TermekAr ta'
+            . ' WHERE (ta.valutanem = :valutanem) AND (ta.arsav = :arsav)'
+            . ' AND (ta.netto >= :minnetto) AND (ta.netto <= :maxnetto)'
+        );
+        $q->setParameters([
+            'valutanem' => $arsav['valutanemid'],
+            'arsav' => $arsav['arsavid'],
+            'minnetto' => $minnetto,
+            'maxnetto' => $maxnetto
+        ]);
+        $ids = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ids[] = $sor['id'];
+        }
+        return $ids;
+    }
+
+    public function getArsavosTermekIdsBruttoKozzel($minbrutto, $maxbrutto)
+    {
+        $arsav = $this->getWebshopArsavAdatok();
+        if (!$arsav || !$arsav['afaszorzo']) {
+            return [];
+        }
+        return $this->getArsavosTermekIdsNettoKozzel(
+            $minbrutto / $arsav['afaszorzo'],
+            $maxbrutto / $arsav['afaszorzo']
+        );
+    }
+
+    /**
+     * @return string|false
+     */
+    public function getArsavArOrderSql()
+    {
+        $arsav = $this->getWebshopArsavAdatok();
+        if (!$arsav) {
+            return false;
+        }
+        return '(SELECT ta.netto FROM termekar ta'
+            . ' WHERE (ta.termek_id = _xx.id) AND (ta.valutanem_id = ' . $arsav['valutanemid'] . ')'
+            . ' AND (ta.arsav_id = ' . $arsav['arsavid'] . '))';
+    }
+
     public function getAkciosFilterSQL($date = null)
     {
         if (!$date) {
@@ -408,6 +476,23 @@ class TermekRepository extends \mkwhelpers\Repository
 
     public function getTermekListaMaxAr($filter)
     {
+        $arsav = \mkw\store::isMugenrace2026() ? $this->getWebshopArsavAdatok() : false;
+        if ($arsav) {
+            // az árak az ársávokban vannak, a termek.brutto oszlop nincs feltöltve
+            $this->addAktivLathatoFilter($filter);
+            $q = $this->_em->createQuery(
+                'SELECT MAX(ar.netto)'
+                . ' FROM Entities\Termek _xx'
+                . ' LEFT JOIN _xx.termekfa1 fa1'
+                . ' LEFT JOIN _xx.termekfa2 fa2'
+                . ' LEFT JOIN _xx.termekfa3 fa3'
+                . ' LEFT JOIN _xx.termekarak ar WITH (ar.valutanem = ' . $arsav['valutanemid'] . ')'
+                . ' AND (ar.arsav = ' . $arsav['arsavid'] . ')'
+                . $this->getFilterString($filter)
+            );
+            $q->setParameters($this->getQueryParameters($filter));
+            return $q->getSingleScalarResult() * $arsav['afaszorzo'];
+        }
         $this->addAktivLathatoFilter($filter);
         $q = $this->_em->createQuery(
             'SELECT MAX(_xx.brutto+IF(v.brutto IS NULL,0,v.brutto))'
@@ -737,9 +822,22 @@ class TermekRepository extends \mkwhelpers\Repository
         if ($a) {
             $filter->addFilter(['termekfa1', 'termekfa2', 'termekfa3'], '=', $a);
         }
-        $filter->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz) / 100)
-            ->addFilter('brutto', '<=', $termek->getBrutto() * (100 + $arszaz) / 100)
-            ->addFilter('id', '<>', $termek->getId())
+        $arsav = \mkw\store::isMugenrace2026() ? $this->getWebshopArsavAdatok() : false;
+        if ($arsav) {
+            $netto = $termek->calcSalePrice($arsav['valutanemid']);
+            $ids = $this->getArsavosTermekIdsNettoKozzel(
+                $netto * (100 - $arszaz) / 100,
+                $netto * (100 + $arszaz) / 100
+            );
+            if (!$ids) {
+                return [];
+            }
+            $filter->addFilter('id', null, $ids);
+        } else {
+            $filter->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz) / 100)
+                ->addFilter('brutto', '<=', $termek->getBrutto() * (100 + $arszaz) / 100);
+        }
+        $filter->addFilter('id', '<>', $termek->getId())
             ->addFilter('nemkaphato', '=', false);
 
         return $this->getWithJoins($filter, [], 0, $db);

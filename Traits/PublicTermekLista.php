@@ -109,12 +109,33 @@ trait PublicTermekLista
 
     private function buildArfilter($minarfilter, $maxarfilter): FilterDescriptor
     {
+        if (\mkw\store::isMugenrace2026()) {
+            return $this->buildArsavosArfilter($minarfilter, $maxarfilter);
+        }
         $arfilterstring = '(_xx.brutto>=' . $minarfilter . ')';
         if ($maxarfilter > 0) {
             $arfilterstring .= ' AND (_xx.brutto<=' . $maxarfilter . ')';
         }
         $arfilter = new FilterDescriptor();
         $arfilter->addSql('((' . $arfilterstring . ') OR (_xx.brutto IS NULL))');
+        return $arfilter;
+    }
+
+    private function buildArsavosArfilter($minarfilter, $maxarfilter): FilterDescriptor
+    {
+        $arfilter = new FilterDescriptor();
+        if ($minarfilter <= 0 && $maxarfilter <= 0) {
+            return $arfilter;
+        }
+        $ids = $this->getEm()->getRepository(Termek::class)->getArsavosTermekIdsBruttoKozzel(
+            $minarfilter,
+            $maxarfilter
+        );
+        if ($ids) {
+            $arfilter->addFilter('id', null, $ids);
+        } else {
+            $arfilter->addFilter('id', '=', false);
+        }
         return $arfilter;
     }
 
@@ -233,6 +254,12 @@ trait PublicTermekLista
 
     private function orderMap(string|null $ord): array
     {
+        if (\mkw\store::isMugenrace2026() && ($ord === 'arasc' || $ord === 'ardesc')) {
+            $arsql = $this->getEm()->getRepository(Termek::class)->getArsavArOrderSql();
+            if ($arsql) {
+                return [$arsql => ($ord === 'arasc' ? 'ASC' : 'DESC')];
+            }
+        }
         return match ($ord) {
             'nevasc' => ['_xx.nev' => 'ASC'],
             'nevdesc' => ['_xx.nev' => 'DESC'],
