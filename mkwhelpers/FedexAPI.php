@@ -170,6 +170,7 @@ class FedexAPI
         curl_setopt($curl, CURLOPT_URL, $this->apiurl . '/oauth/token');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 600);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_POSTFIELDS, $req);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/x-www-form-urlencoded'
@@ -205,6 +206,7 @@ class FedexAPI
         curl_setopt($curl, CURLOPT_URL, $this->apiurl . $endpoint);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 600);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_POSTFIELDS, $req);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Authorization: Bearer ' . $token,
@@ -258,6 +260,7 @@ class FedexAPI
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 600);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $req);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         // a Content-Type-ot a curl állítja be, mert a multipart boundary is kell bele
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Authorization: Bearer ' . $token,
