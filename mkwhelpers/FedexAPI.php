@@ -74,6 +74,7 @@ class FedexAPI
     protected function getToken()
     {
         if ($this->token && $this->tokenexpires > time()) {
+            \mkw\store::writelog('Token a példányból', 'fedex_api.txt');
             return $this->token;
         }
         $cached = $this->readTokenCache();
@@ -81,10 +82,29 @@ class FedexAPI
             $this->token = $cached['token'];
             $this->tokenexpires = $cached['expires'];
             if ($this->token && $this->tokenexpires > time()) {
+                \mkw\store::writelog('Token cacheból', 'fedex_api.txt');
                 return $this->token;
             }
         }
+        \mkw\store::writelog('Token fetch indul', 'fedex_api.txt');
         return $this->fetchToken();
+    }
+
+    protected function fetchToken()
+    {
+        $response = $this->requestToken();
+        if ($response) {
+            if (isset($response->access_token)) {
+                $this->token = $response->access_token;
+                $this->tokenexpires = time()
+                    + (isset($response->expires_in) ? (int)$response->expires_in : 3600)
+                    - self::TOKENMARGIN;
+                $this->writeTokenCache();
+                return $this->token;
+            }
+            $this->lasterrors = $this->extractErrors($response);
+        }
+        return false;
     }
 
     public function clearToken()
@@ -138,6 +158,7 @@ class FedexAPI
 
     protected function requestToken()
     {
+        \mkw\store::writelog('requestToken() start', 'fedex_api.txt');
         $req = http_build_query([
             'grant_type' => 'client_credentials',
             'client_id' => $this->apikey,
@@ -155,7 +176,13 @@ class FedexAPI
             ]
         );
         $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        $error = curl_error($curl);
+        $status = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
         curl_close($curl);
+
+        \mkw\store::writelog('requestToken() end', 'fedex_api.txt');
+        \mkw\store::writelog('errno: ' . $errno . ' error: ' . $error . ' status: ' . $status, 'fedex_api.txt');
 
         if ($response) {
             return json_decode($response);
@@ -163,25 +190,10 @@ class FedexAPI
         return false;
     }
 
-    protected function fetchToken()
-    {
-        $response = $this->requestToken();
-        if ($response) {
-            if (isset($response->access_token)) {
-                $this->token = $response->access_token;
-                $this->tokenexpires = time()
-                    + (isset($response->expires_in) ? (int)$response->expires_in : 3600)
-                    - self::TOKENMARGIN;
-                $this->writeTokenCache();
-                return $this->token;
-            }
-            $this->lasterrors = $this->extractErrors($response);
-        }
-        return false;
-    }
-
     protected function callAPI($endpoint, $data, $method = 'POST', $retry = true)
     {
+        \mkw\store::writelog('callAPI() starts: ' . $this->apiurl . $endpoint, 'fedex_api.txt');
+
         $token = $this->getToken();
         if (!$token) {
             return false;
@@ -202,13 +214,19 @@ class FedexAPI
             ]
         );
         $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        $error = curl_error($curl);
+        $status = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        \mkw\store::writelog($this->apiurl . $endpoint, 'fedex_api.txt');
+        curl_close($curl);
+
         \mkw\store::writelog($req, 'fedex_api.txt');
         \mkw\store::writelog($response, 'fedex_api.txt');
+        \mkw\store::writelog('errno: ' . $errno . ' error: ' . $error . ' status: ' . $status, 'fedex_api.txt');
         \mkw\store::writelog($httpcode, 'fedex_api.txt');
-        curl_close($curl);
+
+        \mkw\store::writelog('callAPI() end: ' . $this->apiurl . $endpoint, 'fedex_api.txt');
 
         if ($retry && ($httpcode == 401 || $httpcode == 403)) {
             $this->clearToken();
@@ -359,6 +377,7 @@ class FedexAPI
      */
     public function createShipment($shipmentdata, $pdfname)
     {
+        \mkw\store::writelog('createShipment() starts ', 'fedex_api.txt');
         $this->lasterrors = [];
         $response = $this->callAPI('/ship/v1/shipments', $shipmentdata);
         if ($response) {
