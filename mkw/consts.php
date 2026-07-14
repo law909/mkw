@@ -219,6 +219,7 @@ class consts
     const GLSSM2 = 'glssm2';
 
     const FedexApiURL = 'fedexapiurl';
+    const FedexDocApiURL = 'fedexdocapiurl';
     const FedexApiKey = 'fedexapikey';
     const FedexSecretKey = 'fedexsecretkey';
     const FedexAccountNumber = 'fedexaccountnumber';

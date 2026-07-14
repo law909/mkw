@@ -68,6 +68,73 @@ class FedexService
         }
     }
 
+    /**
+     * A bizonylat pdf számlaképét feltölti a Fedexhez kereskedelmi dokumentumként.
+     *
+     * Ha a bizonylaton már van Fedex fuvarlevélszám és feladási dátum, akkor utólagos
+     * (post-shipment) feltöltés történik – ilyenkor a Fedex a küldeményhez rendeli a
+     * dokumentumot. Egyébként feladás előtti (pre-shipment) feltöltés, ilyenkor a
+     * visszakapott docid-t kell a küldemény feladásakor megadni.
+     *
+     * @return string|false a Fedex dokumentum azonosítója (docid)
+     */
+    public function uploadSzamlakep(Bizonylatfej $bizonylatfej)
+    {
+        if (!\mkw\store::isPDF()) {
+            \mkw\store::writelog('Fedex dokumentum feltöltés: a pdf készítés nincs bekapcsolva', 'fedex_api_error.txt');
+            return false;
+        }
+        $pdfpath = $this->createSzamlakepPdf($bizonylatfej);
+        if (!$pdfpath) {
+            \mkw\store::writelog(
+                'Fedex dokumentum feltöltés: nem sikerült pdf-et készíteni a(z) '
+                . $bizonylatfej->getId() . ' bizonylatból',
+                'fedex_api_error.txt'
+            );
+            return false;
+        }
+
+        $fedexapi = $this->getApi();
+        $fedexres = $fedexapi->uploadTradeDocument(
+            $pdfpath,
+            basename($pdfpath),
+            [
+                'shipdocumenttype' => 'COMMERCIAL_INVOICE',
+                'origincountrycode' => 'HU',
+                'destinationcountrycode' => $bizonylatfej->getFedexOrszagkod(),
+                'trackingnumber' => $bizonylatfej->getFedextrackingnumber(),
+                'shipdate' => ($bizonylatfej->getFedexshipdate()
+                    ? $bizonylatfej->getFedexshipdate()->format('Y-m-d')
+                    : null)
+            ]
+        );
+        $fedexerror = $fedexapi->getLasterrors();
+        if ($fedexerror) {
+            \mkw\store::writelog('Fedex API error: ' . json_encode($fedexerror), 'fedex_api_error.txt');
+        }
+        unlink($pdfpath);
+
+        return $fedexres ? $fedexres['docid'] : false;
+    }
+
+    /**
+     * @return string|false a legenerált pdf útvonala
+     */
+    private function createSzamlakepPdf(Bizonylatfej $bizonylatfej)
+    {
+        $bizctrl = \Controllers\bizonylatfejController::factory($bizonylatfej->getBizonylattipusId());
+        $html = $bizctrl->getBizonylatHTML($bizonylatfej->getId());
+        if (!$html) {
+            return false;
+        }
+        $pdfpath = \mkw\store::storagePath(\mkw\store::urlize($bizonylatfej->getId()) . '_fedex.pdf');
+        \mkw\store::getPDFEngine($html)->saveAs($pdfpath);
+        if (!is_readable($pdfpath)) {
+            return false;
+        }
+        return $pdfpath;
+    }
+
     public function getRatesById($id)
     {
         /** @var Bizonylatfej $megrendfej */
@@ -104,6 +171,7 @@ class FedexService
                 'secretkey' => \mkw\store::getParameter(\mkw\consts::FedexSecretKey),
                 'accountnumber' => \mkw\store::getParameter(\mkw\consts::FedexAccountNumber),
                 'apiurl' => \mkw\store::getParameter(\mkw\consts::FedexApiURL),
+                'docapiurl' => \mkw\store::getParameter(\mkw\consts::FedexDocApiURL),
                 'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::FedexParcelLabelDir)
             ]
         );

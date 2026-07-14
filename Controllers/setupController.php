@@ -409,6 +409,8 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::FedexApiURL);
         $view->setVar(\mkw\consts::FedexApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FedexDocApiURL);
+        $view->setVar(\mkw\consts::FedexDocApiURL, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FedexApiKey);
         $view->setVar(\mkw\consts::FedexApiKey, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FedexSecretKey);
@@ -1280,6 +1282,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::GLSTerminalURL, $this->params->getStringRequestParam('glsterminalurl'), true);
 
         $this->setObj(\mkw\consts::FedexApiURL, $this->params->getStringRequestParam('fedexapiurl'), true);
+        $this->setObj(\mkw\consts::FedexDocApiURL, $this->params->getStringRequestParam('fedexdocapiurl'), true);
         $this->setObj(\mkw\consts::FedexApiKey, $this->params->getStringRequestParam('fedexapikey'));
         $this->setObj(\mkw\consts::FedexSecretKey, $this->params->getStringRequestParam('fedexsecretkey'));
         $this->setObj(\mkw\consts::FedexAccountNumber, $this->params->getStringRequestParam('fedexaccountnumber'));

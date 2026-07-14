@@ -11,6 +11,7 @@ class FedexAPI
     private $secretkey;
     private $accountnumber;
     private $apiurl = 'https://apis-sandbox.fedex.com';
+    private $docapiurl;
     private $pdfdirectory;
     private $token;
     private $tokenexpires = 0;
@@ -24,7 +25,26 @@ class FedexAPI
         if ($param['apiurl']) {
             $this->apiurl = rtrim($param['apiurl'], '/');
         }
+        if (!empty($param['docapiurl'])) {
+            $this->docapiurl = rtrim($param['docapiurl'], '/');
+        }
         $this->pdfdirectory = $param['pdfdirectory'];
+    }
+
+    /**
+     * A dokumentum feltöltés (ETD) a többi Fedex API-tól eltérő hoston fut, a
+     * tokent viszont ugyanonnan kapjuk. Ha nincs külön beállítva, az apiurl-ből
+     * (sandbox / éles) következtetünk rá.
+     */
+    protected function getDocApiUrl()
+    {
+        if ($this->docapiurl) {
+            return $this->docapiurl;
+        }
+        if (str_contains($this->apiurl, 'sandbox')) {
+            return 'https://documentapitest.prod.fedex.com/sandbox';
+        }
+        return 'https://documentapi.prod.fedex.com';
     }
 
     /**
@@ -196,6 +216,124 @@ class FedexAPI
         }
 
         return $response;
+    }
+
+    /**
+     * A dokumentum feltöltés multipart/form-data-t vár: a "document" rész a
+     * dokumentum leíró json, az "attachment" rész maga a fájl.
+     */
+    protected function callUploadAPI($endpoint, $documentdata, $filepath, $filename, $mimetype, $retry = true)
+    {
+        $token = $this->getToken();
+        if (!$token) {
+            return false;
+        }
+        $documentjson = json_encode($documentdata, JSON_UNESCAPED_UNICODE);
+        $req = [
+            'document' => $documentjson,
+            'attachment' => new \CURLFile($filepath, $mimetype, $filename)
+        ];
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_URL, $this->getDocApiUrl() . $endpoint);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 600);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $req);
+        // a Content-Type-ot a curl állítja be, mert a multipart boundary is kell bele
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer ' . $token,
+                'X-locale: hu_HU'
+            ]
+        );
+        $response = curl_exec($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        \mkw\store::writelog($this->getDocApiUrl() . $endpoint, 'fedex_api.txt');
+        \mkw\store::writelog($documentjson . ' [' . $filename . ']', 'fedex_api.txt');
+        \mkw\store::writelog($response, 'fedex_api.txt');
+        \mkw\store::writelog($httpcode, 'fedex_api.txt');
+        curl_close($curl);
+
+        if ($retry && ($httpcode == 401 || $httpcode == 403)) {
+            $this->clearToken();
+            return $this->callUploadAPI($endpoint, $documentdata, $filepath, $filename, $mimetype, false);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Kereskedelmi dokumentumot (pl. számlakép) tölt fel a Fedexhez.
+     *
+     * A $meta lehetséges kulcsai:
+     *   shipdocumenttype (alap: COMMERCIAL_INVOICE), origincountrycode (alap: HU),
+     *   destinationcountrycode, carriercode (alap: FDXE), contenttype (alap: application/pdf),
+     *   trackingnumber + shipdate (Y-m-d): ha mindkettő megvan, utólagos (post-shipment)
+     *   feltöltés történik, egyébként feladás előtti (pre-shipment).
+     *
+     * Pre-shipment esetén a visszakapott docid-t a küldemény feladásakor kell megadni
+     * (shipmentSpecialServices / etdDetail / attachedDocuments / documentId).
+     *
+     * @return array|false ['docid' => ..., 'folderid' => ..., 'documenttype' => ...]
+     */
+    public function uploadTradeDocument($filepath, $filename, $meta = [])
+    {
+        $this->lasterrors = [];
+        if (!$filepath || !is_readable($filepath)) {
+            $this->lasterrors = [
+                (object)[
+                    'code' => 'DOCUMENT.NOT.FOUND',
+                    'message' => 'A feltöltendő dokumentum nem olvasható: ' . $filepath
+                ]
+            ];
+            return false;
+        }
+        $utolagos = !empty($meta['trackingnumber']) && !empty($meta['shipdate']);
+        $documentdata = [
+            'workflowName' => ($utolagos ? 'ETDPostShipment' : 'ETDPreshipment'),
+            'carrierCode' => $meta['carriercode'] ?? 'FDXE',
+            'name' => $filename,
+            'contentType' => $meta['contenttype'] ?? 'application/pdf',
+            'meta' => [
+                'shipDocumentType' => $meta['shipdocumenttype'] ?? 'COMMERCIAL_INVOICE',
+                'originCountryCode' => $meta['origincountrycode'] ?? 'HU',
+                'destinationCountryCode' => $meta['destinationcountrycode'] ?? 'HU'
+            ]
+        ];
+        if ($utolagos) {
+            $documentdata['meta']['trackingNumber'] = $meta['trackingnumber'];
+            $documentdata['meta']['shipmentDate'] = $meta['shipdate'];
+        }
+
+        $response = $this->callUploadAPI(
+            '/documents/v1/etds/upload',
+            $documentdata,
+            $filepath,
+            $filename,
+            $meta['contenttype'] ?? 'application/pdf'
+        );
+        if ($response) {
+            $response = json_decode($response);
+            $this->lasterrors = $this->extractErrors($response);
+            if (!$this->lasterrors) {
+                $docid = $response->output->meta->docId ?? null;
+                if ($docid) {
+                    return [
+                        'docid' => $docid,
+                        'folderid' => $response->output->meta->folderId ?? null,
+                        'documenttype' => $response->output->meta->documentType ?? null
+                    ];
+                }
+                $this->lasterrors = [
+                    (object)[
+                        'code' => 'DOCUMENT.UPLOAD.FAILED',
+                        'message' => 'A Fedex nem adott vissza dokumentum azonosítót'
+                    ]
+                ];
+            }
+        }
+        return false;
     }
 
     protected function extractErrors($response)

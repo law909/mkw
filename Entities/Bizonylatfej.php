@@ -1412,12 +1412,12 @@ class Bizonylatfej
         ];
     }
 
-    private function getFedexOrszagkod()
+    public function getFedexOrszagkod()
     {
         $orszagkod = $this->getSzallirszam()
             ? $this->getPartnerszallorszagiso3166()
             : $this->getPartnerorszagiso3166();
-        return $orszagkod ? $orszagkod : 'HU';
+        return $orszagkod ?: 'HU';
     }
 
     public function toBarionModel()

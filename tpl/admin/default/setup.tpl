@@ -2091,6 +2091,11 @@
                                 <input id="FedexAccountNumberEdit" name="fedexaccountnumber" type="text" value="{$fedexaccountnumber}" autocomplete="off">
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexDocApiUrlEdit">{at('Fedex dokumentum API URL')}:</label></span>
+                                <input id="FedexDocApiUrlEdit" name="fedexdocapiurl" type="text" value="{$fedexdocapiurl}"
+                                       title="Dokumentum feltöltés (ETD). Éles: https://documentapi.prod.fedex.com, teszt: https://documentapitest.prod.fedex.com/sandbox. Üresen hagyva a Fedex API URL alapján dől el.">
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="FedexApiKeyEdit">{at('Fedex API key')}:</label></span>
                                 <input id="FedexApiKeyEdit" name="fedexapikey" type="text" value="{$fedexapikey}" autocomplete="off">
                                 <span class="setuplabel"><label for="FedexSecretKeyEdit">{at('Fedex secret key')}:</label></span>
