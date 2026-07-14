@@ -200,6 +200,51 @@ class BizonylatfejListener
         }
     }
 
+    /**
+     * A beszúrt / módosított / törölt tételek bizonylatfejei, amelyek maguktól nem
+     * kerülnének a flush-listára. Törléskor a tételről már le van csatolva a fej,
+     * ilyenkor a UnitOfWork eredeti adataiból vesszük.
+     *
+     * @param array $marbenne a már feldolgozásra kerülő entitások
+     *
+     * @return \Entities\Bizonylatfej[]
+     */
+    private function tetelekBizonylatfejei(array $marbenne)
+    {
+        $ismert = [];
+        foreach ($marbenne as $entity) {
+            if ($entity instanceof \Entities\Bizonylatfej) {
+                $ismert[spl_object_id($entity)] = true;
+            }
+        }
+
+        $result = [];
+        $tetelek = array_merge(
+            $this->uow->getScheduledEntityInsertions(),
+            $this->uow->getScheduledEntityUpdates(),
+            $this->uow->getScheduledEntityDeletions()
+        );
+        foreach ($tetelek as $tetel) {
+            if (!($tetel instanceof \Entities\Bizonylattetel)) {
+                continue;
+            }
+            $fej = $tetel->getBizonylatfej();
+            if (!$fej) {
+                $eredeti = $this->uow->getOriginalEntityData($tetel);
+                $fej = $eredeti['bizonylatfej'] ?? null;
+            }
+            if (!($fej instanceof \Entities\Bizonylatfej) || $this->uow->isScheduledForDelete($fej)) {
+                continue;
+            }
+            $oid = spl_object_id($fej);
+            if (!isset($ismert[$oid])) {
+                $ismert[$oid] = true;
+                $result[] = $fej;
+            }
+        }
+        return $result;
+    }
+
     private function removeBiztetel($bizfej, $termekid)
     {
         if ($termekid) {
@@ -552,6 +597,8 @@ class BizonylatfejListener
             $insertedentities,
             $updatedentities,
         );
+
+        $entities = array_merge($entities, $this->tetelekBizonylatfejei($entities));
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {

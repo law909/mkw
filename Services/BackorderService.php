@@ -8,6 +8,32 @@ use Entities\TermekFa;
 
 class BackorderService
 {
+    private function szabadKeszlet(
+        \Entities\Bizonylattetel $tetel,
+        Bizonylatfej $biz,
+        $nominkeszlet,
+        $nominkeszletkat
+    ): float|bool {
+        /** @var \Entities\Termek $t */
+        $t = $tetel->getTermek();
+        if (!$t || !$t->getMozgat()) {
+            return false;
+        }
+        $v = $tetel->getTermekvaltozat();
+        if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
+            if ($v) {
+                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($biz->getId());
+            } else {
+                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($biz->getId());
+            }
+        } elseif ($v) {
+            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($biz->getId()) - $v->calcMinboltikeszlet();
+        } else {
+            $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($biz->getId()) - $t->getMinboltikeszlet();
+        }
+        return max($keszlet, 0);
+    }
+
     public function backOrder($id)
     {
         $regibiz = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
@@ -24,27 +50,11 @@ class BackorderService
             try {
                 $ujdb = 0;
                 $regidb = 0;
-                $keszlet = 0;
                 /** @var \Entities\Bizonylattetel $regitetel */
                 foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                    /** @var \Entities\Termek $t */
-                    $t = $regitetel->getTermek();
-                    if ($t && $t->getMozgat()) {
-                        $v = $regitetel->getTermekvaltozat();
-                        if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
-                            if ($v) {
-                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId());
-                            } else {
-                                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId());
-                            }
-                        } elseif ($v) {
-                            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
-                        } else {
-                            $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
-                        }
-                    }
-                    if ($keszlet < 0) {
-                        $keszlet = 0;
+                    $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
+                    if ($keszlet === false) {
+                        continue;
                     }
                     if ($keszlet < $regitetel->getMennyiseg()) {
                         $ujdb++;
@@ -82,24 +92,11 @@ class BackorderService
                     $ujbiz->setBizonylatstatusz($backorder);
                     /** @var \Entities\Bizonylattetel $regitetel */
                     foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                        /** @var \Entities\Termek $t */
-                        $t = $regitetel->getTermek();
-                        if ($t && $t->getMozgat()) {
-                            $v = $regitetel->getTermekvaltozat();
-                            if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
-                                if ($v) {
-                                    $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId());
-                                } else {
-                                    $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId());
-                                }
-                            } elseif ($v) {
-                                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId()) - $v->calcMinboltikeszlet();
-                            } else {
-                                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId()) - $t->getMinboltikeszlet();
-                            }
-                        }
-                        if ($keszlet < 0) {
-                            $keszlet = 0;
+                        $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
+                        if ($keszlet === false) {
+                            $regitetel->calc();
+                            \mkw\store::getEm()->persist($regitetel);
+                            continue;
                         }
                         if ($keszlet < $regitetel->getMennyiseg()) {
                             $ujtetel = new \Entities\Bizonylattetel();
