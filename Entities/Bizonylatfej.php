@@ -1462,6 +1462,7 @@ class Bizonylatfej
     {
         $ktgs = $this->getKoltsegTermekIdk();
         $valutanem = $this->getValutanemnev() ?: 'HUF';
+        $nyelv = $this->getBizonylatnyelv();
         $vamertek = 0;
         $arucikkek = [];
         /** @var Bizonylattetel $bt */
@@ -1476,7 +1477,7 @@ class Bizonylatfej
             $suly = round((float)$bt->getSuly() * $mennyiseg, 2);
             $vamertek += round((float)$bt->getNetto(), 2);
             $arucikk = [
-                'description' => ($bt->getTermeknev() ?: $bt->getCikkszam()),
+                'description' => ($bt->getLocalizedFieldValue('termeknev', $nyelv) ?: $bt->getTermeknev()),
                 'countryOfManufacture' => 'HU',
                 'quantity' => $mennyiseg,
                 'quantityUnits' => 'PCS',
