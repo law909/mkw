@@ -783,6 +783,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
         $obj->setHatarido($this->params->getStringRequestParam('hatarido'));
+        $obj->setShipdate($this->params->getStringRequestParam('shipdate'));
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));

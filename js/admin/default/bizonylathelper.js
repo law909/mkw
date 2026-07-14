@@ -1340,6 +1340,7 @@ let bizonylathelper = function ($) {
                 });
                 mkwcomp.datumEdit.init('#EsedekessegEdit');
                 mkwcomp.datumEdit.init('#HataridoEdit');
+                mkwcomp.datumEdit.init('#ShipDateEdit');
                 mkwcomp.datumEdit.init('#FakeKifizetesdatumEdit');
                 mkwcomp.datumEdit.init('#SZEPKartyaErvenyessegEdit');
 
