@@ -961,48 +961,50 @@ class Bizonylatfej
             $eddigi = 0;
             $fizmod = $this->getFizmod();
             $kelt = new \DateTimeImmutable(\mkw\store::convDate($this->getKeltStr()));
-            if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
-                $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));
-                $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek1() / 100, 2);
-                $this->setFizetendo1($fiz);
-                $eddigi = $eddigi + $fiz;
-            }
-            if ($fizmod->getOsztotthaladek2()) {
-                $this->setEsedekesseg2($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek2() . 'D')));
-                if ($fizmod->getOsztottszazalek2() * 1 > 0) {
-                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek2() / 100, 2);
-                    $this->setFizetendo2($fiz);
+            if ($fizmod) {
+                if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
+                    $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));
+                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek1() / 100, 2);
+                    $this->setFizetendo1($fiz);
                     $eddigi = $eddigi + $fiz;
-                } else {
-                    $this->setFizetendo2($this->fizetendo - $eddigi);
-                    $eddigi = $this->fizetendo;
                 }
-            }
-            if ($fizmod->getOsztotthaladek3()) {
-                $this->setEsedekesseg3($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek3() . 'D')));
-                if ($fizmod->getOsztottszazalek3() * 1 > 0) {
-                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek3() / 100, 2);
-                    $this->setFizetendo3($fiz);
-                    $eddigi = $eddigi + $fiz;
-                } else {
-                    $this->setFizetendo3($this->fizetendo - $eddigi);
-                    $eddigi = $this->fizetendo;
+                if ($fizmod->getOsztotthaladek2()) {
+                    $this->setEsedekesseg2($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek2() . 'D')));
+                    if ($fizmod->getOsztottszazalek2() * 1 > 0) {
+                        $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek2() / 100, 2);
+                        $this->setFizetendo2($fiz);
+                        $eddigi = $eddigi + $fiz;
+                    } else {
+                        $this->setFizetendo2($this->fizetendo - $eddigi);
+                        $eddigi = $this->fizetendo;
+                    }
                 }
-            }
-            if ($fizmod->getOsztotthaladek4()) {
-                $this->setEsedekesseg4($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek4() . 'D')));
-                if ($fizmod->getOsztottszazalek4() * 1 > 0) {
-                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek4() / 100, 2);
-                    $this->setFizetendo4($fiz);
-                    $eddigi = $eddigi + $fiz;
-                } else {
-                    $this->setFizetendo4($this->fizetendo - $eddigi);
-                    $eddigi = $this->fizetendo;
+                if ($fizmod->getOsztotthaladek3()) {
+                    $this->setEsedekesseg3($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek3() . 'D')));
+                    if ($fizmod->getOsztottszazalek3() * 1 > 0) {
+                        $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek3() / 100, 2);
+                        $this->setFizetendo3($fiz);
+                        $eddigi = $eddigi + $fiz;
+                    } else {
+                        $this->setFizetendo3($this->fizetendo - $eddigi);
+                        $eddigi = $this->fizetendo;
+                    }
                 }
-            }
-            if ($fizmod->getOsztotthaladek5()) {
-                $this->setEsedekesseg5($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek5() . 'D')));
-                $this->setFizetendo5($this->fizetendo - $eddigi);
+                if ($fizmod->getOsztotthaladek4()) {
+                    $this->setEsedekesseg4($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek4() . 'D')));
+                    if ($fizmod->getOsztottszazalek4() * 1 > 0) {
+                        $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek4() / 100, 2);
+                        $this->setFizetendo4($fiz);
+                        $eddigi = $eddigi + $fiz;
+                    } else {
+                        $this->setFizetendo4($this->fizetendo - $eddigi);
+                        $eddigi = $this->fizetendo;
+                    }
+                }
+                if ($fizmod->getOsztotthaladek5()) {
+                    $this->setEsedekesseg5($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek5() . 'D')));
+                    $this->setFizetendo5($this->fizetendo - $eddigi);
+                }
             }
         }
     }
