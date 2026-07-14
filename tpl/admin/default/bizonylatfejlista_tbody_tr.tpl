@@ -104,7 +104,12 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca} {$_egyed.partnerhazszam}
+                    {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca} {$_egyed.partnerhazszam}, {$_egyed.partnerorszagnev}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {$_egyed.szallirszam} {$_egyed.szallvaros}, {$_egyed.szallutca} {$_egyed.szallhazszam}, {$_egyed.partnerszallorszagnev}
                 </td>
             </tr>
             <tr>
