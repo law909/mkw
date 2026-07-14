@@ -629,6 +629,7 @@ class store
         $v->setVar('dev', self::getConfigValue('developer', false));
         $v->setVar('imagepath', self::getConfigValue('main.imagepath', ''));
         $v->setVar('locale', self::getWebshopLongLocale());
+        $v->setVar('shortlocale', self::getWebshopShortLocale());
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
@@ -1126,6 +1127,19 @@ class store
         return 'hu';
     }
 
+    public static function getWebshopShortLocale()
+    {
+        if (self::isMPTNGY()) {
+            $l = self::getMainLocale();
+        } else {
+            $l = self::getParameter(self::getWebshopFieldName('locale'));
+            if ($l) {
+                $l = self::translateToShortLocaleName($l);
+            }
+        }
+        return $l;
+    }
+
     public static function getWebshopLongLocale()
     {
         if (self::isMPTNGY()) {
@@ -1137,6 +1151,16 @@ class store
             }
         }
         return $l;
+    }
+
+    public static function translateToShortLocaleName($ny)
+    {
+        $ny = strtolower($ny);
+        if (array_key_exists($ny, self::$locales)) {
+            return $ny;
+        }
+        $short = array_search($ny, self::$locales, true);
+        return $short !== false ? $short : $ny;
     }
 
     public static function translateToLongLocaleName($ny)

@@ -88,7 +88,9 @@
         <script src="https://js.stripe.com/v3/"></script>
         <script>
             (function () {
-                let stripe = Stripe('{$stripePublishableKey}');
+                let stripe = Stripe('{$stripePublishableKey}', {
+                    locale: '{$shortlocale}'
+                });
                 let elements = stripe.elements({
                     clientSecret: '{$stripeClientSecret}',
                     appearance: {
