@@ -5,7 +5,7 @@
             <div class="container">
                 <div class="row">
                     <div class="span12">
-                        <a href="/"><img src="/themes/main/mugenrace2026/img/colorlogo.png" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
+                        <a href="/"><img src="/themes/main/mugenrace2026/img/mugen-logo.svg" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
                     </div>
                 </div>
             </div>
