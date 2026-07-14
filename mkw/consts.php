@@ -229,6 +229,7 @@ class consts
     const FedexPickupType = 'fedexpickuptype';
     const FedexLabelStockType = 'fedexlabelstocktype';
     const FedexDefaultSuly = 'fedexdefaultsuly';
+    const FedexDutiesPaymentType = 'fedexdutiespaymenttype';
     const FedexToken = 'fedextoken';
 
     const TOFSzallitasiMod = 'tofszallitasimod';

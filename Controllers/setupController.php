@@ -429,6 +429,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::FedexLabelStockType, ($p ? $p->getErtek() : 'PAPER_4X6'));
         $p = $repo->find(\mkw\consts::FedexDefaultSuly);
         $view->setVar(\mkw\consts::FedexDefaultSuly, ($p ? $p->getErtek() : 1));
+        $p = $repo->find(\mkw\consts::FedexDutiesPaymentType);
+        $view->setVar(\mkw\consts::FedexDutiesPaymentType, ($p ? $p->getErtek() : 'RECIPIENT'));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
@@ -1293,6 +1295,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::FedexPickupType, $this->params->getStringRequestParam('fedexpickuptype'));
         $this->setObj(\mkw\consts::FedexLabelStockType, $this->params->getStringRequestParam('fedexlabelstocktype'));
         $this->setObj(\mkw\consts::FedexDefaultSuly, $this->params->getNumRequestParam('fedexdefaultsuly'));
+        $this->setObj(\mkw\consts::FedexDutiesPaymentType, $this->params->getStringRequestParam('fedexdutiespaymenttype'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
         $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
         $this->setObj(\mkw\consts::Off2, $this->params->getBoolRequestParam(\mkw\consts::Off2));

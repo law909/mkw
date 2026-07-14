@@ -2111,6 +2111,24 @@
                                        title="Ezzel a súllyal megy a csomag, ha a tételeken nincs súly megadva">
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="FedexDutiesPaymentTypeEdit">{at('Fedex vám és adó fizetője')}:</label></span>
+                                <select id="FedexDutiesPaymentTypeEdit" name="fedexdutiespaymenttype"
+                                        title="Külföldre menő küldemény vámkezelésénél (customsClearanceDetail / dutiesPayment)">
+                                    <option value="RECIPIENT"{if ($fedexdutiespaymenttype=='RECIPIENT')} selected="selected"{/if}>
+                                        RECIPIENT - a címzett fizeti
+                                    </option>
+                                    <option value="SENDER"{if ($fedexdutiespaymenttype=='SENDER')} selected="selected"{/if}>
+                                        SENDER - a feladó fizeti
+                                    </option>
+                                    <option value="THIRD_PARTY"{if ($fedexdutiespaymenttype=='THIRD_PARTY')} selected="selected"{/if}>
+                                        THIRD_PARTY - harmadik fél fizeti
+                                    </option>
+                                    <option value="COLLECT"{if ($fedexdutiespaymenttype=='COLLECT')} selected="selected"{/if}>
+                                        COLLECT - utólag beszedve
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="FedexServiceTypeEdit">{at('Fedex szolgáltatás típus')}:</label></span>
                                 <select id="FedexServiceTypeEdit" name="fedexservicetype">
                                     <option value="INTERNATIONAL_PRIORITY"{if ($fedexservicetype=='INTERNATIONAL_PRIORITY')} selected="selected"{/if}>

@@ -1370,7 +1370,7 @@ class Bizonylatfej
                 'returnTransitTimes' => true
             ],
             'requestedShipment' => [
-                'shipDateStamp' => date('Y-m-d'),
+                'shipDateStamp' => $this->getShipdate() ? $this->getShipdate()->format('Y-m-d') : date('Y-m-d'),
                 'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
                 'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
                 'rateRequestType' => ['ACCOUNT', 'LIST'],
@@ -1503,9 +1503,7 @@ class Bizonylatfej
             return false;
         }
         $result = [
-            'dutiesPayment' => [
-                'paymentType' => 'RECIPIENT'
-            ],
+            'dutiesPayment' => $this->toFedexVamfizeto(),
             'commodities' => $arucikkek
         ];
         if ($feladas) {
@@ -1516,6 +1514,28 @@ class Bizonylatfej
             $result['totalCustomsValue'] = [
                 'amount' => round($vamertek, 2),
                 'currency' => $valutanem
+            ];
+        }
+        return $result;
+    }
+
+    /**
+     * A vám és az adó fizetője (dutiesPayment). Ha a feladó (vagy harmadik fél)
+     * fizeti, a Fedex a fizető fél account number-ét is kéri.
+     */
+    private function toFedexVamfizeto()
+    {
+        $fizeto = \mkw\store::getParameter(\mkw\consts::FedexDutiesPaymentType) ?: 'RECIPIENT';
+        $result = [
+            'paymentType' => $fizeto
+        ];
+        if ($fizeto === 'SENDER' || $fizeto === 'THIRD_PARTY') {
+            $result['payor'] = [
+                'responsibleParty' => [
+                    'accountNumber' => [
+                        'value' => \mkw\store::getParameter(\mkw\consts::FedexAccountNumber)
+                    ]
+                ]
             ];
         }
         return $result;
@@ -5159,7 +5179,7 @@ class Bizonylatfej
         if ($this->getPartnerorszag()) {
             return $this->getPartnerorszag();
         }
-        return false;
+        return null;
     }
 
     /**
