@@ -184,8 +184,10 @@ class FedexAPI
         $response = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        \mkw\store::writelog($response, 'fedex_api_response.txt');
-        \mkw\store::writelog($httpcode, 'fedex_api_response.txt');
+        \mkw\store::writelog($this->apiurl . $endpoint, 'fedex_api.txt');
+        \mkw\store::writelog($req, 'fedex_api.txt');
+        \mkw\store::writelog($response, 'fedex_api.txt');
+        \mkw\store::writelog($httpcode, 'fedex_api.txt');
         curl_close($curl);
 
         if ($retry && ($httpcode == 401 || $httpcode == 403)) {
