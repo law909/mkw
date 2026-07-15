@@ -4881,7 +4881,7 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getShipdate()
+    public function getShipdate(): ?\DateTime
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShipdate', []);
@@ -4892,7 +4892,7 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getShipdateStr()
+    public function getShipdateStr(): string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShipdateStr', []);
