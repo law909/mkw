@@ -1142,6 +1142,29 @@ var cart = (function($) {
                 console.log('cart input submit 1');
 				submitMennyEdit($(this));
 				return false;
+			})
+			// Törlés a becsúszó kosárból: ne navigáljon a kosár oldalra,
+			// csak frissítse a becsúszó kosarat (a .side-cart-ra szűrünk, hogy
+			// a teljes kosár oldal viselkedése változatlan maradjon).
+			.on('click', '.side-cart .js-kosardelbtn', function(e) {
+				e.preventDefault();
+				var wasActive = $('.side-cart').hasClass('active');
+				$.ajax({
+					url: $(this).attr('href'),
+					type: 'POST',
+					data: {
+						jax: 1
+					},
+					success: function(data) {
+						var d = JSON.parse(data);
+						$('#minikosar').html(d.minikosar);
+						$('#minikosaringyenes').html(d.minikosaringyenes);
+						if (wasActive) {
+							$('.side-cart').addClass('active');
+						}
+					}
+				});
+				return false;
 			});
 	}
 

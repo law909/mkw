@@ -319,24 +319,11 @@ class kosarController extends \mkwhelpers\MattableController
             $this->getRepo()->add($termekid, $vid);
 
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
-                $minidata = $this->getMiniData();
-                $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
-                $v->setVar('kosar', $minidata);
-
-                $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
-                $v2->setVar('kosar', $minidata);
-
-                echo json_encode([
-                    'termekdb' => \mkwhelpers\TypeConverter::toInt($minidata['termekdb']),
-                    'minikosar' => $v->getTemplateResult(),
-                    'minikosaringyenes' => $v2->getTemplateResult()
-                ]);
+                echo json_encode($this->calcKosarData());
+            } elseif (\mkw\store::getMainSession()->prevuri) {
+                header('Location: ' . \mkw\store::getMainSession()->prevuri);
             } else {
-                if (\mkw\store::getMainSession()->prevuri) {
-                    Header('Location: ' . \mkw\store::getMainSession()->prevuri);
-                } else {
-                    Header('Location: /');
-                }
+                header('Location: /');
             }
         }
     }
@@ -377,11 +364,9 @@ class kosarController extends \mkwhelpers\MattableController
         $id = $this->params->getIntRequestParam('id');
         if ($this->getRepo()->del($id)) {
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
-                echo 'ok';
-            } elseif (\mkw\store::getMainSession()->prevuri) {
-                Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
+                echo json_encode($this->calcKosarData($id));
             } else {
-                Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
+                header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
             }
         }
     }
@@ -392,22 +377,20 @@ class kosarController extends \mkwhelpers\MattableController
         $menny = $this->params->getNumRequestParam('mennyiseg', false);
         $kedvezmeny = $this->params->getNumRequestParam('kedvezmeny', false);
         if ($this->getRepo()->edit($id, $menny, $kedvezmeny)) {
-            if ($this->params->getIntRequestParam('jax', 0) > 0) {
-                echo 'ok';
-            } else {
-                echo json_encode($this->calcKosarData($id));
-            }
+            echo json_encode($this->calcKosarData($id));
         }
     }
 
-    protected function calcKosarData($id)
+    protected function calcKosarData($id = null)
     {
         $partner = \mkw\store::getLoggedInUser();
         $minidata = $this->getMiniData();
         $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
+        \mkw\store::fillTemplate($v);
         $v->setVar('kosar', $minidata);
 
         $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
+        \mkw\store::fillTemplate($v2);
         $v2->setVar('kosar', $minidata);
 
         $sum = 0;
@@ -421,8 +404,10 @@ class kosarController extends \mkwhelpers\MattableController
             }
             $mennyisegsum = $m['mennyisegsum'];
         }
+        $valutanem = null;
         $valutanemnev = 'Ft';
         if (\mkw\store::getTheme() !== 'mkwcansas') {
+            \mkw\store::writelog(\mkw\store::getParameter(\mkw\store::getWebshopFieldName('webshopvalutanem')));
             $valutanem = \mkw\store::getWebshopValutanem();
             $valutanemnev = $valutanem?->getNev();
         }
@@ -435,15 +420,15 @@ class kosarController extends \mkwhelpers\MattableController
         }
 
         $sorok = $this->getRepo()->find($id);
-        $s = $sorok->toLista($partner);
+        $s = $sorok?->toLista($partner);
         return [
-            'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-            'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-            'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
-            'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+            'tetelegysegar' => number_format($s['bruttoegysarhuf'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
+            'tetelertek' => number_format($s['bruttohuf'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
+            'tetelnettoertek' => number_format($s['nettohuf'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
+            'tetelbruttoertek' => number_format($s['bruttohuf'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
             'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
-            'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
-            'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+            'kosarnetto' => number_format($m['nettosum'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
+            'kosarbrutto' => number_format($m['bruttosum'] ?? 0, $ker, ',', ' ') . ' ' . $valutanemnev,
             'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
             'minikosar' => $v->getTemplateResult(),
             'minikosaringyenes' => $v2->getTemplateResult(),

@@ -108,7 +108,7 @@ class store
             case self::isMindentkapni():
                 return 36;
             case self::isMugenrace2026():
-                return 1;
+                return 2;
             case self::isSuperzoneHu():
                 return 1;
         }
