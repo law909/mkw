@@ -198,6 +198,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $kosarrepo = $this->getRepo(Kosar::class);
         $krepo = $this->getRepo(SzallitasimodFizmodNovelo::class);
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
+        \mkw\store::fillTemplate($view);
         $fm = new fizmodController();
         $szm = $this->params->getIntRequestParam('szallitasimod');
         $szlist = $fm->getSelectList(null, $szm);
@@ -238,6 +239,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $data = $this->_getTetelListData();
 
         $view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
+        \mkw\store::fillTemplate($view);
 
         $view->setVar('valutanemnev', $data['valutanemnev']);
         $view->setVar('szallitasiido', $data['szallitasiido']);
