@@ -1361,6 +1361,13 @@ let bizonylathelper = function ($) {
                 }
             },
             beforeSerialize: function (f, o, quick) {
+                // A gyorsrögzítő jelzőt a mattkarb setup.quick-je nem állítja be, ezért a bizonylat
+                // rejtett "quick" mezőjéből olvassuk ki. E nélkül az alábbi blokk kimarad, és a gyors
+                // felvitel tételei ÁFA nélkül, valamint minden változattal (nem csak azokkal, amelyekhez
+                // a felhasználó mennyiséget adott) kerülnének mentésre.
+                if (!quick) {
+                    quick = $('input[name="quick"]', f).val() == 1;
+                }
                 if (quick) {
                     $('.js-quickmennyiseginput').each(function () {
                         if (!$(this).val()) {
