@@ -980,17 +980,20 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             a.tartalom,
             p.nev AS szerzonev,
             a.szerzo1email,
-            p.mpt_munkahelynev,
-            '' AS szimpocim, '' AS elnok, '' AS elnok_munkahely, '' AS opponens, '' AS opponens_munkahely,'' AS szimpotartalom, NULL AS szimpoid,
-            p2.nev AS szerzo2nev, a.szerzo2email, p2.mpt_munkahelynev AS szerzo2munkahely,
-            p3.nev AS szerzo3nev, a.szerzo3email, p3.mpt_munkahelynev AS szerzo3munkahely,
-            p4.nev AS szerzo4nev, a.szerzo4email, p4.mpt_munkahelynev AS szerzo4munkahely,
-            p5.nev AS szerzo5nev, a.szerzo5email, p5.mpt_munkahelynev AS szerzo5munkahely,
-            p6.nev AS szerzo6nev, a.szerzo6email, p6.mpt_munkahelynev AS szerzo6munkahely,
-            p7.nev AS szerzo7nev, a.szerzo7email, p7.mpt_munkahelynev AS szerzo7munkahely,
-            p8.nev AS szerzo8nev, a.szerzo8email, p8.mpt_munkahelynev AS szerzo8munkahely,
-            p9.nev AS szerzo9nev, a.szerzo9email, p9.mpt_munkahelynev AS szerzo9munkahely,
-            p10.nev AS szerzo10nev, a.szerzo10email, p10.mpt_munkahelynev AS szerzo10munkahely,
+            e1.nev AS szerzo1egyetem, k1.nev AS szerzo1kar, p.mptngyegyetemegyeb AS szerzo1egyetemegyeb,
+            '' AS szimpocim,
+            '' AS elnok, '' AS elnok_egyetem, '' AS elnok_kar, '' AS elnok_egyetemegyeb,
+            '' AS opponens, '' AS opponens_egyetem, '' AS opponens_kar, '' AS opponens_egyetemegyeb,
+            '' AS szimpotartalom, NULL AS szimpoid,
+            p2.nev AS szerzo2nev, a.szerzo2email, e2.nev AS szerzo2egyetem, k2.nev AS szerzo2kar, p2.mptngyegyetemegyeb AS szerzo2egyetemegyeb,
+            p3.nev AS szerzo3nev, a.szerzo3email, e3.nev AS szerzo3egyetem, k3.nev AS szerzo3kar, p3.mptngyegyetemegyeb AS szerzo3egyetemegyeb,
+            p4.nev AS szerzo4nev, a.szerzo4email, e4.nev AS szerzo4egyetem, k4.nev AS szerzo4kar, p4.mptngyegyetemegyeb AS szerzo4egyetemegyeb,
+            p5.nev AS szerzo5nev, a.szerzo5email, e5.nev AS szerzo5egyetem, k5.nev AS szerzo5kar, p5.mptngyegyetemegyeb AS szerzo5egyetemegyeb,
+            p6.nev AS szerzo6nev, a.szerzo6email, e6.nev AS szerzo6egyetem, k6.nev AS szerzo6kar, p6.mptngyegyetemegyeb AS szerzo6egyetemegyeb,
+            p7.nev AS szerzo7nev, a.szerzo7email, e7.nev AS szerzo7egyetem, k7.nev AS szerzo7kar, p7.mptngyegyetemegyeb AS szerzo7egyetemegyeb,
+            p8.nev AS szerzo8nev, a.szerzo8email, e8.nev AS szerzo8egyetem, k8.nev AS szerzo8kar, p8.mptngyegyetemegyeb AS szerzo8egyetemegyeb,
+            p9.nev AS szerzo9nev, a.szerzo9email, e9.nev AS szerzo9egyetem, k9.nev AS szerzo9kar, p9.mptngyegyetemegyeb AS szerzo9egyetemegyeb,
+            p10.nev AS szerzo10nev, a.szerzo10email, e10.nev AS szerzo10egyetem, k10.nev AS szerzo10kar, p10.mptngyegyetemegyeb AS szerzo10egyetemegyeb,
             a.egyebszerzok
             FROM mptngyszakmaianyag a
             JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
@@ -1003,7 +1006,27 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
             LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
             LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
-            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id";
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            LEFT JOIN mptngyegyetem e1          ON p.mptngyegyetem_id = e1.id
+            LEFT JOIN mptngykar k1              ON p.mptngykar_id = k1.id
+            LEFT JOIN mptngyegyetem e2          ON p2.mptngyegyetem_id = e2.id
+            LEFT JOIN mptngykar k2              ON p2.mptngykar_id = k2.id
+            LEFT JOIN mptngyegyetem e3          ON p3.mptngyegyetem_id = e3.id
+            LEFT JOIN mptngykar k3              ON p3.mptngykar_id = k3.id
+            LEFT JOIN mptngyegyetem e4          ON p4.mptngyegyetem_id = e4.id
+            LEFT JOIN mptngykar k4              ON p4.mptngykar_id = k4.id
+            LEFT JOIN mptngyegyetem e5          ON p5.mptngyegyetem_id = e5.id
+            LEFT JOIN mptngykar k5              ON p5.mptngykar_id = k5.id
+            LEFT JOIN mptngyegyetem e6          ON p6.mptngyegyetem_id = e6.id
+            LEFT JOIN mptngykar k6              ON p6.mptngykar_id = k6.id
+            LEFT JOIN mptngyegyetem e7          ON p7.mptngyegyetem_id = e7.id
+            LEFT JOIN mptngykar k7              ON p7.mptngykar_id = k7.id
+            LEFT JOIN mptngyegyetem e8          ON p8.mptngyegyetem_id = e8.id
+            LEFT JOIN mptngykar k8              ON p8.mptngykar_id = k8.id
+            LEFT JOIN mptngyegyetem e9          ON p9.mptngyegyetem_id = e9.id
+            LEFT JOIN mptngykar k9              ON p9.mptngykar_id = k9.id
+            LEFT JOIN mptngyegyetem e10         ON p10.mptngyegyetem_id = e10.id
+            LEFT JOIN mptngykar k10             ON p10.mptngykar_id = k10.id";
         if ($all) {
             $sql .= " WHERE a.vegleges = 1
               AND a.tipus_id IN (1, 2, 4, 6)";
@@ -1023,21 +1046,21 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
                 a.tartalom,
                 p.nev AS szerzonev,
                 a.szerzo1email,
-                p.mpt_munkahelynev,
+                e1.nev AS szerzo1egyetem, k1.nev AS szerzo1kar, p.mptngyegyetemegyeb AS szerzo1egyetemegyeb,
                 sz.cim AS szimpocim,
-                tulaj.nev AS elnok,tulaj.mpt_munkahelynev AS elnok_munkahely,
-                oppo.nev AS opponens,oppo.mpt_munkahelynev AS opponens_munkahely,
+                tulaj.nev AS elnok, te.nev AS elnok_egyetem, tk.nev AS elnok_kar, tulaj.mptngyegyetemegyeb AS elnok_egyetemegyeb,
+                oppo.nev AS opponens, oe.nev AS opponens_egyetem, ok.nev AS opponens_kar, oppo.mptngyegyetemegyeb AS opponens_egyetemegyeb,
                 sz.tartalom AS szimpotartalom,
                 sz.id AS szimpoid,
-                p2.nev AS szerzo2nev, a.szerzo2email, p2.mpt_munkahelynev AS szerzo2munkahely,
-                p3.nev AS szerzo3nev, a.szerzo3email, p3.mpt_munkahelynev AS szerzo3munkahely,
-                p4.nev AS szerzo4nev, a.szerzo4email, p4.mpt_munkahelynev AS szerzo4munkahely,
-                p5.nev AS szerzo5nev, a.szerzo5email, p5.mpt_munkahelynev AS szerzo5munkahely,
-                p6.nev AS szerzo6nev, a.szerzo6email, p6.mpt_munkahelynev AS szerzo6munkahely,
-                p7.nev AS szerzo7nev, a.szerzo7email, p7.mpt_munkahelynev AS szerzo7munkahely,
-                p8.nev AS szerzo8nev, a.szerzo8email, p8.mpt_munkahelynev AS szerzo8munkahely,
-                p9.nev AS szerzo9nev, a.szerzo9email, p9.mpt_munkahelynev AS szerzo9munkahely,
-                p10.nev AS szerzo10nev, a.szerzo10email, p10.mpt_munkahelynev AS szerzo10munkahely,
+                p2.nev AS szerzo2nev, a.szerzo2email, e2.nev AS szerzo2egyetem, k2.nev AS szerzo2kar, p2.mptngyegyetemegyeb AS szerzo2egyetemegyeb,
+                p3.nev AS szerzo3nev, a.szerzo3email, e3.nev AS szerzo3egyetem, k3.nev AS szerzo3kar, p3.mptngyegyetemegyeb AS szerzo3egyetemegyeb,
+                p4.nev AS szerzo4nev, a.szerzo4email, e4.nev AS szerzo4egyetem, k4.nev AS szerzo4kar, p4.mptngyegyetemegyeb AS szerzo4egyetemegyeb,
+                p5.nev AS szerzo5nev, a.szerzo5email, e5.nev AS szerzo5egyetem, k5.nev AS szerzo5kar, p5.mptngyegyetemegyeb AS szerzo5egyetemegyeb,
+                p6.nev AS szerzo6nev, a.szerzo6email, e6.nev AS szerzo6egyetem, k6.nev AS szerzo6kar, p6.mptngyegyetemegyeb AS szerzo6egyetemegyeb,
+                p7.nev AS szerzo7nev, a.szerzo7email, e7.nev AS szerzo7egyetem, k7.nev AS szerzo7kar, p7.mptngyegyetemegyeb AS szerzo7egyetemegyeb,
+                p8.nev AS szerzo8nev, a.szerzo8email, e8.nev AS szerzo8egyetem, k8.nev AS szerzo8kar, p8.mptngyegyetemegyeb AS szerzo8egyetemegyeb,
+                p9.nev AS szerzo9nev, a.szerzo9email, e9.nev AS szerzo9egyetem, k9.nev AS szerzo9kar, p9.mptngyegyetemegyeb AS szerzo9egyetemegyeb,
+                p10.nev AS szerzo10nev, a.szerzo10email, e10.nev AS szerzo10egyetem, k10.nev AS szerzo10kar, p10.mptngyegyetemegyeb AS szerzo10egyetemegyeb,
                 a.egyebszerzok
             FROM mptngyszakmaianyag a
             JOIN mptngyszakmaianyagtipus t      ON a.tipus_id = t.id
@@ -1059,7 +1082,31 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             LEFT JOIN partner p7                ON a.szerzo7_id = p7.id
             LEFT JOIN partner p8                ON a.szerzo8_id = p8.id
             LEFT JOIN partner p9                ON a.szerzo9_id = p9.id
-            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id";
+            LEFT JOIN partner p10               ON a.szerzo10_id = p10.id
+            LEFT JOIN mptngyegyetem e1          ON p.mptngyegyetem_id = e1.id
+            LEFT JOIN mptngykar k1              ON p.mptngykar_id = k1.id
+            LEFT JOIN mptngyegyetem e2          ON p2.mptngyegyetem_id = e2.id
+            LEFT JOIN mptngykar k2              ON p2.mptngykar_id = k2.id
+            LEFT JOIN mptngyegyetem e3          ON p3.mptngyegyetem_id = e3.id
+            LEFT JOIN mptngykar k3              ON p3.mptngykar_id = k3.id
+            LEFT JOIN mptngyegyetem e4          ON p4.mptngyegyetem_id = e4.id
+            LEFT JOIN mptngykar k4              ON p4.mptngykar_id = k4.id
+            LEFT JOIN mptngyegyetem e5          ON p5.mptngyegyetem_id = e5.id
+            LEFT JOIN mptngykar k5              ON p5.mptngykar_id = k5.id
+            LEFT JOIN mptngyegyetem e6          ON p6.mptngyegyetem_id = e6.id
+            LEFT JOIN mptngykar k6              ON p6.mptngykar_id = k6.id
+            LEFT JOIN mptngyegyetem e7          ON p7.mptngyegyetem_id = e7.id
+            LEFT JOIN mptngykar k7              ON p7.mptngykar_id = k7.id
+            LEFT JOIN mptngyegyetem e8          ON p8.mptngyegyetem_id = e8.id
+            LEFT JOIN mptngykar k8              ON p8.mptngykar_id = k8.id
+            LEFT JOIN mptngyegyetem e9          ON p9.mptngyegyetem_id = e9.id
+            LEFT JOIN mptngykar k9              ON p9.mptngykar_id = k9.id
+            LEFT JOIN mptngyegyetem e10         ON p10.mptngyegyetem_id = e10.id
+            LEFT JOIN mptngykar k10             ON p10.mptngykar_id = k10.id
+            LEFT JOIN mptngyegyetem te          ON tulaj.mptngyegyetem_id = te.id
+            LEFT JOIN mptngykar tk              ON tulaj.mptngykar_id = tk.id
+            LEFT JOIN mptngyegyetem oe          ON oppo.mptngyegyetem_id = oe.id
+            LEFT JOIN mptngykar ok              ON oppo.mptngykar_id = ok.id";
         if ($all) {
             $sql .= " WHERE a.vegleges = 1
               AND a.tipus_id = 5";
@@ -1123,68 +1170,107 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
 
         $sql = "(
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 1' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 1' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo1_id=p.id) AND (a.konferencianszerepelhet=1)
             union 
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 2' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 2' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo2_id=p.id) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 3' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 3' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo3_id=p.id) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 4' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 4' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo4_id=p.id) AND (a.konferencianszerepelhet=1)
             UNION
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 5' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 5' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo5_id=p.id) AND (a.konferencianszerepelhet=1)
             UNION
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 6' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 6' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo6_id=p.id) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 7' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 7' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo7_id=p.id) AND (a.konferencianszerepelhet=1)
             UNION
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 8' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 8' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo8_id=p.id) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 9' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 9' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo9_id=p.id) AND (a.konferencianszerepelhet=1)
             UNION
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'szerző 10' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'szerző 10' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.szerzo10_id=p.id) AND (a.konferencianszerepelhet=1)
             UNION
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'beszélgető partner' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'beszélgető partner' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.beszelgetopartner_id=p.id) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'elnök' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'elnök' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.tulajdonos_id=p.id) AND (a.tipus_id=4) AND (a.konferencianszerepelhet=1)
             union
-            SELECT p.nev,p.email,p.mpt_munkahelynev,a.id,a.cim,t.nev AS tipus,'opponens' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
-            FROM partner p,mptngyszakmaianyag a
+            SELECT p.nev,p.email,e.nev AS egyetem,k.nev AS kar,p.mptngyegyetemegyeb AS egyetemegyeb,a.id,a.cim,t.nev AS tipus,'opponens' AS t,IF(a.tipus_id=5,(SELECT id FROM mptngyszakmaianyag ma WHERE (ma.eloadas1_id=a.id) OR (ma.eloadas2_id=a.id) OR (ma.eloadas3_id=a.id) OR (ma.eloadas4_id=a.id) OR (ma.eloadas5_id=a.id)),null) AS szimpozium_id
+            FROM partner p
+            LEFT JOIN mptngyegyetem e ON (p.mptngyegyetem_id=e.id)
+            LEFT JOIN mptngykar k ON (p.mptngykar_id=k.id)
+            ,mptngyszakmaianyag a
             LEFT OUTER JOIN mptngyszakmaianyagtipus t ON (a.`tipus_id`=t.id)
             WHERE (a.opponens_id=p.id) AND (a.tipus_id=4) AND (a.konferencianszerepelhet=1)
             ) 
