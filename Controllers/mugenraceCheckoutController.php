@@ -261,6 +261,10 @@ class mugenraceCheckoutController extends checkoutController
             $kc = new kosarController();
             $kc->clear();
 
+            if ($bizstatusz) {
+                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+            }
+
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
                 $bc = new barionController();
                 $paymentres = $bc->startPayment($megrendfej);
@@ -272,9 +276,6 @@ class mugenraceCheckoutController extends checkoutController
             } elseif (\mkw\store::isStripeFizmod($fizetesimod)) {
                 Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
             } else {
-                if ($bizstatusz) {
-                    $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
-                }
                 Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
             }
         } else {
