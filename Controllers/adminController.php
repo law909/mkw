@@ -1107,8 +1107,7 @@ class adminController extends mkwhelpers\Controller
         foreach ($anyagok as $anyag) {
             if ($anyag->getSzerzo1email() && strtolower($anyag->getSzerzo1email()) !== strtolower($anyag->getSzerzo1()?->getEmail())) {
                 \mkw\store::writelog(
-                    $anyag->getId() . '/1: ' . $anyag->getSzerzo1email() . ' <> ' . $anyag->getSzerzo1()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo1(
-                    )?->getId()
+                    $anyag->getId() . '/1: ' . $anyag->getSzerzo1email() . ' <> ' . $anyag->getSzerzo1()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo1()?->getId()
                 );
                 $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo1email()]);
                 if ($partner) {
@@ -1118,8 +1117,7 @@ class adminController extends mkwhelpers\Controller
             }
             if ($anyag->getSzerzo2email() && strtolower($anyag->getSzerzo2email()) !== strtolower($anyag->getSzerzo2()?->getEmail())) {
                 \mkw\store::writelog(
-                    $anyag->getId() . '/2: ' . $anyag->getSzerzo2email() . ' <> ' . $anyag->getSzerzo2()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo2(
-                    )?->getId()
+                    $anyag->getId() . '/2: ' . $anyag->getSzerzo2email() . ' <> ' . $anyag->getSzerzo2()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo2()?->getId()
                 );
                 $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo2email()]);
                 if ($partner) {
@@ -1129,8 +1127,7 @@ class adminController extends mkwhelpers\Controller
             }
             if ($anyag->getSzerzo3email() && strtolower($anyag->getSzerzo3email()) !== strtolower($anyag->getSzerzo3()?->getEmail())) {
                 \mkw\store::writelog(
-                    $anyag->getId() . '/3: ' . $anyag->getSzerzo3email() . ' <> ' . $anyag->getSzerzo3()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo3(
-                    )?->getId()
+                    $anyag->getId() . '/3: ' . $anyag->getSzerzo3email() . ' <> ' . $anyag->getSzerzo3()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo3()?->getId()
                 );
                 $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo3email()]);
                 if ($partner) {
@@ -1140,8 +1137,7 @@ class adminController extends mkwhelpers\Controller
             }
             if ($anyag->getSzerzo4email() && strtolower($anyag->getSzerzo4email()) !== strtolower($anyag->getSzerzo4()?->getEmail())) {
                 \mkw\store::writelog(
-                    $anyag->getId() . '/4: ' . $anyag->getSzerzo4email() . ' <> ' . $anyag->getSzerzo4()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo4(
-                    )?->getId()
+                    $anyag->getId() . '/4: ' . $anyag->getSzerzo4email() . ' <> ' . $anyag->getSzerzo4()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo4()?->getId()
                 );
                 $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo4email()]);
                 if ($partner) {
@@ -1151,8 +1147,7 @@ class adminController extends mkwhelpers\Controller
             }
             if ($anyag->getSzerzo5email() && strtolower($anyag->getSzerzo5email()) !== strtolower($anyag->getSzerzo5()?->getEmail())) {
                 \mkw\store::writelog(
-                    $anyag->getId() . '/5: ' . $anyag->getSzerzo5email() . ' <> ' . $anyag->getSzerzo5()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo5(
-                    )?->getId()
+                    $anyag->getId() . '/5: ' . $anyag->getSzerzo5email() . ' <> ' . $anyag->getSzerzo5()?->getEmail() . ' | partnerid ' . $anyag->getSzerzo5()?->getId()
                 );
                 $partner = $this->getRepo(Entities\Partner::class)->findOneBy(['email' => $anyag->getSzerzo5email()]);
                 if ($partner) {
@@ -1181,5 +1176,11 @@ class adminController extends mkwhelpers\Controller
             }
         }
         echo 'Ready.';
+    }
+
+    public function getInbound()
+    {
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        echo $no->getBejovoSzamlaLista('2026-01-01', '2026-07-20');
     }
 }
