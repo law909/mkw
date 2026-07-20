@@ -1194,7 +1194,7 @@ class adminController extends mkwhelpers\Controller
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
         $res = $no->getBejovoSzamla($this->params->getStringRequestParam('szamlaszam'));
         if ($res) {
-            echo $no->getResult();
+            echo base64_decode($no->getResult());
         } else {
             echo json_encode($no->getErrors());
         }
