@@ -1168,10 +1168,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
         if ($datumtol) {
-            $filter->addFilter('bf.kelt', '>=', $datumtol);
+            $filter->addFilter('bf.teljesites', '>=', $datumtol);
         }
         if ($datumig) {
-            $filter->addFilter('bf.kelt', '<=', $datumig);
+            $filter->addFilter('bf.teljesites', '<=', $datumig);
         }
 
         $q = $this->_em->createNativeQuery(
