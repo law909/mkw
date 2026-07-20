@@ -39,7 +39,17 @@ class BevetfejController extends bizonylatfejController
             $filter->addFilter('szallito', '=', true);
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
         }
+
+        $tarsbiztipus = 'szallmegr';
+        $view->setVar('tarsbiztipus', $tarsbiztipus);
+        $view->setVar(
+            'tarsbizonylatlist',
+            $this->buildTarsbizonylatList(
+                $record ? $record->getPartnerId() : 0,
+                $tarsbiztipus,
+                $record ? $record->getTarsbizonylatId() : ''
+            )
+        );
         return $egyed;
     }
-
 }

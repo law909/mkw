@@ -765,6 +765,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         } else {
             $obj->removeCsomagterminal();
         }
+        $ck = $this->params->getStringRequestParam('tarsbizonylat');
+        if ($ck) {
+            $ck = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($ck);
+            if ($ck) {
+                $obj->setTarsbizonylat($ck);
+            }
+        } else {
+            $obj->setTarsbizonylat(null);
+        }
 
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
             $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
@@ -2386,4 +2395,36 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             'null' => $nullcnt
         ];
     }
+
+    protected function buildTarsbizonylatList($partnerid, $biztipus, $selectedId = '')
+    {
+        $ret = [];
+        if (!$partnerid) {
+            return $ret;
+        }
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('partner', '=', $partnerid);
+        $filter->addFilter('bizonylattipus', '=', $biztipus);
+        $filter->addFilter('rontott', '=', false);
+        $lista = $this->getRepo(\Entities\Bizonylatfej::class)->getAll($filter, ['kelt' => 'DESC']);
+        foreach ($lista as $szm) {
+            /** @var \Entities\Bizonylatfej $szm */
+            $ret[] = [
+                'id' => $szm->getId(),
+                'caption' => $szm->getId() . ' - ' . $szm->getKeltStr()
+                    . ' - ' . \bizformat($szm->getBrutto()) . ' ' . $szm->getValutanemnev(),
+                'selected' => ($szm->getId() == $selectedId),
+            ];
+        }
+        return $ret;
+    }
+
+    public function getTarsbizonylatList()
+    {
+        $partnerid = $this->params->getIntRequestParam('partnerid');
+        $selectedId = $this->params->getStringRequestParam('tarsbizonylat');
+        $biztipus = $this->params->getStringRequestParam('tarsbiztipus');
+        echo json_encode($this->buildTarsbizonylatList($partnerid, $biztipus, $selectedId));
+    }
+
 }

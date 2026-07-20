@@ -5,7 +5,7 @@
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
     </div>
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
-          data-funnypartnermessage="{$maintheme=='superzoneb2b'}">
+          data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
@@ -220,6 +220,18 @@
                             </select>
                         </td>
                     </tr>
+                    {if isset($tarsbizonylatlist)}
+                        <tr>
+                            <td><label for="TarsbizonylatEdit">{at('Kapcsolódó megrendelés')}:</label></td>
+                            <td colspan="3"><select id="TarsbizonylatEdit" name="tarsbizonylat">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $tarsbizonylatlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                    {/if}
                     {if ($maintheme === 'darshan')}
                         <tr class="szepkartya">
                             <td><label for="SZEPKartyaTipusEdit">{at('Kártya típusa')}:</label></td>

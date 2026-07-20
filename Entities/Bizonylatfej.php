@@ -86,6 +86,13 @@ class Bizonylatfej
      */
     private $bizonylattipus;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej")
+     * @ORM\JoinColumn(name="tarsbizonylat_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     * @var \Entities\Bizonylatfej
+     */
+    private $tarsbizonylat;
+
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $bizonylatnev;
 
@@ -2636,6 +2643,30 @@ class Bizonylatfej
             return $this->bizonylattipus->getId();
         }
         return '';
+    }
+
+    /**
+     * @return \Entities\Bizonylatfej
+     */
+    public function getTarsbizonylat()
+    {
+        return $this->tarsbizonylat;
+    }
+
+    public function getTarsbizonylatId()
+    {
+        if ($this->tarsbizonylat) {
+            return $this->tarsbizonylat->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $val
+     */
+    public function setTarsbizonylat($val)
+    {
+        $this->tarsbizonylat = $val;
     }
 
     /**

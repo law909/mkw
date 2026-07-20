@@ -1075,6 +1075,32 @@ let bizonylathelper = function ($) {
                         $(this).prop('checked', true);
                     }
                 });
+                $(document).on('change', '.js-partnerid', function () {
+                    let sel = $('#TarsbizonylatEdit');
+                    if (!sel.length) {
+                        return;
+                    }
+                    const partnerid = $(this).val();
+                    $.ajax({
+                        url: '/admin/bizonylatfej/gettarsbizonylatlist',
+                        type: 'GET',
+                        data: {
+                            partnerid: partnerid,
+                            tarsbiztipus: $('#mattkarb-form').data('tarsbiztipus'),
+                            tarsbizonylat: sel.val()
+                        },
+                        success: function (data) {
+                            var list = JSON.parse(data),
+                                html = '<option value=""></option>';
+                            $.each(list, function (i, item) {
+                                html += '<option value="' + item.id + '"'
+                                    + (item.selected ? ' selected="selected"' : '') + '>'
+                                    + item.caption + '</option>';
+                            });
+                            sel.html(html);
+                        }
+                    });
+                });
                 $('#ValutanemEdit').change(function () {
                     valutanemChange();
                 });
