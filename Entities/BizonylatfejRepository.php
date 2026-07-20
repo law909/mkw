@@ -1146,12 +1146,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
     /**
      * Termékváltozatonként (illetve változat nélküli termék esetén termékenként) adja vissza
-     * az adott partnert tartalmazó, adott bizonylattípusú, nem lerontott bizonylatokon
-     * az adott (bf.kelt szerinti) időszakban szereplő összmennyiséget.
+     * a megadott szűrőre illeszkedő bizonylattételek összmennyiségét.
      *
      * @return array kulcs: "termek_id-termekvaltozat_id"
      */
-    private function getBizonylattipusMennyiseg($bizonylattipus, $partnerid, $datumtol, $datumig, $locale = null)
+    private function getTetelMennyiseg(\mkwhelpers\FilterDescriptor $filter, $locale = null)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
@@ -1160,19 +1159,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('valtozatnev', 'valtozatnev');
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
-
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('bf.bizonylattipus_id', '=', $bizonylattipus);
-        $filter->addFilter('bf.rontott', '=', false);
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        if ($datumtol) {
-            $filter->addFilter('bf.teljesites', '>=', $datumtol);
-        }
-        if ($datumig) {
-            $filter->addFilter('bf.teljesites', '<=', $datumig);
-        }
 
         $q = $this->_em->createNativeQuery(
             'SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,'
@@ -1204,15 +1190,78 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     }
 
     /**
+     * Az adott partner, adott (bf.teljesites szerinti) időszakba eső, nem lerontott
+     * "szallmegr" bizonylatainak id-jai.
+     *
+     * @return string[]
+     */
+    private function getSzallmegrIdk($partnerid, $datumtol, $datumig)
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bf.bizonylattipus_id', '=', 'szallmegr');
+        $filter->addFilter('bf.rontott', '=', false);
+        if ($partnerid) {
+            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $filter->addFilter('bf.teljesites', '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter('bf.teljesites', '<=', $datumig);
+        }
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $q = $this->_em->createNativeQuery(
+            'SELECT bf.id FROM bizonylatfej bf' . $this->getFilterString($filter),
+            $rsm
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $ret = [];
+        foreach ($q->getScalarResult() as $rekord) {
+            $ret[] = $rekord['id'];
+        }
+        return $ret;
+    }
+
+    /**
      * "Rendelt / beérkezett" kimutatás: termékváltozatonként (változat nélküli terméknél
-     * termékenként) az adott partner "szallmegr" bizonylatain rendelt és "bevet" bizonylatain
-     * beérkezett mennyiség, valamint a kettő különbözete (rendelt - beérkezett). A lerontott
-     * (rontott) bizonylatok kimaradnak.
+     * termékenként).
+     *  - rendelt: az adott partner, az adott (bf.teljesites szerinti) időszakba eső, nem lerontott
+     *    "szallmegr" bizonylatain rendelt mennyiség;
+     *  - beérkezett: MINDEN nem lerontott "bevet" bizonylat mennyisége, amelynek társbizonylata
+     *    (tarsbizonylat_id) a fenti szallmegr bizonylatok valamelyike – az időszaktól függetlenül;
+     *  - különbözet: rendelt - beérkezett.
      */
     public function getRendeltBeerkezettLista($partnerid, $datumtol, $datumig, $locale = null)
     {
-        $rendelt = $this->getBizonylattipusMennyiseg('szallmegr', $partnerid, $datumtol, $datumig, $locale);
-        $beerkezett = $this->getBizonylattipusMennyiseg('bevet', $partnerid, $datumtol, $datumig, $locale);
+        // Rendelt: az időszakba eső szallmegr bizonylatok tételei
+        $szallmegrfilter = new \mkwhelpers\FilterDescriptor();
+        $szallmegrfilter->addFilter('bf.bizonylattipus_id', '=', 'szallmegr');
+        $szallmegrfilter->addFilter('bf.rontott', '=', false);
+        if ($partnerid) {
+            $szallmegrfilter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $szallmegrfilter->addFilter('bf.teljesites', '>=', $datumtol);
+        }
+        if ($datumig) {
+            $szallmegrfilter->addFilter('bf.teljesites', '<=', $datumig);
+        }
+        $rendelt = $this->getTetelMennyiseg($szallmegrfilter, $locale);
+
+        // Beérkezett: azok a bevet tételek, amelyek társbizonylata (tarsbizonylat_id) a fenti
+        // szallmegr bizonylatok valamelyike – az időszaktól függetlenül
+        $szallmegrIdk = $this->getSzallmegrIdk($partnerid, $datumtol, $datumig);
+        $beerkezett = [];
+        if ($szallmegrIdk) {
+            $bevetfilter = new \mkwhelpers\FilterDescriptor();
+            $bevetfilter->addFilter('bf.bizonylattipus_id', '=', 'bevet');
+            $bevetfilter->addFilter('bf.rontott', '=', false);
+            $bevetfilter->addFilter('bf.tarsbizonylat_id', 'IN', $szallmegrIdk);
+            $beerkezett = $this->getTetelMennyiseg($bevetfilter, $locale);
+        }
 
         $ret = [];
         foreach ($rendelt as $kulcs => $rekord) {

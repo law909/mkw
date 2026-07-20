@@ -1161,6 +1161,7 @@ $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyoserte
 
 $router->map('GET', '/admin/rendbevlista/view', 'rendbevlistaController#view', 'adminrendbevlistaview');
 $router->map('GET', '/admin/rendbevlista/refresh', 'rendbevlistaController#refresh', 'adminrendbevlistarefresh');
+$router->map('GET', '/admin/rendbevlista/export', 'rendbevlistaController#export', 'adminrendbevlistaexport');
 
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 

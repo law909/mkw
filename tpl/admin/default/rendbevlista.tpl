@@ -19,6 +19,7 @@
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
+                <a href="/admin/rendbevlista/export" class="js-exportbutton">{at('Export')}</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

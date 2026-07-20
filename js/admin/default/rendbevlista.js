@@ -38,27 +38,37 @@ $(document).ready(function () {
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                 .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
 
+            function getFilterData() {
+                let partnerid;
+                if (isPartnerAutocomplete()) {
+                    partnerid = $('.js-partnerid').val();
+                } else {
+                    partnerid = $('#PartnerEdit option:selected').val();
+                }
+                return {
+                    datumtol: $('input[name="tol"]').val(),
+                    datumig: $('input[name="ig"]').val(),
+                    partner: partnerid
+                };
+            }
+
             $('.js-refresh')
                 .on('click', function () {
-                    let partnerid;
-                    if (isPartnerAutocomplete()) {
-                        partnerid = $('.js-partnerid').val();
-                    } else {
-                        partnerid = $('#PartnerEdit option:selected').val();
-                    }
-
                     $.ajax({
                         url: '/admin/rendbevlista/refresh',
                         type: 'GET',
-                        data: {
-                            datumtol: $('input[name="tol"]').val(),
-                            datumig: $('input[name="ig"]').val(),
-                            partner: partnerid
-                        },
+                        data: getFilterData(),
                         success: function (d) {
                             $('#eredmeny').html(d);
                         }
                     })
+                })
+                .button();
+
+            $('.js-exportbutton')
+                .on('click', function (e) {
+                    e.preventDefault();
+                    window.location = $(this).attr('href') + '?' + $.param(getFilterData());
                 })
                 .button();
         }
