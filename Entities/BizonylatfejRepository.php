@@ -1144,6 +1144,110 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $ret;
     }
 
+    /**
+     * Termékváltozatonként (illetve változat nélküli termék esetén termékenként) adja vissza
+     * az adott partnert tartalmazó, adott bizonylattípusú, nem lerontott bizonylatokon
+     * az adott (bf.kelt szerinti) időszakban szereplő összmennyiséget.
+     *
+     * @return array kulcs: "termek_id-termekvaltozat_id"
+     */
+    private function getBizonylattipusMennyiseg($bizonylattipus, $partnerid, $datumtol, $datumig, $locale = null)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termek_id', 'termek_id');
+        $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
+        $rsm->addScalarResult('cikkszam', 'cikkszam');
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('valtozatnev', 'valtozatnev');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bf.bizonylattipus_id', '=', $bizonylattipus);
+        $filter->addFilter('bf.rontott', '=', false);
+        if ($partnerid) {
+            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $filter->addFilter('bf.kelt', '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter('bf.kelt', '<=', $datumig);
+        }
+
+        $q = $this->_em->createNativeQuery(
+            'SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,'
+            . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,'
+            . ' TRIM(CONCAT_WS(\' \', tv.ertek1, tv.ertek2)) AS valtozatnev,'
+            . ' SUM(bt.mennyiseg) AS mennyiseg '
+            . ' FROM bizonylattetel bt '
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+            . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+            . $this->getFilterString($filter)
+            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id',
+            $rsm
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        $res = $q->getScalarResult();
+
+        $ret = [];
+        foreach ($res as $rekord) {
+            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+            $ret[$kulcs] = [
+                'cikkszam' => $rekord['cikkszam'],
+                'nev' => $rekord['nev'],
+                'valtozat' => $rekord['valtozatnev'],
+                'mennyiseg' => (float)$rekord['mennyiseg'],
+            ];
+        }
+        return $ret;
+    }
+
+    /**
+     * "Rendelt / beérkezett" kimutatás: termékváltozatonként (változat nélküli terméknél
+     * termékenként) az adott partner "szallmegr" bizonylatain rendelt és "bevet" bizonylatain
+     * beérkezett mennyiség, valamint a kettő különbözete (rendelt - beérkezett). A lerontott
+     * (rontott) bizonylatok kimaradnak.
+     */
+    public function getRendeltBeerkezettLista($partnerid, $datumtol, $datumig, $locale = null)
+    {
+        $rendelt = $this->getBizonylattipusMennyiseg('szallmegr', $partnerid, $datumtol, $datumig, $locale);
+        $beerkezett = $this->getBizonylattipusMennyiseg('bevet', $partnerid, $datumtol, $datumig, $locale);
+
+        $ret = [];
+        foreach ($rendelt as $kulcs => $rekord) {
+            $ret[$kulcs] = [
+                'cikkszam' => $rekord['cikkszam'],
+                'nev' => $rekord['nev'],
+                'valtozat' => $rekord['valtozat'],
+                'rendelt' => $rekord['mennyiseg'],
+                'beerkezett' => 0,
+            ];
+        }
+        foreach ($beerkezett as $kulcs => $rekord) {
+            if (!array_key_exists($kulcs, $ret)) {
+                $ret[$kulcs] = [
+                    'cikkszam' => $rekord['cikkszam'],
+                    'nev' => $rekord['nev'],
+                    'valtozat' => $rekord['valtozat'],
+                    'rendelt' => 0,
+                    'beerkezett' => 0,
+                ];
+            }
+            $ret[$kulcs]['beerkezett'] = $rekord['mennyiseg'];
+        }
+        foreach ($ret as $kulcs => $rekord) {
+            $ret[$kulcs]['kulonbozet'] = $rekord['rendelt'] - $rekord['beerkezett'];
+        }
+
+        uasort($ret, function ($a, $b) {
+            return [$a['cikkszam'], $a['nev'], $a['valtozat']]
+                <=> [$b['cikkszam'], $b['nev'], $b['valtozat']];
+        });
+
+        return $ret;
+    }
+
     public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
     {
         $filter = new FilterDescriptor();

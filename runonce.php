@@ -935,6 +935,16 @@ if ($DBVersion < '0090') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0090');
 }
 
+if ($DBVersion < '0091') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(4, "Rendelt / beérkezett","/admin/rendbevlista/view","/admin/rendbevlista",40,1,1100, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0091');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

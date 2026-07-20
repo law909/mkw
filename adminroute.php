@@ -1158,6 +1158,9 @@ $router->map('GET', '/admin/teljesitmenyjelentes/refresh', 'teljesitmenyjelentes
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
+$router->map('GET', '/admin/rendbevlista/view', 'rendbevlistaController#view', 'adminrendbevlistaview');
+$router->map('GET', '/admin/rendbevlista/refresh', 'rendbevlistaController#refresh', 'adminrendbevlistarefresh');
+
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 
 $router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
