@@ -1181,6 +1181,7 @@ class adminController extends mkwhelpers\Controller
     public function getInbound()
     {
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
-        echo $no->getBejovoSzamlaLista('2026-01-01', '2026-07-20');
+        // max 35 napos intervallumot engednek
+        echo $no->getBejovoSzamlaLista('2026-06-20', '2026-07-20');
     }
 }
