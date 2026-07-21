@@ -1741,6 +1741,9 @@ class Bizonylatfej
         $ret['szepkartyatipus'] = $this->getSzepkartyatipusNev();
         $ret['szepkartyakifizetve'] = $this->getSzepkartyakifizetve();
         $ret['barionpaymentstatus'] = $this->getBarionpaymentstatus();
+        $ret['stripepaymentintentid'] = $this->getStripepaymentintentid();
+        $ret['isbarion'] = \mkw\store::isBarionFizmod($this->getFizmod());
+        $ret['isstripe'] = \mkw\store::isStripeFizmod($this->getFizmod());
         $ret['termekertekelesid'] = $this->getTermekertekelesid();
         $ret['termekertekelesurl'] = '/termekertekeles?b=' . $this->getId() . '&id=' . $this->getTermekertekelesid();
         $ret['termekertekeleskikuldve'] = $this->isTermekertekeleskikuldve();
