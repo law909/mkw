@@ -1183,7 +1183,7 @@ class adminController extends mkwhelpers\Controller
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
         // max 35 napos intervallumot engednek
         if ($no->getInboundDigests('2026-06-20', '2026-07-20')) {
-            echo $no->getResult();
+            echo base64_decode($no->getResult());
         } else {
             echo json_encode($no->getErrors());
         }
