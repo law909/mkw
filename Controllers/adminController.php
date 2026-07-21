@@ -1203,7 +1203,8 @@ class adminController extends mkwhelpers\Controller
     public function getInboundInvList()
     {
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
-        $res = $no->getInboundList($this->params->getStringRequestParam('szamlaszam'));
+        $szamlaszamtomb = explode(',', $this->params->getStringRequestParam('szamlaszam'));
+        $res = $no->getInboundList($szamlaszamtomb);
         if ($res) {
             echo base64_decode($no->getResult());
         } else {
