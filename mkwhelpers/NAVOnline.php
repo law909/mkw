@@ -190,13 +190,24 @@ class NAVOnline
         return $this->callAPI('GET', '/invoice/requery/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
 
-    public function getBejovoSzamlaLista($fromDate, $toDate)
+    public function getInboundDigests($fromDate, $toDate)
     {
-        return $this->callAPI('GET', '/invoices/getinbound/' . $this->cegAdoszam . '/' . $fromDate . '/' . $toDate);
+        return $this->callAPI('GET', '/inbound/digests/' . $this->cegAdoszam . '/' . $fromDate . '/' . $toDate);
     }
 
-    public function getBejovoSzamla($bizszam)
+    public function getInbound($bizszam)
     {
-        return $this->callAPI('GET', '/invoice/getinbound/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
+        return $this->callAPI('GET', '/inbound/' . $this->cegAdoszam . '/' . base64_encode($bizszam));
     }
+
+    public function getInboundList($bizszamlist)
+    {
+        $bizszamlist = array_map('base64_encode', $bizszamlist);
+        $bl = implode('##', $bizszamlist);
+        $postdata = [
+            'bizszamlist' => $bl
+        ];
+        return $this->callAPI('POST', '/inbound/list/' . $this->cegAdoszam, $postdata);
+    }
+
 }

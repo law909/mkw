@@ -1272,6 +1272,7 @@ $router->map('GET', '/admin/createtermekkep', 'termekController#createTermekKepe
 
 $router->map('GET', '/admin/getinbound', 'adminController#getInbound', 'admingetinbound');
 $router->map('GET', '/admin/getinboundinv', 'adminController#getInboundInv', 'admingetinboundinv');
+$router->map('GET', '/admin/getinboundinvlist', 'adminController#getInboundInvList', 'admingetinboundinvlist');
 
 //$router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 //$router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
