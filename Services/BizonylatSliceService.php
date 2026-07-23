@@ -18,7 +18,8 @@ class BizonylatSliceService
      * Bizonylat szétbontása a tételek termékeinek gyártója szerint: minden gyártó tételei
      * külön, új bizonylatra kerülnek. A tételeket nem áttesszük, hanem új (duplikált)
      * tételeket készítünk róluk, így az eredeti bizonylat a tételeivel együtt érintetlenül
-     * megmarad. Az új bizonylatok fejadatai az eredeti másolatai.
+     * megmarad. Az új bizonylatok fejadatai az eredeti másolatai, és mind a fejük
+     * (parbizonylatfej), mind a tételeik (parbizonylattetel) az eredetire hivatkoznak.
      *
      * A gyártó nélküli tételek egy közös új bizonylatra kerülnek — minden tétel új
      * bizonylatra kerül. A szétbontás végén az eredeti bizonylatot lerontjuk
@@ -115,11 +116,9 @@ class BizonylatSliceService
         $ujbiz->clearId();
         $ujbiz->clearCreated();
         $ujbiz->clearLastmod();
-        // a duplicateFrom szándékosan kihagyja, de a szétbontott bizonylatnak ugyanaz
-        // az előzménye, mint az eredetinek
-        if ($regibiz->getParbizonylatfej()) {
-            $ujbiz->setParbizonylatfej($regibiz->getParbizonylatfej());
-        }
+        // a szétbontással keletkező bizonylat az eredetiből származik: az előzménye maga
+        // az eredeti bizonylat (a duplicateFrom a parbizonylatfej-hivatkozást kihagyja)
+        $ujbiz->setParbizonylatfej($regibiz);
         // a duplicateFrom set/get párokat másol, a setter nélküli származtatott mezők
         // (belsőüzletkötő és felhasználó neve, emailje) így kimaradnának – a kapcsolat
         // újra beállításával töltetjük ki őket
@@ -140,8 +139,9 @@ class BizonylatSliceService
      * Tétel átmásolása az új bizonylatra: az eredeti tételt nem mozgatjuk, hanem egy vele
      * megegyező, friss tételt hozunk létre az új bizonylaton. Az eredeti tétel (és a rá
      * mutató hivatkozások, származási láncok) érintetlen marad az eredeti bizonylaton.
-     * Az új tétel önálló: a duplicateFrom kihagyja a bizonylatfej- és az előzmény-
-     * (parbizonylattetel) hivatkozást, előbbit az addBizonylattetel köti be.
+     * A duplicateFrom kihagyja a bizonylatfej- és az előzmény- (parbizonylattetel)
+     * hivatkozást: előbbit az addBizonylattetel köti be, utóbbit az eredeti tételre
+     * állítjuk, hogy az új tétel az eredeti tételből származzon.
      */
     private function masolTetel(Bizonylattetel $regitetel, Bizonylatfej $ujbiz)
     {
@@ -150,6 +150,7 @@ class BizonylatSliceService
         $ujtetel->clearCreated();
         $ujtetel->clearLastmod();
         $ujbiz->addBizonylattetel($ujtetel);
+        $ujtetel->setParbizonylattetel($regitetel);
         \mkw\store::getEm()->persist($ujtetel);
     }
 
