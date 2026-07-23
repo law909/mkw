@@ -6,7 +6,7 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\TermekFa;
 
-class BackorderService
+class BackorderService extends AbstractBizonylatSzetbontasService
 {
     private function szabadKeszlet(
         \Entities\Bizonylattetel $tetel,
@@ -158,84 +158,6 @@ class BackorderService
         return [$terv, $teljdb, $bodb];
     }
 
-    /**
-     * Az eredetivel megegyező, adott státuszú új bizonylatfej (saját azonosítóval), amely
-     * az eredetire hivatkozik (parbizonylatfej).
-     */
-    private function ujBizonylat(Bizonylatfej $regibiz, $statusz)
-    {
-        $ujbiz = new Bizonylatfej();
-        $ujbiz->duplicateFrom($regibiz);
-        $ujbiz->clearId();
-        $ujbiz->clearCreated();
-        $ujbiz->clearLastmod();
-        $ujbiz->setBizonylatstatusz($statusz);
-        // az új bizonylat előzménye maga az eredeti bizonylat
-        $ujbiz->setParbizonylatfej($regibiz);
-        // a duplicateFrom set/get párokat másol, a setter nélküli származtatott mezők
-        // (belsőüzletkötő és felhasználó neve, emailje) így kimaradnának – a kapcsolat
-        // újra beállításával töltetjük ki őket
-        $belsouzletkoto = $regibiz->getBelsouzletkoto();
-        if ($belsouzletkoto) {
-            $ujbiz->removeBelsouzletkoto();
-            $ujbiz->setBelsouzletkoto($belsouzletkoto);
-        }
-        $felhasznalo = $regibiz->getFelhasznalo();
-        if ($felhasznalo) {
-            $ujbiz->removeFelhasznalo();
-            $ujbiz->setFelhasznalo($felhasznalo);
-        }
-        return $ujbiz;
-    }
-
-    /**
-     * Tétel átmásolása az új bizonylatra: az eredeti tételt nem mozgatjuk, hanem egy vele
-     * megegyező, friss tételt hozunk létre az új bizonylaton. Az eredeti tétel érintetlen
-     * marad az eredeti bizonylaton. Részleges mennyiségnél a tételt újraszámoljuk, teljes
-     * mennyiségnél a duplikátum értékeit érintetlenül hagyjuk. Az új tétel az eredeti
-     * tételből származik (parbizonylattetel).
-     */
-    private function masolTetel(\Entities\Bizonylattetel $regitetel, Bizonylatfej $ujbiz, $mennyiseg)
-    {
-        $ujtetel = new \Entities\Bizonylattetel();
-        $ujtetel->duplicateFrom($regitetel);
-        $ujtetel->clearCreated();
-        $ujtetel->clearLastmod();
-        if ($mennyiseg != $regitetel->getMennyiseg()) {
-            $ujtetel->setMennyiseg($mennyiseg);
-            $ujtetel->calc();
-        }
-        $ujbiz->addBizonylattetel($ujtetel);
-        $ujtetel->setParbizonylattetel($regitetel);
-        \mkw\store::getEm()->persist($ujtetel);
-    }
-
-    /**
-     * Új bizonylat véglegesítése: fejösszegek számítása, persist és flush. Bizonylatonként
-     * külön flush kell, mert a bizonylatszámot a prePersist a tábla eddigi legnagyobb
-     * bizonylatszámából képzi – a következő csak akkor kaphat helyes számot, ha az előző
-     * már bent van.
-     */
-    private function mentBizonylat(Bizonylatfej $ujbiz)
-    {
-        $ujbiz->calcOsszesen();
-        \mkw\store::getEm()->persist($ujbiz);
-        \mkw\store::getEm()->flush();
-    }
-
-    /**
-     * Az eredeti bizonylat lerontása a szétbontás végén: a bizonylatfej és — a setRontott
-     * révén — a tételei is rontottá válnak. A ront() vezérlőakcióval egyezően a szállítási
-     * költség újraszámítását is kikapcsoljuk.
-     */
-    private function rontEredeti(Bizonylatfej $regibiz)
-    {
-        $regibiz->setKellszallitasikoltsegetszamolni(false);
-        $regibiz->setRontott(true);
-        \mkw\store::getEm()->persist($regibiz);
-        \mkw\store::getEm()->flush();
-    }
-
     public function getTeljesithetoBackorderLista()
     {
         $ret = [];
@@ -256,34 +178,11 @@ class BackorderService
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {
                     $vankeszlet = false;
-                    $tetelek = $fej->getBizonylattetelek();
                     /** @var \Entities\Bizonylattetel $tetel */
-                    foreach ($tetelek as $tetel) {
-                        /** @var \Entities\TermekValtozat $termekv */
-                        $termekv = $tetel->getTermekvaltozat();
-                        if ($termekv) {
-                            if ($nominkeszlet && $tetel->getTermek()?->isInTermekKategoria($nominkeszletkat)) {
-                                if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
-                                    $vankeszlet = true;
-                                    break;
-                                }
-                            } elseif ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() - $termekv->calcMinboltikeszlet() > 0) {
-                                $vankeszlet = true;
-                                break;
-                            }
-                        } else {
-                            $termek = $tetel->getTermek();
-                            if ($termek) {
-                                if ($nominkeszlet && $termek->isInTermekKategoria($nominkeszletkat)) {
-                                    if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() > 0) {
-                                        $vankeszlet = true;
-                                        break;
-                                    }
-                                } elseif ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() - $termek->getMinboltikeszlet() > 0) {
-                                    $vankeszlet = true;
-                                    break;
-                                }
-                            }
+                    foreach ($fej->getBizonylattetelek() as $tetel) {
+                        if ($this->szabadKeszlet($tetel, $fej, $nominkeszlet, $nominkeszletkat) > 0) {
+                            $vankeszlet = true;
+                            break;
                         }
                     }
                     if ($vankeszlet) {

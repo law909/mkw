@@ -5,7 +5,7 @@ namespace Services;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 
-class BizonylatSliceService
+class BizonylatSliceService extends AbstractBizonylatSzetbontasService
 {
 
     /**
@@ -62,12 +62,7 @@ class BizonylatSliceService
                 foreach ($tetelek as $regitetel) {
                     $this->masolTetel($regitetel, $ujbiz);
                 }
-                $ujbiz->calcOsszesen();
-                \mkw\store::getEm()->persist($ujbiz);
-                // bizonylatonként külön flush: az azonosítót a prePersist a tábla eddigi
-                // legnagyobb bizonylatszámából képzi, ezért a következő csak akkor kaphat
-                // helyes számot, ha az előző már bent van
-                \mkw\store::getEm()->flush();
+                $this->mentBizonylat($ujbiz);
                 $ujak[] = [
                     'id' => $ujbiz->getId(),
                     'gyarto' => $gyartonevek[$gyartoid] ?? ''
@@ -104,67 +99,6 @@ class BizonylatSliceService
             $gyartonevek[$kulcs] = $gyarto ? $gyarto->getNev() : '';
         }
         return [$csoportok, $gyartonevek];
-    }
-
-    /**
-     * Az eredetivel mindenben megegyező új bizonylatfej (saját azonosítóval).
-     */
-    private function ujBizonylat(Bizonylatfej $regibiz)
-    {
-        $ujbiz = new Bizonylatfej();
-        $ujbiz->duplicateFrom($regibiz);
-        $ujbiz->clearId();
-        $ujbiz->clearCreated();
-        $ujbiz->clearLastmod();
-        // a szétbontással keletkező bizonylat az eredetiből származik: az előzménye maga
-        // az eredeti bizonylat (a duplicateFrom a parbizonylatfej-hivatkozást kihagyja)
-        $ujbiz->setParbizonylatfej($regibiz);
-        // a duplicateFrom set/get párokat másol, a setter nélküli származtatott mezők
-        // (belsőüzletkötő és felhasználó neve, emailje) így kimaradnának – a kapcsolat
-        // újra beállításával töltetjük ki őket
-        $belsouzletkoto = $regibiz->getBelsouzletkoto();
-        if ($belsouzletkoto) {
-            $ujbiz->removeBelsouzletkoto();
-            $ujbiz->setBelsouzletkoto($belsouzletkoto);
-        }
-        $felhasznalo = $regibiz->getFelhasznalo();
-        if ($felhasznalo) {
-            $ujbiz->removeFelhasznalo();
-            $ujbiz->setFelhasznalo($felhasznalo);
-        }
-        return $ujbiz;
-    }
-
-    /**
-     * Tétel átmásolása az új bizonylatra: az eredeti tételt nem mozgatjuk, hanem egy vele
-     * megegyező, friss tételt hozunk létre az új bizonylaton. Az eredeti tétel (és a rá
-     * mutató hivatkozások, származási láncok) érintetlen marad az eredeti bizonylaton.
-     * A duplicateFrom kihagyja a bizonylatfej- és az előzmény- (parbizonylattetel)
-     * hivatkozást: előbbit az addBizonylattetel köti be, utóbbit az eredeti tételre
-     * állítjuk, hogy az új tétel az eredeti tételből származzon.
-     */
-    private function masolTetel(Bizonylattetel $regitetel, Bizonylatfej $ujbiz)
-    {
-        $ujtetel = new Bizonylattetel();
-        $ujtetel->duplicateFrom($regitetel);
-        $ujtetel->clearCreated();
-        $ujtetel->clearLastmod();
-        $ujbiz->addBizonylattetel($ujtetel);
-        $ujtetel->setParbizonylattetel($regitetel);
-        \mkw\store::getEm()->persist($ujtetel);
-    }
-
-    /**
-     * Az eredeti bizonylat lerontása a szétbontás végén: a bizonylatfej és — a setRontott
-     * révén — a tételei is rontottá válnak. A ront() vezérlőakcióval egyezően a szállítási
-     * költség újraszámítását is kikapcsoljuk.
-     */
-    private function rontEredeti(Bizonylatfej $regibiz)
-    {
-        $regibiz->setKellszallitasikoltsegetszamolni(false);
-        $regibiz->setRontott(true);
-        \mkw\store::getEm()->persist($regibiz);
-        \mkw\store::getEm()->flush();
     }
 
     private function eredmeny(array $ujak, $uzenet = null)
