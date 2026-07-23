@@ -1227,6 +1227,12 @@
                                                    data-target="utanvetktgtermek" value="{$utanvetktgtermeknev}" size="60" autocomplete="off">
                                 <input name="utanvetktgtermek" type="hidden" value="{$utanvetktgtermekid}"></td>
                         </tr>
+                        <tr>
+                            <td><label for="KoltsegTermekEdit">{at('Költségszámla termék')}:</label></td>
+                            <td colspan="2"><input id="KoltsegTermekEdit" type="text" class="js-setuptermekselect"
+                                                   data-target="koltsegtermek" value="{$koltsegtermeknev}" size="60" autocomplete="off">
+                                <input name="koltsegtermek" type="hidden" value="{$koltsegtermekid}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

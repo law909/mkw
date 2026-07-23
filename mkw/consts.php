@@ -182,6 +182,7 @@ class consts
     const SzallitasiKtg3Ertek = 'szallitasiktg3ertek';
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
     const UtanvetKtgTermek = 'utanvetktgtermek';
+    const KoltsegTermek = 'koltsegtermek';
 
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
     const BizonylatStatuszTeljesitheto = 'bizonylatstatuszteljesitheto';
