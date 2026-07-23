@@ -9,12 +9,20 @@ class BizonylatSliceService
 {
 
     /**
+     * A gyártó nélküli (és termék nélküli, pl. költség-) tételek közös csoportkulcsa.
+     * A gyártó azonosítók pozitív auto-increment értékek, így a 0 nem ütközik velük.
+     */
+    private const NINCS_GYARTO = 0;
+
+    /**
      * Bizonylat szétbontása a tételek termékeinek gyártója szerint: minden gyártó tételei
-     * külön bizonylatra kerülnek. Az új bizonylatok fejadatai az eredeti másolatai.
+     * külön, új bizonylatra kerülnek. A tételeket nem áttesszük, hanem új (duplikált)
+     * tételeket készítünk róluk, így az eredeti bizonylat a tételeivel együtt érintetlenül
+     * megmarad. Az új bizonylatok fejadatai az eredeti másolatai.
      *
-     * A gyártó nélküli tételek (és a termék nélküliek, pl. költségtételek) az eredeti
-     * bizonylaton maradnak. Ha minden tételnek van gyártója, akkor az első gyártó tételei
-     * maradnak az eredetin, a többi gyártó kap új bizonylatot.
+     * A gyártó nélküli tételek egy közös új bizonylatra kerülnek — minden tétel új
+     * bizonylatra kerül. A szétbontás végén az eredeti bizonylatot lerontjuk
+     * (setRontott), mivel a teljes tartalma átkerült az új bizonylatokra.
      *
      * @param string $id a szétbontandó bizonylat azonosítója
      *
@@ -31,24 +39,18 @@ class BizonylatSliceService
         if (!$regibiz) {
             return $this->eredmeny([], 'A bizonylat nem található.');
         }
-        // ha már készült belőle másik bizonylat, a tételek is össze vannak kapcsolva
-        // (parbizonylattetel), ezért nem bontható szét
+        // ha már készült belőle másik bizonylat, a tételei egy származtatott bizonylat
+        // előzményei (parbizonylattetel) — ilyenkor nem bontható szét és nem is rontható le
         if (\mkw\store::getEm()->getRepository(Bizonylatfej::class)->vanSzarmaztatottBizonylat($regibiz)) {
             return $this->eredmeny([], 'A bizonylatból már készült másik bizonylat, ezért nem bontható szét.');
         }
 
         [$csoportok, $gyartonevek] = $this->csoportositTetelek($regibiz);
 
-        if (!$csoportok) {
-            return $this->eredmeny([], 'Egyik tétel termékének sincs gyártója, nincs mit szétbontani.');
-        }
-        // ha nincs gyártó nélküli tétel, az első gyártó tételei maradnak az eredeti bizonylaton
-        if (count($csoportok) === 1 && $this->mindenTetelCsoportban($regibiz, $csoportok)) {
-            return $this->eredmeny([], 'Minden tétel ugyanahhoz a gyártóhoz tartozik, nincs mit szétbontani.');
-        }
-        if ($this->mindenTetelCsoportban($regibiz, $csoportok)) {
-            // az unset (az array_shift-tel szemben) megtartja a gyártó id kulcsokat
-            unset($csoportok[array_key_first($csoportok)]);
+        // csak akkor van értelme szétbontani, ha legalább két különböző csoport van;
+        // egyetlen csoportnál az új bizonylat az eredeti pontos mása lenne
+        if (count($csoportok) < 2) {
+            return $this->eredmeny([], 'Minden tétel egy csoportba tartozik, nincs mit szétbontani.');
         }
 
         \mkw\store::getEm()->beginTransaction();
@@ -57,7 +59,7 @@ class BizonylatSliceService
             foreach ($csoportok as $gyartoid => $tetelek) {
                 $ujbiz = $this->ujBizonylat($regibiz);
                 foreach ($tetelek as $regitetel) {
-                    $this->atteszTetel($regitetel, $regibiz, $ujbiz);
+                    $this->masolTetel($regitetel, $ujbiz);
                 }
                 $ujbiz->calcOsszesen();
                 \mkw\store::getEm()->persist($ujbiz);
@@ -71,9 +73,8 @@ class BizonylatSliceService
                 ];
             }
 
-            $regibiz->calcOsszesen();
-            \mkw\store::getEm()->persist($regibiz);
-            \mkw\store::getEm()->flush();
+            // a teljes tartalom átkerült az új bizonylatokra, ezért az eredetit lerontjuk
+            $this->rontEredeti($regibiz);
             \mkw\store::getEm()->commit();
         } catch (\Exception $e) {
             \mkw\store::getEm()->rollback();
@@ -85,7 +86,8 @@ class BizonylatSliceService
 
     /**
      * A bizonylat tételei gyártónként csoportosítva. A gyártó nélküli (és termék nélküli)
-     * tételek nem kerülnek egyik csoportba sem, azok maradnak az eredeti bizonylaton.
+     * tételek a NINCS_GYARTO kulcs alatt egy közös csoportba kerülnek, hogy minden tétel
+     * új bizonylatra kerülhessen.
      *
      * @return array [ [gyartoid => Bizonylattetel[]], [gyartoid => gyártónév] ]
      */
@@ -96,26 +98,11 @@ class BizonylatSliceService
         /** @var Bizonylattetel $tetel */
         foreach ($biz->getBizonylattetelek() as $tetel) {
             $gyarto = $tetel->getTermek()?->getGyarto();
-            if (!$gyarto) {
-                continue;
-            }
-            $csoportok[$gyarto->getId()][] = $tetel;
-            $gyartonevek[$gyarto->getId()] = $gyarto->getNev();
+            $kulcs = $gyarto ? $gyarto->getId() : self::NINCS_GYARTO;
+            $csoportok[$kulcs][] = $tetel;
+            $gyartonevek[$kulcs] = $gyarto ? $gyarto->getNev() : '';
         }
         return [$csoportok, $gyartonevek];
-    }
-
-    /**
-     * Igaz, ha a bizonylat minden tétele valamelyik gyártócsoportba tartozik, azaz nincs
-     * olyan tétel, ami magától maradna az eredeti bizonylaton.
-     */
-    private function mindenTetelCsoportban(Bizonylatfej $biz, array $csoportok)
-    {
-        $csoportositott = 0;
-        foreach ($csoportok as $tetelek) {
-            $csoportositott += count($tetelek);
-        }
-        return $csoportositott === count($biz->getBizonylattetelek());
     }
 
     /**
@@ -150,17 +137,33 @@ class BizonylatSliceService
     }
 
     /**
-     * Tétel áttétele az új bizonylatra: a tételt nem másoljuk-töröljük, hanem átkötjük.
-     * Így megmaradnak a tételre mutató hivatkozások — ha a bizonylatból már készült másik
-     * (pl. megrendelésből szállítólevél), akkor a származtatott tételek parbizonylattetel
-     * hivatkozása miatt a régi tétel törlését a RESTRICT idegen kulcs nem is engedné.
-     * A tétel azonosítója, létrehozási adatai és származási láncai változatlanok maradnak.
+     * Tétel átmásolása az új bizonylatra: az eredeti tételt nem mozgatjuk, hanem egy vele
+     * megegyező, friss tételt hozunk létre az új bizonylaton. Az eredeti tétel (és a rá
+     * mutató hivatkozások, származási láncok) érintetlen marad az eredeti bizonylaton.
+     * Az új tétel önálló: a duplicateFrom kihagyja a bizonylatfej- és az előzmény-
+     * (parbizonylattetel) hivatkozást, előbbit az addBizonylattetel köti be.
      */
-    private function atteszTetel(Bizonylattetel $tetel, Bizonylatfej $regibiz, Bizonylatfej $ujbiz)
+    private function masolTetel(Bizonylattetel $regitetel, Bizonylatfej $ujbiz)
     {
-        $regibiz->removeBizonylattetel($tetel);
-        $ujbiz->addBizonylattetel($tetel);
-        \mkw\store::getEm()->persist($tetel);
+        $ujtetel = new Bizonylattetel();
+        $ujtetel->duplicateFrom($regitetel);
+        $ujtetel->clearCreated();
+        $ujtetel->clearLastmod();
+        $ujbiz->addBizonylattetel($ujtetel);
+        \mkw\store::getEm()->persist($ujtetel);
+    }
+
+    /**
+     * Az eredeti bizonylat lerontása a szétbontás végén: a bizonylatfej és — a setRontott
+     * révén — a tételei is rontottá válnak. A ront() vezérlőakcióval egyezően a szállítási
+     * költség újraszámítását is kikapcsoljuk.
+     */
+    private function rontEredeti(Bizonylatfej $regibiz)
+    {
+        $regibiz->setKellszallitasikoltsegetszamolni(false);
+        $regibiz->setRontott(true);
+        \mkw\store::getEm()->persist($regibiz);
+        \mkw\store::getEm()->flush();
     }
 
     private function eredmeny(array $ujak, $uzenet = null)
