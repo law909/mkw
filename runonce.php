@@ -2,6 +2,7 @@
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Afa;
+use Entities\Termek;
 
 
 if (!\mkw\store::getNAVOnlineEnv()) {
@@ -943,6 +944,14 @@ if ($DBVersion < '0091') {
     );
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0091');
+}
+
+if ($DBVersion < '0092') {
+    // a termek.cimkenevek gyorsító mező bennragadt régi címkeneveinek helyretétele
+    // (címke átnevezésekor eddig nem frissült – lásd termekcimkeController::afterSave())
+    \mkw\store::getEm()->getRepository(Termek::class)->refreshCimkenevek();
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0092');
 }
 
 /**

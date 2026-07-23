@@ -11,6 +11,12 @@ use mkw\store;
 class termekcimkeController extends \mkwhelpers\MattableController
 {
 
+    /** @var string|null a címke neve mentés előtt – átnevezéskor frissíteni kell a termékek gyorsító mezőjét */
+    private $regicimkenev = null;
+
+    /** @var int[] törlés előtt a címkét viselő termékek – utána már nincs miből visszakeresni */
+    private $erintetttermekids = [];
+
     public function __construct()
     {
         $this->setEntityName(Termekcimketorzs::class);
@@ -38,6 +44,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
 
     protected function setFields($obj)
     {
+        $this->regicimkenev = $obj->getNev();
         $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['leiras']]);
         $ck = store::getEm()->getRepository(Termekcimkekat::class)->find($this->params->getIntRequestParam('cimkecsoport'));
         if ($ck) {
@@ -50,6 +57,34 @@ class termekcimkeController extends \mkwhelpers\MattableController
             $obj->setGyarto(null);
         }
         return $obj;
+    }
+
+    protected function beforeRemove($o)
+    {
+        $this->erintetttermekids = [];
+        if ($o) {
+            foreach ($this->getRepo()->getTermekIdsWithCimke([$o->getId()]) as $sor) {
+                $this->erintetttermekids[] = $sor['id'];
+            }
+        }
+    }
+
+    /**
+     * A termékek Termek::$cimkenevek gyorsító mezője a címke NEVÉT tárolja, viszont
+     * átnevezéskor / törléskor magukon a termékeken nem változik semmi, így a preUpdate
+     * (és vele a doStuffOnPrePersist()) sem fut le rajtuk. Ezért itt kell újraszámoltatni.
+     */
+    protected function afterSave($o, $parancs = null)
+    {
+        $regi = $this->regicimkenev;
+        $termekids = $this->erintetttermekids;
+        $this->regicimkenev = null;
+        $this->erintetttermekids = [];
+        if ($termekids) {   // törölt címke: a kapcsolat már nincs meg, id alapján frissítünk
+            $this->getRepo(Termek::class)->refreshCimkenevek(null, $termekids);
+        } elseif ($o && !is_null($regi) && $regi !== $o->getNev()) {
+            $this->getRepo(Termek::class)->refreshCimkenevek($o->getId());
+        }
     }
 
     public function getlistbody()

@@ -509,6 +509,45 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult();
     }
 
+    /**
+     * A Termek::$cimkenevek gyorsító mező újraszámolása egyetlen UPDATE-tel.
+     *
+     * A mezőt a Termek::doStuffOnPrePersist() tartja karban, de az csak akkor fut le,
+     * ha maga a termék változik. A címke ÁTNEVEZÉSEKOR a termékeken semmi nem változik,
+     * ezért az eltárolt (régi) nevek bennragadnának — ez a metódus rakja őket helyre.
+     *
+     * A címkenevek sorrendje a kapcsolótábla kulcssorrendjét követi, ahogy a
+     * doStuffOnPrePersist() bejárása is.
+     *
+     * Szűrő nélkül az összes terméket újraszámolja (runonce).
+     *
+     * @param int|null $cimketorzsid csak az ezt a címkét viselő termékek
+     * @param int[]|null $termekids csak ezek a termékek (pl. már letörölt címke esetén)
+     *
+     * @return int a módosított termékek száma
+     */
+    public function refreshCimkenevek($cimketorzsid = null, ?array $termekids = null)
+    {
+        $conn = $this->_em->getConnection();
+        $conn->executeStatement('SET SESSION group_concat_max_len = 65535');
+        $sql = 'UPDATE termek t SET t.cimkenevek = COALESCE(('
+            . ' SELECT GROUP_CONCAT(c.nev ORDER BY tc.cimketorzs_id SEPARATOR \'; \')'
+            . ' FROM termek_cimkek tc JOIN cimketorzs c ON c.id = tc.cimketorzs_id'
+            . ' WHERE tc.termek_id = t.id'
+            . '), \'\')';
+        if ($cimketorzsid) {
+            $sql .= ' WHERE t.id IN (SELECT tcf.termek_id FROM termek_cimkek tcf WHERE tcf.cimketorzs_id = '
+                . (int)$cimketorzsid . ')';
+        } elseif (!is_null($termekids)) {
+            $ids = array_values(array_unique(array_map('intval', array_filter($termekids))));
+            if (!$ids) {
+                return 0;
+            }
+            $sql .= ' WHERE t.id IN (' . implode(',', $ids) . ')';
+        }
+        return (int)$conn->executeStatement($sql);
+    }
+
     public function getForSitemapXml()
     {
         $rsm = new ResultSetMapping();
