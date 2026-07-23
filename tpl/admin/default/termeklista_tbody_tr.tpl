@@ -84,7 +84,7 @@
         </table>
     </td>
     <td class="cell">
-        {$_termek.cimkek}
+        {$_termek.cimkenevek}
     </td>
     <td class="cell">
         <table>
