@@ -429,7 +429,15 @@
             } else if (t === 'number') {
                 elem.value = null;
             } else if (tag === 'select') {
-                elem.selectedIndex = 0;
+                // a szerver által renderelt alapértékre állunk vissza (pl. setVars-ban beállított
+                // default szűrő), nem vakon az első opcióra – a .val() csak a selected propertyt
+                // változtatja, a selected attribútum végig az eredeti alapértéket jelöli
+                var def = elem.querySelector('option[selected]');
+                if (def) {
+                    def.selected = true;
+                } else {
+                    elem.selectedIndex = 0;
+                }
             } else {
                 elem.value = '';
             }

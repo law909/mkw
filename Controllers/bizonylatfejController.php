@@ -134,7 +134,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 }
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
-                $view->setVar('bizonylatrontottfilter', 1);
+                if ($this->biztipus === 'megrendeles' || $this->biztipus === 'koltsegszamla' || $this->biztipus === 'webshopbiz') {
+                    $view->setVar('bizonylatrontottfilter', 1);
+                }
                 break;
             case \mkw\store::isKisszamlazo():
                 if ($this->biztipus === 'bizsablon') {
