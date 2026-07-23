@@ -488,8 +488,15 @@ $(document).ready(function () {
                     '#munkahelynevfilter',
                     '#szlanevfilter',
                 ],
+                extraFields: ['cimkefilter'],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
+                },
+                onApplyUrl: function (urlParams) {
+                    mkwcomp.partnercimkeFilter.setFilter(
+                        '.js-cimkefilter',
+                        urlParams.has('cimkefilter') ? urlParams.get('cimkefilter').split(',') : []
+                    );
                 },
                 onFilter: function (obj) {
                     var cimkek = new Array();

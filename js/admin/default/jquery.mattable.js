@@ -23,10 +23,15 @@
             filter: {
                 selector: '#mattable-filterwrapper',
                 fields: undefined,
+                // az onFilter által előállított, vezérlőelem nélküli szűrők nevei (pl. 'cimkefilter').
+                // Ezeket az onFilter/onClear birtokolja, nem az URL – így ki is lehet őket kapcsolni.
+                extraFields: [],
                 clearButton: '.mattable-filterclear',
                 refreshButton: '.mattable-filterrefresh',
                 onClear: false,
-                onFilter: false
+                onFilter: false,
+                // az extraFields szűrők visszaállítása az URL-ből (paraméter: URLSearchParams)
+                onApplyUrl: false
             },
             pager: {
                 hide: false,
@@ -327,8 +332,14 @@
         };
 
         // az URL-ben általunk kezelt kulcsok (szűrőmezők + lapozó/rendezés)
+        var getExtraFieldNames = function () {
+            return $.isArray(setup.filter.extraFields) ? setup.filter.extraFields : [];
+        };
+
         var managedUrlKeys = function () {
-            return getFilterFieldNames().concat(['pageno', 'elemperpage', 'order', 'orderdir']);
+            return getFilterFieldNames()
+                .concat(getExtraFieldNames())
+                .concat(['pageno', 'elemperpage', 'order', 'orderdir']);
         };
 
         // máshonnan belinkelt, vezérlőelem nélküli paraméterek (pl. ?partnerid=5) – ezeket megőrizzük
@@ -443,6 +454,11 @@
                     }
                 }
             }
+            // a vezérlőelem nélküli (extraFields) szűrők visszaállítása – ezt az oldal végzi,
+            // mert csak ő tudja, melyik vezérlőt hogyan kell beállítani
+            if ($.isFunction(setup.filter.onApplyUrl)) {
+                setup.filter.onApplyUrl.call(this, urlParams);
+            }
             if (orderselect && orderselect[0]) {
                 orderselect.val(urlParams.has('order') ? urlParams.get('order') : defaultOrder);
             }
@@ -467,12 +483,24 @@
                 obj.orderdir = orderdirselect[0].options[orderdirselect[0].selectedIndex].value;
             }
             createFilterObject(obj);
+            // az URL-be az onFilter egyedi szűrői közül csak az extraFields-ben deklaráltak kerülnek be;
+            // ami nincs kiválasztva, az ki is marad, így a szűrő kikapcsolható marad
+            var urlobj = $.extend({}, obj);
             if ($.isFunction(setup.filter.onFilter)) {
                 setup.filter.onFilter.call(this, obj);
             }
+            var extrafields = getExtraFieldNames();
+            for (var e in extrafields) {
+                var extrakey = extrafields[e];
+                if (obj[extrakey] === undefined || obj[extrakey] === null || obj[extrakey].length === 0) {
+                    delete urlobj[extrakey];
+                } else {
+                    urlobj[extrakey] = obj[extrakey];
+                }
+            }
             // a felhasználói műveletek alapból új előzmény-bejegyzést kapnak (push),
             // a kezdeti betöltés / Vissza-Előre szinkron explicit 'replace'-t kér
-            updateUrl(obj, _mode === 'replace' ? 'replace' : 'push');
+            updateUrl(urlobj, _mode === 'replace' ? 'replace' : 'push');
             $.ajax({
                 url: setup.tablebody.url, type: 'GET',
                 data: obj,

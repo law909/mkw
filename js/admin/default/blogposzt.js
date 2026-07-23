@@ -205,8 +205,15 @@ $(document).ready(function () {
             },
             filter: {
                 fields: ['#lathatofilter', '#cimfilter'],
+                extraFields: ['fafilter'],
                 onClear: function () {
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');
+                },
+                onApplyUrl: function (urlParams) {
+                    mkwcomp.termekfaFilter.setChecks(
+                        '#termekfa',
+                        urlParams.has('fafilter') ? urlParams.get('fafilter').split(',') : []
+                    );
                 },
                 onFilter: function (obj) {
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');

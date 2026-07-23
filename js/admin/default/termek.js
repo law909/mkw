@@ -779,10 +779,25 @@ $(document).ready(function () {
             },
             filter: {
                 fields: lfilternames,
+                extraFields: ['cimkefilter', 'fafilter', 'menufilter'],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');
                     mkwcomp.termekmenuFilter.clearChecks('#termekmenu');
+                },
+                onApplyUrl: function (urlParams) {
+                    mkwcomp.partnercimkeFilter.setFilter(
+                        '.js-cimkefilter',
+                        urlParams.has('cimkefilter') ? urlParams.get('cimkefilter').split(',') : []
+                    );
+                    mkwcomp.termekfaFilter.setChecks(
+                        '#termekfa',
+                        urlParams.has('fafilter') ? urlParams.get('fafilter').split(',') : []
+                    );
+                    mkwcomp.termekmenuFilter.setChecks(
+                        '#termekmenu',
+                        urlParams.has('menufilter') ? urlParams.get('menufilter').split(',') : []
+                    );
                 },
                 onFilter: function (obj) {
                     var cimkek = new Array(), fak;
