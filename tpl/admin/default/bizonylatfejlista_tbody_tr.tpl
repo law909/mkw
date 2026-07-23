@@ -49,6 +49,10 @@
                     <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{at('Backorder')}"><span
                             class="ui-icon ui-icon-transferthick-e-w"></span></a>
                 {/if}
+                {if ($showslicemanufacturerbutton)}
+                    <a class="js-slicemanufacturer" href="#" data-egyedid="{$_egyed.id}"
+                       title="{at('Szétbontás gyártónként')}"><span class="ui-icon ui-icon-scissors"></span></a>
+                {/if}
                 {if ($showszallitobutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallitofej" data-oper="inherit"
                        title="{at('Szállítólevél')}"><span{if (!$bizonylattipuslist['szallito'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['szallito']['azonosito']}</span></a>

@@ -759,10 +759,8 @@ class Bizonylattetel
     // TODO locale
     public function getFullTermeknev()
     {
-        if ($this->getTermekvaltozat()) {
-            $valtnev = $this->getTermekvaltozat()->getNev();
-        }
-        return implode(' ', [$this->getTermeknev(), $valtnev]);
+        $valtnev = $this->getTermekvaltozat()?->getNev();
+        return trim($this->getTermeknev() . ' ' . $valtnev);
     }
 
     public function getTermeknev()

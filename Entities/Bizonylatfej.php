@@ -3778,7 +3778,7 @@ class Bizonylatfej
     {
         if ($this->belsouzletkoto !== $val) {
             if (!$val) {
-                $this->removeBelsozletkoto();
+                $this->removeBelsouzletkoto();
             } else {
                 $this->belsouzletkoto = $val;
                 if (!$this->duplication) {

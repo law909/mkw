@@ -30,6 +30,7 @@ use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Services\BizonylatCalculatorService;
+use Services\BizonylatSliceService;
 
 class bizonylatfejController extends \mkwhelpers\MattableController
 {
@@ -1290,6 +1291,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $this->getEm()->flush();
             }
         }
+    }
+
+    /**
+     * A bizonylat szétbontása a tételek termékeinek gyártója szerint.
+     * A gombot a bizonylattípus showslicemanufacturerbutton kapcsolója jeleníti meg.
+     */
+    public function sliceByManufacturer()
+    {
+        $sliceSvc = new BizonylatSliceService();
+        echo json_encode(
+            $sliceSvc->sliceByManufacturer($this->params->getStringRequestParam('id'))
+        );
     }
 
     public function getlistbody()

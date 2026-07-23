@@ -313,6 +313,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatfej/sendemailsablon', 'bizonylatfejController#sendEmailSablon', 'adminbizonylatfejsendemailsablon');
     $router->map('POST', '/admin/bizonylatfej/sendemailsablonok', 'bizonylatfejController#sendEmailSablonok', 'adminbizonylatfejsendemailsablonok');
     $router->map('POST', '/admin/bizonylatfej/quickadd', 'bizonylatfejController#quickAdd', 'adminbizonylatfejquickadd');
+    $router->map('POST', '/admin/bizonylatfej/slicebymanufacturer', 'bizonylatfejController#sliceByManufacturer', 'adminbizonylatfejslicebymanufacturer');
 }
 $router->map('GET', '/admin/bizonylatfej/getpartnerlist', 'partnerController#getBizonylatfejSelectList', 'adminbizonylatfejgetpartnerlist');
 $router->map('GET', '/admin/bizonylatfej/pdf', 'bizonylatfejController#doPDF', 'adminbizonylatfejpdf');

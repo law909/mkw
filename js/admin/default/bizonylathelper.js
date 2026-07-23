@@ -1559,7 +1559,7 @@ let bizonylathelper = function ($) {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function () {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
-                            '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-statusznaplobtn, ' +
+                            '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email').button();
                     },
                     onDoEditLink: function () {
@@ -1881,6 +1881,46 @@ let bizonylathelper = function ($) {
                                     }
                                 });
                                 $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('click', '.js-slicemanufacturer', function (e) {
+                    let $this = $(this);
+                    e.preventDefault();
+                    dialogcenter.html('Biztosan szétbontja a bizonylatot gyártónként?').dialog({
+                        resizable: false,
+                        height: 160,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $(this).dialog('close');
+                                $.ajax({
+                                    url: '/admin/bizonylatfej/slicebymanufacturer',
+                                    type: 'POST',
+                                    data: {
+                                        id: $this.data('egyedid')
+                                    },
+                                    success: function (data) {
+                                        let d = JSON.parse(data);
+                                        dialogcenter.html(d.uzenet).dialog({
+                                            resizable: false,
+                                            height: 160,
+                                            modal: true,
+                                            buttons: {
+                                                'OK': function () {
+                                                    if (d.darab) {
+                                                        $('.mattable-tablerefresh').click();
+                                                    }
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             },
                             'Nem': function () {
                                 $(this).dialog('close');

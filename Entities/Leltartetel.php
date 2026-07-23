@@ -186,10 +186,8 @@ class Leltartetel {
     }
 
     public function getFullTermeknev() {
-        if ($this->getTermekvaltozat()) {
-            $valtnev = $this->getTermekvaltozat()->getNev();
-        }
-        return implode(' ', array($this->getTermeknev(), $valtnev));
+        $valtnev = $this->getTermekvaltozat()?->getNev();
+        return trim($this->getTermeknev() . ' ' . $valtnev);
     }
 
     public function getTermeknev() {
