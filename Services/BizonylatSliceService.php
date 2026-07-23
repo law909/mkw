@@ -31,6 +31,11 @@ class BizonylatSliceService
         if (!$regibiz) {
             return $this->eredmeny([], 'A bizonylat nem található.');
         }
+        // ha már készült belőle másik bizonylat, a tételek is össze vannak kapcsolva
+        // (parbizonylattetel), ezért nem bontható szét
+        if (\mkw\store::getEm()->getRepository(Bizonylatfej::class)->vanSzarmaztatottBizonylat($regibiz)) {
+            return $this->eredmeny([], 'A bizonylatból már készült másik bizonylat, ezért nem bontható szét.');
+        }
 
         [$csoportok, $gyartonevek] = $this->csoportositTetelek($regibiz);
 
@@ -145,25 +150,17 @@ class BizonylatSliceService
     }
 
     /**
-     * Tétel áttétele az új bizonylatra: az eredetivel megegyező másolat kerül az új
-     * bizonylatra, a régi tétel pedig törlődik (ahogy a backorder is csinálja).
+     * Tétel áttétele az új bizonylatra: a tételt nem másoljuk-töröljük, hanem átkötjük.
+     * Így megmaradnak a tételre mutató hivatkozások — ha a bizonylatból már készült másik
+     * (pl. megrendelésből szállítólevél), akkor a származtatott tételek parbizonylattetel
+     * hivatkozása miatt a régi tétel törlését a RESTRICT idegen kulcs nem is engedné.
+     * A tétel azonosítója, létrehozási adatai és származási láncai változatlanok maradnak.
      */
-    private function atteszTetel(Bizonylattetel $regitetel, Bizonylatfej $regibiz, Bizonylatfej $ujbiz)
+    private function atteszTetel(Bizonylattetel $tetel, Bizonylatfej $regibiz, Bizonylatfej $ujbiz)
     {
-        $ujtetel = new Bizonylattetel();
-        $ujtetel->duplicateFrom($regitetel);
-        $ujtetel->clearCreated();
-        $ujtetel->clearLastmod();
-        // a duplicateFrom kihagyja, pedig a készletmozgatás múlik rajta
-        if ($regitetel->getParbizonylattetel()) {
-            $ujtetel->setParbizonylattetel($regitetel->getParbizonylattetel());
-        }
-        $ujbiz->addBizonylattetel($ujtetel);
-        $ujtetel->calc();
-        \mkw\store::getEm()->persist($ujtetel);
-
-        $regibiz->removeBizonylattetel($regitetel);
-        \mkw\store::getEm()->remove($regitetel);
+        $regibiz->removeBizonylattetel($tetel);
+        $ujbiz->addBizonylattetel($tetel);
+        \mkw\store::getEm()->persist($tetel);
     }
 
     private function eredmeny(array $ujak, $uzenet = null)

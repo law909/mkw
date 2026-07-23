@@ -68,6 +68,31 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return parent::findWithJoins((string)$id);
     }
 
+    /**
+     * Készült-e a bizonylatból másik bizonylat (öröklés): fej szinten (parbizonylatfej)
+     * vagy tétel szinten (parbizonylattetel).
+     *
+     * @param \Entities\Bizonylatfej $fej
+     *
+     * @return bool
+     */
+    public function vanSzarmaztatottBizonylat($fej)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(sz.id) FROM Entities\Bizonylatfej sz WHERE sz.parbizonylatfej = :fej'
+        );
+        $q->setParameter('fej', $fej);
+        if ($q->getSingleScalarResult() > 0) {
+            return true;
+        }
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(c.id) FROM Entities\Bizonylattetel c'
+            . ' JOIN c.parbizonylattetel p WHERE p.bizonylatfej = :fej'
+        );
+        $q->setParameter('fej', $fej);
+        return $q->getSingleScalarResult() > 0;
+    }
+
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
