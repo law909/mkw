@@ -5,11 +5,8 @@ use Entities\Afa;
 use Entities\Termek;
 
 
-if (!\mkw\store::getNAVOnlineEnv()) {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
-}
 if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '') < '3_0') {
-    $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+    $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
     if ($no->version()) {
         $nover = $no->getResult();
         \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, $nover);

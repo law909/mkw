@@ -224,7 +224,7 @@ trait PartnerDataProvider
         $payernum = $this->params->getStringRequestParam('adoszam');
         $payernum = substr($payernum, 0, 8);
 
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         if ($no->querytaxpayer($payernum)) {
             echo $no->getResult();
         } else {

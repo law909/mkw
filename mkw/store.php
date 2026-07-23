@@ -1287,6 +1287,15 @@ class store
         return self::getConfigValue('developer');
     }
 
+    /**
+     * Teszt üzemmód (config.ini: teszt=1). Ilyenkor a számlák NAV-beküldése nem történik meg
+     * (a beküldő hívások nem csinálnak semmit), a lekérdező NAV metódusok viszont működnek.
+     */
+    public static function isTeszt()
+    {
+        return self::getConfigValue('teszt');
+    }
+
     public static function isReintexTeszt()
     {
         return self::getConfigValue('reintexteszt');
@@ -2038,22 +2047,6 @@ class store
     public static function getTulajAdoszam()
     {
         return self::getParameter(\mkw\consts::Tulajadoszam);
-    }
-
-    public static function getNAVOnlineEnv()
-    {
-        if (self::isDeveloper()) {
-            return 'dev';
-        }
-        return self::getParameter(\mkw\consts::NAVOnlineEnv);
-    }
-
-    public static function getNAVOnlineErtekhatar()
-    {
-        if (self::isDeveloper()) {
-            return 0;
-        }
-        return (float)self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
     }
 
     public static function isMagyarorszag($orszag)

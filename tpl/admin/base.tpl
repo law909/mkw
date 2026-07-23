@@ -34,6 +34,12 @@
 <div class="screen">
     {if ($userloggedin)}
         <div class="menu-container ui-widget ui-widget-content ui-corner-all">
+            {if ($teszt)}
+                <div class="textaligncenter teszt-uzemmod"
+                     style="color:#fff;background:#c0392b;font-weight:bold;padding:3px;border-radius:3px;margin-bottom:3px;">
+                    TESZT ÜZEMMÓD
+                </div>
+            {/if}
             <div class="textaligncenter">{$tulajnev}</div>
             <div class="textaligncenter">{$loggedinuser.name}</div>
             {$cscikl = 0}

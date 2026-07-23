@@ -8,11 +8,7 @@ class NAVOnline
     const NAVOnlineProduction = 'prod';
     const NAVOnlineDeveloper = 'dev';
 
-    private $serviceURL = [
-        'prod' => 'http://no.billy.hu/api',
-        'dev' => 'http://nodev.billy.hu/api'
-    ];
-    private $environment = 'dev';
+    private $serviceURL = 'http://no.billy.hu/api';
     private $cegAdoszam;
     private $errors = [];
     private $result;
@@ -23,10 +19,9 @@ class NAVOnline
     no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
     */
 
-    public function __construct($adoszam, $env = 'dev')
+    public function __construct($adoszam)
     {
         $this->cegAdoszam = $adoszam;
-        $this->setEnvironment($env);
     }
 
     public function getErrors()
@@ -48,16 +43,9 @@ class NAVOnline
         return $this->result;
     }
 
-    public function setEnvironment($value)
-    {
-        if ($value === self::NAVOnlineDeveloper || $value === self::NAVOnlineProduction) {
-            $this->environment = $value;
-        }
-    }
-
     private function getServiceURL()
     {
-        return $this->serviceURL[$this->environment];
+        return $this->serviceURL;
     }
 
     private function callAPI($httpcommand, $command, $data = null)
@@ -143,6 +131,11 @@ class NAVOnline
 
     public function sendSzamla($bizszam, $data)
     {
+        if (\mkw\store::isTeszt()) {
+            $this->errors = [];
+            $this->result = 'TESZT';
+            return true;
+        }
         $operation = substr($data, 0, 6);
         $szladata = substr($data, 6);
         $postdata = [

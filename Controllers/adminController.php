@@ -31,15 +31,14 @@ class adminController extends mkwhelpers\Controller
         $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Főoldal'));
 
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         $no->hello();
         $view->setVar('noerrors', $no->getErrors());
         $view->setVar('noresult', $no->getResult());
         $no->version();
         $view->setVar(
             'noversion',
-            \mkw\store::getNAVOnlineEnv()
-            . ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
+            ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
             . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
             . '; srv v' . $no->getResult()
         );
@@ -565,7 +564,7 @@ class adminController extends mkwhelpers\Controller
 
     public function ujdivatszamlare()
     {
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', 'szamla');
         $filter->addFilter('id', '<=', 'SZ2022/000102');
@@ -1180,7 +1179,7 @@ class adminController extends mkwhelpers\Controller
 
     public function getInbound()
     {
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         // max 35 napos intervallumot engednek
         if ($no->getInboundDigests('2026-06-20', '2026-07-20')) {
             echo base64_decode($no->getResult());
@@ -1191,7 +1190,7 @@ class adminController extends mkwhelpers\Controller
 
     public function getInboundInv()
     {
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         $res = $no->getInbound($this->params->getStringRequestParam('szamlaszam'));
         if ($res) {
             echo base64_decode($no->getResult());
@@ -1202,7 +1201,7 @@ class adminController extends mkwhelpers\Controller
 
     public function getInboundInvList()
     {
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         $szamlaszamtomb = explode(',', $this->params->getStringRequestParam('szamlaszam'));
         $res = $no->getInboundList($szamlaszamtomb);
         if ($res) {

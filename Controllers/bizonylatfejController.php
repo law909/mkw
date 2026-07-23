@@ -2239,7 +2239,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $biz = $this->getRepo()->find($bizszam);
         if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
             $xml = $biz->toNAVOnlineXML();
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
             if ($no->sendSzamla($bizszam, $xml)) {
                 $biz->setSimpleedit(true);
                 $biz->setNaveredmeny($no->getResult());
@@ -2261,7 +2261,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $biz = $this->getRepo()->find($bizszam);
         if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
             $xml = $biz->toNAVOnlineXML();
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
             if ($no->validate($xml)) {
                 if ($no->getResult() !== 'OK') {
                     $noerrors = $no->getErrors();
@@ -2284,7 +2284,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $bizszamok = $this->getRepo()->getNAVEredmenyFeldolgozando();
         if ($bizszamok) {
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
             if ($no->getSomeSzamlaInfo($bizszamok)) {
                 $noresult = json_decode($no->getResult());
                 foreach ($noresult as $res) {
@@ -2340,7 +2340,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         /** @var \Entities\Bizonylatfej $biz */
         $biz = $this->getRepo()->find($id);
         if ($biz) {
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
             $no->requeryFromNAV($id);
         }
     }
