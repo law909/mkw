@@ -34,108 +34,206 @@ class BackorderService
         return max($keszlet, 0);
     }
 
+    /**
+     * Bizonylat szétbontása készlet szerint. Az eredeti bizonylatot érintetlenül hagyjuk:
+     * a teljesíthető és a nem teljesíthető (backorder) tételek két külön, új bizonylatra
+     * kerülnek (nem áttesszük, hanem duplikáljuk őket). A szétbontás végén az eredeti
+     * bizonylatot lerontjuk (setRontott). Mindkét új bizonylat és a tételeik az eredetire
+     * hivatkoznak (parbizonylatfej / parbizonylattetel).
+     *
+     * Ha nincs mit szétbontani (minden tétel teljesíthető, vagy egyik sem), akkor nem
+     * készül új bizonylat: csak az eredeti státuszát állítjuk a megfelelőre.
+     */
     public function backOrder($id)
     {
+        /** @var Bizonylatfej $regibiz */
         $regibiz = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
-        if ($regibiz) {
-            $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
-            $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
-                \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
-            )?->getKarkod();
-            $teljesitheto = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
-                \mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto)
-            );
-            $backorder = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
-            \mkw\store::getEm()->beginTransaction();
-            try {
-                $ujdb = 0;
-                $regidb = 0;
-                /** @var \Entities\Bizonylattetel $regitetel */
-                foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                    $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
-                    if ($keszlet === false) {
-                        continue;
-                    }
-                    if ($keszlet < $regitetel->getMennyiseg()) {
-                        $ujdb++;
-                        if ($keszlet > 0) {
-                            $regidb++;
-                        }
-                    } else {
-                        $regidb++;
-                    }
-                }
-                if ($regidb == 0 || $ujdb == 0) {
-                    $result = 0;
-                    if ($ujdb == 0) {
-                        $regibiz->setBizonylatstatusz($teljesitheto);
-                        foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                            //$regitetel->fillEgysar();
-                            $regitetel->calc();
-                            \mkw\store::getEm()->persist($regitetel);
-                        }
-                    } elseif ($regidb == 0) {
-                        $regibiz->setBizonylatstatusz($backorder);
-                        $result = 1;
-                    }
-                    \mkw\store::getEm()->persist($regibiz);
-                    \mkw\store::getEm()->flush();
-                    \mkw\store::getEm()->commit();
-                    return ['refresh' => $result];
-                } else {
-                    $ujbiz = new \Entities\Bizonylatfej();
-                    $ujbiz->duplicateFrom($regibiz);
-                    $ujbiz->clearId();
-                    $ujbiz->clearCreated();
-                    $ujbiz->clearLastmod();
-                    $ujbiz->setKelt();
-                    $ujbiz->setBizonylatstatusz($backorder);
-                    /** @var \Entities\Bizonylattetel $regitetel */
-                    foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                        $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
-                        if ($keszlet === false) {
-                            $regitetel->calc();
-                            \mkw\store::getEm()->persist($regitetel);
-                            continue;
-                        }
-                        if ($keszlet < $regitetel->getMennyiseg()) {
-                            $ujtetel = new \Entities\Bizonylattetel();
-                            $ujtetel->duplicateFrom($regitetel);
-                            $ujtetel->clearCreated();
-                            $ujtetel->clearLastmod();
-                            $ujtetel->setMennyiseg($regitetel->getMennyiseg() - $keszlet);
-                            $ujtetel->calc();
-                            $ujbiz->addBizonylattetel($ujtetel);
-                            \mkw\store::getEm()->persist($ujtetel);
-                            if ($keszlet <= 0) {
-                                $regibiz->removeBizonylattetel($regitetel);
-                                \mkw\store::getEm()->remove($regitetel);
-                            } else {
-                                $regitetel->setMennyiseg($keszlet);
-                                //$regitetel->fillEgysar();
-                                $regitetel->calc();
-                                \mkw\store::getEm()->persist($regitetel);
-                            }
-                        } else {
-                            //$regitetel->fillEgysar();
-                            $regitetel->calc();
-                            \mkw\store::getEm()->persist($regitetel);
-                        }
-                    }
-                    $regibiz->setBizonylatstatusz($teljesitheto);
-                    \mkw\store::getEm()->persist($regibiz);
-                    \mkw\store::getEm()->persist($ujbiz);
-                    \mkw\store::getEm()->flush();
-                    \mkw\store::getEm()->commit();
-                    return ['refresh' => 1];
-                }
-            } catch (\Exception $e) {
-                \mkw\store::getEm()->rollback();
-                throw $e;
-            }
-        } else {
+        if (!$regibiz) {
             return ['refresh' => 0];
         }
+        $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
+        $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
+            \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
+        )?->getKarkod();
+        $teljesitheto = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
+            \mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto)
+        );
+        $backorder = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
+            \mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder)
+        );
+        \mkw\store::getEm()->beginTransaction();
+        try {
+            // tervet készítünk: tételenként mennyi teljesíthető és mennyi kerül backorderre
+            [$terv, $teljdb, $bodb] = $this->keszletTerv($regibiz, $nominkeszlet, $nominkeszletkat);
+
+            // csak akkor van értelme szétbontani, ha van teljesíthető ÉS backorder rész is;
+            // egyébként nem készül új bizonylat, csak az eredeti státuszát állítjuk
+            if ($teljdb == 0 || $bodb == 0) {
+                $result = 0;
+                if ($bodb == 0) {
+                    $regibiz->setBizonylatstatusz($teljesitheto);
+                    foreach ($regibiz->getBizonylattetelek() as $regitetel) {
+                        $regitetel->calc();
+                        \mkw\store::getEm()->persist($regitetel);
+                    }
+                } elseif ($teljdb == 0) {
+                    $regibiz->setBizonylatstatusz($backorder);
+                    $result = 1;
+                }
+                \mkw\store::getEm()->persist($regibiz);
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->commit();
+                return ['refresh' => $result];
+            }
+
+            // teljesíthető bizonylat: az eredeti keltével, a teljesíthető mennyiségekkel
+            $ujteljbiz = $this->ujBizonylat($regibiz, $teljesitheto);
+            foreach ($terv as [$regitetel, $teljmenny, $bomenny]) {
+                if ($teljmenny > 0) {
+                    $this->masolTetel($regitetel, $ujteljbiz, $teljmenny);
+                }
+            }
+            $this->mentBizonylat($ujteljbiz);
+
+            // backorder bizonylat: mai kelttel (mint korábban az egyetlen új bizonylat)
+            $ujbobiz = $this->ujBizonylat($regibiz, $backorder);
+            $ujbobiz->setKelt();
+            foreach ($terv as [$regitetel, $teljmenny, $bomenny]) {
+                if ($bomenny > 0) {
+                    $this->masolTetel($regitetel, $ujbobiz, $bomenny);
+                }
+            }
+            $this->mentBizonylat($ujbobiz);
+
+            // a teljes tartalom átkerült az új bizonylatokra, ezért az eredetit lerontjuk
+            $this->rontEredeti($regibiz);
+            \mkw\store::getEm()->commit();
+            return ['refresh' => 1];
+        } catch (\Exception $e) {
+            \mkw\store::getEm()->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Tételenkénti szétbontási terv a szabad készlet alapján. Minden tételhez megadja,
+     * hogy mennyi teljesíthető azonnal és mennyi kerül backorderre.
+     *
+     * @return array [
+     *     [ [Bizonylattetel, teljesíthető mennyiség, backorder mennyiség], ... ],
+     *     hány tételnek van teljesíthető része,
+     *     hány tételnek van backorder része
+     * ]
+     */
+    private function keszletTerv(Bizonylatfej $regibiz, $nominkeszlet, $nominkeszletkat)
+    {
+        $terv = [];
+        $teljdb = 0;
+        $bodb = 0;
+        /** @var \Entities\Bizonylattetel $regitetel */
+        foreach ($regibiz->getBizonylattetelek() as $regitetel) {
+            $menny = $regitetel->getMennyiseg();
+            $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
+            if ($keszlet === false || $keszlet >= $menny) {
+                // készletet nem mozgató tétel, vagy a teljes mennyiség teljesíthető
+                $teljmenny = $menny;
+                $bomenny = 0;
+            } elseif ($keszlet <= 0) {
+                // semmi sem teljesíthető: a teljes mennyiség backorder
+                $teljmenny = 0;
+                $bomenny = $menny;
+            } else {
+                // részben teljesíthető: a szabad készlet teljesíthető, a maradék backorder
+                $teljmenny = $keszlet;
+                $bomenny = $menny - $keszlet;
+            }
+            if ($teljmenny > 0) {
+                $teljdb++;
+            }
+            if ($bomenny > 0) {
+                $bodb++;
+            }
+            $terv[] = [$regitetel, $teljmenny, $bomenny];
+        }
+        return [$terv, $teljdb, $bodb];
+    }
+
+    /**
+     * Az eredetivel megegyező, adott státuszú új bizonylatfej (saját azonosítóval), amely
+     * az eredetire hivatkozik (parbizonylatfej).
+     */
+    private function ujBizonylat(Bizonylatfej $regibiz, $statusz)
+    {
+        $ujbiz = new Bizonylatfej();
+        $ujbiz->duplicateFrom($regibiz);
+        $ujbiz->clearId();
+        $ujbiz->clearCreated();
+        $ujbiz->clearLastmod();
+        $ujbiz->setBizonylatstatusz($statusz);
+        // az új bizonylat előzménye maga az eredeti bizonylat
+        $ujbiz->setParbizonylatfej($regibiz);
+        // a duplicateFrom set/get párokat másol, a setter nélküli származtatott mezők
+        // (belsőüzletkötő és felhasználó neve, emailje) így kimaradnának – a kapcsolat
+        // újra beállításával töltetjük ki őket
+        $belsouzletkoto = $regibiz->getBelsouzletkoto();
+        if ($belsouzletkoto) {
+            $ujbiz->removeBelsouzletkoto();
+            $ujbiz->setBelsouzletkoto($belsouzletkoto);
+        }
+        $felhasznalo = $regibiz->getFelhasznalo();
+        if ($felhasznalo) {
+            $ujbiz->removeFelhasznalo();
+            $ujbiz->setFelhasznalo($felhasznalo);
+        }
+        return $ujbiz;
+    }
+
+    /**
+     * Tétel átmásolása az új bizonylatra: az eredeti tételt nem mozgatjuk, hanem egy vele
+     * megegyező, friss tételt hozunk létre az új bizonylaton. Az eredeti tétel érintetlen
+     * marad az eredeti bizonylaton. Részleges mennyiségnél a tételt újraszámoljuk, teljes
+     * mennyiségnél a duplikátum értékeit érintetlenül hagyjuk. Az új tétel az eredeti
+     * tételből származik (parbizonylattetel).
+     */
+    private function masolTetel(\Entities\Bizonylattetel $regitetel, Bizonylatfej $ujbiz, $mennyiseg)
+    {
+        $ujtetel = new \Entities\Bizonylattetel();
+        $ujtetel->duplicateFrom($regitetel);
+        $ujtetel->clearCreated();
+        $ujtetel->clearLastmod();
+        if ($mennyiseg != $regitetel->getMennyiseg()) {
+            $ujtetel->setMennyiseg($mennyiseg);
+            $ujtetel->calc();
+        }
+        $ujbiz->addBizonylattetel($ujtetel);
+        $ujtetel->setParbizonylattetel($regitetel);
+        \mkw\store::getEm()->persist($ujtetel);
+    }
+
+    /**
+     * Új bizonylat véglegesítése: fejösszegek számítása, persist és flush. Bizonylatonként
+     * külön flush kell, mert a bizonylatszámot a prePersist a tábla eddigi legnagyobb
+     * bizonylatszámából képzi – a következő csak akkor kaphat helyes számot, ha az előző
+     * már bent van.
+     */
+    private function mentBizonylat(Bizonylatfej $ujbiz)
+    {
+        $ujbiz->calcOsszesen();
+        \mkw\store::getEm()->persist($ujbiz);
+        \mkw\store::getEm()->flush();
+    }
+
+    /**
+     * Az eredeti bizonylat lerontása a szétbontás végén: a bizonylatfej és — a setRontott
+     * révén — a tételei is rontottá válnak. A ront() vezérlőakcióval egyezően a szállítási
+     * költség újraszámítását is kikapcsoljuk.
+     */
+    private function rontEredeti(Bizonylatfej $regibiz)
+    {
+        $regibiz->setKellszallitasikoltsegetszamolni(false);
+        $regibiz->setRontott(true);
+        \mkw\store::getEm()->persist($regibiz);
+        \mkw\store::getEm()->flush();
     }
 
     public function getTeljesithetoBackorderLista()
