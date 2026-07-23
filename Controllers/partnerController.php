@@ -49,6 +49,9 @@ class partnerController extends \mkwhelpers\MattableController
     use PartnerBulkOps;
     use PartnerExport;
 
+    /** @var array|null partnerid => címkenevek, a lista kötegelt előtöltéséhez (null = nincs előtöltés) */
+    private $cimkenevekcache = null;
+
     public function __construct()
     {
         $this->setEntityName(Partner::class);
@@ -73,7 +76,10 @@ class partnerController extends \mkwhelpers\MattableController
         $x['orszagnev'] = $t->getOrszagNev();
         $x['szallorszagnev'] = $t->getSzallorszagNev();
         $x['lcim'] = $t->getLCim();
-        $x['cimkek'] = $t->getCimkeNevek();
+        // listánál a kötegelt előtöltésből (1 query), egyébként az entityből (lusta betöltés)
+        $x['cimkek'] = is_null($this->cimkenevekcache)
+            ? $t->getCimkeNevek()
+            : ($this->cimkenevekcache[$t->getId()] ?? []);
         $x['fizmodnev'] = $t->getFizmodNev();
         $x['uzletkotonev'] = $t->getUzletkotoNev();
         $x['szallcim'] = $t->getSzallcim();
@@ -474,7 +480,16 @@ class partnerController extends \mkwhelpers\MattableController
             $this->getPager()->getElemPerPage()
         );
 
-        echo json_encode($this->loadDataToView($egyedek, 'partnerlista', $view));
+        // a címkeoszlop nevei egyetlen lekérdezéssel, soronkénti lusta betöltés helyett
+        $partnerids = [];
+        foreach ($egyedek as $egyed) {
+            $partnerids[] = $egyed->getId();
+        }
+        $this->cimkenevekcache = $this->getRepo(Partnercimketorzs::class)->getNevekByPartnerIds($partnerids);
+
+        $res = json_encode($this->loadDataToView($egyedek, 'partnerlista', $view));
+        $this->cimkenevekcache = null;
+        echo $res;
     }
 
     public function viewlist()

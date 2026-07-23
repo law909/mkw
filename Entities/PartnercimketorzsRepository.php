@@ -127,6 +127,40 @@ class PartnercimketorzsRepository extends \mkwhelpers\Repository
         return false;
     }
 
+    /**
+     * Kötegelt címkenév-lekérdezés sok partnerre egyetlen query-vel.
+     * A Partner::getCimkeNevek() soronkénti (N+1) hívása helyett — a partnerlista számára.
+     *
+     * A visszaadott alak megegyezik a Partner::getCimkeNevek() alakjával, hogy a
+     * loadVars() ugyanúgy tudja használni.
+     *
+     * @param int[] $partnerids
+     *
+     * @return array [ partnerid => [ ['nev' => ...], ... ] ]
+     */
+    public function getNevekByPartnerIds(array $partnerids)
+    {
+        $result = [];
+        $ids = array_values(array_unique(array_map('intval', array_filter($partnerids))));
+        if (empty($ids)) {
+            return $result;
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('partner_id', 'partner_id');
+        $rsm->addScalarResult('nev', 'nev');
+        $q = $this->_em->createNativeQuery(
+            'SELECT pc.partner_id, c.nev'
+            . ' FROM partner_cimkek pc JOIN cimketorzs c ON c.id = pc.cimketorzs_id'
+            . ' WHERE pc.partner_id IN (' . implode(',', $ids) . ')'
+            . ' ORDER BY pc.partner_id, pc.cimketorzs_id',
+            $rsm
+        );
+        foreach ($q->getScalarResult() as $sor) {
+            $result[(int)$sor['partner_id']][] = ['nev' => $sor['nev']];
+        }
+        return $result;
+    }
+
     public function getCimkeNevek($cimkefilter)
     {
         $cimkenevek = [];

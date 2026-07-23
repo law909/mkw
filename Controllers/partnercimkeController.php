@@ -100,11 +100,9 @@ class partnercimkeController extends \mkwhelpers\MattableController
 
     protected function beforeRemove($o)
     {
-        $r = $o->getPartnerek();
-        echo count($r);
+        // a partnerkapcsolatok bontása törlés előtt; ide NEM mehet kimenet, mert a
+        // törlés válasza az egyed id-je, amiből a lista a sort azonosítja
         $o->getPartnerek()->clear();
-        $r = $o->getPartnerek();
-        echo count($r);
         $this->getEm()->persist($o);
         $this->getEm()->flush();
     }
