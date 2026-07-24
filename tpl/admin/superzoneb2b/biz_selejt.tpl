@@ -10,7 +10,7 @@
     {/if}
     {for $oldal = 1 to $maxoldalszam}
         <div class="fullwidth">
-            <div class="biznev pull-left">Számla</div>
+            <div class="biznev pull-left">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}Számla</div>
             <div class="pull-right">{if ($egyed.nyomtatva)}Másolat{else}Eredeti példány{/if}. {$oldal}/{$maxoldalszam} oldal</div>
         </div>
         <div class="topline topbottommargin clear"></div>

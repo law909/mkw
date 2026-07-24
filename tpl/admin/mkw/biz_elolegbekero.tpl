@@ -3,7 +3,7 @@
 {block "body"}
     <div class="teto">
     <div>
-        <div class="biznev">Díjbekérő</div>
+        <div class="biznev">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}Díjbekérő</div>
         <div class="bizszam textalignright">{$egyed.id}</div>
     </div>
     {include "biz_headboxki.tpl"}

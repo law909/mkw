@@ -3,7 +3,7 @@
 {block "body"}
     <div class="teto">
     <div>
-        <div class="biznev">{$egyed.bizonylatnev}</div>
+        <div class="biznev">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}{$egyed.bizonylatnev}</div>
         <div class="bizszam textalignright">{$egyed.id}</div>
     </div>
     <div class="headbox pull-left">

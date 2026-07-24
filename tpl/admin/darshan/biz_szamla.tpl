@@ -3,7 +3,7 @@
 {block "body"}
     <div class="teto">
         <div class="fullwidth">
-            <div class="biznev pull-left">{$egyed.bizonylatnev}</div>
+            <div class="biznev pull-left">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}{$egyed.bizonylatnev}</div>
             <div class="biznev pull-right">{$egyed.id}</div>
         </div>
         <div class="clear"></div>

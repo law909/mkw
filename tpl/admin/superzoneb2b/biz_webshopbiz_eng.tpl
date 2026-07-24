@@ -10,7 +10,7 @@
     {/if}
     {for $oldal = 1 to $maxoldalszam}
         <div class="fullwidth">
-            <div class="biznev pull-left">Megrendelés / Order{if ($egyed.allapotnev)} ({$egyed.allapotnev}){/if}</div>
+            <div class="biznev pull-left">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}Megrendelés / Order{if ($egyed.allapotnev)} ({$egyed.allapotnev}){/if}</div>
             <div class="pull-right">{$oldal}/{$maxoldalszam} oldal / page(s)</div>
         </div>
         <div class="topline topbottommargin clear"></div>
