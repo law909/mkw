@@ -16,7 +16,7 @@ use Entities\Bizonylattipus;
  * 4. számlánként költségszámla készítése.
  *
  * Az időszak végét a {@see \mkw\consts::KoltsegszamlaImportDatum} paraméterben tároljuk: a
- * következő import ettől a dátumtól indul. Csak hibátlan futás után tároljuk el, így egy
+ * következő import az azt követő naptól indul. Csak hibátlan futás után tároljuk el, így egy
  * elakadt számla a következő futáskor újra sorra kerül.
  */
 class NAVKoltsegszamlaImportService
@@ -24,7 +24,7 @@ class NAVKoltsegszamlaImportService
     /** a NAV ennél hosszabb időszakra nem ad digestet */
     public const MAX_IDOSZAK_NAP = 35;
 
-    /** a felkínált időszak hossza: az utoljára importált dátum + ennyi nap */
+    /** a felkínált időszak hossza: az utoljára importált dátumot követő nap + ennyi nap */
     public const IDOSZAK_NAP = 30;
 
     /** ennyi számla adatait kérjük le egy hívásban */
@@ -40,8 +40,8 @@ class NAVKoltsegszamlaImportService
     }
 
     /**
-     * A következő import felkínált időszaka: az utoljára importált időszak vége, plusz
-     * IDOSZAK_NAP nap – de a mai napnál nem tovább, különben a köztes időben megérkező
+     * A következő import felkínált időszaka: az utoljára importált időszak vége UTÁNI naptól
+     * IDOSZAK_NAP napig – de a mai napnál nem tovább, különben a köztes időben megérkező
      * számlák kimaradnának. Ha még nem volt import, az utolsó IDOSZAK_NAP nap.
      *
      * @return array{tol: \DateTime, ig: \DateTime}
@@ -49,8 +49,12 @@ class NAVKoltsegszamlaImportService
     public function kovetkezoIdoszak(): array
     {
         $ma = new \DateTime('today');
-        $tol = $this->datum((string)\mkw\store::getParameter(\mkw\consts::KoltsegszamlaImportDatum, ''))
-            ?: (clone $ma)->modify('-' . self::IDOSZAK_NAP . ' days');
+        // a tárolt dátum az utoljára importált időszak vége (azt a napot már lekértük),
+        // ezért a következő import a rá következő naptól indul
+        $utoljara = $this->datum((string)\mkw\store::getParameter(\mkw\consts::KoltsegszamlaImportDatum, ''));
+        $tol = $utoljara
+            ? $utoljara->modify('+1 day')
+            : (clone $ma)->modify('-' . self::IDOSZAK_NAP . ' days');
         if ($tol > $ma) {
             $tol = $ma;
         }
