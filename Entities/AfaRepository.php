@@ -61,7 +61,13 @@ class AfaRepository extends \mkwhelpers\Repository
                 'caption' => 'Egyéb nemzetközi ügyletekhez kapcsolódó jogcímen megállapított adómentesség',
                 'selected' => ($sel == 'NAM'),
                 'reason' => 'Áfa tv. 110-118. §'
-            ]
+            ],
+            [
+                'id' => 'ATK',
+                'caption' => 'Áfa tárgyi hatályán kívül',
+                'selected' => ($sel == 'ATK'),
+                'reason' => 'Áfa tv. 2-3. §'
+            ],
         ];
     }
 

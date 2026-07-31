@@ -2215,6 +2215,9 @@ class Partner
 
     /**
      * @param int $vatstatus
+     * 1 - belfoldi adoalany
+     * 2 - maganszemely
+     * 3 - egyeb
      */
     public function setVatstatus($vatstatus)
     {

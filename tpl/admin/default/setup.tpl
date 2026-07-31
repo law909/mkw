@@ -199,6 +199,12 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="KoltsegTermekEdit">{at('Költségszámla termék')}:</label></span>
+                            <input id="KoltsegTermekEdit" type="text" class="js-setuptermekselect"
+                                   data-target="koltsegtermek" value="{$koltsegtermeknev}" size="60" autocomplete="off">
+                            <input name="koltsegtermek" type="hidden" value="{$koltsegtermekid}">
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultTermekEdit">{at('Termék')}:</label></span>
                             <input id="defaultTermekEdit" type="text" class="js-setuptermekselect" data-target="defaulttermek"
                                    value="{$defaulttermeknev}" size="60" autocomplete="off">
@@ -1226,12 +1232,6 @@
                             <td colspan="2"><input id="UtanvetKtgTermekEdit" type="text" class="js-setuptermekselect"
                                                    data-target="utanvetktgtermek" value="{$utanvetktgtermeknev}" size="60" autocomplete="off">
                                 <input name="utanvetktgtermek" type="hidden" value="{$utanvetktgtermekid}"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="KoltsegTermekEdit">{at('Költségszámla termék')}:</label></td>
-                            <td colspan="2"><input id="KoltsegTermekEdit" type="text" class="js-setuptermekselect"
-                                                   data-target="koltsegtermek" value="{$koltsegtermeknev}" size="60" autocomplete="off">
-                                <input name="koltsegtermek" type="hidden" value="{$koltsegtermekid}"></td>
                         </tr>
                         </tbody>
                     </table>

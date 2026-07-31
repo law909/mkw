@@ -951,6 +951,17 @@ if ($DBVersion < '0092') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0092');
 }
 
+if ($DBVersion < '0093') {
+    // NAV bejövő számla import menüpont a Költségszámlák alá
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "NAV bejövő számla import","/admin/koltsegszamlaimport/view","adminkoltsegszamlaimportview",40,0,650, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0093');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

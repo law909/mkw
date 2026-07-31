@@ -183,6 +183,8 @@ class consts
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
     const UtanvetKtgTermek = 'utanvetktgtermek';
     const KoltsegTermek = 'koltsegtermek';
+    /** a NAV-ból utoljára importált bejövő számla időszak vége (innen indul a következő import) */
+    const KoltsegszamlaImportDatum = 'koltsegszamlaimportdatum';
 
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
     const BizonylatStatuszTeljesitheto = 'bizonylatstatuszteljesitheto';

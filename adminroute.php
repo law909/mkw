@@ -560,6 +560,11 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/koltsegszamlafej/print', 'koltsegszamlafejController#doPrint', 'adminkoltsegszamlafejprint');
 
+$router->map('GET', '/admin/koltsegszamlaimport/view', 'koltsegszamlaimportController#view', 'adminkoltsegszamlaimportview');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/koltsegszamlaimport/process', 'koltsegszamlaimportController#process', 'adminkoltsegszamlaimportprocess');
+}
+
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
 $router->map('GET', '/admin/kivetfej/getlistbody', 'kivetfejController#getlistbody', 'adminkivetfejgetlistbody');
 $router->map('GET', '/admin/kivetfej/getkarb', 'kivetfejController#getkarb', 'adminkivetfejgetkarb');
