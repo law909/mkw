@@ -3065,9 +3065,6 @@ class Bizonylatfej
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
                     $this->fizmodnev_l1 = $val->getNevL1();
-                    // pénzmozgás nélküli fizetési módnál a bizonylat sem mozgat pénzt
-                    // (nem készül hozzá folyószámla); a fordított irányt nem állítjuk vissza,
-                    // hogy a bizonylattípusból örökölt / kézzel beállított érték megmaradjon
                     if ($val->getNincspenzmozgas()) {
                         $this->setPenztmozgat(false);
                     }
