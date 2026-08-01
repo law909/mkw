@@ -95,6 +95,7 @@ class BankbizonylatfejListener
 
         /** @var \Entities\Bankbizonylattetel $tetel */
         foreach ($bizonylat->getBizonylattetelek() as $tetel) {
+            $bf = null;
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
                 /** @var \Entities\Bizonylatfej $bf */
