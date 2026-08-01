@@ -7,6 +7,26 @@ let bizonylathelper = function ($) {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
+    // A pénzmozgás nélküli fizetési mód kikapcsolja és zárolja a "Pénzt mozgat" jelölőt –
+    // mentéskor a Bizonylatfej::setFizmod() ugyanezt teszi, itt csak előre látszik. A zárolt
+    // jelölő nem megy fel a szerverre, tehát false-ként mentődik. Másik fizetési módra
+    // váltva visszakapja a korábbi értékét.
+    function syncPenztmozgat() {
+        let penztmozgat = $('#PenztmozgatEdit');
+        if (!penztmozgat.length) {
+            return;
+        }
+        if ($('#FizmodEdit option:selected').attr('data-nincspenzmozgas') === '1') {
+            if (!penztmozgat.prop('disabled')) {
+                penztmozgat.attr('data-elozoertek', penztmozgat.prop('checked') ? '1' : '0');
+            }
+            penztmozgat.prop('checked', false).prop('disabled', true);
+        } else if (penztmozgat.prop('disabled')) {
+            penztmozgat.prop('disabled', false)
+                .prop('checked', penztmozgat.attr('data-elozoertek') === '1');
+        }
+    }
+
     function setDates() {
         let keltedit = $('#KeltEdit'),
             esededit = $('#EsedekessegEdit'),
@@ -1106,7 +1126,9 @@ let bizonylathelper = function ($) {
                 });
                 fizmodedit.on('change', function () {
                     setDates();
+                    syncPenztmozgat();
                 });
+                syncPenztmozgat();   // a betöltéskor már kiválasztott fizetési módra is
                 alttab
                     .on('click', '.js-quicktetelnewbutton', function (e) {
                         let $this = $(this);

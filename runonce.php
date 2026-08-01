@@ -962,6 +962,20 @@ if ($DBVersion < '0093') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0093');
 }
 
+if ($DBVersion < '0094') {
+    // A bizonylatfej.nincspenzmozgas mező megszűnt: eddig ez (a fizetési módról átmásolva)
+    // külön tiltotta a folyószámla képzését, mostantól a penztmozgat mező hordozza ezt.
+    // A pénzmozgás nélküli fizetési móddal rögzített bizonylatokon ezért kikapcsoljuk a
+    // penztmozgat-ot, különben újramentéskor folyószámla készülne hozzájuk.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej b INNER JOIN fizmod f ON f.id=b.fizmod_id'
+        . ' SET b.penztmozgat=0'
+        . ' WHERE f.nincspenzmozgas=1 AND b.penztmozgat=1'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0094');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

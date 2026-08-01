@@ -597,9 +597,6 @@ class Bizonylatfej
     /** @ORM\Column(type="boolean") */
     private $szepkartyakifizetve = false;
 
-    /** @ORM\Column(type="boolean") */
-    private $nincspenzmozgas = true;
-
     /** @ORM\Column(type="string", length=100,nullable=true) */
     private $programnev;
 
@@ -3068,7 +3065,12 @@ class Bizonylatfej
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
                     $this->fizmodnev_l1 = $val->getNevL1();
-                    $this->setNincspenzmozgas($val->getNincspenzmozgas());
+                    // pénzmozgás nélküli fizetési módnál a bizonylat sem mozgat pénzt
+                    // (nem készül hozzá folyószámla); a fordított irányt nem állítjuk vissza,
+                    // hogy a bizonylattípusból örökölt / kézzel beállított érték megmaradjon
+                    if ($val->getNincspenzmozgas()) {
+                        $this->setPenztmozgat(false);
+                    }
                 }
             }
         }
@@ -3081,7 +3083,6 @@ class Bizonylatfej
             if (!$this->duplication) {
                 $this->fizmodnev = '';
                 $this->fizmodnev_l1 = '';
-                $this->setNincspenzmozgas(false);
             }
         }
     }
@@ -5263,22 +5264,6 @@ class Bizonylatfej
     public function setSzepkartyanev($szepkartyanev)
     {
         $this->szepkartyanev = $szepkartyanev;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNincspenzmozgas()
-    {
-        return $this->nincspenzmozgas;
-    }
-
-    /**
-     * @param mixed $nincspenzmozgas
-     */
-    public function setNincspenzmozgas($nincspenzmozgas)
-    {
-        $this->nincspenzmozgas = $nincspenzmozgas;
     }
 
     /**

@@ -523,7 +523,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['szepkartyatipus'] = $t->getSzepkartyatipus();
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
-        $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
         $x['penztmozgat'] = $t->getPenztmozgat();
         if ($this->biztipus && $t->getBizonylattipusId() !== $this->biztipus) {
             $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);

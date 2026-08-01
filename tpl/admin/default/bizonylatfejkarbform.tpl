@@ -206,12 +206,11 @@
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $fizmodlist as $_mk}
                                     <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizhatido="{$_mk.fizhatido}"
-                                            data-bank="{$_mk.bank}">{$_mk.caption}</option>
+                                            data-bank="{$_mk.bank}"
+                                            data-nincspenzmozgas="{if ($_mk.nincspenzmozgas)}1{else}0{/if}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                         </td>
-                        <td><label for="PenztmozgatEdit">{at('Pénzt mozgat')}:</label></td>
-                        <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}></td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
                         <td><select id="SzallitasimodEdit" name="szallitasimod"
                                     class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzoneb2b')} required="required"{/if}>
@@ -221,6 +220,10 @@
                                 {/foreach}
                             </select>
                         </td>
+                    </tr>
+                    <tr>
+                        <td><label for="PenztmozgatEdit">{at('Pénzt mozgat')}:</label></td>
+                        <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}></td>
                     </tr>
                     {if isset($tarsbizonylatlist)}
                         <tr>
