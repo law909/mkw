@@ -73,6 +73,7 @@ class BizonylatfejListener
                 break;
         }
         $fszla->setBizonylatfej($bizonylat);
+        $bizonylat->addFolyoszamla($fszla);
         $this->em->persist($fszla);
         $this->uow->computeChangeSet($this->folyoszamlamd, $fszla);
     }
@@ -82,57 +83,49 @@ class BizonylatfejListener
      */
     private function createFolyoszamla($bizonylat)
     {
-        if (!$bizonylat->getPenztmozgat()) {
-            foreach ($bizonylat->getFolyoszamlak() as $fsz) {
-                $this->em->remove($fsz);
-            }
-            $bizonylat->clearFolyoszamlak();
-        } else {
-            $fm = $bizonylat->getFizmod();
-            $fmt = '';
-            if ($fm) {
-                $fmt = $fm->getTipus();
-            }
-            if ($fmt !== 'P' || \mkw\store::isKPFolyoszamla()) {
-                foreach ($bizonylat->getFolyoszamlak() as $fsz) {
-                    $this->em->remove($fsz);
-                }
-                $bizonylat->clearFolyoszamlak();
+        // a bizonylat folyószámla sorai minden mentéskor újraképződnek
+        foreach ($bizonylat->getFolyoszamlak() as $fsz) {
+            $this->em->remove($fsz);
+        }
+        $bizonylat->clearFolyoszamlak();
 
-                if (\mkw\store::isOsztottFizmod()) {
-                    $volt = false;
-                    if ($bizonylat->getFizetendo1()) {
-                        $this->createFSzla($bizonylat, 1);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo2()) {
-                        $this->createFSzla($bizonylat, 2);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo3()) {
-                        $this->createFSzla($bizonylat, 3);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo4()) {
-                        $this->createFSzla($bizonylat, 4);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo5()) {
-                        $this->createFSzla($bizonylat, 5);
-                        $volt = true;
-                    }
-                    if (!$volt) {
-                        $this->createFSzla($bizonylat, 0);
-                    }
-                } else {
-                    $this->createFSzla($bizonylat, 0);
-                }
-            } else {
-                foreach ($bizonylat->getFolyoszamlak() as $fsz) {
-                    $this->em->remove($fsz);
-                }
-                $bizonylat->clearFolyoszamlak();
+        if (!$bizonylat->getPenztmozgat()) {
+            return;
+        }
+        // készpénzes fizetési módnál csak akkor képzünk folyószámlát, ha a kpfolyoszamla
+        // beállítás be van kapcsolva
+        $fizmod = $bizonylat->getFizmod();
+        if ($fizmod && $fizmod->getTipus() === 'P' && !\mkw\store::isKPFolyoszamla()) {
+            return;
+        }
+
+        if (\mkw\store::isOsztottFizmod()) {
+            $volt = false;
+            if ($bizonylat->getFizetendo1()) {
+                $this->createFSzla($bizonylat, 1);
+                $volt = true;
             }
+            if ($bizonylat->getFizetendo2()) {
+                $this->createFSzla($bizonylat, 2);
+                $volt = true;
+            }
+            if ($bizonylat->getFizetendo3()) {
+                $this->createFSzla($bizonylat, 3);
+                $volt = true;
+            }
+            if ($bizonylat->getFizetendo4()) {
+                $this->createFSzla($bizonylat, 4);
+                $volt = true;
+            }
+            if ($bizonylat->getFizetendo5()) {
+                $this->createFSzla($bizonylat, 5);
+                $volt = true;
+            }
+            if (!$volt) {
+                $this->createFSzla($bizonylat, 0);
+            }
+        } else {
+            $this->createFSzla($bizonylat, 0);
         }
     }
 
