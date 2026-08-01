@@ -208,6 +208,10 @@
             </tr>
             <tr>
                 <td></td>
+                <td>{if ($_egyed.penztmozgat)}{at('Pénzt mozgat')}{else}{at('Nem mozgat pénzt')}{/if}</td>
+            </tr>
+            <tr>
+                <td></td>
                 <td>{$_egyed.szallitasimodnev}</td>
             </tr>
             {if (haveJog(90) && $_egyed.uzletkotonev)}

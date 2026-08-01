@@ -524,6 +524,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
         $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
+        $x['penztmozgat'] = $t->getPenztmozgat();
+        if ($this->biztipus && $t->getBizonylattipusId() !== $this->biztipus) {
+            $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
+            if ($biztip) {
+                $x['penztmozgat'] = $biztip->getPenztmozgat();
+            }
+        }
         $x['barionpaymentstatus'] = $t->getBarionpaymentstatus();
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['isstripe'] = \mkw\store::isStripeFizmod($t->getFizmod());
@@ -730,6 +737,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
         $obj->setForditottadozas($this->params->getBoolRequestParam('forditottadozas'));
+
+        $obj->setPenztmozgat($this->params->getBoolRequestParam('penztmozgat'));
 
         if ($partnerkod > 0) {
             if ($partnerobj) {
