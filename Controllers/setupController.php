@@ -527,6 +527,13 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::StripeFizmod);
         $view->setVar('stripefizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::AutoPenztarbizonylatPenztar);
+        $penztar = new penztarController();
+        $view->setVar('autopenztarbizonylatpenztarlist', $penztar->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::AutoPenztarbizonylatJogcim);
+        $jogcim = new jogcimController();
+        $view->setVar('autopenztarbizonylatjogcimlist', $jogcim->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
         $c = new jelenlettipusController();
         $view->setVar('munkajelenletlist', $c->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1634,6 +1641,19 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::UtanvetFizmod, $fizmod->getId());
         } else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
+        }
+        // üresen hagyva a bizonylat valutaneme szerinti pénztárba kerül az automatikus bizonylat
+        $penztar = \mkw\store::getEm()->getRepository(\Entities\Penztar::class)->find($this->params->getIntRequestParam('autopenztarbizonylatpenztar', 0));
+        if ($penztar) {
+            $this->setObj(\mkw\consts::AutoPenztarbizonylatPenztar, $penztar->getId());
+        } else {
+            $this->setObj(\mkw\consts::AutoPenztarbizonylatPenztar, '');
+        }
+        $jogcim = \mkw\store::getEm()->getRepository(\Entities\Jogcim::class)->find($this->params->getIntRequestParam('autopenztarbizonylatjogcim', 0));
+        if ($jogcim) {
+            $this->setObj(\mkw\consts::AutoPenztarbizonylatJogcim, $jogcim->getId());
+        } else {
+            $this->setObj(\mkw\consts::AutoPenztarbizonylatJogcim, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
         if ($fizmod) {

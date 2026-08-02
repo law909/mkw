@@ -2087,7 +2087,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         if ($this->params->getBoolRequestParam('vanpenzmozgas') && $this->params->getFloatRequestParam('penz')) {
             if ($fizmod) {
-                if ($fizmod->getTipus() === 'P' || \mkw\store::isSportkartyaFizmod($fizmod) || \mkw\store::isSZEPFizmod($fizmod)) {
+                // Készpénzes fizmódnál a BizonylatfejListener már képzett pénztárbizonylatot
+                // a fenti flush()-ban, ha az automatikus pénztárbizonylat be van kapcsolva –
+                // ilyenkor itt nem szabad még egyet csinálni. A SZÉP/sportkártya fizmódokra
+                // az automatika nem vonatkozik, azokat továbbra is itt kell rögzíteni.
+                $automataintezte = \mkw\store::isAutoPenztarbizonylat() && ($fizmod->getTipus() === 'P');
+                if (!$automataintezte
+                    && ($fizmod->getTipus() === 'P' || \mkw\store::isSportkartyaFizmod($fizmod) || \mkw\store::isSZEPFizmod($fizmod))) {
                     $pbfej = new \Entities\Penztarbizonylatfej();
                     $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
                     $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));

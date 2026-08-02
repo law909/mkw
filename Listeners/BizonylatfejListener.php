@@ -8,11 +8,15 @@ use Entities\Afa;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusznaplo;
 use Entities\Bizonylattetel;
+use Entities\Bizonylattipus;
 use Entities\Feketelista;
 use Entities\Folyoszamla;
+use Entities\Jogcim;
 use Entities\Kupon;
 use Entities\Partner;
+use Entities\Penztar;
 use Entities\Penztarbizonylatfej;
+use Entities\Penztarbizonylattetel;
 use Entities\Szallitasimod;
 use Entities\Termek;
 
@@ -23,6 +27,7 @@ class BizonylatfejListener
     private $uow;
     private $bizonylatfejmd;
     private $penztarbizonylatfejmd;
+    private $penztarbizonylattetelmd;
     private $bizonylattetelmd;
     private $folyoszamlamd;
     private $kuponmd;
@@ -92,10 +97,13 @@ class BizonylatfejListener
         if (!$bizonylat->getPenztmozgat()) {
             return;
         }
-        // készpénzes fizetési módnál csak akkor képzünk folyószámlát, ha a kpfolyoszamla
-        // beállítás be van kapcsolva
+        // Készpénzes fizetési módnál csak akkor képzünk folyószámlát, ha a kpfolyoszamla
+        // beállítás be van kapcsolva. Kivéve, ha automatikus pénztárbizonylatot képzünk:
+        // annak a PenztarbizonylatfejListener ellentétes előjelű folyószámla sort csinál,
+        // ami pár nélkül hamis túlfizetésnek látszana a partner egyenlegében.
         $fizmod = $bizonylat->getFizmod();
-        if ($fizmod && $fizmod->getTipus() === 'P' && !\mkw\store::isKPFolyoszamla()) {
+        if ($fizmod && $fizmod->getTipus() === 'P'
+            && !\mkw\store::isKPFolyoszamla() && !\mkw\store::isAutoPenztarbizonylat()) {
             return;
         }
 
@@ -414,10 +422,237 @@ class BizonylatfejListener
         $pbizek = $pfrep->getAllByHivatkozottBizonylat($filter);
         /** @var \Entities\Penztarbizonylatfej $pbiz */
         foreach ($pbizek as $pbiz) {
-            $pbiz->setRontott(true);
-            $this->em->persist($pbiz);
-            $this->uow->recomputeSingleEntityChangeSet($this->penztarbizonylatfejmd, $pbiz);
+            $this->rontPenztarBizonylatfej($pbiz);
         }
+    }
+
+    /**
+     * A Penztarbizonylatfej::setRontott() a tételeket is átállítja, de a bennük lévő
+     * változást a UnitOfWork-kel is fel kell vetetni – e nélkül a penztarbizonylattetel.rontott
+     * soha nem kerül ki az adatbázisba.
+     *
+     * @param \Entities\Penztarbizonylatfej $pbiz
+     */
+    private function rontPenztarBizonylatfej($pbiz)
+    {
+        $pbiz->setRontott(true);
+        $this->em->persist($pbiz);
+        $this->uow->recomputeSingleEntityChangeSet($this->penztarbizonylatfejmd, $pbiz);
+        /** @var \Entities\Penztarbizonylattetel $pt */
+        foreach ($pbiz->getBizonylattetelek() as $pt) {
+            // a most beszúrásra ütemezetteknek még nincs eredeti adatuk, azokra a
+            // recompute kivételt dobna
+            if ($this->uow->isScheduledForInsert($pt)) {
+                continue;
+            }
+            $this->uow->recomputeSingleEntityChangeSet($this->penztarbizonylattetelmd, $pt);
+        }
+    }
+
+    /**
+     * Készpénzes fizetési módú bizonylathoz automatikus pénztárbizonylatot képez.
+     * Ha már van hozzá ilyen és az összeg változott, a régit rontja és újat képez.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function createPenztarBizonylat($bizfej)
+    {
+        if (!\mkw\store::isAutoPenztarbizonylat() || !$bizfej->getId()) {
+            return;
+        }
+        // a hívó maga rögzíti a pénzmozgást
+        if ($bizfej->isNincsautopenztarbizonylat()) {
+            return;
+        }
+        // A stornózott (eredeti) bizonylat pénztárbizonylatához nem nyúlunk: a pénz annak
+        // idején valóban befolyt. A visszafizetést a storno bizonylat saját, ellentétes
+        // irányú pénztárbizonylata rögzíti – ezért a storno bizonylat NEM kivétel itt.
+        // A rontott bizonylatot a hívó oldali ront-ág kezeli.
+        if ($bizfej->getStornozott() || $bizfej->getRontott()) {
+            return;
+        }
+        if (!$bizfej->getPenztmozgat() || !$bizfej->getPartner()) {
+            return;
+        }
+        $fizmod = $bizfej->getFizmod();
+        if (!$fizmod || $fizmod->getTipus() !== 'P') {
+            return;
+        }
+        // részletfizetési ütemezésnél nincs egyösszegű készpénzes kiegyenlítés
+        if (\mkw\store::isOsztottFizmod()
+            && ($bizfej->getFizetendo1() || $bizfej->getFizetendo2() || $bizfej->getFizetendo3()
+                || $bizfej->getFizetendo4() || $bizfej->getFizetendo5())) {
+            return;
+        }
+
+        // A pénztárbizonylat iránya a bizonylat irányának ellentettje (számla -1 -> bevét,
+        // költségszámla +1 -> kiadás), storno bizonylatnál pedig megfordul, mert a pénz
+        // visszafelé mozog. Ugyanez a storno-szorzó fordítja az összeg előjelét is, így a
+        // szokásos negatív összegű stornóból pozitív kiadás lesz, a ritka pozitív összegűből
+        // pedig negatív. A pénztárbizonylat sorszáma is az irányból képződik ('B' / 'K').
+        //
+        //   számla  (-1)  +10  ->  bevét  +10        számla (-1)  -10  ->  bevét  -10
+        //   storno  (-1)  -10  ->  kiadás +10        storno (-1)  +10  ->  kiadás -10
+        //   bevét   (+1)  +10  ->  kiadás +10
+        $stornoszorzo = $bizfej->getStorno() ? -1 : 1;
+        $irany = $bizfej->getIrany() * -1 * $stornoszorzo;
+        $osszeg = $bizfej->getFizetendo() * $stornoszorzo;
+
+        // új bizonylathoz még nem tartozhat pénztárbizonylat, ilyenkor a lekérdezés
+        // fölösleges (tömeges importnál bizonylatonként egy query)
+        $regi = $this->uow->isScheduledForInsert($bizfej) ? null : $this->getAutoPenztarBizonylat($bizfej);
+        if ($regi) {
+            if ($this->autoPenztarBizonylatEgyezik($regi, $bizfej, $irany, $osszeg)) {
+                return;
+            }
+            $this->rontPenztarBizonylatfej($regi);
+        }
+        if (!$osszeg) {
+            return;
+        }
+
+        $penztar = $this->getAutoPenztar($bizfej);
+        $jogcim = $this->getAutoJogcim();
+        if (!$penztar || !$jogcim) {
+            \mkw\store::writelog(
+                $bizfej->getId() . ': nincs beállítva pénztár vagy jogcím',
+                'autopenztarbizonylat.log'
+            );
+            return;
+        }
+        if ($this->penztarZartIdoszak($penztar, $bizfej->getKelt())) {
+            \mkw\store::writelog(
+                $bizfej->getId() . ': a pénztár időszaka zárt (' . $penztar->getId() . ')',
+                'autopenztarbizonylat.log'
+            );
+            return;
+        }
+
+        $pbfej = new Penztarbizonylatfej();
+        $pbtetel = new Penztarbizonylattetel();
+        $pbfej->addBizonylattetel($pbtetel);
+
+        // A sorrend kötött: a PenztarbizonylatfejListener::generateId() a persist()-kor
+        // meghívódó prePersist-ben fut le, és a bizonylattipus + penztar + irany + kelt
+        // mezőket használja, tehát azoknak addigra készen kell lenniük.
+        $pbfej->setBizonylattipus($this->em->getRepository(Bizonylattipus::class)->find('penztar'));
+        $pbfej->setIrany($irany);
+        $pbfej->setPenztar($penztar);
+        $pbfej->setKelt($bizfej->getKeltStr());
+        // a setPartner() a partner valutanemét is ráteszi a fejre, ezért utána
+        // írjuk vissza a bizonylatét
+        $pbfej->setPartner($bizfej->getPartner());
+        $pbfej->setValutanem($bizfej->getValutanem());
+        $pbfej->setArfolyam($bizfej->getArfolyam() ?: 1);
+        $pbfej->setMegjegyzes('Automatikus pénztárbizonylat');
+
+        $pbtetel->setJogcim($jogcim);
+        $pbtetel->setHivatkozottbizonylat($bizfej->getId());
+        $pbtetel->setHivatkozottdatum($bizfej->getEsedekessegStr() ?: $bizfej->getKeltStr());
+        $pbtetel->setSzoveg($bizfej->getBizonylatnev() . ' ' . $bizfej->getId());
+        $pbtetel->setNetto($osszeg);
+        $pbtetel->setAfa(0);
+        $pbtetel->setBrutto($osszeg);
+
+        $this->em->persist($pbfej);
+        $this->uow->computeChangeSet($this->penztarbizonylatfejmd, $pbfej);
+        $this->em->persist($pbtetel);
+        $this->uow->computeChangeSet($this->penztarbizonylattetelmd, $pbtetel);
+    }
+
+    /**
+     * A bizonylathoz tartozó élő pénztárbizonylat. A kézzel rögzítettet is beleértve:
+     * a bizonylathoz tartozó pénzmozgásból egyszerre csak egy élhet, a fölöslegeset
+     * (akárhogy is keletkezett) rontjuk.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return \Entities\Penztarbizonylatfej|null
+     */
+    private function getAutoPenztarBizonylat($bizfej)
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId())
+            ->addFilter('rontott', '=', false);
+        $pbizek = $this->em->getRepository(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+        if (!count($pbizek)) {
+            return null;
+        }
+        // elvileg csak egy lehet; ha mégis több, a fölöslegeseket rontjuk
+        for ($i = 1; $i < count($pbizek); $i++) {
+            $this->rontPenztarBizonylatfej($pbizek[$i]);
+        }
+        return $pbizek[0];
+    }
+
+    /**
+     * @param \Entities\Penztarbizonylatfej $pbiz
+     * @param \Entities\Bizonylatfej $bizfej
+     * @param int $irany
+     * @param float $osszeg
+     *
+     * @return bool
+     */
+    private function autoPenztarBizonylatEgyezik($pbiz, $bizfej, $irany, $osszeg)
+    {
+        if ($pbiz->getIrany() != $irany) {
+            return false;
+        }
+        if ($pbiz->getValutanemId() != $bizfej->getValutanemId()) {
+            return false;
+        }
+        $tetelek = $pbiz->getBizonylattetelek();
+        if (count($tetelek) !== 1) {
+            return false;
+        }
+        // a tétel bruttóját nézzük, mert a fejet a PenztarbizonylatfejListener::calcOsszesen()
+        // címletre kerekíti, a folyószámla viszont a tétel összegével nettózik
+        return abs($tetelek->first()->getBrutto() * 1 - $osszeg) < 0.005;
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return \Entities\Penztar|null
+     */
+    private function getAutoPenztar($bizfej)
+    {
+        /** @var \Entities\PenztarRepository $prep */
+        $prep = $this->em->getRepository(Penztar::class);
+        $penztarid = \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar);
+        $penztar = $penztarid ? $prep->find($penztarid) : null;
+        // beállítás híján – vagy ha a beállított pénztár más valutanemű – a bizonylat
+        // valutaneme szerinti pénztárba kerül
+        if (!$penztar || ($penztar->getValutanemId() != $bizfej->getValutanemId())) {
+            $penztar = $prep->getByValutanem($bizfej->getValutanem());
+        }
+        return $penztar;
+    }
+
+    /**
+     * @return \Entities\Jogcim|null
+     */
+    private function getAutoJogcim()
+    {
+        $jogcimid = \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatJogcim);
+        return $jogcimid ? $this->em->getRepository(Jogcim::class)->find($jogcimid) : null;
+    }
+
+    /**
+     * @param \Entities\Penztar $penztar
+     * @param \DateTime|null $kelt
+     *
+     * @return bool
+     */
+    private function penztarZartIdoszak($penztar, $kelt)
+    {
+        $zart = \mkw\store::getParameter(\mkw\consts::PenztarZarva . $penztar->getId());
+        if (!$zart || !$kelt) {
+            return false;
+        }
+        // a zárás dátuma Y-m-d alakban van tárolva, azon a lexikografikus összehasonlítás jó
+        return $kelt->format(\mkw\store::$SQLDateFormat) <= $zart;
     }
 
     /**
@@ -560,6 +795,7 @@ class BizonylatfejListener
         $this->bizonylatfejmd = $this->em->getClassMetadata(Bizonylatfej::class);
         $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
         $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
+        $this->penztarbizonylattetelmd = $this->em->getClassMetadata(Penztarbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
         $entity = $args->getObject();
@@ -576,6 +812,7 @@ class BizonylatfejListener
         $this->bizonylatfejmd = $this->em->getClassMetadata(Bizonylatfej::class);
         $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
         $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
+        $this->penztarbizonylattetelmd = $this->em->getClassMetadata(Penztarbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
         $this->bizonylatstatusznaplomd = $this->em->getClassMetadata(Bizonylatstatusznaplo::class);
@@ -643,8 +880,14 @@ class BizonylatfejListener
                         $entity->setWebshopnum(\mkw\store::getWebshopNum());
                     }
 
-                    if ($entity->getStorno() || $entity->getRontott()) {
+                    // Rontáskor a bizonylat pénztárbizonylata is rontott lesz. Stornónál
+                    // viszont nem: a stornózott bizonylat pénztárbizonylata érintetlen
+                    // marad, a visszafizetést a storno bizonylat saját pénztárbizonylata
+                    // rögzíti (azt a createPenztarBizonylat képzi).
+                    if ($entity->getRontott()) {
                         $this->rontPenztarBizonylat($entity);
+                    } else {
+                        $this->createPenztarBizonylat($entity);
                     }
 
                     $entity->checkHibak();

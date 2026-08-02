@@ -28,6 +28,10 @@ class consts
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';
     const KeszpenzFizmod = 'keszpenzfizmod';
+    // az automatikusan képzett pénztárbizonylat pénztára és jogcíme
+    // (a funkciót a setup.ini autopenztarbizonylat kulcsa kapcsolja be)
+    const AutoPenztarbizonylatPenztar = 'autopenztarbizonylatpenztar';
+    const AutoPenztarbizonylatJogcim = 'autopenztarbizonylatjogcim';
     const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
     const ShowTermekArsav = 'showtermekarsav';

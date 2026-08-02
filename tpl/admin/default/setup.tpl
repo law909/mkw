@@ -102,6 +102,26 @@
                                 {/foreach}
                             </select>
                         </div>
+                        {if ($setup.autopenztarbizonylat)}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="AutoPenztarbizonylatPenztarEdit">{at('Automatikus pénztárbizonylat pénztára')}:</label></span>
+                                <select id="AutoPenztarbizonylatPenztarEdit" name="autopenztarbizonylatpenztar">
+                                    <option value="">{at('valutanem szerint')}</option>
+                                    {foreach $autopenztarbizonylatpenztarlist as $_p}
+                                        <option value="{$_p.id}"{if ($_p.selected)} selected="selected"{/if}>{$_p.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="AutoPenztarbizonylatJogcimEdit">{at('Automatikus pénztárbizonylat jogcíme')}:</label></span>
+                                <select id="AutoPenztarbizonylatJogcimEdit" name="autopenztarbizonylatjogcim">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $autopenztarbizonylatjogcimlist as $_j}
+                                        <option value="{$_j.id}"{if ($_j.selected)} selected="selected"{/if}>{$_j.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {/if}
                         {if ($setup.darshan)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>

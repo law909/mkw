@@ -23,6 +23,9 @@ class Bizonylatfej
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
     private $simpleedit = false;
+    // ha a hívó maga gondoskodik a pénzmozgás rögzítéséről, ezzel kikapcsolható
+    // az automatikus pénztárbizonylat képzése (lásd BizonylatfejListener)
+    private $nincsautopenztarbizonylat = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -2551,7 +2554,13 @@ class Bizonylatfej
                     $szam = $from;
                 }
             }
-            $this->id = self::createBizonylatszam($azon, $ev, $szam);
+            $ujid = self::createBizonylatszam($azon, $ev, $szam);
+            $uow = \mkw\store::getEm()->getUnitOfWork();
+            while ($uow->tryGetById($ujid, self::class)) {
+                $szam++;
+                $ujid = self::createBizonylatszam($azon, $ev, $szam);
+            }
+            $this->id = $ujid;
         }
         return $szam;
     }
@@ -5333,6 +5342,25 @@ class Bizonylatfej
     public function setSimpleedit($simpleedit)
     {
         $this->simpleedit = $simpleedit;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNincsautopenztarbizonylat()
+    {
+        return $this->nincsautopenztarbizonylat;
+    }
+
+    /**
+     * Azoknál a hívóknál kell true-ra állítani, amelyek maguk rögzítik a bizonylathoz
+     * tartozó pénzmozgást – így nem képződik hozzá második, automatikus pénztárbizonylat.
+     *
+     * @param bool $nincsautopenztarbizonylat
+     */
+    public function setNincsautopenztarbizonylat($nincsautopenztarbizonylat)
+    {
+        $this->nincsautopenztarbizonylat = $nincsautopenztarbizonylat;
     }
 
     /**

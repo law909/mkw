@@ -508,6 +508,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
                 $biz->setBankszamla($bankfej->getBankszamla());
             }
             $biz->setBelsomegjegyzes(at('Automatikus bizonylat'));
+            // a jelentkezés kifizetésekor már készült bank-/pénztárbizonylat, azt kötjük
+            // rá lentebb a számlára – automatikusat nem szabad képezni hozzá
+            $biz->setNincsautopenztarbizonylat(true);
             $biz->setRaktar(\mkw\store::getDefaultRaktarId());
             $biz->setSzallitasimod(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
 

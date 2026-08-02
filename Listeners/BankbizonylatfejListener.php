@@ -78,7 +78,17 @@ class BankbizonylatfejListener
                     $szam = $from;
                 }
             }
-            $entity->setId(\Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam));
+            $ujid = \Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam);
+            // A fenti MAX(id) csak a már kiírt bizonylatokat látja. Egy flush-on belül több
+            // bankbizonylat is képződhet (pl. banktranzakció-import) – azok ilyenkor még
+            // csak beszúrásra vannak ütemezve, de a saját azonosítójuk miatt már bekerültek
+            // az identity map-be. Enélkül azonos azonosítót kapnának, és az egész flush
+            // elhasalna egy integrity violation-nel.
+            while ($this->uow->tryGetById($ujid, Bankbizonylatfej::class)) {
+                $szam++;
+                $ujid = \Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam);
+            }
+            $entity->setId($ujid);
         }
         return $szam;
     }

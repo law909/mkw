@@ -103,7 +103,17 @@ class PenztarbizonylatfejListener
                     $szam = $from;
                 }
             }
-            $entity->setId(\Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam));
+            $ujid = \Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam);
+            // A fenti MAX(id) csak a már kiírt bizonylatokat látja. Egy flush-on belül több
+            // pénztárbizonylat is képződhet (tömeges import, automatikus pénztárbizonylat) –
+            // azok ilyenkor még csak beszúrásra vannak ütemezve, de a saját azonosítójuk miatt
+            // már bekerültek az identity map-be. Enélkül azonos azonosítót kapnának, és az
+            // egész flush elhasalna egy integrity violation-nel.
+            while ($this->uow->tryGetById($ujid, Penztarbizonylatfej::class)) {
+                $szam++;
+                $ujid = \Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam);
+            }
+            $entity->setId($ujid);
         }
         return $szam;
     }
