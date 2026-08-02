@@ -120,13 +120,13 @@ class Penztarbizonylattetel {
     public function addFolyoszamla(Folyoszamla $val) {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
-            $val->setBizonylatfej($this);
+            $val->setPenztarbizonylattetel($this);
         }
     }
 
     public function removeFolyoszamla(Folyoszamla $val) {
         if ($this->folyoszamlak->removeElement($val)) {
-            $val->removeBizonylatfej();
+            $val->removePenztarbizonylattetel();
             return true;
         }
         return false;

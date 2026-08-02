@@ -121,6 +121,7 @@ class BankbizonylatfejListener
             $fszla->setBrutto($tetel->getBrutto());
             $fszla->setBankbizonylatfej($tetel->getBizonylatfej());
             $fszla->setBankbizonylattetel($tetel);
+            $bizonylat->addFolyoszamla($fszla);
 
             $this->em->persist($fszla);
             $this->uow->computeChangeSet($this->folyoszamlamd, $fszla);
@@ -170,6 +171,51 @@ class BankbizonylatfejListener
         }
     }
 
+    /**
+     * A beszúrt / módosított / törölt tételek bizonylatfejei, amelyek maguktól nem kerülnének
+     * a feldolgozási listára (mert a fejen magán nem változott semmi). Törléskor a tételről
+     * már le van csatolva a fej, ilyenkor a UnitOfWork eredeti adataiból vesszük.
+     *
+     * @param array $marbenne a már feldolgozásra kerülő entitások
+     *
+     * @return \Entities\Bankbizonylatfej[]
+     */
+    private function tetelekBizonylatfejei(array $marbenne)
+    {
+        $ismert = [];
+        foreach ($marbenne as $entity) {
+            if ($entity instanceof \Entities\Bankbizonylatfej) {
+                $ismert[spl_object_id($entity)] = true;
+            }
+        }
+
+        $result = [];
+        $tetelek = array_merge(
+            $this->uow->getScheduledEntityInsertions(),
+            $this->uow->getScheduledEntityUpdates(),
+            $this->uow->getScheduledEntityDeletions()
+        );
+        foreach ($tetelek as $tetel) {
+            if (!($tetel instanceof \Entities\Bankbizonylattetel)) {
+                continue;
+            }
+            $fej = $tetel->getBizonylatfej();
+            if (!$fej) {
+                $eredeti = $this->uow->getOriginalEntityData($tetel);
+                $fej = $eredeti['bizonylatfej'] ?? null;
+            }
+            if (!($fej instanceof \Entities\Bankbizonylatfej) || $this->uow->isScheduledForDelete($fej)) {
+                continue;
+            }
+            $oid = spl_object_id($fej);
+            if (!isset($ismert[$oid])) {
+                $ismert[$oid] = true;
+                $result[] = $fej;
+            }
+        }
+        return $result;
+    }
+
     public function onFlush(OnFlushEventArgs $args)
     {
         $this->em = $args->getObjectManager();
@@ -192,6 +238,8 @@ class BankbizonylatfejListener
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
             }
         }
+
+        $entities = array_merge($entities, $this->tetelekBizonylatfejei($entities));
 
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bankbizonylatfej) {

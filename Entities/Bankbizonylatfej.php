@@ -194,14 +194,14 @@ class Bankbizonylatfej
     {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
-            $val->setBizonylatfej($this);
+            $val->setBankbizonylatfej($this);
         }
     }
 
     public function removeFolyoszamla(Folyoszamla $val)
     {
         if ($this->folyoszamlak->removeElement($val)) {
-            $val->removeBizonylatfej();
+            $val->removeBankbizonylatfej();
             return true;
         }
         return false;

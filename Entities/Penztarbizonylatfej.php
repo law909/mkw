@@ -180,13 +180,13 @@ class Penztarbizonylatfej {
     public function addFolyoszamla(Folyoszamla $val) {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
-            $val->setBizonylatfej($this);
+            $val->setPenztarbizonylatfej($this);
         }
     }
 
     public function removeFolyoszamla(Folyoszamla $val) {
         if ($this->folyoszamlak->removeElement($val)) {
-            $val->removeBizonylatfej();
+            $val->removePaneztarbizonylatfej();
             return true;
         }
         return false;

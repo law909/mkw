@@ -179,14 +179,14 @@ class Bankbizonylattetel
     {
         if (!$this->folyoszamlak->contains($val)) {
             $this->folyoszamlak->add($val);
-            $val->setBizonylatfej($this);
+            $val->setBankbizonylattetel($this);
         }
     }
 
     public function removeFolyoszamla(Folyoszamla $val)
     {
         if ($this->folyoszamlak->removeElement($val)) {
-            $val->removeBizonylatfej();
+            $val->removeBankbizonylattetel();
             return true;
         }
         return false;
