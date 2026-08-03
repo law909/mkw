@@ -527,6 +527,13 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::StripeFizmod);
         $view->setVar('stripefizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        // a pénztár/jogcím alapértelmezés csak akkor érdekes, ha legalább egy
+        // bizonylattípuson be van kapcsolva az automatikus pénztárbizonylat
+        $view->setVar(
+            'vanautopenztarbizonylat',
+            (bool)$this->getRepo(\Entities\Bizonylattipus::class)
+                ->findOneBy(['autopenztarbizonylat' => true])
+        );
         $p = $repo->find(\mkw\consts::AutoPenztarbizonylatPenztar);
         $penztar = new penztarController();
         $view->setVar('autopenztarbizonylatpenztarlist', $penztar->getSelectList(($p ? $p->getErtek() : 0)));

@@ -92,6 +92,10 @@ class Bizonylattipus
     private $showpdf = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $navbekuldendo = false;
+    /**
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $autopenztarbizonylat = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showemailbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -584,6 +588,22 @@ class Bizonylattipus
     public function setNavbekuldendo($navbekuldendo)
     {
         $this->navbekuldendo = $navbekuldendo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAutopenztarbizonylat()
+    {
+        return $this->autopenztarbizonylat;
+    }
+
+    /**
+     * @param bool $autopenztarbizonylat
+     */
+    public function setAutopenztarbizonylat($autopenztarbizonylat)
+    {
+        $this->autopenztarbizonylat = $autopenztarbizonylat;
     }
 
     /**

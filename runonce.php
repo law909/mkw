@@ -994,6 +994,17 @@ if ($DBVersion < '0096') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0096');
 }
+
+if ($DBVersion < '0097') {
+    if (\mkw\store::getSetupValue('autopenztarbizonylat', false)) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylattipus SET autopenztarbizonylat=1'
+            . ' WHERE penztmozgat=1 AND id NOT IN ("bank","penztar")'
+        );
+    }
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0097');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

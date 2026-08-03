@@ -103,7 +103,7 @@ class BizonylatfejListener
         // ami pár nélkül hamis túlfizetésnek látszana a partner egyenlegében.
         $fizmod = $bizonylat->getFizmod();
         if ($fizmod && $fizmod->getTipus() === 'P'
-            && !\mkw\store::isKPFolyoszamla() && !\mkw\store::isAutoPenztarbizonylat()) {
+            && !\mkw\store::isKPFolyoszamla() && !$bizonylat->getBizonylattipus()?->getAutopenztarbizonylat()) {
             return;
         }
 
@@ -457,7 +457,7 @@ class BizonylatfejListener
      */
     private function createPenztarBizonylat($bizfej)
     {
-        if (!\mkw\store::isAutoPenztarbizonylat() || !$bizfej->getId()) {
+        if (!$bizfej->getBizonylattipus()?->getAutopenztarbizonylat() || !$bizfej->getId()) {
             return;
         }
         // a hívó maga rögzíti a pénzmozgást

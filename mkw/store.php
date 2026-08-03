@@ -284,11 +284,6 @@ class store
         if (!array_key_exists('barion', self::$setup)) {
             self::$setup['barion'] = false;
         }
-        // a *.ini fájlok nincsenek verziókövetve, élesben kézzel kerülnek fel –
-        // a hiányzó kulcs kikapcsolt állapotot jelentsen, ne hibát
-        if (!array_key_exists('autopenztarbizonylat', self::$setup)) {
-            self::$setup['autopenztarbizonylat'] = false;
-        }
         if (self::$setup['barion'] && self::$setup['stripe']) {
             self::$setup['stripe'] = false;
         }
@@ -1379,16 +1374,6 @@ class store
     public static function isKPFolyoszamla()
     {
         return self::getSetupValue('kpfolyoszamla');
-    }
-
-    /**
-     * Készpénzes ('P' típusú) fizetési módú bizonylat mentésekor automatikusan
-     * képződjön-e pénztárbizonylat. A hozzá tartozó pénztárat és jogcímet a
-     * Beállítások / Alapértelmezések képernyőn lehet megadni.
-     */
-    public static function isAutoPenztarbizonylat()
-    {
-        return self::getSetupValue('autopenztarbizonylat', false);
     }
 
     public static function isMultiShop()

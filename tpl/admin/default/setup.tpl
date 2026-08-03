@@ -102,7 +102,7 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($setup.autopenztarbizonylat)}
+                        {if ($vanautopenztarbizonylat)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="AutoPenztarbizonylatPenztarEdit">{at('Automatikus pénztárbizonylat pénztára')}:</label></span>
                                 <select id="AutoPenztarbizonylatPenztarEdit" name="autopenztarbizonylatpenztar">
