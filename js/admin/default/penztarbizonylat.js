@@ -242,7 +242,9 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/penztarbizonylatfej/getlistbody',
                 onStyle: function() {
-                    $('.js-rontbizonylat').button();
+                    // a nyomtatás link href-je szerver oldalon készen jön, itt csak a
+                    // jQuery UI gomb-megjelenést kapja meg
+                    $('.js-rontbizonylat,.js-printbizonylat').button();
                 }
             },
             karb: penztarbizonylat

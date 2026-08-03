@@ -3,6 +3,10 @@
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.fejid}" data-oper="edit"
            title="{at('Bizonylat megtekintése')}">{$_egyed.fejid}</a>
+        {if ($_egyed.fejid)}
+            <a class="js-printbizonylat" href="/admin/penztarbizonylatfej/print?id={$_egyed.fejid|escape:'url'}"
+               title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+        {/if}
         {if ($showerbizonylatszam && $_egyed.erbizonylatszam)}
             <div>{at('Er.biz.szám')}: {$_egyed.erbizonylatszam}</div>
         {/if}

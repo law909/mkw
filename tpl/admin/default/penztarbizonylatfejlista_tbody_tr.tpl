@@ -9,6 +9,8 @@
         {if ($_egyed.nemrossz)}
             <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         {/if}
+        <a class="js-printbizonylat" href="/admin/penztarbizonylatfej/print?id={$_egyed.id|escape:'url'}"
+           title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
         <table>
             <tbody>
                 <tr><td colspan="2" class="mattable-important">{$_egyed.partnernev}</td></tr>

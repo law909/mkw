@@ -82,6 +82,10 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/penztarbizonylattetel/getlistbody',
                 onStyle: function () {
+                    // a nyomtatás link href-je szerver oldalon készen jön, itt csak a
+                    // jQuery UI gomb-megjelenést kapja meg (a mattable az editlinket
+                    // magától stílusozza, a többit nem)
+                    $('.js-printbizonylat').button();
                 }
             },
             // a tételt magát nem lehet önállóan szerkeszteni, a sorra kattintva a

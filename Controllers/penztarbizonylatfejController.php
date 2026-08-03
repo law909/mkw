@@ -326,6 +326,59 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * A pénztárbizonylat nyomtatási képe. A sablont a bizonylattípus tplname mezője
+     * adja meg (alapértelmezésben biz_penztar.tpl).
+     *
+     * @param string $id
+     *
+     * @return string
+     */
+    public function getBizonylatHTML($id)
+    {
+        /** @var \Entities\Penztarbizonylatfej $o */
+        $o = $this->getRepo()->find($id);
+        if (!$o) {
+            return '';
+        }
+
+        $bt = $o->getBizonylattipus();
+        $view = $this->createView(($bt ? $bt->getTplname() : '') ?: 'biz_penztar.tpl');
+        if ($bt) {
+            $bt->setTemplateVars($view);
+        }
+
+        $x = $this->loadVars($o);
+        $x['bizonylatnev'] = $bt ? $bt->getNev() : t('Pénztárbizonylat');
+        // a biz_base.tpl ezeket a kulcsokat várja; a pénztárbizonylatnak nincs
+        // nyomtatva jelzője és nem esik a számlarendelet hatálya alá
+        $x['szamlanev'] = $o->getPartnernev();
+        $x['nyomtatva'] = false;
+        $x['printrendelet'] = false;
+        $x['programnev'] = \mkw\store::getParameter(\mkw\consts::ProgramNev);
+        $x['tulajnev'] = \mkw\store::getParameter(\mkw\consts::Tulajnev);
+        $x['tulajirszam'] = \mkw\store::getParameter(\mkw\consts::Tulajirszam);
+        $x['tulajvaros'] = \mkw\store::getParameter(\mkw\consts::Tulajvaros);
+        $x['tulajutca'] = \mkw\store::getParameter(\mkw\consts::Tulajutca);
+        $x['tulajadoszam'] = \mkw\store::getParameter(\mkw\consts::Tulajadoszam);
+        $x['bruttokiirva'] = \mkw\store::Num2Text($o->getBrutto());
+
+        $tetelCtrl = new penztarbizonylattetelController();
+        $tetellista = [];
+        foreach ($o->getBizonylattetelek() as $tetel) {
+            $tetellista[] = $tetelCtrl->loadVars($tetel);
+        }
+        $x['tetellista'] = $tetellista;
+
+        $view->setVar('egyed', $x);
+        return $view->getTemplateResult();
+    }
+
+    public function doPrint()
+    {
+        echo $this->getBizonylatHTML($this->params->getStringRequestParam('id'));
+    }
+
     protected function _getkarb($tplname)
     {
         $id = $this->params->getRequestParam('id', 0);
