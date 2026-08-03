@@ -9,6 +9,7 @@ use mkw\store;
 use Services\BizonylatCalculatorService;
 use stdClass;
 use Traits\GetsFieldValue;
+use Traits\HasListaUrl;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
@@ -18,6 +19,7 @@ class Bizonylatfej
 {
 
     use GetsFieldValue;
+    use HasListaUrl;
 
     /**
      * A pénztár- és a bankbizonylat admin útvonalainak előtagja eltér a bizonylattípus
@@ -2676,20 +2678,11 @@ class Bizonylatfej
     public function getListaUrl()
     {
         $tipusid = $this->getBizonylattipusId();
-        if (!$tipusid || !$this->getId()) {
+        if (!$tipusid) {
             return null;
         }
         $prefix = self::ROUTEPREFIX[$tipusid] ?? $tipusid;
-        try {
-            return \mkw\store::getRouter()->generate(
-                'admin' . $prefix . 'fejviewlist',
-                false,
-                [],
-                ['idfilter' => urlencode($this->getId())]
-            );
-        } catch (\Exception $e) {
-            return null;
-        }
+        return $this->buildListaUrl('admin' . $prefix . 'fejviewlist');
     }
 
     /**

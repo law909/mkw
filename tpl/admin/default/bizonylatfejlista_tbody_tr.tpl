@@ -324,7 +324,14 @@
                 <table>
                     <tbody>
                     <tr>
-                        <td>{$_egyed.parbizonylat.id}</td>
+                        <td>
+                            {if ($_egyed.parbizonylat.listaurl)}
+                                <a href="{$_egyed.parbizonylat.listaurl}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.parbizonylat.id}</a>
+                            {else}
+                                {$_egyed.parbizonylat.id}
+                            {/if}
+                        </td>
                         <td>{$_egyed.parbizonylat.tipusnev}</td>
                         <td>{$_egyed.parbizonylat.keltstr}</td>
                         <td>{$_egyed.parbizonylat.createdstr}</td>
@@ -341,7 +348,14 @@
                     <tbody>
                     {foreach $_egyed.szarmazobizonylatok as $_sb}
                         <tr>
-                            <td>{$_sb.id}</td>
+                            <td>
+                                {if ($_sb.listaurl)}
+                                    <a href="{$_sb.listaurl}" target="_blank"
+                                       title="{at('Ugrás a bizonylathoz')}">{$_sb.id}</a>
+                                {else}
+                                    {$_sb.id}
+                                {/if}
+                            </td>
                             <td>{$_sb.tipusnev}</td>
                             <td>{$_sb.keltstr}</td>
                             <td>{$_sb.createdstr}</td>

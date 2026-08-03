@@ -629,6 +629,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
         return [
             'id' => $b->getId(),
+            'listaurl' => $b->getListaUrl(),
             'tipusnev' => $b->getBizonylattipus() ? $b->getBizonylattipus()->getNev() : $b->getBizonylatnev(),
             'keltstr' => $b->getKeltStr(),
             'createdstr' => $b->getCreatedStr(),
@@ -2217,9 +2218,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             } else {
                 $datum = $fszla->getDatumStr();
             }
+            // a sor vagy bank-, vagy pénztárbizonylathoz tartozik – amelyik megvan,
+            // annak a listájára mutatunk, a bizonylatszámra szűrve
+            $penzbiz = $fszla->getBankbizonylatfej() ?: $fszla->getPenztarbizonylatfej();
             $adat[] = [
                 'datum' => $datum,
                 'bizonylatszam' => $fszla->getBankbizonylatfejId() ? $fszla->getBankbizonylatfejId() : $fszla->getPenztarbizonylatfejId(),
+                'listaurl' => $penzbiz?->getListaUrl(),
                 'fizmodnev' => $fszla->getFizmod()->getNev(),
                 'brutto' => $fszla->getBrutto(),
                 'valutanemnev' => $fszla->getValutanemnev()

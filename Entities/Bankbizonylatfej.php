@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Bankbizonylatfej
 {
 
+    use \Traits\HasListaUrl;
+
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
@@ -136,6 +138,16 @@ class Bankbizonylatfej
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * A bankbizonylat-lista URL-je, erre a bizonylatszámra előszűrve.
+     *
+     * @return string|null
+     */
+    public function getListaUrl()
+    {
+        return $this->buildListaUrl('adminbankbizonylatfejviewlist');
     }
 
     public function setId($val)

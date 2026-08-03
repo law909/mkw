@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * */
 class Penztarbizonylatfej {
 
+    use \Traits\HasListaUrl;
+
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
@@ -131,6 +133,16 @@ class Penztarbizonylatfej {
 
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * A pénztárbizonylat-lista URL-je, erre a bizonylatszámra előszűrve.
+     *
+     * @return string|null
+     */
+    public function getListaUrl()
+    {
+        return $this->buildListaUrl('adminpenztarbizonylatfejviewlist');
     }
 
     public function setId($val) {
