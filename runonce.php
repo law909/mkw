@@ -976,6 +976,17 @@ if ($DBVersion < '0094') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0094');
 }
 
+if ($DBVersion < '0095') {
+    // Házipénztár tételek lista menüpont a Házipénztár alá
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(2, "Házipénztár tételek","/admin/penztarbizonylattetel/viewlist","/admin/penztarbizonylattetel",15,1,220, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0095');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

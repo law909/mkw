@@ -224,6 +224,9 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/penztarbizonylatfej/print', 'penztarbizonylatfejController#doPrint', 'adminpenztarbizonylatfejprint');
     $router->map('GET', '/admin/penztarbizonylatfej/checkdatum', 'penztarbizonylatfejController#checkZartIdoszak', 'adminpenztarbizonylatfejcheckzartidoszak');
     $router->map('GET', '/admin/penztarbizonylattetel/getemptyrow', 'penztarbizonylattetelController#getemptyrow', 'adminpenztarbizonylattetelgetemptyrow');
+    $router->map('GET', '/admin/penztarbizonylattetel/viewlist', 'penztarbizonylattetelController#viewlist', 'adminpenztarbizonylattetelviewlist');
+    $router->map('GET', '/admin/penztarbizonylattetel/viewselect', 'penztarbizonylattetelController#viewselect', 'adminpenztarbizonylattetelviewselect');
+    $router->map('GET', '/admin/penztarbizonylattetel/getlistbody', 'penztarbizonylattetelController#getlistbody', 'adminpenztarbizonylattetelgetlistbody');
 
     $router->map('GET', '/admin/kintlevoseglista/view', 'kintlevoseglistaController#view', 'adminkintlevoseglistaview');
     $router->map('GET', '/admin/kintlevoseglista/get', 'kintlevoseglistaController#createLista', 'adminkintlevoseglistaget');

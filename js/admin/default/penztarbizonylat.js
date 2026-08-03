@@ -1,7 +1,19 @@
 $(document).ready(function () {
 
+    // A pénztárbizonylatnál az irány a fejen van (a banknál tételenként), ezért a
+    // tételösszegeket előjel nélkül adjuk össze – az előjelet a fej irany mezője hordozza.
+    // Csak bruttót számolunk: a tétel netto/afa mezőit egyik mentési ág sem tölti ki.
     function calcOsszesen() {
+        var osszeg = 0;
 
+        $('input[name^="tetelosszeg_"]').each(function() {
+            var ertek = $(this).val() * 1;
+            if (!isNaN(ertek)) {
+                osszeg = osszeg + ertek;
+            }
+        });
+
+        $('.js-bruttosum').text(accounting.formatNumber(tools.round(osszeg, -2), 2, ' '));
     }
 
     function checkPenztarDatum(kelt, penztar) {
@@ -70,6 +82,9 @@ $(document).ready(function () {
             });
 
             $('#AltalanosTab')
+                .on('change', 'input[name^="tetelosszeg_"]', function(e) {
+                    calcOsszesen();
+                })
                 .on('click', '.js-tetelnewbutton', function(e) {
                     var $this = $(this);
                     e.preventDefault();
@@ -87,6 +102,7 @@ $(document).ready(function () {
 
                             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                             $this.remove();
+                            calcOsszesen();
                         }
                     });
                 })
@@ -170,6 +186,7 @@ $(document).ready(function () {
                                         $('input[name="tetelhivatkozottbizonylat_' + tid + '"]').val(sor.data('bizszam'));
                                         $('input[name="tetelhivatkozottdatum_' + tid + '"]').val(sor.data('datum'));
                                         $('input[name="tetelosszeg_' + tid + '"]').val(sor.data('egyenleg'));
+                                        calcOsszesen();
                                         $(this).dialog('close');
                                     },
                                     'Bezár': function() {
@@ -185,6 +202,9 @@ $(document).ready(function () {
                     $('#ValutanemEdit').val(v);
                     $('input[name="valutanem"]').val(v);
                 });
+
+            calcOsszesen();
+
             dialogcenter.on('click', 'tr', function(e) {
                 e.preventDefault();
                 $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
