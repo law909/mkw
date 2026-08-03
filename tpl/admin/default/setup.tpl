@@ -833,6 +833,11 @@
                                        type="checkbox"{if ($tulajegyenivallalkozo)} checked="checked"{/if}></td>
                         </tr>
                         <tr>
+                            <td><label for="TulajalanyiafamentesEdit">{at('Alanyi ÁFA mentes')}:</label></td>
+                            <td><input id="TulajalanyiafamentesEdit" name="tulajalanyiafamentes"
+                                       type="checkbox"{if ($tulajalanyiafamentes)} checked="checked"{/if}></td>
+                        </tr>
+                        <tr>
                             <td><label for="TulajevnevEdit">{at('Egyéni váll.neve')}:</label></td>
                             <td><input id="TulajevnevEdit" type="text" name="tulajevnev" value="{$tulajevnev}"></td>
                             <td><label for="TulajevnyilvszamEdit">{at('Egyéni váll.nyilv.száma')}:</label></td>

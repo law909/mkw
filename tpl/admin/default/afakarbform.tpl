@@ -28,6 +28,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="MagyarEdit">{at('Magyar ÁFA kulcs')}:</label></td>
+                    <td><input id="MagyarEdit" name="magyar" type="checkbox"{if ($egyed.magyar)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="RlbkodEdit">{at('RLB kód')}:</label></td>
                     <td><input id="RlbkodEdit" name="rlbkod" type="number" value="{$egyed.rlbkod}"></td>
                 </tr>

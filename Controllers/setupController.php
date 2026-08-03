@@ -50,6 +50,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Tulajeorinr, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajkisadozo);
         $view->setVar(\mkw\consts::Tulajkisadozo, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::Tulajalanyiafamentes);
+        $view->setVar(\mkw\consts::Tulajalanyiafamentes, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Tulajegyenivallalkozo);
         $view->setVar(\mkw\consts::Tulajegyenivallalkozo, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Tulajevnyilvszam);
@@ -1058,6 +1060,10 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Tulajeuadoszam, $this->params->getStringRequestParam('tulajeuadoszam'));
         $this->setObj(\mkw\consts::Tulajeorinr, $this->params->getStringRequestParam('tulajeorinr'));
         $this->setObj(\mkw\consts::Tulajkisadozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajkisadozo));
+        $this->setObj(
+            \mkw\consts::Tulajalanyiafamentes,
+            $this->params->getBoolRequestParam(\mkw\consts::Tulajalanyiafamentes)
+        );
         $this->setObj(\mkw\consts::Tulajegyenivallalkozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajegyenivallalkozo));
         $this->setObj(\mkw\consts::Tulajevnev, $this->params->getStringRequestParam(\mkw\consts::Tulajevnev));
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));

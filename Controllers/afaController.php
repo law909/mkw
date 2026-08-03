@@ -40,6 +40,7 @@ class afaController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $this->setEntityFieldsFromRequest($obj);
+        $obj->setMagyar($this->params->getBoolRequestParam('magyar', false));
         return $obj;
     }
 
@@ -101,7 +102,10 @@ class afaController extends \mkwhelpers\MattableController
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
-                'afakulcs' => $sor->getErtek()
+                'afakulcs' => $sor->getErtek(),
+                // a kliensoldali ÁFA ellenőrzéshez (bizonylathelper.js checkTetelOsszegek)
+                'magyar' => $sor->getMagyar(),
+                'navcase' => $sor->getNavcase()
             ];
         }
         return $res;

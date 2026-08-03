@@ -337,6 +337,7 @@ class KoltsegszamlaJSONImportService
      * létrehozás flush-sel jár – lásd a createFromArray() megjegyzését.
      *
      * @param array[] $tetelek
+     *
      * @return array[] a tételek az 'afa', 'vtszobj' és 'me' entitásokkal kiegészítve
      */
     private function torzsadatokFeloldasa(array $tetelek): array
@@ -613,6 +614,7 @@ class KoltsegszamlaJSONImportService
                 $afa->setNev($navcase);
                 $afa->setErtek(0);
                 $afa->setNavcase($navcase);
+                $afa->setMagyar(true);
                 $em->persist($afa);
                 $em->flush();
             }
@@ -623,6 +625,7 @@ class KoltsegszamlaJSONImportService
             $afa = new Afa();
             $afa->setNev(rtrim(rtrim(number_format($percent, 2, '.', ''), '0'), '.') . '%');
             $afa->setErtek($percent);
+            $afa->setMagyar(true);
             $em->persist($afa);
             $em->flush();
         }

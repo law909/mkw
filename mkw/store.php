@@ -2049,6 +2049,15 @@ class store
         return self::getParameter(\mkw\consts::Tulajadoszam);
     }
 
+    /**
+     * Alanyi adómentes-e a tulajdonos. Ha igen, a kimenő bizonylatok tételein csak
+     * AAM nav típusú ÁFA kulcs szerepelhet (lásd Bizonylatfej ÁFA ellenőrzés).
+     */
+    public static function isTulajAlanyiAfamentes()
+    {
+        return (bool)self::getParameter(\mkw\consts::Tulajalanyiafamentes);
+    }
+
     public static function isMagyarorszag($orszag)
     {
         $moid = self::getParameter(\mkw\consts::Magyarorszag);
@@ -2072,7 +2081,7 @@ class store
         if (!$moid) {
             $mo = self::getEm()->getRepository(Orszag::class)->findBy(['iso3166' => 'HU']);
             if ($mo) {
-                return $mo;
+                return $mo[array_key_first($mo)];
             } else {
                 return false;
             }

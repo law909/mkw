@@ -72,6 +72,8 @@ class consts
     const Tulajeuadoszam = 'tulajeuadoszam';
     const Tulajeorinr = 'tulajeorinr';
     const Tulajkisadozo = 'tulajkisadozo';
+    // alanyi adómentes tulajdonos: a kimenő bizonylatokon csak AAM nav típusú ÁFA kulcs lehet
+    const Tulajalanyiafamentes = 'tulajalanyiafamentes';
     const Tulajegyenivallalkozo = 'tulajegyenivallalkozo';
     const Tulajevnev = 'tulajevnev';
     const Tulajevnyilvszam = 'tulajevnyilvszam';

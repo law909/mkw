@@ -83,7 +83,8 @@
             <td><select id="AfaSelect{$tetel.id}" name="tetelafa_{$tetel.id}" class="js-afaselect" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $tetel.afalist as $_afa}
-                        <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if} data-afakulcs="{$_afa.afakulcs}">{$_afa.caption}</option>
+                        <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if} data-afakulcs="{$_afa.afakulcs}"
+                                data-magyar="{if ($_afa.magyar)}1{else}0{/if}" data-navcase="{$_afa.navcase}">{$_afa.caption}</option>
                     {/foreach}
                 </select></td>
         </tr>

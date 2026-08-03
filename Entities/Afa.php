@@ -27,6 +27,12 @@ class Afa
     private $bizonylattetelek;
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $navcase;
+    /**
+     * Magyar ÁFA kulcs-e. Belföldi adóalany partnernél a bizonylat tételein bármelyik
+     * magyar ÁFA kulcs szerepelhet (lásd Bizonylatfej ÁFA ellenőrzés).
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $magyar = false;
 
     public function getId()
     {
@@ -103,6 +109,22 @@ class Afa
     public function setNavcase($navcase): void
     {
         $this->navcase = $navcase;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getMagyar()
+    {
+        return $this->magyar;
+    }
+
+    /**
+     * @param bool $magyar
+     */
+    public function setMagyar($magyar): void
+    {
+        $this->magyar = $magyar;
     }
 
 }

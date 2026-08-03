@@ -1629,6 +1629,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 'vatstatuslist',
                 $this->getRepo(Partner::class)->getVatstatusList(($record ? $record->getPartnervatstatus() : ($partner ? $partner->getVatstatus() : 0)))
             );
+            // a kliensoldali ÁFA ellenőrzéshez (bizonylathelper.js checkTetelOsszegek)
+            $view->setVar('tulajalanyiafamentes', \mkw\store::isTulajAlanyiAfamentes());
+            $magyarorszag = \mkw\store::getMagyarorszag();
+            $view->setVar('magyarorszagid', is_object($magyarorszag) ? $magyarorszag->getId() : '');
 
             if (method_exists($this, 'onGetKarb')) {
                 $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);

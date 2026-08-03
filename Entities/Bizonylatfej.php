@@ -803,6 +803,16 @@ class Bizonylatfej
     }
 
     /**
+     * A bizonylat szállítási országa – ennek hiányában az országa – Magyarország-e.
+     * (JS: a checkTetelOsszegek() azonos ága a #SzallOrszagEdit / #OrszagEdit mezőkből.)
+     */
+    private function isMagyarCimuBizonylat()
+    {
+        $orszag = $this->getPartnerszallorszag() ?: $this->getPartnerorszag();
+        return $orszag && \mkw\store::isMagyarorszag($orszag);
+    }
+
+    /**
      * A tételek összegeinek ellenőrzése (JS: checkTetelOsszegek). A tételek belső számtani
      * összefüggéseit, valamint a partnernél előírt ÁFA kulcsot ellenőrzi.
      */
@@ -818,6 +828,15 @@ class Bizonylatfej
             $this->getPartnereuadoszam()
         );
         $szuksegesAfaId = $szuksegesAfa ? $szuksegesAfa->getId() : null;
+
+        // Kimenő bizonylat: a bizonylattípus iránya -1 (számla, kézi számla, bolti eladás…),
+        // a bejövőké 1 (költségszámla, bevét).
+        $kimeno = $this->getIrany() < 0;
+        // Alanyi adómentes tulajdonos: a kimenő bizonylatain nem háríthat át ÁFÁ-t
+        $tulajAam = \mkw\store::isTulajAlanyiAfamentes();
+        // Belföldi partner: NAV szerinti belföldi adóalany (customerVatStatus = DOMESTIC),
+        // vagy a bizonylat szállítási országa – ennek hiányában országa – Magyarország
+        $belfoldi = $this->getPartnervatstatus() == 1 || $this->isMagyarCimuBizonylat();
 
         $sorszam = 0;
         $egyediAzonositoElofordulasok = [];
@@ -877,11 +896,29 @@ class Bizonylatfej
                 }
             }
 
-            // 5. A tétel ÁFA kulcsa egyezzen meg a partnernél előírt (szükséges) ÁFA kulccsal.
-            //    Ha a bizonylaton jóváhagyták az ÁFA-ellenőrzés átlépését (afaellenorzesnemkell),
-            //    ezt az ellenőrzést szerveroldalon is kihagyjuk.
-            if (!$this->getAfaellenorzesnemkell() && $szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
-                $hibak[] = $cimke . ' ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól.';
+            // 5. A tétel ÁFA kulcsának ellenőrzése. Ha a bizonylaton jóváhagyták az
+            //    ÁFA-ellenőrzés átlépését (afaellenorzesnemkell), ezt szerveroldalon is kihagyjuk.
+            //    Az ágak kizárják egymást, ebben a sorrendben:
+            //    a) bejövő bizonylat: bármilyen ÁFA kulcs szerepelhet, nincs ellenőrzés;
+            //    b) alanyi adómentes tulaj: csak AAM nav típusú kulcs;
+            //    c) belföldi partner: bármelyik magyar ÁFA kulcs;
+            //    d) nem magyarországi partner: a partnernél előírt (override) kulccsal
+            //       pontos egyezés, ahogy korábban is.
+            if (!$this->getAfaellenorzesnemkell() && $kimeno) {
+                $afa = $tetel->getAfa();
+                if ($tulajAam) {
+                    if (!$afa || $afa->getNavcase() !== 'AAM') {
+                        $hibak[] = $cimke
+                            . ' ÁFA kulcsa csak alanyi adómentes (AAM) lehet, mert a tulajdonos alanyi adómentes.';
+                    }
+                } elseif ($belfoldi) {
+                    if (!$afa || !$afa->getMagyar()) {
+                        $hibak[] = $cimke
+                            . ' ÁFA kulcsa belföldi partnernél csak magyar ÁFA kulcs lehet.';
+                    }
+                } elseif ($szuksegesAfaId && ($tetel->getAfaId() != $szuksegesAfaId)) {
+                    $hibak[] = $cimke . ' ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól.';
+                }
             }
 
             // 6. Egyedi azonosítót igénylő termék: az azonosító kötelező, és a mennyiség csak 1 vagy -1 lehet.

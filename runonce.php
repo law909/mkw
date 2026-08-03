@@ -1005,6 +1005,16 @@ if ($DBVersion < '0097') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0097');
 }
+
+if ($DBVersion < '0098') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE afa SET magyar=1'
+        . ' WHERE navcase IN ("AAM","TAM","ATK")'
+        . '    OR ((navcase IS NULL OR navcase="") AND ertek IN (27, 5))'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0098');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -67,10 +67,10 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase', '' . "\0" . 'Entities\\Afa' . "\0" . 'magyar'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Afa' . "\0" . 'navcase', '' . "\0" . 'Entities\\Afa' . "\0" . 'magyar'];
     }
 
     /**
@@ -322,6 +322,28 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNavcase', [$navcase]);
 
         parent::setNavcase($navcase);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMagyar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagyar', []);
+
+        return parent::getMagyar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMagyar($magyar): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagyar', [$magyar]);
+
+        parent::setMagyar($magyar);
     }
 
 }

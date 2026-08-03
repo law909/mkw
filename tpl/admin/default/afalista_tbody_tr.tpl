@@ -4,6 +4,7 @@
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <div>{if ($_egyed.magyar)}{at('magyar ÁFA kulcs')}{else}{at('nem magyar ÁFA kulcs')}{/if}</div>
     </td>
     <td class="cell">{$_egyed.ertek}%</td>
     <td class="cell">{$_egyed.navcase}</td>

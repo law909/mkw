@@ -304,12 +304,33 @@ let bizonylathelper = function ($) {
         return hibak;
     }
 
+    // A bizonylat szállítási országa – ennek hiányában az országa – Magyarország-e.
+    // (Szerveroldali megfelelője: Bizonylatfej::isMagyarCimuBizonylat())
+    function isMagyarCimuBizonylat() {
+        let moid = $('#mattkarb-form').data('magyarorszagid'),
+            orszag = $('#SzallOrszagEdit').val() || $('#OrszagEdit').val();
+        return !!moid && !!orszag && (orszag * 1) === (moid * 1);
+    }
+
+    // Belföldi partner-e: NAV szerinti belföldi adóalany (vatstatus 1), vagy a bizonylat
+    // szállítási országa – ennek hiányában országa – Magyarország.
+    // (Szerveroldali megfelelője: Bizonylatfej::checkTetelOsszegHibak() $belfoldi)
+    function isBelfoldiPartner() {
+        return ($('#VatstatusEdit').val() * 1) === 1 || isMagyarCimuBizonylat();
+    }
+
     function checkTetelOsszegek() {
         let mindenOk = true,
             afaEgyezik = true,
             hibaClass = 'tetelszamhiba',
             arfolyam = $('#ArfolyamEdit').val() * 1,
-            szuksegesAfa = $('#PartnerEdit').data('afa');
+            szuksegesAfa = $('#PartnerEdit').data('afa'),
+            // Az ÁFA kulcs ellenőrzés ágai – a szerveroldali megfelelője a
+            // Bizonylatfej::checkTetelOsszegHibak() 5. pontja, a kettőnek egyeznie kell.
+            // A kimenő irányt a meglévő isNegativIrany() adja (#mattkarb-header data-irany).
+            kimeno = isNegativIrany(),
+            tulajAam = ($('#mattkarb-form').data('tulajaam') * 1) === 1,
+            belfoldi = isBelfoldiPartner();
 
         // Korábbi hibajelölések törlése, hogy a javított mezők ne maradjanak megjelölve.
         $('.' + hibaClass).removeClass(hibaClass);
@@ -387,11 +408,22 @@ let bizonylathelper = function ($) {
                 }
             }
 
-            // 5. A tétel ÁFA kulcsa egyezzen meg a partnernél előírt (szükséges) ÁFA kulccsal.
-            //    Csak akkor ellenőrizzük, ha a partnerhez tartozik előírt (override) ÁFA.
-            if (szuksegesAfa) {
-                let afaselect = $('select[name="tetelafa_' + sorId + '"]');
-                if (afaselect.length && (afaselect.val() != szuksegesAfa)) {
+            // 5. A tétel ÁFA kulcsának ellenőrzése. Bejövő bizonylaton bármilyen kulcs
+            //    szerepelhet, ezért ott nem ellenőrzünk. Kimenőn az ágak kizárják egymást:
+            //    a) alanyi adómentes tulaj -> csak AAM; b) belföldi partner -> bármelyik
+            //    magyar ÁFA kulcs; c) nem magyarországi partner -> pontos egyezés.
+            let afaselect = $('select[name="tetelafa_' + sorId + '"]');
+            if (kimeno && afaselect.length) {
+                let valasztott = afaselect.find('option:selected'),
+                    afaHiba = false;
+                if (tulajAam) {
+                    afaHiba = valasztott.data('navcase') !== 'AAM';
+                } else if (belfoldi) {
+                    afaHiba = (valasztott.data('magyar') * 1) !== 1;
+                } else if (szuksegesAfa) {
+                    afaHiba = afaselect.val() != szuksegesAfa;
+                }
+                if (afaHiba) {
                     afaselect.addClass(hibaClass);
                     afaEgyezik = false;
                 }
@@ -1484,7 +1516,7 @@ let bizonylathelper = function ($) {
                 // (afaellenorzesnemkell), akkor többé nem kell az ÁFA kulcsokat ellenőrizni.
                 let afaEllenorzesNemKell = $('#AfaellenorzesnemkellEdit').val() == '1';
                 if (!tetelek.afaegyezik && !afaEllenorzesAtlepes && !afaEllenorzesNemKell) {
-                    $('#dialogcenter').html('Egy vagy több tétel ÁFA kulcsa eltér a partnernél szükséges ÁFA kulcstól (pirossal jelölve). Így menti a bizonylatot, vagy javítja az ÁFA kulcsokat?').dialog({
+                    $('#dialogcenter').html('Egy vagy több tétel ÁFA kulcsa nem felel meg a bizonylaton megengedettnek (pirossal jelölve). Így menti a bizonylatot, vagy javítja az ÁFA kulcsokat?').dialog({
                         resizable: false,
                         width: 460,
                         modal: true,
