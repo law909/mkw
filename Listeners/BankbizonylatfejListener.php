@@ -126,8 +126,6 @@ class BankbizonylatfejListener
             $fszla->setHivatkozottdatum($tetel->getHivatkozottdatum());
             $fszla->setValutanem($tetel->getValutanem());
             $fszla->setIrany($tetel->getIrany() * -1);
-            $fszla->setNetto($tetel->getNetto());
-            $fszla->setAfa($tetel->getAfa());
             $fszla->setBrutto($tetel->getBrutto());
             $fszla->setBankbizonylatfej($tetel->getBizonylatfej());
             $fszla->setBankbizonylattetel($tetel);
@@ -149,12 +147,8 @@ class BankbizonylatfejListener
             $mincimlet = $entity->getValutanem()->getMincimlet();
             $kerekit = $entity->getValutanem()->getKerekit();
         }
-        $netto = 0;
-        $afa = 0;
         $brutto = 0;
         foreach ($entity->getBizonylattetelek() as $bt) {
-            $netto += $bt->getNetto();
-            $afa += $bt->getAfa();
             $brutto += $bt->getBrutto();
         }
         $entity->setBrutto($brutto);

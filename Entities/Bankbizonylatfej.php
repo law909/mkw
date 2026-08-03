@@ -65,12 +65,6 @@ class Bankbizonylatfej
     private $kelt;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $netto;
-
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $afa;
-
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $brutto;
 
     /**
@@ -286,26 +280,6 @@ class Bankbizonylatfej
             }
             $this->kelt = new \DateTime(\mkw\store::convDate($adat));
         }
-    }
-
-    public function getNetto()
-    {
-        return $this->netto;
-    }
-
-    public function setNetto($val)
-    {
-        $this->netto = $val;
-    }
-
-    public function getAfa()
-    {
-        return $this->afa;
-    }
-
-    public function setAfa($val)
-    {
-        $this->afa = $val;
     }
 
     public function getBrutto()

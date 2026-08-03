@@ -550,8 +550,6 @@ class BizonylatfejListener
         $pbtetel->setHivatkozottbizonylat($bizfej->getId());
         $pbtetel->setHivatkozottdatum($bizfej->getEsedekessegStr() ?: $bizfej->getKeltStr());
         $pbtetel->setSzoveg($bizfej->getBizonylatnev() . ' ' . $bizfej->getId());
-        $pbtetel->setNetto($osszeg);
-        $pbtetel->setAfa(0);
         $pbtetel->setBrutto($osszeg);
 
         $this->em->persist($pbfej);

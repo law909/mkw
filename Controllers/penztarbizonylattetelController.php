@@ -39,8 +39,6 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
             $x['id'] = $t->getId();
             $x['oper'] = 'edit';
         }
-        $x['netto'] = $t->getNetto();
-        $x['afa'] = $t->getAfa();
         $x['brutto'] = $t->getBrutto();
         $x['jogcim'] = $t->getJogcimId();
         $x['jogcimnev'] = $t->getJogcimnev();

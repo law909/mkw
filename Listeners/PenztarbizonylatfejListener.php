@@ -151,8 +151,6 @@ class PenztarbizonylatfejListener
             $fszla->setHivatkozottdatum($tetel->getHivatkozottdatum());
             $fszla->setValutanem($bbf->getValutanem());
             $fszla->setIrany($bbf->getIrany() * -1);
-            $fszla->setNetto($tetel->getNetto());
-            $fszla->setAfa($tetel->getAfa());
             $fszla->setBrutto($tetel->getBrutto());
             $fszla->setPenztarbizonylatfej($tetel->getBizonylatfej());
             $fszla->setPenztarbizonylattetel($tetel);
@@ -174,12 +172,8 @@ class PenztarbizonylatfejListener
             $mincimlet = $entity->getValutanem()->getMincimlet();
             $kerekit = $entity->getValutanem()->getKerekit();
         }
-        $netto = 0;
-        $afa = 0;
         $brutto = 0;
         foreach ($entity->getBizonylattetelek() as $bt) {
-            $netto += $bt->getNetto();
-            $afa += $bt->getAfa();
             $brutto += $bt->getBrutto();
         }
         $entity->setBrutto($brutto);

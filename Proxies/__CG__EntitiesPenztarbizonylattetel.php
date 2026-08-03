@@ -67,10 +67,10 @@ class Penztarbizonylattetel extends \Entities\Penztarbizonylattetel implements \
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'folyoszamlak'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'folyoszamlak'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'folyoszamlak'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Penztarbizonylattetel' . "\0" . 'folyoszamlak'];
     }
 
     /**
@@ -305,28 +305,6 @@ class Penztarbizonylattetel extends \Entities\Penztarbizonylattetel implements \
     /**
      * {@inheritDoc}
      */
-    public function getAfa()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
-
-        return parent::getAfa();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAfa($afa)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$afa]);
-
-        return parent::setAfa($afa);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getBrutto()
     {
 
@@ -388,28 +366,6 @@ class Penztarbizonylattetel extends \Entities\Penztarbizonylattetel implements \
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', []);
 
         return parent::clearLastmod();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getNetto()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
-
-        return parent::getNetto();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setNetto($netto)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$netto]);
-
-        return parent::setNetto($netto);
     }
 
     /**

@@ -542,8 +542,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                 $bt->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 $bt->setDatum($this->params->getStringRequestParam('datum'));
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
-                $bt->setNetto($osszeg);
-                $bt->setAfa(0);
                 $bt->setBrutto($osszeg);
                 $bt->setIrany(1);
                 $bt->setJogcim($jogcim);
@@ -567,8 +565,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                 $biz->setPartner($r->getPartner());
 
                 $bt->setJogcim($jogcim);
-                $bt->setNetto($osszeg);
-                $bt->setAfa(0);
                 $bt->setBrutto($osszeg);
                 $bt->setSzoveg($r->getRendezveny()?->getTeljesNev());
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));

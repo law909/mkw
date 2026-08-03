@@ -32,8 +32,6 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['megjegyzes'] = $t->getMegjegyzes();
         $x['keltstr'] = $t->getKeltStr();
-        $x['netto'] = $t->getNetto();
-        $x['afa'] = $t->getAfa();
         $x['brutto'] = $t->getBrutto();
         $x['valutanemnev'] = $t->getValutanemnev();
         $x['valutanem'] = $t->getValutanemId();

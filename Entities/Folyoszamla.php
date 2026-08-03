@@ -99,14 +99,6 @@ class Folyoszamla {
      */
     private $fizmod;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $netto;
-
-    /**
-     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-     */
-    private $afa;
-
     /**
      * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
      */
@@ -118,21 +110,6 @@ class Folyoszamla {
      * @var \Entities\Valutanem
      */
     private $valutanem;
-
-    /**
-     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-     */
-    private $nettohuf;
-
-    /**
-     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-     */
-    private $afahuf;
-
-    /**
-     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
-     */
-    private $bruttohuf;
 
     /**
      * @ORM\Column(type="boolean",nullable=false)
@@ -315,34 +292,6 @@ class Folyoszamla {
     /**
      * @return mixed
      */
-    public function getAfa() {
-        return $this->afa;
-    }
-
-    /**
-     * @param mixed $afa
-     */
-    public function setAfa($afa) {
-        $this->afa = $afa;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAfahuf() {
-        return $this->afahuf;
-    }
-
-    /**
-     * @param mixed $afahuf
-     */
-    public function setAfahuf($afahuf) {
-        $this->afahuf = $afahuf;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getBrutto() {
         return $this->brutto;
     }
@@ -357,20 +306,6 @@ class Folyoszamla {
     /**
      * @return mixed
      */
-    public function getBruttohuf() {
-        return $this->bruttohuf;
-    }
-
-    /**
-     * @param mixed $bruttohuf
-     */
-    public function setBruttohuf($bruttohuf) {
-        $this->bruttohuf = $bruttohuf;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getIrany() {
         return $this->irany;
     }
@@ -380,34 +315,6 @@ class Folyoszamla {
      */
     public function setIrany($irany) {
         $this->irany = $irany;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNetto() {
-        return $this->netto;
-    }
-
-    /**
-     * @param mixed $netto
-     */
-    public function setNetto($netto) {
-        $this->netto = $netto;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNettohuf() {
-        return $this->nettohuf;
-    }
-
-    /**
-     * @param mixed $nettohuf
-     */
-    public function setNettohuf($nettohuf) {
-        $this->nettohuf = $nettohuf;
     }
 
     /**

@@ -49,12 +49,6 @@ class Bankbizonylattetel
     private $rontott = false;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $netto;
-
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $afa;
-
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $brutto;
 
     /**
@@ -454,22 +448,6 @@ class Bankbizonylattetel
     /**
      * @return mixed
      */
-    public function getAfa()
-    {
-        return $this->afa;
-    }
-
-    /**
-     * @param mixed $afa
-     */
-    public function setAfa($afa)
-    {
-        $this->afa = $afa;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getBrutto()
     {
         return $this->brutto;
@@ -513,22 +491,6 @@ class Bankbizonylattetel
     public function clearLastmod()
     {
         $this->lastmod = null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNetto()
-    {
-        return $this->netto;
-    }
-
-    /**
-     * @param mixed $netto
-     */
-    public function setNetto($netto)
-    {
-        $this->netto = $netto;
     }
 
     /**

@@ -67,10 +67,10 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
     }
 
     /**
@@ -426,50 +426,6 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getAfa()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
-
-        return parent::getAfa();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAfa($afa)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$afa]);
-
-        return parent::setAfa($afa);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAfahuf()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfahuf', []);
-
-        return parent::getAfahuf();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAfahuf($afahuf)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfahuf', [$afahuf]);
-
-        return parent::setAfahuf($afahuf);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getBrutto()
     {
 
@@ -492,28 +448,6 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getBruttohuf()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttohuf', []);
-
-        return parent::getBruttohuf();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setBruttohuf($bruttohuf)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttohuf', [$bruttohuf]);
-
-        return parent::setBruttohuf($bruttohuf);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getIrany()
     {
 
@@ -531,50 +465,6 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', [$irany]);
 
         return parent::setIrany($irany);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getNetto()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
-
-        return parent::getNetto();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setNetto($netto)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$netto]);
-
-        return parent::setNetto($netto);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getNettohuf()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettohuf', []);
-
-        return parent::getNettohuf();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setNettohuf($nettohuf)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettohuf', [$nettohuf]);
-
-        return parent::setNettohuf($nettohuf);
     }
 
     /**
