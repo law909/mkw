@@ -12,10 +12,9 @@ codebase is Hungarian-language (entity, controller, method, and route names are 
 
 ## Switching between deployments
 
-Each deployment has a one-line shell script in the repo root (`galad.sh`, `darshan.sh`, `mugenrace2026.sh`, `mkw.sh`, `mpt.sh`, `mptngy.sh`, `superzoneb2b.sh`,
-`ujdivat.sh`, `b2bhungary.sh`, `lb.sh`, `mugenrace.sh`) that copies `<owner>config.ini` → `config.ini` and `<owner>setup.ini` → `setup.ini`. Always run the
-matching script before exercising owner-specific code; `main.theme` in `config.ini` is what `mkw\store::getTheme()` returns and what the `is<Owner>()` helpers
-key off of.
+Each deployment has a one-line `<owner>.sh` script in the repo root that copies `<owner>config.ini` → `config.ini` and `<owner>setup.ini` → `setup.ini`. Always
+run the matching script before exercising owner-specific code; `main.theme` in `config.ini` is what `mkw\store::getTheme()` returns and what the `is<Owner>()`
+helpers key off of.
 
 ## Common commands
 
@@ -46,31 +45,19 @@ cache (`apc` recommended).
 
 ## Request lifecycle
 
-`index.php` is the single entry point (`.htaccess` rewrites everything to it). The flow:
+`index.php` is the single entry point (`.htaccess` rewrites everything to it); `bootstrap.php` wires the `EntityManager`, Gedmo, and the `Listeners/` classes.
 
-1. `bootstrap.php` builds the Doctrine `EntityManager`, registers Gedmo listeners (Sluggable / Timestampable / Blameable, and Translatable when
-   `isMultilang()`), and registers the project's own listeners from `Listeners/` (see below). Custom DQL functions `YEAR`, `NOW`, `IF`, `RAND`, `CURDATE` are
-   registered here.
-2. `mainroute.php`, `adminroute.php`, and `pubadminroute.php` register AltoRouter routes. Route handlers use the form `'<controllerFile>#<method>'` (e.g.
-   `'termekController#show'`). The route *name* prefix decides the mode: `admin…` → admin (auth-gated against `Dolgozo`), `pubadmin…` → public admin, anything
-   else → main storefront.
-3. `callTheController()` in `index.php` resolves `<name>Controller` to `\Controllers\<name>Controller`, instantiates it with a `mkwhelpers\ParameterHandler`,
-   and invokes the method.
+Routes are registered in `mainroute.php`, `adminroute.php`, and `pubadminroute.php`. Handlers use the form `'<controllerFile>#<method>'` (e.g.
+`'termekController#show'`). The route *name* prefix decides the mode: `admin…` → admin (auth-gated against `Dolgozo`), `pubadmin…` → public admin, anything else
+→ main storefront.
 
 When adding a route, add it under the correct `is<Owner>()` / `isB2B()` / etc. guard so it only activates for deployments that need it — see the conditionals at
 the top of `mainroute.php`.
 
 ## `mkw\store` — the central service locator
 
-Everything reaches global state through the static `mkw\store` class (`mkw/store.php`):
-
-- EntityManager: `store::getEm()`
-- Sessions: `getMainSession()`, `getAdminSession()`, `getPubAdminSession()` (each is a `session_namespace`)
-- Router, template factory, sanitizer, translation listener
-- Feature flags: `isB2B()`, `isMultilang()`, `isMultiValuta()`, `isBankpenztar()`, `isArsavok()`, `isFoglalas()`, `isOsztottFizmod()`, `mustLogin()`, …
-- Theme flags: `isDarshan()`, `isSuperzoneHu()`, `isMugenrace2026()`, `isMPT()`, `isMPTNGY()`, `isMindentkapni()`, `isSuperzoneB2B()`, `isGalad()`,
-  `isKisszamlazo()`, `isVarganyomda()`
-- Logged-in user accessors and the `BlameableListener` user setter
+Everything reaches global state through the static `mkw\store` class (`mkw/store.php`): the EntityManager, the three sessions, the router and template factory,
+the logged-in user, and the `is…()` feature/theme flags.
 
 Reach for `store::` rather than re-resolving dependencies; large swaths of the codebase assume it.
 
@@ -79,12 +66,10 @@ Reach for `store::` rather than re-resolving dependencies; large swaths of the c
 - `Entities/` — one Doctrine entity per file with annotation mappings, plus a sibling `<Entity>Repository.php` for custom queries. Use
   `store::getEm()->getRepository(Entities\Foo::class)`.
 - `Proxies/` — generated; never edit by hand. In `developer` mode they regenerate automatically; otherwise run `./generateproxies.sh` after entity changes.
-- After any entity field change run `./updateschema.sh` (or inspect first with `./updatesql.sh`).
 - **Multilang fields**: when `isMultilang()`, translated content lives in extra columns suffixed `_l1`, `_l2`, … on the same entity (not in a separate
   translation table). The default locale is `hu_hu` with fallback enabled.
-- **Lifecycle listeners** (`Listeners/`, registered in `bootstrap.php`): `BizonylatfejListener`, `BankbizonylatfejListener`, `PenztarbizonylatfejListener`,
-  `BizonylattetelListener`, `KuponListener`, `RendezvenyListener`, `JogareszvetelListener`, `PartnerListener`, `MPTNGYSzakmaianyagListener`, `ArsavListener`.
-  When editing the corresponding entities, check the listener — it often mutates state on `onFlush`/`prePersist` and your direct setter may be re-derived.
+- **Entity or schema changes**: follow the `entity-change` skill — it covers proxy regeneration, DDL review before apply, `./updateschema.sh`, and the map of
+  which `Listeners/` classes re-derive fields on `onFlush`/`prePersist` (your direct setter may be overwritten).
 
 ## Controller conventions
 
