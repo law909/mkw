@@ -18,7 +18,12 @@
         {$_egyed.jogcimnev}
     </td>
     <td class="cell">
-        {$_egyed.hivatkozottbizonylat}
+        {if ($_egyed.hivatkozottbizonylatlink)}
+            <a href="{$_egyed.hivatkozottbizonylatlink}" target="_blank"
+               title="{at('Bizonylat megkeresése a listában')}">{$_egyed.hivatkozottbizonylat}</a>
+        {else}
+            {$_egyed.hivatkozottbizonylat}
+        {/if}
         {if ($_egyed.hivatkozottdatumstr)}
             <div>{at('Esedékesség')}: {$_egyed.hivatkozottdatumstr}</div>
         {/if}

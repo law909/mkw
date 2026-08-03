@@ -679,6 +679,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getListaUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getListaUrl', []);
+
+        return parent::getListaUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTarsbizonylat()
     {
 

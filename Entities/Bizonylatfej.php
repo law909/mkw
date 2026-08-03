@@ -19,6 +19,15 @@ class Bizonylatfej
 
     use GetsFieldValue;
 
+    /**
+     * A pénztár- és a bankbizonylat admin útvonalainak előtagja eltér a bizonylattípus
+     * azonosítójától, a többi típusnál <azonosito>fej a minta.
+     */
+    private const ROUTEPREFIX = [
+        'penztar' => 'penztarbizonylat',
+        'bank' => 'bankbizonylat',
+    ];
+
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
@@ -2652,6 +2661,35 @@ class Bizonylatfej
             return $this->bizonylattipus->getId();
         }
         return '';
+    }
+
+    /**
+     * A bizonylat típusának megfelelő admin listanézet URL-je, erre a bizonylatszámra
+     * előszűrve. A szűrőmezőket a mattable tölti fel a query stringből
+     * (jquery.mattable.js, applyUrlToControls()), ezért elég az idfilter paraméter.
+     *
+     * Ha a típusnak nincs listaútvonala (vagy ennél a deploymentnél nincs bekapcsolva),
+     * null-t ad – a hívó ilyenkor link helyett sima szövegként mutassa a bizonylatszámot.
+     *
+     * @return string|null
+     */
+    public function getListaUrl()
+    {
+        $tipusid = $this->getBizonylattipusId();
+        if (!$tipusid || !$this->getId()) {
+            return null;
+        }
+        $prefix = self::ROUTEPREFIX[$tipusid] ?? $tipusid;
+        try {
+            return \mkw\store::getRouter()->generate(
+                'admin' . $prefix . 'fejviewlist',
+                false,
+                [],
+                ['idfilter' => urlencode($this->getId())]
+            );
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**

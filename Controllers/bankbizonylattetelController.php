@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bankbizonylattetel;
+use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
 use mkw\store;
 
@@ -43,6 +44,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
         $x['partner'] = $t->getPartnerId();
         $x['jogcimnev'] = $t->getJogcimnev();
         $x['hivatkozottdatumstr'] = $t->getHivatkozottdatumStr();
+        $x['hivatkozottbizonylatlink'] = $this->getHivatkozottListaUrl($t->getHivatkozottbizonylat());
         $x['valutanem'] = $t->getValutanemId();
 
         if ($forKarb) {
@@ -57,6 +59,20 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         return $obj;
+    }
+
+    /**
+     * A hivatkozott bizonylat száma egy Bizonylatfej id. Ha a bizonylat megvan, a
+     * típusának megfelelő, erre a számra szűrt listanézet URL-jét adjuk. Kézzel beírt
+     * vagy időközben törölt hivatkozásnál null, ilyenkor a lista sima szövegként
+     * mutatja a számot.
+     */
+    private function getHivatkozottListaUrl($bizonylatszam)
+    {
+        if (!$bizonylatszam) {
+            return null;
+        }
+        return $this->getRepo(Bizonylatfej::class)->find($bizonylatszam)?->getListaUrl();
     }
 
     public function getemptyrow()

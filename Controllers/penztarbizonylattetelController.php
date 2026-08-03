@@ -10,11 +10,6 @@ use mkw\store;
 class penztarbizonylattetelController extends \mkwhelpers\MattableController
 {
 
-    private const PRINTROUTEPREFIX = [
-        'penztar' => 'penztarbizonylat',
-        'bank' => 'bankbizonylat',
-    ];
-
     public function __construct()
     {
         $this->setEntityName(Penztarbizonylattetel::class);
@@ -44,7 +39,7 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
         $x['jogcimnev'] = $t->getJogcimnev();
         $x['hivatkozottdatumstr'] = $t->getHivatkozottdatumStr();
         $x['hivatkozottbizonylat'] = $t->getHivatkozottbizonylat();
-        $x['hivatkozottbizonylatlink'] = $this->getHivatkozottPrintUrl($x['hivatkozottbizonylat']);
+        $x['hivatkozottbizonylatlink'] = $this->getHivatkozottListaUrl($x['hivatkozottbizonylat']);
         $x['szoveg'] = $t->getSzoveg();
         $x['nemrossz'] = !$t->getRontott();
 
@@ -69,31 +64,18 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
         return $obj;
     }
 
-    private function getHivatkozottPrintUrl($bizonylatszam)
+    /**
+     * A hivatkozott bizonylat száma egy Bizonylatfej id. Ha a bizonylat megvan, a
+     * típusának megfelelő, erre a számra szűrt listanézet URL-jét adjuk. Kézzel beírt
+     * vagy időközben törölt hivatkozásnál null, ilyenkor a lista sima szövegként
+     * mutatja a számot.
+     */
+    private function getHivatkozottListaUrl($bizonylatszam)
     {
         if (!$bizonylatszam) {
             return null;
         }
-        $fej = $this->getRepo(Bizonylatfej::class)->find($bizonylatszam);
-        if (!$fej) {
-            return null;
-        }
-        $tipusid = $fej->getBizonylattipusId();
-        if (!$tipusid) {
-            return null;
-        }
-        $prefix = self::PRINTROUTEPREFIX[$tipusid] ?? $tipusid;
-        try {
-            return store::getRouter()->generate(
-                'admin' . $prefix . 'fejprint',
-                false,
-                [],
-                ['id' => urlencode($bizonylatszam)]
-            );
-        } catch (\Exception $e) {
-            // a típusnak nincs (vagy ennél a deploymentnél nincs bekapcsolva) nyomtatási útvonala
-            return null;
-        }
+        return $this->getRepo(Bizonylatfej::class)->find($bizonylatszam)?->getListaUrl();
     }
 
     public function getemptyrow()

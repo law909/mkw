@@ -29,7 +29,7 @@
                 {at('Hivatkozott bizonylat')}:
                 {if ($_egyed.hivatkozottbizonylatlink)}
                     <a href="{$_egyed.hivatkozottbizonylatlink}" target="_blank"
-                       title="{at('Nyomtatási kép')}">{$_egyed.hivatkozottbizonylat}</a>
+                       title="{at('Bizonylat megkeresése a listában')}">{$_egyed.hivatkozottbizonylat}</a>
                 {else}
                     {$_egyed.hivatkozottbizonylat}
                 {/if}
