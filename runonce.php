@@ -987,6 +987,13 @@ if ($DBVersion < '0095') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0095');
 }
 
+if ($DBVersion < '0096') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET tplname="biz_boltieladas.tpl" WHERE id="boltieladas"'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0096');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
