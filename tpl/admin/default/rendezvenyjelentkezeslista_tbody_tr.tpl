@@ -52,12 +52,22 @@
                         {if ($_egyed.visszautalaspenztarnev)}
                             {$_egyed.visszautalaspenztarnev}
                             <br>
-                            {$_egyed.visszautalaspenztarbizonylatszam}
+                            {if ($_egyed.visszautalaspenztarbizonylatszamlink)}
+                                <a href="{$_egyed.visszautalaspenztarbizonylatszamlink}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.visszautalaspenztarbizonylatszam}</a>
+                            {else}
+                                {$_egyed.visszautalaspenztarbizonylatszam}
+                            {/if}
                             <br>
                         {else}
                             {$_egyed.visszautalasbankszamlaszam}
                             <br>
-                            {$_egyed.visszautalasbankbizonylatszam}
+                            {if ($_egyed.visszautalasbankbizonylatszamlink)}
+                                <a href="{$_egyed.visszautalasbankbizonylatszamlink}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.visszautalasbankbizonylatszam}</a>
+                            {else}
+                                {$_egyed.visszautalasbankbizonylatszam}
+                            {/if}
                             <br>
                         {/if}
                     </td>
@@ -75,7 +85,12 @@
                 <tr>
                     <td>
                         <span class="mattable-important">{at('Számlázva')}</span> ({$_egyed.szamlazasdatum}): {bizformat($_egyed.szamlazvaosszeghuf)}<br>
-                        {$_egyed.szamlaszam}<br>
+                        {if ($_egyed.szamlaszamlink)}
+                            <a href="{$_egyed.szamlaszamlink}" target="_blank"
+                               title="{at('Ugrás a bizonylathoz')}">{$_egyed.szamlaszam}</a>
+                        {else}
+                            {$_egyed.szamlaszam}
+                        {/if}<br>
                         {at('Kért kelt')}: {$_egyed.szamlazvakelt}<br>
                         {at('Kért teljesítés')}: {$_egyed.szamlazvateljesites}<br>
                     </td>
@@ -89,12 +104,22 @@
                         {if ($_egyed.fizetvepenztarnev)}
                             {$_egyed.fizetvepenztarnev}
                             <br>
-                            {$_egyed.fizetvepenztarbizonylatszam}
+                            {if ($_egyed.fizetvepenztarbizonylatszamlink)}
+                                <a href="{$_egyed.fizetvepenztarbizonylatszamlink}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.fizetvepenztarbizonylatszam}</a>
+                            {else}
+                                {$_egyed.fizetvepenztarbizonylatszam}
+                            {/if}
                             <br>
                         {else}
                             {$_egyed.fizetvebankszamlaszam}
                             <br>
-                            {$_egyed.fizetvebankbizonylatszam}
+                            {if ($_egyed.fizetvebankbizonylatszamlink)}
+                                <a href="{$_egyed.fizetvebankbizonylatszamlink}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.fizetvebankbizonylatszam}</a>
+                            {else}
+                                {$_egyed.fizetvebankbizonylatszam}
+                            {/if}
                             <br>
                         {/if}
                     </td>

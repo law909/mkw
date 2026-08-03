@@ -5,7 +5,9 @@ namespace Controllers;
 use Entities\Bankbizonylatfej;
 use Entities\Bankbizonylattetel;
 use Entities\Bankszamla;
+use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
+use Entities\Penztarbizonylatfej;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
 use Entities\Jogcim;
@@ -65,7 +67,38 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
         $x['visszautalasfizmodnev'] = $t->getVisszautalasfizmod()?->getNev();
 
         $x['emaildijbekerodatum'] = $t->getEmaildijbekerodatumStr();
+
+        // A jelentkezésen a bizonylatszámok denormalizált szövegmezők, ezért a
+        // listanézet URL-jéhez fel kell oldani őket a megfelelő entitásra.
+        $x['fizetvepenztarbizonylatszamlink'] =
+            $this->getListaUrl($x['fizetvepenztarbizonylatszam'] ?? null, Penztarbizonylatfej::class);
+        $x['fizetvebankbizonylatszamlink'] =
+            $this->getListaUrl($x['fizetvebankbizonylatszam'] ?? null, Bankbizonylatfej::class);
+        $x['visszautalaspenztarbizonylatszamlink'] =
+            $this->getListaUrl($x['visszautalaspenztarbizonylatszam'] ?? null, Penztarbizonylatfej::class);
+        $x['visszautalasbankbizonylatszamlink'] =
+            $this->getListaUrl($x['visszautalasbankbizonylatszam'] ?? null, Bankbizonylatfej::class);
+        $x['szamlaszamlink'] = $this->getListaUrl($x['szamlaszam'] ?? null, Bizonylatfej::class);
+
         return $x;
+    }
+
+    /**
+     * Bizonylatszámhoz a típusának megfelelő, arra a számra szűrt listanézet URL-je.
+     * Ha a bizonylat nincs meg (kézzel írt vagy időközben törölt), null – ilyenkor a
+     * sablon sima szövegként mutatja a számot.
+     *
+     * @param string|null $bizonylatszam
+     * @param string      $entityclass Bizonylatfej / Penztarbizonylatfej / Bankbizonylatfej
+     *
+     * @return string|null
+     */
+    private function getListaUrl($bizonylatszam, $entityclass)
+    {
+        if (!$bizonylatszam) {
+            return null;
+        }
+        return $this->getRepo($entityclass)->find($bizonylatszam)?->getListaUrl();
     }
 
     /**

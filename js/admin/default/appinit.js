@@ -39,11 +39,30 @@ $(document).ready(
         var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter');
 
+        // Bizonylatra ugró ikon a #dialogcenter párbeszédekben (pl. kiegyenlítetlen
+        // bizonylat választó). A sorra kattintás ott kijelölést jelent, és a sor-kezelő
+        // preventDefault()-ot hív – ami elnyelné a link navigációját. Ugyanezen a
+        // delegálási gyökéren regisztrálunk, így a mélyebb találat (az ikon) előbb fut:
+        // a stopPropagation() megakadályozza a kijelölést, az ablakot pedig magunk
+        // nyitjuk meg, hogy a kezelők sorrendjétől függetlenül biztos működjön.
+        dialogcenter.on('click', '.js-bizlink', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.open($(this).attr('href'));
+        });
+
         $(document)
             .ajaxStart(pleaseWait)
             .ajaxStop($.unblockUI)
             .ajaxError(function (e, xhr, settings, exception) {
                 alert('error in: ' + settings.url + ' \n' + 'error:\n' + exception);
+            })
+            // A párbeszédek tartalmát négy különböző oldal tölti be ajaxszal, ezért a
+            // gomb-megjelenést itt, központilag adjuk rá – a beszúrt html már a helyén
+            // van, mire az ajaxComplete lefut. A :not(.ui-button) az ismételt
+            // inicializálást kerüli el, ha ugyanaz a párbeszéd újra megnyílik.
+            .ajaxComplete(function () {
+                $('#dialogcenter .js-bizlink:not(.ui-button)').button();
             });
         $('#ThemeSelect').change(function (e) {
             $.ajax({

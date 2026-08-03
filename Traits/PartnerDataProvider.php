@@ -205,6 +205,7 @@ trait PartnerDataProvider
             }
             $adat[] = [
                 'bizszam' => $biz['hivatkozottbizonylat'],
+                'bizszamlink' => $hbiz?->getListaUrl(),
                 'erbizszam' => $erbizszam,
                 'datum' => $datum,
                 'egyenleg' => $biz['egyenleg'] * 1 * $irany,
