@@ -1541,8 +1541,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
             $fizmod = new fizmodController();
-            if (!$record || !$record->getFizmodId()) {
-                $fmid = \mkw\store::getParameter(\mkw\consts::Fizmod);
+            // Az alapértelmezett fizetési mód csak új bizonylatra kerül rá. Létező
+            // (már mentett, tehát id-val bíró) bizonylatnál a sajátját mutatjuk akkor is,
+            // ha nincs kitöltve – különben a "válasszon" helyett némán a készpénz
+            // látszana kiválasztottnak, és mentéskor az is íródna be.
+            if (!$record || !$record->getId()) {
+                $fmid = $record && $record->getFizmodId()
+                    ? $record->getFizmodId()
+                    : \mkw\store::getParameter(\mkw\consts::Fizmod);
             } else {
                 $fmid = $record->getFizmodId();
             }

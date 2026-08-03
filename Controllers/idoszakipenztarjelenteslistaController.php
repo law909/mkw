@@ -120,14 +120,6 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
 
     public function exportLista()
     {
-        function x($o)
-        {
-            if ($o <= 26) {
-                return chr(65 + $o);
-            }
-            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
-        }
-
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Dátum')
@@ -147,18 +139,13 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $mind = $repo->getWithJoins($filter, ['_xx.kelt' => 'ASC', '_xx.id' => 'ASC']);
 
         $sor = 2;
-        $egyenleg = 0;
+        // a getSum() előjeles összeget ad (SUM(irany * brutto)), ezért a nyitót
+        // előjelesen kell átvenni – ahogy a HTML riport is teszi. A * 1 az üres
+        // időszakban visszakapott null-t is 0-ra hozza.
+        $egyenleg = $nyito * 1;
         $excel->setActiveSheetIndex(0)
-            ->setCellValue('B' . $sor, 'Nyitó');
-        if ($nyito > 0) {
-            $egyenleg = $egyenleg + $nyito;
-            $excel->setActiveSheetIndex(0)
-                ->setCellValue('F' . $sor, $egyenleg);
-        } else {
-            $egyenleg = $egyenleg - $nyito;
-            $excel->setActiveSheetIndex(0)
-                ->setCellValue('F' . $sor, $egyenleg);
-        }
+            ->setCellValue('B' . $sor, 'Nyitó')
+            ->setCellValue('F' . $sor, $egyenleg);
         $sor++;
         /** @var \Entities\Penztarbizonylatfej $item */
         foreach ($mind as $item) {
