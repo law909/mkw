@@ -962,7 +962,7 @@ class exportController extends \mkwhelpers\Controller
                         '"' . $valt->getMeret() . '"',
                         '"' . $keszlet . '"',
                         '"' . (string)$valt->getVonalkod() . '"',
-                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras() ? $t->getLeiras() : '') . '"',
                         '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
 //                        '"' . $t->getNettoAr($valt, null, $eur, 'eurar') . '"'
                     ];
@@ -984,7 +984,7 @@ class exportController extends \mkwhelpers\Controller
                     '""',
                     '"' . $keszlet . '"',
                     '"' . (string)$t->getVonalkod() . '"',
-                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras() ? $t->getLeiras() : '') . '"',
                     '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
 //                    '"' . $t->getNettoAr(null, null, $eur, 'eurar') . '"'
                 ];
@@ -1066,8 +1066,12 @@ class exportController extends \mkwhelpers\Controller
                         'visible' => ($t->getLathato3() && $valt->getLathato3()),
                         'stock' => $keszlet,
                         'EANcode' => (string)$valt->getVonalkod(),
-                        'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
-                        'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                        'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras() ? $t->getLeiras() : ''),
+                        'descriptionEN' => preg_replace(
+                            "/(\t|\n|\r)+/",
+                            "",
+                            $t->getLocalizedFieldValue('leiras', 'en_us') ? $t->getLocalizedFieldValue('leiras', 'en_us') : ''
+                        ),
                         'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", ''),
                         'imageUrl' => ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                         'images' => $kepek,
@@ -1099,8 +1103,12 @@ class exportController extends \mkwhelpers\Controller
                     'visible' => $t->getLathato3(),
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
-                    'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                    'description' => preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras() ? $t->getLeiras() : ''),
+                    'descriptionEN' => preg_replace(
+                        "/(\t|\n|\r)+/",
+                        "",
+                        $t->getLocalizedFieldValue('leiras', 'en_us') ? $t->getLocalizedFieldValue('leiras', 'en_us') : ''
+                    ),
                     'descriptionIT' => preg_replace("/(\t|\n|\r)+/", "", ''),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
@@ -1269,7 +1277,11 @@ class exportController extends \mkwhelpers\Controller
                     'visible' => $t->getLathato(),
                     'pending' => $t->getFuggoben(),
                     'notAvailable' => $t->getNemkaphato(),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                    'descriptionEN' => preg_replace(
+                        "/(\t|\n|\r)+/",
+                        "",
+                        $t->getLocalizedFieldValue('leiras', 'en_us') ? $t->getLocalizedFieldValue('leiras', 'en_us') : ''
+                    ),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $price,
@@ -1296,7 +1308,11 @@ class exportController extends \mkwhelpers\Controller
                     'notAvailable' => $t->getNemkaphato(),
                     'stock' => $keszlet,
                     'EANcode' => (string)$t->getVonalkod(),
-                    'descriptionEN' => preg_replace("/(\t|\n|\r)+/", "", $t->getLocalizedFieldValue('leiras', 'en_us')),
+                    'descriptionEN' => preg_replace(
+                        "/(\t|\n|\r)+/",
+                        "",
+                        $t->getLocalizedFieldValue('leiras', 'en_us') ? $t->getLocalizedFieldValue('leiras', 'en_us') : ''
+                    ),
                     'imageUrl' => ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : ''),
                     'images' => $kepek,
                     'price' => $price,
