@@ -19,6 +19,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class bankbizonylatfejController extends \mkwhelpers\MattableController
 {
 
+    use \Traits\Kiegyenlites;
+
     public function __construct()
     {
         $this->setEntityName(Bankbizonylatfej::class);
@@ -267,7 +269,16 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $view->setVar('formaction', '/admin/bankbizonylatfej/save');
         $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record, true));
+        $egyed = $this->loadVars($record, true);
+
+        // a bizonylatlista "Kiegyenlít" gombjáról érkezve a form a kiegyenlítendő
+        // bizonylat adataival indul
+        $kiegy = $record ? null : $this->kiegyenlitendo();
+        if ($kiegy) {
+            $egyed['keltstr'] = $kiegy['keltstr'];
+            $egyed['tetelek'] = [$this->kiegyenlitesTetel($kiegy)];
+        }
+        $view->setVar('egyed', $egyed);
 
         $bt = $this->getRepo(Bizonylattipus::class)->find('bank');
         $bt->setTemplateVars($view);
@@ -296,6 +307,35 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
 
         return $view->getTemplateResult();
+    }
+
+    /**
+     * A kiegyenlítés egyetlen, előre kitöltött tételsora. A bankbizonylattetelController új
+     * sort ad (saját UID + oper=add), abba írjuk bele a bizonylat adatait. A bankbizonylatnál
+     * a partner és az irány is a tételen van, nem a fejen.
+     *
+     * @param array $kiegy
+     *
+     * @return array
+     */
+    private function kiegyenlitesTetel($kiegy)
+    {
+        $tetelCtrl = new bankbizonylattetelController();
+        $partnerCtrl = new partnerController();
+        $jogcimCtrl = new jogcimController();
+
+        $tetel = $tetelCtrl->loadVars(null, true);
+        $tetel['datumstr'] = $kiegy['keltstr'];
+        $tetel['partner'] = $kiegy['partnerid'];
+        $tetel['partnernev'] = $kiegy['partnernev'];
+        $tetel['partnerlist'] = $partnerCtrl->getSelectList($kiegy['partnerid']);
+        $tetel['irany'] = $kiegy['irany'];
+        $tetel['jogcim'] = $kiegy['jogcimid'];
+        $tetel['jogcimlist'] = $jogcimCtrl->getSelectList($kiegy['jogcimid']);
+        $tetel['hivatkozottbizonylat'] = $kiegy['bizonylat'];
+        $tetel['hivatkozottdatumstr'] = $kiegy['esedekessegstr'];
+        $tetel['brutto'] = $kiegy['osszeg'];
+        return $tetel;
     }
 
     public function exportKonyvelo()

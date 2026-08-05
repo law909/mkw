@@ -35,6 +35,8 @@ use Services\BizonylatSliceService;
 class bizonylatfejController extends \mkwhelpers\MattableController
 {
 
+    use \Traits\Kiegyenlites;
+
     protected $biztipus;
 
     public static function factory($biztip)
@@ -596,6 +598,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['tetelek'] = $tetel;
         } else {
             $x['egyenleg'] = $t->getEgyenleg() * -1 * $t->getIrany();
+            // a nyitott egyenlegű bizonylat mellé a listán "Kiegyenlít" gomb kerül
+            $x['kiegyenlitesurl'] = $this->kiegyenlitesUrl($t, $x['egyenleg']);
             if (\mkw\store::isOsztottFizmod()) {
                 $ma = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
                 $egyenlegek = [];

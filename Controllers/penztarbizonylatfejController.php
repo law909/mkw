@@ -8,6 +8,8 @@ use Entities\Penztarbizonylattetel;
 class penztarbizonylatfejController extends \mkwhelpers\MattableController
 {
 
+    use \Traits\Kiegyenlites;
+
     public function __construct()
     {
         $this->setEntityName(Penztarbizonylatfej::class);
@@ -389,13 +391,25 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $view->setVar('formaction', '/admin/penztarbizonylatfej/save');
         $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record, true));
+        $egyed = $this->loadVars($record, true);
+        $partnerid = $record ? $record->getPartnerId() : 0;
+
+        // a bizonylatlista "Kiegyenlít" gombjáról érkezve a form a kiegyenlítendő
+        // bizonylat adataival indul
+        $kiegy = $record ? null : $this->kiegyenlitendo();
+        if ($kiegy) {
+            $partnerid = $kiegy['partnerid'];
+            $egyed['irany'] = $kiegy['irany'];
+            $egyed['keltstr'] = $kiegy['keltstr'];
+            $egyed['tetelek'] = [$this->kiegyenlitesTetel($kiegy)];
+        }
+        $view->setVar('egyed', $egyed);
 
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
         $bt->setTemplateVars($view);
 
         $partner = new partnerController();
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+        $view->setVar('partnerlist', $partner->getSelectList($partnerid));
 
         $valutanem = new valutanemController();
         if (!$record || !$record->getValutanemId()) {
@@ -413,6 +427,28 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('penztarlist', $penztar->getSelectList($penztarid));
 
         return $view->getTemplateResult();
+    }
+
+    /**
+     * A kiegyenlítés egyetlen, előre kitöltött tételsora. A penztarbizonylattetelController
+     * új sort ad (saját UID + oper=add), abba írjuk bele a bizonylat adatait.
+     *
+     * @param array $kiegy
+     *
+     * @return array
+     */
+    private function kiegyenlitesTetel($kiegy)
+    {
+        $tetelCtrl = new penztarbizonylattetelController();
+        $jogcimCtrl = new jogcimController();
+
+        $tetel = $tetelCtrl->loadVars(null, true);
+        $tetel['jogcim'] = $kiegy['jogcimid'];
+        $tetel['jogcimlist'] = $jogcimCtrl->getSelectList($kiegy['jogcimid']);
+        $tetel['hivatkozottbizonylat'] = $kiegy['bizonylat'];
+        $tetel['hivatkozottdatumstr'] = $kiegy['esedekessegstr'];
+        $tetel['brutto'] = $kiegy['osszeg'];
+        return $tetel;
     }
 
     public function ront()
