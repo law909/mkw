@@ -236,7 +236,7 @@
                         </tr>
                     {/if}
                     <tr>
-                        <td><label for="PenztmozgatEdit">{at('Pénzt mozgat')}:</label></td>
+                        <td><label for="PenztmozgatEdit">{at('Kintlévőséget/tartozást képez')}:</label></td>
                         <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}></td>
                     </tr>
                     {if isset($tarsbizonylatlist)}
