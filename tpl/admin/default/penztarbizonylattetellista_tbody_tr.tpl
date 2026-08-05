@@ -12,6 +12,9 @@
         {/if}
         <div>{$_egyed.penztarnev}</div>
         <div>{if ($_egyed.irany > 0)}{at('befizetés')}{else}{at('kifizetés')}{/if}</div>
+        {if ($_egyed.megjegyzes)}
+            <div>{$_egyed.megjegyzes}</div>
+        {/if}
     </td>
     <td class="cell">
         {$_egyed.partnernev}

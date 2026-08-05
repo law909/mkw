@@ -18,6 +18,9 @@
                 {if ($showerbizonylatszam)}
                 <tr><td>{at('Er.biz.szám')}:</td><td>{$_egyed.erbizonylatszam}</td></tr>
                 {/if}
+                {if ($_egyed.megjegyzes)}
+                <tr><td colspan="2">{$_egyed.megjegyzes}</td></tr>
+                {/if}
                 <tr><td>{at('Létrehozva')}:</td><td>{$_egyed.createdby} {$_egyed.createdstr}</td></tr>
                 <tr><td>{at('Módosítva')}:</td><td>{$_egyed.updatedby} {$_egyed.lastmodstr}</td></tr>
             </tbody>

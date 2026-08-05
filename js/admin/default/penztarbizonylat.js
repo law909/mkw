@@ -250,6 +250,15 @@ $(document).ready(function () {
             karb: penztarbizonylat
         });
 
+        // A pénztárak közti átvezetés rögzítője az "Új" gomb mellől indul. Az "Új" linket a
+        // mattable a lapozósorba teszi, ezért csak a plugin inicializálása után tudjuk mellé
+        // fűzni. Az átvezetés két pénztárbizonylatot képez, ezért nem fér bele a karb-ba.
+        $('.mattable-addlink').after(
+            '<a class="mattable-atvezeteslink mattable-left" href="/admin/penztaratvezetes/viewkarb?id=0&amp;oper=add" title="Átvezetés">' +
+            '<span class="ui-icon ui-icon-transferthick-e-w"></span></a>'
+        );
+        $('.mattable-atvezeteslink').button();
+
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });

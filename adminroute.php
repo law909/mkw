@@ -228,6 +228,13 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/penztarbizonylattetel/viewselect', 'penztarbizonylattetelController#viewselect', 'adminpenztarbizonylattetelviewselect');
     $router->map('GET', '/admin/penztarbizonylattetel/getlistbody', 'penztarbizonylattetelController#getlistbody', 'adminpenztarbizonylattetelgetlistbody');
 
+    $router->map('GET', '/admin/penztaratvezetes/viewlist', 'penztaratvezetesController#viewlist', 'adminpenztaratvezetesviewlist');
+    $router->map('GET', '/admin/penztaratvezetes/getkarb', 'penztaratvezetesController#getkarb', 'adminpenztaratvezetesgetkarb');
+    $router->map('GET', '/admin/penztaratvezetes/viewkarb', 'penztaratvezetesController#viewkarb', 'adminpenztaratvezetesviewkarb');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/penztaratvezetes/save', 'penztaratvezetesController#save', 'adminpenztaratvezetessave');
+    }
+
     $router->map('GET', '/admin/kintlevoseglista/view', 'kintlevoseglistaController#view', 'adminkintlevoseglistaview');
     $router->map('GET', '/admin/kintlevoseglista/get', 'kintlevoseglistaController#createLista', 'adminkintlevoseglistaget');
     $router->map('GET', '/admin/kintlevoseglista/export', 'kintlevoseglistaController#exportLista', 'adminkintlevoseglistaexport');

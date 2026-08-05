@@ -51,6 +51,7 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
         $x['partnernev'] = $fej?->getPartnernev();
         $x['penztarnev'] = $fej?->getPenztarnev();
         $x['valutanemnev'] = $fej?->getValutanemnev();
+        $x['megjegyzes'] = $fej?->getMegjegyzes();
 
         if ($forKarb) {
             $x['jogcimlist'] = $jogcim->getSelectList($t->getJogcimId());
