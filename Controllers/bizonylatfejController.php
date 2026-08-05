@@ -533,6 +533,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if ($biztip) {
                 $x['penztmozgat'] = $biztip->getPenztmozgat();
             }
+            // Más típusú bizonylatot képezve: ha az előd bizonylatok bármelyike már
+            // mozgatott pénzt, akkor a képzett bizonylat nem mozgathat, különben a
+            // pénzmozgás kétszer kerülne a folyószámlára. A formon már kivéve látszik, a
+            // mentés pedig a setFields() inherit ágán is kikényszeríti.
+            if ($x['penztmozgat'] && $this->elodPenztmozgat($t)) {
+                $x['penztmozgat'] = false;
+            }
         }
         $x['barionpaymentstatus'] = $t->getBarionpaymentstatus();
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
@@ -640,6 +647,30 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             'keltstr' => $b->getKeltStr(),
             'createdstr' => $b->getCreatedStr(),
         ];
+    }
+
+    /**
+     * Mozgat-e pénzt az előd bizonylatok valamelyike. A szülők láncán megyünk fölfelé (a
+     * kapott bizonylatot is beleértve), mert a pénzmozgás a lánc bármely pontján állhat:
+     * pl. megrendelés (mozgat) -> szállítólevél (nem mozgat) -> számla esetén a megrendelés
+     * pénzmozgása számít, nem a közvetlen szülőé.
+     *
+     * @param \Entities\Bizonylatfej|null $bizonylat
+     *
+     * @return bool
+     */
+    protected function elodPenztmozgat($bizonylat)
+    {
+        // a láncot elvileg nem lehet körbekötni, de egy hibás adat ne fagyassza le a mentést
+        $latott = [];
+        while ($bizonylat && !isset($latott[$bizonylat->getId()])) {
+            if ($bizonylat->getPenztmozgat()) {
+                return true;
+            }
+            $latott[$bizonylat->getId()] = true;
+            $bizonylat = $bizonylat->getParbizonylatfej();
+        }
+        return false;
     }
 
     protected function setFields(\Entities\Bizonylatfej $obj, $parancs)
@@ -918,6 +949,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
                 if ($parentbiz) {
                     $obj->setParbizonylatfej($parentbiz);
+                    // Ha az előd bizonylatok bármelyike már mozgatott pénzt, akkor a belőle
+                    // képzett bizonylat minden esetben nem mozgat: a pénzmozgás egyszer, a
+                    // lánc első ilyen bizonylatán keletkezik, különben kétszer kerülne a
+                    // folyószámlára. Ez felülírja a bizonylattípus alapértelmezését és a
+                    // formról érkező jelölőt is.
+                    if ($this->elodPenztmozgat($parentbiz)) {
+                        $obj->setPenztmozgat(false);
+                    }
                 }
                 $obj->setNaveredmeny(null);
                 break;
