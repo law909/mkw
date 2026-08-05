@@ -23,6 +23,7 @@
                 </select>
             </div>
             {if ($showpenztar)}
+                <div class="matt-hseparator"></div>
                 <div class="boltieladas-fejsor js-boltieladas-penztarsor" style="display: none;">
                     <label for="BoltieladasPenztarEdit">{t('Pénztár')}:</label>
                     <select id="BoltieladasPenztarEdit" class="js-boltieladas-penztar" name="penztar">
