@@ -208,7 +208,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td>{if ($_egyed.penztmozgat)}{at('Pénzt mozgat')}{else}{at('Nem mozgat pénzt')}{/if}</td>
+                <td>{if ($_egyed.penztmozgat)}{at('Kintlévőséget/tartozást képez')}{else}{at('Kintlévőséget/tartozást NEM képez')}{/if}</td>
             </tr>
             <tr>
                 <td></td>
