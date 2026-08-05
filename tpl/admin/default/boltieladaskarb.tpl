@@ -17,10 +17,22 @@
                 <label for="BoltieladasFizmodEdit">{t('Fizetési mód')}:</label>
                 <select id="BoltieladasFizmodEdit" class="js-boltieladas-fizmod" name="fizmod">
                     {foreach $fizmodlist as $_fm}
-                        <option value="{$_fm.id}"{if ($_fm.selected)} selected="selected"{/if}>{$_fm.caption}</option>
+                        <option value="{$_fm.id}"{if ($_fm.selected)} selected="selected"{/if}
+                                data-keszpenz="{$_fm.keszpenz}">{$_fm.caption}</option>
                     {/foreach}
                 </select>
             </div>
+            {if ($showpenztar)}
+                <div class="boltieladas-fejsor js-boltieladas-penztarsor" style="display: none;">
+                    <label for="BoltieladasPenztarEdit">{t('Pénztár')}:</label>
+                    <select id="BoltieladasPenztarEdit" class="js-boltieladas-penztar" name="penztar">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $penztarlist as $_p}
+                            <option value="{$_p.id}"{if ($_p.selected)} selected="selected"{/if}>{$_p.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            {/if}
         </div>
         <div class="matt-hseparator"></div>
         <table class="boltieladas-tetelek ui-widget ui-widget-content ui-corner-all mattable-repeatable">

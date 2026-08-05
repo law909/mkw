@@ -208,6 +208,7 @@
                                 {foreach $fizmodlist as $_mk}
                                     <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizhatido="{$_mk.fizhatido}"
                                             data-bank="{$_mk.bank}"
+                                            data-keszpenz="{$_mk.keszpenz}"
                                             data-nincspenzmozgas="{if ($_mk.nincspenzmozgas)}1{else}0{/if}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
@@ -222,6 +223,18 @@
                             </select>
                         </td>
                     </tr>
+                    {if ($showpenztar)}
+                        <tr class="js-penztarrow" style="display: none;">
+                            <td><label for="PenztarEdit">{at('Pénztár')}:</label></td>
+                            <td colspan="7"><select id="PenztarEdit" name="penztar">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $penztarlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td><label for="PenztmozgatEdit">{at('Pénzt mozgat')}:</label></td>
                         <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}></td>

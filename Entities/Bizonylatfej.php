@@ -459,6 +459,20 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $raktarnev;
 
+    /**
+     * Az automatikus pénztárbizonylat pénztára. Csak készpénzes fizetési módú, a
+     * bizonylattipus.autopenztarbizonylat-tal bekapcsolt bizonylaton van értelme;
+     * kitöltetlenül a globális beállítás (consts::AutoPenztarbizonylatPenztar) dönt.
+     *
+     * @ORM\ManyToOne(targetEntity="Penztar")
+     * @ORM\JoinColumn(name="penztar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Penztar
+     */
+    private $penztar;
+
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $penztarnev;
+
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $bizonylattetelek;
 
@@ -3924,6 +3938,57 @@ class Bizonylatfej
             $this->raktar = null;
             if (!$this->duplication) {
                 $this->raktarnev = '';
+            }
+        }
+    }
+
+    /**
+     * @return \Entities\Penztar
+     */
+    public function getPenztar()
+    {
+        return $this->penztar;
+    }
+
+    public function getPenztarnev()
+    {
+        return $this->penztarnev;
+    }
+
+    public function getPenztarId()
+    {
+        if ($this->penztar) {
+            return $this->penztar->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Penztar $val
+     */
+    public function setPenztar($val)
+    {
+        if (!($val instanceof \Entities\Penztar)) {
+            $val = \mkw\store::getEm()->getRepository(Penztar::class)->find($val);
+        }
+        if ($this->penztar !== $val) {
+            if (!$val) {
+                $this->removePenztar();
+            } else {
+                $this->penztar = $val;
+                if (!$this->duplication) {
+                    $this->penztarnev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removePenztar()
+    {
+        if ($this->penztar !== null) {
+            $this->penztar = null;
+            if (!$this->duplication) {
+                $this->penztarnev = '';
             }
         }
     }

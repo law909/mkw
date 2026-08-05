@@ -6,6 +6,7 @@ use Entities\Arfolyam;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Partner;
+use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekValtozat;
@@ -136,9 +137,11 @@ class szamlafejController extends bizonylatfejController
     {
         $tetelek = \mkw\store::getAdminSession()->boltiszamlatetelek;
         $fizmodid = \mkw\store::getAdminSession()->boltiszamlafizmod;
+        $penztarid = \mkw\store::getAdminSession()->boltiszamlapenztar;
         // egyszer használatos: azonnal töröljük, hogy frissítéskor ne épüljön újra
         \mkw\store::getAdminSession()->boltiszamlatetelek = null;
         \mkw\store::getAdminSession()->boltiszamlafizmod = null;
+        \mkw\store::getAdminSession()->boltiszamlapenztar = null;
         if (!is_array($tetelek) || !$tetelek) {
             return null;
         }
@@ -160,6 +163,11 @@ class szamlafejController extends bizonylatfejController
         $fizmod = $fizmodid ? $this->getRepo(Fizmod::class)->find($fizmodid) : null;
         if ($fizmod) {
             $fej->setFizmod($fizmod);
+        }
+        // a POS-on választott pénztárat visszük tovább a számlára is
+        $penztar = $penztarid ? $this->getRepo(Penztar::class)->find($penztarid) : null;
+        if ($penztar) {
+            $fej->setPenztar($penztar);
         }
         $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         if ($valutanem) {

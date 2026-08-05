@@ -8,6 +8,7 @@ use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Partner;
+use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekValtozat;
@@ -46,6 +47,17 @@ class boltieladasController extends \mkwhelpers\Controller
 
         $fmc = new fizmodController();
         $view->setVar('fizmodlist', $fmc->getSelectList());
+
+        // Az automatikus pénztárbizonylat pénztára – csak akkor kérdezzük, ha a bolti eladás
+        // típusa egyáltalán képez ilyet. Alapból a globális beállítás van kiválasztva, azaz
+        // az, amelyikbe a BizonylatfejListener e nélkül is könyvelne.
+        $biztipus = $this->getRepo(Bizonylattipus::class)->find(self::BIZTIPUS);
+        $view->setVar('showpenztar', $biztipus && $biztipus->getAutopenztarbizonylat());
+        $penztar = new penztarController();
+        $view->setVar(
+            'penztarlist',
+            $penztar->getSelectList(\mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar))
+        );
 
         echo $view->getTemplateResult();
     }
@@ -239,6 +251,7 @@ class boltieladasController extends \mkwhelpers\Controller
         $valutanem = $this->getDefaultValutanem();
         $raktar = $this->getDefaultRaktar();
         $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $penztar = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
 
         $this->getEm()->beginTransaction();
         try {
@@ -260,6 +273,9 @@ class boltieladasController extends \mkwhelpers\Controller
             }
             if ($raktar) {
                 $fej->setRaktar($raktar);
+            }
+            if ($penztar) {
+                $fej->setPenztar($penztar);
             }
 
             $vantetel = false;
@@ -362,6 +378,7 @@ class boltieladasController extends \mkwhelpers\Controller
 
         \mkw\store::getAdminSession()->boltiszamlatetelek = $tetelek;
         \mkw\store::getAdminSession()->boltiszamlafizmod = $this->params->getIntRequestParam('fizmod');
+        \mkw\store::getAdminSession()->boltiszamlapenztar = $this->params->getIntRequestParam('penztar');
         echo json_encode(['ok' => true]);
     }
 }

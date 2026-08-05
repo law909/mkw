@@ -27,6 +27,17 @@ let bizonylathelper = function ($) {
         }
     }
 
+    // Az automatikus pénztárbizonylat pénztárát csak készpénzes fizetési módnál kell
+    // megadni – a sor csak olyan bizonylattípuson létezik, amelyiken az automatikus
+    // pénztárbizonylat be van kapcsolva (Bizonylattipus::setTemplateVars: showpenztar).
+    function syncPenztar() {
+        let sor = $('.js-penztarrow');
+        if (!sor.length) {
+            return;
+        }
+        sor.toggle($('#FizmodEdit option:selected').attr('data-keszpenz') === '1');
+    }
+
     function setDates() {
         let keltedit = $('#KeltEdit'),
             esededit = $('#EsedekessegEdit'),
@@ -1159,8 +1170,10 @@ let bizonylathelper = function ($) {
                 fizmodedit.on('change', function () {
                     setDates();
                     syncPenztmozgat();
+                    syncPenztar();
                 });
                 syncPenztmozgat();   // a betöltéskor már kiválasztott fizetési módra is
+                syncPenztar();
                 alttab
                     .on('click', '.js-quicktetelnewbutton', function (e) {
                         let $this = $(this);

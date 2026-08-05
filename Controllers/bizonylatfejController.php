@@ -460,6 +460,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['partnerszallorszagnev'] = $t->getPartnerszallorszagnev();
         $x['raktar'] = $t->getRaktarId();
         $x['raktarnev'] = $t->getRaktarnev();
+        $x['penztar'] = $t->getPenztarId();
+        $x['penztarnev'] = $t->getPenztarnev();
         $x['fizmod'] = $t->getFizmodId();
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['fizmodnev_locale'] = $t->getLocalizedFieldValue('fizmodnev', $t->getBizonylatnyelv());
@@ -754,6 +756,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
             $obj->setFizmod($ck);
+        }
+        // az automatikus pénztárbizonylat pénztára; a mező csak az azt képző
+        // bizonylattípusoknál van kint a formon, egyébként érintetlen marad
+        if ($obj->getBizonylattipus()?->getAutopenztarbizonylat()) {
+            $ck = \mkw\store::getEm()->getRepository(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
+            if ($ck) {
+                $obj->setPenztar($ck);
+            } else {
+                $obj->removePenztar();
+            }
         }
         $ck = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('szallitasimod'));
         if ($ck) {
@@ -1554,6 +1566,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $fmid = $record->getFizmodId();
             }
             $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
+
+            // Az automatikus pénztárbizonylat pénztára. Kitöltetlen bizonylatnál a globális
+            // beállítást ajánljuk fel – ugyanazt, amelyikbe a BizonylatfejListener e nélkül is
+            // rögzítene.
+            $penztar = new penztarController();
+            $penztarid = $record && $record->getPenztarId()
+                ? $record->getPenztarId()
+                : \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar);
+            $view->setVar('penztarlist', $penztar->getSelectList($penztarid));
 
             $szallitasimod = new szallitasimodController();
             if (!$record || !$record->getSzallitasimodId()) {

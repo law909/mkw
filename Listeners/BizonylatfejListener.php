@@ -501,8 +501,17 @@ class BizonylatfejListener
         // új bizonylathoz még nem tartozhat pénztárbizonylat, ilyenkor a lekérdezés
         // fölösleges (tömeges importnál bizonylatonként egy query)
         $regi = $this->uow->isScheduledForInsert($bizfej) ? null : $this->getAutoPenztarBizonylat($bizfej);
+        if (!$regi && !$osszeg) {
+            return;
+        }
+
+        // a pénztárat már itt föl kell oldani, mert a meglévő pénztárbizonylat
+        // összevetésének is része: a bizonylat pénztárát átállítva a régit rontani,
+        // az újat pedig a másik pénztárban kell képezni
+        $penztar = $this->getAutoPenztar($bizfej);
+
         if ($regi) {
-            if ($this->autoPenztarBizonylatEgyezik($regi, $bizfej, $irany, $osszeg)) {
+            if ($this->autoPenztarBizonylatEgyezik($regi, $bizfej, $irany, $osszeg, $penztar)) {
                 return;
             }
             $this->rontPenztarBizonylatfej($regi);
@@ -511,7 +520,6 @@ class BizonylatfejListener
             return;
         }
 
-        $penztar = $this->getAutoPenztar($bizfej);
         $jogcim = $this->getAutoJogcim();
         if (!$penztar || !$jogcim) {
             \mkw\store::writelog(
@@ -589,15 +597,20 @@ class BizonylatfejListener
      * @param \Entities\Bizonylatfej $bizfej
      * @param int $irany
      * @param float $osszeg
+     * @param \Entities\Penztar|null $penztar
      *
      * @return bool
      */
-    private function autoPenztarBizonylatEgyezik($pbiz, $bizfej, $irany, $osszeg)
+    private function autoPenztarBizonylatEgyezik($pbiz, $bizfej, $irany, $osszeg, $penztar)
     {
         if ($pbiz->getIrany() != $irany) {
             return false;
         }
         if ($pbiz->getValutanemId() != $bizfej->getValutanemId()) {
+            return false;
+        }
+        // pénztárat váltva a régit rontani kell, hogy az újat a mostani pénztár kapja
+        if ($penztar && ($pbiz->getPenztarId() != $penztar->getId())) {
             return false;
         }
         $tetelek = $pbiz->getBizonylattetelek();
@@ -618,9 +631,13 @@ class BizonylatfejListener
     {
         /** @var \Entities\PenztarRepository $prep */
         $prep = $this->em->getRepository(Penztar::class);
-        $penztarid = \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar);
-        $penztar = $penztarid ? $prep->find($penztarid) : null;
-        // beállítás híján – vagy ha a beállított pénztár más valutanemű – a bizonylat
+        // a bizonylatra kézzel kiválasztott pénztár erősebb a globális beállításnál
+        $penztar = $bizfej->getPenztar();
+        if (!$penztar) {
+            $penztarid = \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar);
+            $penztar = $penztarid ? $prep->find($penztarid) : null;
+        }
+        // beállítás híján – vagy ha a kiválasztott pénztár más valutanemű – a bizonylat
         // valutaneme szerinti pénztárba kerül
         if (!$penztar || ($penztar->getValutanemId() != $bizfej->getValutanemId())) {
             $penztar = $prep->getByValutanem($bizfej->getValutanem());

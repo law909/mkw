@@ -175,10 +175,21 @@ var boltieladas = (function ($) {
         });
     }
 
+    // Az automatikus pénztárbizonylat pénztárát csak készpénzes fizetési módnál kérdezzük –
+    // a sor csak akkor van a formon, ha a bolti eladás típusa képez ilyen bizonylatot.
+    function syncPenztar($cont) {
+        var $sor = $cont.find('.js-boltieladas-penztarsor');
+        if (!$sor.length) {
+            return;
+        }
+        $sor.toggle($cont.find('.js-boltieladas-fizmod option:selected').attr('data-keszpenz') === '1');
+    }
+
     // A kosár sorainak összegyűjtése párhuzamos tömbökbe (a mentés és a számla is ezt küldi).
     function collectData($cont) {
         var data = {
             fizmod: $cont.find('.js-boltieladas-fizmod').val(),
+            penztar: $cont.find('.js-boltieladas-penztar').val() || '',
             termekid: [],
             valtozatid: [],
             mennyiseg: [],
@@ -346,10 +357,12 @@ var boltieladas = (function ($) {
         });
 
         // Fizetési mód váltásakor újraszámoljuk az összesítőket (a készpénzes minimum
-        // címlet-kerekítés miatt).
+        // címlet-kerekítés miatt), és a pénztárválasztót is hozzáigazítjuk.
         $cont.on('change', '.js-boltieladas-fizmod', function () {
             recalcTotals($cont);
+            syncPenztar($cont);
         });
+        syncPenztar($cont);   // a betöltéskor kiválasztott fizetési módra is
 
         // Változatválasztás: a kiválasztott változat tételsora bekerül a táblázatba, a doboz ürül.
         $cont.on('change', '.js-be-valtozatvalaszto', function () {

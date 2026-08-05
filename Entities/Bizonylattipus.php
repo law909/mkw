@@ -139,6 +139,8 @@ class Bizonylattipus
         $view->setVar('showemailbutton', $this->getShowemailbutton());
         $view->setVar('showeddigimegrendeleseiurl', $this->getShoweddigimegrendeleseiurl());
         $view->setVar('showgarancialisadatok', $this->getShowgarancialisadatok());
+        // a pénztár csak az automatikus pénztárbizonylatot képző típusokon szerkeszthető
+        $view->setVar('showpenztar', $this->getAutopenztarbizonylat());
     }
 
     public function getId()
