@@ -1080,6 +1080,71 @@ if ($DBVersion < '0100') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0100');
 }
+
+if ($DBVersion < '0101') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menucsoport (nev,lathato,sorrend) VALUES ("Egyéb műveletek","1",90)'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET menucsoport_id=9 WHERE (routename IN ('
+        . '"/admin/export","/admin/import","/admin/partnermerge",'
+        . '"/admin/partnertermekkedvezmenyupload","adminraktarkeszletnullazoview","adminkoltsegszamlaimportview"))'
+        . ' OR (class IN ("js-regeneratekarkod","js-regeneratemenukarkod"))'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET routename="/admin/raktarkeszletnullazo" WHERE routename="adminraktarkeszletnullazoview"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET routename="/admin/koltsegszamlaimport" WHERE routename="adminkoltsegszamlaimportview"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=100 WHERE routename="/admin/import"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=200 WHERE routename="/admin/koltsegszamlaimport"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=300 WHERE class="js-regeneratekarkod"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=400 WHERE class="js-regeneratemenukarkod"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=500 WHERE routename="/admin/partnertermekkedvezmenyupload"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=600 WHERE routename="/admin/export"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=700 WHERE routename="/admin/partnermerge"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend=800 WHERE routename="/admin/raktarkeszletnullazo"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0101');
+}
+
+if ($DBVersion < '0102') {
+    $menuk = \mkw\store::getEm()->getConnection()
+        ->executeQuery('SELECT id FROM menu WHERE menucsoport_id=7 ORDER BY nev')
+        ->fetchAllAssociative();
+    $sorrend = 0;
+    foreach ($menuk as $m) {
+        $sorrend += 100;
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE menu SET sorrend=' . $sorrend . ' WHERE id=' . $m['id']
+        );
+    }
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0102');
+}
+
+if ($DBVersion < '0103') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM menu WHERE routename="/admin/egyebtorzs"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0103');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
