@@ -439,6 +439,22 @@ class adminController extends mkwhelpers\Controller
         }
     }
 
+    /**
+     * A bal oldali menü egy menücsoportjának nyitott/zárt állapota, a bejelentkezett
+     * dolgozóhoz mentve. A menü kirajzolásakor a menuController::getMenu() olvassa vissza.
+     */
+    public function setMenucsoportNyitva()
+    {
+        $mcsid = $this->params->getIntRequestParam('mcsid', 0);
+        $value = $this->params->getStringRequestParam('value', '0');
+        if ($mcsid > 0) {
+            \Services\DolgozoParameterService::setParameter(
+                \Services\DolgozoParameterService::getMenucsoportKey($mcsid),
+                $value ? '1' : '0'
+            );
+        }
+    }
+
     public function getSmallUrl()
     {
         echo \mkw\store::createSmallImageUrl($this->params->getStringRequestParam('url'));

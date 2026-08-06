@@ -98,6 +98,13 @@ class menuController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
+    /**
+     * A bal oldali menü sorai. Minden sor viszi a menücsoportja nyitott/zárt állapotát
+     * ('mcsnyitva'), amit a dolgozó a fejlécre kattintva állít – az érték dolgozónként
+     * tárolódik (\Services\DolgozoParameterService). Alapértelmezés a nyitott állapot,
+     * így akinek nincs mentett beállítása, az a régi, teljesen nyitott menüt látja.
+     * Csoport nélküli menüpont mindig látszik.
+     */
     public function getMenu()
     {
         $menu = [];
@@ -109,9 +116,11 @@ class menuController extends \mkwhelpers\MattableController
         /** @var \Entities\Menu $rek */
         foreach ($adat as $rek) {
             if ($rek->isLathato(\mkw\store::getJog())) {
+                $mcsid = $rek->getMenucsoportId();
                 $menu[] = [
-                    'mcsid' => $rek->getMenucsoportId(),
+                    'mcsid' => $mcsid,
                     'mcsnev' => $rek->getMenucsoportNev(),
+                    'mcsnyitva' => $this->isMenucsoportNyitva($mcsid),
                     'nev' => $rek->getNev(),
                     'url' => $rek->getUrl(),
                     'class' => $rek->getClass()
@@ -119,6 +128,17 @@ class menuController extends \mkwhelpers\MattableController
             }
         }
         return $menu;
+    }
+
+    private function isMenucsoportNyitva($mcsid)
+    {
+        if (!$mcsid) {
+            return true;
+        }
+        return \Services\DolgozoParameterService::getBoolParameter(
+            \Services\DolgozoParameterService::getMenucsoportKey($mcsid),
+            $mcsid !== 7
+        );
     }
 
 }

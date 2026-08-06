@@ -12,6 +12,17 @@ body {
     margin-right: 0.5em;
 }
 
+/* Menücsoport fejléce: kattintásra nyitja/zárja a csoport menüpontjait. */
+.menu-titlebar {
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-titlebar-icon {
+    float: left;
+    margin-right: 0.3em;
+}
+
 .content-container {
     display: flex;
     flex-direction: column;

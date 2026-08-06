@@ -198,6 +198,7 @@
                     $.ajax({
                         url: '/admin/setlistparam',
                         type: 'POST',
+                        global: false, // ne villanjon fel a globális "Kérem várjon..." réteg
                         data: {
                             key: window.location.pathname,
                             par: 'mindignyitva',

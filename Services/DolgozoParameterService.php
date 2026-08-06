@@ -29,6 +29,9 @@ class DolgozoParameterService
     /** A mattable listák "Mindig nyitva" (szűrő nyitva tartása) pipája */
     const MINDIGNYITVA = 'mindignyitva';
 
+    /** A bal oldali menü egy menücsoportjának nyitott/zárt állapota */
+    const MENUCSOPORT = 'menucsoportnyitva';
+
     /** dolgozoid => [par => ertek] – kérésen belüli cache */
     private static $cache = [];
 
@@ -40,6 +43,16 @@ class DolgozoParameterService
     public static function getListKey($path, $par)
     {
         return $path . '_' . $par;
+    }
+
+    /**
+     * Egy menücsoport nyitott/zárt állapotának kulcsa, pl. `menucsoportnyitva_7`.
+     * Hogy mi az alapértelmezés mentett sor hiányában, azt a hívó dönti el
+     * (lásd menuController::isMenucsoportNyitva()).
+     */
+    public static function getMenucsoportKey($mcsid)
+    {
+        return self::MENUCSOPORT . '_' . $mcsid;
     }
 
     /**

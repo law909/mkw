@@ -64,6 +64,27 @@ $(document).ready(
             .ajaxComplete(function () {
                 $('#dialogcenter .js-bizlink:not(.ui-button)').button();
             });
+        // A bal oldali menü menücsoportjai: a fejlécre kattintva nyílnak/záródnak.
+        // A kezdeti állapotot a sablon rendereli (base.tpl), a változást dolgozónként
+        // mentjük (dolgozoparameterek tábla). A mentés global:false, hogy a globális
+        // ajaxStart/ajaxStop ne villantsa fel a "Kérem várjon..." réteget.
+        $('.js-menucsoporttoggle').on('click', function (e) {
+            e.preventDefault();
+            var titlebar = $(this),
+                mcsid = titlebar.data('mcsid'),
+                csoport = $('.js-menucsoport[data-mcsid="' + mcsid + '"]'),
+                nyitva = !csoport.is(':visible');
+            titlebar.children('.menu-titlebar-icon')
+                .toggleClass('ui-icon-circle-triangle-n', nyitva)
+                .toggleClass('ui-icon-circle-triangle-s', !nyitva);
+            csoport.slideToggle(200);
+            $.ajax({
+                url: '/admin/setmenucsoportnyitva',
+                type: 'POST',
+                global: false,
+                data: {mcsid: mcsid, value: nyitva ? 1 : 0}
+            });
+        });
         $('#ThemeSelect').change(function (e) {
             $.ajax({
                 url: '/admin/setuitheme',

@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
-    <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css?v=2"/>
+    <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css"/>
     <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery-migrate-1.2.1.js"></script>
@@ -47,22 +47,30 @@
             {/if}
             <div class="textaligncenter">{$tulajnev}</div>
             <div class="textaligncenter">{$loggedinuser.name}</div>
+            {* A menücsoportok fejlécére kattintva nyílnak/záródnak; a nyitott állapot
+               dolgozónként mentődik (lásd appinit.js + adminController::setMenucsoportNyitva).
+               Csoport nélküli menüpont nem kap fejlécet, és mindig látszik. *}
             {$cscikl = 0}
             {$mdb = count($menu)}
             {while ($cscikl < $mdb)}
+                {$mcs = $menu[$cscikl]['mcsid']}
+                {$mcsnyitva = $menu[$cscikl]['mcsnyitva']}
                 {if ($menu[$cscikl]['mcsnev'])}
-                    <div class="menu-titlebar mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all">
+                    <div class="menu-titlebar mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all js-menucsoporttoggle"
+                         data-mcsid="{$mcs}" title="{t('Nyitás/zárás')}">
+                        <span class="ui-icon menu-titlebar-icon {if ($mcsnyitva)}ui-icon-circle-triangle-n{else}ui-icon-circle-triangle-s{/if}"></span>
                         <span class="ui-jqgrid-title">{t($menu[$cscikl]['mcsnev'])}</span>
                     </div>
                 {/if}
-                {$mcs = $menu[$cscikl]['mcsid']}
-                {while ($cscikl < $mdb) && ($menu[$cscikl]['mcsid'] == $mcs)}
-                    <div><a
-                            class="menupont ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only {$menu[$cscikl]['class']}"
-                            href="{$menu[$cscikl]['url']}"><span class="ui-button-text">{t($menu[$cscikl]['nev'])}</span></a>
-                    </div>
-                    {$cscikl = $cscikl + 1}
-                {/while}
+                <div class="menu-csoport js-menucsoport" data-mcsid="{$mcs}"{if (!$mcsnyitva)} style="display:none;"{/if}>
+                    {while ($cscikl < $mdb) && ($menu[$cscikl]['mcsid'] == $mcs)}
+                        <div><a
+                                class="menupont ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only {$menu[$cscikl]['class']}"
+                                href="{$menu[$cscikl]['url']}"><span class="ui-button-text">{t($menu[$cscikl]['nev'])}</span></a>
+                        </div>
+                        {$cscikl = $cscikl + 1}
+                    {/while}
+                </div>
             {/while}
             <div>
                 <select id="ThemeSelect">

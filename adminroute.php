@@ -479,6 +479,12 @@ $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod
 $router->map('GET', '/admin/regeneratemenukarkod', 'adminController#regeneratemenukarkod', 'adminregeneratemenukarkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
 $router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
+$router->map(
+    'POST',
+    '/admin/setmenucsoportnyitva',
+    'adminController#setMenucsoportNyitva',
+    'adminsetmenucsoportnyitva'
+);
 $router->map('GET', '/admin/setgrideditbutton', 'adminController#setGridEditButton', 'adminsetgrideditbutton');
 $router->map('GET', '/admin/seteditstyle', 'adminController#setEditStyle', 'adminseteditstyle');
 $router->map('GET', '/admin/setvonalkodfromvaltozat', 'adminController#setVonalkodFromValtozat', 'adminsetvonalkodfromvaltozat');
