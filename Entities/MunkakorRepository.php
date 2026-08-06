@@ -10,7 +10,9 @@ class MunkakorRepository extends \mkwhelpers\Repository
         parent::__construct($em, $class);
         $this->setEntityname(Munkakor::class);
         $this->setOrders([
-            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']]
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint csökkenő', 'order' => ['_xx.nev' => 'DESC']],
+            '3' => ['caption' => 'jog szerint növekvő', 'order' => ['_xx.jog' => 'ASC']],
         ]);
     }
 }

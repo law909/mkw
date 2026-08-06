@@ -3,44 +3,87 @@
 namespace Controllers;
 
 use Entities\MPTNGYEgyetem;
-use mkwhelpers\JQGridController;
 
-class mptngyegyetemController extends JQGridController
+class mptngyegyetemController extends \mkwhelpers\MattableController
 {
+
     public function __construct()
     {
         $this->setEntityName(MPTNGYEgyetem::class);
+        $this->setKarbFormTplName('mptngyegyetemkarbform.tpl');
+        $this->setKarbTplName('mptngyegyetemkarb.tpl');
+        $this->setListBodyRowTplName('mptngyegyetemlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    /**
-     * @param MPTNGYEgyetem $sor
-     *
-     * @return array
-     */
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        return [
-            $sor->getNev(),
-        ];
+        if (!$t) {
+            $t = new MPTNGYEgyetem();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        return $x;
     }
 
+    /**
+     * @param \Entities\MPTNGYEgyetem $obj
+     *
+     * @return \Entities\MPTNGYEgyetem
+     */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('mptngyegyetemlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('mptngyegyetemlista.tpl');
+
+        $view->setVar('pagetitle', t('MPT NGY egyetemek'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('MPT NGY egyetem'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminmptngyegyetemsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null)
@@ -48,11 +91,7 @@ class mptngyegyetemController extends JQGridController
         $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid),
-            ];
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }

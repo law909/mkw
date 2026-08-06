@@ -4,7 +4,7 @@
     <td class="cell">{if ($_egyed.online == 1)}Online{elseif ($_egyed.online == 2)}Élő{/if}</td>
     <td class="cell">
         <span>{$_egyed.datum} {$_egyed.napnev}</span>
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
     </td>
     <td class="cell">{$_egyed.tanarnev}</td>
     <td class="cell">{$_egyed.jogaoratipusnev}</td>

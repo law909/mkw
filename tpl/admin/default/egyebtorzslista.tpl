@@ -11,6 +11,51 @@
 {/block}
 
 {block "kozep"}
+    {* Az itt felsorolt törzsadatok önálló képernyőt kaptak (lásd az Egyebek menücsoportot).
+       A maradék rács fokozatosan költözik át – a végén ez a lap tiszta linkgyűjtő lesz. *}
+    <div class="egyebadat-wrapper">
+        <div class="egyebadat-grid egyebadat-links">
+            <div class="menu-titlebar mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all">
+                <span>{at('Önálló képernyőn')}</span>
+            </div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/termekcsoport/viewlist"><span class="ui-button-text">{at('Termékcsoportok')}</span></a></div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/jelenlettipus/viewlist"><span class="ui-button-text">{at('Jelenlét típusok')}</span></a></div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/kapcsolatfelveteltema/viewlist"><span class="ui-button-text">{at('Kapcsolatfelvétel témák')}</span></a></div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/termekvaltozatadattipus/viewlist"><span class="ui-button-text">{at('Termékváltozat adattípusok')}</span></a></div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/munkakor/viewlist"><span class="ui-button-text">{at('Munkakörök')}</span></a></div>
+            <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                    href="/admin/arsav/viewlist"><span class="ui-button-text">{at('Ársávok')}</span></a></div>
+            {if ($setup.bankpenztar)}
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/jogcim/viewlist"><span class="ui-button-text">{at('Jogcímek')}</span></a></div>
+            {/if}
+            {if ($setup.mpt)}
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptszekcio/viewlist"><span class="ui-button-text">{at('MPT szekciók')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mpttagozat/viewlist"><span class="ui-button-text">{at('MPT tagozatok')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mpttagsagforma/viewlist"><span class="ui-button-text">{at('MPT tagság formák')}</span></a></div>
+            {/if}
+            {if ($setup.mptngy)}
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptngytemakor/viewlist"><span class="ui-button-text">{at('MPT NGY témakörök')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptngytema/viewlist"><span class="ui-button-text">{at('MPT NGY témák')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptngyszerepkor/viewlist"><span class="ui-button-text">{at('MPT NGY szerepkörök')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptngyszakmaianyagtipus/viewlist"><span class="ui-button-text">{at('MPT NGY szakmai anyag típusok')}</span></a></div>
+                <div><a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        href="/admin/mptngyegyetem/viewlist"><span class="ui-button-text">{at('MPT NGY egyetemek')}</span></a></div>
+            {/if}
+        </div>
+    </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">
             <table id="vtszgrid"></table>
@@ -25,10 +70,6 @@
             <div id="arfolyamgridpager"></div>
         </div>
         <div class="egyebadat-grid">
-            <table id="arsavgrid"></table>
-            <div id="arsavgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
             <table id="raktargrid"></table>
             <div id="raktargridpager"></div>
         </div>
@@ -36,15 +77,7 @@
             <table id="irszamgrid"></table>
             <div id="irszamgridpager"></div>
         </div>
-        <div class="egyebadat-grid">
-            <table id="termekcsoportgrid"></table>
-            <div id="termekcsoportgridpager"></div>
-        </div>
         {if ($setup.bankpenztar)}
-            <div class="egyebadat-grid">
-                <table id="jogcimgrid"></table>
-                <div id="jogcimgridpager"></div>
-            </div>
             <div class="egyebadat-grid">
                 <table id="penztargrid"></table>
                 <div id="penztargridpager"></div>
@@ -77,24 +110,8 @@
             <div id="termekcimkekatgridpager"></div>
         </div>
         <div class="egyebadat-grid">
-            <table id="termekvaltozatadattipusgrid"></table>
-            <div id="termekvaltozatadattipusgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="munkakorgrid"></table>
-            <div id="munkakorgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
             <table id="felhasznalogrid"></table>
             <div id="felhasznalogridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="jelenlettipusgrid"></table>
-            <div id="jelenlettipusgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="kapcsolatfelveteltemagrid"></table>
-            <div id="kapcsolatfelveteltemagridpager"></div>
         </div>
         <div class="egyebadat-grid">
             <table id="cskgrid"></table>
@@ -104,32 +121,6 @@
             <table id="korzetszamgrid"></table>
             <div id="korzetszamgridpager"></div>
         </div>
-        {if ($setup.mpt)}
-            <div class="egyebadat-grid">
-                <table id="mptszekciogrid"></table>
-                <div id="mptszekciogridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mpttagozatgrid"></table>
-                <div id="mpttagozatgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mpttagsagformagrid"></table>
-                <div id="mpttagsagformagridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngytemakorgrid"></table>
-                <div id="mptngytemakorgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngyszakmaianyagtipusgrid"></table>
-                <div id="mptngyszakmaianyagtipusgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngyszerepkorgrid"></table>
-                <div id="mptngyszerepkorgridpager"></div>
-            </div>
-        {/if}
         <div class="egyebadat-grid">
             <table id="jogateremgrid"></table>
             <div id="jogateremgridpager"></div>
@@ -143,26 +134,6 @@
             <div id="rendezvenyallapotgridpager"></div>
         </div>
         {if ($setup.mptngy)}
-            <div class="egyebadat-grid">
-                <table id="mptngytemakorgrid"></table>
-                <div id="mptngytemakorgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngytemagrid"></table>
-                <div id="mptngytemagridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngyszerepkorgrid"></table>
-                <div id="mptngyszerepkorgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngyszakmaianyagtipusgrid"></table>
-                <div id="mptngyszakmaianyagtipusgridpager"></div>
-            </div>
-            <div class="egyebadat-grid">
-                <table id="mptngyegyetemgrid"></table>
-                <div id="mptngyegyetemgridpager"></div>
-            </div>
             <div class="egyebadat-grid">
                 <table id="mptngykargrid"></table>
                 <div id="mptngykargridpager"></div>

@@ -6,8 +6,8 @@
         {else}
             <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.azonosito}</a>
         {/if}
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                    class="ui-icon ui-icon-circle-minus"></span></a>
         <div class="matt-hseparator"></div>
     </td>
     <td class="cell">

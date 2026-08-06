@@ -47,6 +47,18 @@ body {
     margin-bottom: 5px;
 }
 
+/* Az "Egyéb adatok" lapon az önálló képernyőt kapott törzsadatok linkjei.
+   A szélesség a jqGrid rácsokéval egyezik, hogy a hasábos elrendezés megmaradjon. */
+.egyebadat-links {
+    width: 320px;
+}
+
+.egyebadat-links a {
+    display: block;
+    text-align: left;
+    margin-bottom: 2px;
+}
+
 .egyebadat-wrapper {
     margin-right: 5px;
     float: left;

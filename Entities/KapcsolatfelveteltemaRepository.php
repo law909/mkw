@@ -9,5 +9,9 @@ class KapcsolatfelveteltemaRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname(Kapcsolatfelveteltema::class);
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint csökkenő', 'order' => ['_xx.nev' => 'DESC']],
+        ]);
     }
 }

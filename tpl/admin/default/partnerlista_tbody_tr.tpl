@@ -6,8 +6,8 @@
             {if (!$_partner.anonym && !$_partner.anonymizalnikell)}
                 <a class="js-anonym" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{at('Anonymizál')}">{at('Anonym')}</a>
             {/if}
-            <span class="jobbra"><a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{at('Töröl')}"><span
-                        class="ui-icon ui-icon-circle-minus"></span></a></span>
+            <a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{at('Töröl')}"><span
+                        class="ui-icon ui-icon-circle-minus"></span></a>
         </div>
         <table class="fullwidth">
             <tbody>

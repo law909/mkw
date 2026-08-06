@@ -8,7 +8,7 @@
             <a class="js-zar" href="#" data-href="/admin/leltarfej/zar" data-leltarfejid="{$_leltarfej.id}">{at('Zárás')}</a>
 
             {if (!$_leltarfej.zarva)}
-            <span class="jobbra"><a class="mattable-dellink" href="#" data-leltarfejid="{$_leltarfej.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+            <a class="mattable-dellink" href="#" data-leltarfejid="{$_leltarfej.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
             {/if}
         </div>
         <div>{$_leltarfej.nev}</div>

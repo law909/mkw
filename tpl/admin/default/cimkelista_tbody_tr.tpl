@@ -5,7 +5,7 @@
             <tbody>
                 <tr>{if ($cimketipus === 'termek')}<td>{if ($_cimke.kepurl)}<a class="toFlyout" href="{$mainurl}{$_cimke.kepurl}" target="_blank"><img src="{$mainurl}{$_cimke.kepurlsmall}"/></a>{/if}</td>{/if}
                     <td><a class="mattable-editlink" href="#" data-cimkeid="{$_cimke.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_cimke.nev}</a></td>
-                    <td><span class="jobbra"><a class="mattable-dellink" href="#" data-cimkeid="{$_cimke.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>
+                    <td><a class="mattable-dellink" href="#" data-cimkeid="{$_cimke.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></td>
                 </tr>
             </tbody>
         </table>

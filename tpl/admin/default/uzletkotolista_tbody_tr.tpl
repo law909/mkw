@@ -1,7 +1,7 @@
 <tr id="mattable-row_{$_uzletkoto.id}">
     <td class="cell">
         <a class="mattable-editlink" href="#" data-uzletkotoid="{$_uzletkoto.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_uzletkoto.nev}</a>
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-uzletkotoid="{$_uzletkoto.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <a class="mattable-dellink" href="#" data-uzletkotoid="{$_uzletkoto.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         {if ($_uzletkoto.fo)}<div>{at('Vezető')}</div>{/if}
         {if ($_uzletkoto.belso)}<div>{at('Belső')}</div>{/if}
         {if ($_uzletkoto.fouzletkotonev)}<div>{at('Vezető üzletkötője')}: {$_uzletkoto.fouzletkotonev}</div>{/if}

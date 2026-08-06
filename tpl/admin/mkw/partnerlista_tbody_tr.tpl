@@ -2,7 +2,7 @@
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_partner.nev}</a>
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         <table>
             <tbody>
                 <tr><td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td></tr>

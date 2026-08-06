@@ -4,8 +4,8 @@
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
         <a class="js-emailrendezvenykezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a>
 
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a></span>
+        <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                    class="ui-icon ui-icon-circle-minus"></span></a>
         <table>
             <tbody>
             <tr>

@@ -1015,6 +1015,35 @@ if ($DBVersion < '0098') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0098');
 }
+
+if ($DBVersion < '0099') {
+    // Az "Egyéb adatok" jqGrid-es gyűjtőképernyő törzsadatai önálló mattable képernyőket kaptak.
+    // 1. szakasz: az egymezős törzsadatok. A setup-flag mögötti képernyők sora minden telepítésbe
+    // bekerül, de csak az érintett ügyfélnél látszik (lathato=1) – utólag DB-ből bekapcsolható.
+    $mpt = \mkw\store::isMPT() ? 1 : 0;
+    $mptngy = \mkw\store::isMPTNGY() ? 1 : 0;
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Termékcsoportok","/admin/termekcsoport/viewlist","/admin/termekcsoport",40,1,251, ""),'
+        . '(7, "Jelenlét típusok","/admin/jelenlettipus/viewlist","/admin/jelenlettipus",40,1,252, ""),'
+        . '(7, "Kapcsolatfelvétel témák","/admin/kapcsolatfelveteltema/viewlist","/admin/kapcsolatfelveteltema",40,1,253, ""),'
+        . '(7, "Termékváltozat adattípusok","/admin/termekvaltozatadattipus/viewlist","/admin/termekvaltozatadattipus",40,1,254, ""),'
+        . '(7, "Munkakörök","/admin/munkakor/viewlist","/admin/munkakor",40,1,255, ""),'
+        . '(7, "Ársávok","/admin/arsav/viewlist","/admin/arsav",40,' . (\mkw\store::isArsavok() ? 1 : 0) . ',256, ""),'
+        . '(7, "Jogcímek","/admin/jogcim/viewlist","/admin/jogcim",40,' . (\mkw\store::isBankpenztar() ? 1 : 0) . ',257, ""),'
+        . '(7, "MPT szekciók","/admin/mptszekcio/viewlist","/admin/mptszekcio",40,' . $mpt . ',258, ""),'
+        . '(7, "MPT tagozatok","/admin/mpttagozat/viewlist","/admin/mpttagozat",40,' . $mpt . ',259, ""),'
+        . '(7, "MPT tagság formák","/admin/mpttagsagforma/viewlist","/admin/mpttagsagforma",40,' . $mpt . ',260, ""),'
+        . '(7, "MPT NGY témakörök","/admin/mptngytemakor/viewlist","/admin/mptngytemakor",40,' . $mptngy . ',261, ""),'
+        . '(7, "MPT NGY témák","/admin/mptngytema/viewlist","/admin/mptngytema",40,' . $mptngy . ',262, ""),'
+        . '(7, "MPT NGY szerepkörök","/admin/mptngyszerepkor/viewlist","/admin/mptngyszerepkor",40,' . $mptngy . ',263, ""),'
+        . '(7, "MPT NGY szakmai anyag típusok","/admin/mptngyszakmaianyagtipus/viewlist","/admin/mptngyszakmaianyagtipus",40,' . $mptngy . ',264, ""),'
+        . '(7, "MPT NGY egyetemek","/admin/mptngyegyetem/viewlist","/admin/mptngyegyetem",40,' . $mptngy . ',265, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0099');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

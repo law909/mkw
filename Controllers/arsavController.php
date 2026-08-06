@@ -3,48 +3,87 @@
 namespace Controllers;
 
 use Entities\Arsav;
-use mkw\store;
 
-class arsavController extends \mkwhelpers\JQGridController
+class arsavController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
         $this->setEntityName(Arsav::class);
+        $this->setKarbFormTplName('arsavkarbform.tpl');
+        $this->setKarbTplName('arsavkarb.tpl');
+        $this->setListBodyRowTplName('arsavlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    /**
-     * @param \Entities\Arsav $sor
-     *
-     * @return mixed
-     */
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        return [$sor->getNev()];
+        if (!$t) {
+            $t = new Arsav();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        return $x;
     }
 
     /**
      * @param \Entities\Arsav $obj
      *
-     * @return mixed
+     * @return \Entities\Arsav
      */
     protected function setFields($obj)
     {
-        $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        return $obj;
+        return $this->setEntityFieldsFromRequest($obj);
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('arsavlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('arsavlista.tpl');
+
+        $view->setVar('pagetitle', t('Ársávok'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Ársáv'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminarsavsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null)
@@ -52,11 +91,7 @@ class arsavController extends \mkwhelpers\JQGridController
         $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid),
-            ];
+            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
     }
@@ -71,5 +106,4 @@ class arsavController extends \mkwhelpers\JQGridController
         $ret .= '</select>';
         echo $ret;
     }
-
 }
