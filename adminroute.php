@@ -4,7 +4,6 @@ $router->map('GET', '/admin/cron', 'cronController#run', 'admincron');
 
 $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
-$router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'adminegyebtorzsview');
 $router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
 $router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
@@ -323,7 +322,12 @@ if (\mkw\store::isMPTNGY()) {
     }
 
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/viewlist', 'mptngyszakmaianyagtipusController#viewlist', 'adminmptngyszakmaianyagtipusviewlist');
-    $router->map('GET', '/admin/mptngyszakmaianyagtipus/getlistbody', 'mptngyszakmaianyagtipusController#getlistbody', 'adminmptngyszakmaianyagtipusgetlistbody');
+    $router->map(
+        'GET',
+        '/admin/mptngyszakmaianyagtipus/getlistbody',
+        'mptngyszakmaianyagtipusController#getlistbody',
+        'adminmptngyszakmaianyagtipusgetlistbody'
+    );
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/getkarb', 'mptngyszakmaianyagtipusController#getkarb', 'adminmptngyszakmaianyagtipusgetkarb');
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/viewkarb', 'mptngyszakmaianyagtipusController#viewkarb', 'adminmptngyszakmaianyagtipusviewkarb');
     $router->map('GET', '/admin/mptngyszakmaianyagtipus/htmllist', 'mptngyszakmaianyagtipusController#htmllist', 'adminmptngyszakmaianyagtipushtmllist');
