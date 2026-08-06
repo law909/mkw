@@ -1,15 +1,3 @@
-function termekAutocompleteRenderer(ul, item) {
-    if (item.nemlathato) {
-        return $('<li>')
-            .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-            .appendTo(ul);
-    } else {
-        return $('<li>')
-            .append('<a>' + item.label + '</a>')
-            .appendTo(ul);
-    }
-}
-
 function termekAutocompleteConfig() {
     return {
         minLength: 4,
@@ -30,22 +18,11 @@ function termekAutocompleteConfig() {
 
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
-    const mattkarbconfig = {
-        container: '#mattkarb',
-        viewUrl: '/admin/szallitasimod/getkarb',
-        newWindowUrl: '/admin/szallitasimod/viewkarb',
-        saveUrl: '/admin/szallitasimod/save',
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        },
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'szallitasimod',
         beforeShow: function () {
             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                .autocompleteRenderer(termekAutocompleteRenderer);
             $('#AltalanosTab').on('click', '.js-termekclear', function (e) {
                 e.preventDefault();
                 $('.js-termekselect').val(null);
@@ -198,7 +175,7 @@ $(document).ready(function () {
                 });
             $('.js-fizmodnewbutton,.js-fizmoddelbutton').button();
         }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -211,11 +188,11 @@ $(document).ready(function () {
             karb: mattkarbconfig
         });
         $('#maincheckbox').change(function () {
-            $('.egyedcheckbox').attr('checked', $(this).attr('checked'));
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, mattkarbconfig, {independent: true}));
+            $('#mattkarb').mattkarb(mattkarbconfig);
         }
     }
 });

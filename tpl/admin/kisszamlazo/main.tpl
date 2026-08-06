@@ -1,7 +1,7 @@
 {extends "../base.tpl"}
 
 {block "inhead"}
-    <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
+    {include "../partials/jquery.form.tpl"}
     <script type="text/javascript" src="/js/admin/kisszamlazo/appinit.js?v={$smarty.now}"></script>
 {/block}
 

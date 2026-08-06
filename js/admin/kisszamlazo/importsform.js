@@ -1,11 +1,6 @@
 $(document).ready(function () {
-    let dialogcenter = $('#dialogcenter');
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        viewUrl: '/admin/getkarb',
-        newWindowUrl: '/admin/viewkarb',
-        saveUrl: '/admin/save',
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
 
             $('.js-termekbevetimport').on('click', function (e) {
@@ -32,13 +27,5 @@ $(document).ready(function () {
                 });
             }).button();
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    });
+    }));
 });

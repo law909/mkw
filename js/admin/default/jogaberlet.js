@@ -1,13 +1,7 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo( ul );
     }
 
     function partnerAutocompleteConfig() {
@@ -15,7 +9,7 @@ $(document).ready(function(){
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylatfej/getpartnerlist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var partner = ui.item,
                     pi = $('input[name="partner"]');
                 if (partner) {
@@ -27,25 +21,12 @@ $(document).ready(function(){
         };
     }
 
-    function termekAutocompleteRenderer(ul, item) {
-        if (item.nemlathato) {
-            return $('<li>')
-                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                .appendTo( ul );
-        }
-        else {
-            return $('<li>')
-                .append('<a>' + item.label + '</a>')
-                .appendTo( ul );
-        }
-    }
-
     function termekAutocompleteConfig() {
         return {
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var termek = ui.item;
                 if (termek) {
                     var $this = $(this),
@@ -66,7 +47,7 @@ $(document).ready(function(){
                 partner: partner,
                 termek: $('select[name="termek"] option:selected').val()
             },
-            success: function(data) {
+            success: function (data) {
                 var inp = $('input[name="bruttoar"]'),
                     adat = JSON.parse(data);
                 inp.val(adat.bruttofull);
@@ -75,40 +56,29 @@ $(document).ready(function(){
         });
     }
 
-    var mattkarbconfig={
-			container:'#mattkarb',
-			viewUrl:'/admin/jogaberlet/getkarb',
-			newWindowUrl:'/admin/jogaberlet/viewkarb',
-			saveUrl:'/admin/jogaberlet/save',
-            beforeShow: function() {
-                $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                    .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
-                mkwcomp.datumEdit.init('#VasarlasDatumEdit');
-                mkwcomp.datumEdit.init('#LejaratDatumEdit');
-            $('#mattkarb-form').on('change', '.js-termekedit', function(e) {
-                    setTermekAr($(this).data('id'));
-                })
-            },
-			onSubmit:function() {
-				$('#messagecenter')
-					.html('A mentés sikerült.')
-					.hide()
-					.addClass('matt-messagecenter ui-widget ui-state-highlight')
-					.one('click',messagecenterclick)
-					.slideToggle('slow');
-			}
-	}
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'jogaberlet',
+        beforeShow: function () {
+            $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
+                .autocompleteRenderer(partnerAutocompleteRenderer);
+            mkwcomp.datumEdit.init('#VasarlasDatumEdit');
+            mkwcomp.datumEdit.init('#LejaratDatumEdit');
+            $('#mattkarb-form').on('change', '.js-termekedit', function (e) {
+                setTermekAr($(this).data('id'));
+            })
+        }
+    });
 
-	if ($.fn.mattable) {
-	    mkwcomp.datumEdit.init('#datumtolfilter');
+    if ($.fn.mattable) {
+        mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
         mkwcomp.datumEdit.init('#lejarattolfilter');
         mkwcomp.datumEdit.init('#lejaratigfilter');
         mkwcomp.datumEdit.init('#utolsohasznalatfilter');
-		$('#mattable-select').mattable({
-			filter:{
-				fields:[
-				    '#vevonevfilter',
+        $('#mattable-select').mattable({
+            filter: {
+                fields: [
+                    '#vevonevfilter',
                     '#TermekEdit',
                     '#datumtolfilter',
                     '#datumigfilter',
@@ -118,15 +88,15 @@ $(document).ready(function(){
                     '#nincsfizetvefilter',
                     '#utolsohasznalatfilter'
                 ]
-			},
-			tablebody:{
-				url: '/admin/jogaberlet/getlistbody'
-			},
-			karb: mattkarbconfig
-		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
-		});
+            },
+            tablebody: {
+                url: '/admin/jogaberlet/getlistbody'
+            },
+            karb: mattkarbconfig
+        });
+        $('#maincheckbox').change(function () {
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
+        });
         $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
             function doit(succ) {
                 var id = $this.attr('data-id'),
@@ -154,10 +124,9 @@ $(document).ready(function(){
             doit();
         });
 
-	}
-	else {
-		if ($.fn.mattkarb) {
-			$('#mattkarb').mattkarb($.extend({},mattkarbconfig,{independent:true}));
-		}
-	}
+    } else {
+        if ($.fn.mattkarb) {
+            $('#mattkarb').mattkarb(mattkarbconfig);
+        }
+    }
 });

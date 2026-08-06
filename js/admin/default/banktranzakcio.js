@@ -1,11 +1,4 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
-    }
 
     function partnerAutocompleteConfig() {
         return {
@@ -23,24 +16,13 @@ $(document).ready(function () {
         };
     }
 
-    var mattkarbconfig = {
-        container: '#mattkarb',
-        viewUrl: '/admin/banktranzakcio/getkarb',
-        newWindowUrl: '/admin/banktranzakcio/viewkarb',
-        saveUrl: '/admin/banktranzakcio/save',
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        },
+    var mattkarbconfig = new MattkarbConfig({
+        entityName: 'banktranzakcio',
         beforeShow: function () {
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
         }
-    }
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -78,11 +60,11 @@ $(document).ready(function () {
         });
 
         $('#maincheckbox').change(function () {
-            $('.egyedcheckbox').attr('checked', $(this).attr('checked'));
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, mattkarbconfig, {independent: true}));
+            $('#mattkarb').mattkarb(mattkarbconfig);
         }
     }
 });

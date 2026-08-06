@@ -50,18 +50,6 @@ function varosAutocomplete(irszam, varos) {
     });
 }
 
-function termekAutocompleteRenderer(ul, item) {
-    if (item.nemlathato) {
-        return $('<li>')
-            .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-            .appendTo(ul);
-    } else {
-        return $('<li>')
-            .append('<a>' + item.label + '</a>')
-            .appendTo(ul);
-    }
-}
-
 function termekAutocompleteConfig() {
     return {
         minLength: 4,
@@ -80,12 +68,9 @@ function termekAutocompleteConfig() {
 
 
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
-    var partner = {
-        container: '#mattkarb',
-        viewUrl: '/admin/partner/getkarb',
-        newWindowUrl: '/admin/partner/viewkarb',
-        saveUrl: '/admin/partner/save',
+    const dialogcenter = $('#dialogcenter');
+    const partner = new MattkarbConfig({
+        entityName: 'partner',
         beforeShow: function () {
             var szuletesiidoedit = $('#SzuletesiidoEdit'),
                 mpt_tagsagdateedit = $('#MPTTagsagdateEdit'),
@@ -283,7 +268,7 @@ $(document).ready(function () {
                         tbody.append(data);
                         $('.js-termekkedvezmenynewbutton,.js-termekkedvezmenydelbutton').button();
                         $('.js-termekkedvezmenytermekselect').autocomplete(termekAutocompleteConfig())
-                            .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                            .autocompleteRenderer(termekAutocompleteRenderer);
                         $this.remove();
                     }
                 });
@@ -323,7 +308,7 @@ $(document).ready(function () {
                 });
             $('.js-termekkedvezmenynewbutton, .js-termekkedvezmenydelbutton').button();
             $('.js-termekkedvezmenytermekselect').autocomplete(termekAutocompleteConfig())
-                .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                .autocompleteRenderer(termekAutocompleteRenderer);
 
             mptfolyoszamlatab.on('click', '.js-eloirasbutton', function (e) {
                 e.preventDefault();
@@ -454,16 +439,7 @@ $(document).ready(function () {
                 return false;
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -765,7 +741,7 @@ $(document).ready(function () {
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, partner, {independent: true}));
+            $('#mattkarb').mattkarb(partner);
         }
     }
 });

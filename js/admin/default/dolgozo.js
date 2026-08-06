@@ -1,10 +1,7 @@
 $(document).ready(function () {
     let dialogcenter = $('#dialogcenter');
-    let dolgozo = {
-        container: '#mattkarb',
-        viewUrl: '/admin/dolgozo/getkarb',
-        newWindowUrl: '/admin/dolgozo/viewkarb',
-        saveUrl: '/admin/dolgozo/save',
+    let dolgozo = new MattkarbConfig({
+        entityName: 'dolgozo',
         beforeShow: function () {
             let szulidoedit = $('#SzulidoEdit');
             szulidoedit.datepicker($.datepicker.regional['hu']);
@@ -15,15 +12,7 @@ $(document).ready(function () {
             mkvkedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             mkvkedit.datepicker('setDate', mkvkedit.attr('data-datum'));
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('.js-maincheckbox').change(function () {
@@ -95,7 +84,7 @@ $(document).ready(function () {
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, dolgozo, {independent: true}));
+            $('#mattkarb').mattkarb(dolgozo);
         }
     }
 });

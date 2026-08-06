@@ -1,13 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo( ul );
     }
 
     function partnerAutocompleteConfig() {
@@ -15,7 +9,7 @@ $(document).ready(function() {
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylatfej/getpartnerlist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var partner = ui.item,
                     pi = $('input[name="partner"]');
                 if (partner) {
@@ -27,25 +21,12 @@ $(document).ready(function() {
         };
     }
 
-    function termekAutocompleteRenderer(ul, item) {
-        if (item.nemlathato) {
-            return $('<li>')
-                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                .appendTo( ul );
-        }
-        else {
-            return $('<li>')
-                .append('<a>' + item.label + '</a>')
-                .appendTo( ul );
-        }
-    }
-
     function termekAutocompleteConfig() {
         return {
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var termek = ui.item;
                 if (termek) {
                     var $this = $(this),
@@ -57,29 +38,16 @@ $(document).ready(function() {
         };
     }
 
-    var termekertekeles = {
-        container: '#mattkarb',
-        viewUrl: '/admin/termekertekeles/getkarb',
-        newWindowUrl: '/admin/termekertekeles/viewkarb',
-        saveUrl: '/admin/termekertekeles/save',
-        beforeShow: function() {
+    const termekertekeles = new MattkarbConfig({
+        entityName: 'termekertekeles',
+        beforeShow: function () {
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
 
             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+                .autocompleteRenderer(termekAutocompleteRenderer);
         },
-        beforeHide: function() {
-        },
-        onSubmit: function() {
-            $('#messagecenter')
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
-        }
-    }
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -91,13 +59,12 @@ $(document).ready(function() {
             },
             karb: termekertekeles
         });
-        $('.js-maincheckbox').change(function() {
+        $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, termekertekeles, {independent: true}));
+            $('#mattkarb').mattkarb(termekertekeles);
         }
     }
 });

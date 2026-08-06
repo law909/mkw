@@ -9,13 +9,12 @@ $(document).ready(function () {
         }
     };
 
-    $('#mattkarb').mattkarb({
-        independent: true,
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
         }
-    });
+    }));
 
     // Az importálás AJAX-ból megy, hogy a böngésző URL-je ne változzon meg (és az oldal
     // frissítése se indítsa újra a letöltést). A letöltés lassú – a NAV-tól számlánként

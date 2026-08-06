@@ -652,12 +652,6 @@ let bizonylathelper = function ($) {
         });
     }
 
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
-    }
-
     function partnerAutocompleteConfig() {
         return {
             minLength: 4,
@@ -673,18 +667,6 @@ let bizonylathelper = function ($) {
                 }
             }
         };
-    }
-
-    function termekAutocompleteRenderer(ul, item) {
-        if (item.nemlathato) {
-            return $('<li>')
-                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                .appendTo(ul);
-        } else {
-            return $('<li>')
-                .append('<a>' + item.label + '</a>')
-                .appendTo(ul);
-        }
     }
 
     function termekAutocompleteConfig() {
@@ -965,11 +947,8 @@ let bizonylathelper = function ($) {
     }
 
     function getMattKarbConfig(bizonylattipus) {
-        return {
-            container: '#mattkarb',
-            viewUrl: '/admin/' + bizonylattipus + 'fej/getkarb',
-            newWindowUrl: '/admin/' + bizonylattipus + 'fej/viewkarb',
-            saveUrl: '/admin/' + bizonylattipus + 'fej/save',
+        return new MattkarbConfig({
+            entityName: bizonylattipus,
             beforeShow: function () {
                 let keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
@@ -1083,7 +1062,7 @@ let bizonylathelper = function ($) {
                 });
 
                 $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                    .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                    .autocompleteRenderer(partnerAutocompleteRenderer);
 
                 irszamAutocomplete('input[name="partnerirszam"]', 'input[name="partnervaros"]');
                 varosAutocomplete('input[name="partnerirszam"]', 'input[name="partnervaros"]');
@@ -1188,7 +1167,7 @@ let bizonylathelper = function ($) {
                                 $('.js-bizonylatosszesito').before(data);
                                 $('.js-quicktetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(quicktermekAutocompleteConfig())
-                                    .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                                    .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
                             }
                         });
@@ -1212,7 +1191,7 @@ let bizonylathelper = function ($) {
                                 $('.js-bizonylatosszesito').before(data);
                                 $('.js-tetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                                    .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                                    .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
                             }
                         });
@@ -1413,7 +1392,7 @@ let bizonylathelper = function ($) {
                     });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                    .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                    .autocompleteRenderer(termekAutocompleteRenderer);
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email').button();
 
@@ -1449,7 +1428,7 @@ let bizonylathelper = function ($) {
                     });
                 }
 
-                if (!$.browser.mobile && $.fn.flyout) {
+                if (!window.mkwIsMobile && $.fn.flyout) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -1551,10 +1530,11 @@ let bizonylathelper = function ($) {
                 afaEllenorzesAtlepes = false;
                 return true;
             }
-        };
+        });
     }
 
     function createMattable(bizonylattipus) {
+        const entityName = bizonylattipus + 'fej';
         if ($.fn.mattable) {
             let dialogcenter = $('#dialogcenter'),
                 datumtolfilter = $('#datumtolfilter'),
@@ -1668,7 +1648,7 @@ let bizonylathelper = function ($) {
                         $('.js-sumcol').html(data.sumhtml);
                     }
                 },
-                karb: getMattKarbConfig(bizonylattipus)
+                karb: getMattKarbConfig(entityName),
             });
             $('.mattable-batchbtn').on('click', function (e) {
                 let cbs,
@@ -2491,7 +2471,7 @@ let bizonylathelper = function ($) {
             });
         } else {
             if ($.fn.mattkarb) {
-                $('#mattkarb').mattkarb($.extend({}, getMattKarbConfig(bizonylattipus), {independent: true}));
+                $('#mattkarb').mattkarb(getMattKarbConfig(entityName));
             }
         }
 

@@ -1,15 +1,13 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
             $('.js-refresh')
-                .on('click', function() {
+                .on('click', function () {
 
                     $.ajax({
                         url: '/admin/teljesitmenyjelentes/refresh',
@@ -18,7 +16,7 @@ $(document).ready(function() {
                             tol: mkwcomp.datumEdit.getDate('#TolEdit'),
                             ig: mkwcomp.datumEdit.getDate('#IgEdit')
                         },
-                        success: function(d) {
+                        success: function (d) {
                             $('#eredmeny').html(d);
                         }
                     })
@@ -26,5 +24,5 @@ $(document).ready(function() {
                 .button();
 
         }
-    });
+    }));
 });

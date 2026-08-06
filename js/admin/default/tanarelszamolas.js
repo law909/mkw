@@ -1,16 +1,11 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent:true,
-        viewUrl:'/admin/getkarb',
-        newWindowUrl:'/admin/viewkarb',
-        saveUrl:'/admin/save',
-        beforeShow:function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
             $('.js-refresh')
-                .on('click', function() {
+                .on('click', function () {
 
                     $.ajax({
                         url: '/admin/tanarelszamolas/refresh',
@@ -19,14 +14,14 @@ $(document).ready(function() {
                             tol: $('input[name="tol"]').val(),
                             ig: $('input[name="ig"]').val(),
                         },
-                        success: function(d) {
+                        success: function (d) {
                             $('#eredmeny').html(d);
                         }
                     })
                 })
                 .button();
 
-            $('.js-exportbutton').on('click', function(e) {
+            $('.js-exportbutton').on('click', function (e) {
                 e.preventDefault();
 
                 $ff = $('#b');
@@ -34,7 +29,7 @@ $(document).ready(function() {
                 $ff.submit();
             }).button();
 
-            $('.js-print').on('click', function(e) {
+            $('.js-print').on('click', function (e) {
                 var fak, fafilter, $ff, partnercimkefilter;
                 e.preventDefault();
 
@@ -57,18 +52,10 @@ $(document).ready(function() {
                 page: '.js-cimkefilterpage',
                 closeUp: '.js-cimkefiltercloseupbutton'
             });
-            $('.js-cimkefilter').on('click', function(e) {
+            $('.js-cimkefilter').on('click', function (e) {
                 e.preventDefault();
                 $(this).toggleClass('ui-state-hover');
             });
         },
-        onSubmit:function() {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click',messagecenterclick)
-                .slideToggle('slow');
-        }
-    });
+    }));
 });

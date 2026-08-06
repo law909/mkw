@@ -4,12 +4,6 @@ $(document).ready(function () {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
-    }
-
     function partnerAutocompleteConfig() {
         return {
             minLength: 4,
@@ -64,11 +58,8 @@ $(document).ready(function () {
                 onStyle: function () {
                 }
             },
-            karb: {
-                container: '#mattkarb',
-                viewUrl: '/admin/bankbizonylatfej/getkarb',
-                newWindowUrl: '/admin/bankbizonylatfej/viewkarb',
-                saveUrl: '/admin/bankbizonylatfej/save',
+            karb: new MattkarbConfig({
+                entityName: 'bankbizonylatfej',
                 beforeShow: function () {
                     var dialogcenter = $('#dialogcenter');
                     mkwcomp.datumEdit.init('#KeltEdit');
@@ -84,7 +75,7 @@ $(document).ready(function () {
                     });
 
                     $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                        .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                        .autocompleteRenderer(partnerAutocompleteRenderer);
 
                     $('#AltalanosTab')
                         .on('change', '.js-osszegedit', function (e) {
@@ -110,7 +101,7 @@ $(document).ready(function () {
                                     mkwcomp.datumEdit.init('#DatumEdit' + d.id);
 
                                     $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                                        .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                                        .autocompleteRenderer(partnerAutocompleteRenderer);
 
                                     $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                                     $this.remove();
@@ -221,15 +212,7 @@ $(document).ready(function () {
                 beforeHide: function () {
                     $('.mattable-tablerefresh').trigger('click');
                 },
-                onSubmit: function () {
-                    $('#messagecenter')
-                        .html('A mentés sikerült.')
-                        .hide()
-                        .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                        .one('click', messagecenterclick)
-                        .slideToggle('slow');
-                }
-            }
+            })
         });
 
         $('#maincheckbox').change(function () {

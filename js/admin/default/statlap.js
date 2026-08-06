@@ -1,11 +1,8 @@
 $(document).ready(function () {
-    var statlap = {
-        container: '#mattkarb',
-        viewUrl: '/admin/statlap/getkarb',
-        newWindowUrl: '/admin/statlap/viewkarb',
-        saveUrl: '/admin/statlap/save',
+    const statlap = new MattkarbConfig({
+        entityName: 'statlap',
         beforeShow: function () {
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('.js-ckeditor').each(function () {
                     $(this).ckeditor();
@@ -13,7 +10,7 @@ $(document).ready(function () {
             }
         },
         beforeHide: function () {
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 let editor;
                 $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
@@ -23,15 +20,7 @@ $(document).ready(function () {
                 });
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -49,7 +38,7 @@ $(document).ready(function () {
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, statlap, {independent: true}));
+            $('#mattkarb').mattkarb(statlap);
         }
     }
 });

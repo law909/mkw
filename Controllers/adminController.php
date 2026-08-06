@@ -405,15 +405,29 @@ class adminController extends mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
+    /**
+     * A jQuery UI téma váltása. A választott téma a dolgozóhoz mentődik, de a felület
+     * a session `loggedinuser` tömbjéből olvassa (generalDataLoader), ezért ott is
+     * frissíteni kell – különben a váltás csak a következő belépéskor látszana.
+     *
+     * A session_namespace `__get`-je tömbnél MÁSOLATOT ad vissza, így a
+     * `…->loggedinuser['uitheme'] = $theme` alakú írás némán elveszne: ki kell olvasni,
+     * módosítani, majd egészben visszaírni.
+     */
     public function setUITheme()
     {
-        $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find(\mkw\store::getAdminSession()->loggedinuser['id']);
+        $lu = \mkw\store::getAdminSession()->loggedinuser;
+        if (!is_array($lu) || !array_key_exists('id', $lu)) {
+            return;
+        }
+        $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find($lu['id']);
         if ($dolgozo) {
             $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
             $dolgozo->setUitheme($theme);
             $this->getEm()->persist($dolgozo);
             $this->getEm()->flush();
-            \mkw\store::getAdminSession()->loggedinuser['uitheme'] = $theme;
+            $lu['uitheme'] = $theme;
+            \mkw\store::getAdminSession()->loggedinuser = $lu;
         }
     }
 

@@ -1,13 +1,11 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             mkwcomp.datumEdit.init('#DatumEdit');
 
-            $('.js-okbutton').on('click', function(e) {
+            $('.js-okbutton').on('click', function (e) {
                 var datumedit = $('#DatumEdit'),
                     datum = datumedit.datepicker('getDate');
                 e.preventDefault();
@@ -23,5 +21,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

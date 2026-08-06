@@ -12,17 +12,14 @@ $(document).ready(function () {
         });
     };
 
-    var dialogcenter = $('#dialogcenter');
+    const dialogcenter = $('#dialogcenter');
 
-    var popup = {
-        container: '#mattkarb',
-        viewUrl: '/admin/popup/getkarb',
-        newWindowUrl: '/admin/popup/viewkarb',
-        saveUrl: '/admin/popup/save',
+    const popup = new MattkarbConfig({
+        entityName: 'popup',
         beforeShow: function () {
             var alttab = $('#AltalanosTab');
             $('#FoKepDelButton,#FoKepBrowseButton').button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 $('.js-toflyout').flyout();
             }
 
@@ -57,36 +54,27 @@ $(document).ready(function () {
                     finder.popup();
                 });
 
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#bodytextEdit').ckeditor();
             }
         },
         beforeHide: function () {
             var editor;
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 editor = $('#bodytextEdit').ckeditorGet();
                 if (editor) {
                     editor.destroy();
                 }
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             name: 'popup',
             onGetTBody: function () {
-                if (!$.browser.mobile) {
+                if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
                 $('.js-regenerateid, .js-showpopupteszt').button();
@@ -94,7 +82,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/popup/getlistbody',
                 onStyle: function () {
-                    if (!$.browser.mobile) {
+                    if (!window.mkwIsMobile) {
                         $('.js-toflyout').flyout();
                     }
                     $('.js-regenerateid, .js-showpopupteszt').button();
@@ -167,7 +155,7 @@ $(document).ready(function () {
 
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, popup, {independent: true}));
+            $('#mattkarb').mattkarb(popup);
         }
     }
 });

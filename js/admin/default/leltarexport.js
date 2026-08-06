@@ -1,16 +1,11 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent:true,
-        viewUrl:'/admin/getkarb',
-        newWindowUrl:'/admin/viewkarb',
-        saveUrl:'/admin/save',
-        beforeShow:function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
             mkwcomp.termekfaFilter.init('#termekfa');
 
             $('.js-exportbutton')
-                .on('click', function(e) {
+                .on('click', function (e) {
                     var $ff, fafi, inp;
                     e.preventDefault();
                     $ff = $('#leltariv');
@@ -19,8 +14,7 @@ $(document).ready(function() {
                     fafi = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fafi.length > 0) {
                         inp.val(fafi);
-                    }
-                    else {
+                    } else {
                         inp.val('');
                     }
 
@@ -29,5 +23,5 @@ $(document).ready(function() {
                 })
                 .button();
         }
-    });
+    }));
 });

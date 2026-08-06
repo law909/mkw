@@ -6,7 +6,7 @@ $(document).ready(function () {
     function calcOsszesen() {
         var osszeg = 0;
 
-        $('input[name^="tetelosszeg_"]').each(function() {
+        $('input[name^="tetelosszeg_"]').each(function () {
             var ertek = $(this).val() * 1;
             if (!isNaN(ertek)) {
                 osszeg = osszeg + ertek;
@@ -25,7 +25,7 @@ $(document).ready(function () {
                 datum: kelt,
                 penztar: penztar
             },
-            success: function(data) {
+            success: function (data) {
                 var d = JSON.parse(data);
                 if (d.response == 'ok') {
                     retval = true;
@@ -51,7 +51,7 @@ $(document).ready(function () {
                 height: 140,
                 modal: true,
                 buttons: {
-                    'OK': function() {
+                    'OK': function () {
                         $(this).dialog('close');
                     }
                 }
@@ -60,12 +60,9 @@ $(document).ready(function () {
         return ret;
     }
 
-    var penztarbizonylat = {
-        container: '#mattkarb',
-        viewUrl: '/admin/penztarbizonylatfej/getkarb',
-        newWindowUrl: '/admin/penztarbizonylatfej/viewkarb',
-        saveUrl: '/admin/penztarbizonylatfej/save',
-        beforeSerialize: function(form, opt) {
+    const penztarbizonylat = new MattkarbConfig({
+        entityName: 'penztarbizonylatfej',
+        beforeSerialize: function (form, opt) {
             if (!checkPenztar()) {
                 return false;
             }
@@ -77,15 +74,15 @@ $(document).ready(function () {
 
             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
 
-            $('input[name^="teteldatum_"]').each(function() {
+            $('input[name^="teteldatum_"]').each(function () {
                 mkwcomp.datumEdit.init($(this));
             });
 
             $('#AltalanosTab')
-                .on('change', 'input[name^="tetelosszeg_"]', function(e) {
+                .on('change', 'input[name^="tetelosszeg_"]', function (e) {
                     calcOsszesen();
                 })
-                .on('click', '.js-tetelnewbutton', function(e) {
+                .on('click', '.js-tetelnewbutton', function (e) {
                     var $this = $(this);
                     e.preventDefault();
                     $.ajax({
@@ -94,7 +91,7 @@ $(document).ready(function () {
                             type: 'penztar'
                         },
                         type: 'GET',
-                        success: function(data) {
+                        success: function (data) {
                             var d = JSON.parse(data);
 
                             $('.js-bizonylatosszesito').before(d.html);
@@ -106,7 +103,7 @@ $(document).ready(function () {
                         }
                     });
                 })
-                .on('click', '.js-teteldelbutton', function(e) {
+                .on('click', '.js-teteldelbutton', function (e) {
                     e.preventDefault();
                     var removegomb = $(this),
                         removeid = removegomb.attr('data-id');
@@ -116,24 +113,23 @@ $(document).ready(function () {
                             height: 140,
                             modal: true,
                             buttons: {
-                                'Igen': function() {
+                                'Igen': function () {
                                     $('#teteltable_' + removeid).remove();
                                     calcOsszesen();
                                     $(this).dialog('close');
                                 },
-                                'Nem': function() {
+                                'Nem': function () {
                                     $(this).dialog('close');
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
-                                'Igen': function() {
+                                'Igen': function () {
                                     $.ajax({
                                         url: '/admin/penztarbizonylattetel/save',
                                         type: 'POST',
@@ -141,21 +137,21 @@ $(document).ready(function () {
                                             id: removeid,
                                             oper: 'del'
                                         },
-                                        success: function(data) {
+                                        success: function (data) {
                                             $('#teteltable_' + data).remove();
                                             calcOsszesen();
                                         }
                                     });
                                     $(this).dialog('close');
                                 },
-                                'Nem': function() {
+                                'Nem': function () {
                                     $(this).dialog('close');
                                 }
                             }
                         });
                     }
                 })
-                .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
+                .on('click', '.js-hivatkozottbizonylatbutton', function (e) {
                     e.preventDefault();
                     var $this = $(this),
                         tid = $this.data('id'),
@@ -173,7 +169,7 @@ $(document).ready(function () {
                             partner: $('select[name="partner"]').val(),
                             irany: irany
                         },
-                        success: function(d) {
+                        success: function (d) {
                             var data = JSON.parse(d);
                             dialogcenter.html(data.html);
                             dialogcenter.dialog({
@@ -181,7 +177,7 @@ $(document).ready(function () {
                                 height: 340,
                                 modal: true,
                                 buttons: {
-                                    'OK': function() {
+                                    'OK': function () {
                                         var sor = $('tr.js-selected', dialogcenter);
                                         $('input[name="tetelhivatkozottbizonylat_' + tid + '"]').val(sor.data('bizszam'));
                                         $('input[name="tetelhivatkozottdatum_' + tid + '"]').val(sor.data('datum'));
@@ -189,7 +185,7 @@ $(document).ready(function () {
                                         calcOsszesen();
                                         $(this).dialog('close');
                                     },
-                                    'Bezár': function() {
+                                    'Bezár': function () {
                                         $(this).dialog('close');
                                     }
                                 }
@@ -197,7 +193,7 @@ $(document).ready(function () {
                         }
                     });
                 })
-                .on('change', '#PenztarEdit', function(e) {
+                .on('change', '#PenztarEdit', function (e) {
                     var v = $('#PenztarEdit option:selected').data('valutanem');
                     $('#ValutanemEdit').val(v);
                     $('input[name="valutanem"]').val(v);
@@ -205,23 +201,13 @@ $(document).ready(function () {
 
             calcOsszesen();
 
-            dialogcenter.on('click', 'tr', function(e) {
+            dialogcenter.on('click', 'tr', function (e) {
                 e.preventDefault();
                 $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
                 $(this).addClass('ui-state-highlight js-selected');
             })
         },
-        beforeHide: function () {
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -241,7 +227,7 @@ $(document).ready(function () {
             },
             tablebody: {
                 url: '/admin/penztarbizonylatfej/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                     // a nyomtatás link href-je szerver oldalon készen jön, itt csak a
                     // jQuery UI gomb-megjelenést kapja meg
                     $('.js-rontbizonylat,.js-printbizonylat').button();
@@ -262,15 +248,15 @@ $(document).ready(function () {
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-        $('#mattable-body').on('click', '.js-rontbizonylat', function(e) {
+        $('#mattable-body').on('click', '.js-rontbizonylat', function (e) {
             e.preventDefault();
             $.ajax({
-                url:'/admin/penztarbizonylatfej/ront',
+                url: '/admin/penztarbizonylatfej/ront',
                 type: 'POST',
                 data: {
                     id: $(this).data('egyedid')
                 },
-                success:function() {
+                success: function () {
                     $('.mattable-tablerefresh').click();
                 }
             });
@@ -278,10 +264,9 @@ $(document).ready(function () {
 
         mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, penztarbizonylat, {independent: true}));
+            $('#mattkarb').mattkarb(penztarbizonylat);
         }
     }
 });

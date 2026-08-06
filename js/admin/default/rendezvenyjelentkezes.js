@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
@@ -16,23 +16,19 @@ $(document).ready(function() {
         $('input[name="partneremail"]').val(d.email);
     }
 
-    var rendezvenyjel = {
-        container: '#mattkarb',
-        viewUrl: '/admin/rendezvenyjelentkezes/getkarb',
-        newWindowUrl: '/admin/rendezvenyjelentkezes/viewkarb',
-        saveUrl: '/admin/rendezvenyjelentkezes/save',
-        beforeShow: function() {
+    const rendezvenyjel = new MattkarbConfig({
+        entityName: 'rendezvenyjelentkezes',
+        beforeShow: function () {
             var datumedit = $('#DatumEdit');
             datumedit.datepicker($.datepicker.regional['hu']);
             datumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             datumedit.datepicker('setDate', datumedit.attr('data-datum'));
-            $('#EmailEdit').change(function() {
+            $('#EmailEdit').change(function () {
                 var partner,
                     ee = $(this);
                 if (isPartnerAutocomplete()) {
                     partner = $('.js-partnerid').val();
-                }
-                else {
+                } else {
                     partner = $('#PartnerEdit').val();
                 }
                 if (partner == -1) {
@@ -42,14 +38,13 @@ $(document).ready(function() {
                         data: {
                             email: ee.val()
                         },
-                        success: function(data) {
+                        success: function (data) {
                             var d = JSON.parse(data);
                             if (d.id) {
                                 setPartnerData(d);
                                 if (isPartnerAutocomplete()) {
                                     $('.js-partnerid').val(d.id);
-                                }
-                                else {
+                                } else {
                                     $('#PartnerEdit').val(d.id);
                                 }
                             }
@@ -58,7 +53,7 @@ $(document).ready(function() {
                 }
             });
 
-            $('.js-partnerid').change(function() {
+            $('.js-partnerid').change(function () {
                 var pe = $(this);
                 if (pe.val() > 0) {
                     $.ajax({
@@ -67,7 +62,7 @@ $(document).ready(function() {
                         data: {
                             partnerid: pe.val()
                         },
-                        success: function(data) {
+                        success: function (data) {
                             var d = JSON.parse(data);
                             setPartnerData(d);
                         }
@@ -75,15 +70,7 @@ $(document).ready(function() {
                 }
             });
         },
-        onSubmit: function() {
-            $('#messagecenter')
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         var dialogcenter = $('#dialogcenter'),
@@ -123,14 +110,14 @@ $(document).ready(function() {
             },
             tablebody: {
                 url: '/admin/rendezvenyjelentkezes/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                     $('.js-emaildijbekero, .js-emailrendezvenykezdes, .js-fizetve, .js-szamlazva, .js-lemondva, .js-visszautalva').button();
                 }
             },
             karb: rendezvenyjel
         });
         $('#mattable-body')
-            .on('click', '.js-emaildijbekero', function(e) {
+            .on('click', '.js-emaildijbekero', function (e) {
                 var $gomb = $(this);
                 e.preventDefault();
                 $.ajax({
@@ -146,7 +133,7 @@ $(document).ready(function() {
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
                                     $(this).dialog('close');
                                 }
                             }
@@ -154,7 +141,7 @@ $(document).ready(function() {
                     }
                 });
             })
-            .on('click', '.js-emailrendezvenykezdes', function(e) {
+            .on('click', '.js-emailrendezvenykezdes', function (e) {
                 var $gomb = $(this);
                 e.preventDefault();
                 $.ajax({
@@ -170,7 +157,7 @@ $(document).ready(function() {
                             height: 140,
                             modal: true,
                             buttons: {
-                                'OK': function() {
+                                'OK': function () {
                                     $(this).dialog('close');
                                 }
                             }
@@ -178,7 +165,7 @@ $(document).ready(function() {
                     }
                 });
             })
-            .on('click', '.js-fizetve', function(e) {
+            .on('click', '.js-fizetve', function (e) {
 
                 function clearForm() {
                     $('#afizetveosszegedit').val('');
@@ -207,13 +194,12 @@ $(document).ready(function() {
                                 height: 140,
                                 modal: true,
                                 buttons: {
-                                    'OK': function() {
+                                    'OK': function () {
                                         $(this).dialog('close');
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             $('#afizetveosszegedit').val(d.price);
                             $('#fizetveform').show().dialog({
                                 resizable: false,
@@ -246,8 +232,7 @@ $(document).ready(function() {
                                                     clearForm();
                                                     $('#fizetveform').hide();
                                                     $('.mattable-tablerefresh').click();
-                                                }
-                                                else {
+                                                } else {
                                                     dia.dialog('close').dialog('destroy');
                                                     clearForm();
                                                     $('#fizetveform').hide();
@@ -276,7 +261,7 @@ $(document).ready(function() {
                     }
                 });
             })
-            .on('click', '.js-szamlazva', function(e) {
+            .on('click', '.js-szamlazva', function (e) {
 
                 function clearForm() {
                     $('#aszamlazvabiztipusedit').val('');
@@ -301,13 +286,12 @@ $(document).ready(function() {
                                 height: 140,
                                 modal: true,
                                 buttons: {
-                                    'OK': function() {
+                                    'OK': function () {
                                         $(this).dialog('close');
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             $('#aszamlazvaosszegedit').val(d.price);
                             $('#szamlazvaform').show().dialog({
                                 resizable: false,
@@ -343,8 +327,7 @@ $(document).ready(function() {
                                                     clearForm();
                                                     $('#szamlazvaform').hide();
                                                     $('.mattable-tablerefresh').click();
-                                                }
-                                                else {
+                                                } else {
                                                     dia.dialog('close').dialog('destroy');
                                                     clearForm();
                                                     $('#szamlazvaform').hide();
@@ -373,7 +356,7 @@ $(document).ready(function() {
                     }
                 });
             })
-            .on('click', '.js-lemondva', function(e) {
+            .on('click', '.js-lemondva', function (e) {
 
                 function clearForm() {
                     $('#alemondasokaedit').val('');
@@ -410,8 +393,7 @@ $(document).ready(function() {
                                         clearForm();
                                         $('#lemondvaform').hide();
                                         $('.mattable-tablerefresh').click();
-                                    }
-                                    else {
+                                    } else {
                                         dia.dialog('close').dialog('destroy');
                                         clearForm();
                                         $('#lemondvaform').hide();
@@ -437,18 +419,17 @@ $(document).ready(function() {
                     }
                 });
             })
-            .on('click', '.js-visszautalva', function(e) {
+            .on('click', '.js-visszautalva', function (e) {
                 var $gomb = $(this);
                 e.preventDefault();
             });
 
-        $('.js-maincheckbox').change(function() {
+        $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, rendezvenyjel, {independent: true}));
+            $('#mattkarb').mattkarb(rendezvenyjel);
         }
     }
 });

@@ -1,11 +1,8 @@
 $(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
-    var orarend = {
-        container: '#mattkarb',
-        viewUrl: '/admin/orarend/getkarb',
-        newWindowUrl: '/admin/orarend/viewkarb',
-        saveUrl: '/admin/orarend/save',
+    var orarend = new MattkarbConfig({
+        entityName: 'orarend',
         beforeShow: function (form, opt) {
             $('#JogateremEdit').on('blur', function (e) {
                 var $mfe = $('#MaxferohelyEdit');
@@ -20,19 +17,7 @@ $(document).ready(function () {
                 }
             });
         },
-        beforeSerialize: function (form, opt) {
-            return true;
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -191,7 +176,7 @@ $(document).ready(function () {
 
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, orarend, {independent: true}));
+            $('#mattkarb').mattkarb(orarend);
         }
     }
 });

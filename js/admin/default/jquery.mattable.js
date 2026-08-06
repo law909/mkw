@@ -4,7 +4,7 @@
             return this;
         }
 
-        let baseOptions = {
+        const baseOptions = {
             name: 'egyed',
             animationSpeed: 50,
             numberOfRows: 30,
@@ -49,16 +49,6 @@
                 onStyle: false,
                 onDoEditLink: false
             },
-            karb: {
-                name: 'egyed',
-                container: 'mattable-karb',
-                independent: false,
-                viewUrl: '/admin/xx/getkarb',
-                newWindowUrl: '/admin/xx/viewkarb',
-                saveUrl: '/admin/xx/save',
-                beforeShow: false,
-                beforeHide: false
-            },
             txt: {
                 header: 'txt.header',
                 headerTitle: 'Frissít',
@@ -79,6 +69,7 @@
             }
         };
 
+        options.karb.independent = false;
         let setup = $.extend(true, {}, baseOptions, options);
 
         let _pagerIds = {
@@ -231,18 +222,18 @@
                 $(setup.filter.clearButton)
                     .on('click', function (e) {
                         e.preventDefault();
-                        if ($.isArray(setup.filter.fields)) {
+                        if (Array.isArray(setup.filter.fields)) {
                             for (i in setup.filter.fields) {
                                 clearFilterElement($(setup.filter.fields[i])[0]);
                             }
                         }
-                        if ($.isFunction(setup.filter.onClear)) {
+                        if (typeof setup.filter.onClear === 'function') {
                             setup.filter.onClear.call(this);
                         }
                         reloadTbody();
                     })
                     .button();
-                if ($.isArray(setup.filter.fields)) {
+                if (Array.isArray(setup.filter.fields)) {
                     for (i in setup.filter.fields) {
                         $(setup.filter.fields[i]).keypress(function (e) {
                             if (e.keyCode == 13) {
@@ -323,7 +314,7 @@
         // a szűrőmezők name attribútumai – ezeket vezérlőelem állítja elő, így az URL-ben mi kezeljük
         var getFilterFieldNames = function () {
             var names = [];
-            if ($.isArray(setup.filter.fields)) {
+            if (Array.isArray(setup.filter.fields)) {
                 for (var i in setup.filter.fields) {
                     var nm = $(setup.filter.fields[i]).attr('name');
                     if (nm) {
@@ -336,7 +327,7 @@
 
         // az URL-ben általunk kezelt kulcsok (szűrőmezők + lapozó/rendezés)
         var getExtraFieldNames = function () {
-            return $.isArray(setup.filter.extraFields) ? setup.filter.extraFields : [];
+            return Array.isArray(setup.filter.extraFields) ? setup.filter.extraFields : [];
         };
 
         var managedUrlKeys = function () {
@@ -451,7 +442,7 @@
         // a Vissza/Előre gomb (popstate) korrektül vissza tudja állítani a korábbi nézetet.
         var applyUrlToControls = function () {
             var urlParams = new URLSearchParams(window.location.search);
-            if ($.isArray(setup.filter.fields)) {
+            if (Array.isArray(setup.filter.fields)) {
                 for (var i in setup.filter.fields) {
                     var o = $(setup.filter.fields[i]),
                         nm = o.attr('name');
@@ -467,7 +458,7 @@
             }
             // a vezérlőelem nélküli (extraFields) szűrők visszaállítása – ezt az oldal végzi,
             // mert csak ő tudja, melyik vezérlőt hogyan kell beállítani
-            if ($.isFunction(setup.filter.onApplyUrl)) {
+            if (typeof setup.filter.onApplyUrl === 'function') {
                 setup.filter.onApplyUrl.call(this, urlParams);
             }
             if (orderselect && orderselect[0]) {
@@ -497,7 +488,7 @@
             // az URL-be az onFilter egyedi szűrői közül csak az extraFields-ben deklaráltak kerülnek be;
             // ami nincs kiválasztva, az ki is marad, így a szűrő kikapcsolható marad
             var urlobj = $.extend({}, obj);
-            if ($.isFunction(setup.filter.onFilter)) {
+            if (typeof setup.filter.onFilter === 'function') {
                 setup.filter.onFilter.call(this, obj);
             }
             var extrafields = getExtraFieldNames();
@@ -525,7 +516,7 @@
                     }
                     styleTbody();
                     doEditLink(tbody);
-                    if ($.isFunction(setup.onGetTBody)) {
+                    if (typeof setup.onGetTBody === 'function') {
                         setup.onGetTBody.call(this, resp);
                     }
                     $('.' + _pagerIds.pageno).val(resp.pageno);
@@ -560,7 +551,7 @@
             $(setup.table + ' > tbody > tr').addClass('ui-widget-content');
             $('.mattable-editlink').button();
             $('.mattable-dellink').button();
-            if ($.isFunction(setup.tablebody.onStyle)) {
+            if (typeof setup.tablebody.onStyle === 'function') {
                 setup.tablebody.onStyle.call(this);
             }
         };
@@ -569,7 +560,7 @@
             $(setup.editLink, obj).each(function (i) {
                 $(this).attr('href', setup.karb.newWindowUrl + '?id=' + $(this).attr(_dataattr.recordid) + '&oper=' + $(this).attr(_dataattr.oper));
             });
-            if ($.isFunction(setup.tablebody.onDoEditLink)) {
+            if (typeof setup.tablebody.onDoEditLink === 'function') {
                 setup.tablebody.onDoEditLink.call(this);
             }
         };

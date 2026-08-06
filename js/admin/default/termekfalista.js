@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
+    const dialogcenter = $('#dialogcenter');
 
     function _new_edit(uj) {
         let valasztottid = $('#termekfa').jstree('get_selected').children('a').attr('id'),
@@ -43,7 +43,7 @@ $(document).ready(function () {
                 $(document).scrollTop(0);
                 $('#termekfa').hide();
                 $('#termekfakarb').append(data);
-                var karbsetup = {
+                var karbsetup = new MattkarbConfig({
                     name: '',
                     independent: false,
                     header: '#fakarb-header',
@@ -54,7 +54,7 @@ $(document).ready(function () {
                     viewUrl: '/admin/termekfa/getkarb',
                     saveUrl: '/admin/termekfa/save',
                     beforeShow: function () {
-                        if (!$.browser.mobile) {
+                        if (!window.mkwIsMobile) {
                             CKFinder.setupCKEditor(null, '/ckfinder/');
                             $('.js-ckeditor').each(function () {
                                 $(this).ckeditor();
@@ -107,7 +107,7 @@ $(document).ready(function () {
                                 finder.popup();
                             });
                         $('#KepDelButton,#KepBrowseButton').button();
-                        if (!$.browser.mobile) {
+                        if (!window.mkwIsMobile) {
                             $('.js-toflyout').flyout();
                         }
                     },
@@ -132,14 +132,14 @@ $(document).ready(function () {
                         $('#termekfa').show();
                         $(document).scrollTop(scrollPosition);
                     }
-                };
+                });
                 $('#termekfakarb').mattkarb(karbsetup);
             }
         });
     };
 
     $('#termekfa')
-        .bind('loaded.jstree refresh.jstree', function (e, d) {
+        .on('loaded.jstree refresh.jstree', function (e, d) {
             d.inst.open_all();
         })
         .jstree({
@@ -246,7 +246,7 @@ $(document).ready(function () {
                                 },
                                 ui: {select_limit: 1}
                             })
-                                .bind('loaded.jstree', function (event, data) {
+                                .on('loaded.jstree', function (event, data) {
                                     dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                                 });
                             dialogcenter.dialog({
@@ -281,7 +281,7 @@ $(document).ready(function () {
                 }
             }
         })
-        .bind('change_state.jstree', function (e, data) {
+        .on('change_state.jstree', function (e, data) {
             $termekfa = $(this);
             $('li', $termekfa).each(function (i) {
                 $this = $(this);

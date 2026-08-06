@@ -1,36 +1,24 @@
-$(document).ready(function(){
-    var mattkarbconfig={
-        container:'#mattkarb',
-        viewUrl:'/admin/feketelista/getkarb',
-        newWindowUrl:'/admin/feketelista/viewkarb',
-        saveUrl:'/admin/feketelista/save',
-        onSubmit:function() {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click',messagecenterclick)
-                .slideToggle('slow');
-        }
-    }
+$(document).ready(function () {
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'feketelista'
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
-            filter:{
-                fields:['#emailfilter']
+            filter: {
+                fields: ['#emailfilter']
             },
-            tablebody:{
-                url:'/admin/feketelista/getlistbody'
+            tablebody: {
+                url: '/admin/feketelista/getlistbody'
             },
-            karb:mattkarbconfig
+            karb: mattkarbconfig
         });
-        $('#maincheckbox').change(function(){
-            $('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+        $('#maincheckbox').change(function () {
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({},mattkarbconfig,{independent:true}));
+            $('#mattkarb').mattkarb(mattkarbconfig);
         }
     }
 });

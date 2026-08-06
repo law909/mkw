@@ -2,9 +2,8 @@
 
 {block "inhead"}
     {include 'ckeditor.tpl'}
-    <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
+    {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/admin/default/setupform.js"></script>
 {/block}
@@ -104,7 +103,8 @@
                         </div>
                         {if ($vanautopenztarbizonylat)}
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="AutoPenztarbizonylatPenztarEdit">{at('Automatikus pénztárbizonylat pénztára')}:</label></span>
+                                <span class="setuplabel"><label
+                                        for="AutoPenztarbizonylatPenztarEdit">{at('Automatikus pénztárbizonylat pénztára')}:</label></span>
                                 <select id="AutoPenztarbizonylatPenztarEdit" name="autopenztarbizonylatpenztar">
                                     <option value="">{at('valutanem szerint')}</option>
                                     {foreach $autopenztarbizonylatpenztarlist as $_p}
@@ -113,7 +113,8 @@
                                 </select>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="AutoPenztarbizonylatJogcimEdit">{at('Automatikus pénztárbizonylat jogcíme')}:</label></span>
+                                <span class="setuplabel"><label
+                                        for="AutoPenztarbizonylatJogcimEdit">{at('Automatikus pénztárbizonylat jogcíme')}:</label></span>
                                 <select id="AutoPenztarbizonylatJogcimEdit" name="autopenztarbizonylatjogcim">
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $autopenztarbizonylatjogcimlist as $_j}

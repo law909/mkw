@@ -1,14 +1,13 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
+    const dialogcenter = $('#dialogcenter');
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
-            $('.js-okbutton').on('click', function(e) {
+            $('.js-okbutton').on('click', function (e) {
                 var tol, ig;
                 e.preventDefault();
 
@@ -24,7 +23,7 @@ $(document).ready(function() {
                         szlasztol: $('#SzamlaszamTolEdit').val(),
                         szlaszig: $('#SzamlaszamIgEdit').val()
                     },
-                    success: function(d) {
+                    success: function (d) {
                         var res = JSON.parse(d);
                         if (res.result == 'ok') {
                             dialogcenter.html('<a href="' + res.href + '" target="_blank">Letöltés</a>').dialog({
@@ -37,8 +36,7 @@ $(document).ready(function() {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             dialogcenter.html(res.msg).dialog({
                                 resizable: false,
                                 height: 140,
@@ -55,5 +53,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

@@ -1,11 +1,9 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
-            $('.js-kiegyenlit').on('click', function(e) {
+            $('.js-kiegyenlit').on('click', function (e) {
                 var bizid = $(this).data('egyedid');
                 e.preventDefault();
                 $.ajax({
@@ -14,7 +12,7 @@ $(document).ready(function() {
                     data: {
                         id: bizid
                     },
-                    success: function(data) {
+                    success: function (data) {
                         $('table[data-egyedid="' + bizid + '"]').remove();
                     }
                 });
@@ -22,5 +20,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

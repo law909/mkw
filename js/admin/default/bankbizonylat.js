@@ -5,27 +5,21 @@ $(document).ready(function () {
     }
 
     function valutanemChange(firstrun) {
-        if (!firstrun || $('input[name="oper"]').val()==='add') {
+        if (!firstrun || $('input[name="oper"]').val() === 'add') {
             $('#BankszamlaEdit').val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
         }
     }
 
     function calcOsszesen() {
         var osszeg = 0;
-        $('input[name^="tetelosszeg_"]').each(function() {
+        $('input[name^="tetelosszeg_"]').each(function () {
             var $this = $(this),
                 tetelid = $this.attr('name').split('_')[1];
-                tetelertek = $('input[name="tetelirany_' + tetelid + '"]:checked').val() * 1 * $this.val();
+            tetelertek = $('input[name="tetelirany_' + tetelid + '"]:checked').val() * 1 * $this.val();
             osszeg = osszeg + tetelertek;
         });
 
         $('.js-osszegsum').text(accounting.formatNumber(tools.round(osszeg, -2), 2, ' '));
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo( ul );
     }
 
     function partnerAutocompleteConfig() {
@@ -33,7 +27,7 @@ $(document).ready(function () {
             minLength: 4,
             autoFocus: true,
             source: '/admin/bizonylatfej/getpartnerlist',
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var partner = ui.item,
                     pi = $('input[name="tetelpartner_' + $(this).data('tetelid') + '"]');
                 if (partner) {
@@ -44,36 +38,33 @@ $(document).ready(function () {
         };
     }
 
-    var bankbizonylat = {
-        container: '#mattkarb',
-        viewUrl: '/admin/bankbizonylatfej/getkarb',
-        newWindowUrl: '/admin/bankbizonylatfej/viewkarb',
-        saveUrl: '/admin/bankbizonylatfej/save',
+    const bankbizonylat = new MattkarbConfig({
+        entityName: 'bankbizonylatfej',
         beforeShow: function () {
             var dialogcenter = $('#dialogcenter');
             mkwcomp.datumEdit.init('#KeltEdit');
 
             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
 
-            $('#ValutanemEdit').change(function(e) {
+            $('#ValutanemEdit').change(function (e) {
                 valutanemChange(false);
             });
 
-            $('input[name^="teteldatum_"]').each(function() {
+            $('input[name^="teteldatum_"]').each(function () {
                 mkwcomp.datumEdit.init($(this));
             });
 
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
 
             $('#AltalanosTab')
-                .on('change', '.js-osszegedit', function(e) {
+                .on('change', '.js-osszegedit', function (e) {
                     calcOsszesen();
                 })
-                .on('change', '.js-iranyedit', function(e) {
+                .on('change', '.js-iranyedit', function (e) {
                     calcOsszesen();
                 })
-                .on('click', '.js-tetelnewbutton', function(e) {
+                .on('click', '.js-tetelnewbutton', function (e) {
                     var $this = $(this);
                     e.preventDefault();
                     calcOsszesen();
@@ -83,21 +74,21 @@ $(document).ready(function () {
                             type: 'bank'
                         },
                         type: 'GET',
-                        success: function(data) {
+                        success: function (data) {
                             var d = JSON.parse(data);
 
                             $('.js-bizonylatosszesito').before(d.html);
                             mkwcomp.datumEdit.init('#DatumEdit' + d.id);
 
                             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                                .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+                                .autocompleteRenderer(partnerAutocompleteRenderer);
 
                             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                             $this.remove();
                         }
                     });
                 })
-                .on('click', '.js-teteldelbutton', function(e) {
+                .on('click', '.js-teteldelbutton', function (e) {
                     e.preventDefault();
                     var removegomb = $(this),
                         removeid = removegomb.attr('data-id');
@@ -107,24 +98,23 @@ $(document).ready(function () {
                             height: 140,
                             modal: true,
                             buttons: {
-                                'Igen': function() {
+                                'Igen': function () {
                                     $('#teteltable_' + removeid).remove();
                                     calcOsszesen();
                                     $(this).dialog('close');
                                 },
-                                'Nem': function() {
+                                'Nem': function () {
                                     $(this).dialog('close');
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
-                                'Igen': function() {
+                                'Igen': function () {
                                     $.ajax({
                                         url: '/admin/bankbizonylattetel/save',
                                         type: 'POST',
@@ -132,21 +122,21 @@ $(document).ready(function () {
                                             id: removeid,
                                             oper: 'del'
                                         },
-                                        success: function(data) {
+                                        success: function (data) {
                                             $('#teteltable_' + data).remove();
                                             calcOsszesen();
                                         }
                                     });
                                     $(this).dialog('close');
                                 },
-                                'Nem': function() {
+                                'Nem': function () {
                                     $(this).dialog('close');
                                 }
                             }
                         });
                     }
                 })
-                .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
+                .on('click', '.js-hivatkozottbizonylatbutton', function (e) {
                     e.preventDefault();
                     var $this = $(this),
                         tid = $this.data('id'),
@@ -154,8 +144,7 @@ $(document).ready(function () {
 
                     if (isPartnerAutocomplete()) {
                         partner = $('input[name="tetelpartner_' + tid + '"]').val();
-                    }
-                    else {
+                    } else {
                         partner = $('select[name="tetelpartner_' + tid + '"]').val();
                     }
 
@@ -164,9 +153,9 @@ $(document).ready(function () {
                         url: '/admin/partner/getkiegyenlitetlenbiz',
                         data: {
                             partner: partner,
-                            irany: $('input[name="tetelirany_' + tid +'"]:checked').val()
+                            irany: $('input[name="tetelirany_' + tid + '"]:checked').val()
                         },
-                        success: function(d) {
+                        success: function (d) {
                             var data = JSON.parse(d);
                             dialogcenter.html(data.html);
                             dialogcenter.dialog({
@@ -175,7 +164,7 @@ $(document).ready(function () {
                                 width: 400,
                                 modal: true,
                                 buttons: {
-                                    'OK': function() {
+                                    'OK': function () {
                                         var sor = $('tr.js-selected', dialogcenter);
                                         $('input[name="tetelhivatkozottbizonylat_' + tid + '"]').val(sor.data('bizszam'));
                                         $('input[name="tetelhivatkozottdatum_' + tid + '"]').val(sor.data('datum'));
@@ -183,7 +172,7 @@ $(document).ready(function () {
                                         calcOsszesen();
                                         $(this).dialog('close');
                                     },
-                                    'Bezár': function() {
+                                    'Bezár': function () {
                                         $(this).dialog('close');
                                     }
                                 }
@@ -194,23 +183,13 @@ $(document).ready(function () {
 
             calcOsszesen();
 
-            dialogcenter.on('click', 'tr', function(e) {
+            dialogcenter.on('click', 'tr', function (e) {
                 e.preventDefault();
                 $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
                 $(this).addClass('ui-state-highlight js-selected');
             })
         },
-        beforeHide: function () {
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -228,7 +207,7 @@ $(document).ready(function () {
             },
             tablebody: {
                 url: '/admin/bankbizonylatfej/getlistbody',
-                onStyle: function() {
+                onStyle: function () {
                     $('.js-rontbizonylat').button();
                 }
             },
@@ -238,15 +217,15 @@ $(document).ready(function () {
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-        $('#mattable-body').on('click', '.js-rontbizonylat', function(e) {
+        $('#mattable-body').on('click', '.js-rontbizonylat', function (e) {
             e.preventDefault();
             $.ajax({
-                url:'/admin/bankbizonylatfej/ront',
+                url: '/admin/bankbizonylatfej/ront',
                 type: 'POST',
                 data: {
                     id: $(this).data('egyedid')
                 },
-                success:function() {
+                success: function () {
                     $('.mattable-tablerefresh').click();
                 }
             });
@@ -254,10 +233,9 @@ $(document).ready(function () {
 
         mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, bankbizonylat, {independent: true}));
+            $('#mattkarb').mattkarb(bankbizonylat);
         }
     }
 });

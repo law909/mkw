@@ -1,11 +1,8 @@
 $(document).ready(function () {
     let dialogcenter = $('#dialogcenter');
 
-    let szin = {
-        container: '#mattkarb',
-        viewUrl: '/admin/szin/getkarb',
-        newWindowUrl: '/admin/szin/viewkarb',
-        saveUrl: '/admin/szin/save',
+    let szin = new MattkarbConfig({
+        entityName: 'szin',
         beforeShow: function () {
             $('#FoKepDelButton').on('click', function (e) {
                 e.preventDefault();
@@ -39,26 +36,18 @@ $(document).ready(function () {
                 finder.popup();
             });
             $('#FoKepDelButton,#FoKepBrowseButton').button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 $('.js-toflyout').flyout();
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         var lfilternames = ['#nevfilter'];
         $('#mattable-select').mattable({
             name: 'szin',
             onGetTBody: function () {
-                if (!$.browser.mobile) {
+                if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -104,7 +93,7 @@ $(document).ready(function () {
 
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, szin, {independent: true}));
+            $('#mattkarb').mattkarb(szin);
         }
     }
 });

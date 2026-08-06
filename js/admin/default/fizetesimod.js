@@ -1,18 +1,7 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
-    var mattkarbconfig = {
-        container: '#mattkarb',
-        viewUrl: '/admin/fizetesimod/getkarb',
-        newWindowUrl: '/admin/fizetesimod/viewkarb',
-        saveUrl: '/admin/fizetesimod/save',
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        },
+    const dialogcenter = $('#dialogcenter');
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'fizetesimod',
         beforeShow: function () {
             $('#HatarTab').on('click', '.js-hatarnewbutton', function (e) {
                 var $this = $(this);
@@ -64,7 +53,7 @@ $(document).ready(function () {
             $('.js-hatarnewbutton,.js-hatardelbutton').button();
 
         }
-    }
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -77,11 +66,11 @@ $(document).ready(function () {
             karb: mattkarbconfig
         });
         $('#maincheckbox').change(function () {
-            $('.egyedcheckbox').attr('checked', $(this).attr('checked'));
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, mattkarbconfig, {independent: true}));
+            $('#mattkarb').mattkarb(mattkarbconfig);
         }
     }
 });

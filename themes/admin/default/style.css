@@ -205,8 +205,12 @@ img {
     color: red !important;
 }
 
+/* A jQuery UI 1.12+ a paddinget már magára a .ui-button-ra teszi (1.11-ben a belső
+   .ui-button-text span vitte), ezért a width:100% mellé border-box kell – különben a
+   gomb a padding szélességével kilóg a menüoszlopból, és rátakar a tartalomra. */
 .menupont {
     width: 100%;
+    box-sizing: border-box;
     text-align: left;
 }
 

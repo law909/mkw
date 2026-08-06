@@ -1,14 +1,12 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
-            $('.js-okbutton').on('click', function(e) {
+            $('.js-okbutton').on('click', function (e) {
                 var $ff;
                 e.preventDefault();
                 $ff = $('#idoszakipenztarjelentes');
@@ -16,7 +14,7 @@ $(document).ready(function() {
                 $ff.submit();
             }).button();
 
-            $('.js-exportbutton').on('click', function(e) {
+            $('.js-exportbutton').on('click', function (e) {
                 var $ff;
                 e.preventDefault();
                 $ff = $('#idoszakipenztarjelentes');
@@ -25,5 +23,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

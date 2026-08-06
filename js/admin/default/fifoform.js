@@ -1,21 +1,16 @@
-$(document).ready(function() {
-	var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-		independent:true,
-		viewUrl:'/admin/getkarb',
-		newWindowUrl:'/admin/viewkarb',
-		saveUrl:'/admin/save',
-		beforeShow:function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
-            $('.js-fifoalapadat,.js-keszletertek').on('click', function(e) {
+            $('.js-fifoalapadat,.js-keszletertek').on('click', function (e) {
                 e.preventDefault();
                 $ff = $('#fifoexport');
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
 
-            $('.js-fifocalc').on('click', function(e) {
+            $('.js-fifocalc').on('click', function (e) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
@@ -23,20 +18,12 @@ $(document).ready(function() {
                         storno: $('input[name="storno"]').prop('checked')
                     },
                     url: $(this).attr('href'),
-                    success: function() {
+                    success: function () {
                         alert('Kész.');
                     }
                 });
             }).button();
 
-		},
-		onSubmit:function() {
-			$('#messagecenter')
-				.html('A mentés sikerült.')
-				.hide()
-				.addClass('matt-messagecenter ui-widget ui-state-highlight')
-				.one('click',messagecenterclick)
-				.slideToggle('slow');
-		}
-	});
+        },
+    }));
 });

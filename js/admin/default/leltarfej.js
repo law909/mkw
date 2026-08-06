@@ -1,24 +1,7 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
-    var leltarfej = {
-        container: '#mattkarb',
-        viewUrl: '/admin/leltarfej/getkarb',
-        newWindowUrl: '/admin/leltarfej/viewkarb',
-        saveUrl: '/admin/leltarfej/save',
-        beforeShow: function () {
-        },
-        beforeSerialize: function (form, opt) {
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    const leltarfej = new MattkarbConfig({
+        entityName: 'leltarfej',
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -37,7 +20,7 @@ $(document).ready(function () {
             },
             karb: leltarfej
         });
-        var $zarasdatumedit = $('#DatumEdit');
+        const $zarasdatumedit = $('#DatumEdit');
         if ($zarasdatumedit) {
             $zarasdatumedit.datepicker($.datepicker.regional['hu']);
             $zarasdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
@@ -82,7 +65,7 @@ $(document).ready(function () {
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, leltarfej, {independent: true}));
+            $('#mattkarb').mattkarb(leltarfej);
         }
     }
 });

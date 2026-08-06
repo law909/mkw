@@ -1,11 +1,10 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
+    var dialogcenter = $('#dialogcenter');
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
-            $('.js-okbutton').on('click', function(e) {
+            $('.js-okbutton').on('click', function (e) {
                 var $ff;
                 e.preventDefault();
                 dialogcenter.html('Biztosan összefűzi a partnereket? Az első partner törölve lesz!').dialog({
@@ -42,5 +41,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

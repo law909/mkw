@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
+    const dialogcenter = $('#dialogcenter');
 
     function _new_edit(uj) {
         let valasztottid = $('#termekmenu').jstree('get_selected').children('a').attr('id'),
@@ -43,7 +43,7 @@ $(document).ready(function () {
                 $(document).scrollTop(0);
                 $('#termekmenu').hide();
                 $('#termekmenukarb').append(data);
-                var karbsetup = {
+                var karbsetup = new MattkarbConfig({
                     name: '',
                     independent: false,
                     header: '#menukarb-header',
@@ -54,7 +54,7 @@ $(document).ready(function () {
                     viewUrl: '/admin/termekmenu/getkarb',
                     saveUrl: '/admin/termekmenu/save',
                     beforeShow: function () {
-                        if (!$.browser.mobile) {
+                        if (!window.mkwIsMobile) {
                             CKFinder.setupCKEditor(null, '/ckfinder/');
                             $('.js-ckeditor').each(function () {
                                 $(this).ckeditor();
@@ -107,12 +107,12 @@ $(document).ready(function () {
                                 finder.popup();
                             });
                         $('#KepDelButton,#KepBrowseButton').button();
-                        if (!$.browser.mobile) {
+                        if (!window.mkwIsMobile) {
                             $('.js-toflyout').flyout();
                         }
                     },
                     beforeHide: function () {
-                        if (!$.browser.mobile) {
+                        if (!window.mkwIsMobile) {
                             let editor;
                             $('.js-ckeditor').each(function () {
                                 editor = $(this).ckeditorGet();
@@ -134,14 +134,14 @@ $(document).ready(function () {
                         $('#termekmenu').show();
                         $(document).scrollTop(scrollPosition);
                     }
-                };
+                });
                 $('#termekmenukarb').mattkarb(karbsetup);
             }
         });
     };
 
     $('#termekmenu')
-        .bind('loaded.jstree refresh.jstree', function (e, d) {
+        .on('loaded.jstree refresh.jstree', function (e, d) {
             d.inst.open_all();
         })
         .jstree({
@@ -248,7 +248,7 @@ $(document).ready(function () {
                                 },
                                 ui: {select_limit: 1}
                             })
-                                .bind('loaded.jstree', function (event, data) {
+                                .on('loaded.jstree', function (event, data) {
                                     dialogcenter.jstree('open_node', $('#termekmenu_1', dialogcenter).parent());
                                 });
                             dialogcenter.dialog({
@@ -283,7 +283,7 @@ $(document).ready(function () {
                 }
             }
         })
-        .bind('change_state.jstree', function (e, data) {
+        .on('change_state.jstree', function (e, data) {
             $termekmenu = $(this);
             $('li', $termekmenu).each(function (i) {
                 $this = $(this);

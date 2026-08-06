@@ -1,16 +1,13 @@
 $(document).ready(function () {
-    var hir = {
-        container: '#mattkarb',
-        viewUrl: '/admin/hir/getkarb',
-        newWindowUrl: '/admin/hir/viewkarb',
-        saveUrl: '/admin/hir/save',
+    const hir = new MattkarbConfig({
+        entityName: 'hir',
         beforeShow: function () {
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#SzovegEdit').ckeditor();
                 $('#LeadEdit').ckeditor();
             }
-            var dedit = $('#DatumEdit');
+            let dedit = $('#DatumEdit');
             dedit.datepicker($.datepicker.regional['hu']);
             dedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             dedit.datepicker('setDate', dedit.attr('data-datum'));
@@ -44,7 +41,7 @@ $(document).ready(function () {
 
         },
         beforeHide: function () {
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 editor = $('#SzovegEdit').ckeditorGet();
                 if (editor) {
                     editor.destroy();
@@ -55,20 +52,12 @@ $(document).ready(function () {
                 }
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             onGetTBody: function () {
-                if (!$.browser.mobile) {
+                if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -100,7 +89,7 @@ $(document).ready(function () {
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, hir, {independent: true}));
+            $('#mattkarb').mattkarb(hir);
         }
     }
 });

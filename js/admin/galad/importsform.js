@@ -1,11 +1,7 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
+    const dialogcenter = $('#dialogcenter');
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        viewUrl: '/admin/getkarb',
-        newWindowUrl: '/admin/viewkarb',
-        saveUrl: '/admin/save',
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
 
             $('.js-galadoxfordimport, .js-galadcgmimport, .js-galadproductimport, .js-galadsuomyimport, .js-szinimport, .js-meretimport, .js-orszagimport, .js-galadpartnerimport').on('click', function (e) {
@@ -37,7 +33,7 @@ $(document).ready(function () {
                     },
                     ui: {select_limit: 1}
                 })
-                    .bind('loaded.jstree', function (event, data) {
+                    .on('loaded.jstree', function (event, data) {
                         dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                     });
                 dialogcenter.dialog({
@@ -49,7 +45,7 @@ $(document).ready(function () {
                             dialogcenter.jstree('get_selected').each(function () {
                                 var treenode = $(this).children('a');
                                 edit.attr('data-value', treenode.attr('id').split('_')[1]);
-                                $('span', edit).text(treenode.text());
+                                edit.buttonLabel(treenode.text());
                             });
                             $(this).dialog('close');
                         },
@@ -65,13 +61,5 @@ $(document).ready(function () {
                 }
             });
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    });
+    }));
 });

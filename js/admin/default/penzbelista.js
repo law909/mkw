@@ -1,14 +1,7 @@
 $(document).ready(function () {
-    const dialogcenter = $('#dialogcenter');
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
     }
 
     function partnerAutocompleteConfig() {
@@ -27,12 +20,11 @@ $(document).ready(function () {
         };
     }
 
-    $('#mattkarb').mattkarb({
-        independent: true,
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
 
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
 
             const $toledit = $('#TolEdit');
             if ($toledit) {
@@ -80,13 +72,5 @@ $(document).ready(function () {
             }).button();
 
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    });
+    }));
 });

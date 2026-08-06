@@ -1,14 +1,7 @@
 $(document).ready(function () {
-    const dialogcenter = $('#dialogcenter');
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
     }
 
     function partnerAutocompleteConfig() {
@@ -27,8 +20,7 @@ $(document).ready(function () {
         };
     }
 
-    $('#mattkarb').mattkarb({
-        independent: true,
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
 
             mkwcomp.datumEdit.init('#TolEdit');
@@ -36,7 +28,7 @@ $(document).ready(function () {
             mkwcomp.datumEdit.init('#BefEdit');
 
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
 
             $('#cimkefiltercontainer').mattaccord({
                 header: '',
@@ -70,5 +62,5 @@ $(document).ready(function () {
             }).button();
 
         }
-    });
+    }));
 });

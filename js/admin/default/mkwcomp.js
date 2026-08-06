@@ -1,3 +1,81 @@
+/**
+ * Közös autocomplete renderer-ek.
+ *
+ * A jQuery UI 1.12-ben a menüelem markupja `<li><a>`-ról
+ * `<li><div class="ui-menu-item-wrapper">`-re változott: a wrapper osztályt a widget
+ * teszi rá a gyerek elemre, nekünk csak `<a>` helyett `<div>`-et kell adnunk. `<a>`-val
+ * a legördülő stílus nélkül és kattinthatatlanul jelenne meg.
+ *
+ * Korábban ez a két függvény 22 példányban élt 20 fájlban – itt egy helyen van. A
+ * hívóhelyek változatlanul a nevükre hivatkoznak: a mkwcomp.js minden admin oldalon
+ * (base.tpl) a képernyő-JS-ek előtt töltődik be, így a globális definíció mindenhol áll.
+ */
+function partnerAutocompleteRenderer(ul, item) {
+    return $('<li>')
+        .append($('<div>').html(item.value))
+        .appendTo(ul);
+}
+
+function termekAutocompleteRenderer(ul, item) {
+    var $item = $('<div>').html(item.label);
+    if (item.nemlathato) {
+        $item.addClass('nemelerhetovaltozat');
+    }
+    return $('<li>')
+        .append($item)
+        .appendTo(ul);
+}
+
+(function ($) {
+    /**
+     * A legördülő sorainak saját rendererét állítja be:
+     *   $('.js-termekselect').autocomplete(cfg).autocompleteRenderer(termekAutocompleteRenderer);
+     *
+     * Miért kell: a jQuery UI 1.12 óta a `.autocomplete('instance')` ÜRES halmazon
+     * undefined-ot ad vissza (1.11-ben magát a jQuery objektumot adta), így a korábbi
+     * `…autocomplete('instance')._renderItem = fn` alak TypeError-t dobott ott, ahol a
+     * szelektor semmire sem illeszkedik – például tétel nélküli, most nyitott bizonylaton.
+     * A kivétel a hívó függvény hátralévő részét is megölte (gombok, eseménykezelők).
+     *
+     * Ráadásul a régi alak több találat esetén is csak az ELSŐ elemre állította be a
+     * renderert; ez itt már mindegyikre ráteszi.
+     */
+    $.fn.autocompleteRenderer = function (renderer) {
+        return this.each(function () {
+            var instance = $(this).autocomplete('instance');
+            if (instance) {
+                instance._renderItem = renderer;
+            }
+        });
+    };
+
+    /**
+     * Egy `.button()`-ná alakított elem feliratának cseréje:
+     *   $('.js-termekfabutton').buttonLabel('KABÁT');
+     *
+     * Miért kell: a jQuery UI 1.11 a gomb szövegét egy `<span class="ui-button-text">`-be
+     * csomagolta, ezért a régi kód `$('span', gomb).text(…)`-tel írta felül a feliratot.
+     * Az 1.12 óta a widget NEM hoz létre ilyen spant, így az a szelektor semmire sem
+     * illeszkedik, és a felirat némán változatlan marad – a termékkarbon például a
+     * kategóriaválasztó „válasszon"-on ragadt, pedig a `data-value` már a kiválasztott
+     * elemé volt.
+     *
+     * Ha van szöveg-span gyerek (régi markup), azt írja, különben magát az elemet.
+     * Az ikon-spanokat (`ui-icon`) nem tekinti feliratnak.
+     */
+    $.fn.buttonLabel = function (text) {
+        return this.each(function () {
+            var $el = $(this),
+                $label = $el.children('span').not('.ui-icon');
+            if ($label.length) {
+                $label.text(text);
+            } else {
+                $el.text(text);
+            }
+        });
+    };
+})(jQuery);
+
 var mkwcomp = (function ($) {
 
     // jstree alapú fa szűrő (termékfa, termékmenü) – a listaurl adja a fa tartalmát
@@ -78,10 +156,10 @@ var mkwcomp = (function ($) {
                     }
                 }
             })
-                .bind('loaded.jstree', function () {
+                .on('loaded.jstree', function () {
                     applyPending(sel);
                 })
-                .bind('change_state.jstree', function (e, data) {
+                .on('change_state.jstree', function (e, data) {
                     $termekfa = $(this);
                     $('li', $termekfa).each(function (i) {
                         $this = $(this);

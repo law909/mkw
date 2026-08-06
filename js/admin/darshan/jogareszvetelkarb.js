@@ -1,11 +1,8 @@
-$(document).ready(function() {
-    var jogareszvetel = {
-        container: '#mattkarb',
-        viewUrl: '/admin/jogareszvetel/getkarb',
-        newWindowUrl: '/admin/jogareszvetel/viewkarb',
-        saveUrl: '/admin/jogareszvetel/save',
-        beforeShow: function() {
-            $('.js-partneredit').on('change', function() {
+$(document).ready(function () {
+    const jogareszvetel = new MattkarbConfig({
+        entityName: 'jogareszvetel',
+        beforeShow: function () {
+            $('.js-partneredit').on('change', function () {
                 var $this = $(this);
                 $.ajax({
                     url: '/admin/jogareszvetel/getselect',
@@ -13,23 +10,13 @@ $(document).ready(function() {
                         partnerid: $this.val()
                     },
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         $('.js-berletedit').innerHTML(data);
                     }
                 });
             });
         },
-        beforeHide: function() {
-        },
-        onSubmit: function() {
-            $('#messagecenter')
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
-        }
-    }
+    });
 
     if ($.fn.mattable) {
         mkwcomp.datumEdit.init('#datumtolfilter');
@@ -43,13 +30,12 @@ $(document).ready(function() {
             },
             karb: jogareszvetel
         });
-        $('.js-maincheckbox').change(function() {
+        $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-    }
-    else {
+    } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, emailtemplate, {independent: true}));
+            $('#mattkarb').mattkarb(jogareszvetel);
         }
     }
 });

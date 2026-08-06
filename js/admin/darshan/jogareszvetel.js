@@ -9,12 +9,6 @@ function jogareszvetel() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo( ul );
-    }
-
     function partnerAutocompleteConfig(id) {
         return {
             minLength: 4,
@@ -61,7 +55,7 @@ function jogareszvetel() {
                 });
 
                 $('.js-jrpartnerautocomplete').autocomplete(partnerAutocompleteConfig(data.id))
-                    .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+                    .autocompleteRenderer(partnerAutocompleteRenderer);
 
             }
         });
@@ -251,7 +245,7 @@ function jogareszvetel() {
             })
             .on('change', '.js-jrberletedit', function(e) {
                 var termekid = $('option:selected', this).data('termekid');
-                $('select[name="termek_' + $(this).data('id') + '"] option[value="' + termekid + '"]').attr('selected', 'selected');
+                $('select[name="termek_' + $(this).data('id') + '"] option[value="' + termekid + '"]').prop('selected', true);
                 setBerletAr($(this).data('id'));
             })
             .on('change', '.js-jrtermekedit', function(e) {

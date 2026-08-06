@@ -1,21 +1,10 @@
 $(document).ready(function () {
-    var mattkarbconfig = {
-        container: '#mattkarb',
-        viewUrl: '/admin/arfolyam/getkarb',
-        newWindowUrl: '/admin/arfolyam/viewkarb',
-        saveUrl: '/admin/arfolyam/save',
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'arfolyam',
         beforeShow: function () {
             mkwcomp.datumEdit.init('#DatumEdit');
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
         }
-    }
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
@@ -25,11 +14,11 @@ $(document).ready(function () {
             karb: mattkarbconfig
         });
         $('#maincheckbox').change(function () {
-            $('.egyedcheckbox').attr('checked', $(this).attr('checked'));
+            $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, mattkarbconfig, {independent: true}));
+            $('#mattkarb').mattkarb(mattkarbconfig);
         }
     }
 });

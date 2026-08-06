@@ -4,12 +4,6 @@ $(document).ready(function () {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
-    }
-
     function partnerAutocompleteConfig() {
         return {
             minLength: 4,
@@ -26,17 +20,13 @@ $(document).ready(function () {
         };
     }
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        viewUrl: '/admin/getkarb',
-        newWindowUrl: '/admin/viewkarb',
-        saveUrl: '/admin/save',
+    $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
             $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                .autocompleteRenderer(partnerAutocompleteRenderer);
 
             function getFilterData() {
                 let partnerid;
@@ -72,5 +62,5 @@ $(document).ready(function () {
                 })
                 .button();
         }
-    });
+    }));
 });

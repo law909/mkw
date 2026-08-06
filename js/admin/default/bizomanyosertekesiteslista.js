@@ -1,14 +1,7 @@
 $(document).ready(function () {
-    const dialogcenter = $('#dialogcenter');
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
-    }
-
-    function partnerAutocompleteRenderer(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.value + '</a>')
-            .appendTo(ul);
     }
 
     function partnerAutocompleteConfig() {
@@ -27,64 +20,53 @@ $(document).ready(function () {
         };
     }
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        viewUrl: '/admin/getkarb',
-        newWindowUrl: '/admin/viewkarb',
-        saveUrl: '/admin/save',
-        beforeShow: function () {
-            mkwcomp.datumEdit.init('#TolEdit');
-            mkwcomp.datumEdit.init('#IgEdit');
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+            beforeShow: function () {
+                mkwcomp.datumEdit.init('#TolEdit');
+                mkwcomp.datumEdit.init('#IgEdit');
 
-            $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
-                .autocomplete("instance")._renderItem = partnerAutocompleteRenderer;
+                $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
+                    .autocompleteRenderer(partnerAutocompleteRenderer);
 
-            $('.js-refresh')
-                .on('click', function () {
+                $('.js-refresh')
+                    .on('click', function () {
 
-                    const partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
-                    let partnerid;
-                    if (isPartnerAutocomplete()) {
-                        partnerid = $('.js-partnerid').val();
-                    } else {
-                        partnerid = $('#PartnerEdit option:selected').val();
-                    }
-
-                    $.ajax({
-                        url: '/admin/bizomanyosertekesiteslista/refresh',
-                        type: 'GET',
-                        data: {
-                            datumtipus: $('select[name="datumtipus"]').val(),
-                            datumtol: $('input[name="tol"]').val(),
-                            datumig: $('input[name="ig"]').val(),
-                            partnerid: partnerid,
-                            ertektipus: $('select[name="ertektipus"]').val(),
-                            arsav: $('select[name="arsav"]').val(),
-                            partnercimkefilter: partnercimkefilter
-                        },
-                        success: function (d) {
-                            $('#eredmeny').html(d);
+                        const partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
+                        let partnerid;
+                        if (isPartnerAutocomplete()) {
+                            partnerid = $('.js-partnerid').val();
+                        } else {
+                            partnerid = $('#PartnerEdit option:selected').val();
                         }
+
+                        $.ajax({
+                            url: '/admin/bizomanyosertekesiteslista/refresh',
+                            type: 'GET',
+                            data: {
+                                datumtipus: $('select[name="datumtipus"]').val(),
+                                datumtol: $('input[name="tol"]').val(),
+                                datumig: $('input[name="ig"]').val(),
+                                partnerid: partnerid,
+                                ertektipus: $('select[name="ertektipus"]').val(),
+                                arsav: $('select[name="arsav"]').val(),
+                                partnercimkefilter: partnercimkefilter
+                            },
+                            success: function (d) {
+                                $('#eredmeny').html(d);
+                            }
+                        })
                     })
-                })
-                .button();
-            $('#cimkefiltercontainer').mattaccord({
-                header: '',
-                page: '.js-cimkefilterpage',
-                closeUp: '.js-cimkefiltercloseupbutton'
-            });
-            $('.js-cimkefilter').on('click', function (e) {
-                e.preventDefault();
-                $(this).toggleClass('ui-state-hover');
-            });
-        },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    });
+                    .button();
+                $('#cimkefiltercontainer').mattaccord({
+                    header: '',
+                    page: '.js-cimkefilterpage',
+                    closeUp: '.js-cimkefiltercloseupbutton'
+                });
+                $('.js-cimkefilter').on('click', function (e) {
+                    e.preventDefault();
+                    $(this).toggleClass('ui-state-hover');
+                });
+            },
+        })
+    );
 });

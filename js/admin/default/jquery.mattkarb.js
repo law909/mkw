@@ -1,40 +1,10 @@
 (function ($) {
-    $.fn.mattkarb = function (options) {
+    $.fn.mattkarb = function (setup) {
         if (!this.length) {
             return this;
         }
 
-        var baseOptions = {
-            name: 'egyed',
-            animationSpeed: 50,
-            independent: true,
-            header: '#mattkarb-header',
-            footer: '#mattkarb-footer',
-            form: '#mattkarb-form',
-            tab: '#mattkarb-tabs',
-            page: '.mattkarb-page',
-            titlebar: '.mattkarb-titlebar',
-            cancel: '#mattkarb-cancelbutton',
-            ok: '#mattkarb-okbutton',
-            viewUrl: '/admin/xx/viewkarb',
-            saveUrl: '/admin/xx/save',
-            beforeShow: function () {
-                ;
-            },
-            beforeHide: function () {
-                ;
-            },
-            onSubmit: function () {
-                ;
-            },
-            onCancel: function () {
-                ;
-            }
-        };
-
-        var setup = $.extend({}, baseOptions, options);
-
-        var _dataattr = {
+        const _dataattr = {
             recordid: 'data-' + setup.name + 'id',
             oper: 'data-oper',
             pagevisible: 'data-visible',
@@ -105,7 +75,7 @@
                 type: 'POST',
                 beforeSerialize: function (form, opt) {
                     var ret = true;
-                    if ($.isFunction(setup.beforeSerialize)) {
+                    if (typeof setup.beforeSerialize === 'function') {
                         ret = setup.beforeSerialize.call(this, form, opt, setup.quick);
                     }
                     if (ret) {
@@ -125,10 +95,10 @@
                     return ret;
                 },
                 success: function (data) {
-                    if ($.isFunction(setup.beforeHide)) {
+                    if (typeof setup.beforeHide === 'function') {
                         setup.beforeHide.call(this);
                     }
-                    if ($.isFunction(setup.onSubmit)) {
+                    if (typeof setup.onSubmit === 'function') {
                         setup.onSubmit.call(this, data);
                     }
                     // Önálló (saját URL-es / viewkarb) karb oldalon a mentés után
@@ -157,10 +127,10 @@
             $(setup.ok).button();
             cancelbtn.on('click', function (e) {
                 e.preventDefault();
-                if ($.isFunction(setup.beforeHide)) {
+                if (typeof setup.beforeHide === 'function') {
                     setup.beforeHide.call(this);
                 }
-                if ($.isFunction(setup.onCancel)) {
+                if (typeof setup.onCancel === 'function') {
                     setup.onCancel.call(this);
                 }
                 if (isStandaloneKarbPage()) {
@@ -183,12 +153,12 @@
                 }
             });
             $(setup.page).each(function (index) {
-                var $this = $(this).addClass('mattedit-page');
+                const $this = $(this).addClass('mattedit-page');
                 if ($this.attr(_dataattr.pagevisible) == 'hidden') {
                     $this.hide();
                 }
             });
-            if ($.isFunction(setup.beforeShow)) {
+            if (typeof setup.beforeShow === 'function') {
                 setup.beforeShow.call(this);
             }
             karbContainer.show();

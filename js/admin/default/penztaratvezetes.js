@@ -68,11 +68,8 @@ $(document).ready(function () {
         return true;
     }
 
-    var penztaratvezetes = {
-        container: '#mattkarb',
-        viewUrl: '/admin/penztaratvezetes/getkarb',
-        newWindowUrl: '/admin/penztaratvezetes/viewkarb',
-        saveUrl: '/admin/penztaratvezetes/save',
+    const penztaratvezetes = new MattkarbConfig({
+        entityName: 'penztaratvezetes',
         beforeSerialize: function (form, opt) {
             return ellenoriz();
         },
@@ -84,17 +81,9 @@ $(document).ready(function () {
             });
             syncValutanem();
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    });
 
     if ($.fn.mattkarb) {
-        $('#mattkarb').mattkarb($.extend({}, penztaratvezetes, {independent: true}));
+        $('#mattkarb').mattkarb(penztaratvezetes);
     }
 });

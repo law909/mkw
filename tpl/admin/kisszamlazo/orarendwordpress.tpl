@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="/js/main/kisszamlazo/iframeResizer.contentWindow.min.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var modal = document.querySelector('.modal'),

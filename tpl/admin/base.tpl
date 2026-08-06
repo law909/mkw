@@ -4,14 +4,17 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css"/>
-    <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery-migrate-1.2.1.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/admin/default/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery-ui-1.14.2.min.js"></script>
+    {* datepicker magyar honosítás – kötelezően a jquery-ui után *}
+    <script type="text/javascript" src="/js/admin/default/jquery-ui-i18n-hu.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.blockUI-2.70.js"></script>
     <script type="text/javascript" src="/js/admin/default/dmb.js"></script>
     <script type="text/javascript" src="/js/admin/default/accounting.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/tools.js"></script>
     <script type="text/javascript" src="/js/admin/default/mkwcomp.js"></script>
+    {* A mattkarb configja: a lista (mattable karb:) és az önálló karb oldal is használja *}
+    <script type="text/javascript" src="/js/admin/default/mattkarb-config.js"></script>
     {* Pontosan az egyik töltődik be – mindkettő window.CKFinder-t definiál. *}
     {if ($setup.mediatar|default:0)}
         <script type="text/javascript" src="/js/admin/default/mediatar.js"></script>

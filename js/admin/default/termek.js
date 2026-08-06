@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var dialogcenter = $('#dialogcenter');
+    const dialogcenter = $('#dialogcenter');
 
     function termekAutocompleteConfig() {
         return {
@@ -158,11 +158,8 @@ $(document).ready(function () {
         });
     }
 
-    var termek = {
-        container: '#mattkarb',
-        viewUrl: '/admin/termek/getkarb',
-        newWindowUrl: '/admin/termek/viewkarb',
-        saveUrl: '/admin/termek/save',
+    const termek = new MattkarbConfig({
+        entityName: 'termek',
         beforeShow: function () {
             var artab = $('#ArsavTab');
             var keptab = $('#KepTab');
@@ -327,7 +324,7 @@ $(document).ready(function () {
                     finder.popup();
                 });
             $('#FoKepDelButton,#FoKepBrowseButton,.js-kepnewbutton,.js-kepbrowsebutton,.js-kepdelbutton').button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 $('.js-toflyout').flyout();
             }
             $('#cimkekarbcontainer').mattaccord({
@@ -641,7 +638,7 @@ $(document).ready(function () {
                     },
                     ui: {select_limit: 1}
                 })
-                    .bind('loaded.jstree', function (event, data) {
+                    .on('loaded.jstree', function (event, data) {
                         dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                     });
                 dialogcenter.dialog({
@@ -651,14 +648,14 @@ $(document).ready(function () {
                     buttons: {
                         'Töröl': function () {
                             edit.attr('data-value', 0);
-                            $('span', edit).text(edit.attr('data-text'));
+                            edit.buttonLabel(edit.attr('data-text'));
                             $(this).dialog('close');
                         },
                         'OK': function () {
                             dialogcenter.jstree('get_selected').each(function () {
                                 var treenode = $(this).children('a');
                                 edit.attr('data-value', treenode.attr('id').split('_')[1]);
-                                $('span', edit).text(treenode.text());
+                                edit.buttonLabel(treenode.text());
                             });
                             $(this).dialog('close');
                         },
@@ -681,7 +678,7 @@ $(document).ready(function () {
                     },
                     ui: {select_limit: 1}
                 })
-                    .bind('loaded.jstree', function (event, data) {
+                    .on('loaded.jstree', function (event, data) {
                         dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                     });
                 dialogcenter.dialog({
@@ -691,14 +688,14 @@ $(document).ready(function () {
                     buttons: {
                         'Töröl': function () {
                             edit.attr('data-value', 0);
-                            $('span', edit).text(edit.attr('data-text'));
+                            edit.buttonLabel(edit.attr('data-text'));
                             $(this).dialog('close');
                         },
                         'OK': function () {
                             dialogcenter.jstree('get_selected').each(function () {
                                 var treenode = $(this).children('a');
                                 edit.attr('data-value', treenode.attr('id').split('_')[1]);
-                                $('span', edit).text(treenode.text());
+                                edit.buttonLabel(treenode.text());
                             });
                             $(this).dialog('close');
                         },
@@ -709,7 +706,7 @@ $(document).ready(function () {
                 });
             })
                 .button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('.js-ckeditor').each(function () {
                     $(this).ckeditor();
@@ -744,7 +741,7 @@ $(document).ready(function () {
         },
         beforeHide: function () {
             var editor;
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 $('.js-ckeditor').each(function () {
                     editor = $(this).ckeditorGet();
                     if (editor) {
@@ -753,16 +750,7 @@ $(document).ready(function () {
                 });
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         var lfilternames = ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
@@ -773,7 +761,7 @@ $(document).ready(function () {
         $('#mattable-select').mattable({
             name: 'termek',
             onGetTBody: function () {
-                if (!$.browser.mobile) {
+                if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -962,7 +950,7 @@ $(document).ready(function () {
                             },
                             ui: {select_limit: 1}
                         })
-                            .bind('loaded.jstree', function () {
+                            .on('loaded.jstree', function () {
                                 dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                             });
                         dialogcenter.dialog({
@@ -1139,7 +1127,7 @@ $(document).ready(function () {
         mkwcomp.termekmenuFilter.init('#termekmenu');
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, termek, {independent: true}));
+            $('#mattkarb').mattkarb(termek);
         }
     }
 });

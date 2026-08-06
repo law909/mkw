@@ -207,7 +207,7 @@ function koltseg() {
         $('#KtgJogcimEdit')[0].selectedIndex = 0;
         $('#KtgErtek').text('');
         $('#KtgOsszegEdit').val('');
-        $('#KtgVanPenzmozgas').attr('checked', 'checked');
+        $('#KtgVanPenzmozgas').prop('checked', true);
         $('#KtgSzamlaEdit[value="koltsegszamla"]').prop('checked', true);
         setPenztarNemkotelezo();
     }

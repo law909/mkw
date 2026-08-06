@@ -1,13 +1,11 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             $('.js-emailbutton, .js-downloadbutton').button();
 
-            $('.js-downloadbutton').on('click', function(e) {
+            $('.js-downloadbutton').on('click', function (e) {
                 var $ff;
                 e.preventDefault();
                 $ff = $('#xmlszamlaexport');
@@ -15,7 +13,7 @@ $(document).ready(function() {
                 $ff.submit();
             });
 
-            $('.js-emailbutton').on('click', function(e) {
+            $('.js-emailbutton').on('click', function (e) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
@@ -24,16 +22,14 @@ $(document).ready(function() {
                         utolsoszamla: $('#utolsoszamlainput').val(),
                         utolsoesetiszamla: $('#utolsoesetiszamlainput').val()
                     },
-                    success: function(d) {
+                    success: function (d) {
                         if (!d) {
                             alert('Kész.');
-                        }
-                        else {
+                        } else {
                             var adat = JSON.parse(d);
                             if (adat.url) {
                                 document.location = adat.url;
-                            }
-                            else {
+                            } else {
                                 if (adat.msg) {
                                     alert(adat.msg);
                                 }
@@ -44,5 +40,5 @@ $(document).ready(function() {
             });
 
         }
-    });
+    }));
 });

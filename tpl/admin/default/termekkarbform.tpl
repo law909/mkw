@@ -60,6 +60,10 @@
                         <input id="ArukeresofanevEdit" name="arukeresofanev" maxlength=255 value="{$egyed.arukeresofanev}">
                     </td>
                 </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
                 <tr>
                     <td><label>{at('Menü')}:</label></td>
                     <td>

@@ -83,7 +83,7 @@
         $body.append($input);
 
         function accept() {
-            var v = $.trim($input.val());
+            var v = ($input.val() || '').trim();
             if (!v) {
                 $input.focus();
                 return;

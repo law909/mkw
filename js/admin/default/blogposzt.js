@@ -1,18 +1,6 @@
 $(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
-    function termekAutocompleteRenderer(ul, item) {
-        if (item.nemlathato) {
-            return $('<li>')
-                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                .appendTo(ul);
-        } else {
-            return $('<li>')
-                .append('<a>' + item.label + '</a>')
-                .appendTo(ul);
-        }
-    }
-
     function termekAutocompleteConfig() {
         return {
             minLength: 4,
@@ -29,16 +17,13 @@ $(document).ready(function () {
         };
     }
 
-    var blogposzt = {
-        container: '#mattkarb',
-        viewUrl: '/admin/blogposzt/getkarb',
-        newWindowUrl: '/admin/blogposzt/viewkarb',
-        saveUrl: '/admin/blogposzt/save',
+    const blogposzt = new MattkarbConfig({
+        entityName: 'blogposzt',
         beforeShow: function () {
             var alttab = $('#AltalanosTab'),
                 termektab = $('#TermekTab');
             $('#FoKepDelButton,#FoKepBrowseButton,.js-termeknewbutton,.js-termekdelbutton').button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 $('.js-toflyout').flyout();
             }
 
@@ -87,7 +72,7 @@ $(document).ready(function () {
                             termektab.append(data);
                             $('.js-termeknewbutton,.js-termekdelbutton').button();
                             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
-                                .autocomplete("instance")._renderItem = termekAutocompleteRenderer;
+                                .autocompleteRenderer(termekAutocompleteRenderer);
                             $this.remove();
                         }
                     });
@@ -133,7 +118,7 @@ $(document).ready(function () {
                     },
                     ui: {select_limit: 1}
                 })
-                    .bind('loaded.jstree', function (event, data) {
+                    .on('loaded.jstree', function (event, data) {
                         dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                     });
                 dialogcenter.dialog({
@@ -143,14 +128,14 @@ $(document).ready(function () {
                     buttons: {
                         'Töröl': function () {
                             edit.attr('data-value', 0);
-                            $('span', edit).text(edit.attr('data-text'));
+                            edit.buttonLabel(edit.attr('data-text'));
                             $(this).dialog('close');
                         },
                         'OK': function () {
                             dialogcenter.jstree('get_selected').each(function () {
                                 var treenode = $(this).children('a');
                                 edit.attr('data-value', treenode.attr('id').split('_')[1]);
-                                $('span', edit).text(treenode.text());
+                                edit.buttonLabel(treenode.text());
                             });
                             $(this).dialog('close');
                         },
@@ -161,7 +146,7 @@ $(document).ready(function () {
                 });
             })
                 .button();
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();
             }
@@ -177,29 +162,20 @@ $(document).ready(function () {
         },
         beforeHide: function () {
             var editor;
-            if (!$.browser.mobile) {
+            if (!window.mkwIsMobile) {
                 editor = $('#LeirasEdit').ckeditorGet();
                 if (editor) {
                     editor.destroy();
                 }
             }
         },
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-            //setTimeout('$("#messagecenter").unbind(messagecenterclick).slideToggle("slow");',5000);
-        }
-    };
+    });
 
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             name: 'blogposzt',
             onGetTBody: function () {
-                if (!$.browser.mobile) {
+                if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -284,7 +260,7 @@ $(document).ready(function () {
         mkwcomp.termekfaFilter.init('#termekfa');
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, blogposzt, {independent: true}));
+            $('#mattkarb').mattkarb(blogposzt);
         }
     }
 });

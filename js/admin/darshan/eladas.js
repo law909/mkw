@@ -391,7 +391,7 @@ function eladas() {
         $('#SZEPKartyaNevEdit').val('');
         $('#SZEPKartyaSzamEdit').val('');
         $('tr.szepkartya').hide();
-        vanpenzmozgasedit.attr('checked', 'checked');
+        vanpenzmozgasedit.prop('checked', true);
         $('#ElSzamlaEdit[value="egyeb"]').prop('checked', true);
         showPenztar();
         hideSzamlaDatumok();

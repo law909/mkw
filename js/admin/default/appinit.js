@@ -257,7 +257,7 @@ $(document).ready(
                 },
                 ui: {select_limit: 1}
             })
-                .bind('loaded.jstree', function (event, data) {
+                .on('loaded.jstree', function (event, data) {
                     dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
                 });
             dialogcenter.dialog({
@@ -267,7 +267,7 @@ $(document).ready(
                 buttons: {
                     'Töröl': function () {
                         edit.attr('data-value', 0);
-                        $('span', edit).text(edit.attr('data-text'));
+                        edit.buttonLabel(edit.attr('data-text'));
                         input.val(0);
                         $(this).dialog('close');
                     },
@@ -277,7 +277,7 @@ $(document).ready(
                                 id = treenode.attr('id').split('_')[1];
                             edit.attr('data-value', id);
                             input.val(id);
-                            $('span', edit).text(treenode.text());
+                            edit.buttonLabel(treenode.text());
                         });
                         $(this).dialog('close');
                     },

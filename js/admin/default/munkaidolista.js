@@ -1,15 +1,13 @@
-$(document).ready(function() {
-    var dialogcenter=$('#dialogcenter');
+$(document).ready(function () {
 
-    $('#mattkarb').mattkarb({
-        independent: true,
-        beforeShow: function() {
+    $('#mattkarb').mattkarb(new MattkarbConfig({
+        beforeShow: function () {
 
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
-            $('.js-okbutton').on('click', function(e) {
-                var $ff, $c, cimkek = [];
+            $('.js-okbutton').on('click', function (e) {
+                let $ff;
                 e.preventDefault();
                 $ff = $('#munkaido');
                 $ff.attr('action', $(this).attr('href'));
@@ -17,5 +15,5 @@ $(document).ready(function() {
             }).button();
 
         }
-    });
+    }));
 });

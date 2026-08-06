@@ -1,20 +1,9 @@
 $(document).ready(function () {
     let dialogcenter = $('#dialogcenter');
 
-    let meretsor = {
-        container: '#mattkarb',
-        viewUrl: '/admin/meretsor/getkarb',
-        newWindowUrl: '/admin/meretsor/viewkarb',
-        saveUrl: '/admin/meretsor/save',
-        onSubmit: function () {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click', messagecenterclick)
-                .slideToggle('slow');
-        }
-    };
+    let meretsor = new MattkarbConfig({
+        entityName: 'meretsor',
+    });
 
     if ($.fn.mattable) {
         var lfilternames = ['#nevfilter'];
@@ -62,7 +51,7 @@ $(document).ready(function () {
 
     } else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, meretsor, {independent: true}));
+            $('#mattkarb').mattkarb(meretsor);
         }
     }
 });

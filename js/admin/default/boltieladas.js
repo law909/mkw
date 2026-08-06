@@ -322,7 +322,7 @@ var boltieladas = (function ($) {
                     return;
                 }
                 var $inp = $(this);
-                var kod = $.trim($inp.val());
+                var kod = ($inp.val() || '').trim();
                 $inp.autocomplete('close');
                 $inp.val('');
                 if (kod !== '') {
