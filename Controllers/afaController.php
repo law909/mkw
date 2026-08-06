@@ -40,7 +40,6 @@ class afaController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $this->setEntityFieldsFromRequest($obj);
-        $obj->setMagyar($this->params->getBoolRequestParam('magyar', false));
         return $obj;
     }
 

@@ -41,8 +41,6 @@ class valutanemController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setKerekit($this->params->getBoolRequestParam('kerekit', false));
-        $obj->setHivatalos($this->params->getBoolRequestParam('hivatalos', false));
 
         $bankszamla = $this->getRepo(\Entities\Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla', 0));
         $obj->setBankszamla($bankszamla ?: null);

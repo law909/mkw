@@ -35,8 +35,6 @@ class raktarController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setMozgat($this->params->getBoolRequestParam('mozgat', false));
-        $obj->setArchiv($this->params->getBoolRequestParam('archiv', false));
 
         return $obj;
     }

@@ -84,7 +84,6 @@ class jogaberletController extends \mkwhelpers\MattableController
             $obj->removePartner();
         }
         $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
-        $obj->setLejart($this->params->getBoolRequestParam('lejart'));
         if (!$oldlejart && $oldlejart !== $obj->isLejart()) {
             $obj->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletDatumLejartSablon));
         }

@@ -35,7 +35,6 @@ class jogateremController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', false));
 
         return $obj;
     }

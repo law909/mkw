@@ -35,21 +35,6 @@ class partnertipusController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setBelephet($this->params->getBoolRequestParam('belephet', false));
-        $obj->setBelephet2($this->params->getBoolRequestParam('belephet2', false));
-        $obj->setBelephet3($this->params->getBoolRequestParam('belephet3', false));
-        $obj->setBelephet4($this->params->getBoolRequestParam('belephet4', false));
-        $obj->setBelephet5($this->params->getBoolRequestParam('belephet5', false));
-        $obj->setBelephet6($this->params->getBoolRequestParam('belephet6', false));
-        $obj->setBelephet7($this->params->getBoolRequestParam('belephet7', false));
-        $obj->setBelephet8($this->params->getBoolRequestParam('belephet8', false));
-        $obj->setBelephet9($this->params->getBoolRequestParam('belephet9', false));
-        $obj->setBelephet10($this->params->getBoolRequestParam('belephet10', false));
-        $obj->setBelephet11($this->params->getBoolRequestParam('belephet11', false));
-        $obj->setBelephet12($this->params->getBoolRequestParam('belephet12', false));
-        $obj->setBelephet13($this->params->getBoolRequestParam('belephet13', false));
-        $obj->setBelephet14($this->params->getBoolRequestParam('belephet14', false));
-        $obj->setBelephet15($this->params->getBoolRequestParam('belephet15', false));
 
         return $obj;
     }

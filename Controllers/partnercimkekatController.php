@@ -35,7 +35,6 @@ class partnercimkekatController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setLathato($this->params->getBoolRequestParam('lathato', false));
 
         return $obj;
     }

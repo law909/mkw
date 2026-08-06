@@ -35,11 +35,6 @@ class termekcimkekatController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setLathato($this->params->getBoolRequestParam('lathato', false));
-        $obj->setTermeklaponlathato($this->params->getBoolRequestParam('termeklaponlathato', false));
-        $obj->setTermekszurobenlathato($this->params->getBoolRequestParam('termekszurobenlathato', false));
-        $obj->setTermeklistabanlathato($this->params->getBoolRequestParam('termeklistabanlathato', false));
-        $obj->setTermekakciodobozbanlathato($this->params->getBoolRequestParam('termekakciodobozbanlathato', false));
 
         return $obj;
     }

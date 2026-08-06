@@ -35,7 +35,6 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $obj->setOrarendbenszerepel($this->params->getBoolRequestParam('orarendbenszerepel', false));
 
         return $obj;
     }

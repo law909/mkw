@@ -129,7 +129,28 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
      */
     public function setFields($obj, $oper, $pub = false)
     {
-        $obj = $this->setEntityFieldsFromRequest($obj);
+        $obj = $this->setEntityFieldsFromRequest($obj, [
+            'skip' => [
+                'biralatkesz',
+                'konferencianszerepelhet',
+                'vegleges',
+                'b1biralatkesz',
+                'b2biralatkesz',
+                'b3biralatkesz',
+                'szerzo1email',
+                'szerzo2email',
+                'szerzo3email',
+                'szerzo4email',
+                'szerzo5email',
+                'szerzo6email',
+                'szerzo7email',
+                'szerzo8email',
+                'szerzo9email',
+                'szerzo10email',
+                'opponensemail',
+                'beszelgetopartneremail',
+            ]
+        ]);
         if (!$pub) {
             $obj->setBiralatkesz($this->params->getBoolRequestParam('biralatkesz'));
             $obj->setKonferencianszerepelhet($this->params->getBoolRequestParam('konferencianszerepelhet'));
