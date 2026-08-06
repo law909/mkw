@@ -39,9 +39,13 @@ class importController extends \mkwhelpers\Controller
     public function __construct()
     {
         parent::__construct();
+        $sizes = [];
+        foreach (\Services\MediatarService::SIZES as $key => $box) {
+            $sizes[$key] = $box[0] . 'x' . $box[1];
+        }
         $this->settings = [
-            'quality' => 80,
-            'sizes' => ['100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800']
+            'quality' => \Services\MediatarService::QUALITY,
+            'sizes' => $sizes
         ];
     }
 

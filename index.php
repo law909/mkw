@@ -102,7 +102,12 @@ function exc_handler($e)
 //set_exception_handler('exc_handler');
 
 if ($ini['developer']) {
-    if (in_array(\mkw\store::getExtension($_SERVER['REQUEST_URI']), ['jpg', 'gif', 'png', 'jpeg'])) {
+    // Csak az ÚTVONALAT nézzük, a query stringet nem: a getExtension() az egész
+    // REQUEST_URI utolsó pontja utáni részt adja vissza, így egy
+    // "?...&sel=kep.jpg" alakú paraméter is "jpg"-nek látszana, és a kérés némán,
+    // üres 200-zal elszállna (pl. a médiatár browse/thumb/usage végpontjai).
+    $__path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if (in_array(\mkw\store::getExtension($__path), ['jpg', 'gif', 'png', 'jpeg'])) {
         die();
     }
 }

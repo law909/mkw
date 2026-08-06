@@ -1321,6 +1321,16 @@ class store
         return self::getSetupValue('arsavok');
     }
 
+    /**
+     * Saját médiatár a CKFinder helyett. Hiányzó vagy 0 érték ⇒ marad a CKFinder.
+     * Szándékosan opt-in: a setup.ini-k követetlenek, így a deploy önmagában
+     * egyetlen deploymentet sem billent át.
+     */
+    public static function isMediatar()
+    {
+        return self::getSetupValue('mediatar');
+    }
+
     public static function isEmailTemplateCKEditor()
     {
         return self::getSetupValue('emailtemplateckeditor');

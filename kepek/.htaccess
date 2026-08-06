@@ -1,0 +1,14 @@
+# Médiatár – mélységi védelem a feltöltési könyvtár fölött.
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+<FilesMatch "\.(?i:php|phtml|phar|php[0-9]|pl|py|cgi|asp|aspx|jsp|shtml|htaccess)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes -ExecCGI
+
+RemoveHandler .php .phtml .phar
+AddType text/plain .php .phtml

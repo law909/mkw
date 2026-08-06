@@ -12,7 +12,12 @@
     <script type="text/javascript" src="/js/admin/default/accounting.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/tools.js"></script>
     <script type="text/javascript" src="/js/admin/default/mkwcomp.js"></script>
-    <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+    {* Pontosan az egyik töltődik be – mindkettő window.CKFinder-t definiál. *}
+    {if ($setup.mediatar|default:0)}
+        <script type="text/javascript" src="/js/admin/default/mediatar.js"></script>
+    {else}
+        <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+    {/if}
     <script type="text/javascript">window.mattableMindigNyitva = {$mindignyitva|default:0};</script>
     {block "inhead"}
     {/block}

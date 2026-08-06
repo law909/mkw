@@ -36,9 +36,16 @@ There is no formal test framework. Per `.junie/AGENTS.md`: do not create tests u
 Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored on `mkw\store`:
 
 - **`config.ini`** — DB credentials, mail/SMTP, paths (templates, images), `developer`, `sqllog`, `cache` (`apc` | `file` | empty = ArrayAdapter), `main.theme`.
-  Read via `store::getConfigValue($key)`.
+  Read via `store::getConfigValue($key)`. Parsed **without sections**, so keys are flat and dotted (`path.template`, `db.driver`, `mediatar.type.Images.ext`).
+  Comments must start with `;` — a `#` line is *not* a comment to `parse_ini_file()` and can make the whole file unparseable (every request then 500s).
+  - `mediatar.type.<Name>.{dir,ext,max}` — optional per-deployment override of the media library's resource types (`Services\MediatarService::getTypes()`,
+    default in `DEFAULTTYPES`). Field-level: writing only `ext` keeps the default `dir`/`max`. `max` understands `50M`; `0` means the PHP upload limit decides.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,
-  `webshopnum`, `enabledwebshops`, …). Read via `store::getSetupValue($key)`.
+  `webshopnum`, `enabledwebshops`, `mediatar`, `mediatarstrictorigin`, …). Read via `store::getSetupValue($key)`.
+  - `mediatar = 1` swaps the legacy CKFinder 2.3 file browser for the in-house media library (`Services/MediatarService.php`, `Controllers/mediatarController.php`,
+    `js/admin/default/mediatar.js`). Missing/`0` keeps CKFinder — the switch is deliberately opt-in per deployment, and flipping it takes effect on the next
+    request (clear `tpl/template_c/` so `base.tpl` recompiles). `mediatarstrictorigin = 1` turns the media library's Origin/Referer check from log-only into
+    enforcing. See `docs/mediatar.md`.
 
 `developer = 1` enables: always-regenerate proxy classes, error display, SQL logging (when `sqllog = 1`). Production should run with `developer = 0` and a real
 cache (`apc` recommended).

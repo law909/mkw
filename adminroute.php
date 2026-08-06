@@ -8,6 +8,28 @@ $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'admi
 $router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
 $router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
+
+// --- Médiatár (a CKFinder helyett) ---
+// A kapcsoló mögé zárva: a "mediatar" egyetlen setup.ini-kulcsként kapcsolja a
+// frontendet és a backendet is, mediatar = 0 mellett nincs használaton kívüli végpont.
+// A nevek "admin"-nal kezdődnek → az index.php a Dolgozo sessionhöz köti őket.
+if (\mkw\store::isMediatar()) {
+    $router->map('GET', '/admin/mediatar/browse', 'mediatarController#browse', 'adminmediatarbrowse');
+    $router->map('GET', '/admin/mediatar/list', 'mediatarController#jsonlist', 'adminmediatarjsonlist');
+    $router->map('GET', '/admin/mediatar/thumb', 'mediatarController#thumb', 'adminmediatarthumb');
+    $router->map('GET', '/admin/mediatar/usage', 'mediatarController#usage', 'adminmediatarusage');
+    // Az olvasó végpontok szándékosan az isClosed() guardon kívül vannak:
+    // zárt boltban is lehessen böngészni, csak írni ne.
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/mediatar/upload', 'mediatarController#upload', 'adminmediatarupload');
+        $router->map('POST', '/admin/mediatar/quickupload', 'mediatarController#quickUpload', 'adminmediatarquickupload');
+        $router->map('POST', '/admin/mediatar/createfolder', 'mediatarController#createFolder', 'adminmediatarcreatefolder');
+        $router->map('POST', '/admin/mediatar/rename', 'mediatarController#rename', 'adminmediatarrename');
+        $router->map('POST', '/admin/mediatar/delete', 'mediatarController#delete', 'adminmediatardelete');
+        $router->map('POST', '/admin/mediatar/deletefolder', 'mediatarController#deleteFolder', 'adminmediatardeletefolder');
+    }
+}
+
 $router->map('GET', '/admin/afa/viewlist', 'afaController#viewlist', 'adminafaviewlist');
 $router->map('GET', '/admin/afa/getlistbody', 'afaController#getlistbody', 'adminafagetlistbody');
 $router->map('GET', '/admin/afa/getkarb', 'afaController#getkarb', 'adminafagetkarb');

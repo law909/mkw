@@ -1,0 +1,379 @@
+/* Médiatár – választó UI. Az oldal iframe-ben vagy popup ablakban él, ezért
+   teljes magasságú flex-oszlop, saját görgethető rács-területtel. */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body.mediatar {
+    font: 12px/1.4 Verdana, Arial, Helvetica, sans-serif;
+    color: #333;
+    background: #fff;
+    overflow: hidden;
+}
+
+#mediatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+/* --- fejléc --- */
+
+.mt-warn {
+    background: #fff4d6;
+    border-bottom: 1px solid #e6cf87;
+    color: #7a5b00;
+    padding: 6px 10px;
+    font-size: 11px;
+}
+
+.mt-head {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+    background: #f7f7f7;
+}
+
+.mt-crumbs {
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mt-crumbs a {
+    color: #1c5f9e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mt-crumbs a:hover {
+    text-decoration: underline;
+}
+
+.mt-crumbs .sep {
+    color: #999;
+    margin: 0 4px;
+}
+
+.mt-crumbs .cur {
+    font-weight: bold;
+}
+
+.mt-headtools {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.mt-headtools button {
+    margin-left: 4px;
+}
+
+.mt-search {
+    width: 150px;
+    padding: 3px 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* --- rács --- */
+
+.mt-grid {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    outline: none;
+}
+
+.mt-tile {
+    display: inline-block;
+    vertical-align: top;
+    width: 120px;
+    margin: 0 6px 10px 0;
+    padding: 4px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.mt-tile:hover {
+    background: #f0f6fb;
+    border-color: #cde0f0;
+}
+
+.mt-tile.sel {
+    background: #d9eaf7;
+    border-color: #7fb2dc;
+}
+
+.mt-tile .box {
+    height: 90px;
+    line-height: 90px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.mt-tile .box img {
+    max-width: 100%;
+    max-height: 88px;
+    vertical-align: middle;
+}
+
+.mt-tile .name {
+    margin-top: 4px;
+    font-size: 11px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-height: 2.8em;
+    overflow: hidden;
+}
+
+.mt-tile .icon {
+    font-size: 34px;
+    color: #9ab;
+}
+
+/* Nem-kép fájl: a kiterjesztés maga az ikon (pdf, docx, zip …) */
+.mt-tile .ext {
+    display: inline-block;
+    padding: 6px 10px;
+    border: 2px solid #c3cdd6;
+    border-radius: 4px;
+    background: #fff;
+    color: #5a6b7a;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    line-height: 1.2;
+    max-width: 92%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.mt-tile.folder .box {
+    background: #fdf6e3;
+    border-color: #eadfc0;
+}
+
+.mt-tile.folder .icon {
+    color: #d3a83b;
+}
+
+.mt-tile.folder .name {
+    font-weight: bold;
+}
+
+.mt-tile .fdel {
+    display: none;
+    float: right;
+    color: #a00;
+    font-size: 11px;
+    line-height: 1;
+    padding: 1px 3px;
+}
+
+.mt-tile.folder:hover .fdel {
+    display: block;
+}
+
+.mt-empty {
+    color: #888;
+    padding: 20px 4px;
+}
+
+.mt-more {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 0 0 8px;
+}
+
+/* --- feltöltés --- */
+
+.mt-drop {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, .9);
+    border: 3px dashed #7fb2dc;
+    z-index: 50;
+    text-align: center;
+    color: #1c5f9e;
+    font-size: 16px;
+}
+
+.mt-drop.on {
+    display: block;
+}
+
+.mt-drop span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-top: -10px;
+}
+
+.mt-queue {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    max-height: 120px;
+    overflow-y: auto;
+    border-top: 1px solid #ddd;
+    background: #fbfbfb;
+    display: none;
+}
+
+.mt-queue.on {
+    display: block;
+}
+
+.mt-qitem {
+    padding: 3px 10px;
+    font-size: 11px;
+    border-bottom: 1px solid #eee;
+}
+
+.mt-qitem .bar {
+    height: 4px;
+    background: #e5e5e5;
+    border-radius: 2px;
+    margin-top: 2px;
+    overflow: hidden;
+}
+
+.mt-qitem .bar i {
+    display: block;
+    height: 4px;
+    width: 0;
+    background: #4a90c4;
+}
+
+.mt-qitem.err {
+    color: #a00;
+}
+
+.mt-qitem.ok {
+    color: #2a7;
+}
+
+/* --- lábléc --- */
+
+.mt-foot {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px 10px;
+    border-top: 1px solid #ddd;
+    background: #f7f7f7;
+}
+
+.mt-info {
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #666;
+    font-size: 11px;
+}
+
+.mt-foottools {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.mt-foottools button {
+    margin-left: 4px;
+}
+
+.mt-foottools .mt-primary {
+    font-weight: bold;
+}
+
+.mt-msg {
+    padding: 6px 10px;
+    background: #fde8e8;
+    color: #a00;
+    border-bottom: 1px solid #f0c0c0;
+    font-size: 11px;
+}
+
+/* --- kérdező dialógusok (jQuery UI, a natív prompt/confirm helyett) --- */
+
+.mt-ask {
+    font: 12px/1.5 Verdana, Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+.mt-askmsg {
+    background: #fff4d6;
+    border: 1px solid #e6cf87;
+    border-radius: 3px;
+    color: #7a5b00;
+    padding: 6px 8px;
+    margin-bottom: 10px;
+}
+
+.mt-asktext {
+    margin-bottom: 4px;
+}
+
+.mt-asklabel {
+    display: block;
+    margin-bottom: 4px;
+    color: #555;
+}
+
+.mt-askinput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font: 12px/1.4 Verdana, Arial, Helvetica, sans-serif;
+}
+
+.mt-askinput:focus {
+    border-color: #7fb2dc;
+    outline: none;
+}

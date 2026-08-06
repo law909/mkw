@@ -2,7 +2,7 @@
 
 namespace mkw;
 
-class Thumbnail
+class thumbnail
 {
 
     public static function createThumb($sourceFile, $targetFile, $maxWidth, $maxHeight, $quality, $preserverAspectRatio, $bmpSupported = false)
@@ -239,6 +239,15 @@ class Thumbnail
      * convert shorthand php.ini notation into bytes, much like how the PHP source does it
      * @link http://pl.php.net/manual/en/function.ini-get.php
      *
+     * A számot és a rövidítést KÜLÖN kezeljük. A korábbi változat a rövidítést még
+     * tartalmazó sztringen szorzott (`'50M' * 1024`), ami PHP 7.1 óta minden híváskor
+     * "A non-numeric value encountered" warningot ír a logba, PHP 8 alatt pedig egy
+     * csupa betűs érték már TypeError-t dobna. Az `(int)` cast a vezető számjegyeket
+     * veszi, pontosan úgy, ahogy a PHP is olvassa az ini-értékeket.
+     *
+     * A `-1` (a memory_limit „korlátlan" jelölése) változatlanul -1 marad, mert nincs
+     * mögötte rövidítés.
+     *
      * @static
      * @access public
      *
@@ -248,22 +257,24 @@ class Thumbnail
      */
     public static function returnBytes($val)
     {
-        $val = trim($val);
-        if (!$val) {
+        $val = trim((string)$val);
+        if ($val === '') {
             return 0;
         }
-        $last = strtolower($val[strlen($val) - 1]);
-        switch ($last) {
+        $bytes = (int)$val;
+        switch (strtolower(substr($val, -1))) {
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
-                $val *= 1024;
+                $bytes *= 1024;
+            // no break
             case 'm':
-                $val *= 1024;
+                $bytes *= 1024;
+            // no break
             case 'k':
-                $val *= 1024;
+                $bytes *= 1024;
         }
 
-        return $val;
+        return $bytes;
     }
 
     /**
