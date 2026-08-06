@@ -6,6 +6,10 @@ class SzotarRepository extends \mkwhelpers\Repository {
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Szotar');
+		$this->setOrders([
+		    '1' => ['caption' => 'mit szerint növekvő', 'order' => ['_xx.mit' => 'ASC']],
+		    '2' => ['caption' => 'mit szerint csökkenő', 'order' => ['_xx.mit' => 'DESC']],
+		]);
 	}
 
 	public function isAllTranslated() {

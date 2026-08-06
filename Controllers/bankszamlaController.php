@@ -3,68 +3,98 @@
 namespace Controllers;
 
 use Entities\Bankszamla;
-use Entities\Valutanem;
-use mkw\store;
 
-class bankszamlaController extends \mkwhelpers\JQGridController
+class bankszamlaController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
         $this->setEntityName(Bankszamla::class);
+        $this->setKarbFormTplName('bankszamlakarbform.tpl');
+        $this->setKarbTplName('bankszamlakarb.tpl');
+        $this->setListBodyRowTplName('bankszamlalista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        $valuta = $sor->getValutanem();
-        return [
-            $sor->getBanknev(),
-            $sor->getBankcim(),
-            $sor->getSzamlaszam(),
-            $sor->getSwift(),
-            $sor->getIban(),
-            (isset($valuta) ? $valuta->getNev() : '')
-        ];
+        if (!$t) {
+            $t = new Bankszamla();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        $x['valutanemid'] = $t->getValutanem() ? $t->getValutanem()->getId() : null;
+        $x['valutanemnev'] = $t->getValutanem() ? $t->getValutanem()->getNev() : '';
+        if ($forKarb) {
+            $valutanemc = new valutanemController();
+            $x['valutanemlist'] = $valutanemc->getSelectList($x['valutanemid']);
+        }
+        return $x;
     }
 
+    /**
+     * @param \Entities\Bankszamla $obj
+     *
+     * @return \Entities\Bankszamla
+     */
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $valutanem = $this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
-        if ($valutanem) {
-            $obj->setValutanem($valutanem);
-        } else {
-            $obj->setValutanem(null);
-        }
+
+        $valutanem = $this->getRepo(\Entities\Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
+        $obj->setValutanem($valutanem ?: null);
+
         return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('bankszamlalista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('banknev', null))) {
-                $filter->addFilter('banknev', 'LIKE', '%' . $this->params->getStringRequestParam('banknev') . '%');
-            }
-            if (!is_null($this->params->getStringRequestParam('bankcim', null))) {
-                $filter->addFilter('bankcim', 'LIKE', '%' . $this->params->getStringRequestParam('bankcim') . '%');
-            }
-            if (!is_null($this->params->getStringRequestParam('szamlaszam', null))) {
-                $filter->addFilter('szamlaszam', 'LIKE', '%' . $this->params->getStringRequestParam('szamlaszam') . '%');
-            }
-            if (!is_null($this->params->getStringRequestParam('swift', null))) {
-                $filter->addFilter('swift', 'LIKE', '%' . $this->params->getStringRequestParam('swift') . '%');
-            }
-            if (!is_null($this->params->getStringRequestParam('iban', null))) {
-                $filter->addFilter('iban', 'LIKE', '%' . $this->params->getStringRequestParam('iban') . '%');
-            }
-            if (!is_null($this->params->getStringRequestParam('valutanem', null))) {
-                $filter->addFilter('v.nev', 'LIKE', '%' . $this->params->getStringRequestParam('valutanem') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('banknev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('bankszamlalista.tpl');
+
+        $view->setVar('pagetitle', t('Bankszámlák'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Bankszámla'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminbankszamlasave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null)
@@ -87,5 +117,4 @@ class bankszamlaController extends \mkwhelpers\JQGridController
         $ret .= '</select>';
         echo $ret;
     }
-
 }

@@ -2,63 +2,113 @@
 
 namespace Controllers;
 
-use Entities\Afa;
-use Entities\Csk;
 use Entities\Vtsz;
-use mkw\store;
 
-class vtszController extends \mkwhelpers\JQGridController
+class vtszController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
         $this->setEntityName(Vtsz::class);
+        $this->setKarbFormTplName('vtszkarbform.tpl');
+        $this->setKarbTplName('vtszkarb.tpl');
+        $this->setListBodyRowTplName('vtszlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        $afa = $sor->getAfa();
-        $csk = $sor->getCsk();
-        $kt = $sor->getKt();
-        return [
-            $sor->getSzam(),
-            $sor->getNev(),
-            (isset($afa) ? $afa->getNev() : ''),
-            (isset($csk) ? $csk->getNev() : ''),
-            (isset($kt) ? $kt->getNev() : '')
-        ];
+        if (!$t) {
+            $t = new Vtsz();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        $x['afaid'] = $t->getAfa() ? $t->getAfa()->getId() : null;
+        $x['afanev'] = $t->getAfa() ? $t->getAfa()->getNev() : '';
+        $x['cskid'] = $t->getCsk() ? $t->getCsk()->getId() : null;
+        $x['csknev'] = $t->getCsk() ? $t->getCsk()->getNev() : '';
+        $x['ktid'] = $t->getKt() ? $t->getKt()->getId() : null;
+        $x['ktnev'] = $t->getKt() ? $t->getKt()->getNev() : '';
+        if ($forKarb) {
+            $afac = new afaController();
+            $x['afalist'] = $afac->getSelectList($x['afaid']);
+            $cskc = new cskController();
+            $x['csklist'] = $cskc->getSelectList($x['cskid']);
+            $ktc = new cskController();
+            $x['ktlist'] = $ktc->getSelectList($x['ktid']);
+        }
+        return $x;
     }
 
+    /**
+     * @param \Entities\Vtsz $obj
+     *
+     * @return \Entities\Vtsz
+     */
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        $afa = store::getEm()->getReference(Afa::class, $this->params->getIntRequestParam('afa', $obj->getAfa()));
-        $obj->setAfa($afa);
-        $csk = store::getEm()->getReference(Csk::class, $this->params->getIntRequestParam('csk', $obj->getCsk()));
-        if ($this->params->getIntRequestParam('csk', $obj->getCsk()) && $csk) {
-            $obj->setCsk($csk);
-        }
-        $kt = store::getEm()->getReference(Csk::class, $this->params->getIntRequestParam('kt', $obj->getKt()));
-        if ($this->params->getIntRequestParam('kt', $obj->getKt()) && $kt) {
-            $obj->setKt($kt);
-        }
+
+        $afa = $this->getRepo(\Entities\Afa::class)->find($this->params->getIntRequestParam('afa', 0));
+        $obj->setAfa($afa ?: null);
+
+        $csk = $this->getRepo(\Entities\Csk::class)->find($this->params->getIntRequestParam('csk', 0));
+        $obj->setCsk($csk ?: null);
+
+        $kt = $this->getRepo(\Entities\Csk::class)->find($this->params->getIntRequestParam('kt', 0));
+        $obj->setKt($kt ?: null);
+
         return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('vtszlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('afa', null))) {
-                $filter->addFilter('a.nev', 'LIKE', '%' . $this->params->getStringRequestParam('afa') . '%');
-            }
-            if (!is_null($this->params->getRequestParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('szam', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('vtszlista.tpl');
+
+        $view->setVar('pagetitle', t('VTSZ'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('VTSZ'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminvtszsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid)
@@ -78,5 +128,4 @@ class vtszController extends \mkwhelpers\JQGridController
         }
         return $res;
     }
-
 }

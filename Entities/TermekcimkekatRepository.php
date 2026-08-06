@@ -11,6 +11,11 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Termekcimkekat');
+        $this->setOrders([
+            '1' => ['caption' => 'sorrend szerint', 'order' => ['_xx.sorrend' => 'ASC']],
+            '2' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '3' => ['caption' => 'név szerint csökkenő', 'order' => ['_xx.nev' => 'DESC']],
+        ]);
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
@@ -61,7 +66,7 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository
     public function getCount($filter)
     {
         $q = $this->_em->createQuery(
-            'SELECT COUNT(_xx.id)'
+            'SELECT COUNT(DISTINCT _xx.id)'
             . ' FROM Entities\Termekcimkekat _xx'
             . ' LEFT JOIN _xx.cimkek c '
             . $this->getFilterString($filter)

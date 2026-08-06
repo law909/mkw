@@ -39,25 +39,54 @@ $router->map('GET', '/admin/afa/navcaselist', 'afaController#navcaselist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
 }
-$router->map('GET', '/admin/arfolyam/jsonlist', 'arfolyamController#jsonlist', 'adminarfolyamjsonlist');
-$router->map('GET', '/admin/arfolyam/htmllist', 'arfolyamController#htmllist', 'adminarfolyamhtmllist');
-$router->map('POST', '/admin/arfolyam/save', 'arfolyamController#save', 'adminarfolyamsave');
+$router->map('GET', '/admin/arfolyam/viewlist', 'arfolyamController#viewlist', 'adminarfolyamviewlist');
+$router->map('GET', '/admin/arfolyam/getlistbody', 'arfolyamController#getlistbody', 'adminarfolyamgetlistbody');
+$router->map('GET', '/admin/arfolyam/getkarb', 'arfolyamController#getkarb', 'adminarfolyamgetkarb');
+$router->map('GET', '/admin/arfolyam/viewkarb', 'arfolyamController#viewkarb', 'adminarfolyamviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/arfolyam/save', 'arfolyamController#save', 'adminarfolyamsave');
+}
 $router->map('GET', '/admin/arfolyam/getarfolyam', 'arfolyamController#getarfolyam', 'admingetarfolyam');
 $router->map('POST', '/admin/arfolyam/download', 'arfolyamController#downloadArfolyam', 'admindownloadarfolyam');
-$router->map('GET', '/admin/unnepnap/jsonlist', 'unnepnapController#jsonlist', 'adminunnepnapjsonlist');
+$router->map('GET', '/admin/unnepnap/viewlist', 'unnepnapController#viewlist', 'adminunnepnapviewlist');
+$router->map('GET', '/admin/unnepnap/getlistbody', 'unnepnapController#getlistbody', 'adminunnepnapgetlistbody');
+$router->map('GET', '/admin/unnepnap/getkarb', 'unnepnapController#getkarb', 'adminunnepnapgetkarb');
+$router->map('GET', '/admin/unnepnap/viewkarb', 'unnepnapController#viewkarb', 'adminunnepnapviewkarb');
 $router->map('GET', '/admin/unnepnap/htmllist', 'unnepnapController#htmllist', 'adminunnepnaphtmllist');
-$router->map('POST', '/admin/unnepnap/save', 'unnepnapController#save', 'adminunnepnapsave');
-$router->map('GET', '/admin/bankszamla/jsonlist', 'bankszamlaController#jsonlist', 'adminbankszamlajsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/unnepnap/save', 'unnepnapController#save', 'adminunnepnapsave');
+}
+$router->map('GET', '/admin/bankszamla/viewlist', 'bankszamlaController#viewlist', 'adminbankszamlaviewlist');
+$router->map('GET', '/admin/bankszamla/getlistbody', 'bankszamlaController#getlistbody', 'adminbankszamlagetlistbody');
+$router->map('GET', '/admin/bankszamla/getkarb', 'bankszamlaController#getkarb', 'adminbankszamlagetkarb');
+$router->map('GET', '/admin/bankszamla/viewkarb', 'bankszamlaController#viewkarb', 'adminbankszamlaviewkarb');
 $router->map('GET', '/admin/bankszamla/htmllist', 'bankszamlaController#htmllist', 'adminbankszamlahtmllist');
-$router->map('POST', '/admin/bankszamla/save', 'bankszamlaController#save', 'adminbankszamlasave');
-$router->map('GET', '/admin/penztar/jsonlist', 'penztarController#jsonlist', 'adminpenztarjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/bankszamla/save', 'bankszamlaController#save', 'adminbankszamlasave');
+}
+$router->map('GET', '/admin/penztar/viewlist', 'penztarController#viewlist', 'adminpenztarviewlist');
+$router->map('GET', '/admin/penztar/getlistbody', 'penztarController#getlistbody', 'adminpenztargetlistbody');
+$router->map('GET', '/admin/penztar/getkarb', 'penztarController#getkarb', 'adminpenztargetkarb');
+$router->map('GET', '/admin/penztar/viewkarb', 'penztarController#viewkarb', 'adminpenztarviewkarb');
 $router->map('GET', '/admin/penztar/htmllist', 'penztarController#htmllist', 'adminpenztarhtmllist');
-$router->map('POST', '/admin/penztar/save', 'penztarController#save', 'adminpenztarsave');
-$router->map('GET', '/admin/csk/jsonlist', 'cskController#jsonlist', 'admincskjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/penztar/save', 'penztarController#save', 'adminpenztarsave');
+}
+$router->map('GET', '/admin/csk/viewlist', 'cskController#viewlist', 'admincskviewlist');
+$router->map('GET', '/admin/csk/getlistbody', 'cskController#getlistbody', 'admincskgetlistbody');
+$router->map('GET', '/admin/csk/getkarb', 'cskController#getkarb', 'admincskgetkarb');
+$router->map('GET', '/admin/csk/viewkarb', 'cskController#viewkarb', 'admincskviewkarb');
 $router->map('GET', '/admin/csk/htmllist', 'cskController#htmllist', 'admincskhtmllist');
-$router->map('POST', '/admin/csk/save', 'cskController#save', 'admincsksave');
-$router->map('GET', '/admin/felhasznalo/jsonlist', 'felhasznaloController#jsonlist', 'adminfelhasznalojsonlist');
-$router->map('POST', '/admin/felhasznalo/save', 'felhasznaloController#save', 'adminfelhasznalosave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/csk/save', 'cskController#save', 'admincsksave');
+}
+$router->map('GET', '/admin/felhasznalo/viewlist', 'felhasznaloController#viewlist', 'adminfelhasznaloviewlist');
+$router->map('GET', '/admin/felhasznalo/getlistbody', 'felhasznaloController#getlistbody', 'adminfelhasznalogetlistbody');
+$router->map('GET', '/admin/felhasznalo/getkarb', 'felhasznaloController#getkarb', 'adminfelhasznalogetkarb');
+$router->map('GET', '/admin/felhasznalo/viewkarb', 'felhasznaloController#viewkarb', 'adminfelhasznaloviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/felhasznalo/save', 'felhasznaloController#save', 'adminfelhasznalosave');
+}
 $router->map('GET', '/admin/jelenlettipus/viewlist', 'jelenlettipusController#viewlist', 'adminjelenlettipusviewlist');
 $router->map('GET', '/admin/jelenlettipus/getlistbody', 'jelenlettipusController#getlistbody', 'adminjelenlettipusgetlistbody');
 $router->map('GET', '/admin/jelenlettipus/getkarb', 'jelenlettipusController#getkarb', 'adminjelenlettipusgetkarb');
@@ -79,12 +108,27 @@ $router->map('GET', '/admin/munkakor/viewkarb', 'munkakorController#viewkarb', '
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/munkakor/save', 'munkakorController#save', 'adminmunkakorsave');
 }
-$router->map('GET', '/admin/partnercimkekat/jsonlist', 'partnercimkekatController#jsonlist', 'adminpartnercimkekatjsonlist');
-$router->map('POST', '/admin/partnercimkekat/save', 'partnercimkekatController#save', 'adminpartnercimkekatsave');
-$router->map('GET', '/admin/raktar/jsonlist', 'raktarController#jsonlist', 'adminraktarjsonlist');
-$router->map('POST', '/admin/raktar/save', 'raktarController#save', 'adminraktarsave');
-$router->map('GET', '/admin/termekcimkekat/jsonlist', 'termekcimkekatController#jsonlist', 'admintermekcimkekatjsonlist');
-$router->map('POST', '/admin/termekcimkekat/save', 'termekcimkekatController#save', 'admintermekcimkekatsave');
+$router->map('GET', '/admin/partnercimkekat/viewlist', 'partnercimkekatController#viewlist', 'adminpartnercimkekatviewlist');
+$router->map('GET', '/admin/partnercimkekat/getlistbody', 'partnercimkekatController#getlistbody', 'adminpartnercimkekatgetlistbody');
+$router->map('GET', '/admin/partnercimkekat/getkarb', 'partnercimkekatController#getkarb', 'adminpartnercimkekatgetkarb');
+$router->map('GET', '/admin/partnercimkekat/viewkarb', 'partnercimkekatController#viewkarb', 'adminpartnercimkekatviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/partnercimkekat/save', 'partnercimkekatController#save', 'adminpartnercimkekatsave');
+}
+$router->map('GET', '/admin/raktar/viewlist', 'raktarController#viewlist', 'adminraktarviewlist');
+$router->map('GET', '/admin/raktar/getlistbody', 'raktarController#getlistbody', 'adminraktargetlistbody');
+$router->map('GET', '/admin/raktar/getkarb', 'raktarController#getkarb', 'adminraktargetkarb');
+$router->map('GET', '/admin/raktar/viewkarb', 'raktarController#viewkarb', 'adminraktarviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/raktar/save', 'raktarController#save', 'adminraktarsave');
+}
+$router->map('GET', '/admin/termekcimkekat/viewlist', 'termekcimkekatController#viewlist', 'admintermekcimkekatviewlist');
+$router->map('GET', '/admin/termekcimkekat/getlistbody', 'termekcimkekatController#getlistbody', 'admintermekcimkekatgetlistbody');
+$router->map('GET', '/admin/termekcimkekat/getkarb', 'termekcimkekatController#getkarb', 'admintermekcimkekatgetkarb');
+$router->map('GET', '/admin/termekcimkekat/viewkarb', 'termekcimkekatController#viewkarb', 'admintermekcimkekatviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekcimkekat/save', 'termekcimkekatController#save', 'admintermekcimkekatsave');
+}
 $router->map('GET', '/admin/termekvaltozatadattipus/viewlist', 'termekvaltozatadattipusController#viewlist', 'admintermekvaltozatadattipusviewlist');
 $router->map('GET', '/admin/termekvaltozatadattipus/getlistbody', 'termekvaltozatadattipusController#getlistbody', 'admintermekvaltozatadattipusgetlistbody');
 $router->map('GET', '/admin/termekvaltozatadattipus/getkarb', 'termekvaltozatadattipusController#getkarb', 'admintermekvaltozatadattipusgetkarb');
@@ -92,19 +136,38 @@ $router->map('GET', '/admin/termekvaltozatadattipus/viewkarb', 'termekvaltozatad
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekvaltozatadattipus/save', 'termekvaltozatadattipusController#save', 'admintermekvaltozatadattipussave');
 }
-$router->map('GET', '/admin/valutanem/jsonlist', 'valutanemController#jsonlist', 'adminvalutanemjsonlist');
+$router->map('GET', '/admin/valutanem/viewlist', 'valutanemController#viewlist', 'adminvalutanemviewlist');
+$router->map('GET', '/admin/valutanem/getlistbody', 'valutanemController#getlistbody', 'adminvalutanemgetlistbody');
+$router->map('GET', '/admin/valutanem/getkarb', 'valutanemController#getkarb', 'adminvalutanemgetkarb');
+$router->map('GET', '/admin/valutanem/viewkarb', 'valutanemController#viewkarb', 'adminvalutanemviewkarb');
 $router->map('GET', '/admin/valutanem/htmllist', 'valutanemController#htmllist', 'adminvalutanemhtmllist');
-$router->map('POST', '/admin/valutanem/save', 'valutanemController#save', 'adminvalutanemsave');
-$router->map('GET', '/admin/vtsz/jsonlist', 'vtszController#jsonlist', 'adminvtszjsonlist');
-$router->map('GET', '/admin/vtsz/htmllist', 'vtszController#htmllist', 'adminvtszhtmllist');
-$router->map('POST', '/admin/vtsz/save', 'vtszController#save', 'adminvtszsave');
-$router->map('GET', '/admin/irszam/jsonlist', 'irszamController#jsonlist', 'adminirszamjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/valutanem/save', 'valutanemController#save', 'adminvalutanemsave');
+}
+$router->map('GET', '/admin/vtsz/viewlist', 'vtszController#viewlist', 'adminvtszviewlist');
+$router->map('GET', '/admin/vtsz/getlistbody', 'vtszController#getlistbody', 'adminvtszgetlistbody');
+$router->map('GET', '/admin/vtsz/getkarb', 'vtszController#getkarb', 'adminvtszgetkarb');
+$router->map('GET', '/admin/vtsz/viewkarb', 'vtszController#viewkarb', 'adminvtszviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/vtsz/save', 'vtszController#save', 'adminvtszsave');
+}
+$router->map('GET', '/admin/irszam/viewlist', 'irszamController#viewlist', 'adminirszamviewlist');
+$router->map('GET', '/admin/irszam/getlistbody', 'irszamController#getlistbody', 'adminirszamgetlistbody');
+$router->map('GET', '/admin/irszam/getkarb', 'irszamController#getkarb', 'adminirszamgetkarb');
+$router->map('GET', '/admin/irszam/viewkarb', 'irszamController#viewkarb', 'adminirszamviewkarb');
 $router->map('GET', '/admin/irszam/htmllist', 'irszamController#htmllist', 'adminirszamhtmllist');
-$router->map('POST', '/admin/irszam/save', 'irszamController#save', 'adminirszamsave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/irszam/save', 'irszamController#save', 'adminirszamsave');
+}
 $router->map('GET', '/admin/irszam', 'irszamController#typeaheadList', 'adminirszamtypeahead');
 $router->map('GET', '/admin/varos', 'irszamController#varosTypeaheadList', 'adminvarostypeahead');
-$router->map('GET', '/admin/rw301/jsonlist', 'rewrite301Controller#jsonlist', 'adminrewrite301jsonlist');
-$router->map('POST', '/admin/rw301/save', 'rewrite301Controller#save', 'adminrewrite301save');
+$router->map('GET', '/admin/rw301/viewlist', 'rewrite301Controller#viewlist', 'adminrewrite301viewlist');
+$router->map('GET', '/admin/rw301/getlistbody', 'rewrite301Controller#getlistbody', 'adminrewrite301getlistbody');
+$router->map('GET', '/admin/rw301/getkarb', 'rewrite301Controller#getkarb', 'adminrewrite301getkarb');
+$router->map('GET', '/admin/rw301/viewkarb', 'rewrite301Controller#viewkarb', 'adminrewrite301viewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/rw301/save', 'rewrite301Controller#save', 'adminrewrite301save');
+}
 $router->map('GET', '/admin/termekcsoport/viewlist', 'termekcsoportController#viewlist', 'admintermekcsoportviewlist');
 $router->map('GET', '/admin/termekcsoport/getlistbody', 'termekcsoportController#getlistbody', 'admintermekcsoportgetlistbody');
 $router->map('GET', '/admin/termekcsoport/getkarb', 'termekcsoportController#getkarb', 'admintermekcsoportgetkarb');
@@ -113,9 +176,14 @@ $router->map('GET', '/admin/termekcsoport/htmllist', 'termekcsoportController#ht
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekcsoport/save', 'termekcsoportController#save', 'admintermekcsoportsave');
 }
-$router->map('GET', '/admin/partnertipus/jsonlist', 'partnertipusController#jsonlist', 'adminpartnertipusjsonlist');
+$router->map('GET', '/admin/partnertipus/viewlist', 'partnertipusController#viewlist', 'adminpartnertipusviewlist');
+$router->map('GET', '/admin/partnertipus/getlistbody', 'partnertipusController#getlistbody', 'adminpartnertipusgetlistbody');
+$router->map('GET', '/admin/partnertipus/getkarb', 'partnertipusController#getkarb', 'adminpartnertipusgetkarb');
+$router->map('GET', '/admin/partnertipus/viewkarb', 'partnertipusController#viewkarb', 'adminpartnertipusviewkarb');
 $router->map('GET', '/admin/partnertipus/htmllist', 'partnertipusController#htmllist', 'adminpartnertipushtmllist');
-$router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 'adminpartnertipussave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 'adminpartnertipussave');
+}
 $router->map('GET', '/admin/orszag/viewlist', 'orszagController#viewlist', 'adminorszagviewlist');
 $router->map('GET', '/admin/orszag/getlistbody', 'orszagController#getlistbody', 'adminorszaggetlistbody');
 $router->map('GET', '/admin/orszag/getkarb', 'orszagController#getkarb', 'adminorszaggetkarb');
@@ -124,25 +192,55 @@ $router->map('GET', '/admin/orszag/htmllist', 'orszagController#htmllist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/orszag/save', 'orszagController#save', 'adminorszagsave');
 }
-$router->map('GET', '/admin/me/jsonlist', 'meController#jsonlist', 'adminmejsonlist');
+$router->map('GET', '/admin/me/viewlist', 'meController#viewlist', 'adminmeviewlist');
+$router->map('GET', '/admin/me/getlistbody', 'meController#getlistbody', 'adminmegetlistbody');
+$router->map('GET', '/admin/me/getkarb', 'meController#getkarb', 'adminmegetkarb');
+$router->map('GET', '/admin/me/viewkarb', 'meController#viewkarb', 'adminmeviewkarb');
 $router->map('GET', '/admin/me/htmllist', 'meController#htmllist', 'adminmehtmllist');
-$router->map('POST', '/admin/me/save', 'meController#save', 'adminmesave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/me/save', 'meController#save', 'adminmesave');
+}
 $router->map('GET', '/admin/me/navtipuslist', 'meController#navtipuslist', 'adminmenavtipuslist');
-$router->map('GET', '/admin/korzetszam/jsonlist', 'korzetszamController#jsonlist', 'adminkorzetszamjsonlist');
+$router->map('GET', '/admin/korzetszam/viewlist', 'korzetszamController#viewlist', 'adminkorzetszamviewlist');
+$router->map('GET', '/admin/korzetszam/getlistbody', 'korzetszamController#getlistbody', 'adminkorzetszamgetlistbody');
+$router->map('GET', '/admin/korzetszam/getkarb', 'korzetszamController#getkarb', 'adminkorzetszamgetkarb');
+$router->map('GET', '/admin/korzetszam/viewkarb', 'korzetszamController#viewkarb', 'adminkorzetszamviewkarb');
 $router->map('GET', '/admin/korzetszam/htmllist', 'korzetszamController#htmllist', 'adminkorzetszamhtmllist');
-$router->map('POST', '/admin/korzetszam/save', 'korzetszamController#save', 'adminkorzetszamsave');
-$router->map('GET', '/admin/szotar/jsonlist', 'szotarController#jsonlist', 'adminszotarjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/korzetszam/save', 'korzetszamController#save', 'adminkorzetszamsave');
+}
+$router->map('GET', '/admin/szotar/viewlist', 'szotarController#viewlist', 'adminszotarviewlist');
+$router->map('GET', '/admin/szotar/getlistbody', 'szotarController#getlistbody', 'adminszotargetlistbody');
+$router->map('GET', '/admin/szotar/getkarb', 'szotarController#getkarb', 'adminszotargetkarb');
+$router->map('GET', '/admin/szotar/viewkarb', 'szotarController#viewkarb', 'adminszotarviewkarb');
 $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'adminszotarhtmllist');
-$router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
-$router->map('GET', '/admin/jogaterem/jsonlist', 'jogateremController#jsonlist', 'adminjogateremjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
+}
+$router->map('GET', '/admin/jogaterem/viewlist', 'jogateremController#viewlist', 'adminjogateremviewlist');
+$router->map('GET', '/admin/jogaterem/getlistbody', 'jogateremController#getlistbody', 'adminjogateremgetlistbody');
+$router->map('GET', '/admin/jogaterem/getkarb', 'jogateremController#getkarb', 'adminjogateremgetkarb');
+$router->map('GET', '/admin/jogaterem/viewkarb', 'jogateremController#viewkarb', 'adminjogateremviewkarb');
 $router->map('GET', '/admin/jogaterem/htmllist', 'jogateremController#htmllist', 'adminjogateremhtmllist');
-$router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
-$router->map('GET', '/admin/jogaoratipus/jsonlist', 'jogaoratipusController#jsonlist', 'adminjogaoratipusjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
+}
+$router->map('GET', '/admin/jogaoratipus/viewlist', 'jogaoratipusController#viewlist', 'adminjogaoratipusviewlist');
+$router->map('GET', '/admin/jogaoratipus/getlistbody', 'jogaoratipusController#getlistbody', 'adminjogaoratipusgetlistbody');
+$router->map('GET', '/admin/jogaoratipus/getkarb', 'jogaoratipusController#getkarb', 'adminjogaoratipusgetkarb');
+$router->map('GET', '/admin/jogaoratipus/viewkarb', 'jogaoratipusController#viewkarb', 'adminjogaoratipusviewkarb');
 $router->map('GET', '/admin/jogaoratipus/htmllist', 'jogaoratipusController#htmllist', 'adminjogaoratipushtmllist');
-$router->map('POST', '/admin/jogaoratipus/save', 'jogaoratipusController#save', 'adminjogaoratipussave');
-$router->map('GET', '/admin/rendezvenyallapot/jsonlist', 'rendezvenyallapotController#jsonlist', 'adminrendezvenyallapotjsonlist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/jogaoratipus/save', 'jogaoratipusController#save', 'adminjogaoratipussave');
+}
+$router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
+$router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
+$router->map('GET', '/admin/rendezvenyallapot/getkarb', 'rendezvenyallapotController#getkarb', 'adminrendezvenyallapotgetkarb');
+$router->map('GET', '/admin/rendezvenyallapot/viewkarb', 'rendezvenyallapotController#viewkarb', 'adminrendezvenyallapotviewkarb');
 $router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
-$router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
+}
 
 $router->map('GET', '/admin/arsav/viewlist', 'arsavController#viewlist', 'adminarsavviewlist');
 $router->map('GET', '/admin/arsav/getlistbody', 'arsavController#getlistbody', 'adminarsavgetlistbody');
@@ -242,9 +340,13 @@ if (\mkw\store::isMPTNGY()) {
         $router->map('POST', '/admin/mptngyegyetem/save', 'mptngyegyetemController#save', 'adminmptngyegyetemsave');
     }
 
-    $router->map('GET', '/admin/mptngykar/jsonlist', 'mptngykarController#jsonlist', 'adminmptngykarjsonlist');
-    $router->map('GET', '/admin/mptngykar/htmllist', 'mptngykarController#htmllist', 'adminmptngykarhtmllist');
-    $router->map('POST', '/admin/mptngykar/save', 'mptngykarController#save', 'adminmptngykarsave');
+    $router->map('GET', '/admin/mptngykar/viewlist', 'mptngykarController#viewlist', 'adminmptngykarviewlist');
+    $router->map('GET', '/admin/mptngykar/getlistbody', 'mptngykarController#getlistbody', 'adminmptngykargetlistbody');
+    $router->map('GET', '/admin/mptngykar/getkarb', 'mptngykarController#getkarb', 'adminmptngykargetkarb');
+    $router->map('GET', '/admin/mptngykar/viewkarb', 'mptngykarController#viewkarb', 'adminmptngykarviewkarb');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/mptngykar/save', 'mptngykarController#save', 'adminmptngykarsave');
+    }
 
     $router->map('GET', '/admin/mptngyszakmaianyag/viewlist', 'mptngyszakmaianyagController#viewlist', 'adminmptngyszakmaianyagviewlist');
     $router->map('GET', '/admin/mptngyszakmaianyag/getlistbody', 'mptngyszakmaianyagController#getlistbody', 'adminmptngyszakmaianyaggetlistbody');

@@ -11,19 +11,29 @@ class ArfolyamRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname(Arfolyam::class);
+        $this->setOrders([
+            '1' => ['caption' => 'dátum szerint csökkenő', 'order' => ['_xx.datum' => 'DESC']],
+            '2' => ['caption' => 'dátum szerint növekvő', 'order' => ['_xx.datum' => 'ASC']],
+        ]);
     }
 
     public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)
     {
-        return $this->_em->createQuery(
+        $q = $this->_em->createQuery(
             'SELECT _xx,v '
             . ' FROM Entities\Arfolyam _xx'
             . ' LEFT JOIN _xx.valutanem v'
             . $this->getFilterString($filter)
             . $this->getOrderString($order)
-        )
-            ->setParameters($this->getQueryParameters($filter))
-            ->getResult();
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        return $q->getResult();
     }
 
     public function getActualArfolyam($valuta, $datum)

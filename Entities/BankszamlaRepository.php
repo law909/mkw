@@ -9,19 +9,29 @@ class BankszamlaRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname(Bankszamla::class);
+        $this->setOrders([
+            '1' => ['caption' => 'bank neve szerint növekvő', 'order' => ['_xx.banknev' => 'ASC']],
+            '2' => ['caption' => 'számlaszám szerint növekvő', 'order' => ['_xx.szamlaszam' => 'ASC']],
+        ]);
     }
 
     public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)
     {
-        return $this->_em->createQuery(
+        $q = $this->_em->createQuery(
             'SELECT _xx, v '
             . ' FROM Entities\Bankszamla _xx'
             . ' LEFT JOIN _xx.valutanem v'
             . $this->getFilterString($filter)
             . $this->getOrderString($order)
-        )
-            ->setParameters($this->getQueryParameters($filter))
-            ->getResult();
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        return $q->getResult();
     }
 
     public function getByValutanem($valutanem)

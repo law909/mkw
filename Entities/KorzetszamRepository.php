@@ -9,5 +9,9 @@ class KorzetszamRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname(Korzetszam::class);
+        $this->setOrders([
+            '1' => ['caption' => 'sorrend szerint', 'order' => ['_xx.sorrend' => 'ASC']],
+            '2' => ['caption' => 'szám szerint növekvő', 'order' => ['_xx.id' => 'ASC']],
+        ]);
     }
 }

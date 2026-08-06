@@ -3,40 +3,92 @@
 namespace Controllers;
 
 use Entities\Szotar;
-use mkw\store;
 
-class szotarController extends \mkwhelpers\JQGridController
+class szotarController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
         $this->setEntityName(Szotar::class);
+        $this->setKarbFormTplName('szotarkarbform.tpl');
+        $this->setKarbTplName('szotarkarb.tpl');
+        $this->setListBodyRowTplName('szotarlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        return [$sor->getMit(), $sor->getMire()];
+        if (!$t) {
+            $t = new Szotar();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        return $x;
     }
 
+    /**
+     * @param \Entities\Szotar $obj
+     *
+     * @return \Entities\Szotar
+     */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        if ($this->params->getRequestParam('oper', '') === $this->addOperation) {
+            $obj->setMit($this->params->getStringRequestParam('mit'));
+        }
+
+        return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('szotarlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('mit', null))) {
-                $filter->addFilter('mit', '=', $this->params->getStringRequestParam('mit'));
-            }
-            if (!is_null($this->params->getParam('mire', null))) {
-                $filter->addFilter('mire', 'LIKE', '%' . $this->params->getStringRequestParam('mire') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('mit', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('szotarlista.tpl');
+
+        $view->setVar('pagetitle', t('Szótár'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Szótár bejegyzés'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminszotarsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid)
@@ -64,5 +116,4 @@ class szotarController extends \mkwhelpers\JQGridController
         $ret .= '</select>';
         echo $ret;
     }
-
 }

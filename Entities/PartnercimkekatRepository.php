@@ -9,6 +9,10 @@ class PartnercimkekatRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Partnercimkekat');
+        $this->setOrders([
+            '1' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint csökkenő', 'order' => ['_xx.nev' => 'DESC']],
+        ]);
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
@@ -33,7 +37,7 @@ class PartnercimkekatRepository extends \mkwhelpers\Repository
     public function getCount($filter)
     {
         $q = $this->_em->createQuery(
-            'SELECT COUNT(_xx.id)'
+            'SELECT COUNT(DISTINCT _xx.id)'
             . ' FROM Entities\Partnercimkekat _xx'
             . ' LEFT JOIN _xx.cimkek c '
             . $this->getFilterString($filter)

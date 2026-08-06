@@ -3,47 +3,90 @@
 namespace Controllers;
 
 use Entities\Jogaterem;
-use mkw\store;
 
-class jogateremController extends \mkwhelpers\JQGridController
+class jogateremController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
         $this->setEntityName(Jogaterem::class);
+        $this->setKarbFormTplName('jogateremkarbform.tpl');
+        $this->setKarbTplName('jogateremkarb.tpl');
+        $this->setListBodyRowTplName('jogateremlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    /**
-     * @param $sor \Entities\Jogaterem
-     *
-     * @return array
-     */
-    protected function loadCells($sor)
+    public function loadVars($t, $forKarb = false)
     {
-        return [$sor->getNev(), $sor->getMaxferohely(), $sor->getInaktiv(), $sor->getOrarendclass()];
+        if (!$t) {
+            $t = new Jogaterem();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        return $x;
     }
 
     /**
-     * @param $obj \Entities\Jogaterem
+     * @param \Entities\Jogaterem $obj
      *
-     * @return mixed
+     * @return \Entities\Jogaterem
      */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', false));
+
+        return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('jogateremlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('jogateremlista.tpl');
+
+        $view->setVar('pagetitle', t('Termek'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Terem'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminjogateremsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null)
@@ -73,5 +116,4 @@ class jogateremController extends \mkwhelpers\JQGridController
         $ret .= '</select>';
         echo $ret;
     }
-
 }

@@ -3,51 +3,94 @@
 namespace Controllers;
 
 use Entities\Termekcimkekat;
-use mkw\store;
 
-class termekcimkekatController extends \mkwhelpers\JQGridController
+class termekcimkekatController extends \mkwhelpers\MattableController
 {
-
-    private $termekcimkek;
 
     public function __construct()
     {
         $this->setEntityName(Termekcimkekat::class);
+        $this->setKarbFormTplName('termekcimkekatkarbform.tpl');
+        $this->setKarbTplName('termekcimkekatkarb.tpl');
+        $this->setListBodyRowTplName('termekcimkekatlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
 
-    protected function loadCells($obj)
+    public function loadVars($t, $forKarb = false)
     {
-        return [
-            $obj->getNev(),
-            $obj->getSorrend(),
-            $obj->getTermeklaponlathato(),
-            $obj->getTermekszurobenlathato(),
-            $obj->getTermeklistabanlathato(),
-            $obj->getTermekakciodobozbanlathato()
-        ];
+        if (!$t) {
+            $t = new Termekcimkekat();
+            $this->getEm()->detach($t);
+        }
+        $x = $this->getEntityFieldsArray($t);
+        return $x;
     }
 
     /**
-     * @param $obj Termekcimkekat
+     * @param \Entities\Termekcimkekat $obj
      *
-     * @return mixed
+     * @return \Entities\Termekcimkekat
      */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        $obj = $this->setEntityFieldsFromRequest($obj);
+        $obj->setLathato($this->params->getBoolRequestParam('lathato', false));
+        $obj->setTermeklaponlathato($this->params->getBoolRequestParam('termeklaponlathato', false));
+        $obj->setTermekszurobenlathato($this->params->getBoolRequestParam('termekszurobenlathato', false));
+        $obj->setTermeklistabanlathato($this->params->getBoolRequestParam('termeklistabanlathato', false));
+        $obj->setTermekakciodobozbanlathato($this->params->getBoolRequestParam('termekakciodobozbanlathato', false));
+
+        return $obj;
     }
 
-    public function jsonlist()
+    public function getlistbody()
     {
+        $view = $this->createView('termekcimkekatlista_tbody.tpl');
+
         $filter = new \mkwhelpers\FilterDescriptor();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', null))) {
-                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1)
+        );
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage()
+        );
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist()
+    {
+        $view = $this->createView('termekcimkekatlista.tpl');
+
+        $view->setVar('pagetitle', t('Termékcímke csoportok'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname)
+    {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Termékcímke csoport'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('admintermekcimkekatsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record, true));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid)
@@ -135,5 +178,4 @@ class termekcimkekatController extends \mkwhelpers\JQGridController
         unset($sid);
         return $res;
     }
-
 }

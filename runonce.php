@@ -1044,6 +1044,42 @@ if ($DBVersion < '0099') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0099');
 }
+
+if ($DBVersion < '0100') {
+    // 2. szakasz: az összetett törzsadatok is önálló mattable képernyőt kaptak.
+    // Ezzel az "Egyéb adatok" lapról minden jqGrid rács eltűnt.
+    $mptngy = \mkw\store::isMPTNGY() ? 1 : 0;
+    $bp = \mkw\store::isBankpenztar() ? 1 : 0;
+    $rw = \mkw\store::getSetupValue('rewrite301') ? 1 : 0;
+    $joga = \mkw\store::isDarshan() ? 1 : 0;
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "VTSZ","/admin/vtsz/viewlist","/admin/vtsz",40,1,266, ""),'
+        . '(7, "Valutanemek","/admin/valutanem/viewlist","/admin/valutanem",40,1,267, ""),'
+        . '(7, "Árfolyamok","/admin/arfolyam/viewlist","/admin/arfolyam",40,1,268, ""),'
+        . '(7, "Bankszámlák","/admin/bankszamla/viewlist","/admin/bankszamla",40,1,269, ""),'
+        . '(7, "Raktárak","/admin/raktar/viewlist","/admin/raktar",40,1,270, ""),'
+        . '(7, "Irányítószámok","/admin/irszam/viewlist","/admin/irszam",40,1,271, ""),'
+        . '(7, "Körzetszámok","/admin/korzetszam/viewlist","/admin/korzetszam",40,1,272, ""),'
+        . '(7, "Mennyiségi egységek","/admin/me/viewlist","/admin/me",40,1,273, ""),'
+        . '(7, "CSK kódok","/admin/csk/viewlist","/admin/csk",40,1,274, ""),'
+        . '(7, "Ünnepnapok","/admin/unnepnap/viewlist","/admin/unnepnap",40,1,275, ""),'
+        . '(7, "Szótár","/admin/szotar/viewlist","/admin/szotar",40,1,276, ""),'
+        . '(7, "Partner típusok","/admin/partnertipus/viewlist","/admin/partnertipus",40,1,277, ""),'
+        . '(7, "Partnercímke csoportok","/admin/partnercimkekat/viewlist","/admin/partnercimkekat",40,1,278, ""),'
+        . '(7, "Termékcímke csoportok","/admin/termekcimkekat/viewlist","/admin/termekcimkekat",40,1,279, ""),'
+        . '(7, "Felhasználók (webshop)","/admin/felhasznalo/viewlist","/admin/felhasznalo",40,1,280, ""),'
+        . '(7, "Pénztárak","/admin/penztar/viewlist","/admin/penztar",40,' . $bp . ',281, ""),'
+        . '(7, "Termek","/admin/jogaterem/viewlist","/admin/jogaterem",40,' . $joga . ',282, ""),'
+        . '(7, "Óratípusok","/admin/jogaoratipus/viewlist","/admin/jogaoratipus",40,' . $joga . ',283, ""),'
+        . '(7, "Rendezvény állapotok","/admin/rendezvenyallapot/viewlist","/admin/rendezvenyallapot",40,' . $joga . ',284, ""),'
+        . '(7, "Átirányítások (301)","/admin/rw301/viewlist","/admin/rw301",40,' . $rw . ',285, ""),'
+        . '(7, "MPT NGY karok","/admin/mptngykar/viewlist","/admin/mptngykar",40,' . $mptngy . ',286, "")'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0100');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

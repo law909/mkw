@@ -2,12 +2,12 @@
 
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
-    <script type="text/javascript" src="/js/admin/default/{$controllerscript}"></script>
+    <script type="text/javascript" src="/js/admin/default/felhasznalo.js"></script>
 {/block}
 
 {block "kozep"}
     <div id="mattable-select" data-theme="{$theme}">
-        <div id="mattable-header"><h3><a class="mattable-tablerefresh" href="#" title="{at('Frissítés')}">{at('Felhasználók')}</a></h3></div>
+        <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Felhasználók')}"></div>
         <div id="mattable-filterwrapper">
             <label for="nevfilter">{at('Szűrés')}</label>
             <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
@@ -26,8 +26,9 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
-                <th>{at('Név')}</th>
                 <th>{at('Felhasználónév')}</th>
+                <th>{at('Név')}</th>
+                <th>{at('Üzletkötő')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
