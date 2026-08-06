@@ -418,18 +418,24 @@ class adminController extends mkwhelpers\Controller
     }
 
     /**
-     * Lista-szintű felhasználói beállítás mentése a parameterek táblába.
-     * A kulcs a lista URL-jének (? előtti) elérési útja, a domain nélkül (pl. /admin/orszag/viewlist).
-     * Jelenleg a "Mindig nyitva" (szűrő nyitva tartása) állapotot menti a mattable listák.
+     * Lista-szintű felhasználói beállítás mentése a bejelentkezett dolgozóhoz
+     * (dolgozoparameterek tábla, \Services\DolgozoParameterService).
+     * A `key` a lista URL-jének (? előtti) elérési útja, a domain nélkül (pl. /admin/orszag/viewlist),
+     * a `par` a paraméter neve – a kettőből áll össze a tárolt kulcs (…/viewlist_mindignyitva).
+     * Egy listához több paraméter is tartozhat, a metódus nincs a "Mindig nyitva" pipához kötve.
      */
     public function setListParam()
     {
         $key = $this->params->getStringRequestParam('key', '');
+        $par = $this->params->getStringRequestParam('par', \Services\DolgozoParameterService::MINDIGNYITVA);
         $value = $this->params->getStringRequestParam('value', '0');
-        // biztonsági korlát: csak elérési út jellegű kulcs (vezető /, nincs domain/query),
-        // hogy ne lehessen tetszőleges parameterek-sort felülírni
-        if (preg_match('#^/[A-Za-z0-9/_-]+$#', $key)) {
-            \mkw\store::setParameter($key, $value ? '1' : '0');
+        // biztonsági korlát: csak elérési út jellegű kulcs (vezető /, nincs domain/query)
+        // és egyszerű paraméternév, hogy ne lehessen tetszőleges dolgozoparameterek-sort felülírni
+        if (preg_match('#^/[A-Za-z0-9/_-]+$#', $key) && preg_match('#^[a-z][a-z0-9_]*$#', $par)) {
+            \Services\DolgozoParameterService::setParameter(
+                \Services\DolgozoParameterService::getListKey($key, $par),
+                $value ? '1' : '0'
+            );
         }
     }
 

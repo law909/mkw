@@ -1145,6 +1145,27 @@ if ($DBVersion < '0103') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0103');
 }
+
+if ($DBVersion < '0104') {
+    // A mattable listák "Mindig nyitva" pipája mostantól dolgozónként tárolódik
+    // (dolgozoparameterek tábla, \Services\DolgozoParameterService). A régi, mindenkire
+    // érvényes sorok a parameterek táblában voltak, csupasz lista-URL kulccsal; az új kulcs
+    // a lista URL-je + a paraméter neve (…/viewlist_mindignyitva), mert listánként több
+    // paraméter is lesz.
+    // A bekapcsolt (ertek=1) beállításokat átvisszük minden dolgozóra, hogy senkinek se
+    // változzon a megszokott képernyője, a kikapcsoltak pedig egyszerűen eldobhatók.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO dolgozoparameterek (dolgozo_id, par, ertek)'
+        . ' SELECT d.id, CONCAT(p.id, "_mindignyitva"), p.ertek FROM dolgozo d, parameterek p'
+        . ' WHERE p.id LIKE "/admin/%" AND p.ertek="1"'
+        . ' AND NOT EXISTS (SELECT 1 FROM dolgozoparameterek dp'
+        . '                  WHERE dp.dolgozo_id=d.id AND dp.par=CONCAT(p.id, "_mindignyitva"))'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM parameterek WHERE id LIKE "/admin/%"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0104');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

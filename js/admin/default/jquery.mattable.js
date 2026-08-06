@@ -187,7 +187,8 @@
                 });
 
                 // "Mindig nyitva" pipa: a szűrő nyitva tartásának be/ki kapcsolása.
-                // Az állapotot lista-URL-enként a parameterek táblába mentjük (AJAX),
+                // Az állapotot lista-URL + paraméternév kulccsal, a bejelentkezett dolgozóhoz
+                // kötve mentjük (AJAX -> dolgozoparameterek tábla, .../viewlist_mindignyitva),
                 // a kezdeti értéket a sablon adja át (window.mattableMindigNyitva).
                 header.append('<label class="mattable-mindignyitva"><input type="checkbox" class="js-mattable-mindignyitva"' +
                     (window.mattableMindigNyitva ? ' checked="checked"' : '') + '> ' + setup.txt.alwaysOpen + '</label>');
@@ -199,6 +200,7 @@
                         type: 'POST',
                         data: {
                             key: window.location.pathname,
+                            par: 'mindignyitva',
                             value: checked ? 1 : 0
                         }
                     });

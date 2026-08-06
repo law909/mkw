@@ -81,15 +81,26 @@ abstract class Controller
 
     /**
      * A lista-sablonokhoz (…lista.tpl) átadja a "Mindig nyitva" (szűrő nyitva tartása)
-     * mentett állapotát. A kulcs a lista URL-jének elérési útja (a ? előtti rész, domain nélkül) –
-     * ugyanaz, amit a kliens a mentéskor használ. Így egy helyen, minden mattable listára
-     * érvényesen (a controller ősosztályától függetlenül) töltődik be az érték.
+     * mentett állapotát. A kulcs a lista URL-jének elérési útja (a ? előtti rész, domain nélkül)
+     * és a paraméter neve, pl. /admin/orszag/viewlist_mindignyitva – ugyanaz, amit a kliens
+     * a mentéskor összerak. Így egy helyen, minden mattable listára érvényesen (a controller
+     * ősosztályától függetlenül) töltődik be az érték.
+     * Az érték dolgozónként külön tárolódik (dolgozoparameterek tábla).
+     * További lista-paraméter ide, egy újabb setVar()-ral kerülhet.
      */
     protected function loadListParams($view, $tplfilename)
     {
         if (substr($tplfilename, -9) === 'lista.tpl') {
-            $key = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
-            $view->setVar('mindignyitva', \mkw\store::getParameter($key) ? 1 : 0);
+            $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+            $view->setVar(
+                'mindignyitva',
+                \Services\DolgozoParameterService::getBoolParameter(
+                    \Services\DolgozoParameterService::getListKey(
+                        $path,
+                        \Services\DolgozoParameterService::MINDIGNYITVA
+                    )
+                ) ? 1 : 0
+            );
         }
     }
 
