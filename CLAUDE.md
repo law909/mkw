@@ -83,16 +83,26 @@ Reach for `store::` rather than re-resolving dependencies; large swaths of the c
 Two base classes in `mkwhelpers/`:
 
 - **`Controller`** — base; exposes `getEm()`, `getRepo()`, view factories (`createView`, `createMainView`, `createPubAdminView`).
-- **`MattableController`** — admin CRUD scaffold extending `Controller`. The standard hooks to override (per `.junie/AGENTS.md`):
-    - `loadFilters($filter)` — list-view filters
-    - `loadVars($t, $forKarb)` — template variables for the edit form
-    - `setFields($obj)` — write form fields back onto the entity
-    - `afterSave($o, $parancs)` — post-save side effects
-    - `getlistbody()` — list rows
-    - `_getKarb($tplname)` — assemble the edit form
+- **`MattableController`** — admin CRUD scaffold extending `Controller`. A subclass **must** provide these; the base calls them
+  but does not declare them:
+    - `loadVars($t, $forKarb = false)` — entity → template array (`getEntityFieldsArray($t)` plus relation/date extras)
+    - `setFields($obj)` — request → entity. `setEntityFieldsFromRequest($obj)` maps every scalar field automatically,
+      **including booleans** (an unchecked checkbox is absent from the POST and correctly becomes `false`). What it does
+      *not* do: associations, and `date`/`datetime` fields (it passes the raw string, so convert to `\DateTime` yourself).
+    - `getlistbody()` — the list `<tbody>` + pager JSON; this is where list filtering is written inline
+    - `viewlist()` — the list page
+    - `_getkarb($tplname)` — assemble the edit form (**lowercase `k`**; called by the base `getkarb()`/`viewkarb()`)
+
+  Optional hooks that already exist (empty) in the base: `setVars($view)`, `beforeRemove($o)`, `afterSave($o, $parancs = null)`.
+  Sorting comes from `getOrderArray()`, which reads the `order` request param against the repository's `setOrders()` — there is
+  no `loadFilters()` hook (the only method by that name is a private helper in `bizonylatfejController`).
 
 Per-entity template set in `tpl/admin/{theme}/`: `<entity>lista.tpl`, `<entity>lista_tbody.tpl`, `<entity>lista_tbody_tr.tpl`, `<entity>karb.tpl`,
-`<entity>karbform.tpl`. There is also `mkwhelpers/JQGridController.php` for jqGrid-based admin lists.
+`<entity>karbform.tpl`, plus `js/admin/default/<entity>.js` (copy `afa.js`, swap the three URLs) and 5–6 routes in `adminroute.php`
+(`viewlist`, `getlistbody`, `getkarb`, `viewkarb`, optional `htmllist`, and `save` inside `if (!\mkw\store::isClosed())`).
+The list's sort dropdown comes from `setOrders()` in the entity's repository — forgetting it leaves the dropdown empty.
+**`MattableController` is the only admin list scaffold**; the former jqGrid-based `JQGridController` was removed in 2026-08
+(see `docs/egyebtorzs-mattable-migracio.md`).
 
 ## Templates and assets
 

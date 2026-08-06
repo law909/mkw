@@ -142,12 +142,26 @@ $test->run();
 
 #### Key Controller Methods
 
-- `loadFilters($filter)` - Load data filters for list view
-- `loadVars($t, $forKarb)` - Load template variables
-- `setFields($obj)` - Set entity fields from form data
-- `afterSave($o, $parancs)` - Post-save operations
-- `getlistbody()` - Generate list view data
-- `_getKarb($tplname)` - Generate add/edit form variables and the form itself
+Required in every subclass — `MattableController` calls them but does not declare them:
+
+- `loadVars($t, $forKarb = false)` - Entity to template array
+- `setFields($obj)` - Set entity fields from form data. `setEntityFieldsFromRequest($obj)` handles every
+  scalar field automatically, **booleans included** (an unchecked checkbox is absent from the POST and
+  correctly becomes `false`). Associations and `date`/`datetime` fields still need manual handling —
+  the latter arrive as raw strings, so convert to `\DateTime` yourself.
+- `getlistbody()` - Generate list view data; list filtering is written inline here
+- `viewlist()` - Render the list page
+- `_getkarb($tplname)` - Generate add/edit form variables and the form itself (lowercase `k`)
+
+Optional hooks, already present (empty) in the base class:
+
+- `setVars($view)` - Extra view variables
+- `beforeRemove($o)` - Runs before delete
+- `afterSave($o, $parancs = null)` - Post-save operations
+
+There is no `loadFilters()` hook — the only method by that name is a private helper in
+`bizonylatfejController`. Sorting comes from `getOrderArray()`, which resolves the `order`
+request param against the repository's `setOrders()`.
 
 #### Template Structure
 

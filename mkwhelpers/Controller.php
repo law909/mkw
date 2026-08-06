@@ -153,12 +153,20 @@ abstract class Controller
      *   string|text              -> getStringRequestParam (raw esetén getOriginalStringRequestParam)
      *   integer|smallint|bigint  -> getIntRequestParam
      *   decimal|float            -> getFloatRequestParam
+     *   boolean                  -> getBoolRequestParam
+     *   datetime|date            -> getStringRequestParam (nyers string! lásd lentebb)
      *
-     * A boolean mezőket SZÁNDÉKOSAN nem kezeli: a bekapcsolatlan checkbox nem kerül
-     * be a POST-ba, így a "csak a beküldöttet írd" elv kinullázás helyett a régi
-     * értéket őrizné meg. A boolean mezőket (és az asszociációkat, dátumokat) a
-     * controllernek kézzel kell beállítania. Alapból kihagyott rendszermezők:
-     * az azonosító(k), valamint id, slug, created, updated.
+     * A boolean az EGYETLEN kivétel a "csak a beküldöttet írd" elv alól: a bekapcsolatlan
+     * checkbox nem kerül be a POST-ba, ezért a bool mezőket akkor is feldolgozza, ha
+     * hiányoznak — így a kikapcsolás ténylegesen false-ra állít. Kézzel NEM kell őket
+     * beállítani (lásd orszagController::setFields(), ami az `eu`/`lathato*` mezőket
+     * teljesen erre bízza).
+     *
+     * A dátum mezőket viszont nyers stringként adja át a setternek, ezért ha az entitás
+     * setDatum()-ja \DateTime-ot vár, azt a controllernek kézzel kell konvertálnia
+     * (lásd arfolyamController::setFields()). Az asszociációkat sem kezeli.
+     *
+     * Alapból kihagyott rendszermezők: az azonosító(k), valamint id, slug, created, updated.
      *
      * @param object $entity
      * @param array $options {

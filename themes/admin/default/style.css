@@ -47,8 +47,7 @@ body {
     margin-bottom: 5px;
 }
 
-/* Az "Egyéb adatok" lapon az önálló képernyőt kapott törzsadatok linkjei.
-   A szélesség a jqGrid rácsokéval egyezik, hogy a hasábos elrendezés megmaradjon. */
+/* Az "Egyéb adatok" gyűjtőlap törzsadat-linkjei (három hasábban). */
 .egyebadat-links {
     width: 320px;
 }

@@ -7,7 +7,7 @@ use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatErtek;
 use mkw\store;
 
-class termekvaltozatertekController extends \mkwhelpers\JQGridController
+class termekvaltozatertekController extends \mkwhelpers\Controller
 {
 
     public function __construct()
