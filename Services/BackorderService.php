@@ -73,13 +73,10 @@ class BackorderService extends AbstractBizonylatSzetbontasService
                 // itt csak a státusz változik, a bizonylat tartalma nem: a szállítási költség
                 // újraszámítását kikapcsoljuk, nehogy a mentés olyan bizonylatra vigye fel,
                 // amelyiken eredetileg nincs (a flag nem perzisztens, alapértéke true)
+                $regibiz->setSimpleedit(true);
                 $regibiz->setKellszallitasikoltsegetszamolni(false);
                 if ($bodb == 0) {
                     $regibiz->setBizonylatstatusz($teljesitheto);
-                    foreach ($regibiz->getBizonylattetelek() as $regitetel) {
-                        $regitetel->calc();
-                        \mkw\store::getEm()->persist($regitetel);
-                    }
                 } elseif ($teljdb == 0) {
                     $regibiz->setBizonylatstatusz($backorder);
                     $result = 1;
