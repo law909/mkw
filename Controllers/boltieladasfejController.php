@@ -12,10 +12,10 @@ class boltieladasfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('boltieladas');
         $this->setPageTitle('Bolti eladás');
         $this->setPluralPageTitle('Bolti eladások');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

@@ -7,10 +7,10 @@ class KivetfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('kivet');
         $this->setPageTitle('Kivét');
         $this->setPluralPageTitle('Kivétek');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

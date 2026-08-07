@@ -7,10 +7,10 @@ class SzallitofejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('szallito');
         $this->setPageTitle('Szállítólevél');
         $this->setPluralPageTitle('Szállítólevelek');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

@@ -15,10 +15,10 @@ class megrendelesfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('megrendeles');
         $this->setPageTitle('Megrendelés');
         $this->setPluralPageTitle('Megrendelések');
-        parent::__construct();
         $this->getRepo()->addToBatches(['foxpostsend' => 'Küldés Foxpostnak']);
         $this->getRepo()->addToBatches(['foxpostlabel' => 'Foxpost címke letöltés']);
         $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);

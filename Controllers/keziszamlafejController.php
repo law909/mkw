@@ -9,10 +9,10 @@ class KeziszamlafejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('keziszamla');
         $this->setPageTitle('Kézi számla');
         $this->setPluralPageTitle('Kézi számlák');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

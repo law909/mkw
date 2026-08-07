@@ -9,10 +9,10 @@ class esetiszamlafejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('esetiszamla');
         $this->setPageTitle('Eseti számla');
         $this->setPluralPageTitle('Eseti számlák');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)

@@ -7,10 +7,10 @@ class BevetfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('bevet');
         $this->setPageTitle('Bevételezés');
         $this->setPluralPageTitle('Bevételezések');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

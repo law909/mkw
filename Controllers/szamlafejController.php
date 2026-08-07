@@ -17,10 +17,10 @@ class szamlafejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('szamla');
         $this->setPageTitle('Számla');
         $this->setPluralPageTitle('Számlák');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)

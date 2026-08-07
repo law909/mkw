@@ -7,10 +7,10 @@ class kolcsonzesfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('kolcsonzes');
         $this->setPageTitle('Kölcsönzés');
         $this->setPluralPageTitle('Kölcsönzések');
-        parent::__construct();
     }
 
     public function setVars($view)

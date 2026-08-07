@@ -7,10 +7,10 @@ class AutokiserofejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('autokisero');
         $this->setPageTitle('Gépjármű kísérő');
         $this->setPluralPageTitle('Gépjármű kísérők');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

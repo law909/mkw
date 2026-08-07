@@ -7,10 +7,10 @@ class garancialevelfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('garancialevel');
         $this->setPageTitle('Garancialevél');
         $this->setPluralPageTitle('Garancialevelek');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

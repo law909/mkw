@@ -7,10 +7,10 @@ class LeltartobbletfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('leltartobblet');
         $this->setPageTitle('Leltár többlet');
         $this->setPluralPageTitle('Leltár többletek');
-        parent::__construct();
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)

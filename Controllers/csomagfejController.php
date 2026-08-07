@@ -7,10 +7,10 @@ class csomagfejController extends bizonylatfejController
 
     public function __construct()
     {
+        parent::__construct();
         $this->setBiztipus('csomag');
         $this->setPageTitle('Csomag');
         $this->setPluralPageTitle('Csomagok');
-        parent::__construct();
     }
 
     /**
