@@ -15,6 +15,23 @@ use Entities\Bizonylattetel;
  */
 abstract class AbstractBizonylatSzetbontasService
 {
+    /** @var array|null a költségtételek termékazonosítói, lusta betöltéssel */
+    private $koltsegtermekek;
+
+    /**
+     * Költségtétel-e (szállítási / utánvét / kezelési költség, vásárlási utalvány). Ezeket a
+     * tételeket a BizonylatfejListener tartja karban: nem szabad átmásolni őket az új
+     * bizonylatokra, és nem számítanak a bizonylat valódi tartalmának sem — a listener a
+     * mentéskor mindegyik új bizonylatra a saját tartalma alapján képzi őket.
+     */
+    protected function koltsegTetel(Bizonylattetel $tetel)
+    {
+        if ($this->koltsegtermekek === null) {
+            $this->koltsegtermekek = \mkw\store::getKoltsegTermekIdk();
+        }
+        return isset($this->koltsegtermekek[$tetel->getTermekId()]);
+    }
+
     /**
      * Az eredetivel megegyező, az eredetire hivatkozó (parbizonylatfej) új bizonylatfej,
      * saját azonosítóval. Ha kap státuszt, azt is beállítja rajta (egyébként a

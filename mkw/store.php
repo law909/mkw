@@ -1629,6 +1629,38 @@ class store
         }
     }
 
+    /**
+     * A BizonylatfejListener által karbantartott költségtételek termékazonosítói: szállítási
+     * költség, utánvét költség, kezelési költség, vásárlási utalvány. Ezeknek a tételeknek az
+     * ára nem a termék árlistájából, hanem a szállítási mód / kupon beállításaiból származik,
+     * és a listener a bizonylat mentésekor magától képzi őket. Ezért a bizonylatot átszámoló
+     * vagy szétbontó műveleteknek nem szabad úgy kezelniük őket, mint a valódi tételeket.
+     *
+     * @return array termékid => termékid
+     */
+    public static function getKoltsegTermekIdk()
+    {
+        $ret = [];
+        $parok = [
+            consts::SzallitasiKtgTermek,
+            consts::UtanvetKtgTermek,
+            consts::VasarlasiUtalvanyTermek,
+        ];
+        foreach ($parok as $par) {
+            $termekid = self::getParameter($par);
+            if ($termekid) {
+                $ret[$termekid] = $termekid;
+            }
+        }
+        $kezelesi = self::getEm()->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+        foreach ($kezelesi as $termekid) {
+            if ($termekid) {
+                $ret[$termekid] = $termekid;
+            }
+        }
+        return $ret;
+    }
+
     public static function setAdminMode()
     {
         self::$adminmode = true;

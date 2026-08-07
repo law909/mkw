@@ -85,6 +85,9 @@ class BizonylatSliceService extends AbstractBizonylatSzetbontasService
      * tételek a NINCS_GYARTO kulcs alatt egy közös csoportba kerülnek, hogy minden tétel
      * új bizonylatra kerülhessen.
      *
+     * A költségtételek kimaradnak a csoportosításból: önmagukban egy csak költséget tartalmazó
+     * bizonylatot eredményeznének, az új bizonylatokra pedig a listener képzi őket.
+     *
      * @return array [ [gyartoid => Bizonylattetel[]], [gyartoid => gyártónév] ]
      */
     private function csoportositTetelek(Bizonylatfej $biz)
@@ -93,6 +96,9 @@ class BizonylatSliceService extends AbstractBizonylatSzetbontasService
         $gyartonevek = [];
         /** @var Bizonylattetel $tetel */
         foreach ($biz->getBizonylattetelek() as $tetel) {
+            if ($this->koltsegTetel($tetel)) {
+                continue;
+            }
             $gyarto = $tetel->getTermek()?->getGyarto();
             $kulcs = $gyarto ? $gyarto->getId() : self::NINCS_GYARTO;
             $csoportok[$kulcs][] = $tetel;

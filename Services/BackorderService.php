@@ -70,6 +70,10 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             // egyébként nem készül új bizonylat, csak az eredeti státuszát állítjuk
             if ($teljdb == 0 || $bodb == 0) {
                 $result = 0;
+                // itt csak a státusz változik, a bizonylat tartalma nem: a szállítási költség
+                // újraszámítását kikapcsoljuk, nehogy a mentés olyan bizonylatra vigye fel,
+                // amelyiken eredetileg nincs (a flag nem perzisztens, alapértéke true)
+                $regibiz->setKellszallitasikoltsegetszamolni(false);
                 if ($bodb == 0) {
                     $regibiz->setBizonylatstatusz($teljesitheto);
                     foreach ($regibiz->getBizonylattetelek() as $regitetel) {
@@ -119,6 +123,11 @@ class BackorderService extends AbstractBizonylatSzetbontasService
      * Tételenkénti szétbontási terv a szabad készlet alapján. Minden tételhez megadja,
      * hogy mennyi teljesíthető azonnal és mennyi kerül backorderre.
      *
+     * A költségtételek (szállítási / utánvét / kezelési költség, vásárlási utalvány) kimaradnak
+     * a tervből: nem készletezett termékek, ezért teljesíthetőnek látszanának, és önmagukban egy
+     * üres, csak költséget tartalmazó "teljesíthető" bizonylatot eredményeznének. Az új
+     * bizonylatokra a listener képzi őket a saját tartalmuk alapján.
+     *
      * @return array [
      *     [ [Bizonylattetel, teljesíthető mennyiség, backorder mennyiség], ... ],
      *     hány tételnek van teljesíthető része,
@@ -132,6 +141,9 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         $bodb = 0;
         /** @var \Entities\Bizonylattetel $regitetel */
         foreach ($regibiz->getBizonylattetelek() as $regitetel) {
+            if ($this->koltsegTetel($regitetel)) {
+                continue;
+            }
             $menny = $regitetel->getMennyiseg();
             $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
             if ($keszlet === false || $keszlet >= $menny) {
