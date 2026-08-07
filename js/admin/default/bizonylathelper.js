@@ -947,8 +947,9 @@ let bizonylathelper = function ($) {
     }
 
     function getMattKarbConfig(bizonylattipus) {
+        const entityName = bizonylattipus + 'fej';
         return new MattkarbConfig({
-            entityName: bizonylattipus,
+            entityName: entityName,
             beforeShow: function () {
                 let keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
@@ -1603,7 +1604,7 @@ let bizonylathelper = function ($) {
                     }
                 },
                 tablebody: {
-                    url: '/admin/' + bizonylattipus + 'fej/getlistbody',
+                    url: '/admin/' + entityName + '/getlistbody',
                     onStyle: function () {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
@@ -1617,7 +1618,7 @@ let bizonylathelper = function ($) {
                         });
                         $('.js-printbizonylat').each(function () {
                             let $this = $(this);
-                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/print?id=' + $this.data('egyedid'));
+                            $this.attr('href', '/admin/' + entityName + '/print?id=' + $this.data('egyedid'));
                         });
                         $('.js-pdf').each(function () {
                             let $this = $(this);
@@ -1633,12 +1634,12 @@ let bizonylathelper = function ($) {
                         });
                         $('.js-printelolegbekero').each(function () {
                             let $this = $(this);
-                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/printelolegbekero?id=' + $this.data('egyedid'));
+                            $this.attr('href', '/admin/' + entityName + '/printelolegbekero?id=' + $this.data('egyedid'));
                         });
                         $('.js-nav').each(function () {
                             if ($('#mattable-table').data('noversion') <= '1_1') {
                                 let $this = $(this);
-                                $this.attr('href', '/admin/' + bizonylattipus + 'fej/navonline?id=' + $this.data('egyedid'));
+                                $this.attr('href', '/admin/' + entityName + '/navonline?id=' + $this.data('egyedid'));
                             }
                         });
                     }
@@ -1648,7 +1649,7 @@ let bizonylathelper = function ($) {
                         $('.js-sumcol').html(data.sumhtml);
                     }
                 },
-                karb: getMattKarbConfig(entityName),
+                karb: getMattKarbConfig(bizonylattipus),
             });
             $('.mattable-batchbtn').on('click', function (e) {
                 let cbs,
@@ -1670,7 +1671,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/' + bizonylattipus + 'fej/generatefoxpostlabel',
+                                            url: '/admin/' + entityName + '/generatefoxpostlabel',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb
@@ -1696,7 +1697,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/' + bizonylattipus + 'fej/sendtofoxpost',
+                                            url: '/admin/' + entityName + '/sendtofoxpost',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb
@@ -1722,7 +1723,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/' + bizonylattipus + 'fej/sendtogls',
+                                            url: '/admin/' + entityName + '/sendtogls',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb
@@ -1748,7 +1749,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/' + bizonylattipus + 'fej/sendtofedex',
+                                            url: '/admin/' + entityName + '/sendtofedex',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb
@@ -1774,7 +1775,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/' + bizonylattipus + 'fej/recalcprice',
+                                            url: '/admin/' + entityName + '/recalcprice',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb
@@ -1793,13 +1794,13 @@ let bizonylathelper = function ($) {
                             break;
                         case 'excelfejexport':
                             let $exportfejform = $('#exportform');
-                            $exportfejform.attr('action', '/admin/' + bizonylattipus + 'fej/fejexport');
+                            $exportfejform.attr('action', '/admin/' + entityName + '/fejexport');
                             $('input[name="ids"]', $exportfejform).val(tomb);
                             $exportfejform.submit();
                             break;
                         case 'exceltetelexport':
                             let $exporttetelform = $('#exportform');
-                            $exporttetelform.attr('action', '/admin/' + bizonylattipus + 'fej/tetelexport');
+                            $exporttetelform.attr('action', '/admin/' + entityName + '/tetelexport');
                             $('input[name="ids"]', $exporttetelform).val(tomb);
                             $exporttetelform.submit();
                             break;
@@ -1919,7 +1920,7 @@ let bizonylathelper = function ($) {
                         buttons: {
                             'Igen': function () {
                                 $.ajax({
-                                    url: '/admin/' + bizonylattipus + 'fej/ront',
+                                    url: '/admin/' + entityName + '/ront',
                                     type: 'POST',
                                     data: {
                                         id: $this.data('egyedid')
@@ -1979,7 +1980,7 @@ let bizonylathelper = function ($) {
                 .on('click', '.js-backorder', function (e) {
                     e.preventDefault();
                     $.ajax({
-                        url: '/admin/' + bizonylattipus + 'fej/backorder',
+                        url: '/admin/' + entityName + '/backorder',
                         type: 'POST',
                         data: {
                             id: $(this).data('egyedid')
@@ -2372,7 +2373,7 @@ let bizonylathelper = function ($) {
                             'Igen': function () {
                                 let dia = $(this);
                                 $.ajax({
-                                    url: '/admin/' + bizonylattipus + 'fej/delglsparcel',
+                                    url: '/admin/' + entityName + '/delglsparcel',
                                     type: 'POST',
                                     data: {
                                         id: $this.data('egyedid')
@@ -2400,7 +2401,7 @@ let bizonylathelper = function ($) {
                             'Igen': function () {
                                 let dia = $(this);
                                 $.ajax({
-                                    url: '/admin/' + bizonylattipus + 'fej/delfedexparcel',
+                                    url: '/admin/' + entityName + '/delfedexparcel',
                                     type: 'POST',
                                     data: {
                                         id: $this.data('egyedid')
@@ -2431,7 +2432,7 @@ let bizonylathelper = function ($) {
                         }
                     });
                     $.ajax({
-                        url: '/admin/' + bizonylattipus + 'fej/fedexrates',
+                        url: '/admin/' + entityName + '/fedexrates',
                         type: 'POST',
                         dataType: 'json',
                         data: {
@@ -2471,7 +2472,7 @@ let bizonylathelper = function ($) {
             });
         } else {
             if ($.fn.mattkarb) {
-                $('#mattkarb').mattkarb(getMattKarbConfig(entityName));
+                $('#mattkarb').mattkarb(getMattKarbConfig(bizonylattipus, entityName));
             }
         }
 

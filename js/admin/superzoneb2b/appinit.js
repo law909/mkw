@@ -16,7 +16,7 @@ $(document).ready(
         function setupForm(data) {
             var $mattkarb = $('#mattkarb');
             $mattkarb.append(data);
-            $mattkarb.mattkarb($.extend({}, bizonylathelper.getMattKarbConfig('szamla'), {
+            $mattkarb.mattkarb($.extend({}, bizonylathelper.getMattKarbConfig('garancialevel'), {
                 independent: true,
                 onSubmit: function (data) {
                     var d = JSON.parse(data);
