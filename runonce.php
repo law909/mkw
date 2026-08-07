@@ -1177,6 +1177,13 @@ if ($DBVersion < '0105') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0105');
 }
+
+if ($DBVersion < '0106') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET showszallitasicim=1'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0106');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -150,6 +150,15 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><label for="SzallirszamEdit">{at('Szállítási cím')}:</label></td>
+                            <td colspan="7">
+                                <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
+                                <input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
+                                <input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
+                                <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
+                            </td>
+                        </tr>
+                        <tr>
                             <td><label for="SzallOrszagEdit">{at('Szállítási ország')}:</label></td>
                             <td><select id="SzallOrszagEdit" name="partnerszallorszag">
                                     <option value="">{at('válasszon')}</option>
@@ -157,15 +166,6 @@
                                         <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                     {/foreach}
                                 </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="SzallirszamEdit">{at('Szállítási cím')}:</label></td>
-                            <td colspan="7">
-                                <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
-                                <input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
-                                <input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
-                                <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
                             </td>
                         </tr>
                     {/if}
