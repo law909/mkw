@@ -4,22 +4,61 @@ namespace Services;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
+use Entities\Szallitasimod;
 
 class BizonylatCalculatorService
 {
 
+    /**
+     * A BizonylatfejListener által karbantartott költségtételek termékei: szállítási költség,
+     * utánvét költség, kezelési költség, vásárlási utalvány. Ezek egységára nem a termék
+     * árlistájából, hanem a szállítási mód / kupon beállításaiból jön, ezért az árak
+     * újraszámolásából ki kell hagyni őket (különben 0-ra állna az áruk).
+     *
+     * @return array a termékid-k, kulcsként is
+     */
+    private function getKoltsegTermekIdk()
+    {
+        $ret = [];
+        $parok = [
+            \mkw\consts::SzallitasiKtgTermek,
+            \mkw\consts::UtanvetKtgTermek,
+            \mkw\consts::VasarlasiUtalvanyTermek,
+        ];
+        foreach ($parok as $par) {
+            $termekid = \mkw\store::getParameter($par);
+            if ($termekid) {
+                $ret[$termekid] = $termekid;
+            }
+        }
+        $kezelesi = \mkw\store::getEm()->getRepository(Szallitasimod::class)->getKezelesiKoltsegTermekek();
+        foreach ($kezelesi as $termekid) {
+            if ($termekid) {
+                $ret[$termekid] = $termekid;
+            }
+        }
+        return $ret;
+    }
+
     public function recalcPrice($ids)
     {
+        $koltsegtermekek = $this->getKoltsegTermekIdk();
         foreach ($ids as $id) {
             /** @var Bizonylatfej $bizfej */
             $bizfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
             if ($bizfej) {
                 \mkw\store::getEm()->beginTransaction();
                 try {
+                    // Csak a termékek árát számoljuk újra: a szállítási / utánvét költséget a
+                    // listener képezné a mentéskor, ami olyan bizonylatra is felvinné, amelyiken
+                    // eredetileg nincs (a flag nem perzisztens, alapértéke true).
+                    $bizfej->setKellszallitasikoltsegetszamolni(false);
                     /** @var Bizonylattetel $bt */
                     foreach ($bizfej->getBizonylattetelek() as $bt) {
+                        if (isset($koltsegtermekek[$bt->getTermekId()])) {
+                            continue;
+                        }
                         $bt->fillEgysar();
-                        $bt->kerekitBruttoegysar();
                         $bt->calc();
                         \mkw\store::getEm()->persist($bt);
                     }
