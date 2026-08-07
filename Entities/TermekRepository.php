@@ -25,6 +25,7 @@ class TermekRepository extends \mkwhelpers\Repository
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'tcsset' => 'Termékcsoport módosítás',
             'kategoriaset' => 'Termék kategória módosítás',
+            'leirastisztitas' => 'Leírás tisztítása',
         ]);
     }
 

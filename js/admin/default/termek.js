@@ -988,6 +988,33 @@ $(document).ready(function () {
                             }
                         });
                         break;
+                    case 'leirastisztitas':
+                        // A kijelölt termékek leírásából kiszedjük a html tag-eken lévő style és class attributumokat.
+                        dialogcenter.html('Biztos, hogy tisztítja ' + tomb.length + ' termék leírását? A html tag-ekről lekerülnek a style és class attributumok.').dialog({
+                            resizable: false,
+                            height: 200,
+                            modal: true,
+                            buttons: {
+                                'Igen': function () {
+                                    var dia = $(this);
+                                    $.ajax({
+                                        url: '/admin/termek/leirastisztitas',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb
+                                        },
+                                        success: function () {
+                                            dia.dialog('close');
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Nem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
                 }
             } else {
                 dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({

@@ -872,6 +872,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admintermeksetflag');
     $router->map('POST', '/admin/termek/tcsset', 'termekController#setTermekcsoport', 'admintermektcsset');
     $router->map('POST', '/admin/termek/kategoriaset', 'termekController#setKategoria', 'admintermekkategoriaset');
+    $router->map('POST', '/admin/termek/leirastisztitas', 'termekController#leirasTisztitas', 'admintermekleirastisztitas');
     $router->map('POST', '/admin/nepszeruseg/clear', 'termekController#clearNepszeruseg', 'adminclearnepszeruseg');
 }
 

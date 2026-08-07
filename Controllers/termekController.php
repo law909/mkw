@@ -2135,6 +2135,49 @@ class termekController extends \mkwhelpers\MattableController
         }
     }
 
+    private function getLeirasTisztitoSanitizer()
+    {
+        return new \mkwhelpers\HtmlPurifierSanitizer([
+            'HTML.ForbiddenAttributes' => 'style,class',
+            'HTML.SafeIframe' => true,
+            'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%',
+            'Attr.AllowedFrameTargets' => ['_blank'],
+        ]);
+    }
+
+    public function leirasTisztitas()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $db = 0;
+        if ($ids) {
+            $puri = $this->getLeirasTisztitoSanitizer();
+
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('id', 'IN', $ids);
+            $termekek = $this->getRepo()->getAll($filter, []);
+            $batchsize = 20;
+            /** @var Termek $termek */
+            foreach ($termekek as $termek) {
+                $db++;
+                $leiras = $termek->getLeiras();
+                if ($leiras) {
+                    $termek->setLeiras($puri->sanitize($leiras));
+                }
+                $leirasl1 = $termek->getLeirasL1();
+                if ($leirasl1) {
+                    $termek->setLeirasL1($puri->sanitize($leirasl1));
+                }
+                $this->getEm()->persist($termek);
+                if (($db % $batchsize) === 0) {
+                    $this->getEm()->flush();
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+        }
+        echo json_encode(['db' => $db]);
+    }
+
     public function createTermekKepekFromFields()
     {
         $termekek = $this->getRepo()->getAll();
