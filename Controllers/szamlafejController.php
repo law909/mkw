@@ -17,7 +17,7 @@ class szamlafejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'szamla';
+        $this->setBiztipus('szamla');
         $this->setPageTitle('Számla');
         $this->setPluralPageTitle('Számlák');
         parent::__construct();
@@ -35,7 +35,7 @@ class szamlafejController extends bizonylatfejController
                 $egyed['teljesitesstr'] = $kelt;
                 $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 $egyed['reportfile'] = '';
-                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
+                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
@@ -148,7 +148,7 @@ class szamlafejController extends bizonylatfejController
 
         $fej = new \Entities\Bizonylatfej();
         $fej->setPersistentData();
-        $fej->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find($this->biztipus));
+        $fej->setBizonylattipus($this->getBiztipus());
         $fej->setKelt('');
         $fej->setTeljesites('');
         $fej->setEsedekesseg('');

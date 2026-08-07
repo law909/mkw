@@ -2,12 +2,12 @@
 
 namespace Controllers;
 
-class SelejtfejController extends bizonylatfejController
+class selejtfejController extends bizonylatfejController
 {
 
     public function __construct()
     {
-        $this->biztipus = 'selejt';
+        $this->setBiztipus('selejt');
         $this->setPageTitle('Selejtezés');
         $this->setPluralPageTitle('Selejtezések');
         parent::__construct();

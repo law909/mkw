@@ -12,7 +12,7 @@ class boltieladasfejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'boltieladas';
+        $this->setBiztipus('boltieladas');
         $this->setPageTitle('Bolti eladás');
         $this->setPluralPageTitle('Bolti eladások');
         parent::__construct();
@@ -28,7 +28,7 @@ class boltieladasfejController extends bizonylatfejController
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['reportfile'] = '';
-            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
+            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
             $ttk = [];
             $cikl = 1;
             foreach ($egyed['tetelek'] as $tetel) {

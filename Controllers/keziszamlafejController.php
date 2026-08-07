@@ -9,7 +9,7 @@ class KeziszamlafejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'keziszamla';
+        $this->setBiztipus('keziszamla');
         $this->setPageTitle('Kézi számla');
         $this->setPluralPageTitle('Kézi számlák');
         parent::__construct();
@@ -26,7 +26,7 @@ class KeziszamlafejController extends bizonylatfejController
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['reportfile'] = '';
-            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
+            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
             switch ($source) {
                 case 'megrendeles':
                     $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;

@@ -37,7 +37,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     use \Traits\Kiegyenlites;
 
-    protected $biztipus;
+    private $biztipusid;
+    private \Entities\Bizonylattipus|null $biztipus;
+
+    public function setBiztipus($biztipusid)
+    {
+        $this->biztipusid = $biztipusid;
+        $this->biztipus = $this->getRepo(Bizonylattipus::class)->find($biztipusid);
+    }
+
+    public function getBiztipusId()
+    {
+        return $this->biztipusid;
+    }
+
+    public function getBiztipus()
+    {
+        return $this->biztipus;
+    }
 
     public static function factory($biztip)
     {
@@ -68,23 +85,21 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view = $this->createView('bizonylatfejlista.tpl');
 
         $view->setVar('pagetitle', $this->getPluralPageTitle());
-        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $view->setVar('controllerscript', $this->biztipusid . 'fej.js');
         $this->setVars($view);
         $view->printTemplateResult();
     }
 
     public function viewlist()
     {
-        /** @var \Entities\Bizonylattipus $bt */
-        $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
-        if ($bt && $bt->getNavbekuldendo()) {
+        if ($this->biztipus?->getNavbekuldendo()) {
             $this->NAVEredmenyFeldolgoz();
         }
 
         $view = $this->createView('bizonylatfejlista.tpl');
 
         $view->setVar('pagetitle', $this->getPluralPageTitle());
-        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $view->setVar('controllerscript', $this->biztipusid . 'fej.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $this->setVars($view);
@@ -93,8 +108,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function setVars($view)
     {
-        $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
-        $bt->setTemplateVars($view);
+        $this->biztipus?->setTemplateVars($view);
 
         $fmc = new fizmodController();
         $view->setVar('fizmodlist', $fmc->getSelectList());
@@ -121,7 +135,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
-                if ($this->biztipus === 'megrendeles') {
+                if ($this->biztipusid === 'megrendeles') {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
                 } else {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
@@ -136,12 +150,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 }
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
-                if ($this->biztipus === 'megrendeles' || $this->biztipus === 'koltsegszamla' || $this->biztipus === 'webshopbiz') {
+                if ($this->biztipusid === 'megrendeles' || $this->biztipusid === 'koltsegszamla' || $this->biztipusid === 'webshopbiz') {
                     $view->setVar('bizonylatrontottfilter', 1);
                 }
                 break;
             case \mkw\store::isKisszamlazo():
-                if ($this->biztipus === 'bizsablon') {
+                if ($this->biztipusid === 'bizsablon') {
                     $view->setVar('bizonylatrontottfilter', 1);
                 }
                 $a = false;
@@ -392,10 +406,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         // Új bizonylatnál a fejen még nincs irány – ilyenkor a bizonylattípus iránya a mérvadó
         // (hogy az egyedi azonosító autocomplete új, negatív irányú bizonylaton is működjön).
         if (!$x['irany'] && $this->biztipus) {
-            $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
-            if ($biztip) {
-                $x['irany'] = $biztip->getIrany();
-            }
+            $x['irany'] = $this->biztipus->getIrany();
         }
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
@@ -528,16 +539,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
         $x['penztmozgat'] = $t->getPenztmozgat();
-        if ($this->biztipus && $t->getBizonylattipusId() !== $this->biztipus) {
-            $biztip = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
-            if ($biztip) {
-                $x['penztmozgat'] = $biztip->getPenztmozgat();
-            }
+        if ($this->biztipusid && $t->getBizonylattipusId() !== $this->biztipusid) {
+            $x['penztmozgat'] = $this->biztipus?->getPenztmozgat();
             // Más típusú bizonylatot képezve: ha az előd bizonylatok bármelyike már
             // mozgatott pénzt, akkor a képzett bizonylat nem mozgathat, különben a
             // pénzmozgás kétszer kerülne a folyószámlára. A formon már kivéve látszik, a
             // mentés pedig a setFields() inherit ágán is kikényszeríti.
-            if ($x['penztmozgat'] && $this->elodPenztmozgat($t)) {
+            if ($this->elodPenztmozgat($t)) {
                 $x['penztmozgat'] = false;
             }
         }
@@ -769,7 +777,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             }
         }
 
-        $obj->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find($this->biztipus));
+        $obj->setBizonylattipus($this->biztipus);
 
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
@@ -1380,7 +1388,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $this->loadFilters($filter);
 
-        $filter->addFilter('bizonylattipus', '=', $this->getRepo(Bizonylattipus::class)->find($this->biztipus));
+        $filter->addFilter('bizonylattipus', '=', $this->biztipusid);
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -1408,20 +1416,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         /** @var Bizonylatfej $o */
         $o = $this->getRepo()->findForPrint($id);
         if ($o) {
-            if (!$this->biztipus) {
-                $this->biztipus = $o->getBizonylattipus()->getId();
+            if (!$this->biztipusid) {
+                $this->biztipusid = $o->getBizonylattipus()?->getId();
+                $this->biztipus = $o->getBizonylattipus();
             }
-            $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
             if ($o->getReportfile()) {
                 $tplname = $o->getReportfile();
-            } elseif ($bt) {
-                $tplname = $bt->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv());
+            } elseif ($this->biztipus) {
+                $tplname = $this->biztipus->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv());
                 if (!$tplname) {
-                    $tplname = $bt->getTplname();
+                    $tplname = $this->biztipus->getTplname();
                 }
             }
             $view = $this->createView($tplname);
-            $bt->setTemplateVars($view);
+            $this->biztipus->setTemplateVars($view);
             $x = $o->toLista();
             $view->setVar('egyed', $x);
             $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
@@ -1442,7 +1450,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipus = $o->getBizonylattipusId();
+                $this->biztipusid = $o->getBizonylattipusId();
+                $this->biztipus = $o->getBizonylattipus();
                 $html = $this->getBizonylatHTML($id);
                 $pdf = \mkw\store::getPDFEngine($html);
                 $pdf->send(\mkw\store::urlize($id) . '.pdf');
@@ -1460,7 +1469,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipus = $o->getBizonylattipusId();
+                $this->biztipusid = $o->getBizonylattipusId();
+                $this->biztipus = $o->getBizonylattipus();
                 $email = $o->getPartneremail();
                 if ($email) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
@@ -1498,7 +1508,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
-            ->addFilter('bizonylattipus', '=', $this->getRepo(Bizonylattipus::class)->find($this->biztipus));
+            ->addFilter('bizonylattipus', '=', $this->biztipusid);
         $filter->addFilter('rontott', '=', false);
 
         if ($forfouk) {
@@ -1561,8 +1571,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
         $view = $this->createView($tplname);
         $view->setVar('pagetitle', $this->getPageTitle());
-        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
-        $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
+        $view->setVar('controllerscript', $this->biztipusid . 'fej.js');
+        $view->setVar('formaction', '/admin/' . $this->biztipusid . 'fej/save');
         $view->setVar('oper', $oper);
         $view->setVar('quick', $quick);
         //       $this->setVars($view);
@@ -1580,8 +1590,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($mehet) {
             $egyed = $this->loadVars($record, true, $oper);
 
-            $bt = $this->getRepo(Bizonylattipus::class)->find($this->biztipus);
-            $bt->setTemplateVars($view);
+            $this->biztipus->setTemplateVars($view);
 
             if (!\mkw\store::isPartnerAutocomplete()) {
                 $partnerc = new partnerController();
@@ -1666,7 +1675,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 'reportfilelist',
                 $this->getRepo()->getReportfileSelectList(
                     ($record ? $record->getReportfile() : ''),
-                    ($record ? $record->getBizonylattipusId() : $this->biztipus)
+                    ($record ? $record->getBizonylattipusId() : $this->biztipusid)
                 )
             );
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
@@ -1782,7 +1791,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $fejek = $this->getRepo()->getWithJoins($filter, []);
         $o = 0;
         $excel = new Spreadsheet();
-        if ($this->biztipus === 'megrendeles') {
+        if ($this->biztipusid === 'megrendeles') {
             $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, 1), 'Státusz');
         }
         $excel->setActiveSheetIndex(0)
@@ -1812,7 +1821,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $fej */
             foreach ($fejek as $fej) {
                 $o = 0;
-                if ($this->biztipus === 'megrendeles') {
+                if ($this->biztipusid === 'megrendeles') {
                     $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getBizonylatstatusznev());
                 }
                 $excel->setActiveSheetIndex(0)
@@ -1874,7 +1883,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $o = 0;
         $excel = new Spreadsheet();
-        if ($this->biztipus === 'megrendeles') {
+        if ($this->biztipusid === 'megrendeles') {
             $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, 1), 'Státusz');
         }
         $excel->setActiveSheetIndex(0)
@@ -1922,7 +1931,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 /** @var \Entities\Bizonylattetel $tetel */
                 foreach ($fej->getBizonylattetelek() as $tetel) {
                     $o = 0;
-                    if ($this->biztipus === 'megrendeles') {
+                    if ($this->biztipusid === 'megrendeles') {
                         $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getBizonylatstatusznev());
                     }
                     $excel->setActiveSheetIndex(0)

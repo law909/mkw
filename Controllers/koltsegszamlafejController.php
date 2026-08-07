@@ -7,7 +7,7 @@ class KoltsegszamlafejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'koltsegszamla';
+        $this->setBiztipus('koltsegszamla');
         $this->setPageTitle('Költségszámla');
         $this->setPluralPageTitle('Költségszámlák');
         parent::__construct();

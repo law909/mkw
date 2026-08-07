@@ -9,7 +9,7 @@ class esetiszamlafejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'esetiszamla';
+        $this->setBiztipus('esetiszamla');
         $this->setPageTitle('Eseti számla');
         $this->setPluralPageTitle('Eseti számlák');
         parent::__construct();
@@ -27,7 +27,7 @@ class esetiszamlafejController extends bizonylatfejController
                 $egyed['teljesitesstr'] = $kelt;
                 $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 $egyed['reportfile'] = '';
-                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
+                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;

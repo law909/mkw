@@ -7,7 +7,7 @@ class LeltarhianyfejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'leltarhiany';
+        $this->setBiztipus('leltarhiany');
         $this->setPageTitle('Leltár hiány');
         $this->setPluralPageTitle('Leltár hiányok');
         parent::__construct();

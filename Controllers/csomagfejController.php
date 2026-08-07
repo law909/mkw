@@ -7,7 +7,7 @@ class csomagfejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'csomag';
+        $this->setBiztipus('csomag');
         $this->setPageTitle('Csomag');
         $this->setPluralPageTitle('Csomagok');
         parent::__construct();
@@ -33,7 +33,7 @@ class csomagfejController extends bizonylatfejController
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['reportfile'] = '';
-            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
+            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
             switch ($source) {
                 case 'megrendeles':
                     $egyed['megjegyzes'] = \mkw\store::translate('Rendelés szám', $record->getBizonylatnyelv()) . ': ' . $id;

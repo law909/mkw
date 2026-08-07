@@ -7,7 +7,7 @@ class bizsablonfejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'bizsablon';
+        $this->setBiztipus('bizsablon');
         $this->setPageTitle('Biz. sablon');
         $this->setPluralPageTitle('Biz. sablonok');
         parent::__construct();

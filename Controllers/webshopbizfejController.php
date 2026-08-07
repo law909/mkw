@@ -14,7 +14,7 @@ class webshopbizfejController extends bizonylatfejController
 
     public function __construct()
     {
-        $this->biztipus = 'webshopbiz';
+        $this->setBiztipus('webshopbiz');
         $this->setPageTitle('Webshop rendelés');
         $this->setPluralPageTitle('Webshop rendelések');
         parent::__construct();
