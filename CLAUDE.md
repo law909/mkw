@@ -7,8 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 MKW is a custom PHP 8.1 webshop + back-office platform. The same codebase ships to many distinct deployments ("owners" / "themes"): `galad`, `darshan`,
 `mkwcansas` (mindentkapni), `mugenrace`, `mugenrace2026`, `mpt`, `mptngy`, `superzoneb2b`, `ujdivat`, `b2bhungary`, `lb`, `varganyomda`, `kisszamlazo`. The
 active deployment is selected by swapping `config.ini` and `setup.ini` — feature flags in those files drive large branches of behavior throughout the code. The
-codebase is Hungarian-language (entity, controller, method, and route names are in Hungarian — e.g. `Termek` = product, `Partner` = customer, `Bizonylatfej`/
-`Bizonylattetel` = document header/line, `Raktar` = warehouse, `Valutanem` = currency, `Szallitasimod` = shipping, `Fizmod` = payment).
+codebase is Hungarian-language (entity, controller, and route names are in Hungarian — e.g. `Termek` = product, `Partner` = customer, `Bizonylatfej`/
+`Bizonylattetel` = document header/line, `Raktar` = warehouse, `Valutanem` = currency, `Szallitasimod` = shipping, `Fizmod` = payment). Most existing *method*
+names are Hungarian too, but **new methods are written in English** — see "Naming" below.
 
 ## Switching between deployments
 
@@ -111,9 +112,37 @@ The list's sort dropdown comes from `setOrders()` in the entity's repository —
 - Frontend JS/CSS is bundled by `Gruntfile.js`: `concat` builds per-theme `*bootstrap.js`/`*app.js` and combined CSS; `less` and `sass` compile theme
   stylesheets. Only some themes are wired into Grunt (`mkwcansas`, `mugenrace`, `mugenrace2026`) — others ship hand-edited assets.
 
+## Naming
+
+**In new code every identifier is English** — method, constant, property, and local variable alike:
+
+- good: `matchTermek()`, `getTermekValtozatList()`, `downloadProductDB()`, `const BATCHKEPCSV`, `$report`, `$rows`
+- bad: Hungarian verbs/nouns (`letoltes()`, `irMezok()`, `const KOTEG`, `$riport`, `$fajl`)
+
+**Three things stay Hungarian**, and anglicizing them is always wrong:
+
+1. **Entity names** — `Termek`, `TermekValtozat`, `TermekKep`, `Partner`, `Bizonylatfej` … keep them inside English identifiers too:
+   `importTermek()`, not `importProduct()`; `getTermekValtozatList()`, not `getProductVariantList()`.
+2. **Entity field / DB column names** — `cikkszam`, `vonalkod`, `nev`, `leiras`, `ertek1`, `unasid`. A variable holding one keeps the field's name (`$cikkszam`).
+3. **Route names and array keys that are a contract** — report/JSON keys, request parameter names, Smarty variables. Those are not identifiers; renaming them
+   silently breaks templates and JS.
+
+This applies to **new** code. Existing Hungarian-named methods are not renamed just for the convention, and the `MattableController` hooks (`loadVars`,
+`setFields`, `getlistbody`, `viewlist`, `_getkarb`) are fixed by the base class anyway.
+
+## Comments
+
+Comment sparingly. **If the next few lines of code say it, don't write it** — the repo is lightly commented and dense explanatory blocks stand out.
+
+- Don't: restate the code (`// batch save` above `flush()`), repeat the method name in prose, or pad a PHPDoc with `@param` lines that add nothing to the type hint.
+- Do, in **one line**: an external constraint that isn't visible in the code (`// the file expires at UNAS after an hour`), a trap
+  (`// setKepurl(null) also nulls kepleiras`), or why the obvious approach was rejected (`// not getByProperties(): it interpolates into SQL`).
+
+Test: cover the comment — is it still clear from the next 3–4 lines? Then drop it.
+
 ## Things to know that bite
 
-- **Hungarian naming**: don't try to anglicize identifiers when editing — match the existing convention. Use the glossary above when reading unfamiliar names.
+- **Hungarian naming**: don't anglicize entity, column, or route identifiers when editing — match the existing convention (see "Naming" above).
 - **Two SQL workflows coexist**: schema changes via `./updateschema.sh` (annotations → DDL) and ad-hoc data migrations in `runonce.php` (executed once on first
   admin request after deployment, gated by stored markers). Pick the right one.
 - **Owner-specific code is everywhere**: before changing shared code, grep for `is<Owner>()` and `getTheme()` to see who else depends on the path. The same
