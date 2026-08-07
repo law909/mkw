@@ -27,7 +27,7 @@
                             <td><select id="BizonylatStatuszEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit">
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $egyed.bizonylatstatuszlist as $_role}
-                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                        <option value="{$_role.id}" data-vanemailtemplate="{if ($_role.vanemailtemplate)}1{else}0{/if}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
                                     {/foreach}
                                 </select></td>
                             <td><label for="BizonylatStatuszErtesitoEdit">Értesítés kell:</label></td>

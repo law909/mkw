@@ -5,10 +5,11 @@
     {/if}
     {if ($showbizonylatstatuszeditor)}
         <td class="cell">
-            <select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit">
+            <select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit"
+                    data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}">
                 <option value="">{at('válasszon')}</option>
                 {foreach $_egyed.bizonylatstatuszlist as $_role}
-                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                    <option value="{$_role.id}" data-vanemailtemplate="{if ($_role.vanemailtemplate)}1{else}0{/if}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
                 {/foreach}
             </select>
         </td>

@@ -946,6 +946,23 @@ let bizonylathelper = function ($) {
 
     }
 
+    /**
+     * Kell-e email értesítést kérdezni a bizonylat státuszának váltásakor. Csak akkor van
+     * mit kiküldeni, ha a választott státuszhoz be van állítva email sablon, és a bizonylaton
+     * van partner email cím.
+     *
+     * @param $statuszselect a státusz választó (a listán soronként, a karbantartón a formban)
+     * @param partneremail   a bizonylat partner emailje; ha nincs megadva, a választó
+     *                       data-vanpartneremail attribútumából olvassuk
+     */
+    function kellEmailErtesitestKerdezni($statuszselect, partneremail) {
+        let vanemailtemplate = $('option:selected', $statuszselect).data('vanemailtemplate') * 1;
+        let vanpartneremail = (partneremail === undefined)
+            ? $statuszselect.data('vanpartneremail') * 1
+            : ($.trim(partneremail || '') !== '');
+        return !!vanemailtemplate && !!vanpartneremail;
+    }
+
     function getMattKarbConfig(bizonylattipus) {
         const entityName = bizonylattipus + 'fej';
         return new MattkarbConfig({
@@ -1320,7 +1337,12 @@ let bizonylathelper = function ($) {
                         setTermekAr(sorid);
                     })
                     .on('change', '.js-bizonylatstatuszedit', function (e) {
-                        $('input[name="bizonylatstatuszertesito"]').prop('checked', true);
+                        // az "Értesítés kell" pipa csak akkor jöjjön magától, ha a választott
+                        // státuszhoz van email sablon és a bizonylaton van partner email
+                        $('input[name="bizonylatstatuszertesito"]').prop(
+                            'checked',
+                            kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
+                        );
                     })
                     .on('change', '.js-quickmennyiseginput', function (e) {
                         calcOsszesen();
@@ -1894,6 +1916,12 @@ let bizonylathelper = function ($) {
                     let $this = $(this),
                         id = $this.parents('tr').data('egyedid'),
                         statusz = $this.val();
+                    // csak akkor van értelme rákérdezni, ha a választott státuszhoz tartozik
+                    // email sablon és a bizonylaton van partner email — egyébként nincs mit kiküldeni
+                    if (!kellEmailErtesitestKerdezni($this)) {
+                        sendQ(id, statusz, false);
+                        return;
+                    }
                     dialogcenter.html('Küld email értesítést a változásról?').dialog({
                         resizable: false,
                         height: 140,

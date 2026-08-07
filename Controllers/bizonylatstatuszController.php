@@ -147,7 +147,14 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
-            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid),
+                // a státuszváltáskor csak akkor van értelme email értesítést kérdezni,
+                // ha a státuszhoz be van állítva email sablon
+                'vanemailtemplate' => (bool)$sor->getEmailtemplateId(),
+            ];
         }
         return $res;
     }
