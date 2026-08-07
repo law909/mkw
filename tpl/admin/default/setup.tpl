@@ -123,6 +123,17 @@
                                 </select>
                             </div>
                         {/if}
+                        {* a banktranzakció-importból generált bankbizonylat tételeinek jogcíme *}
+                        <div class="setuprow">
+                            <span class="setuplabel"><label
+                                    for="AutoBankbizonylatJogcimEdit">{at('Automatikus bankbizonylat jogcíme')}:</label></span>
+                            <select id="AutoBankbizonylatJogcimEdit" name="autobankbizonylatjogcim">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $autobankbizonylatjogcimlist as $_j}
+                                    <option value="{$_j.id}"{if ($_j.selected)} selected="selected"{/if}>{$_j.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                         {if ($setup.darshan)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>

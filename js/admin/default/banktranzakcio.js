@@ -59,6 +59,25 @@ $(document).ready(function () {
 
         });
 
+        // Párosít: a bizonylatszám nélküli tételeken újra lefuttatja a keresést
+        // (pl. ha az importálás óta rögzítették a hiányzó számlát)
+        $('.js-parosit').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/banktranzakcio/parosit',
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        var adat = JSON.parse(data);
+                        if (adat.msg) {
+                            alert(adat.msg);
+                        }
+                    }
+                    $('.mattable-tablerefresh').click();
+                }
+            });
+        }).button();
+
         $('#maincheckbox').change(function () {
             $('.egyedcheckbox').prop('checked', $(this).prop('checked'));
         });

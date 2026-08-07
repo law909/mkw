@@ -32,6 +32,15 @@ class BankTranzakcio
     /** @ORM\Column(type="string",length=255) */
     private $azonosito;
 
+    /**
+     * Melyik bank kivonatából jött a tranzakció (a banktranzakcioController
+     * IMPORTFORMATUMOK kulcsa: 'raiffeisen', 'otp', …). Az `azonosito` csak bankon belül
+     * egyedi – az importáláskori duplikátumszűrés ezért erre a két mezőre együtt néz.
+     *
+     * @ORM\Column(type="string",length=30,nullable=true)
+     */
+    private $bank;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $konyvelesdatum;
 
@@ -88,6 +97,16 @@ class BankTranzakcio
     public function setAzonosito($azonosito): void
     {
         $this->azonosito = $azonosito;
+    }
+
+    public function getBank()
+    {
+        return $this->bank;
+    }
+
+    public function setBank($bank): void
+    {
+        $this->bank = $bank;
     }
 
     /**

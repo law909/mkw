@@ -11,6 +11,9 @@
         <div class="matt-hseparator"></div>
     </td>
     <td class="cell">
+        {$_egyed.banknev}
+    </td>
+    <td class="cell">
         {$_egyed.konyvelesdatumstr}
     </td>
     <td class="cell">

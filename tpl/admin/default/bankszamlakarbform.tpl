@@ -30,6 +30,17 @@
                     <td><input id="IbanEdit" name="iban" type="text" size="80" maxlength="20" value="{$egyed.iban}"></td>
                 </tr>
                 <tr>
+                    <td><label for="BankEdit">{at('Bank (tranzakció import)')}:</label></td>
+                    <td>
+                        <select id="BankEdit" name="bank">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $egyed.banklist as $_o}
+                                <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
                     <td>
                         <select id="ValutanemEdit" name="valutanem">

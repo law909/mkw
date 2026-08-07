@@ -16,8 +16,24 @@
                     <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
                 </ul>
                 <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-                    <label for="fileedit">{at('Tranzakciós fájl')}:</label>
-                    <input id="fileedit" name="toimport" type="file">
+                    <div>
+                        <label for="formatumedit">{at('Bank')}:</label>
+                        <select id="formatumedit" name="formatum">
+                            {foreach $formatumok as $_kulcs => $_nev}
+                                <option value="{$_kulcs}"{if ($_kulcs == $valasztottformatum)} selected="selected"{/if}>{$_nev}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="negativisedit">{at('Negatív (terhelés) tételek is')}:</label>
+                        <input id="negativisedit" name="negativis" type="checkbox" value="1">
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="fileedit">{at('Tranzakciós fájl')}:</label>
+                        <input id="fileedit" name="toimport" type="file">
+                    </div>
                 </div>
             </div>
             <div class="mattkarb-footer">

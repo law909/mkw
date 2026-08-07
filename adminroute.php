@@ -992,6 +992,7 @@ if (!\mkw\store::isClosed()) {
         'banktranzakcioController#generateBankbizonylat',
         'adminbanktranzakciogeneratebankbizonylat'
     );
+    $router->map('POST', '/admin/banktranzakcio/parosit', 'banktranzakcioController#parosit', 'adminbanktranzakcioparosit');
 }
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');

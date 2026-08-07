@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Bankbizonylatfej;
 use Entities\Bankbizonylattetel;
+use Entities\Bankszamla;
 use Entities\BankTranzakcio;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
@@ -36,6 +37,9 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['konyvelesdatumstr'] = $t->getKonyvelesdatumStr();
         $x['erteknapstr'] = $t->getErteknapStr();
+        // a tárolt kulcs helyett a bank megjelenítendő neve (a régi, import előtti soroknál üres)
+        $bank = (string)$t->getBank();
+        $x['banknev'] = self::IMPORTFORMATUMOK[$bank]['nev'] ?? $bank;
         return $x;
     }
 
@@ -108,14 +112,79 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
+    /**
+     * A támogatott banki kivonat-formátumok. A felhasználó importáláskor választ közülük
+     * (banktranzakcioupload.tpl), a kulcs érkezik `formatum` paraméterként.
+     *
+     * `oszlop`: melyik oszlopban áll az adott mező; `elsosor`: az első adatsor (a fejléc alatt);
+     * `datum`: a dátumoszlopok formátuma – az OTP HTML-export szövegesen adja a dátumot,
+     * a Raiffeisen viszont Excel-sorszámként.
+     */
+    const IMPORTFORMATUMOK = [
+        'raiffeisen' => [
+            'nev' => 'Raiffeisen',
+            'elsosor' => 1,
+            'datum' => 'excel',
+            'oszlop' => [
+                'konyvelesdatum' => 'B',
+                'erteknap' => 'C',
+                'azonosito' => 'D',
+                'osszeg' => 'E',
+                'kozlemeny1' => 'F',
+                'kozlemeny2' => 'G',
+                'kozlemeny3' => 'H',
+                // az ellenoldali számlaszám (partnerkereséshez) és a bizonylatszámot tartalmazó mező
+                'szamlaszam' => 'F',
+                'bizonylatszam' => 'H',
+                // az ellenoldali (partner) neve – a bizonylatszám nélküli tételek párosításához
+                'partnernev' => 'G',
+            ],
+        ],
+        'otp' => [
+            'nev' => 'OTP',
+            'elsosor' => 17,
+            'datum' => 'szoveg',
+            'oszlop' => [
+                'konyvelesdatum' => 'C',
+                'erteknap' => 'D',
+                'azonosito' => 'I',
+                'osszeg' => 'E',
+                'kozlemeny1' => 'F',
+                'kozlemeny2' => 'G',
+                'kozlemeny3' => 'H',
+                'szamlaszam' => 'F',
+                'bizonylatszam' => 'H',
+                // az ellenoldali (partner) neve – a bizonylatszám nélküli tételek párosításához
+                'partnernev' => 'G',
+            ],
+        ],
+    ];
+
     public function viewupload()
     {
         $view = $this->createView('banktranzakcioupload.tpl');
+        $formatumok = [];
+        foreach (self::IMPORTFORMATUMOK as $kulcs => $f) {
+            $formatumok[$kulcs] = $f['nev'];
+        }
+        $view->setVar('formatumok', $formatumok);
+        // a legutóbb használt bank legyen előre kiválasztva
+        $view->setVar('valasztottformatum', \mkw\store::getParameter(\mkw\consts::LastBankiFormatum, ''));
         $view->printTemplateResult();
     }
 
     public function upload()
     {
+        $formatumkulcs = $this->params->getStringRequestParam('formatum', 'raiffeisen');
+        if (!array_key_exists($formatumkulcs, self::IMPORTFORMATUMOK)) {
+            echo json_encode(['msg' => 'Ismeretlen formátum: ' . $formatumkulcs]);
+            return;
+        }
+        $formatum = self::IMPORTFORMATUMOK[$formatumkulcs];
+        $oszlop = $formatum['oszlop'];
+        \mkw\store::setParameter(\mkw\consts::LastBankiFormatum, $formatumkulcs);
+        $negativis = $this->params->getBoolRequestParam('negativis', false);
+
         $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
         move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
 
@@ -126,75 +195,52 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $sheet = $excel->getActiveSheet();
         $maxrow = (int)$sheet->getHighestRow();
 
-        /** @var Bizonylattipus $szamlatipus */
-        $szamlatipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
-        // '/[Ss]?[Zz]?\d{4}\/\d{1,6}/'
-        $regexp = '/' . $szamlatipus->getAzonositoForRegexp() . '\d{4}\/\d{1,6}/';
         $repo = $this->getRepo();
         $partnerrepo = $this->getRepo(Partner::class);
-        $bizrepo = $this->getRepo(Bizonylatfej::class);
 
-        for ($row = 0; $row <= $maxrow; ++$row) {
-            $osszeg = (float)$sheet->getCell('E' . $row)->getValue();
-            if ($osszeg && $osszeg > 0) {
-                $azon = (string)$sheet->getCell('D' . $row)->getValue();
-                if ($azon && !$repo->findOneBy(['azonosito' => $azon])) {
+        for ($row = $formatum['elsosor']; $row <= $maxrow; ++$row) {
+            $osszeg = $this->importOsszeg($sheet->getCell($oszlop['osszeg'] . $row)->getValue());
+            if ($osszeg && ($osszeg > 0 || $negativis)) {
+                $azon = trim((string)$sheet->getCell($oszlop['azonosito'] . $row)->getValue());
+                // az azonosító csak bankon belül egyedi (az OTP pl. rövid sorszámot ad),
+                // ezért a duplikátumszűrés a bankot is nézi
+                if ($azon && !$repo->findOneBy(['azonosito' => $azon, 'bank' => $formatumkulcs])) {
+                    $konyvelesdatum = $this->importDatum(
+                        $sheet->getCell($oszlop['konyvelesdatum'] . $row)->getValue(),
+                        $formatum['datum']
+                    );
+                    $erteknap = $this->importDatum(
+                        $sheet->getCell($oszlop['erteknap'] . $row)->getValue(),
+                        $formatum['datum']
+                    );
+                    if (!$konyvelesdatum && !$erteknap) {
+                        // fejléc- vagy összesítő sor a dátumoszlopban – nem tranzakció
+                        continue;
+                    }
+                    // a bank néha csak az egyik dátumot adja meg (pl. függő kártyás tételnél
+                    // nincs még értéknap) – ilyenkor a másikkal pótoljuk
+                    $konyvelesdatum = $konyvelesdatum ? $konyvelesdatum : clone $erteknap;
+                    $erteknap = $erteknap ? $erteknap : clone $konyvelesdatum;
+
                     $o = new BankTranzakcio();
                     $o->setAzonosito($azon);
+                    $o->setBank($formatumkulcs);
                     $o->setOsszeg($osszeg);
 
-                    $o->setKozlemeny1((string)$sheet->getCell('F' . $row)->getValue());
-                    $o->setKozlemeny2((string)$sheet->getCell('G' . $row)->getValue());
-                    $o->setKozlemeny3((string)$sheet->getCell('H' . $row)->getValue());
+                    $o->setKozlemeny1((string)$sheet->getCell($oszlop['kozlemeny1'] . $row)->getValue());
+                    $o->setKozlemeny2((string)$sheet->getCell($oszlop['kozlemeny2'] . $row)->getValue());
+                    $o->setKozlemeny3((string)$sheet->getCell($oszlop['kozlemeny3'] . $row)->getValue());
 
-                    $o->setKonyvelesdatum(Date::excelToDateTimeObject($sheet->getCell('B' . $row)->getValue()));
-                    $o->setErteknap(Date::excelToDateTimeObject($sheet->getCell('C' . $row)->getValue()));
+                    $o->setKonyvelesdatum($konyvelesdatum);
+                    $o->setErteknap($erteknap);
 
-                    $partner = $partnerrepo->findOneBy(['iban' => (string)$sheet->getCell('F' . $row)->getValue()]);
+                    $szamlaszam = trim((string)$sheet->getCell($oszlop['szamlaszam'] . $row)->getValue());
+                    $partner = $szamlaszam ? $partnerrepo->findOneBy(['iban' => $szamlaszam]) : null;
                     if ($partner) {
                         $o->setPartner($partner);
                     }
 
-                    $bizszamarr = [];
-                    $trimmedbizsz = trim((string)$sheet->getCell('H' . $row)->getValue());
-                    /** @var Bizonylatfej $biz */
-                    $biz = $bizrepo->find($trimmedbizsz);
-                    if ($biz) {
-                        $bizszamarr[] = $biz->getId();
-                    } elseif (is_numeric($trimmedbizsz)) {
-                        $convertedB = $szamlatipus->getAzonosito() . $o->getErteknap()->format('Y') . '/' . str_pad($trimmedbizsz, 6, '0', STR_PAD_LEFT);
-
-                        /** @var Bizonylatfej $biz */
-                        $biz = $bizrepo->find($convertedB);
-                        if ($biz) {
-                            if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
-                                $bizszamarr[] = $biz->getId();
-                            }
-                        }
-                    } else {
-                        $matchcnt = preg_match_all($regexp, str_replace(' ', '', $trimmedbizsz), $bizsz);
-                        if ($matchcnt) {
-                            foreach ($bizsz[0] as $b) {
-                                $convertedB = strtoupper($b);
-                                $szamlatipusAzonosito = $szamlatipus->getAzonosito();
-
-                                if (substr($convertedB, 0, 2) !== $szamlatipusAzonosito) {
-                                    $convertedB = $szamlatipusAzonosito . $convertedB;
-                                }
-                                $partsofB = explode('/', $convertedB);
-                                $partsofB[1] = sprintf('%06d', (int)$partsofB[1]);
-                                $convertedB = implode('/', $partsofB);
-
-                                /** @var Bizonylatfej $biz */
-                                $biz = $bizrepo->find($convertedB);
-                                if ($biz) {
-                                    if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
-                                        $bizszamarr[] = $biz->getId();
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $bizszamarr = $this->keresBizonylatszamok($o);
                     if ($bizszamarr) {
                         $o->setBizonylatszamok(implode(';', $bizszamarr));
                     }
@@ -208,9 +254,265 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         \unlink($filenev);
     }
 
+    public function parosit()
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('inaktiv', '=', false);
+        $filter->addSql("(_xx.bizonylatszamok IS NULL) OR (_xx.bizonylatszamok = '')");
+        $trs = $this->getRepo()->getAll($filter, ['erteknap' => 'ASC']);
+        $talalt = 0;
+        /** @var BankTranzakcio $tr */
+        foreach ($trs as $tr) {
+            $bizszamarr = $this->keresBizonylatszamok($tr);
+            if ($bizszamarr) {
+                $tr->setBizonylatszamok(implode(';', $bizszamarr));
+                $this->getEm()->persist($tr);
+                $talalt++;
+            }
+        }
+        $this->getEm()->flush();
+        echo json_encode([
+            'vizsgalt' => count($trs),
+            'talalt' => $talalt,
+            'msg' => count($trs) . ' párosítatlan tétel közül ' . $talalt . ' kapott bizonylatszámot.',
+        ]);
+    }
+
+    /**
+     * Egy tranzakcióhoz tartozó bizonylatszám(ok) megkeresése. Ugyanaz fut importáláskor és
+     * a "Párosít" gombra – a tranzakció eltárolt mezőiből dolgozik:
+     *  - kozlemeny3: a közlemény, amiben a bizonylatszám állhat
+     *  - kozlemeny2: az ellenoldali (partner) neve
+     *  - partner: az ellenoldali számlaszám alapján már megtalált partner
+     *
+     * Jóváírásnál vevőszámlát, terhelésnél költségszámlát keres.
+     *
+     * @return array a megtalált bizonylatszámok
+     */
+    private function keresBizonylatszamok(BankTranzakcio $o): array
+    {
+        $szamlatipus = $this->getBizonylattipus('szamla');
+        $osszeg = (float)$o->getOsszeg();
+        $partner = $o->getPartner();
+        $trimmedbizsz = trim((string)$o->getKozlemeny3());
+        $bizrepo = $this->getRepo(Bizonylatfej::class);
+        // jóváírás → vevőszámla, terhelés → költségszámla
+        $celtipus = $osszeg > 0 ? $szamlatipus : $this->getBizonylattipus('koltsegszamla');
+
+        $bizszamarr = [];
+        if ($osszeg < 0) {
+            $bizszamarr = $this->keresKoltsegszamlaErbizonylatszam($trimmedbizsz);
+        } elseif ($biz = $bizrepo->find($trimmedbizsz)) {
+            $bizszamarr[] = $biz->getId();
+        } elseif (is_numeric($trimmedbizsz)) {
+            $convertedB = $szamlatipus->getAzonosito() . $o->getErteknap()->format('Y') . '/' . str_pad($trimmedbizsz, 6, '0', STR_PAD_LEFT);
+
+            /** @var Bizonylatfej $biz */
+            $biz = $bizrepo->find($convertedB);
+            if ($biz) {
+                if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
+                    $bizszamarr[] = $biz->getId();
+                }
+            }
+        } else {
+            // '/[Ss]?[Zz]?\d{4}\/\d{1,6}/'
+            $regexp = '/' . $szamlatipus->getAzonositoForRegexp() . '\d{4}\/\d{1,6}/';
+            $matchcnt = preg_match_all($regexp, str_replace(' ', '', $trimmedbizsz), $bizsz);
+            if ($matchcnt) {
+                foreach ($bizsz[0] as $b) {
+                    $convertedB = strtoupper($b);
+                    $szamlatipusAzonosito = $szamlatipus->getAzonosito();
+
+                    if (substr($convertedB, 0, 2) !== $szamlatipusAzonosito) {
+                        $convertedB = $szamlatipusAzonosito . $convertedB;
+                    }
+                    $partsofB = explode('/', $convertedB);
+                    $partsofB[1] = sprintf('%06d', (int)$partsofB[1]);
+                    $convertedB = implode('/', $partsofB);
+
+                    /** @var Bizonylatfej $biz */
+                    $biz = $bizrepo->find($convertedB);
+                    if ($biz) {
+                        if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
+                            $bizszamarr[] = $biz->getId();
+                        }
+                    }
+                }
+            }
+        }
+        if (!$bizszamarr) {
+            $bizszamarr = $this->keresBizonylatPartnerEsOsszeg(
+                $partner,
+                (string)$o->getKozlemeny2(),
+                $osszeg,
+                $celtipus
+            );
+        }
+        return $bizszamarr;
+    }
+
+    /** @return \Entities\Bizonylattipus */
+    private function getBizonylattipus($id)
+    {
+        return $this->getRepo(Bizonylattipus::class)->find($id);
+    }
+
+    /**
+     * A tranzakció bankjához tartozó saját bankszámla. Ugyanaz a kulcs azonosítja, mint az
+     * importformátumot (Bankszámlák törzs → "Bank (tranzakció import)").
+     *
+     * Ha egy bankhoz több számla is tartozik (pl. HUF és EUR), a bizonylat valutaneme dönt;
+     * ha úgy nincs találat, a bank első számlájával térünk vissza.
+     *
+     * @return \Entities\Bankszamla|null
+     */
+    private function keresBankszamla($bank, $valutanem)
+    {
+        if (!$bank) {
+            return null;
+        }
+        $repo = $this->getRepo(Bankszamla::class);
+        if ($valutanem) {
+            $bsz = $repo->findOneBy(['bank' => $bank, 'valutanem' => $valutanem]);
+            if ($bsz) {
+                return $bsz;
+            }
+        }
+        return $repo->findOneBy(['bank' => $bank]);
+    }
+
+    /**
+     * Terhelés (negatív összeg) párosítása költségszámlához: a szállítói számla száma a
+     * költségszámla `erbizonylatszam` mezőjében áll, a banki közlemény pedig tartalmazza
+     * (pl. "mbnh25/028433 MBV26/196785").
+     *
+     * Egy utalással több szállítói számla is kiegyenlíthető, ezért – a vevőszámlás ághoz
+     * hasonlóan – minden találatot visszaadunk. A LOCATE sima részstring-keresés, tehát az
+     * erbizonylatszamban lévő _ és % nem viselkedik joker karakterként.
+     *
+     * @return array a megtalált költségszámla-számok
+     */
+    private function keresKoltsegszamlaErbizonylatszam($kozlemeny): array
+    {
+        $kozlemeny = trim($kozlemeny);
+        if (mb_strlen($kozlemeny) < 4) {
+            return [];
+        }
+        $sql = 'SELECT bf.id FROM bizonylatfej bf'
+            . ' WHERE bf.bizonylattipus_id = :ktgtipus'
+            . '   AND bf.erbizonylatszam IS NOT NULL'
+            . '   AND CHAR_LENGTH(bf.erbizonylatszam) >= 4'
+            . '   AND LOCATE(bf.erbizonylatszam, :kozlemeny) > 0';
+        $talalatok = $this->getEm()->getConnection()->executeQuery(
+            $sql,
+            ['ktgtipus' => 'koltsegszamla', 'kozlemeny' => $kozlemeny]
+        )->fetchAllAssociative();
+        return array_column($talalatok, 'id');
+    }
+
+    /**
+     * Tartalék párosítás: ha a közleményből nem jött ki bizonylatszám, a partner neve és
+     * az összeg alapján keresünk számlát. Minden banknál fut.
+     *
+     * Csak akkor fogadjuk el, ha PONTOSAN EGY nyitott számla illik rá – egy téves találat
+     * rossz bankbizonylatot eredményezne, ezért a bizonytalan eseteket üresen hagyjuk.
+     *
+     * A nevet a bankok levágják (pl. "SZÁSZ MOTOR KERESKEDELMI ÉS SZOL"), ezért a kivonatból
+     * jövő név a teljes név eleje: prefix egyezést nézünk. Ha az ellenoldali számlaszám
+     * alapján megvan a partner, akkor a névre nincs is szükség.
+     *
+     * A "nyitott összeg" a folyószámla egyenlege (a számla sora + a rá könyvelt
+     * kiegyenlítések), így egy részben fizetett számla maradványára is talál.
+     *
+     * @return array a megtalált bizonylatszám egyelemű tömbben, vagy üres tömb
+     */
+    private function keresBizonylatPartnerEsOsszeg($partner, $nev, $osszeg, Bizonylattipus $szamlatipus): array
+    {
+        $nev = trim($nev);
+        if (!$partner && mb_strlen($nev) < 5) {
+            // se partner, se használható név – ennyiből nem párosítunk
+            return [];
+        }
+
+        $sql = 'SELECT f.hivatkozottbizonylat AS id, SUM(f.brutto * f.irany) AS tartozas'
+            . ' FROM folyoszamla f'
+            . ' INNER JOIN bizonylatfej bf ON bf.id = f.hivatkozottbizonylat'
+            . ' WHERE f.hivatkozottbizonylat IS NOT NULL'
+            . '   AND f.rontott = 0'
+            . '   AND bf.bizonylattipus_id = :sztipus'
+            . '   AND bf.valutanem_id = :valutanem'
+            . ($partner ? '   AND bf.partner_id = :partnerid' : '   AND bf.partnernev LIKE :nev')
+            . ' GROUP BY f.hivatkozottbizonylat'
+            . ' HAVING ABS(tartozas - :osszeg) < 0.01';
+
+        $params = [
+            'sztipus' => $szamlatipus->getId(),
+            'valutanem' => \mkw\store::getParameter(\mkw\consts::Valutanem),
+            'osszeg' => $osszeg,
+        ];
+        if ($partner) {
+            $params['partnerid'] = $partner->getId();
+        } else {
+            $params['nev'] = addcslashes($nev, '%_\\') . '%';
+        }
+
+        $talalatok = $this->getEm()->getConnection()->executeQuery($sql, $params)->fetchAllAssociative();
+        if (count($talalatok) === 1) {
+            return [$talalatok[0]['id']];
+        }
+        return [];
+    }
+
+    /**
+     * Összeg a kivonatból. A HTML-alapú exportokban (OTP) szövegként jön, akár ezres
+     * elválasztóval és tizedesvesszővel.
+     */
+    private function importOsszeg($ertek)
+    {
+        if (is_numeric($ertek)) {
+            return (float)$ertek;
+        }
+        $ertek = str_replace([' ', "\xc2\xa0", "\t"], '', (string)$ertek);
+        $ertek = str_replace(',', '.', $ertek);
+        return is_numeric($ertek) ? (float)$ertek : 0.0;
+    }
+
+    /**
+     * Dátum a kivonatból.
+     *  - 'excel': Excel-sorszám (Raiffeisen)
+     *  - 'szoveg': "2026.07.24." vagy "2026.07.24. 09:39:00" (OTP)
+     *
+     * @return \DateTime|null null, ha a cella nem dátum (pl. fejléc- vagy összesítő sor)
+     */
+    private function importDatum($ertek, $formatum)
+    {
+        if ($formatum === 'excel') {
+            if (!is_numeric($ertek)) {
+                return null;
+            }
+            return Date::excelToDateTimeObject($ertek);
+        }
+        $matchcnt = preg_match(
+            '/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.?(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/',
+            (string)$ertek,
+            $m
+        );
+        if (!$matchcnt) {
+            return null;
+        }
+        $d = new \DateTime();
+        $d->setDate((int)$m[1], (int)$m[2], (int)$m[3]);
+        $d->setTime((int)($m[4] ?? 0), (int)($m[5] ?? 0), (int)($m[6] ?? 0));
+        return $d;
+    }
+
     public function generateBankbizonylat()
     {
-        $jogcim = $this->getRepo(Jogcim::class)->find(1);
+        // a tételek jogcíme a beállításokból (Alapértelmezések fül); ha nincs beállítva,
+        // marad a régi viselkedés
+        $jogcim = $this->getRepo(Jogcim::class)->find(
+            \mkw\store::getIntParameter(\mkw\consts::AutoBankbizonylatJogcim, 1)
+        );
         $ids = $this->params->getArrayRequestParam('ids');
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bankbizonylatkesz', '=', false);
@@ -237,8 +539,19 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                 if ($tr->getPartner()) {
                     $bb->setPartner($tr->getPartner());
                 }
-                $bb->setValutanem($this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem)));
-                $befosszeg = $tr->getOsszeg();
+                $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+                // a kivonat bankjához beállított saját bankszámla (Bankszámlák törzs → "Bank
+                // (tranzakció import)"). Ez pontosabb, mint a hivatkozott bizonylaté – utóbbi
+                // költségszámlánál jellemzően üres is. Ha nincs beállítva, marad a régi működés.
+                $sajatbankszamla = $this->keresBankszamla($tr->getBank(), $valutanem);
+                if ($sajatbankszamla) {
+                    $bb->setBankszamla($sajatbankszamla);
+                }
+                // jóváírás (a vevő fizet nekünk) → bevétel, terhelés (mi fizetünk a szállítónak)
+                // → kiadás. A tételen a bruttó mindig előjel nélküli, az irányt az irany hordozza
+                // (a folyószámlára a listener fordított előjellel könyveli).
+                $irany = $tr->getOsszeg() < 0 ? -1 : 1;
+                $befosszeg = abs($tr->getOsszeg());
                 foreach ($szlaszamok as $szlaszam) {
                     /** @var Bizonylatfej $szamla */
                     $szamla = $this->getRepo(Bizonylatfej::class)->find($szlaszam);
@@ -246,7 +559,9 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                         if (!$bb->getPartner()) {
                             $bb->setPartner($szamla->getPartner());
                         }
-                        $bb->setBankszamla($szamla->getBankszamla());
+                        if (!$sajatbankszamla) {
+                            $bb->setBankszamla($szamla->getBankszamla());
+                        }
                         $bt = new Bankbizonylattetel();
                         $bt->setBizonylatfej($bb);
                         $bt->setPartner($szamla->getPartner());
@@ -256,8 +571,8 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                         $bt->setJogcim($jogcim);
                         $bt->setValutanem($szamla->getValutanem());
                         $bt->setErbizonylatszam($tr->getAzonosito());
-                        $bt->setIrany(1);
-                        $needed = min($szamla->getBrutto(), $befosszeg);
+                        $bt->setIrany($irany);
+                        $needed = min(abs($szamla->getBrutto()), $befosszeg);
                         $bt->setBrutto($needed);
                         $this->getEm()->persist($bt);
                         $befosszeg = $befosszeg - $needed;
@@ -266,6 +581,8 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                         }
                     }
                 }
+                // A valutanemet CSAK a partner beállítása után szabad megadni
+                $bb->setValutanem($valutanem);
                 $tr->setBankbizonylatkesz(true);
                 $this->getEm()->persist($tr);
                 $this->getEm()->persist($bb);

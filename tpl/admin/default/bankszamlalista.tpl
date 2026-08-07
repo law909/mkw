@@ -28,6 +28,7 @@
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Bank neve')}</th>
                 <th>{at('Számlaszám')}</th>
+                <th>{at('Bank (import)')}</th>
                 <th>{at('Valutanem')}</th>
             </tr>
             </thead>

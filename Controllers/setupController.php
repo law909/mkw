@@ -542,6 +542,8 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::AutoPenztarbizonylatJogcim);
         $jogcim = new jogcimController();
         $view->setVar('autopenztarbizonylatjogcimlist', $jogcim->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::AutoBankbizonylatJogcim);
+        $view->setVar('autobankbizonylatjogcimlist', $jogcim->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
         $c = new jelenlettipusController();
@@ -1667,6 +1669,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::AutoPenztarbizonylatJogcim, $jogcim->getId());
         } else {
             $this->setObj(\mkw\consts::AutoPenztarbizonylatJogcim, '');
+        }
+        $jogcim = \mkw\store::getEm()->getRepository(\Entities\Jogcim::class)->find($this->params->getIntRequestParam('autobankbizonylatjogcim', 0));
+        if ($jogcim) {
+            $this->setObj(\mkw\consts::AutoBankbizonylatJogcim, $jogcim->getId());
+        } else {
+            $this->setObj(\mkw\consts::AutoBankbizonylatJogcim, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
         if ($fizmod) {

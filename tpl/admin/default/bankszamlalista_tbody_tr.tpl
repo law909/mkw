@@ -6,5 +6,6 @@
                     class="ui-icon ui-icon-circle-minus"></span></a>
     </td>
     <td class="cell">{$_egyed.szamlaszam}</td>
+    <td class="cell">{$_egyed.bankformatumnev}</td>
     <td class="cell">{$_egyed.valutanemnev}</td>
 </tr>

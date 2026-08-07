@@ -1166,6 +1166,17 @@ if ($DBVersion < '0104') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0104');
 }
+
+if ($DBVersion < '0105') {
+    // A banktranzakcio import több bankot is tud (Raiffeisen, OTP), ezért a sor mostantól
+    // viszi, melyik bank kivonatából jött – az azonosító ugyanis csak bankon belül egyedi.
+    // A korábban importált sorok mind Raiffeisen kivonatból származnak: ha üresen maradnának,
+    // egy újbóli Raiffeisen import nem ismerné fel őket, és duplán hozná létre a tételeket.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE banktranzakcio SET bank="raiffeisen" WHERE bank IS NULL OR bank=""'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0105');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

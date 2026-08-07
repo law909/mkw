@@ -26,11 +26,31 @@ class bankszamlaController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['valutanemid'] = $t->getValutanem() ? $t->getValutanem()->getId() : null;
         $x['valutanemnev'] = $t->getValutanem() ? $t->getValutanem()->getNev() : '';
+        $bank = (string)$t->getBank();
+        $x['bankformatumnev'] = banktranzakcioController::IMPORTFORMATUMOK[$bank]['nev'] ?? $bank;
         if ($forKarb) {
             $valutanemc = new valutanemController();
             $x['valutanemlist'] = $valutanemc->getSelectList($x['valutanemid']);
+            $x['banklist'] = $this->getBankSelectList($bank);
         }
         return $x;
+    }
+
+    /**
+     * A választható bankok – ugyanaz a lista, mint a banktranzakció importnál,
+     * hogy a kettő összeköthető legyen.
+     */
+    public function getBankSelectList($sel = null)
+    {
+        $ret = [];
+        foreach (banktranzakcioController::IMPORTFORMATUMOK as $kulcs => $f) {
+            $ret[] = [
+                'id' => $kulcs,
+                'caption' => $f['nev'],
+                'selected' => ($kulcs === (string)$sel),
+            ];
+        }
+        return $ret;
     }
 
     /**
@@ -44,6 +64,10 @@ class bankszamlaController extends \mkwhelpers\MattableController
 
         $valutanem = $this->getRepo(\Entities\Valutanem::class)->find($this->params->getIntRequestParam('valutanem', 0));
         $obj->setValutanem($valutanem ?: null);
+
+        // csak ismert formátumkulcsot fogadunk el (a setEntityFieldsFromRequest bármit beírna)
+        $bank = $this->params->getStringRequestParam('bank', '');
+        $obj->setBank(array_key_exists($bank, banktranzakcioController::IMPORTFORMATUMOK) ? $bank : null);
 
         return $obj;
     }

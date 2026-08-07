@@ -24,6 +24,13 @@ class Bankszamla {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $iban;
     /**
+     * Melyik bank kivonatformátumáról van szó – ugyanazok a kulcsok, mint a
+     * banktranzakció importnál (\Controllers\banktranzakcioController::IMPORTFORMATUMOK).
+     *
+     * @ORM\Column(type="string",length=30,nullable=true)
+     */
+    private $bank;
+    /**
      * @ORM\ManyToOne(targetEntity="Valutanem")
      * @ORM\JoinColumn(name="valutanem_id",referencedColumnName="id",nullable=true,onDelete="set null")
      */
@@ -75,6 +82,14 @@ class Bankszamla {
 
     public function setIban($iban) {
         $this->iban = $iban;
+    }
+
+    public function getBank() {
+        return $this->bank;
+    }
+
+    public function setBank($bank) {
+        $this->bank = $bank;
     }
 
     public function getValutanem() {

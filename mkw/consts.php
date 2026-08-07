@@ -32,6 +32,12 @@ class consts
     // (a funkciót bizonylattípusonként a bizonylattipus.autopenztarbizonylat mező kapcsolja be)
     const AutoPenztarbizonylatPenztar = 'autopenztarbizonylatpenztar';
     const AutoPenztarbizonylatJogcim = 'autopenztarbizonylatjogcim';
+    // a banktranzakciókból automatikusan képzett bankbizonylat tételeinek jogcíme
+    // (banktranzakcioController::generateBankbizonylat)
+    const AutoBankbizonylatJogcim = 'autobankbizonylatjogcim';
+    // a banki tranzakció-import legutóbb választott formátuma – a feltöltő képernyő
+    // ezt kínálja fel alapértelmezésként (banktranzakcioController::IMPORTFORMATUMOK kulcsa)
+    const LastBankiFormatum = 'lastbankiformatum';
     const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
     const ShowTermekArsav = 'showtermekarsav';

@@ -30,12 +30,15 @@
                 {/foreach}
             </select>
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
+            {* a bizonylatszám nélküli tételeken újra lefuttatja a keresést *}
+            <a href="#" class="js-parosit">{at('Párosít')}</a>
         </div>
         <table id="mattable-table">
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Azonosito')}</th>
+                <th>{at('Bank')}</th>
                 <th>{at('Könyvelés dátuma')}</th>
                 <th>{at('Értéknap')}</th>
                 <th>{at('Összeg')}</th>
