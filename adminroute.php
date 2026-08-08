@@ -795,6 +795,11 @@ if (\mkw\store::isUnas()) {
         $router->map('POST', '/admin/unastermekimport/riport', 'unastermekimportController#report', 'adminunastermekimportriport');
         $router->map('POST', '/admin/unastermekimport/stop', 'unastermekimportController#stop', 'adminunastermekimportstop');
     }
+
+    $router->map('GET', '/admin/unaskepcleanup/view', 'unaskepcleanupController#view', 'adminunaskepcleanupview');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/unaskepcleanup/futtat', 'unaskepcleanupController#run', 'adminunaskepcleanupfuttat');
+    }
 }
 
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');

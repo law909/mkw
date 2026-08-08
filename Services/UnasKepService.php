@@ -19,6 +19,9 @@ class UnasKepService
 
     private const KEPEXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
 
+    /** a takarítás riportjában legfeljebb ennyi fájlnév megy vissza listánként */
+    private const CLEANUPSAMPLE = 500;
+
     private $absFolder;
 
     /** @var string a tárolt URL-ek eleje (vezető perjel nélkül, záró perjellel) */
@@ -32,11 +35,21 @@ class UnasKepService
     /** @var array termékID => [tartalom-lenyomat => URL] */
     private $contentIndex = [];
 
-    public function __construct()
+    /**
+     * @param string|null $folder csak a takarításnak: az import mindig az UNAS képmappáját tölti.
+     *                            Megadva az URL-előtag is ez lesz.
+     */
+    public function __construct($folder = null)
     {
-        $folder = UnasService::getKepPath();
+        $folder = trim((string)$folder);
+        $custom = $folder !== '';
+        if ($custom) {
+            $folder = rtrim(str_replace('\\', '/', $folder), '/') . '/';
+        } else {
+            $folder = UnasService::getKepPath();
+        }
         $this->absFolder = rtrim(getcwd() . '/' . ltrim($folder, '/'), '/') . '/';
-        $this->urlPrefix = ltrim(UnasService::getKepUrlPrefix(), '/');
+        $this->urlPrefix = ltrim($custom ? $folder : UnasService::getKepUrlPrefix(), '/');
 
         try {
             $this->mediatar = new MediatarService('Images');
@@ -280,6 +293,238 @@ class UnasKepService
             return;
         }
         $this->mediatar->createDerivatives($abs, $ext);
+    }
+
+    // ------------------------------------------------------------------
+    // Takarítás
+    // ------------------------------------------------------------------
+
+    /**
+     * A mappa árva fájljai: amikre az adatbázisból semmi nem hivatkozik. Ide gyűlik az azonos
+     * tartalmú duplikátum (amit az {@see importKepek()} szándékosan a lemezen hagy), a régi
+     * névkonvencióval letöltött kép és a törölt termékek képe is.
+     *
+     * A fájllal együtt a médiatár bélyegkép-tükre is törlődik; almappákba nem megyünk be, és az
+     * adatbázishoz nem nyúlunk – a hiányzó fájlra mutató hivatkozások csak a riportba kerülnek.
+     *
+     * @param bool $apply false esetén csak számol
+     * @param bool $force üres találat mellett is töröl
+     *
+     * @return array
+     */
+    public function cleanupOrphans($apply = false, $force = false)
+    {
+        $result = [
+            'mappa' => $this->absFolder,
+            'urlprefix' => $this->urlPrefix,
+            'oszlop' => 0,
+            'hivatkozott' => 0,
+            'fajl' => 0,
+            'megtartva' => 0,
+            'megtartva_meret' => 0,
+            'arva' => 0,
+            'arva_meret' => 0,
+            'almappa' => 0,
+            'lista' => [],
+            'hianyzo' => [],
+            'hianyzo_db' => 0,
+            'torolve' => 0,
+            'torolve_meret' => 0,
+            'hiba' => [],
+            'hiba_db' => 0,
+            'megallt' => false,
+            'uzenet' => null,
+        ];
+        if (!is_dir($this->absFolder)) {
+            $result['megallt'] = true;
+            $result['uzenet'] = t('A képmappa nem található') . ': ' . $this->absFolder;
+            return $result;
+        }
+
+        $scan = $this->collectReferencedNames();
+        $result['oszlop'] = $scan['oszlop'];
+        $result['hivatkozott'] = count($scan['nevek']);
+        $protected = $this->buildProtectedSet($scan['nevek']);
+
+        $onDisk = [];
+        $doomed = [];
+        foreach (scandir($this->absFolder) ?: [] as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+            $abs = $this->absFolder . $entry;
+            if (is_dir($abs)) {
+                $result['almappa']++;
+                continue;
+            }
+            $onDisk[$entry] = true;
+            $result['fajl']++;
+            $size = (int)@filesize($abs);
+            if ($this->isProtected($entry, $protected)) {
+                $result['megtartva']++;
+                $result['megtartva_meret'] += $size;
+                continue;
+            }
+            $doomed[$entry] = $size;
+            $result['arva']++;
+            $result['arva_meret'] += $size;
+        }
+
+        $result['lista'] = array_slice(array_keys($doomed), 0, self::CLEANUPSAMPLE);
+        $missing = array_diff_key($scan['nevek'], $onDisk);
+        $result['hianyzo_db'] = count($missing);
+        $result['hianyzo'] = array_slice(array_keys($missing), 0, self::CLEANUPSAMPLE);
+
+        // Üres találat mellett a törlés az egész mappát vinné – ilyenkor jóval valószínűbb, hogy
+        // a mappa vagy az URL-előtag téves, mint hogy tényleg minden kép árva.
+        if ($doomed && !$scan['nevek'] && !$force) {
+            $result['megallt'] = true;
+            $result['uzenet'] = t('Egyetlen hivatkozást sem találtunk erre az előtagra, ezért a törlés leállt.');
+            return $result;
+        }
+        if (!$apply) {
+            return $result;
+        }
+
+        foreach ($doomed as $name => $size) {
+            if (!@unlink($this->absFolder . $name)) {
+                $result['hiba_db']++;
+                if (count($result['hiba']) < self::CLEANUPSAMPLE) {
+                    $result['hiba'][] = $name;
+                }
+                continue;
+            }
+            $result['torolve']++;
+            $result['torolve_meret'] += $size;
+            $thumb = $this->thumbCachePath($name);
+            if ($thumb !== null && is_file($thumb)) {
+                @unlink($thumb);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Minden képnév, amire az adatbázis bárhonnan hivatkozik. Nem elég a `termek.kepurl` és a
+     * `termekkep.url`: leírásba ágyazott `<img>` is mutathat ide, ezért az URL-gyanús nevű
+     * oszlopok mellé a szöveges (HTML-t tároló) oszlopokat is végigvisszük.
+     *
+     * @return array{nevek: array<string,bool>, oszlop: int}
+     */
+    private function collectReferencedNames()
+    {
+        $conn = \mkw\store::getEm()->getConnection();
+        $columns = $conn->fetchAllAssociative(
+            "SELECT TABLE_NAME t, COLUMN_NAME c"
+            . " FROM information_schema.COLUMNS"
+            . " WHERE TABLE_SCHEMA = DATABASE()"
+            . " AND DATA_TYPE IN ('varchar','char','tinytext','text','mediumtext','longtext')"
+            . " AND (COLUMN_NAME LIKE '%url%' OR COLUMN_NAME LIKE '%kep%'"
+            . " OR DATA_TYPE IN ('text','mediumtext','longtext'))"
+        );
+
+        $needle = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $this->urlPrefix) . '%';
+        $names = [];
+        foreach ($columns as $column) {
+            $table = '`' . str_replace('`', '``', $column['t']) . '`';
+            $field = '`' . str_replace('`', '``', $column['c']) . '`';
+            $values = $conn->fetchFirstColumn(
+                'SELECT DISTINCT ' . $field . ' FROM ' . $table . ' WHERE ' . $field . ' LIKE ?',
+                [$needle]
+            );
+            foreach ($values as $value) {
+                foreach ($this->extractNames($value) as $name) {
+                    $names[$name] = true;
+                }
+            }
+        }
+        return ['nevek' => $names, 'oszlop' => count($columns)];
+    }
+
+    /** @return array<string> a mezőben szereplő képek fájlneve */
+    private function extractNames($value)
+    {
+        $value = str_replace('\\/', '/', (string)$value);
+        $pattern = '#' . preg_quote($this->urlPrefix, '#') . '([^\s"\'<>()\[\]{},;|\\\\]+)#i';
+        if (!preg_match_all($pattern, $value, $m)) {
+            return [];
+        }
+        $names = [];
+        foreach ($m[1] as $hit) {
+            $name = basename(rawurldecode((string)strtok($hit, '?#')));
+            if ($name !== '' && $name !== '.' && $name !== '..') {
+                $names[] = $name;
+            }
+        }
+        return $names;
+    }
+
+    /**
+     * Egy név és a származék-ősei: `abc_250.jpg` → [`abc_250.jpg`, `abc.jpg`]. A MediatarService
+     * DERIVEDPATTERN-je csak felismeri a származékot, az alapnevet nem adja vissza.
+     *
+     * @return array<string>
+     */
+    private function nameChain($name)
+    {
+        $pattern = '/^(.+)_(' . implode('|', array_keys(MediatarService::SIZES)) . ')(\.[^.]+)$/i';
+        $chain = [$name];
+        while (preg_match($pattern, $name, $m)) {
+            $name = $m[1] . $m[3];
+            $chain[] = $name;
+        }
+        return $chain;
+    }
+
+    /**
+     * A hivatkozott nevek és az őseik. Az ősre azért van szükség, mert egy leírásból hivatkozott
+     * `abc_250.jpg` az `abc.jpg`-t is életben tartja – abból generálódik újra minden méret.
+     *
+     * @return array<string,bool>
+     */
+    private function buildProtectedSet(array $referenced)
+    {
+        $protected = [];
+        foreach (array_keys($referenced) as $name) {
+            foreach ($this->nameChain($name) as $link) {
+                $protected[$link] = true;
+            }
+        }
+        return $protected;
+    }
+
+    /** Élő a fájl, ha ő maga vagy valamelyik őse hivatkozott – az utóbbi a származékokat védi. */
+    private function isProtected($name, array $protected)
+    {
+        foreach ($this->nameChain($name) as $link) {
+            if (isset($protected[$link])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * A médiatár lusta bélyegkép-cache-e ugyanezt a fájlt tükrözi
+     * ({@see MediatarService::thumbCachePath()}); a képeket `Images` típussal töltjük.
+     *
+     * @return string|null null, ha a mappa a képgyökéren kívül van
+     */
+    private function thumbCachePath($name)
+    {
+        $base = realpath(MediatarService::getDocRoot() . MediatarService::getBaseUrl());
+        $real = realpath($this->absFolder);
+        if ($base === false || $real === false) {
+            return null;
+        }
+        $base = rtrim(str_replace('\\', '/', $base), '/');
+        $real = rtrim(str_replace('\\', '/', $real), '/');
+        if (strncmp($real . '/', $base . '/', strlen($base) + 1) !== 0) {
+            return null;
+        }
+        $rel = trim(substr($real, strlen($base)), '/');
+        return $base . '/' . MediatarService::THUMBDIR . '/Images'
+            . ($rel === '' ? '' : '/' . $rel) . '/' . $name;
     }
 
     /**

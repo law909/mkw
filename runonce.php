@@ -1245,6 +1245,18 @@ if ($DBVersion < '0109') {
         . ' SET b.bizonylatnyelv = COALESCE (NULLIF (p.bizonylatnyelv, ""), "hu_hu") '
         . ' WHERE b.bizonylatnyelv IS NULL OR b.bizonylatnyelv = ""'
     );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0109');
+}
+
+if ($DBVersion < '0110') {
+    // fájlt töröl, ezért a bontós műveletek 90-es jogosultságával megy, nem az importok 40-esével
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "UNAS képtakarítás", "/admin/unaskepcleanup/view", "/admin/unaskepcleanup", 90,'
+        . (\mkw\store::isUnas() ? '1' : '0') . ', 260, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/unaskepcleanup/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0110');
 }
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
