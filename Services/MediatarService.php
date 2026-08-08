@@ -14,6 +14,9 @@ class MediatarService
 
     const QUALITY = 80;
 
+    const DIR_PERMISSON = 0775;
+    const FILE_PERMISSION = 0664;
+
     /**
      * A generált származékok. A kulcs a fájlnév-utótag (foo_250.jpg), az érték
      * a doboz mérete.
@@ -196,7 +199,7 @@ class MediatarService
         if ($this->typedef['dir']) {
             $dir = $basereal . DIRECTORY_SEPARATOR . $this->typedef['dir'];
             if (!is_dir($dir)) {
-                @mkdir($dir, 0755, true);
+                @mkdir($dir, self::DIR_PERMISSON, true);
             }
             $real = realpath($dir);
             if ($real === false) {
@@ -890,13 +893,13 @@ class MediatarService
             return $dst;
         }
         $dir = dirname($dst);
-        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
+        if (!is_dir($dir) && !@mkdir($dir, self::DIR_PERMISSON, true) && !is_dir($dir)) {
             return null;
         }
         if (!\mkw\thumbnail::createThumb($src, $dst, self::THUMBSIZE, self::THUMBSIZE, self::QUALITY, true)) {
             return null;
         }
-        @chmod($dst, 0644);
+        @chmod($dst, 0664);
         return $dst;
     }
 
@@ -947,7 +950,7 @@ class MediatarService
         if (!@move_uploaded_file($file['tmp_name'], $dst)) {
             throw new \RuntimeException('A fájl mentése nem sikerült');
         }
-        @chmod($dst, 0644);
+        @chmod($dst, self::FILE_PERMISSION);
 
         $this->createDerivatives($dst, $ext);
 
@@ -982,7 +985,7 @@ class MediatarService
             // $bmpSupported szándékosan false – a CKFinder és az importerek is így
             // hívják, BMP-hez ma sincs származék. Paritás.
             if (\mkw\thumbnail::createThumb($abs, $dst, $size[0], $size[1], self::QUALITY, true)) {
-                @chmod($dst, 0644);
+                @chmod($dst, self::FILE_PERMISSION);
             }
         }
     }
@@ -1118,7 +1121,7 @@ class MediatarService
         foreach ($this->familyRenameMap($path, $name, $newname) as $from => $to) {
             $dir = dirname($to);
             if (!is_dir($dir)) {
-                @mkdir($dir, 0755, true);
+                @mkdir($dir, self::DIR_PERMISSON, true);
             }
             @rename($from, $to);
         }
@@ -1163,7 +1166,7 @@ class MediatarService
         if (file_exists($abs)) {
             throw new \RuntimeException('Már létezik ilyen nevű mappa vagy fájl');
         }
-        if (!@mkdir($abs, 0755)) {
+        if (!@mkdir($abs, self::DIR_PERMISSON)) {
             throw new \RuntimeException('A mappa létrehozása nem sikerült');
         }
         return $this->normalizePath($path) . $name . '/';
