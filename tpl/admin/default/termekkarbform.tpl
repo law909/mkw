@@ -111,6 +111,13 @@
                                    value="{$egyed.vonalkod}"></td>
                     </tr>
                 {/if}
+                {if ($setup.unas)}
+                    <tr>
+                        <td><label for="UnasidEdit">{at('UNAS azonosító')}:</label></td>
+                        <td><input id="UnasidEdit" name="unasid" type="text" size="30" maxlength="50"
+                                   value="{$egyed.unasid}"></td>
+                    </tr>
+                {/if}
                 <tr>
                     <td><label for="MEEdit">{at('ME')}:</label></td>
                     <td><select id="MEEdit" name="me">
@@ -246,7 +253,7 @@
             <div class="matt-hseparator"></div>
             <div>
                 <label for="RovidleirasL1Edit">{at('Rövid leírás')}:</label>
-                <input id="RovidleirasL1Edit" name="rovidleiras_l1" type="text" size="100" maxlength="255" value="{$egyed.rovidleiras_l1}">
+                <textarea id="RovidleirasL1Edit" name="rovidleiras_l1" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras_l1}</textarea>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -526,8 +533,7 @@
                 </tr>
                 <tr>
                     <td><label for="RovidLeirasEdit">{at('Rövid leírás')}:</label></td>
-                    <td><input id="RovidLeirasEdit" name="rovidleiras" type="text" size="100" maxlength="255"
-                               value="{$egyed.rovidleiras}"></td>
+                    <td><textarea id="RovidLeirasEdit" name="rovidleiras" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="LeirasEdit">{at('Leírás')}:</label></td>

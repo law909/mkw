@@ -229,12 +229,18 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
         $obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
         $obj->setVonalkod($this->params->getStringRequestParam('vonalkod'));
+        // a mező csak `unas` kapcsolóval van a formon – hiányában ne nullázzuk a párosítást
+        if ($this->params->existsRequestParam('unasid')) {
+            $obj->setUnasid($this->params->getStringRequestParam('unasid'));
+        }
         $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
         $obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-        $obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
+        // `unas` kapcsolóval a rövid leírás CKEditor-os, tehát HTML – azt nyersen kell venni
+        $rovidleiras = \mkw\store::isUnas() ? 'getOriginalStringRequestParam' : 'getStringRequestParam';
+        $obj->setRovidleiras($this->params->$rovidleiras('rovidleiras'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setOldalcimL1($this->params->getStringRequestParam('oldalcim_l1'));
-        $obj->setRovidleirasL1($this->params->getStringRequestParam('rovidleiras_l1'));
+        $obj->setRovidleirasL1($this->params->$rovidleiras('rovidleiras_l1'));
         $obj->setLeirasL1($this->params->getOriginalStringRequestParam('leiras_l1'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->setFeltoltheto($this->params->getBoolRequestParam('feltoltheto'));
@@ -573,6 +579,11 @@ class termekController extends \mkwhelpers\MattableController
                     $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                     $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
                     $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
+                    // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
+                    // ne nullázzuk a meglévő párosítást
+                    if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
+                        $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
+                    }
                     $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
                     if (\mkw\store::isFixSzinMode()) {
@@ -675,6 +686,11 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                         $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
                         $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
+                    // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
+                    // ne nullázzuk a meglévő párosítást
+                    if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
+                        $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
+                    }
                         $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
                         if (\mkw\store::isFixSzinMode()) {

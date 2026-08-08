@@ -360,8 +360,7 @@
                 </tr>
                 <tr>
                     <td><label for="RovidLeirasEdit">{at('Rövid leírás')}:</label></td>
-                    <td><input id="RovidLeirasEdit" name="rovidleiras" type="text" size="100" maxlength="255"
-                               value="{$egyed.rovidleiras}"></td>
+                    <td><textarea id="RovidLeirasEdit" name="rovidleiras" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="LeirasEdit">{at('Leírás')}:</label></td>

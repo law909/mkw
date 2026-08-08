@@ -85,8 +85,6 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
                 $felh = new dolgozoController();
                 $view->setVar('felhasznalolist', $felh->getSelectList());
-                $apierrorlog = new apierrorlogController();
-                $view->setVar('apierrorlog', $apierrorlog->getList());
                 break;
             case \mkw\store::isKisszamlazo():
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getLejartKintlevosegByValutanem());
@@ -137,6 +135,13 @@ class adminController extends mkwhelpers\Controller
             default:
                 break;
         }
+
+        // A hibapostafiók (Apierrorlog) korábban csak a mugenrace2026/superzone ágon került a
+        // sablonba, és egyetlen sablon sem jelenítette meg – vagyis a bejegyzések láthatatlanok
+        // voltak. Mostantól minden theme főoldalán ott van (comp_apierrorlog.tpl).
+        $apierrorlog = new apierrorlogController();
+        $view->setVar('apierrorlog', $apierrorlog->getList());
+
         $view->printTemplateResult();
     }
 

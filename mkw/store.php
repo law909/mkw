@@ -284,6 +284,9 @@ class store
         if (!array_key_exists('barion', self::$setup)) {
             self::$setup['barion'] = false;
         }
+        if (!array_key_exists('unas', self::$setup)) {
+            self::$setup['unas'] = false;
+        }
         if (self::$setup['barion'] && self::$setup['stripe']) {
             self::$setup['stripe'] = false;
         }
@@ -1334,6 +1337,15 @@ class store
     public static function isEmailTemplateCKEditor()
     {
         return self::getSetupValue('emailtemplateckeditor');
+    }
+
+    /**
+     * UNAS webáruház integráció (termékazonosítás, később rendelés- és készletszinkron).
+     * Szándékosan opt-in: kapcsoló nélkül sem az admin fül, sem a route-ok nem jelennek meg.
+     */
+    public static function isUnas()
+    {
+        return self::getSetupValue('unas');
     }
 
     public static function mustLogin()

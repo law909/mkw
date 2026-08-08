@@ -412,6 +412,27 @@ class consts
     const StripeFizetesrevarStatusz = 'stripefizetesrevarstatusz';
     const StripeWebhookSecret = 'stripewebhooksecret';
 
+    // UNAS integráció (lásd docs/unas-integracio.md)
+    const UnasApiUrl = 'unasapiurl';
+    const UnasApiKey = 'unasapikey';
+    // a login-nal kapott token cache-e, JSON: {token, expires, cred}
+    const UnasToken = 'unastoken';
+    // végpontonkénti órás hívásszámláló, JSON: {ora, db:{végpont: darab}}
+    const UnasRateLimit = 'unasratelimit';
+    // az inkrementális termékimport kurzora (unix ts), csak hibátlan futás után lép
+    const UnasTermekImportCursor = 'unastermekimportcursor';
+    // a legutóbbi termékadatbázis-letöltés, JSON: {fajl, ido, jelzes}
+    const UnasTermekImportLastDownload = 'unastermekimportlastdownload';
+    // a folyamatban lévő sorablakos menet fájlja, JSON: {fajl, ido} – ezt a takarítás nem viheti el
+    const UnasTermekImportInProgress = 'unastermekimportinprogress';
+    const RunningUnasTermekImport = 'runningunastermekimport';
+    // hova mentsük a letöltött képeket (a kepek/ alatt), és milyen URL-lel hivatkozzunk rájuk
+    const UnasKepPath = 'unaskeppath';
+    const UnasKepUrlPrefix = 'unaskepurlprefix';
+    // az alap import nyelve (ISO 639-1), és a _l1 mezőkhöz tartozó nyelv
+    const UnasNyelv = 'unasnyelv';
+    const UnasNyelvL1 = 'unasnyelvl1';
+
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
 

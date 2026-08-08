@@ -3,7 +3,7 @@
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
     <meta property="og:url" content="{$serverurl}/termek/{$termek.slug}"/>
-    <meta property="og:description" content="{$termek.rovidleiras}"/>
+    <meta property="og:description" content="{$termek.rovidleiras|strip_tags|strip|trim|escape}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
     <meta property="og:type" content="product"/>
     <meta name='itemId' content='{$termek.id}'>

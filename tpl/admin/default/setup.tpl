@@ -46,6 +46,9 @@
                     {if ($setup.stripe)}
                         <li><a href="#StripeTab">{at('Stripe')}</a></li>
                     {/if}
+                    {if ($setup.unas)}
+                        <li><a href="#UnasTab">{at('UNAS')}</a></li>
+                    {/if}
                     <li><a href="#RendezvenyTab">{at('Rendezvények')}</a></li>
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
@@ -1974,6 +1977,46 @@
                                         <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
                                     {/foreach}
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
+                {if ($setup.unas)}
+                    <div id="UnasTab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasApiUrlEdit">{at('API URL')}:</label></span>
+                                <input id="UnasApiUrlEdit" name="unasapiurl" value="{$unasapiurl}" placeholder="https://api.unas.eu/shop">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasApiKeyEdit">{at('API kulcs')}:</label></span>
+                                <input id="UnasApiKeyEdit" name="unasapikey" value="{$unasapikey}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel">&nbsp;</span>
+                                <span>{at('A kulcshoz engedélyezni kell a getProductDB és a getProduct végpontot. IP-korlátozás esetén a szerver kimenő IP-jét is fel kell venni.')}</span>
+                            </div>
+                            <div class="setuprow">
+                                {* a MOST beírt értékekkel megy, mentés nélkül is próbálható *}
+                                <span class="setuplabel">&nbsp;</span>
+                                <a href="#" class="js-unasteszt" data-href="/admin/unastermekimport/teszt">{at('Kapcsolat teszt')}</a>
+                                <span id="unastesztvalasz"></span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKepPathEdit">{at('Képek mappája')}:</label></span>
+                                <input id="UnasKepPathEdit" name="unaskeppath" value="{$unaskeppath}" placeholder="kepek/termek/unas/">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKepUrlPrefixEdit">{at('Képek URL előtagja')}:</label></span>
+                                <input id="UnasKepUrlPrefixEdit" name="unaskepurlprefix" value="{$unaskepurlprefix}" placeholder="kepek/termek/unas/">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasNyelvEdit">{at('Az alapmezők nyelve')}:</label></span>
+                                <input id="UnasNyelvEdit" name="unasnyelv" value="{$unasnyelv}" placeholder="hu">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasNyelvL1Edit">{at('A _l1 mezők nyelve')}:</label></span>
+                                <input id="UnasNyelvL1Edit" name="unasnyelvl1" value="{$unasnyelvl1}" placeholder="en">
                             </div>
                         </div>
                     </div>

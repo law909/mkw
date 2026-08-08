@@ -21,7 +21,8 @@ use Traits\GetsFieldValue;
  *      @ORM\index(name="termekvonalkod_idx",columns={"vonalkod"}),
  * 		@ORM\index(name="termekcikkszamgyarto_idx",columns={"cikkszam","gyarto_id"}),
  * 		@ORM\index(name="termekidegencikkszamgyarto_idx",columns={"idegencikkszam","gyarto_id"}),
- *      @ORM\index(name="termekidegenkod_idx",columns={"idegenkod"})
+ *      @ORM\index(name="termekidegenkod_idx",columns={"idegenkod"}),
+ *      @ORM\index(name="termekunasid_idx",columns={"unasid"})
  * })
  * @ORM\HasLifecycleCallbacks
  */
@@ -124,10 +125,10 @@ class Termek
     /** @ORM\Column(type="text",nullable=true) */
     private $leiras_l1 = '';
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $rovidleiras = '';
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $rovidleiras_l1 = '';
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
@@ -140,6 +141,12 @@ class Termek
      * @ORM\Column(type="text",nullable=true)
      */
     private $seodescription = '';
+
+    /** `_l1` párja szándékosan nincs, ahogy a seodescription-nek sem. @ORM\Column(type="string",length=255,nullable=true) */
+    private $seokeywords = '';
+
+    /** UNAS "Azonosító a webáruházban". @ORM\Column(type="string",length=50,nullable=true) */
+    private $unasid = '';
 
     /**
      * @Gedmo\Slug(fields={"nev"})
@@ -1515,6 +1522,26 @@ class Termek
     public function setSeodescription($seodescription)
     {
         $this->seodescription = $seodescription;
+    }
+
+    public function getSeokeywords()
+    {
+        return $this->seokeywords;
+    }
+
+    public function setSeokeywords($seokeywords)
+    {
+        $this->seokeywords = $seokeywords;
+    }
+
+    public function getUnasid()
+    {
+        return $this->unasid;
+    }
+
+    public function setUnasid($unasid)
+    {
+        $this->unasid = $unasid;
     }
 
     public function getSlug()

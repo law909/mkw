@@ -1184,6 +1184,30 @@ if ($DBVersion < '0106') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0106');
 }
+
+if ($DBVersion < '0107') {
+    // UNAS: alapértékek és a termékimport menüpont. A DDL az entitásokból jön (./updateschema.sh).
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO parameterek (id, ertek, specialchars) VALUES (?, ?, 1)',
+        [\mkw\consts::UnasApiUrl, 'https://api.unas.eu/shop']
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO parameterek (id, ertek, specialchars) VALUES (?, ?, 0)',
+        [\mkw\consts::UnasNyelv, 'hu']
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO parameterek (id, ertek, specialchars) VALUES (?, ?, 0)',
+        [\mkw\consts::UnasNyelvL1, 'en']
+    );
+    // kapcsoló nélkül a route sem létezik, ezért alapból nem látszik
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(9, "UNAS termékimport","/admin/unastermekimport/view","/admin/unastermekimport",40,'
+        . (\mkw\store::isUnas() ? '1' : '0') . ',250, "")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0107');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

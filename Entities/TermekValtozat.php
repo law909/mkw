@@ -14,7 +14,9 @@ use mkwhelpers\FilterDescriptor;
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
  *      @ORM\index(name="termekvaltozatvonalkod_idx",columns={"vonalkod"}),
- *      @ORM\index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"})
+ *      @ORM\index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"}),
+ *      @ORM\index(name="termekvaltozatunasvaltozat_idx",columns={"unasvaltozat"}),
+ *      @ORM\index(name="termekvaltozatunasid_idx",columns={"unasid"})
  * })
  * @ORM\HasLifecycleCallbacks
  */
@@ -168,6 +170,22 @@ class TermekValtozat
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $vonalkod;
+
+    /**
+     * UNAS azonosító, ha az UNAS termék nálunk EZ a változat. Ilyenkor a `Termek.unasid` üres.
+     *
+     * @ORM\Column(type="string",length=50,nullable=true)
+     */
+    private $unasid = '';
+
+    /**
+     * Az UNAS változat-kulcsa: az értéknevek pipe-pal összefűzve (pl. `Kék|S`). Azért nem
+     * azonosító, mert az UNAS változatnak nincs saját azonosítója – a setStock és a
+     * rendeléstétel is ezt a kombinációt küldi.
+     *
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $unasvaltozat = '';
 
     /** @ORM\Column(type="date",nullable=true) */
     private $beerkezesdatum;
@@ -662,6 +680,26 @@ class TermekValtozat
     public function setVonalkod($vonalkod)
     {
         $this->vonalkod = $vonalkod;
+    }
+
+    public function getUnasid()
+    {
+        return $this->unasid;
+    }
+
+    public function setUnasid($unasid)
+    {
+        $this->unasid = $unasid;
+    }
+
+    public function getUnasvaltozat()
+    {
+        return $this->unasvaltozat;
+    }
+
+    public function setUnasvaltozat($unasvaltozat)
+    {
+        $this->unasvaltozat = $unasvaltozat;
     }
 
     public function getBeerkezesdatum()

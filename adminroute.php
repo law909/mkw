@@ -784,6 +784,19 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/koltsegszamlaimport/process', 'koltsegszamlaimportController#process', 'adminkoltsegszamlaimportprocess');
 }
 
+if (\mkw\store::isUnas()) {
+    $router->map('GET', '/admin/unastermekimport/view', 'unastermekimportController#view', 'adminunastermekimportview');
+    $router->map('GET', '/admin/unastermekimport/nemtalalt', 'unastermekimportController#notFoundCsv', 'adminunastermekimportnemtalalt');
+    $router->map('GET', '/admin/unastermekimport/letoltottfajl', 'unastermekimportController#downloadedFile', 'adminunastermekimportletoltottfajl');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/unastermekimport/teszt', 'unastermekimportController#testConnection', 'adminunastermekimportteszt');
+        $router->map('POST', '/admin/unastermekimport/letoltes', 'unastermekimportController#download', 'adminunastermekimportletoltes');
+        $router->map('POST', '/admin/unastermekimport/koteg', 'unastermekimportController#processBatch', 'adminunastermekimportkoteg');
+        $router->map('POST', '/admin/unastermekimport/riport', 'unastermekimportController#report', 'adminunastermekimportriport');
+        $router->map('POST', '/admin/unastermekimport/stop', 'unastermekimportController#stop', 'adminunastermekimportstop');
+    }
+}
+
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
 $router->map('GET', '/admin/kivetfej/getlistbody', 'kivetfejController#getlistbody', 'adminkivetfejgetlistbody');
 $router->map('GET', '/admin/kivetfej/getkarb', 'kivetfejController#getkarb', 'adminkivetfejgetkarb');

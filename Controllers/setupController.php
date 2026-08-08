@@ -490,6 +490,19 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::StripeWebhookSecret);
         $view->setVar(\mkw\consts::StripeWebhookSecret, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::UnasApiUrl);
+        $view->setVar(\mkw\consts::UnasApiUrl, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UnasApiKey);
+        $view->setVar(\mkw\consts::UnasApiKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UnasKepPath);
+        $view->setVar(\mkw\consts::UnasKepPath, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UnasKepUrlPrefix);
+        $view->setVar(\mkw\consts::UnasKepUrlPrefix, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UnasNyelv);
+        $view->setVar(\mkw\consts::UnasNyelv, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UnasNyelvL1);
+        $view->setVar(\mkw\consts::UnasNyelvL1, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::SzamlaOrzesEv);
@@ -1026,6 +1039,18 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar($namebase . 'id', $katid ?: '');
         $kat = $katid ? \mkw\store::getEm()->getRepository(\Entities\TermekFa::class)->find($katid) : null;
         $view->setVar($namebase . 'nev', $kat ? $kat->getNev() : '');
+    }
+
+    /**
+     * Csak akkor ír, ha a mező tényleg megérkezett. Az UNAS fül a setup.ini kapcsolója mögött
+     * van: ha nem renderelődik, a feltétel nélküli írás némán kitörölné az API kulcsot.
+     */
+    private function setUnasObj($par, $specialchars = false)
+    {
+        if (!$this->params->existsRequestParam($par)) {
+            return;
+        }
+        $this->setObj($par, $this->params->getStringRequestParam($par), $specialchars);
     }
 
     private function setObj($par, $value, $specialchars = false)
@@ -1608,6 +1633,13 @@ class setupController extends \mkwhelpers\Controller
         } else {
             $this->setObj(\mkw\consts::StripeFizetesrevarStatusz, '');
         }
+
+        $this->setUnasObj(\mkw\consts::UnasApiUrl, true);
+        $this->setUnasObj(\mkw\consts::UnasApiKey);
+        $this->setUnasObj(\mkw\consts::UnasKepPath, true);
+        $this->setUnasObj(\mkw\consts::UnasKepUrlPrefix, true);
+        $this->setUnasObj(\mkw\consts::UnasNyelv);
+        $this->setUnasObj(\mkw\consts::UnasNyelvL1);
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));

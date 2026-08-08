@@ -48,6 +48,7 @@ class SmartyView extends View
         $this->tplengine->registerPlugin('modifier', 'bizformat', '\bizformat');
         $this->tplengine->registerPlugin('modifier', 'number_format', '\number_format');
         $this->tplengine->registerPlugin('modifier', 'prefixUrl', '\prefixUrl');
+        $this->tplengine->registerPlugin('modifier', 'trim', '\trim');
 
         $this->tplengine->registerPlugin('function', 't', function (array $params) {
             return \t($params['msgid'] ?? $params['text'] ?? $params['value'] ?? '');

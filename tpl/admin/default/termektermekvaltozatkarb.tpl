@@ -137,6 +137,17 @@
             </td>
         </tr>
     {/if}
+    {if ($setup.unas)}
+        {* akkor van kitöltve, ha az UNAS termék nálunk ez a változat *}
+        <tr>
+            <td class="mattable-cell">
+                <label for="VUnasidEdit_{$valtozat.id}">{at('UNAS azonosító')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input id="VUnasidEdit_{$valtozat.id}" name="valtozatunasid_{$valtozat.id}" type="text" value="{$valtozat.unasid}">
+            </td>
+        </tr>
+    {/if}
     <tr>
         <td>
             <label for="ValtozatTermekKepCB_{$valtozat.id}">{at('A kép a termék főképe')}:</label>

@@ -307,6 +307,38 @@ $(document).ready(function () {
                     }
                 })
             }).button();
+            // a MOST beírt kulcsot küldjük: az UNAS 5 sikertelen logint enged óránként
+            $('.js-unasteszt').on('click', function (e) {
+                var $this = $(this),
+                    $valasz = $('#unastesztvalasz').removeClass('ui-state-error-text').text('...');
+                e.preventDefault();
+                $.ajax({
+                    url: $this.data('href'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        unasapiurl: $('input[name="unasapiurl"]').val(),
+                        unasapikey: $('input[name="unasapikey"]').val()
+                    }
+                })
+                    .done(function (data) {
+                        if (!data.ok) {
+                            $valasz.addClass('ui-state-error-text').text(data.hiba);
+                            return;
+                        }
+                        var szoveg = 'ShopId: ' + data.shopid + ', csomag: ' + data.subscription
+                            + ', jogosultságok: ' + (data.permissions || []).join(', ');
+                        if (data.hianyzo && data.hianyzo.length) {
+                            $valasz.addClass('ui-state-error-text')
+                                .text(szoveg + ' — HIÁNYZIK: ' + data.hianyzo.join(', '));
+                        } else {
+                            $valasz.text(szoveg);
+                        }
+                    })
+                    .fail(function () {
+                        $valasz.addClass('ui-state-error-text').text('A teszt nem futott le.');
+                    });
+            }).button();
             mkwcomp.datumEdit.init('#mptngydatum1edit');
             mkwcomp.datumEdit.init('#mptngydatum2edit');
             mkwcomp.datumEdit.init('#mptngydatum3edit');
