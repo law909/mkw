@@ -11,22 +11,21 @@
         state = {
             type: $root.data('type') || 'Images',
             path: $root.data('path') || '/',
-            sel: String($root.data('sel') || ''),
             cb: parseInt($root.data('cb'), 10) || 0,
             funcnum: parseInt($root.data('funcnum'), 10) || 0,
             maxsize: parseInt($root.data('maxsize'), 10) || 0,
             writable: String($root.data('writable')) === '1',
             files: [],
             folders: [],
-            shown: 0,
+            from: 0,
+            to: 0,
             filter: '',
+            pending: '',
             selected: null
         };
 
     var $grid = $('#mtGrid'),
         $crumbs = $('#mtCrumbs'),
-        $empty = $('#mtEmpty'),
-        $more = $('#mtMore'),
         $queue = $('#mtQueue'),
         $drop = $('#mtDrop'),
         $info = $('#mtInfo');
@@ -201,10 +200,16 @@
     // Listázás és rajzolás
     // ------------------------------------------------------------------
 
-    function load(path) {
+    /**
+     * A `pending` a betöltés után kijelölendő fájl neve. Betöltésenként adjuk át, nem
+     * állapotként: mappaváltáskor nem szivároghat át az előző mappa kijelölési szándéka.
+     */
+    function load(path, pending) {
         state.path = path || '/';
+        state.pending = pending ? String(pending) : '';
         state.selected = null;
-        state.shown = 0;
+        state.from = 0;
+        state.to = 0;
         $grid.html('<div class="mt-empty">Betöltés…</div>');
         $.ajax({
             url: '/admin/mediatar/list',
@@ -222,8 +227,7 @@
                 state.folders = d.folders || [];
                 state.files = d.files || [];
                 renderCrumbs();
-                render();
-                selectStartupFile();
+                render(anchorIndex());
             },
             error: function () {
                 message('A szerver nem válaszolt. Lehet, hogy lejárt a bejelentkezés – frissítsd az admin felületet.');
@@ -261,49 +265,138 @@
         });
     }
 
-    function render() {
+    function indexOfName(name) {
+        if (!name) {
+            return -1;
+        }
+        var files = filtered();
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].name === name) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /** Újrarajzoláskor a még kijelölendő, annak híján a már kijelölt fájlra nyíljon az ablak. */
+    function anchorIndex() {
+        var i = indexOfName(state.pending);
+        return i !== -1 ? i : indexOfName(state.selected && state.selected.name);
+    }
+
+    /**
+     * A mappacsempék és a „..” csak a lista elején értelmesek: az ablak közepén azt
+     * sugallnák, hogy fölöttük nincs több fájl.
+     */
+    function headHtml() {
+        if (state.filter) {
+            return '';
+        }
+        var html = [];
+        if (state.path !== '/') {
+            html.push('<div class="mt-tile folder up" data-path="' + esc(parentPath(state.path)) + '">'
+                + '<div class="box"><span class="icon">&#8598;</span></div>'
+                + '<div class="name">..</div></div>');
+        }
+        $.each(state.folders, function (i, f) {
+            html.push('<div class="mt-tile folder" data-path="' + esc(f.path) + '" data-name="' + esc(f.name) + '">'
+                + (state.writable ? '<span class="fdel" title="Mappa törlése">&#10005;</span>' : '')
+                + '<div class="box"><span class="icon">&#128193;</span></div>'
+                + '<div class="name">' + esc(f.name) + '</div></div>');
+        });
+        return html.join('');
+    }
+
+    function barHtml(id, text) {
+        return '<div class="mt-pagebar" id="' + id + '">' + esc(text) + '</div>';
+    }
+
+    /**
+     * A rácsban mindig csak a [from, to) ablak van kirajzolva, legfeljebb PAGE csempe –
+     * egy néhány ezer fájlos mappa különben megöli a böngészőt. Az `anchor` a szűrt lista
+     * indexe, aminek látszania kell; erre igazodik az ablak kezdete.
+     */
+    function render(anchor) {
         var files = filtered(),
+            len = files.length,
             html = [];
 
-        state.selected = null;
-
-        if (!state.filter) {
-            if (state.path !== '/') {
-                html.push('<div class="mt-tile folder up" data-path="' + esc(parentPath(state.path)) + '">'
-                    + '<div class="box"><span class="icon">&#8598;</span></div>'
-                    + '<div class="name">..</div></div>');
-            }
-            $.each(state.folders, function (i, f) {
-                html.push('<div class="mt-tile folder" data-path="' + esc(f.path) + '" data-name="' + esc(f.name) + '">'
-                    + (state.writable ? '<span class="fdel" title="Mappa törlése">&#10005;</span>' : '')
-                    + '<div class="box"><span class="icon">&#128193;</span></div>'
-                    + '<div class="name">' + esc(f.name) + '</div></div>');
-            });
+        if (typeof anchor !== 'number' || anchor < 0 || anchor >= len) {
+            anchor = 0;
         }
+        state.from = Math.floor(anchor / PAGE) * PAGE;
+        state.to = Math.min(len, state.from + PAGE);
 
-        state.shown = Math.min(files.length, PAGE);
-        for (var i = 0; i < state.shown; i++) {
+        html.push(state.from === 0 ? headHtml() : barHtml('mtPrevBar', 'Korábbiak'));
+        for (var i = state.from; i < state.to; i++) {
             html.push(tileHtml(files[i]));
+        }
+        if (state.to < len) {
+            html.push(barHtml('mtNextBar', 'További elemek'));
         }
 
         $grid.html(html.join(''));
-        if (!html.length) {
+        if (!$grid.children().length) {
             $grid.html('<div class="mt-empty">A mappa üres.</div>');
         }
-        $more.toggle(files.length > state.shown);
-        updateFoot();
+        $grid.scrollTop(0);
+        afterRender();
     }
 
-    function renderMore() {
+    function renderNext() {
         var files = filtered(),
-            html = [],
-            to = Math.min(files.length, state.shown + PAGE);
-        for (var i = state.shown; i < to; i++) {
+            to = Math.min(files.length, state.to + PAGE),
+            html = [];
+        if (to <= state.to) {
+            return;
+        }
+        for (var i = state.to; i < to; i++) {
             html.push(tileHtml(files[i]));
         }
-        state.shown = to;
-        $grid.append(html.join(''));
-        $more.toggle(files.length > state.shown);
+        state.to = to;
+
+        var $bar = $grid.find('#mtNextBar');
+        $bar.before(html.join(''));
+        if (state.to >= files.length) {
+            $bar.remove();
+        }
+        afterRender();
+    }
+
+    /**
+     * Visszafelé bővítés. A beszúrás a görgetősáv fölé kerül, ezért a scrollTop-ot a
+     * magasságkülönbséggel korrigálni kell, különben a tartalom kiugrik a kép alól.
+     */
+    function renderPrev() {
+        var files = filtered(),
+            from = Math.max(0, state.from - PAGE),
+            html = [];
+        if (from >= state.from) {
+            return;
+        }
+        for (var i = from; i < state.from; i++) {
+            html.push(tileHtml(files[i]));
+        }
+        state.from = from;
+
+        var g = $grid[0],
+            h0 = g.scrollHeight,
+            t0 = g.scrollTop,
+            $bar = $grid.find('#mtPrevBar');
+        if (state.from === 0) {
+            $bar.replaceWith(headHtml() + html.join(''));
+        } else {
+            $bar.after(html.join(''));
+        }
+        g.scrollTop = t0 + (g.scrollHeight - h0);
+        afterRender();
+    }
+
+    function afterRender() {
+        applySelection();
+        consumePending();
+        observe();
+        updateFoot();
     }
 
     /**
@@ -343,27 +436,75 @@
         return segs.length ? '/' + segs.join('/') + '/' : '/';
     }
 
+    function tileByName(name) {
+        var want = String(name);
+        return $grid.find('.mt-tile.file').filter(function () {
+            return String($(this).data('name')) === want;
+        }).first();
+    }
+
+    /**
+     * A kijelölés a state-ben él, nem a DOM-ban: újrarajzolás (szűrés, ablakváltás) után
+     * vissza kell tenni a csempére. Ha a fájl épp kiszűrődött, a kijelölés akkor is marad.
+     */
+    function applySelection() {
+        if (state.selected) {
+            tileByName(state.selected.name).addClass('sel');
+        }
+    }
+
     /**
      * A shim &sel=-ként átadja az aktuális kép nevét – görgessünk oda és emeljük ki.
      * Kis UX-nyereség a CKFinderhez képest, ami csak a mappáig jutott.
+     * A pending CSAK találat esetén törlődik: a fájl egy későbbi blokkban vagy a szűrő
+     * módosítása után is előjöhet.
      */
-    function selectStartupFile() {
-        if (!state.sel) {
+    function consumePending() {
+        if (!state.pending) {
             return;
         }
-        var want = String(state.sel),
-            $t = $grid.find('.mt-tile.file').filter(function () {
-                return String($(this).data('name')) === want;
-            }).first();
-        state.sel = '';
+        var $t = tileByName(state.pending);
         if (!$t.length) {
             return;
         }
+        state.pending = '';
         pick($t);
         var delta = $t.offset().top - $grid.offset().top;
         if (delta < 0 || delta > $grid.height() - 40) {
             $grid.scrollTop($grid.scrollTop() + delta - 20);
         }
+    }
+
+    /**
+     * A két lapozósáv egyszerre kattintható gomb és görgetés-érzékelő: ha beúszik a
+     * rácsba, magától betölti a következő blokkot. Observer nélküli böngészőn a
+     * kattintás marad – ezért nem kell külön fallback.
+     */
+    var io = null;
+
+    function observe() {
+        if (!window.IntersectionObserver) {
+            return;
+        }
+        if (io) {
+            io.disconnect();
+        }
+        io = new window.IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+                if (!entries[i].isIntersecting) {
+                    continue;
+                }
+                if (entries[i].target.id === 'mtNextBar') {
+                    renderNext();
+                } else {
+                    renderPrev();
+                }
+                return;
+            }
+        }, {root: $grid[0], rootMargin: '300px'});
+        $grid.find('#mtPrevBar, #mtNextBar').each(function () {
+            io.observe(this);
+        });
     }
 
     function pick($tile) {
@@ -487,7 +628,7 @@
     // ugyanaz a /themes/ui/<uitheme>/jquery-ui.css, amit ez az oldal is betölt.
     // Fontos, hogy ez a load() ELŐTT fusson: az updateFoot() a widget enable/disable
     // metódusát hívja, ami inicializálatlan elemen kivételt dobna.
-    $('#mtNewFolder, #mtUploadBtn, #mtMoreBtn, #mtRename, #mtDelete, #mtSelect, #mtCancel').button();
+    $('#mtNewFolder, #mtUploadBtn, #mtRename, #mtDelete, #mtSelect, #mtCancel').button();
     // A Kiválaszt kiemelve; a Mégse SZÁNDÉKOSAN nem kap ui-priority-secondary-t –
     // annak 0.7-es átlátszósága ugyanúgy nézne ki, mint a tiltott gombok mellette.
     $('#mtSelect').addClass('ui-priority-primary');
@@ -542,7 +683,8 @@
         }
     });
 
-    $('#mtMoreBtn').on('click', renderMore);
+    $grid.on('click', '#mtNextBar', renderNext);
+    $grid.on('click', '#mtPrevBar', renderPrev);
 
     $('#mtSelect').on('click', function () {
         if (state.selected) {
@@ -554,7 +696,7 @@
 
     $('#mtSearch').on('input keyup', function () {
         state.filter = $(this).val();
-        render();
+        render(anchorIndex());
     });
 
     $('#mtNewFolder').on('click', function () {
@@ -615,8 +757,7 @@
                     data: {type: state.type, path: state.path, name: cur, newname: name},
                     success: function (d) {
                         if (d && d.ok) {
-                            state.sel = d.name;
-                            load(state.path);
+                            load(state.path, d.name);
                         } else {
                             message((d && d.error) || 'Az átnevezés nem sikerült.');
                         }
@@ -711,6 +852,6 @@
 
     // --- indulás ---
 
-    load(state.path);
+    load(state.path, $root.data('sel'));
 
 })(jQuery);

@@ -42,11 +42,7 @@
     </div>
 
     <div class="mt-grid" id="mtGrid" tabindex="0">
-        <div class="mt-empty" id="mtEmpty">{at('Betöltés')}…</div>
-    </div>
-
-    <div class="mt-more" id="mtMore" style="display:none">
-        <button type="button" id="mtMoreBtn">{at('További elemek')}</button>
+        <div class="mt-empty">{at('Betöltés')}…</div>
     </div>
 
     <div class="mt-drop" id="mtDrop">
