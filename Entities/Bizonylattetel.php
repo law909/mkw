@@ -336,7 +336,7 @@ class Bizonylattetel
         $ret['kedvezmeny'] = $this->getKedvezmeny();
         $ret['termekegyediazonosito'] = $this->getTermekegyediazonosito();
         $nyelv = $this->getBizonylatfej()?->getBizonylatnyelv();
-        $ret['termeknev'] = $this->getLocalizedFieldValue('termeknev', $nyelv);
+        $ret['termeknev'] = $this->getLocalizedFieldValue('termeknev', $nyelv) ?: $this->getTermeknev();
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
         $ret['vtszszam'] = $this->getVtszszam();

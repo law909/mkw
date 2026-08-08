@@ -1645,7 +1645,7 @@ class Bizonylatfej
         $ppr->PayerHint = $this->getPartneremail();
         $ppr->RedirectUrl = \mkw\store::getParameter(\mkw\consts::BarionRedirectUrl);
         $ppr->CallbackUrl = \mkw\store::getParameter(\mkw\consts::BarionCallbackUrl);
-        switch ($this->getBizonylatnyelv()) {
+        switch (\mkw\store::translateToLongLocaleName($this->getBizonylatnyelv())) {
             case 'en_us':
                 $ppr->Locale = \UILocale::EN;
                 break;
@@ -1656,7 +1656,7 @@ class Bizonylatfej
                 $partner = $this->getPartner();
                 if (!\mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
                     $ppr->Locale = \UILocale::HU;
-                } elseif ($partner->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
+                } elseif ($partner?->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
                     $ppr->Locale = \UILocale::HU;
                 } else {
                     $ppr->Locale = \UILocale::EN;
@@ -3431,19 +3431,22 @@ class Bizonylatfej
 
         $this->setPartnerSzamlatipus($val->getSzamlatipus());
 
-        $nyelv = $val->getBizonylatnyelv();
-        if (!$nyelv) {
-            if (\mkw\store::isAdminMode()) {
-                $nyelv = \mkw\store::getAdminDataLocale();
-            } else {
-                $nyelv = \mkw\store::getWebshopLongLocale();
-            }
-        }
-        $this->setBizonylatnyelv($nyelv);
+        $this->setBizonylatnyelvWithFallback($val);
 
         $this->setPartnerktdatalany($val->getKtdatalany());
         $this->setPartnerktdatvallal($val->getKtdatvallal());
         $this->setPartnerktdszerzszam($val->getKtdszerzszam());
+    }
+
+    public function setBizonylatnyelvWithFallback($partner = null)
+    {
+        $nyelv = ($partner ?? $this->getPartner())?->getBizonylatnyelv();
+        if (!$nyelv) {
+            $nyelv = \mkw\store::isAdminMode()
+                ? \mkw\store::getAdminDataLocale()
+                : (\mkw\store::getWebshopLongLocale() ?: \mkw\store::getAdminDataLocale());
+        }
+        $this->setBizonylatnyelv(\mkw\store::translateToLongLocaleName($nyelv));
     }
 
     /**

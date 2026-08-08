@@ -815,6 +815,9 @@ class BizonylatfejListener
         $entity = $args->getObject();
         if ($entity instanceof \Entities\Bizonylatfej) {
             $entity->generateId();
+            if (!$entity->getBizonylatnyelv()) {
+                $entity->setBizonylatnyelvWithFallback();
+            }
         }
     }
 

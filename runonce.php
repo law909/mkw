@@ -1229,6 +1229,23 @@ if ($DBVersion < '0108') {
 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0108');
 }
+
+if ($DBVersion < '0109') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE partner SET bizonylatnyelv = "en_us" WHERE bizonylatnyelv = "en"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej SET bizonylatnyelv = "hu_hu" WHERE bizonylatnyelv = "hu"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej SET bizonylatnyelv = "en_us" WHERE bizonylatnyelv = "en"'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej b LEFT JOIN partner p ON p.id = b.partner_id '
+        . ' SET b.bizonylatnyelv = COALESCE (NULLIF (p.bizonylatnyelv, ""), "hu_hu") '
+        . ' WHERE b.bizonylatnyelv IS NULL OR b.bizonylatnyelv = ""'
+    );
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
