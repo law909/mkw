@@ -155,6 +155,22 @@ class unastermekimportController extends \mkwhelpers\Controller
         readfile(\mkw\store::logsPath($file));
     }
 
+    /** A riportok és lista-CSV-k eldobása – a következő menet nulláról kezdi a riportot. */
+    public function deleteReports()
+    {
+        $service = new UnasTermekImportService();
+        if ($service->isLocked()) {
+            $this->json(['ok' => false, 'hiba' => t('Éppen fut egy import, a riportok most nem törölhetők.')]);
+            return;
+        }
+        $szarazfutas = $this->params->getBoolRequestParam('szarazfutas', false);
+        $this->json([
+            'ok' => true,
+            'db' => $service->deleteReports(!$szarazfutas),
+            'szarazfutas' => $szarazfutas,
+        ]);
+    }
+
     /** Beragadt zárolás feloldása. */
     public function stop()
     {
@@ -190,11 +206,9 @@ class unastermekimportController extends \mkwhelpers\Controller
             'inkrementalis' => $this->params->getBoolRequestParam('inkrementalis', false),
             'unasidkihagy' => $this->params->getBoolRequestParam('unasidkihagy', false),
             'ujraletoltes' => $this->params->getBoolRequestParam('ujraletoltes', false),
-            'riportujra' => $this->params->getBoolRequestParam('riportujra', false),
             'sortol' => $this->params->getIntRequestParam('sortol', 0),
             'sorig' => $this->params->getIntRequestParam('sorig', 0),
-            'editleiras' => $this->params->getBoolRequestParam('editleiras', false),
-            'editseo' => $this->params->getBoolRequestParam('editseo', false),
+            'editmezok' => $this->params->getBoolRequestParam('editmezok', false),
             'kepek' => $this->params->getBoolRequestParam('kepek', false),
             'kepekujra' => $this->params->getBoolRequestParam('kepekujra', false),
             'kepforras' => $this->params->getStringRequestParam('kepforras', 'auto'),

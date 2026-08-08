@@ -125,9 +125,9 @@ class UnasTermekImportService
             $this->writeMeta($file, $meta);
             // sorablakos menet: a fájlt a takarítás nem viheti el a szakaszok között
             $this->markInProgress($file, $opts['sortol'] > 0);
-            // Sorablakos menet folytatásakor a riport és a lista-CSV-k tovább gyűlnek. Ha a
-            // riport mégsem lenne meg, inkább újrakezdjük, mint hogy a feldolgozás elhaljon.
-            if (!$this->isContinuation($opts) || $opts['riportujra'] || !$this->reportExists($file)) {
+            // Sorablakos menet folytatásakor a riport és a lista-CSV-k tovább gyűlnek. Ha a riport
+            // nincs meg (mert nem is volt, vagy a „Riportok törlése" elvitte), nulláról kezdjük.
+            if (!$this->isContinuation($opts) || !$this->reportExists($file)) {
                 $this->initReport($file, $meta);
             }
             $this->cleanupOrphans();
@@ -993,11 +993,9 @@ class UnasTermekImportService
         $l1 = $opts['nyelvsuffix'] === '_l1';
         $written = false;
 
-        if ($opts['editleiras']) {
+        if ($opts['editmezok']) {
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setLeirasL1' : 'setLeiras', $this->cell($row, $columns, 'leiras')) || $written;
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setRovidleirasL1' : 'setRovidleiras', $this->cell($row, $columns, 'rovidleiras')) || $written;
-        }
-        if ($opts['editseo']) {
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setOldalcimL1' : 'setOldalcim', $this->cell($row, $columns, 'seotitle'), 255) || $written;
             // a seodescription-nek és a seokeywords-nek nincs _l1 párja
             if (!$l1) {
@@ -1317,10 +1315,8 @@ class UnasTermekImportService
                 && (!array_key_exists('unasidkihagy', $opts) || !empty($opts['unasidkihagy'])),
             'sortol' => max(0, (int)($opts['sortol'] ?? 0)),
             'sorig' => max(0, (int)($opts['sorig'] ?? 0)),
-            'editleiras' => !empty($opts['editleiras']),
-            'editseo' => !empty($opts['editseo']),
+            'editmezok' => !empty($opts['editmezok']),
             'ujraletoltes' => !empty($opts['ujraletoltes']),
-            'riportujra' => !empty($opts['riportujra']),
             'kepek' => !empty($opts['kepek']),
             'kepekujra' => !empty($opts['kepekujra']),
             'kepforras' => in_array($opts['kepforras'] ?? 'auto', ['auto', 'csv', 'getproduct'], true)
@@ -1399,6 +1395,31 @@ class UnasTermekImportService
                 @unlink($abs);
             }
         }
+    }
+
+    /**
+     * A riportok és a lista-CSV-k eldobása. A letöltött termékadatbázis és a `_meta.json` marad:
+     * abból folytatható a félbehagyott sorablakos menet.
+     *
+     * @param bool $apply false esetén csak megszámolja, mit vinne el
+     *
+     * @return int ahány fájlt töröltünk (száraz futásban: törölnénk)
+     */
+    public function deleteReports($apply = false)
+    {
+        $count = 0;
+        foreach (glob(\mkw\store::logsPath('unas_productdb_*_*_???_*.*')) ?: [] as $abs) {
+            if (!preg_match('/^unas_productdb_\d{8}_\d{6}_\d{3}_(.+)\.(csv|json)$/', basename($abs), $m)) {
+                continue;
+            }
+            if ($m[1] === 'meta') {
+                continue;
+            }
+            if (!$apply || @unlink($abs)) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     private function writeMeta($file, array $meta)

@@ -57,6 +57,40 @@ $(document).ready(function () {
             });
     });
 
+    $('#unasriporttorles').on('click', function () {
+        var gomb = $(this),
+            valasz = $('#unasriporttorlesvalasz'),
+            szaraz = $('#SzarazfutasEdit').is(':checked');
+        if (!szaraz && !window.confirm(gomb.attr('data-kerdes'))) {
+            return;
+        }
+        gomb.prop('disabled', true);
+        $.ajax({
+            url: '/admin/unastermekimport/riporttorles',
+            type: 'POST',
+            data: {szarazfutas: szaraz ? 1 : 0},
+            dataType: 'json'
+        })
+            .done(function (data) {
+                if (data.ok) {
+                    if (data.szarazfutas) {
+                        valasz.text('Száraz futás: ' + data.db + ' fájl törlődne.');
+                    } else {
+                        eredmeny.empty();
+                        valasz.text(data.db + ' fájl törölve.');
+                    }
+                } else {
+                    valasz.html($('<span>').addClass('ui-state-error-text').text(data.hiba));
+                }
+            })
+            .fail(function () {
+                valasz.html($('<span>').addClass('ui-state-error-text').text('A törlés nem futott le.'));
+            })
+            .always(function () {
+                gomb.prop('disabled', false);
+            });
+    });
+
     $('#unasstop').on('click', function () {
         $.ajax({url: '/admin/unastermekimport/stop', type: 'POST', dataType: 'json'})
             .always(function () {
@@ -106,10 +140,8 @@ $(document).ready(function () {
                     if (data.kovetkezo_sortol) {
                         $('#SortolEdit').val(data.kovetkezo_sortol);
                         $('#SorigEdit').val(data.kovetkezo_sorig);
-                        // a folytatás ugyanazt a fájlt dolgozza fel, újraletöltés nem való hozzá;
-                        // a riport-újrakezdés pedig egyszeri, különben minden szakasz nullázna
+                        // a folytatás ugyanazt a fájlt dolgozza fel, újraletöltés nem való hozzá
                         $('#UjraletoltesEdit').prop('checked', false);
-                        $('#RiportujraEdit').prop('checked', false);
                     } else if (typeof data.kovetkezo_sortol !== 'undefined') {
                         $('#SortolEdit').val(0);
                         $('#SorigEdit').val(0);

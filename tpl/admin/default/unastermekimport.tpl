@@ -44,8 +44,9 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="LimitnumEdit">{at('Teszt limit (0 = az egész katalógus)')}:</label>
+                        <label for="LimitnumEdit">{at('Lekért termékek darabszáma')}:</label>
                         <input id="LimitnumEdit" name="limitnum" type="number" value="0" min="0">
+                        <span>{at('0 = az egész katalógus')}</span>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
@@ -82,13 +83,9 @@
                         <input type="hidden" name="nyelvsuffix" value="">
                     {/if}
                     <div>
-                        <label for="EditleirasEdit">{at('Leírás és rövid leírás felülírása')}:</label>
-                        <input id="EditleirasEdit" name="editleiras" type="checkbox">
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <label for="EditseoEdit">{at('SEO mezők és kép ALT felülírása')}:</label>
-                        <input id="EditseoEdit" name="editseo" type="checkbox">
+                        <label for="EditmezokEdit">{at('Szöveges mezők felülírása')}:</label>
+                        <input id="EditmezokEdit" name="editmezok" type="checkbox">
+                        <span>{at('Leírás, rövid leírás, SEO mezők és a kép ALT. Üres UNAS érték egyiket sem törli.')}</span>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
@@ -119,9 +116,10 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="RiportujraEdit">{at('Riport újrakezdése')}:</label>
-                        <input id="RiportujraEdit" name="riportujra" type="checkbox">
-                        <span>{at('Ugyanazon a fájlon nulláról indítja a riportot és a lista-CSV-ket, a megadott sortól folytatva.')}</span>
+                        <label>{at('Riportok')}:</label>
+                        <button type="button" id="unasriporttorles" class="ui-button ui-widget ui-state-default ui-corner-all"
+                                data-kerdes="{at('Biztosan törli a riportokat és a lista-CSV-ket?')}">{at('Riportok törlése')}</button>
+                        <span id="unasriporttorlesvalasz">{at('A következő menet nulláról kezdi a riportot. A letöltött termékadatbázis megmarad, a félbehagyott sorablakos menet folytatható.')}</span>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div class="admin-form-footer">
