@@ -49,6 +49,12 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label for="UnasidkihagyEdit">{at('Az UNAS azonosító alapján megtalált tételeket hagyja békén')}:</label>
+                        <input id="UnasidkihagyEdit" name="unasidkihagy" type="checkbox" checked="checked">
+                        <span>{at('Amit egy korábbi menet már párosított, azon nem ír mezőt, nem párosít változatot és nem tölt képet. Kikapcsolva a már ismert termékek adatai is frissülnek – inkrementális menetben ezért magától kikapcsol.')}</span>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <label for="InkrementalisEdit">{at('Inkrementális (csak a legutóbbi import óta módosultak)')}:</label>
                         <input id="InkrementalisEdit" name="inkrementalis" type="checkbox">
                     </div>

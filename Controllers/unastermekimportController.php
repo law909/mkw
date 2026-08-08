@@ -188,6 +188,7 @@ class unastermekimportController extends \mkwhelpers\Controller
             'nyelvsuffix' => $this->params->getStringRequestParam('nyelvsuffix') === '_l1' ? '_l1' : '',
             'szarazfutas' => $this->params->getBoolRequestParam('szarazfutas', false),
             'inkrementalis' => $this->params->getBoolRequestParam('inkrementalis', false),
+            'unasidkihagy' => $this->params->getBoolRequestParam('unasidkihagy', false),
             'ujraletoltes' => $this->params->getBoolRequestParam('ujraletoltes', false),
             'riportujra' => $this->params->getBoolRequestParam('riportujra', false),
             'sortol' => $this->params->getIntRequestParam('sortol', 0),

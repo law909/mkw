@@ -21,6 +21,20 @@ $(document).ready(function () {
         haladasCsik.css('width', szazalek + '%');
     };
 
+    // a szolgáltatás inkrementális menetben úgyis kikapcsolja – itt csak látszódjon is
+    var inkrementalis = $('#InkrementalisEdit'),
+        unasidkihagy = $('#UnasidkihagyEdit'),
+        unasidkihagyElozo = unasidkihagy.prop('checked');
+
+    inkrementalis.on('change', function () {
+        if (this.checked) {
+            unasidkihagyElozo = unasidkihagy.prop('checked');
+            unasidkihagy.prop({checked: false, disabled: true});
+        } else {
+            unasidkihagy.prop({checked: unasidkihagyElozo, disabled: false});
+        }
+    }).trigger('change');
+
     $('#unasteszt').on('click', function () {
         var valasz = $('#unastesztvalasz').text('...');
         $.ajax({url: '/admin/unastermekimport/teszt', type: 'POST', dataType: 'json'})

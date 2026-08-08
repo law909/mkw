@@ -40,7 +40,8 @@
         <tr>
             <td style="padding:2px 5px;">{at('Ebből aláhúzás → kötőjel cserével')}</td>
             <td class="textalignright" style="padding:2px 5px;">{$riport.cikkszam_csere_db}</td>
-            <td colspan="2" style="padding:2px 5px;"></td>
+            <td style="padding:2px 5px;">{at('Azonosító alapján megtalált, érintetlenül hagyott')}</td>
+            <td class="textalignright" style="padding:2px 5px;">{$riport.kihagyva_unasid|default:0}</td>
         </tr>
         <tr>
             <td style="padding:2px 5px;">{at('Nem található a törzsben')}</td>
@@ -65,6 +66,11 @@
             <td class="textalignright" style="padding:2px 5px;">{$riport.mezo_irva}</td>
             <td style="padding:2px 5px;">{at('Kép: letöltött / kihagyott / azonos tartalmú / hibás')}</td>
             <td class="textalignright" style="padding:2px 5px;">{$riport.kep_letoltve} / {$riport.kep_kihagyva} / {$riport.kep_duplikatum} / {$riport.kep_hiba_db}</td>
+        </tr>
+        <tr>
+            <td style="padding:2px 5px;">{at('Termékhez rendelt kép (főkép + galéria)')}</td>
+            <td class="textalignright" style="padding:2px 5px;">{$riport.kep_hozzarendelve|default:0}</td>
+            <td colspan="2" style="padding:2px 5px;"></td>
         </tr>
         </tbody>
     </table>

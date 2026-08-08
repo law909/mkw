@@ -64,11 +64,12 @@ class UnasKepService
      * @param array $kepek [['url' => ..., 'alt' => ..., 'fokep' => bool], ...] UNAS sorrendben
      * @param bool $force a már meglévő fájlt is újratölti
      *
-     * @return array{letoltve: int, kihagyva: int, duplikatum: int, hibak: array<string>}
+     * @return array{letoltve: int, kihagyva: int, duplikatum: int, hozzarendelve: int,
+     *               hibak: array<string>}
      */
     public function importKepek(Termek $termek, array $kepek, $force = false)
     {
-        $result = ['letoltve' => 0, 'kihagyva' => 0, 'duplikatum' => 0, 'hibak' => []];
+        $result = ['letoltve' => 0, 'kihagyva' => 0, 'duplikatum' => 0, 'hozzarendelve' => 0, 'hibak' => []];
 
         $kepek = $this->cleanKepList($kepek);
         if (!$kepek) {
@@ -89,6 +90,7 @@ class UnasKepService
         }
 
         $existingUrls = $this->getExistingKepUrls($termek);
+        $vanFokep = ltrim((string)$termek->getKepurl(''), '/') !== '';
         foreach ($kepek as $i => $kep) {
             $name = $this->sourceFilename($kep['url']);
             if ($name === '') {
@@ -126,10 +128,17 @@ class UnasKepService
             }
 
             $alt = trim((string)($kep['alt'] ?? '')) ?: $termek->getNev();
-            if ($i === $mainIndex) {
+
+            // Egy termékünkhöz több UNAS termék is tartozhat (a változataink külön UNAS sorok),
+            // és mindegyik hozza a saját főképét. Főkép csak az elsőből lesz, a többi a galériába
+            // megy: felülírva a kepurl-t az előző főkép hozzárendelés nélkül maradna a lemezen.
+            if ($i === $mainIndex && !$vanFokep) {
                 // setKepurl(hamis) a kepleiras-t is nullázza
                 $termek->setKepurl($url);
                 $termek->setKepleiras($alt);
+                $existingUrls[$url] = true;
+                $vanFokep = true;
+                $result['hozzarendelve']++;
                 continue;
             }
             if (isset($existingUrls[$url])) {
@@ -141,6 +150,7 @@ class UnasKepService
             $tk->setLeiras($alt);
             \mkw\store::getEm()->persist($tk);
             $existingUrls[$url] = true;
+            $result['hozzarendelve']++;
         }
 
         return $result;

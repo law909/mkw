@@ -489,7 +489,10 @@ class UnasTermekImportService
         // száraz futásban nem hívjuk: a getProduct órás kerete túl szűk próbafutásra
         $getproductKepek = [];
         if ($opts['kepek'] && !$opts['szarazfutas'] && $opts['kepforras'] === 'getproduct') {
-            $getproductKepek = $this->getKepekWithGetProduct($cikkszamok, $report);
+            $getproductKepek = $this->getKepekWithGetProduct(
+                $opts['unasidkihagy'] ? $this->unskippedCikkszamok($rows, $columns, $map) : $cikkszamok,
+                $report
+            );
         }
 
         $count = 0;
@@ -515,6 +518,24 @@ class UnasTermekImportService
             return false;
         }
         return !$this->flushClear($report);
+    }
+
+    /** A kihagyandó sorokra kár elkölteni a getProduct órás keretét. */
+    private function unskippedCikkszamok(array $rows, array $columns, array $map)
+    {
+        $result = [];
+        foreach ($rows as $row) {
+            $cikkszam = $this->cell($row, $columns, 'cikkszam');
+            if ($cikkszam === '') {
+                continue;
+            }
+            $match = $this->matchTermek($cikkszam, $this->cell($row, $columns, 'unasid'), $map);
+            if ($match['statusz'] === 'ok' && $match['mod'] === 'unasid') {
+                continue;
+            }
+            $result[] = $cikkszam;
+        }
+        return $result;
     }
 
     /** Egy CSV sor: párosítás, mezőírás, változatok, képek. */
@@ -557,6 +578,13 @@ class UnasTermekImportService
         }
 
         $report['parositott_' . $match['szint'] . '_' . $match['mod']]++;
+
+        // Amit az UNAS azonosító alapján megtaláltunk, azt egy korábbi menet már párosította:
+        // a kapcsolóval együtt onnantól hozzá sem nyúlunk (mező, változat, kép semmi).
+        if ($opts['unasidkihagy'] && $match['mod'] === 'unasid') {
+            $report['kihagyva_unasid']++;
+            return;
+        }
 
         // jelzés, hogy a törzs és az UNAS cikkszámformátuma eltér
         if (!empty($match['csere'])) {
@@ -1023,6 +1051,7 @@ class UnasTermekImportService
         $report['kep_letoltve'] += $result['letoltve'];
         $report['kep_kihagyva'] += $result['kihagyva'];
         $report['kep_duplikatum'] += $result['duplikatum'];
+        $report['kep_hozzarendelve'] += $result['hozzarendelve'];
         foreach ($result['hibak'] as $error) {
             $report['kep_hiba_db']++;
             $this->addSample($report, 'kep_hiba', ['uzenet' => $error]);
@@ -1275,11 +1304,17 @@ class UnasTermekImportService
     private function defaultOptions(array $opts)
     {
         $suffix = ($opts['nyelvsuffix'] ?? '') === '_l1' ? '_l1' : '';
+        $inkrementalis = !empty($opts['inkrementalis']);
         return [
             'nyelvsuffix' => $suffix,
             'nyelv' => $suffix === '_l1' ? UnasService::getLangL1() : UnasService::getLang(),
             'szarazfutas' => !empty($opts['szarazfutas']),
-            'inkrementalis' => !empty($opts['inkrementalis']),
+            'inkrementalis' => $inkrementalis,
+            // Alapból bekapcsolva: a hiányzó kulcs nem "ki", hanem "alapértelmezés". Inkrementális
+            // menetben viszont épp a már párosított tételek jönnek vissza, ott kihagyni őket annyi
+            // lenne, mint el sem indítani az importot.
+            'unasidkihagy' => !$inkrementalis
+                && (!array_key_exists('unasidkihagy', $opts) || !empty($opts['unasidkihagy'])),
             'sortol' => max(0, (int)($opts['sortol'] ?? 0)),
             'sorig' => max(0, (int)($opts['sorig'] ?? 0)),
             'editleiras' => !empty($opts['editleiras']),
@@ -1402,10 +1437,14 @@ class UnasTermekImportService
             'parositott_termek_cikkszam' => 0,
             // ebből hányat csak az aláhúzás→kötőjel cserével találtunk meg
             'cikkszam_csere_db' => 0,
+            // az azonosító alapján megtalált, ezért érintetlenül hagyott tételek
+            'kihagyva_unasid' => 0,
             'valtozat_parositva' => 0,
             'mezo_irva' => 0,
             'kep_letoltve' => 0,
             'kep_kihagyva' => 0,
+            // ahány kép ténylegesen a termékhez került (főkép + TermekKep sor)
+            'kep_hozzarendelve' => 0,
             // ugyanaz a fotó más néven: az UNAS a változat cikkszáma szerint nevezi a képeket
             'kep_duplikatum' => 0,
             'nem_talalt_db' => 0,
