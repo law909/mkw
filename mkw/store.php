@@ -1127,7 +1127,7 @@ class store
 
     public static function getAdminDataLocale()
     {
-        return 'hu';
+        return 'hu_hu';
     }
 
     public static function getWebshopShortLocale()
@@ -2170,7 +2170,7 @@ class store
 
     public static function getLocalizedFieldName($fieldName, $locale = null)
     {
-        $locale = translate::normalizeLocale($locale);
+        $locale = self::translateToLongLocaleName(translate::normalizeLocale($locale));
         switch ($locale) {
             case 'en_us':
                 return $fieldName . '_l1';

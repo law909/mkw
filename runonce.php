@@ -1208,6 +1208,27 @@ if ($DBVersion < '0107') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0107');
 }
+
+if ($DBVersion < '0108') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej b'
+        . ' JOIN fizmod f ON f.id = b.fizmod_id'
+        . ' SET b.fizmodnev_l1 = f.nev_l1'
+        . ' WHERE b.fizmodnev_l1 IS NULL OR b.fizmodnev_l1 = ""'
+    );
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylatfej b'
+        . ' JOIN szallitasimod f ON f.id = b.szallitasimod_id'
+        . ' SET b.szallitasimodnev_l1 = f.nev_l1'
+        . ' WHERE b.szallitasimodnev_l1 IS NULL OR b.szallitasimodnev_l1 = ""'
+    );
+
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE partner SET bizonylatnyelv = "hu_hu" WHERE bizonylatnyelv="hu"'
+    );
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0108');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
