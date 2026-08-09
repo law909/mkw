@@ -218,13 +218,13 @@
             {if (haveJog(90) && $_egyed.uzletkotonev)}
                 <tr>
                     <td></td>
-                    <td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek, 2, '.', ' ')} %)</td>
+                    <td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek|default:0, 2, '.', ' ')} %)</td>
                 </tr>
             {/if}
             {if (haveJog(90) && $_egyed.belsouzletkotonev)}
                 <tr>
                     <td></td>
-                    <td>(B){$_egyed.belsouzletkotonev} ({number_format($_egyed.belsouzletkotojutalek, 2, '.', ' ')} %)</td>
+                    <td>(B){$_egyed.belsouzletkotonev} ({number_format($_egyed.belsouzletkotojutalek|default:0, 2, '.', ' ')} %)</td>
                 </tr>
             {/if}
             {if ($showerbizonylatszam)}

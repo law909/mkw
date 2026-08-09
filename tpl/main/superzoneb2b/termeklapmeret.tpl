@@ -42,7 +42,7 @@
                                            data-eredetikedvezmeny="{$termek.kedvezmeny}" value="{$termek.kedvezmeny}" class="js-kedvezmenyinput">
                                     %
                                 {else}
-                                    <span>{number_format($termek.kedvezmeny, 2, ',', ' ')} %</span>
+                                    <span>{number_format($termek.kedvezmeny|default:0, 2, ',', ' ')} %</span>
                                 {/if}
                             </td>
                             <td class="textalignright">

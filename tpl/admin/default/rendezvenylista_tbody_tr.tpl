@@ -22,11 +22,11 @@
             </tr>
             <tr>
                 <td>Ár:</td>
-                <td class="pricenowrap">{number_format($_egyed.ar, 2, '.', ' ')}</td>
+                <td class="pricenowrap">{number_format($_egyed.ar|default:0, 2, '.', ' ')}</td>
             </tr>
             <tr>
                 <td>Early bird ár:</td>
-                <td class="pricenowrap">{number_format($_egyed.earlybirdar, 2, '.', ' ')}</td>
+                <td class="pricenowrap">{number_format($_egyed.earlybirdar|default:0, 2, '.', ' ')}</td>
             </tr>
             <tr>
                 <td>Early bird vége:</td>

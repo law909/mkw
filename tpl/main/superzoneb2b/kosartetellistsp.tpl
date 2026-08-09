@@ -49,14 +49,14 @@
             <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
         </td>
         <td>
-            <div class="textalignright">{number_format($tetel.ebruttoegysar, 2, ',', ' ')} {$valutanem}</div>
+            <div class="textalignright">{number_format($tetel.ebruttoegysar|default:0, 2, ',', ' ')} {$valutanem}</div>
         </td>
         <td class="kosar-discounttd">
             <div class="textaligncenter">
                 {if ($uzletkoto.loggedin)}
                     <form class="kosarformk" action="{$tetel.editlink}">
                         <div>{if ($tetel.noedit)}
-                                {number_format($tetel.kedvezmeny, 0, ',', ' ')} %
+                                {number_format($tetel.kedvezmeny|default:0, 0, ',', ' ')} %
                             {else}
                                 <input id="kedvezmenyedit_{$tetel.id}" class="form-control" type="number" min="1" step="any" name="kedvezmeny"
                                        value="{$tetel.kedvezmeny * 1}" data-org="{$tetel.kedvezmeny}">
