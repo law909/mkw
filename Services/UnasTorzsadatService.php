@@ -121,10 +121,12 @@ class UnasTorzsadatService
         }
         $valutanem = $this->repo(Valutanem::class)->findOneBy(['nev' => $code]);
         if (!$valutanem) {
-            throw new \Exception(sprintf(
-                t('A(z) %s valutanem nincs felvéve a törzsben. Vedd fel, majd importáld újra a rendelést.'),
-                $code
-            ));
+            throw new \Exception(
+                sprintf(
+                    t('A(z) %s valutanem nincs felvéve a törzsben.'),
+                    $code
+                )
+            );
         }
         return $valutanem;
     }
@@ -155,11 +157,13 @@ class UnasTorzsadatService
                 return $orszag;
             }
         }
-        throw new \Exception(sprintf(
-            t('A(z) "%s" (%s) ország nincs felvéve a törzsben. Vedd fel, majd importáld újra a rendelést.'),
-            $name,
-            $code
-        ));
+        throw new \Exception(
+            sprintf(
+                t('A(z) "%s" (%s) ország nincs felvéve a törzsben.'),
+                $name,
+                $code
+            )
+        );
     }
 
     /**
@@ -234,12 +238,14 @@ class UnasTorzsadatService
         }
 
         $fizmod = $repo->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
-        $this->warn(sprintf(
-            t('Az UNAS "%s" (id: %s) fizetési módja nincs leképezve, a bizonylatra a(z) "%s" került. Állítsd be az UNAS rendelések képernyőn.'),
-            $name,
-            $payment['id'] ?? '',
-            $fizmod ? $fizmod->getNev() : '-'
-        ));
+        $this->warn(
+            sprintf(
+                t('Az UNAS "%s" (id: %s) fizetési módja nincs leképezve, a bizonylatra a(z) "%s" került.'),
+                $name,
+                $payment['id'] ?? '',
+                $fizmod ? $fizmod->getNev() : '-'
+            )
+        );
         return $fizmod;
     }
 
@@ -270,11 +276,13 @@ class UnasTorzsadatService
             }
         }
 
-        $this->warn(sprintf(
-            t('Az UNAS "%s" (id: %s) szállítási módja nincs leképezve, a bizonylatra nem került szállítási mód. Állítsd be az UNAS rendelések képernyőn.'),
-            $name,
-            $shipping['id'] ?? ''
-        ));
+        $this->warn(
+            sprintf(
+                t('Az UNAS "%s" (id: %s) szállítási módja nincs leképezve, a bizonylatra nem került szállítási mód.'),
+                $name,
+                $shipping['id'] ?? ''
+            )
+        );
         return null;
     }
 
@@ -322,13 +330,15 @@ class UnasTorzsadatService
         }
 
         $statusz = $repo->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
-        $this->warn(sprintf(
-            t('Az UNAS "%s" (id: %s, típus: %s) rendelésstátusza nincs leképezve, a bizonylat a(z) "%s" státuszt kapta.'),
-            $status['name'] ?? '',
-            $status['id'] ?? '',
-            $type,
-            $statusz ? $statusz->getNev() : '-'
-        ));
+        $this->warn(
+            sprintf(
+                t('Az UNAS "%s" (id: %s, típus: %s) rendelésstátusza nincs leképezve, a bizonylat a(z) "%s" státuszt kapta.'),
+                $status['name'] ?? '',
+                $status['id'] ?? '',
+                $type,
+                $statusz ? $statusz->getNev() : '-'
+            )
+        );
         return $statusz;
     }
 
@@ -368,11 +378,13 @@ class UnasTorzsadatService
             'tipus' => $tipus,
         ]);
         if (!$terminal) {
-            $this->warn(sprintf(
-                t('A(z) %s azonosítójú %s csomagpont nincs a törzsben, a bizonylatra nem került csomagpont.'),
-                $deliveryPointId,
-                $tipus
-            ));
+            $this->warn(
+                sprintf(
+                    t('A(z) %s azonosítójú %s csomagpont nincs a törzsben, a bizonylatra nem került csomagpont.'),
+                    $deliveryPointId,
+                    $tipus
+                )
+            );
         }
         return $terminal;
     }

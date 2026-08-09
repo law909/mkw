@@ -2,7 +2,6 @@
 
 {block "kozep"}
 {include "../default/comp_noallapot.tpl"}
-{include "../default/comp_apierrorlog.tpl"}
 {if (haveJog(20))}
 <div class="ui-widget ui-widget-content ui-corner-all">
     <div class="ui-widget-header ui-corner-top">
@@ -32,4 +31,5 @@
 </div>
 
 {/if}
+{include "../default/comp_apierrorlog.tpl"}
 {/block}

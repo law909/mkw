@@ -690,6 +690,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKarbUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKarbUrl', []);
+
+        return parent::getKarbUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTarsbizonylat()
     {
 

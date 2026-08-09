@@ -2767,6 +2767,22 @@ class Bizonylatfej
     }
 
     /**
+     * A bizonylat karbantartójának URL-je – teljes oldal, ugyanaz, ahová a lista
+     * szerkesztő linkje visz. A null-szabály a getListaUrl()-lel azonos.
+     *
+     * @return string|null
+     */
+    public function getKarbUrl()
+    {
+        $tipusid = $this->getBizonylattipusId();
+        if (!$tipusid) {
+            return null;
+        }
+        $prefix = self::ROUTEPREFIX[$tipusid] ?? $tipusid;
+        return $this->buildKarbUrl('admin' . $prefix . 'fejviewkarb');
+    }
+
+    /**
      * @return \Entities\Bizonylatfej
      */
     public function getTarsbizonylat()

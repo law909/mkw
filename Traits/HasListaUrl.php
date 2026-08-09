@@ -3,7 +3,7 @@
 namespace Traits;
 
 /**
- * Bizonylat admin listanézetének URL-je, a bizonylatszámra előszűrve.
+ * Bizonylat admin URL-jei: a bizonylatszámra előszűrt listanézet és a karbantartó.
  *
  * A szűrőmezőket a mattable tölti fel a query stringből (jquery.mattable.js,
  * applyUrlToControls()), ezért elég az idfilter paraméter – a listasablonokban
@@ -22,6 +22,24 @@ trait HasListaUrl
      */
     protected function buildListaUrl($routename)
     {
+        return $this->buildAdminUrl($routename, ['idfilter' => $this->getId()]);
+    }
+
+    /**
+     * A bizonylat karbantartójának (viewkarb) URL-je. A paraméterezés a mattable
+     * szerkesztő linkjével azonos (jquery.mattable.js, doEditLink()).
+     *
+     * @param string $routename a karbantartó AltoRouter-neve
+     *
+     * @return string|null ugyanaz a null-szabály, mint a buildListaUrl()-nél
+     */
+    protected function buildKarbUrl($routename)
+    {
+        return $this->buildAdminUrl($routename, ['id' => $this->getId(), 'oper' => 'edit']);
+    }
+
+    private function buildAdminUrl($routename, array $query)
+    {
         if (!$this->getId()) {
             return null;
         }
@@ -30,7 +48,7 @@ trait HasListaUrl
                 $routename,
                 false,
                 [],
-                ['idfilter' => urlencode($this->getId())]
+                array_map('urlencode', $query)
             );
         } catch (\Exception $e) {
             return null;

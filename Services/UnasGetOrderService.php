@@ -155,8 +155,7 @@ class UnasGetOrderService
                 $this->unas->logApiError(
                     sprintf(
                         t(
-                            'A(z) %s UNAS rendelés importja nem sikerült: %s Hárítsd el a hibát, majd az '
-                            . 'UNAS megrendelések képernyőn ezzel az azonosítóval importáld újra.'
+                            'A(z) %s UNAS rendelés importja nem sikerült: %s '
                         ),
                         $order['key'],
                         $e->getMessage()
@@ -703,11 +702,15 @@ class UnasGetOrderService
                     // kerül, hogy az összeg ne tűnjön el a bizonylatról – de erről szólni kell.
                     $resolved['termek'] = $this->defaultTermek();
                     $resolved['fallback'] = true;
-                    $this->torzsadat->warn(sprintf(
-                        t('A(z) "%s" UNAS tételhez nincs beállítva termék (Beállítások → UNAS fül), '
-                            . 'ezért az alapértelmezett termékre került.'),
-                        $item['id']
-                    ));
+                    $this->torzsadat->warn(
+                        sprintf(
+                            t(
+                                'A(z) "%s" UNAS tételhez nincs beállítva termék (Beállítások → UNAS fül), '
+                                . 'ezért az alapértelmezett termékre került.'
+                            ),
+                            $item['id']
+                        )
+                    );
                 }
                 $items[] = $resolved;
                 continue;
@@ -1009,10 +1012,10 @@ class UnasGetOrderService
         if ($diff <= self::TOTALTOLERANCE) {
             return;
         }
+        // a bizonylatszám előtag a hibapostafiókban linkké válik (apierrorlogController::addBizonylat)
         $this->unas->logApiError(
-            sprintf(
-                t('A(z) %s bizonylat bruttója (%s) eltér az UNAS rendelés végösszegétől (%s). Ellenőrizd a tételeket.'),
-                $fej->getId(),
+            $fej->getId() . ': ' . sprintf(
+                t('A bizonylat bruttója (%s) eltér az UNAS rendelés végösszegétől (%s).'),
                 (float)$fej->getBrutto(),
                 $unasTotal
             ),

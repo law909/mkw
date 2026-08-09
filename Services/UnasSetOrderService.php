@@ -328,8 +328,9 @@ class UnasSetOrderService
         if ($sor->getProbalkozas() >= self::MAXPROBALKOZAS) {
             $sor->setAllapot(Unasoutbox::ALLAPOTHIBA);
             $sor->setFeldolgozva(new \DateTime());
+            $bizszam = $sor->getBizonylatfejId();
             $this->unas->logApiError(
-                sprintf(
+                ($bizszam ? $bizszam . ': ' : '') . sprintf(
                     t('A(z) %s UNAS rendelés %s visszaírása %s próbálkozás után sem sikerült: %s'),
                     $sor->getUnaskey(),
                     $sor->getTipus(),

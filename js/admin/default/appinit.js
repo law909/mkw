@@ -338,14 +338,25 @@ $(document).ready(
 
         $(document).on('click', '.js-apierrorlogclose', function (e) {
             e.preventDefault();
+            var sor = $(this).closest('tr');
+            var doboz = $(this).closest('.js-apierrorlog');
             $.ajax({
                 url: '/admin/apierrorlog/close',
                 type: 'POST',
                 data: {
                     id: $(this).data('id')
                 },
-                success: function (data) {
-                    dialogcenter.html('Kész. Frissítsd az oldalt.').dialog({
+                success: function () {
+                    sor.remove();
+                    var db = doboz.find('tbody tr').length;
+                    if (db) {
+                        doboz.find('.js-apierrorlogcount').text(db);
+                    } else {
+                        doboz.remove();
+                    }
+                },
+                error: function () {
+                    dialogcenter.html('A hiba lezárása nem sikerült.').dialog({
                         resizable: false,
                         height: 140,
                         modal: true,

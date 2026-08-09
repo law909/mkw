@@ -15,9 +15,6 @@
         {include "../default/comp_noallapot.tpl"}
     </div>
     <div class="component-container">
-        {include "../default/comp_apierrorlog.tpl"}
-    </div>
-    <div class="component-container">
         <div class="ui-widget ui-widget-content ui-corner-all">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Jelenléti ív</div>
@@ -740,5 +737,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="component-container">
+        {include "../default/comp_apierrorlog.tpl"}
     </div>
 {/block}

@@ -9,9 +9,6 @@
     <div class="component-container">
         {include "../default/comp_noallapot.tpl"}
     </div>
-    <div class="component-container">
-        {include "../default/comp_apierrorlog.tpl"}
-    </div>
     {if (haveJog(20))}
         {if ($setup.bankpenztar)}
             <div class="component-container">
@@ -83,4 +80,7 @@
             </div>
         </div>
     {/if}
+    <div class="component-container">
+        {include "../default/comp_apierrorlog.tpl"}
+    </div>
 {/block}
