@@ -1753,10 +1753,12 @@ class store
      */
     public static function felKerekit($ertek, $step)
     {
-        if (($ertek % $step) != 0) {
-            return (floor($ertek / $step) + 1) * $step;
+        if ($step == 0) {
+            return $ertek;
         }
-        return $ertek;
+        // nem ($ertek % $step): a % int-re csonkolná a törtárat, így a nem egész
+        // értékek fölé kerekítés elmaradna (500.7 esetén 500 maradna)
+        return ceil($ertek / $step) * $step;
     }
 
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg)

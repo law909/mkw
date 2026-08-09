@@ -725,17 +725,9 @@ class termekfaController extends \mkwhelpers\MattableController
                     }
 
                     $ret['arfilterstep'] = \mkw\store::getParameter(\mkw\consts::Arfilterstep, 500);
-                    if (($maxexistingar % $ret['arfilterstep']) != 0) {
-                        $ret['maxar'] = (floor($maxexistingar / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
-                    } else {
-                        $ret['maxar'] = $maxexistingar;
-                    }
+                    $ret['maxar'] = \mkw\store::felKerekit($maxexistingar, $ret['arfilterstep']);
                     $ret['minarfilter'] = $minarfilter;
-                    if (($maxarfilter % $ret['arfilterstep']) != 0) {
-                        $ret['maxarfilter'] = (floor($maxarfilter / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
-                    } else {
-                        $ret['maxarfilter'] = $maxarfilter;
-                    }
+                    $ret['maxarfilter'] = \mkw\store::felKerekit($maxarfilter, $ret['arfilterstep']);
                     switch ($caller) {
                         case 'termekfa':
                             $ret['url'] = '/termekfa/' . $parent->getSlug();
