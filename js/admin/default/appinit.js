@@ -141,56 +141,54 @@ $(document).ready(
 
         const $napijelentesdatumedit = $('#NapijelentesDatumEdit'),
             $napijelentesdatumigedit = $('#NapijelentesDatumigEdit');
-        if ($napijelentesdatumedit && $napijelentesdatumigedit) {
+        if ($napijelentesdatumedit.length && $napijelentesdatumigedit.length) {
             mkwcomp.datumEdit.init($napijelentesdatumedit);
             mkwcomp.datumEdit.init($napijelentesdatumigedit);
-            $('.js-napijelentes').on('click', function (e) {
-                e.preventDefault();
-                var datum = $napijelentesdatumedit.datepicker('getDate'),
-                    datumig = $napijelentesdatumigedit.datepicker('getDate');
-                datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
-                datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
+            const loadNapijelentes = function () {
                 $.ajax({
                     url: '/admin/napijelentes',
                     type: 'POST',
                     data: {
-                        datum: datum,
-                        datumig: datumig
+                        datum: mkwcomp.datumEdit.getDate($napijelentesdatumedit),
+                        datumig: mkwcomp.datumEdit.getDate($napijelentesdatumigedit)
                     },
                     success: function (data) {
                         $('.js-napijelentesbody').replaceWith(data);
                     }
                 })
+            };
+            $('.js-napijelentes').on('click', function (e) {
+                e.preventDefault();
+                loadNapijelentes();
             });
+            loadNapijelentes();
         }
 
         const $napijelentes2datumedit = $('#Napijelentes2DatumEdit'),
             $napijelentes2datumigedit = $('#Napijelentes2DatumigEdit');
-        if ($napijelentes2datumedit && $napijelentes2datumigedit) {
+        if ($napijelentes2datumedit.length && $napijelentes2datumigedit.length) {
             mkwcomp.datumEdit.init($napijelentes2datumedit);
             mkwcomp.datumEdit.init($napijelentes2datumigedit);
-            $('.js-napijelentes2').on('click', function (e) {
-                e.preventDefault();
-                var datum = $napijelentes2datumedit.datepicker('getDate'),
-                    datumig = $napijelentes2datumigedit.datepicker('getDate'),
-                    raktar = $('#Napijelentes2RaktarEdit').val(),
-                    letrehozo = $('#Napijelentes2LetrehozoEdit').val();
-                datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
-                datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
+            const loadNapijelentes2 = function () {
                 $.ajax({
                     url: '/admin/napijelentes2',
                     type: 'POST',
                     data: {
-                        datum: datum,
-                        datumig: datumig,
-                        raktar: raktar,
-                        letrehozo: letrehozo
+                        datum: mkwcomp.datumEdit.getDate($napijelentes2datumedit),
+                        datumig: mkwcomp.datumEdit.getDate($napijelentes2datumigedit),
+                        raktar: $('#Napijelentes2RaktarEdit').val(),
+                        letrehozo: $('#Napijelentes2LetrehozoEdit').val()
                     },
                     success: function (data) {
                         $('.js-napijelentes2body').replaceWith(data);
                     }
                 })
+            };
+            $('.js-napijelentes2').on('click', function (e) {
+                e.preventDefault();
+                loadNapijelentes2();
             });
+            loadNapijelentes2();
         }
 
         $('.js-refreshkintlevoseg').on('click', function (e) {

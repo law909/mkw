@@ -72,18 +72,16 @@ class adminController extends mkwhelpers\Controller
         $raktarid = \mkw\store::getDefaultRaktarId();
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
-        $lista = new listaController();
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneHu():
             case \mkw\store::isSuperzoneB2B():
-                $napijelentesdatum = date(\mkw\store::$DateFormat);
-                $igdatum = date(\mkw\store::$DateFormat);
-                $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
+                // a napijelentes/napijelentes2 tartalmat a bongeszo tolti be (adminnapijelentes[2] utvonal)
                 if (\mkw\store::haveJog(90)) { // a napijelentes2 blokk a sablonban is jog 90 mogott van
-                    $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
-                    $view->setVar('napijelentes2defaultraktar', $raktarid2);
-                    $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
+                    $view->setVar(
+                        'napijelentes2defaultraktar',
+                        \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15)
+                    );
                     $felh = new dolgozoController();
                     $view->setVar('felhasznalolist', $felh->getSelectList());
                 }
@@ -358,6 +356,9 @@ class adminController extends mkwhelpers\Controller
 
     public function printNapijelentes2()
     {
+        if (!\mkw\store::haveJog(90)) {
+            return;
+        }
         $lista = new listaController();
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = \mkw\store::convDate($datumstr);

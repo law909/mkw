@@ -73,7 +73,7 @@
                     <button class="js-napijelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span
                             class="ui-button-text">Frissít</span></button>
                 </div>
-                {include "napijelentesbody.tpl"}
+                <div class="js-napijelentesbody">{t('Betöltés')}…</div>
             </div>
         </div>
     </div>
