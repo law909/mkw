@@ -40,6 +40,11 @@ class galadCGMImportController extends \mkwhelpers\Controller
     private $galadLetezoTermekVonalkod = [];
     private $galadLetezoTermekKulcs = [];
 
+    // a findOneBy nem látja a még nem flush-olt változatokat, ezért a csoporton belül
+    // már feldolgozott változat-cikkszámokat memóriában tartjuk
+    private $handledValtozatCikkszam = [];
+    private $skippedRows = 0;
+
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
      *
@@ -206,7 +211,8 @@ class galadCGMImportController extends \mkwhelpers\Controller
         }
         $em->flush();
 
-        echo 'Kész. ' . $termekdb . ' termék, ' . $valtozatdb . ' változat importálva.';
+        echo 'Kész. ' . $termekdb . ' termék, ' . $valtozatdb . ' változat importálva.'
+            . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor azonosító (vonalkód/cikkszám) hiányában kimaradt.' : '');
     }
 
     /**
@@ -274,6 +280,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
         }
 
         $valtozatdb = 0;
+        $this->handledValtozatCikkszam = [];
         // változatos termék: A oszlop == 1
         if ($valtozatos) {
             foreach ($group as $sor) {
@@ -339,6 +346,12 @@ class galadCGMImportController extends \mkwhelpers\Controller
             $vcikkszam .= '-' . $sor['meret'];
         }
 
+        // vonalkód és cikkszám nélkül a sor nem azonosítható: újraimportnál duplikálódna
+        if ($sor['vonalkod'] === '' && $vcikkszam === '') {
+            $this->skippedRows++;
+            return false;
+        }
+
         $tvr = \mkw\store::getEm()->getRepository(TermekValtozat::class);
         // ha van vonalkód: csak akkor importáljuk a változatot, ha még nincs ilyen vonalkódú változat
         if ($sor['vonalkod'] !== '') {
@@ -349,15 +362,18 @@ class galadCGMImportController extends \mkwhelpers\Controller
             $termek->addValtozat($valtozat);
             $this->galadLetezoValtozatVonalkod[$sor['vonalkod']] = true;
         } else {
-            // nincs vonalkód: minden úgy mint eddig (cikkszám alapú azonosítás)
-            $valtozat = null;
-            if ($termek->getId() && $vcikkszam !== '') {
-                $valtozat = $tvr->findOneBy(['termek' => $termek->getId(), 'cikkszam' => $vcikkszam]);
+            // nincs vonalkód: cikkszám alapú azonosítás
+            if (isset($this->handledValtozatCikkszam[$vcikkszam])) {
+                return false;
             }
+            $valtozat = $termek->getId()
+                ? $tvr->findOneBy(['termek' => $termek->getId(), 'cikkszam' => $vcikkszam])
+                : null;
             if (!$valtozat) {
                 $valtozat = new \Entities\TermekValtozat();
                 $termek->addValtozat($valtozat);
             }
+            $this->handledValtozatCikkszam[$vcikkszam] = true;
         }
         if ($vcikkszam !== '') {
             $valtozat->setCikkszam($vcikkszam);
