@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Arfolyam;
+use Entities\Valutanem;
 
 class arfolyamController extends \mkwhelpers\MattableController
 {
