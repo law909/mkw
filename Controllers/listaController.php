@@ -114,7 +114,8 @@ class listaController extends \mkwhelpers\Controller
         $btrepo = $this->getRepo(Bizonylattipus::class);
         $termekrepo = $this->getRepo(Termek::class);
         $farepo = $this->getRepo(TermekFa::class);
-        $focsoportok = $farepo->getForParent(1);
+        $focsoportparentid = 1;
+        $focsoportok = $farepo->getForParent($focsoportparentid);
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
 
         $ret = [];
@@ -125,67 +126,30 @@ class listaController extends \mkwhelpers\Controller
             $ret['raktarnev'] = '';
         }
 
-        $napijelentes = [];
-        foreach ($focsoportok as $csoport) {
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter
-                ->addFilter('bf.teljesites', '>=', $datum)
-                ->addFilter('bf.teljesites', '<=', $ig)
-                ->addFilter('bf.rontott', '=', false)
-                ->addFilter('f.tipus', '=', 'P')
-                ->addFilter('bf.raktar_id', '=', $raktarid)
-                ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
-                ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bf.teljesites', '>=', $datum)
+            ->addFilter('bf.teljesites', '<=', $ig)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('f.tipus', 'IN', ['P', 'B'])
+            ->addFilter('bf.raktar_id', '=', $raktarid)
+            ->addFilter('g.parent_id', '=', $focsoportparentid)
+            ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
 
-            if ($kiskercimke) {
-                $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
-            }
-            if ($letrehozoid) {
-                $filter->addFilter('bf.createdby', '=', $letrehozoid);
-            }
-
-            $k = $termekrepo->calcNapijelentes($filter);
-            $k = $k[0];
-            if ($k['mennyiseg'] || $k['nettohuf'] || $k['bruttohuf']) {
-                $elem = $csoport;
-                $elem['mennyiseg'] = $k['mennyiseg'];
-                $elem['netto'] = $k['nettohuf'];
-                $elem['brutto'] = $k['bruttohuf'];
-                $napijelentes[] = $elem;
-            }
+        if ($kiskercimke) {
+            $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
         }
-        $ret['napijelentes'] = $napijelentes;
-
-        $napijelentes = [];
-        foreach ($focsoportok as $csoport) {
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter
-                ->addFilter('bf.teljesites', '>=', $datum)
-                ->addFilter('bf.teljesites', '<=', $ig)
-                ->addFilter('bf.rontott', '=', false)
-                ->addFilter('f.tipus', '=', 'B')
-                ->addFilter('bf.raktar_id', '=', $raktarid)
-                ->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $csoport['karkod'] . '%')
-                ->addFilter('bf.bizonylattipus_id', 'IN', ['szamla', 'egyeb', 'keziszamla', 'garancialevel']);
-
-            if ($kiskercimke) {
-                $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
-            }
-            if ($letrehozoid) {
-                $filter->addFilter('bf.createdby', '=', $letrehozoid);
-            }
-
-            $k = $termekrepo->calcNapijelentes($filter);
-            $k = $k[0];
-            if ($k['mennyiseg'] || $k['nettohuf'] || $k['bruttohuf']) {
-                $elem = $csoport;
-                $elem['mennyiseg'] = $k['mennyiseg'];
-                $elem['netto'] = $k['nettohuf'];
-                $elem['brutto'] = $k['bruttohuf'];
-                $napijelentes[] = $elem;
-            }
+        if ($letrehozoid) {
+            $filter->addFilter('bf.createdby', '=', $letrehozoid);
         }
-        $ret['napijelentesnemkp'] = $napijelentes;
+
+        $sums = [];
+        foreach ($termekrepo->sumByTermekFaAndFizmodTipus($filter) as $row) {
+            $sums[$row['tipus']][$row['termekfa_id']] = $row;
+        }
+
+        $ret['napijelentes'] = $this->buildNapijelentesRows($focsoportok, $sums['P'] ?? []);
+        $ret['napijelentesnemkp'] = $this->buildNapijelentesRows($focsoportok, $sums['B'] ?? []);
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
@@ -227,6 +191,23 @@ class listaController extends \mkwhelpers\Controller
         $ret['nemhufforgalom'] = $nemhufforg;
 
         return $ret;
+    }
+
+    private function buildNapijelentesRows($focsoportok, $sums)
+    {
+        $rows = [];
+        foreach ($focsoportok as $csoport) {
+            $k = $sums[$csoport['id']] ?? null;
+            if (!$k || (!$k['mennyiseg'] && !$k['nettohuf'] && !$k['bruttohuf'])) {
+                continue;
+            }
+            $elem = $csoport;
+            $elem['mennyiseg'] = $k['mennyiseg'];
+            $elem['netto'] = $k['nettohuf'];
+            $elem['brutto'] = $k['bruttohuf'];
+            $rows[] = $elem;
+        }
+        return $rows;
     }
 
     public function nemkaphatoertesito()

@@ -80,11 +80,13 @@ class adminController extends mkwhelpers\Controller
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
-                $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
-                $view->setVar('napijelentes2defaultraktar', $raktarid2);
-                $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
-                $felh = new dolgozoController();
-                $view->setVar('felhasznalolist', $felh->getSelectList());
+                if (\mkw\store::haveJog(90)) { // a napijelentes2 blokk a sablonban is jog 90 mogott van
+                    $raktarid2 = \mkw\store::getIntParameter(\mkw\consts::Napijelentes2DefaultRaktar, 15);
+                    $view->setVar('napijelentes2defaultraktar', $raktarid2);
+                    $view->setVar('napijelentes2', $lista->napiJelentes($napijelentesdatum, $igdatum, $raktarid2));
+                    $felh = new dolgozoController();
+                    $view->setVar('felhasznalolist', $felh->getSelectList());
+                }
                 break;
             case \mkw\store::isKisszamlazo():
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository(Entities\Folyoszamla::class)->getLejartKintlevosegByValutanem());

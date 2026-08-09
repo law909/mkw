@@ -1102,23 +1102,31 @@ class TermekRepository extends \mkwhelpers\Repository
         return $res;
     }
 
-    public function calcNapijelentes($filter)
+    // a termekfa join OR-ja adja a regi, csoportonkenti kulon lekerdezes szemantikajat:
+    // egy tetel csoportonkent egyszer szamit, akkor is, ha tobb fa-oszlopa is beleesik
+    public function sumByTermekFaAndFizmodTipus($filter)
     {
         $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termekfa_id', 'termekfa_id');
+        $rsm->addScalarResult('tipus', 'tipus');
         $rsm->addScalarResult('mennyiseg', 'mennyiseg');
         $rsm->addScalarResult('nettohuf', 'nettohuf');
         $rsm->addScalarResult('bruttohuf', 'bruttohuf');
 
         $q = $this->_em->createNativeQuery(
-            'SELECT SUM(bt.mennyiseg) AS mennyiseg, SUM(bt.nettohuf) AS nettohuf, SUM(bt.bruttohuf) AS bruttohuf '
+            'SELECT g.id AS termekfa_id, f.tipus AS tipus, SUM(bt.mennyiseg) AS mennyiseg,'
+            . ' SUM(bt.nettohuf) AS nettohuf, SUM(bt.bruttohuf) AS bruttohuf '
             . 'FROM bizonylattetel bt '
             . 'LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id) '
             . 'LEFT JOIN termek t ON (bt.termek_id=t.id) '
             . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
             . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
             . 'LEFT JOIN fizmod f ON (bf.fizmod_id=f.id) '
-//            . 'LEFT JOIN bizonylatfej par ON (bf.parbizonylatfej_id=par.id)'
-            . $this->getFilterString($filter),
+            . 'JOIN termekfa g ON ((t.termekfa1karkod LIKE CONCAT(g.karkod, \'%\'))'
+            . ' OR (t.termekfa2karkod LIKE CONCAT(g.karkod, \'%\'))'
+            . ' OR (t.termekfa3karkod LIKE CONCAT(g.karkod, \'%\'))) '
+            . $this->getFilterString($filter)
+            . ' GROUP BY g.id, f.tipus',
             $rsm
         );
         $q->setParameters($this->getQueryParameters($filter));
