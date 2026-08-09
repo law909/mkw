@@ -1062,8 +1062,13 @@ class UnasGetOrderService
     }
 
     /**
-     * A rendelés nyers XML-je → lapos tömb. Azért tömb, hogy a leképezés SimpleXML-mentes és
+     * A rendelés nyers XML-je → normalizált tömb. Azért tömb, hogy a leképezés SimpleXML-mentes és
      * fájlból is tesztelhető legyen.
+     *
+     * **Ez az EGYETLEN hely, ami az UNAS XML mezőneveit ismeri.** A SimpleXML kis/nagybetű-érzékeny:
+     * egy elrontott név némán üres sztringet ad, nem hibát – ezért az itteni nevek pontosan az
+     * UNAS adatszerkezet-dokumentációját követik (`StatusID`, `EUTaxNumber`, `DeliveryPointID`, …).
+     * A kimenő tömb kulcsai viszont kisbetűsek, és a feldolgozó rétegek már csak azokat használják.
      */
     private function parseOrder(\SimpleXMLElement $node)
     {

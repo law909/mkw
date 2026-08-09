@@ -25,6 +25,11 @@ use Entities\Valutanem;
  * és folyószámla sort érint. Ami nem oldható fel, az a beállított alapértékre esik és
  * figyelmeztetést kap ({@see getWarnings()}).
  *
+ * **A tömbkulcsok itt KISBETŰSEK, és nem azonosak az UNAS XML mezőneveivel.** Ez az osztály nem lát
+ * SimpleXML-t: a `UnasGetOrderService::parseOrder()` normalizált tömbjét kapja, ahol az XML
+ * `Customer.Addresses.Invoice.TaxNumber`-ből `$order['customer']['invoice']['taxnumber']` lesz.
+ * A pontos – kis/nagybetű-érzékeny! – XML neveket kizárólag a parser ismeri, egy helyen.
+ *
  * Lásd docs/unas-megrendeles-integracio.md.
  */
 class UnasTorzsadatService
