@@ -13,7 +13,7 @@ services:
       - dev-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mkw.rule=Host(`mkw.local`)"
+      - "traefik.http.routers.mkw.rule=Host(`mkw.test`)"
       - "traefik.http.routers.mkw.entrypoints=web"
 
 networks:
