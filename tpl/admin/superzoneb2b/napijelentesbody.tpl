@@ -73,7 +73,7 @@
         </tfoot>
         {$sumsum = $sumsum + $sumbrutto}
     </table>
-    {if (haveJog(20))}
+    {if (haveJog(40))}
         <div>Nagyker forgalom</div>
         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
             <thead>
