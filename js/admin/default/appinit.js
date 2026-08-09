@@ -139,6 +139,15 @@ $(document).ready(
             });
         }
 
+        if ($('.js-noallapotbody').length) {
+            $.ajax({
+                url: '/admin/noallapot',
+                success: function (data) {
+                    $('.js-noallapotbody').replaceWith(data);
+                }
+            });
+        }
+
         const $napijelentesdatumedit = $('#NapijelentesDatumEdit'),
             $napijelentesdatumigedit = $('#NapijelentesDatumigEdit');
         if ($napijelentesdatumedit.length && $napijelentesdatumigedit.length) {

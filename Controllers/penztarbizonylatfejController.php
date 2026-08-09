@@ -467,7 +467,6 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
     public function zarasView()
     {
         $view = $this->createView('penztarzaras.tpl');
-        $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Pénztár zárás'));
         $view->setVar('datum', date(\mkw\store::$DateFormat));
 

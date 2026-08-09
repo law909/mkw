@@ -1,4 +1,4 @@
-<div class="ui-widget ui-widget-content ui-corner-all">
+<div class="js-noallapotbody ui-widget ui-widget-content ui-corner-all">
     <div class="ui-widget-header ui-corner-top">
         <div class="mainboxinner ui-corner-top">NAV Online beküldő állapota</div>
     </div>

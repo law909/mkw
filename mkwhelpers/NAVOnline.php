@@ -7,6 +7,9 @@ class NAVOnline
 
     const NAVOnlineProduction = 'prod';
     const NAVOnlineDeveloper = 'dev';
+    const CONNECTTIMEOUT = 5;
+    const DEFAULTTIMEOUT = 120;
+    const STATUSTIMEOUT = 10; // a hello/version csak allapotjelzo, ne varjunk ra sokat
 
     private $serviceURL = 'http://no.billy.hu/api';
     private $cegAdoszam;
@@ -48,7 +51,7 @@ class NAVOnline
         return $this->serviceURL;
     }
 
-    private function callAPI($httpcommand, $command, $data = null)
+    private function callAPI($httpcommand, $command, $data = null, $timeout = self::DEFAULTTIMEOUT)
     {
         $sikeres = false;
         $this->result = null;
@@ -56,6 +59,8 @@ class NAVOnline
         $ch = curl_init($this->getServiceURL() . $command);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpcommand);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECTTIMEOUT);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         if ($data) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
@@ -116,12 +121,12 @@ class NAVOnline
 
     public function hello()
     {
-        return $this->callAPI('GET', '/hello/' . $this->cegAdoszam);
+        return $this->callAPI('GET', '/hello/' . $this->cegAdoszam, null, self::STATUSTIMEOUT);
     }
 
     public function version()
     {
-        return $this->callAPI('GET', '/version/' . $this->cegAdoszam);
+        return $this->callAPI('GET', '/version/' . $this->cegAdoszam, null, self::STATUSTIMEOUT);
     }
 
     public function querytaxpayer($payernum)

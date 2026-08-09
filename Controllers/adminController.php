@@ -18,7 +18,6 @@ class adminController extends mkwhelpers\Controller
         $ub = false;
         if (preg_match('/MSIE/i', $u_agent)) {
             $view = $this->createView('noie.tpl');
-            $this->generalDataLoader->loadData($view);
             $view->printTemplateResult();
             $ub = true;
         }
@@ -27,47 +26,10 @@ class adminController extends mkwhelpers\Controller
 
     public function view()
     {
-        $view = $this->createView('main.tpl');
-        $this->generalDataLoader->loadData($view);
+        $view = $this->createView('main.tpl'); // createView() maga hivja a loadData()-t
         $view->setVar('pagetitle', t('Főoldal'));
 
-        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-        $no->hello();
-        $view->setVar('noerrors', $no->getErrors());
-        $view->setVar('noresult', $no->getResult());
-        $no->version();
-        $view->setVar(
-            'noversion',
-            ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
-            . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
-            . '; srv v' . $no->getResult()
-        );
-
-        $nohibasbeallitas = [];
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addSql('(_xx.navtipus=\'\') OR (_xx.navtipus IS NULL)');
-        $hibasdb = $this->getRepo(\Entities\Fizmod::class)->getCount($filter);
-        if ($hibasdb) {
-            $nohibasbeallitas[] = 'Nincs minden fizetési módnak NAV típus megadva.';
-        }
-        $hibasdb = $this->getRepo(\Entities\ME::class)->getCount($filter);
-        if ($hibasdb) {
-            $nohibasbeallitas[] = 'Nincs minden mennyiségi egységnek NAV típus megadva.';
-        }
-        $filter->clear();
-        $filter->addFilter('ertek', '=', 0);
-        $filter->addSql('(_xx.navcase=\'\') OR (_xx.navcase IS NULL)');
-        $hibasdb = $this->getRepo(Entities\Afa::class)->getCount($filter);
-        if ($hibasdb) {
-            $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
-        }
-        $bizc = new bizonylatfejController(null);
-        $bizcnt = $bizc->calcNavEredmenyRiasztas();
-        if ($bizcnt['aborted'] > 0) {
-            $nohibasbeallitas[] = $bizcnt['aborted'] . ' db ABORTED számla van!';
-        }
-        $view->setVar('nohibalista', $nohibasbeallitas);
-
+        // a NAV allapotdoboz tartalmat a bongeszo tolti be (adminnoallapot utvonal)
         $raktar = new raktarController();
         $raktarid = \mkw\store::getDefaultRaktarId();
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
@@ -341,6 +303,48 @@ class adminController extends mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
+    public function printNoallapot()
+    {
+        $view = $this->createView('comp_noallapot.tpl');
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
+        $no->hello();
+        $view->setVar('noerrors', $no->getErrors());
+        $view->setVar('noresult', $no->getResult());
+        $no->version();
+        $view->setVar(
+            'noversion',
+            ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
+            . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
+            . '; srv v' . $no->getResult()
+        );
+
+        $nohibasbeallitas = [];
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addSql('(_xx.navtipus=\'\') OR (_xx.navtipus IS NULL)');
+        $hibasdb = $this->getRepo(\Entities\Fizmod::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden fizetési módnak NAV típus megadva.';
+        }
+        $hibasdb = $this->getRepo(\Entities\ME::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden mennyiségi egységnek NAV típus megadva.';
+        }
+        $filter->clear();
+        $filter->addFilter('ertek', '=', 0);
+        $filter->addSql('(_xx.navcase=\'\') OR (_xx.navcase IS NULL)');
+        $hibasdb = $this->getRepo(Entities\Afa::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
+        }
+        $abortedcnt = (int)$view->getVar('abortedszamlacnt'); // a loadData() mar kiszamolta
+        if ($abortedcnt > 0) {
+            $nohibasbeallitas[] = $abortedcnt . ' db ABORTED számla van!';
+        }
+        $view->setVar('nohibalista', $nohibasbeallitas);
+
+        $view->printTemplateResult();
+    }
+
     public function printNapijelentes()
     {
         $lista = new listaController();
@@ -408,7 +412,6 @@ class adminController extends mkwhelpers\Controller
     protected function cropimage()
     {
         $view = $this->createView('cropimage.tpl');
-        $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Főoldal'));
         $view->printTemplateResult();
     }

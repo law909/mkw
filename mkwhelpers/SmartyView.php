@@ -27,6 +27,11 @@ class SmartyView extends View
         $this->tplengine->assign($variable, $data);
     }
 
+    public function getVar($variable)
+    {
+        return $this->tplengine->getTemplateVars($variable);
+    }
+
     public function getTemplateResult()
     {
         return $this->tplengine->fetch($this->tplfile);

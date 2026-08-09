@@ -1376,6 +1376,7 @@ $router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek'
 $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');
 $router->map('GET', '/admin/lista/nemkaphatoertesito', 'listaController#nemkaphatoertesito', 'adminlistanemkaphatoertesito');
 //$router->map('GET', '/admin/fillbiztetelvaltozat', 'adminController#fillBiztetelValtozat', 'adminfillbiztetelvaltozat');
+$router->map('GET', '/admin/noallapot', 'adminController#printNoallapot', 'adminnoallapot');
 $router->map('POST', '/admin/napijelentes', 'adminController#printNapijelentes', 'adminnapijelentes');
 $router->map('POST', '/admin/napijelentes2', 'adminController#printNapijelentes2', 'adminnapijelentes2');
 $router->map('POST', '/admin/teljesitmenyjelentes', 'adminController#printTeljesitmenyJelentes', 'adminteljesitmenyjelentes');

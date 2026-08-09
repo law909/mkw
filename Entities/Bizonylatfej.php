@@ -15,7 +15,8 @@ use Traits\HasListaUrl;
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
- * 		@ORM\index(name="bizonylatfejteljesites_idx",columns={"teljesites","rontott","raktar_id"})
+ * 		@ORM\index(name="bizonylatfejteljesites_idx",columns={"teljesites","rontott","raktar_id"}),
+ * 		@ORM\index(name="bizonylatfejnaveredmeny_idx",columns={"naveredmeny","bizonylattipus_id","kelt"})
  * },
  *     uniqueConstraints={@ORM\UniqueConstraint(name="bizonylatfejunaskey_uq",columns={"unaskey"})})
  * */

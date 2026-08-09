@@ -5,7 +5,7 @@
 
 {block "kozep"}
     <div class="component-container">
-    {include "comp_noallapot.tpl"}
+    <div class="js-noallapotbody">{t('Betöltés')}…</div>
     </div>
     <div class="component-container">
     {include "comp_apierrorlog.tpl"}

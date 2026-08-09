@@ -1,7 +1,7 @@
 {extends "../base.tpl"}
 
 {block "kozep"}
-{include "../default/comp_noallapot.tpl"}
+<div class="js-noallapotbody">{t('Betöltés')}…</div>
 {include "../default/comp_apierrorlog.tpl"}
 {if (haveJog(20))}
 <div class="ui-widget ui-widget-content ui-corner-all">
