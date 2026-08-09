@@ -1158,7 +1158,9 @@ class store
 
     public static function translateToShortLocaleName($ny)
     {
-        $ny = strtolower($ny);
+        if ($ny !== null) {
+            $ny = strtolower($ny);
+        }
         if (array_key_exists($ny, self::$locales)) {
             return $ny;
         }
@@ -1168,7 +1170,9 @@ class store
 
     public static function translateToLongLocaleName($ny)
     {
-        $ny = strtolower($ny);
+        if ($ny !== null) {
+            $ny = strtolower($ny);
+        }
         if (in_array($ny, self::getLongLocaleList())) {
             return $ny;
         }
