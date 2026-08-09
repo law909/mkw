@@ -75,7 +75,8 @@ class Bizonylattetel
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $termeknev;
 
-    /** @ORM\Column(type="string",length=255,nullable=false) */
+    /** Fordítás: üresen maradhat, ha a deployment nem multilang, vagy a terméknek nincs `nev_l1`-e.
+     * @ORM\Column(type="string",length=255,nullable=true) */
     private $termeknev_l1;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
@@ -95,6 +96,18 @@ class Bizonylattetel
 
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $idegencikkszam;
+
+    /**
+     * Az UNAS rendeléstétel terméknevet és cikkszáma, ha a terméket nem sikerült beazonosítani.
+     * Ilyenkor a tétel az alapértelmezett termékre kerül, és ebből a két mezőből derül ki,
+     * mit rendeltek valójában.
+     *
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $unasnev;
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $unascikkszam;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $ehparany;
@@ -801,6 +814,26 @@ class Bizonylattetel
     public function setIdegencikkszam($val)
     {
         $this->idegencikkszam = $val;
+    }
+
+    public function getUnasnev()
+    {
+        return $this->unasnev;
+    }
+
+    public function setUnasnev($val)
+    {
+        $this->unasnev = $val;
+    }
+
+    public function getUnascikkszam()
+    {
+        return $this->unascikkszam;
+    }
+
+    public function setUnascikkszam($val)
+    {
+        $this->unascikkszam = $val;
     }
 
     public function getMekod()

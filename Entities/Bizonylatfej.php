@@ -13,7 +13,8 @@ use Traits\HasListaUrl;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
- * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="bizonylatfejunaskey_uq",columns={"unaskey"})})
  * */
 class Bizonylatfej
 {
@@ -29,6 +30,12 @@ class Bizonylatfej
         'penztar' => 'penztarbizonylat',
         'bank' => 'bankbizonylat',
     ];
+
+    /**
+     * Hurokvédelem: az UNAS-ból importált változás nem generálhat visszaírást az UNAS-ba.
+     * Nem perzisztált – az import service állítja, a UnasOutboxListener figyeli.
+     */
+    public $unasSkipWriteback = false;
 
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
@@ -176,6 +183,26 @@ class Bizonylatfej
 
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
+
+    /**
+     * A rendelés UNAS-beli azonosítója – MINDIG az UNAS oldali kulcs, a rendelés eredetétől
+     * függetlenül (a getOrder `InternalKey`-e, ha van, egyébként a `Key`-e). Ez az import
+     * idempotencia-kulcsa, egyedi indexen.
+     * Nem az `erbizonylatszam`: az általános célú és az admin felületen szabadon átírható.
+     *
+     * @ORM\Column(type="string",length=50,nullable=true)
+     */
+    private $unaskey;
+
+    /**
+     * Third-party rendelésnél (Árukereső, eMAG, Unas API) a piactér saját azonosítója – a getOrder
+     * `Key`-e. Normál rendelésnél üres, mert ott a `Key` maga az UNAS azonosító.
+     * A getOrder / setOrder KIZÁRÓLAG a `Key`-t fogadja el szűrőként, ezért a hívásokhoz nem az
+     * `unaskey`, hanem a {@see getUnasApikey()} kell.
+     *
+     * @ORM\Column(type="string",length=50,nullable=true)
+     */
+    private $unaskulsokey;
 
     /** @ORM\Column(type="text",nullable=true) */
     private $fuvarlevelszam;
@@ -4006,6 +4033,35 @@ class Bizonylatfej
         $this->erbizonylatszam = $val;
     }
 
+    public function getUnaskey()
+    {
+        return $this->unaskey;
+    }
+
+    public function setUnaskey($val)
+    {
+        $this->unaskey = $val;
+    }
+
+    public function getUnaskulsokey()
+    {
+        return $this->unaskulsokey;
+    }
+
+    public function setUnaskulsokey($val)
+    {
+        $this->unaskulsokey = $val;
+    }
+
+    /**
+     * Az az azonosító, amivel az UNAS API megszólítja a rendelést (a `Key` szűrő). Third-party
+     * rendelésnél a piactér azonosítója, egyébként maga az UNAS azonosító.
+     */
+    public function getUnasApikey()
+    {
+        return trim((string)$this->unaskulsokey) !== '' ? $this->unaskulsokey : $this->unaskey;
+    }
+
     public function getMegjegyzes()
     {
         return $this->megjegyzes;
@@ -4641,7 +4697,10 @@ class Bizonylatfej
     public function duplicateFrom($entityB)
     {
         $this->duplication = true;
-        $kivetel = ['setParbizonylatfej'];
+        // Az UNAS rendelés azonosítója nem másolható: egyedi indexen van, és egy rendeléshez
+        // egyetlen bizonylat tartozhat – különben a szétbontás/összefűzés flush-e elhasalna,
+        // és a visszaírás sem tudná, melyik bizonylat a rendelés párja.
+        $kivetel = ['setParbizonylatfej', 'setUnaskey', 'setUnaskulsokey'];
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {

@@ -1258,6 +1258,30 @@ if ($DBVersion < '0110') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0110');
 }
+
+if ($DBVersion < '0111') {
+    // UNAS megrendelés-import: menüpont + alapértékek. A DDL az entitásokból jön (./updateschema.sh).
+    // Az importok 40-es jogosultságával megy, mint a termékimport.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "UNAS megrendelések", "/admin/unasrendeles/view", "/admin/unasrendeles", 40,'
+        . (\mkw\store::isUnas() ? '1' : '0') . ', 255, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/unasrendeles/view") m)'
+    );
+    // a rendelések a beállított alapraktárba jönnek, amíg valaki mást nem választ
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO parameterek (id, ertek, specialchars)'
+        . ' SELECT ?, ertek, 0 FROM parameterek WHERE id = ?',
+        [\mkw\consts::UnasRaktar, \mkw\consts::Raktar]
+    );
+    // a „függőben" státusz a nyitott rendelések tartaléka
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO parameterek (id, ertek, specialchars)'
+        . ' SELECT ?, ertek, 0 FROM parameterek WHERE id = ?',
+        [\mkw\consts::UnasStatuszOpenNormal, \mkw\consts::BizonylatStatuszFuggoben]
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0111');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

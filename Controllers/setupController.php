@@ -502,6 +502,42 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::UnasNyelv, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UnasNyelvL1);
         $view->setVar(\mkw\consts::UnasNyelvL1, ($p ? $p->getErtek() : ''));
+        // a megrendelés-import beállításai; a státusz- és módleképezés az UNAS rendelések
+        // képernyőn van, mert azt a getOrderStatus / getMethod válaszából generáljuk
+        $bizstatusz = new bizonylatstatuszController();
+        foreach ([
+            \mkw\consts::UnasStatuszOpenNormal,
+            \mkw\consts::UnasStatuszOpenPrepare,
+            \mkw\consts::UnasStatuszCloseOk,
+            \mkw\consts::UnasStatuszCloseFault,
+            \mkw\consts::UnasFizetveStatusz,
+        ] as $par) {
+            $p = $repo->find($par);
+            $view->setVar($par . 'list', $bizstatusz->getSelectList(($p ? $p->getErtek() : 0)));
+        }
+        $p = $repo->find(\mkw\consts::UnasRaktar);
+        $view->setVar('unasraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::UnasPartnertipus);
+        $view->setVar('unaspartnertipuslist', (new partnertipusController())->getSelectList(($p ? $p->getErtek() : 0)));
+        foreach ([
+            \mkw\consts::UnasDefaultTermek,
+            \mkw\consts::UnasSzallitasiKtgTermek,
+            \mkw\consts::UnasKezelesiKtgTermek,
+            \mkw\consts::UnasKedvezmenyTermek,
+        ] as $par) {
+            $p = $repo->find($par);
+            $this->setTermekAutocompleteVars($view, $par, ($p ? $p->getErtek() : ''));
+        }
+        foreach ([
+            \mkw\consts::UnasVisszairasStatusz,
+            \mkw\consts::UnasVisszairasSzamla,
+            \mkw\consts::UnasVisszairasCsomag,
+            \mkw\consts::UnasStatuszEmail,
+            \mkw\consts::UnasModositasEngedve,
+        ] as $par) {
+            $p = $repo->find($par);
+            $view->setVar($par, ($p ? (bool)$p->getErtek() : false));
+        }
 
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
@@ -1051,6 +1087,53 @@ class setupController extends \mkwhelpers\Controller
             return;
         }
         $this->setObj($par, $this->params->getStringRequestParam($par), $specialchars);
+    }
+
+    /**
+     * A megrendelés-import beállításai. A pipákat is csak akkor írjuk, ha a fül renderelődött –
+     * a kikapcsolt checkbox amúgy sem érkezik meg, tehát egy jelzőmezőből döntünk.
+     */
+    private function saveUnasRendelesSetup()
+    {
+        if (!$this->params->existsRequestParam('unasfulvan')) {
+            return;
+        }
+        foreach ([
+            \mkw\consts::UnasStatuszOpenNormal,
+            \mkw\consts::UnasStatuszOpenPrepare,
+            \mkw\consts::UnasStatuszCloseOk,
+            \mkw\consts::UnasStatuszCloseFault,
+            \mkw\consts::UnasFizetveStatusz,
+        ] as $par) {
+            $statusz = \mkw\store::getEm()->getRepository(\Entities\Bizonylatstatusz::class)
+                ->find($this->params->getIntRequestParam($par, 0));
+            $this->setObj($par, $statusz ? $statusz->getId() : '');
+        }
+        $raktar = \mkw\store::getEm()->getRepository(\Entities\Raktar::class)
+            ->find($this->params->getIntRequestParam(\mkw\consts::UnasRaktar, 0));
+        $this->setObj(\mkw\consts::UnasRaktar, $raktar ? $raktar->getId() : '');
+        $partnertipus = \mkw\store::getEm()->getRepository(\Entities\Partnertipus::class)
+            ->find($this->params->getIntRequestParam(\mkw\consts::UnasPartnertipus, 0));
+        $this->setObj(\mkw\consts::UnasPartnertipus, $partnertipus ? $partnertipus->getId() : '');
+        foreach ([
+            \mkw\consts::UnasDefaultTermek,
+            \mkw\consts::UnasSzallitasiKtgTermek,
+            \mkw\consts::UnasKezelesiKtgTermek,
+            \mkw\consts::UnasKedvezmenyTermek,
+        ] as $par) {
+            $termek = \mkw\store::getEm()->getRepository(Termek::class)
+                ->find($this->params->getIntRequestParam($par, 0));
+            $this->setObj($par, $termek ? $termek->getId() : '');
+        }
+        foreach ([
+            \mkw\consts::UnasVisszairasStatusz,
+            \mkw\consts::UnasVisszairasSzamla,
+            \mkw\consts::UnasVisszairasCsomag,
+            \mkw\consts::UnasStatuszEmail,
+            \mkw\consts::UnasModositasEngedve,
+        ] as $par) {
+            $this->setObj($par, $this->params->getBoolRequestParam($par, false));
+        }
     }
 
     private function setObj($par, $value, $specialchars = false)
@@ -1640,6 +1723,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setUnasObj(\mkw\consts::UnasKepUrlPrefix, true);
         $this->setUnasObj(\mkw\consts::UnasNyelv);
         $this->setUnasObj(\mkw\consts::UnasNyelvL1);
+        $this->saveUnasRendelesSetup();
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
         $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));

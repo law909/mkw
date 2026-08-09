@@ -433,6 +433,39 @@ class consts
     const UnasNyelv = 'unasnyelv';
     const UnasNyelvL1 = 'unasnyelvl1';
 
+    // UNAS megrendelés-import és visszaírás (lásd docs/unas-megrendeles-integracio.md)
+    const UnasRaktar = 'unasraktar';
+    const UnasPartnertipus = 'unaspartnertipus';
+    // leképezések JSON-ban, {UNAS azonosító: MKW azonosító} – az UNAS státuszai és módjai
+    // boltonként szabadon konfigurálhatók, ezért nem lehet belőlük oszlop
+    const UnasStatuszMap = 'unasstatuszmap';
+    const UnasFizmodMap = 'unasfizmodmap';
+    const UnasSzallmodMap = 'unasszallmodmap';
+    // amit a leképezés nem fed le: az UNAS StatusType-ja szerinti négy tartalék
+    const UnasStatuszOpenNormal = 'unasstatuszopennormal';
+    const UnasStatuszOpenPrepare = 'unasstatuszopenprepare';
+    const UnasStatuszCloseOk = 'unasstatuszcloseok';
+    const UnasStatuszCloseFault = 'unasstatuszclosefault';
+    // kifizetett rendelés (Payment.Status = paid) státusza, ez erősebb a fentieknél
+    const UnasFizetveStatusz = 'unasfizetvestatusz';
+    // fel nem oldott cikkszám, szállítási / kezelési költség és kedvezmény tételek terméke
+    const UnasDefaultTermek = 'unasdefaulttermek';
+    // üresen a globális consts::SzallitasiKtgTermek marad
+    const UnasSzallitasiKtgTermek = 'unasszallitasiktgtermek';
+    const UnasKezelesiKtgTermek = 'unaskezelesiktgtermek';
+    const UnasKedvezmenyTermek = 'unaskedvezmenytermek';
+    // az UNAS-ban utólag módosított rendelés felülírhatja-e a bizonylat tételeit
+    const UnasModositasEngedve = 'unasmodositasengedve';
+    // a setOrder küldjön-e státuszértesítő levelet a vásárlónak
+    const UnasStatuszEmail = 'unasstatuszemail';
+    // mit írunk vissza az UNAS-ba
+    const UnasVisszairasStatusz = 'unasvisszairasstatusz';
+    const UnasVisszairasSzamla = 'unasvisszairasszamla';
+    const UnasVisszairasCsomag = 'unasvisszairascsomag';
+    // a rendelés-poller kurzora (unix ts), csak hibátlan futás után lép
+    const UnasImportCursor = 'unasimportcursor';
+    const UnasUtolsoCron = 'unasutolsocron';
+
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
 

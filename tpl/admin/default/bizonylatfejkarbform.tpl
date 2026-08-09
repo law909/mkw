@@ -6,7 +6,8 @@
     </div>
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
           data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}"
-          data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}">
+          data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}"
+          data-unasdefaulttermek="{$unasdefaulttermek|default}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>

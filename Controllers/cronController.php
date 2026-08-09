@@ -11,10 +11,46 @@ use mkwhelpers\FilterDescriptor;
 class cronController extends \mkwhelpers\Controller
 {
 
+    /** ennyi másodpercnél gyakrabban nem futtatjuk az UNAS blokkot */
+    private const UNASINTERVAL = 300;
+
     public function run()
     {
         if (\mkw\store::isDarshan()) {
             //$this->checkJogaBejelentkezes();
+        }
+        if (\mkw\store::isUnas()) {
+            $this->runUnas();
+        }
+    }
+
+    /**
+     * A rendelés-poller és a visszaírás. `GET_LOCK(?, 0)` – nulla várakozás: ha már fut egy
+     * példány, a második azonnal kilép. Ez azért is fontos, mert az index.php admin ága minden
+     * híváskor lefuttatja a runonce.php-t, tehát a cron nem olcsó.
+     */
+    private function runUnas()
+    {
+        if (!\Services\UnasService::isEnabled()) {
+            return;
+        }
+        $conn = $this->getEm()->getConnection();
+        if ((int)$conn->fetchOne('SELECT GET_LOCK(?, 0)', ['unas_cron']) !== 1) {
+            return;
+        }
+        try {
+            $utolso = (int)\mkw\store::getParameter(\mkw\consts::UnasUtolsoCron, 0);
+            if (time() - $utolso < self::UNASINTERVAL) {
+                return;
+            }
+            \mkw\store::setParameter(\mkw\consts::UnasUtolsoCron, time());
+            (new \Services\UnasGetOrderService())->pollOrders();
+            // a visszaírás a poll UTÁN: a most importált rendelés hurokvédett, nem generál sort
+            (new \Services\UnasSetOrderService())->drainOutbox(50);
+        } catch (\Exception $e) {
+            \mkw\store::writelog('UNAS cron hiba: ' . $e->getMessage(), 'unas_api_error.txt');
+        } finally {
+            $conn->executeStatement('SELECT RELEASE_LOCK(?)', ['unas_cron']);
         }
     }
 

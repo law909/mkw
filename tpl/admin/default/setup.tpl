@@ -2019,6 +2019,144 @@
                                 <input id="UnasNyelvL1Edit" name="unasnyelvl1" value="{$unasnyelvl1}" placeholder="en">
                             </div>
                         </div>
+
+                        {* a pipák kikapcsolva nem érkeznek meg, ezért kell egy jelző, hogy a fül renderelődött *}
+                        <input name="unasfulvan" type="hidden" value="1">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span><b>{at('Megrendelés-import')}</b> –
+                                    {at('a státuszok és a fizetési / szállítási módok összerendelése az UNAS rendelések képernyőn van')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasRaktarEdit">{at('Raktár')}:</label></span>
+                                <select id="UnasRaktarEdit" name="unasraktar">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasraktarlist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasPartnertipusEdit">{at('Új vevők partnertípusa')}:</label></span>
+                                <select id="UnasPartnertipusEdit" name="unaspartnertipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unaspartnertipuslist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasDefaultTermekEdit">{at('Beazonosíthatatlan cikkszám terméke')}:</label></span>
+                                <input id="UnasDefaultTermekEdit" type="text" class="js-setuptermekselect"
+                                       data-target="unasdefaulttermek" value="{$unasdefaulttermeknev}" size="60" autocomplete="off">
+                                <input name="unasdefaulttermek" type="hidden" value="{$unasdefaulttermekid}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasSzallitasiKtgTermekEdit">{at('Szállítási költség terméke')}:</label></span>
+                                <input id="UnasSzallitasiKtgTermekEdit" type="text" class="js-setuptermekselect"
+                                       data-target="unasszallitasiktgtermek" value="{$unasszallitasiktgtermeknev}" size="60" autocomplete="off">
+                                <input name="unasszallitasiktgtermek" type="hidden" value="{$unasszallitasiktgtermekid}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel">&nbsp;</span>
+                                <span>{at('Üresen hagyva a Bizonylat fülön beállított szállítási költség termék marad. Ha mást választasz, ügyelj rá, hogy a bizonylat kézi mentésekor a "Szállítási költséget számoljon" pipa a globális termékre vinne fel egy MÁSODIK sort.')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKezelesiKtgTermekEdit">{at('Kezelési költség terméke')}:</label></span>
+                                <input id="UnasKezelesiKtgTermekEdit" type="text" class="js-setuptermekselect"
+                                       data-target="unaskezelesiktgtermek" value="{$unaskezelesiktgtermeknev}" size="60" autocomplete="off">
+                                <input name="unaskezelesiktgtermek" type="hidden" value="{$unaskezelesiktgtermekid}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKedvezmenyTermekEdit">{at('Kedvezmény terméke')}:</label></span>
+                                <input id="UnasKedvezmenyTermekEdit" type="text" class="js-setuptermekselect"
+                                       data-target="unaskedvezmenytermek" value="{$unaskedvezmenytermeknev}" size="60" autocomplete="off">
+                                <input name="unaskedvezmenytermek" type="hidden" value="{$unaskedvezmenytermekid}">
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel">&nbsp;</span>
+                                <span>{at('A kedvezmény terméke ne mozgassa a készletet.')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasStatuszOpenNormalEdit">{at('Státusz: nyitott (open_normal)')}:</label></span>
+                                <select id="UnasStatuszOpenNormalEdit" name="unasstatuszopennormal">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasstatuszopennormallist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="UnasStatuszOpenPrepareEdit">{at('Státusz: előkészítés alatt (open_prepare)')}:</label></span>
+                                <select id="UnasStatuszOpenPrepareEdit" name="unasstatuszopenprepare">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasstatuszopenpreparelist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasStatuszCloseOkEdit">{at('Státusz: teljesített (close_ok)')}:</label></span>
+                                <select id="UnasStatuszCloseOkEdit" name="unasstatuszcloseok">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasstatuszcloseoklist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasStatuszCloseFaultEdit">{at('Státusz: meghiúsult (close_fault)')}:</label></span>
+                                <select id="UnasStatuszCloseFaultEdit" name="unasstatuszclosefault">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasstatuszclosefaultlist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasFizetveStatuszEdit">{at('Kifizetett rendelés státusza')}:</label></span>
+                                <select id="UnasFizetveStatuszEdit" name="unasfizetvestatusz">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $unasfizetvestatuszlist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="UnasModositasEngedveEdit">{at('Az UNAS-ban módosított rendelés felülírja a tételeket')}:</label></span>
+                                <input id="UnasModositasEngedveEdit" name="unasmodositasengedve"
+                                       type="checkbox"{if ($unasmodositasengedve)} checked="checked"{/if}>
+                            </div>
+                        </div>
+
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span><b>{at('Visszaírás az UNAS-ba')}</b> –
+                                    {at('a letöltés soha nem változtatja meg a rendelés UNAS-beli állapotát, csak az itt bekapcsolt visszaírás')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasVisszairasStatuszEdit">{at('Bizonylatstátusz visszaírása')}:</label></span>
+                                <input id="UnasVisszairasStatuszEdit" name="unasvisszairasstatusz"
+                                       type="checkbox"{if ($unasvisszairasstatusz)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasVisszairasSzamlaEdit">{at('Számlaszám visszaírása')}:</label></span>
+                                <input id="UnasVisszairasSzamlaEdit" name="unasvisszairasszamla"
+                                       type="checkbox"{if ($unasvisszairasszamla)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasVisszairasCsomagEdit">{at('Csomagszám visszaírása')}:</label></span>
+                                <input id="UnasVisszairasCsomagEdit" name="unasvisszairascsomag"
+                                       type="checkbox"{if ($unasvisszairascsomag)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasStatuszEmailEdit">{at('Az UNAS küldjön státuszértesítő levelet')}:</label></span>
+                                <input id="UnasStatuszEmailEdit" name="unasstatuszemail"
+                                       type="checkbox"{if ($unasstatuszemail)} checked="checked"{/if}>
+                            </div>
+                        </div>
                     </div>
                 {/if}
 

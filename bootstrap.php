@@ -28,6 +28,7 @@ use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\RendezvenyListener;
 use Listeners\MPTNGYSzakmaianyagListener;
+use Listeners\UnasOutboxListener;
 use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
@@ -125,6 +126,8 @@ $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
+// A BizonylatfejListener UTÁN: a státusznaplózás és a költségsorok után nézzük a changesetet.
+$evm->addEventListener(['onFlush'], new UnasOutboxListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

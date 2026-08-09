@@ -1706,6 +1706,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('tulajalanyiafamentes', \mkw\store::isTulajAlanyiAfamentes());
             $magyarorszag = \mkw\store::getMagyarorszag();
             $view->setVar('magyarorszagid', is_object($magyarorszag) ? $magyarorszag->getId() : '');
+            // Az UNAS import beazonosíthatatlan cikkszámai erre a termékre kerülnek – a
+            // bizonylathelper.js ezekre a tételekre hibajelölést tesz, hogy a kezelő javítsa.
+            // Kapcsoló nélkül üres, ilyenkor a jelölés soha nem aktiválódik.
+            $view->setVar('unasdefaulttermek', \mkw\store::isUnas()
+                ? \mkw\store::getParameter(\mkw\consts::UnasDefaultTermek, '')
+                : '');
 
             if (method_exists($this, 'onGetKarb')) {
                 $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);

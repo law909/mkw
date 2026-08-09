@@ -310,7 +310,9 @@ $(document).ready(function () {
             // a MOST beírt kulcsot küldjük: az UNAS 5 sikertelen logint enged óránként
             $('.js-unasteszt').on('click', function (e) {
                 var $this = $(this),
-                    $valasz = $('#unastesztvalasz').removeClass('ui-state-error-text').text('...');
+                    // redtext, nem ui-state-error-text: az utóbbi a hot-sneaks UI témában fehér,
+                    // ez a válasz pedig sima háttéren áll
+                    $valasz = $('#unastesztvalasz').removeClass('redtext').text('...');
                 e.preventDefault();
                 $.ajax({
                     url: $this.data('href'),
@@ -323,20 +325,20 @@ $(document).ready(function () {
                 })
                     .done(function (data) {
                         if (!data.ok) {
-                            $valasz.addClass('ui-state-error-text').text(data.hiba);
+                            $valasz.addClass('redtext').text(data.hiba);
                             return;
                         }
                         var szoveg = 'ShopId: ' + data.shopid + ', csomag: ' + data.subscription
                             + ', jogosultságok: ' + (data.permissions || []).join(', ');
                         if (data.hianyzo && data.hianyzo.length) {
-                            $valasz.addClass('ui-state-error-text')
+                            $valasz.addClass('redtext')
                                 .text(szoveg + ' — HIÁNYZIK: ' + data.hianyzo.join(', '));
                         } else {
                             $valasz.text(szoveg);
                         }
                     })
                     .fail(function () {
-                        $valasz.addClass('ui-state-error-text').text('A teszt nem futott le.');
+                        $valasz.addClass('redtext').text('A teszt nem futott le.');
                     });
             }).button();
             mkwcomp.datumEdit.init('#mptngydatum1edit');

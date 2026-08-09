@@ -48,6 +48,14 @@ class UnasAPI
         'default' => 2000,
     ];
 
+    /**
+     * A `set*` végpontok gyökéreleme nem `Params`, hanem a saját listájuk. Csak az itt felsoroltak
+     * ellenőrzöttek – új `set*` burkoló hozzáadásakor ezt is ki kell egészíteni.
+     */
+    private const ROOTELEMENT = [
+        'setOrder' => 'Orders',
+    ];
+
     private $apiurl;
     private $apikey;
     private $token;
@@ -55,6 +63,7 @@ class UnasAPI
     private $lasterrors = [];
     private $logininfo = [];
     private $dumpseq = 0;
+    private $lastdumpfile;
 
     public function __construct($param)
     {
@@ -80,6 +89,15 @@ class UnasAPI
     public function getApiurl()
     {
         return $this->apiurl;
+    }
+
+    /**
+     * A legutóbbi hívás nyers válaszának dump fájlneve a `storage/logs` alatt, vagy null.
+     * A hívónak ritkán kell – az „csak letöltés" menetnek viszont ezt kell megmutatnia.
+     */
+    public function getLastDumpFile()
+    {
+        return $this->lastdumpfile;
     }
 
     public function isConfigured()
@@ -248,6 +266,7 @@ class UnasAPI
     protected function callAPI($endpoint, array $params, $retry = true)
     {
         $this->lasterrors = [];
+        $this->lastdumpfile = null;
         if (!$this->isConfigured()) {
             $this->addError('NOTCONFIGURED', 'Nincs beállítva az UNAS API URL vagy API kulcs.');
             return false;
@@ -266,7 +285,7 @@ class UnasAPI
             return false;
         }
 
-        $req = $this->buildXml($params);
+        $req = $this->buildXml($params, self::ROOTELEMENT[$endpoint] ?? 'Params');
         $this->rateInc($endpoint);
         $response = $this->httpPost('/' . $endpoint, $req, $token);
 
@@ -431,7 +450,7 @@ class UnasAPI
     protected function parseResponse($endpoint, $body, $httpcode, $dumpable = true)
     {
         if ($dumpable) {
-            $this->dump($endpoint, 'xml', (string)$body);
+            $this->lastdumpfile = $this->dump($endpoint, 'xml', (string)$body);
         }
 
         \mkw\store::writelog(

@@ -330,6 +330,22 @@ let bizonylathelper = function ($) {
         return ($('#VatstatusEdit').val() * 1) === 1 || isMagyarCimuBizonylat();
     }
 
+    // Az UNAS import beazonosíthatatlan cikkszámai az alapértelmezett termékre kerülnek: azokat a
+    // tételeket megjelöljük, hogy a kezelő a valódi termékre javítsa. A jelölés a pillanatnyi
+    // termékválasztást követi, tehát javítás után magától eltűnik.
+    // Nem a tetelszamhiba class-t használjuk: azt a checkTetelOsszegek() minden futáskor letörli.
+    function jelolUnasDefaultTetelek() {
+        let defaultTermek = String($('#mattkarb-form').data('unasdefaulttermek') || '');
+        if (defaultTermek === '' || defaultTermek === '0') {
+            return;
+        }
+        $('.js-termekid').each(function () {
+            let $this = $(this);
+            $this.closest('[id^="teteltable_"]')
+                .toggleClass('unasdefaulttetel', String($this.val() || '') === defaultTermek);
+        });
+    }
+
     function checkTetelOsszegek() {
         let mindenOk = true,
             afaEgyezik = true,
@@ -714,6 +730,7 @@ let bizonylathelper = function ($) {
                     if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
                         $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
                     }
+                    jelolUnasDefaultTetelek();
                 }
             }
         };
@@ -1262,6 +1279,9 @@ let bizonylathelper = function ($) {
                             });
                         }
                     })
+                    .on('change', '.js-termekid', function () {
+                        jelolUnasDefaultTetelek();
+                    })
                     .on('change', '.js-vtszselect', function (e) {
                         e.preventDefault();
                         let $this = $(this);
@@ -1409,6 +1429,7 @@ let bizonylathelper = function ($) {
                                     $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
                                     $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
                                     loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
+                                    jelolUnasDefaultTetelek();
                                 }
                             }
                         });
@@ -1416,6 +1437,7 @@ let bizonylathelper = function ($) {
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocompleteRenderer(termekAutocompleteRenderer);
+                jelolUnasDefaultTetelek();
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email').button();
 

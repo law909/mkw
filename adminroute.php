@@ -801,6 +801,18 @@ if (\mkw\store::isUnas()) {
     if (!\mkw\store::isClosed()) {
         $router->map('POST', '/admin/unaskepcleanup/futtat', 'unaskepcleanupController#run', 'adminunaskepcleanupfuttat');
     }
+
+    $router->map('GET', '/admin/unasrendeles/view', 'unasrendelesController#view', 'adminunasrendelesview');
+    $router->map('GET', '/admin/unasrendeles/outbox', 'unasrendelesController#outbox', 'adminunasrendelesoutbox');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/unasrendeles/lekepezes', 'unasrendelesController#loadMaps', 'adminunasrendeleslekepezes');
+        $router->map('POST', '/admin/unasrendeles/lekepezesmentes', 'unasrendelesController#saveMaps', 'adminunasrendeleslekepezesmentes');
+        $router->map('POST', '/admin/unasrendeles/import', 'unasrendelesController#importOrder', 'adminunasrendelesimport');
+        $router->map('POST', '/admin/unasrendeles/poll', 'unasrendelesController#poll', 'adminunasrendelespoll');
+        $router->map('POST', '/admin/unasrendeles/kurzor', 'unasrendelesController#saveCursor', 'adminunasrendeleskurzor');
+        $router->map('POST', '/admin/unasrendeles/outboxfuttat', 'unasrendelesController#drainOutbox', 'adminunasrendelesoutboxfuttat');
+        $router->map('POST', '/admin/unasrendeles/outboxujra', 'unasrendelesController#retryOutbox', 'adminunasrendelesoutboxujra');
+    }
 }
 
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
