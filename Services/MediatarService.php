@@ -225,6 +225,26 @@ class MediatarService
     }
 
     /**
+     * Egy kép-URL összes alakja, amiben az adatbázisban előfordulhat: a médiatár nyersen
+     * írja ki, a CKFinder 2.3 szegmensenként rawurlencode-olva tette, és a vezető perjel
+     * is hol van, hol nincs.
+     *
+     * @return array
+     */
+    public static function urlVariants($url)
+    {
+        $decoded = rawurldecode((string)$url);
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $decoded)));
+
+        $out = [];
+        foreach ([(string)$url, $decoded, $encoded] as $form) {
+            $out[] = '/' . ltrim($form, '/');
+            $out[] = ltrim($form, '/');
+        }
+        return array_values(array_unique($out));
+    }
+
+    /**
      * Az erőforrás-típusok feloldott táblája: a {@see DEFAULTTYPES} alapértelmezés fölé
      * húzva a `config.ini` beállításai.
      *
@@ -456,10 +476,49 @@ class MediatarService
     {
         $raw = (string)$raw;
 
+        $candidates = [$raw];
+        // A CKFinder 2.3 rawurlencode-olt URL-t adott vissza, tehát a régi adatokban
+        // '/2023%20csizm%C3%A1k/kep.jpg' áll, a fájlrendszeren viszont '2023 csizmák'.
+        // Nyersen próbáljuk előbb: egy fájlnévben a '%' is lehet valódi karakter.
+        if (preg_match('/%[0-9A-Fa-f]{2}/', $raw)) {
+            $candidates[] = rawurldecode($raw);
+        }
+
+        $partial = null;
+        foreach ($candidates as $candidate) {
+            $exact = false;
+            $res = $this->matchStartPath($candidate, $exact);
+            if ($res === null) {
+                continue;
+            }
+            if ($exact) {
+                return $res;
+            }
+            if ($partial === null) {
+                $partial = $res;
+            }
+        }
+
+        return $partial === null ? ['/', ''] : $partial;
+    }
+
+    /**
+     * A {@see resolveStartPath()} egy jelöltre. `null`, ha semmi nem oldható fel;
+     * a $exact akkor igaz, ha létező mappára vagy létező fájlra sikerült illeszteni –
+     * csak a nem egzakt (fájl nincs meg, de a mappa létezik) találatot érdemes egy
+     * másik jelölttel felülírni.
+     *
+     * @return array|null [mappa, kijelölendő fájlnév]
+     */
+    private function matchStartPath($raw, &$exact)
+    {
+        $exact = false;
+
         // 1) Mappaként értelmezve – ez a gyakori eset.
         try {
             $path = $this->normalizePath($raw);
             $this->absFolder($path);
+            $exact = true;
             return [$path, ''];
         } catch (\Exception $e) {
             // nem mappa; lehet, hogy a hívó a teljes fájl-útvonalat adta át
@@ -475,11 +534,12 @@ class MediatarService
         // ITT kell megszűrni, ne csak az absFile()-ban. Enélkül egy '\0', backslash
         // vagy dotfile-név átcsorogna a sablon data-sel attribútumába.
         if ($file === '' || $file[0] === '.' || preg_match('#[\x00-\x1f\x7f/\\\\]#', $file)) {
-            return ['/', ''];
+            return null;
         }
 
         try {
             $this->absFile($folder, $file);
+            $exact = true;
             return [$this->normalizePath($folder), $file];
         } catch (\Exception $e) {
             // a fájl nincs meg – a mappa attól még létezhet
@@ -492,7 +552,29 @@ class MediatarService
             // sem mappa, sem fájl
         }
 
-        return ['/', ''];
+        return null;
+    }
+
+    /**
+     * A kijelölendő fájl neve a mappában. A shim a tárolt URL-t maga vágja mappára és
+     * fájlnévre, tehát a CKFinder-kori adatokban a NÉV is kódolva érkezik.
+     * Ha semmi nem illeszkedik, a kapott nevet adja vissza – a kijelölés marad el, nem a nyitás.
+     */
+    public function resolveSelName($path, $name)
+    {
+        $name = (string)$name;
+        if ($name === '') {
+            return '';
+        }
+        foreach ([$name, rawurldecode($name)] as $candidate) {
+            try {
+                $this->absFile($path, $candidate);
+                return $candidate;
+            } catch (\Exception $e) {
+                // nem ez a név
+            }
+        }
+        return $name;
     }
 
     /**

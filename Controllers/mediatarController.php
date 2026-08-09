@@ -35,6 +35,7 @@ class mediatarController extends \mkwhelpers\Controller
             if ($sel === '' && $derived !== '') {
                 $sel = $derived;
             }
+            $sel = $mediatar->resolveSelName($path, $sel);
         } catch (\Exception $e) {
             // Ismeretlen típus vagy hiányzó/rosszul konfigurált képgyökér.
             header('Content-Type: text/plain; charset=utf-8');
@@ -115,8 +116,7 @@ class mediatarController extends \mkwhelpers\Controller
             $this->json(['count' => 0, 'where' => []]);
             return;
         }
-        // A tárolt értékek hol vezető perjellel, hol anélkül szerepelnek.
-        $variants = array_unique([$url, ltrim($url, '/')]);
+        $variants = \Services\MediatarService::urlVariants($url);
 
         $sources = [
             [\Entities\TermekKep::class, 'url', t('Termékkép')],
