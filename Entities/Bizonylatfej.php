@@ -185,9 +185,9 @@ class Bizonylatfej
     private $erbizonylatszam;
 
     /**
-     * A rendelés UNAS-beli azonosítója – MINDIG az UNAS oldali kulcs, a rendelés eredetétől
-     * függetlenül (a getOrder `InternalKey`-e, ha van, egyébként a `Key`-e). Ez az import
-     * idempotencia-kulcsa, egyedi indexen.
+     * A getOrder `Key`-e: a rendelés azonosítója az UNAS API felé. Soha nem üres, és a
+     * getOrder / setOrder KIZÁRÓLAG ezt fogadja el szűrőként ({@see getUnasApikey()}).
+     * Egyben az import idempotencia-kulcsa, egyedi indexen.
      * Nem az `erbizonylatszam`: az általános célú és az admin felületen szabadon átírható.
      *
      * @ORM\Column(type="string",length=50,nullable=true)
@@ -195,14 +195,13 @@ class Bizonylatfej
     private $unaskey;
 
     /**
-     * Third-party rendelésnél (Árukereső, eMAG, Unas API) a piactér saját azonosítója – a getOrder
-     * `Key`-e. Normál rendelésnél üres, mert ott a `Key` maga az UNAS azonosító.
-     * A getOrder / setOrder KIZÁRÓLAG a `Key`-t fogadja el szűrőként, ezért a hívásokhoz nem az
-     * `unaskey`, hanem a {@see getUnasApikey()} kell.
+     * A getOrder `InternalKey`-e: csak akkor jön, ha a rendelést eredetileg külső rendszerben
+     * (eMAG, Árukereső) adták le – ilyenkor ez az UNAS rendszerbeli azonosító, a `Key` pedig a
+     * külső rendszeré. Normál rendelésnél üres. Tájékoztató mező, szűrőként nem használható.
      *
      * @ORM\Column(type="string",length=50,nullable=true)
      */
-    private $unaskulsokey;
+    private $unasinternalkey;
 
     /** @ORM\Column(type="text",nullable=true) */
     private $fuvarlevelszam;
@@ -4043,23 +4042,20 @@ class Bizonylatfej
         $this->unaskey = $val;
     }
 
-    public function getUnaskulsokey()
+    public function getUnasinternalkey()
     {
-        return $this->unaskulsokey;
+        return $this->unasinternalkey;
     }
 
-    public function setUnaskulsokey($val)
+    public function setUnasinternalkey($val)
     {
-        $this->unaskulsokey = $val;
+        $this->unasinternalkey = $val;
     }
 
-    /**
-     * Az az azonosító, amivel az UNAS API megszólítja a rendelést (a `Key` szűrő). Third-party
-     * rendelésnél a piactér azonosítója, egyébként maga az UNAS azonosító.
-     */
+    /** Az azonosító, amivel az UNAS API megszólítja a rendelést – mindig a `Key`. */
     public function getUnasApikey()
     {
-        return trim((string)$this->unaskulsokey) !== '' ? $this->unaskulsokey : $this->unaskey;
+        return $this->unaskey;
     }
 
     public function getMegjegyzes()
@@ -4700,7 +4696,7 @@ class Bizonylatfej
         // Az UNAS rendelés azonosítója nem másolható: egyedi indexen van, és egy rendeléshez
         // egyetlen bizonylat tartozhat – különben a szétbontás/összefűzés flush-e elhasalna,
         // és a visszaírás sem tudná, melyik bizonylat a rendelés párja.
-        $kivetel = ['setParbizonylatfej', 'setUnaskey', 'setUnaskulsokey'];
+        $kivetel = ['setParbizonylatfej', 'setUnaskey', 'setUnasinternalkey'];
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {

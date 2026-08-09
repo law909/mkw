@@ -67,10 +67,10 @@ class Unasoutbox extends \Entities\Unasoutbox implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'id', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'created', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskulsokey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'tipus', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'allapot', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'probalkozas', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'utolsohiba', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'feldolgozva'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'id', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'created', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unasinternalkey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'tipus', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'allapot', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'probalkozas', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'utolsohiba', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'feldolgozva'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'id', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'created', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskulsokey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'tipus', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'allapot', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'probalkozas', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'utolsohiba', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'feldolgozva'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'id', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'created', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unaskey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'unasinternalkey', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'tipus', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'allapot', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'probalkozas', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'utolsohiba', '' . "\0" . 'Entities\\Unasoutbox' . "\0" . 'feldolgozva'];
     }
 
     /**
@@ -294,23 +294,23 @@ class Unasoutbox extends \Entities\Unasoutbox implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function getUnaskulsokey()
+    public function getUnasinternalkey()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUnaskulsokey', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUnasinternalkey', []);
 
-        return parent::getUnaskulsokey();
+        return parent::getUnasinternalkey();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setUnaskulsokey($val)
+    public function setUnasinternalkey($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUnaskulsokey', [$val]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUnasinternalkey', [$val]);
 
-        return parent::setUnaskulsokey($val);
+        return parent::setUnasinternalkey($val);
     }
 
     /**

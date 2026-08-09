@@ -132,11 +132,9 @@ class UnasGetOrderService
                 $results[] = $this->result('hiba', '', null, t('A rendelésben nincs azonosító (Key).'));
                 continue;
             }
-            // Az azonosítókat NEM csonkítjuk: az `unaskey` az idempotencia-kulcs, két különböző
-            // rendelés csonkolva ütközhetne egymással. A külső azonosítóval a getOrder / setOrder
-            // szólítja meg a rendelést, tehát az sem csonkítható.
-            $tulHosszu = mb_strlen($this->unasAzonosito($order)) > self::KEYMAXLENGTH
-                || mb_strlen($order['key']) > self::KEYMAXLENGTH;
+            // A `Key`-t NEM csonkítjuk: ez az idempotencia-kulcs ÉS ezzel szólítja meg a
+            // getOrder / setOrder a rendelést – csonkolva két rendelés ütközhetne.
+            $tulHosszu = mb_strlen($order['key']) > self::KEYMAXLENGTH;
             if ($tulHosszu) {
                 $results[] = $this->result(
                     'hiba',
@@ -305,15 +303,14 @@ class UnasGetOrderService
      */
     private function processOrder(array $order)
     {
-        $azonosito = $this->unasAzonosito($order);
         $conn = \mkw\store::getEm()->getConnection();
-        $lock = 'unas_order_' . $azonosito;
+        $lock = 'unas_order_' . $order['key'];
         if ((int)$conn->fetchOne('SELECT GET_LOCK(?, ?)', [$lock, self::LOCKWAIT]) !== 1) {
-            return $this->result('kihagyva', $this->unasAzonosito($order), null, t('A rendelés éppen feldolgozás alatt van.'));
+            return $this->result('kihagyva', $order['key'], null, t('A rendelés éppen feldolgozás alatt van.'));
         }
         try {
             $fej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)
-                ->findOneBy(['unaskey' => $azonosito]);
+                ->findOneBy(['unaskey' => $order['key']]);
             if ($fej) {
                 return $this->refreshOrder($fej, $order);
             }
@@ -387,10 +384,9 @@ class UnasGetOrderService
             $fej->setBankszamla($valutanem->getBankszamla());
 
             $fej->setBizonylatstatusz($bizonylatstatusz);
-            $fej->setUnaskey($this->unasAzonosito($order));
-            $fej->setUnaskulsokey($this->unasKulsoAzonosito($order));
-            // a felhasználó az UNAS-beli azonosítót keresi, nem a piactér hash-ét
-            $fej->setErbizonylatszam(mb_substr($this->unasAzonosito($order), 0, 30));
+            $fej->setUnaskey($order['key']);
+            $fej->setUnasinternalkey(mb_substr($order['internalkey'], 0, self::KEYMAXLENGTH));
+            $fej->setErbizonylatszam(mb_substr($order['key'], 0, 30));
             // ugyanaz a mező, amit a webshop saját checkoutja is tölt
             $fej->setReferrer($order['referer']);
             $fej->setWebshopmessage($order['comments']['customer']);
@@ -427,7 +423,7 @@ class UnasGetOrderService
 
         $this->logWarnings($order, $fej);
         $this->checkTotal($fej, $order);
-        return $this->result('uj', $this->unasAzonosito($order), $fej, '');
+        return $this->result('uj', $order['key'], $fej, '');
     }
 
     /**
@@ -458,16 +454,15 @@ class UnasGetOrderService
         if ($this->fillCsomagadat($fej, $order)) {
             $valtozott = true;
         }
-        $kulso = $this->unasKulsoAzonosito($order);
-        if ($kulso !== null && !$fej->getUnaskulsokey()) {
-            $fej->setUnaskulsokey($kulso);
+        if ($order['internalkey'] !== '' && !$fej->getUnasinternalkey()) {
+            $fej->setUnasinternalkey(mb_substr($order['internalkey'], 0, self::KEYMAXLENGTH));
             $valtozott = true;
         }
 
         if (!$valtozott) {
             // az átfedéses kurzor miatt ugyanaz a rendelés többször is sorra kerül – változás
             // nélkül nem naplózunk, különben a hibapostafiók megtelne ismétlődő sorokkal
-            return $this->result('letezo', $this->unasAzonosito($order), $fej, '');
+            return $this->result('letezo', $order['key'], $fej, '');
         }
         // a nem perzisztált jelzőket csak a mentés előtt tesszük rá, hogy egy változás nélküli
         // körben ne maradjon `simpleedit` a memóriában lévő bizonylaton
@@ -478,7 +473,7 @@ class UnasGetOrderService
         $em->flush();
         $this->logWarnings($order, $fej);
         $this->checkTotal($fej, $order);
-        return $this->result('frissitve', $this->unasAzonosito($order), $fej, '');
+        return $this->result('frissitve', $order['key'], $fej, '');
     }
 
     /**
@@ -556,7 +551,7 @@ class UnasGetOrderService
 
         $this->logWarnings($order, $fej);
         $this->checkTotal($fej, $order);
-        return $this->result('ujraepitve', $this->unasAzonosito($order), $fej, '');
+        return $this->result('ujraepitve', $order['key'], $fej, '');
     }
 
     // ------------------------------------------------------------------
@@ -645,10 +640,10 @@ class UnasGetOrderService
      */
     private function buildBelsomegjegyzes(array $order, array $items)
     {
-        $lines = ['UNAS azonosító: ' . $this->unasAzonosito($order)];
-        $kulso = $this->unasKulsoAzonosito($order);
-        if ($kulso !== null) {
-            $lines[] = 'Külső (piactéri) azonosító: ' . $kulso;
+        $lines = ['UNAS Key: ' . $order['key']];
+        if ($order['internalkey'] !== '') {
+            // külső rendszerből (eMAG, Árukereső) érkezett: a Key a piactéré, ez az UNAS-beli
+            $lines[] = 'UNAS InternalKey: ' . $order['internalkey'];
         }
         if ($order['id'] !== '') {
             $lines[] = 'UNAS Id: ' . $order['id'];
@@ -1218,28 +1213,6 @@ class UnasGetOrderService
             return '';
         }
         return trim((string)$node->{$field});
-    }
-
-    /**
-     * A rendelés UNAS-beli azonosítója. Third-party rendelésnél (Árukereső, eMAG, Unas API) a
-     * `Key` a PIACTÉR azonosítója és az `InternalKey` az UNAS-beli – normál rendelésnél viszont
-     * a `Key` maga az UNAS azonosító. Így az `unaskey` mindig ugyanazt jelenti.
-     */
-    private function unasAzonosito(array $order)
-    {
-        return trim((string)$order['internalkey']) !== '' ? $order['internalkey'] : $order['key'];
-    }
-
-    /**
-     * A piactér azonosítója, ha van – vagyis a `Key`, amikor az nem az UNAS-beli kulcs. A getOrder
-     * és a setOrder KIZÁRÓLAG a `Key`-t fogadja el szűrőként, ezért ezt is el kell tárolni.
-     *
-     * @return string|null null, ha a `Key` maga az UNAS azonosító
-     */
-    private function unasKulsoAzonosito(array $order)
-    {
-        $kulso = trim((string)$order['key']);
-        return ($kulso !== '' && $kulso !== $this->unasAzonosito($order)) ? $kulso : null;
     }
 
     private function orderDate(array $order)

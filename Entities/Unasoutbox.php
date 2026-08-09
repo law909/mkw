@@ -48,15 +48,15 @@ class Unasoutbox
      */
     private $bizonylatfej;
 
-    /** A rendelés UNAS-beli azonosítója. Denormalizált, hogy a bizonylat törlése után is elmenjen
-     * a visszaírás – ugyanaz a jelentés, mint a `Bizonylatfej.unaskey`-nek.
+    /** A rendelés UNAS API azonosítója (`Key`). Denormalizált, hogy a bizonylat törlése után is
+     * elmenjen a visszaírás – ugyanaz a jelentés, mint a `Bizonylatfej.unaskey`-nek.
      * @ORM\Column(type="string",length=50,nullable=false) */
     private $unaskey;
 
-    /** Third-party rendelésnél a piactér azonosítója, egyébként üres – lásd
-     * `Bizonylatfej.unaskulsokey`. A setOrder ezzel szólítja meg a rendelést, ha ki van töltve.
+    /** Az UNAS `InternalKey`-e, ha külső rendszerből (eMAG, Árukereső) érkezett a rendelés –
+     * lásd `Bizonylatfej.unasinternalkey`. Csak tájékoztatás, a setOrder a `unaskey`-t használja.
      * @ORM\Column(type="string",length=50,nullable=true) */
-    private $unaskulsokey;
+    private $unasinternalkey;
 
     /** @ORM\Column(type="string",length=20,nullable=false) */
     private $tipus = self::TIPUSSTATUSZ;
@@ -80,7 +80,7 @@ class Unasoutbox
             'created' => $this->getCreatedStr(),
             'bizonylatfej' => $this->getBizonylatfejId(),
             'unaskey' => $this->getUnaskey(),
-            'unaskulsokey' => $this->getUnaskulsokey(),
+            'unasinternalkey' => $this->getUnasinternalkey(),
             'tipus' => $this->getTipus(),
             'allapot' => $this->getAllapot(),
             'probalkozas' => $this->getProbalkozas(),
@@ -144,20 +144,20 @@ class Unasoutbox
         $this->unaskey = $val;
     }
 
-    public function getUnaskulsokey()
+    public function getUnasinternalkey()
     {
-        return $this->unaskulsokey;
+        return $this->unasinternalkey;
     }
 
-    public function setUnaskulsokey($val)
+    public function setUnasinternalkey($val)
     {
-        $this->unaskulsokey = $val;
+        $this->unasinternalkey = $val;
     }
 
-    /** Az azonosító, amivel a setOrder megszólítja a rendelést (a `Key` szűrő). */
+    /** Az azonosító, amivel a setOrder megszólítja a rendelést – mindig a `Key`. */
     public function getUnasApikey()
     {
-        return trim((string)$this->unaskulsokey) !== '' ? $this->unaskulsokey : $this->unaskey;
+        return $this->unaskey;
     }
 
     public function getTipus()

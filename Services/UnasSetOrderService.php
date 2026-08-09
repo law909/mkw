@@ -52,7 +52,7 @@ class UnasSetOrderService
         $sor->setCreated(new \DateTime());
         $sor->setBizonylatfej($fej);
         $sor->setUnaskey($fej->getUnaskey());
-        $sor->setUnaskulsokey($fej->getUnaskulsokey());
+        $sor->setUnasinternalkey($fej->getUnasinternalkey());
         $sor->setTipus($tipus);
         $sor->setAllapot(Unasoutbox::ALLAPOTFUGGO);
         return $sor;
@@ -208,7 +208,6 @@ class UnasSetOrderService
 
         $payload = [
             'Action' => 'modify',
-            // a setOrder csak a `Key`-t fogadja el, ami third-party rendelésnél a piactér azonosítója
             'Key' => $sor->getUnasApikey(),
         ];
         switch ($sor->getTipus()) {

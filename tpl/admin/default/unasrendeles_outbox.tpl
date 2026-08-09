@@ -10,7 +10,7 @@
         <tr>
             <th>{at('Létrejött')}</th>
             <th>{at('UNAS azonosító')}</th>
-            <th>{at('Külső azonosító')}</th>
+            <th>{at('UNAS InternalKey')}</th>
             <th>{at('Bizonylat')}</th>
             <th>{at('Típus')}</th>
             <th>{at('Állapot')}</th>
@@ -24,7 +24,7 @@
             <tr>
                 <td>{$_sor.created}</td>
                 <td>{$_sor.unaskey}</td>
-                <td>{$_sor.unaskulsokey}</td>
+                <td>{$_sor.unasinternalkey}</td>
                 <td>{$_sor.bizonylat}</td>
                 <td>{$_sor.tipus}</td>
                 <td class="{if ($_sor.allapot == 'hiba')}redtext{/if}">{$_sor.allapot}</td>
