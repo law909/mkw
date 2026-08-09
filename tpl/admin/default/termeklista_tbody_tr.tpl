@@ -76,6 +76,15 @@
                                 <td>{number_format($_termek.brutto,2,'.',' ')}</td>
                             </tr>
                         {/if}
+                        <tr>
+                            <td>{at('Létrehozva')}:</td>
+                            <td>{$_termek.createdstr}</td>
+                        </tr>
+                        <tr>
+                            <td>{at('Módosítva')}:</td>
+                            <td>{$_termek.lastmodstr}</td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </td>

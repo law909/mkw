@@ -100,6 +100,9 @@ class termekController extends \mkwhelpers\MattableController
         $x['kepurl400'] = $t->getKepurl400();
         $x['kepurl2000'] = $t->getKepurl2000();
 
+        $x['lastmodstr'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
+
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
@@ -686,11 +689,11 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                         $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
                         $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
-                    // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
-                    // ne nullázzuk a meglévő párosítást
-                    if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
-                        $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
-                    }
+                        // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
+                        // ne nullázzuk a meglévő párosítást
+                        if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
+                            $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
+                        }
                         $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
                         if (\mkw\store::isFixSzinMode()) {

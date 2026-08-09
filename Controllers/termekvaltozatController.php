@@ -67,6 +67,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 $x['meretlista'] = $meretc->getSelectList($t->getMeretId());
             }
         }
+        $x['lastmodstr'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
+
         return $x;
     }
 

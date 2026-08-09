@@ -169,6 +169,14 @@
             <input id="ValtozatKepId_{$valtozat.id}" name="valtozatkepid_{$valtozat.id}" type="hidden" value="{$valtozat.kepid}">
         </td>
     </tr>
+    <tr>
+        <td>{at('Létrehozva')}:</td>
+        <td>{$valtozat.createdstr}</td>
+    </tr>
+    <tr>
+        <td>{at('Módosítva')}:</td>
+        <td>{$valtozat.lastmodstr}</td>
+    </tr>
     </tbody>
 </table>
 {if ($valtozat.oper=='add')}

@@ -2351,6 +2351,23 @@ class Termek
         return $this->created;
     }
 
+    public function getLastmodStr()
+    {
+        if ($this->getLastmod()) {
+            return $this->getLastmod()->format(store::$DateTimeFormat);
+        }
+        return '';
+    }
+
+    public function getCreatedStr()
+    {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(store::$DateTimeFormat);
+        }
+        return '';
+    }
+
+
     public function getValtozatadattipus()
     {
         return $this->valtozatadattipus;

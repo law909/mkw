@@ -2076,6 +2076,28 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getLastmodStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmodStr', []);
+
+        return parent::getLastmodStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getValtozatadattipus()
     {
 
