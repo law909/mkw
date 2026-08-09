@@ -107,6 +107,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
 
         $termekdb = 0;
         $valtozatdb = 0;
+        $existingCount = 0;
 
         // A sorokat a közös cikkszám (C oszlop) szerint csoportosítjuk: ugyanaz a közös
         // cikkszám ugyanahhoz a termékhez tartozik akkor is, ha a sorok NEM összefüggőek.
@@ -195,6 +196,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
             $res = $this->galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus);
             $termekdb += $res['termek'];
             $valtozatdb += $res['valtozat'];
+            $existingCount += $res['existing'];
             if (++$koteg % 200 === 0) {
                 $em->flush();
                 $em->clear();
@@ -211,7 +213,8 @@ class galadCGMImportController extends \mkwhelpers\Controller
         }
         $em->flush();
 
-        echo 'Kész. ' . $termekdb . ' termék, ' . $valtozatdb . ' változat importálva.'
+        echo 'Kész. ' . $termekdb . ' új termék, ' . $valtozatdb . ' új változat létrehozva.'
+            . ($existingCount ? ' ' . $existingCount . ' termék már létezett, változatlan maradt.' : '')
             . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor azonosító (vonalkód/cikkszám) hiányában kimaradt.' : '');
     }
 
@@ -221,12 +224,12 @@ class galadCGMImportController extends \mkwhelpers\Controller
     private function galadImportGroup($group, $afa, $vtsz, $gyarto, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus)
     {
         if (!$group) {
-            return ['termek' => 0, 'valtozat' => 0];
+            return ['termek' => 0, 'valtozat' => 0, 'existing' => 0];
         }
         $first = $group[0];
         $cikkszam = $first['cikkszam'];
         if ($cikkszam === '') {
-            return ['termek' => 0, 'valtozat' => 0];
+            return ['termek' => 0, 'valtozat' => 0, 'existing' => 0];
         }
 
         // változatos termék-e (A oszlop == 1); sima terméknél a vonalkód a termékre kerül
@@ -238,11 +241,13 @@ class galadCGMImportController extends \mkwhelpers\Controller
         $termek = isset($this->galadLetezoTermekKulcs[$cikkszam])
             ? $termekrepo->findOneBy(['cikkszam' => $cikkszam])
             : null;
+        $newTermek = false;
         if (!$termek) {
             // vonalkóddal felvitt terméket csak akkor, ha még nincs ilyen vonalkódú termék
             if ($termekVonalkod !== '' && isset($this->galadLetezoTermekVonalkod[$termekVonalkod])) {
-                return ['termek' => 0, 'valtozat' => 0];
+                return ['termek' => 0, 'valtozat' => 0, 'existing' => 1];
             }
+            $newTermek = true;
             $this->galadLetezoTermekKulcs[$cikkszam] = true;
             $termek = new \Entities\Termek();
             $termek->setCikkszam($cikkszam);
@@ -297,7 +302,11 @@ class galadCGMImportController extends \mkwhelpers\Controller
         }
         \mkw\store::getEm()->persist($termek);
 
-        return ['termek' => 1, 'valtozat' => $valtozatdb];
+        return [
+            'termek' => $newTermek ? 1 : 0,
+            'valtozat' => $valtozatdb,
+            'existing' => $newTermek ? 0 : 1,
+        ];
     }
 
     /**
@@ -353,6 +362,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
         }
 
         $tvr = \mkw\store::getEm()->getRepository(TermekValtozat::class);
+        $newValtozat = false;
         // ha van vonalkód: csak akkor importáljuk a változatot, ha még nincs ilyen vonalkódú változat
         if ($sor['vonalkod'] !== '') {
             if (isset($this->galadLetezoValtozatVonalkod[$sor['vonalkod']])) {
@@ -360,6 +370,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
             }
             $valtozat = new \Entities\TermekValtozat();
             $termek->addValtozat($valtozat);
+            $newValtozat = true;
             $this->galadLetezoValtozatVonalkod[$sor['vonalkod']] = true;
         } else {
             // nincs vonalkód: cikkszám alapú azonosítás
@@ -372,6 +383,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
             if (!$valtozat) {
                 $valtozat = new \Entities\TermekValtozat();
                 $termek->addValtozat($valtozat);
+                $newValtozat = true;
             }
             $this->handledValtozatCikkszam[$vcikkszam] = true;
         }
@@ -400,7 +412,7 @@ class galadCGMImportController extends \mkwhelpers\Controller
         $valtozat->setLathato(true);
         $valtozat->setElerheto(true);
         \mkw\store::getEm()->persist($valtozat);
-        return true;
+        return $newValtozat;
     }
 
     private function getOrCreateMe($nev)
