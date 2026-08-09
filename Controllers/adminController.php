@@ -305,7 +305,7 @@ class adminController extends mkwhelpers\Controller
 
     public function printNoallapot()
     {
-        $view = $this->createView('comp_noallapot.tpl');
+        $view = $this->createView('comp_noallapotbody.tpl');
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
         $no->hello();
         $view->setVar('noerrors', $no->getErrors());
