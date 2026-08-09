@@ -55,6 +55,12 @@ class SmartyView extends View
         $this->tplengine->registerPlugin('modifier', 'prefixUrl', '\prefixUrl');
         $this->tplengine->registerPlugin('modifier', 'trim', '\trim');
 
+        // sablonban használt PHP függvények: regisztráció nélkül a Smarty 4 deprecated-et naplóz.
+        // Szándékosan \ nélkül: így a fordított kód közvetlen hívás lesz, nem call_user_func_array.
+        foreach (['min', 'floor', 'intdiv', 'implode', 'array_key_exists', 'htmlentities', 'strpos', 'date'] as $f) {
+            $this->tplengine->registerPlugin('modifier', $f, $f);
+        }
+
         $this->tplengine->registerPlugin('function', 't', function (array $params) {
             return \t($params['msgid'] ?? $params['text'] ?? $params['value'] ?? '');
         });
