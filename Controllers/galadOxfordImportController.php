@@ -37,6 +37,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
     private $galadLetezoValtozatVonalkod = [];
     private $galadLetezoTermekVonalkod = [];
     private $galadLetezoTermekKulcs = [];
+    private $galadLetezoTermekCikkszam = [];
 
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
@@ -165,11 +166,16 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         }
 
         // a soronkénti findOneBy-ok kiváltása: egyszerre betöltjük a fájlban előforduló,
-        // már létező vonalkódokat és termékkódokat (idegenkod) memóriába
+        // már létező vonalkódokat, termékkódokat (idegenkod) és cikkszámokat memóriába
         $mindenVonalkod = [];
         $mindenTermekKulcs = [];
+        $mindenTermekCikkszam = [];
         foreach ($groups as $group) {
-            $mindenTermekKulcs[] = $group[0]['termekkod'];
+            if ($group[0]['termekkod'] !== '') {
+                $mindenTermekKulcs[] = $group[0]['termekkod'];
+            } else {
+                $mindenTermekCikkszam[] = $group[0]['tcikkszam'];
+            }
             foreach ($group as $sor) {
                 if ($sor['vonalkod'] !== '') {
                     $mindenVonalkod[] = $sor['vonalkod'];
@@ -179,6 +185,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
         $this->galadLetezoValtozatVonalkod = $this->galadLetezoHalmaz(TermekValtozat::class, 'vonalkod', $mindenVonalkod);
         $this->galadLetezoTermekVonalkod = $this->galadLetezoHalmaz(Termek::class, 'vonalkod', $mindenVonalkod);
         $this->galadLetezoTermekKulcs = $this->galadLetezoHalmaz(Termek::class, 'idegenkod', $mindenTermekKulcs);
+        $this->galadLetezoTermekCikkszam = $this->galadLetezoHalmaz(Termek::class, 'cikkszam', $mindenTermekCikkszam);
 
         // kötegelt mentés: 200 termékenként flush + clear, hogy a Unit of Work ne nőjön
         // korlátlanul (a soronkénti flush négyzetes lassulást okozott). A clear() minden
@@ -240,9 +247,16 @@ class galadOxfordImportController extends \mkwhelpers\Controller
 
         $termekrepo = \mkw\store::getEm()->getRepository(Termek::class);
         /** @var Termek $termek */
-        $termek = ($first['termekkod'] === '' || isset($this->galadLetezoTermekKulcs[$first['termekkod']]))
-            ? $termekrepo->findOneBy(['idegenkod' => $first['termekkod']])
-            : null;
+        $termek = null;
+        if ($first['termekkod'] !== '') {
+            if (isset($this->galadLetezoTermekKulcs[$first['termekkod']])) {
+                $termek = $termekrepo->findOneBy(['idegenkod' => $first['termekkod']]);
+            }
+        } elseif (isset($this->galadLetezoTermekCikkszam[$tcikkszam])) {
+            // termékkód nélkül az idegenkod üres marad, és az üres idegenkod rengeteg
+            // független termékre illeszkedik — ilyenkor a cikkszám azonosít
+            $termek = $termekrepo->findOneBy(['cikkszam' => $tcikkszam]);
+        }
         if (!$termek) {
             // vonalkóddal felvitt terméket csak akkor, ha még nincs ilyen vonalkódú termék
             if ($termekVonalkod !== '' && isset($this->galadLetezoTermekVonalkod[$termekVonalkod])) {
@@ -250,6 +264,8 @@ class galadOxfordImportController extends \mkwhelpers\Controller
             }
             if ($first['termekkod'] !== '') {
                 $this->galadLetezoTermekKulcs[$first['termekkod']] = true;
+            } else {
+                $this->galadLetezoTermekCikkszam[$tcikkszam] = true;
             }
             $termek = new \Entities\Termek();
             $termek->setIdegenkod($first['termekkod']);
