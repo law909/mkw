@@ -147,6 +147,14 @@
                 <input id="VUnasidEdit_{$valtozat.id}" name="valtozatunasid_{$valtozat.id}" type="text" value="{$valtozat.unasid}">
             </td>
         </tr>
+        <tr>
+            <td class="mattable-cell">
+                <label for="VUnasalaptipusEdit_{$valtozat.id}">{at('UNAS alap típus')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input id="VUnasalaptipusEdit_{$valtozat.id}" name="valtozatunasalaptipus_{$valtozat.id}" type="text" value="{$valtozat.unasalaptipus}">
+            </td>
+        </tr>
     {/if}
     <tr>
         <td>

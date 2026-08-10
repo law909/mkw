@@ -80,7 +80,7 @@
             <td class="textalignright" style="padding:2px 5px;">{$riport.kategoria_irva|default:0}</td>
         </tr>
         <tr>
-            <td style="padding:2px 5px;">{at('Létrehozott fa-szint')}</td>
+            <td style="padding:2px 5px;">{at('Létrehozott kategóriaszint')}</td>
             <td class="textalignright" style="padding:2px 5px;">{$riport.fa_letrehozva|default:0}</td>
             <td colspan="2" style="padding:2px 5px;"></td>
         </tr>
