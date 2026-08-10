@@ -307,15 +307,15 @@ class adminController extends mkwhelpers\Controller
     {
         $view = $this->createView('comp_noallapotbody.tpl');
         $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-        $no->hello();
+        $no->hello2();
+        $hellores = json_decode($no->getResult(), true);
         $view->setVar('noerrors', $no->getErrors());
-        $view->setVar('noresult', $no->getResult());
-        $no->version();
+        $view->setVar('noresult', $hellores['hello']);
         $view->setVar(
             'noversion',
             ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
             . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
-            . '; srv v' . $no->getResult()
+            . '; srv v' . $hellores['version']
         );
 
         $nohibasbeallitas = [];

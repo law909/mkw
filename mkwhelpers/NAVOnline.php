@@ -124,6 +124,11 @@ class NAVOnline
         return $this->callAPI('GET', '/hello/' . $this->cegAdoszam, null, self::STATUSTIMEOUT);
     }
 
+    public function hello2()
+    {
+        return $this->callAPI('GET', '/hello2/' . $this->cegAdoszam, null, self::STATUSTIMEOUT);
+    }
+
     public function version()
     {
         return $this->callAPI('GET', '/version/' . $this->cegAdoszam, null, self::STATUSTIMEOUT);
