@@ -186,40 +186,48 @@ class CronService
                 'host' => substr((string)gethostname(), 0, 100),
                 'pid' => getmypid() ?: null
             ]);
-            return (int)$conn->lastInsertId();
+            $id = (int)$conn->lastInsertId();
+            if (!$id) {
+                $this->writeFileLog('cron napló figyelmeztetés (' . $name . '): a beszúrt sor'
+                    . ' azonosítója nem jött vissza, a futás nem lesz lezárva a cronlog táblában');
+            }
+            return $id;
         } catch (\Throwable $e) {
-            \mkw\store::writelog('cron napló hiba (' . $name . '): ' . $e->getMessage(), 'cron.txt');
+            $this->writeFileLog('cron napló hiba (' . $name . '): ' . $e->getMessage());
             return null;
         }
     }
 
+    /**
+     * Előbb a DB, utána a fájl. A naplósor lezárása nem függhet attól, hogy a `storage/logs`
+     * írható-e: a cron tipikusan más felhasználóval fut, mint a webszerver, és egy elbukott
+     * fájlírás különben `fut` állapotban ragadt sort hagyna maga után.
+     */
     private function logFinish($logId, $name, $allapot, $uzenet, $idotartam)
     {
         $uzenet = mb_substr((string)$uzenet, 0, self::UZENETMAX);
-        \mkw\store::writelog($name . ' | ' . $allapot . ' | ' . $idotartam . 's | ' . $uzenet, 'cron.txt');
-        if (!$logId) {
-            return;
+        if ($logId) {
+            try {
+                $this->getConnection()->update(
+                    'cronlog',
+                    [
+                        'allapot' => $allapot,
+                        'veg' => date('Y-m-d H:i:s'),
+                        'idotartam' => $idotartam,
+                        'uzenet' => $uzenet
+                    ],
+                    ['id' => $logId]
+                );
+            } catch (\Throwable $e) {
+                $this->writeFileLog('cron napló hiba (' . $name . '): ' . $e->getMessage());
+            }
         }
-        try {
-            $this->getConnection()->update(
-                'cronlog',
-                [
-                    'allapot' => $allapot,
-                    'veg' => date('Y-m-d H:i:s'),
-                    'idotartam' => $idotartam,
-                    'uzenet' => $uzenet
-                ],
-                ['id' => $logId]
-            );
-        } catch (\Throwable $e) {
-            \mkw\store::writelog('cron napló hiba (' . $name . '): ' . $e->getMessage(), 'cron.txt');
-        }
+        $this->writeFileLog($name . ' | ' . $allapot . ' | ' . $idotartam . 's | ' . $uzenet);
     }
 
     /** Egyetlen sorban lezárt futás: a menet el sem indult (zárolt). */
     private function logSkipped($name, $allapot, $uzenet)
     {
-        \mkw\store::writelog($name . ' | ' . $allapot . ' | ' . $uzenet, 'cron.txt');
         try {
             $this->getConnection()->insert('cronlog', [
                 'feladat' => $name,
@@ -232,7 +240,17 @@ class CronService
                 'pid' => getmypid() ?: null
             ]);
         } catch (\Throwable $e) {
-            \mkw\store::writelog('cron napló hiba (' . $name . '): ' . $e->getMessage(), 'cron.txt');
+            $this->writeFileLog('cron napló hiba (' . $name . '): ' . $e->getMessage());
+        }
+        $this->writeFileLog($name . ' | ' . $allapot . ' | ' . $uzenet);
+    }
+
+    /** A fájlnapló sosem buktathatja el a futást – a cronlog tábla a fő nyilvántartás. */
+    private function writeFileLog($sor)
+    {
+        try {
+            \mkw\store::writelog($sor, 'cron.txt');
+        } catch (\Throwable $e) {
         }
     }
 

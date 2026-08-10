@@ -45,6 +45,18 @@ if (!function_exists('at')) {
     }
 }
 
+// A fájlnapló nem kötelező (a cronlog tábla a fő nyilvántartás), de ha nem írható, arról tudni kell:
+// tipikusan a cron más felhasználóval fut, mint a webszerver, vagy a storage/logs meg sem született
+// (a storage/ nincs verziókövetve). Amíg így van, a crontab minden futásról levelet küld.
+$__logfile = \mkw\store::logsPath('cron.txt');
+$__logdir = dirname($__logfile);
+// meglévő fájlnál a fájl joga dönt (appendhez az kell), különben a mappáé (ott jön létre)
+$__logwritable = is_file($__logfile) ? is_writable($__logfile) : (is_dir($__logdir) && is_writable($__logdir));
+if (!$__logwritable) {
+    fwrite(STDERR, 'FIGYELEM: a ' . (is_file($__logfile) ? $__logfile : $__logdir) . ' nem írható,'
+        . ' a fájlnapló kimarad (a cronlog tábla vezetése ettől még megy).' . PHP_EOL);
+}
+
 $options = [];
 $taskname = '';
 foreach (array_slice($argv, 1) as $arg) {

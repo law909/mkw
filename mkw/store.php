@@ -158,7 +158,14 @@ class store
 
     public static function writelog($text, $fname = 'log.txt')
     {
-        $handle = fopen(self::logsPath($fname), "a");
+        $path = self::logsPath($fname);
+        if (!is_dir(dirname($path))) {
+            @mkdir(dirname($path), 0775, true);
+        }
+        $handle = @fopen($path, "a");
+        if (!$handle) {
+            return;
+        }
         $log = "";
         $separator = " ## ";
         [$usec, $sec] = explode(" ", microtime());
