@@ -1328,6 +1328,16 @@ if ($DBVersion < '0113') {
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0113');
     }
 }
+
+if ($DBVersion < '0114') {
+    // Minimum készlet alatti termékek riportja – a Készlet kimutatás mellé, azonos jogosultsággal
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 4, "Minimum készlet alatt", "/admin/minkeszletlista/view", "/admin/minkeszletlista", 40, 1, 710, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/minkeszletlista/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0114');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

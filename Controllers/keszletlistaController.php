@@ -149,23 +149,17 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
         if ($minkeszletszamit) {
             $this->minkeszletstr = 'Min.készlet számít';
-            // A feloldási létra SQL-be írt mása (a másik implementáció:
-            // \Services\MinBoltiKeszletService::getMinKeszlet). A NULLIF a „ha nem nulla"
-            // lépcső: a DECIMAL "0.00" numerikusan nulla, de nem NULL.
+            $minexpr = \Services\MinBoltiKeszletService::getMinKeszletSql(
+                '_xx.termek_id',
+                't.minboltikeszlet',
+                '_xx.id',
+                '_xx.minboltikeszlet',
+                $this->raktar ? 'mkraktar' : ''
+            );
             if ($this->raktar) {
-                $minexpr = 'COALESCE('
-                    . 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
-                    . ' WHERE tmk.termek_id = _xx.termek_id AND tmk.raktar_id = :mkraktar), 0),'
-                    . 'NULLIF((SELECT vmk.minboltikeszlet FROM termekvaltozatminboltikeszlet vmk'
-                    . ' WHERE vmk.termekvaltozat_id = _xx.id AND vmk.raktar_id = :mkraktar), 0),'
-                    . 'NULLIF(t.minboltikeszlet, 0),'
-                    . '_xx.minboltikeszlet,'
-                    . '0)';
                 // csak ebben az ágban köthető: a createNativeQuery hibát dob olyan paraméterre,
                 // ami nincs benne az SQL-ben
                 $mkparams = ['mkraktar' => $this->raktar];
-            } else {
-                $minexpr = 'COALESCE(NULLIF(t.minboltikeszlet, 0), _xx.minboltikeszlet, 0)';
             }
             // a minimum a külső SELECT-ben korrelál a külső _xx / t aliasra, ezért tűnt el
             // az aggregáló alkérdésből az azt árnyékoló `LEFT JOIN termek t`

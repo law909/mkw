@@ -112,6 +112,46 @@ class MinBoltiKeszletService
     }
 
     /**
+     * Ugyanaz a létra natív SQL-ben, riportlekérdezésekhez – a getMinKeszlet() párja, hogy a két
+     * implementáció ne csússzon szét. A NULLIF a „ha nem nulla" lépcső: a DECIMAL "0.00"
+     * numerikusan nulla, de nem NULL.
+     *
+     * Változat nélküli (csak termékszintű) ághoz a $valtozatid/$valtozatmin maradjon üres,
+     * raktárfüggetlen értékhez a $raktarparam.
+     *
+     * @param string $termekid a termék azonosítóját adó SQL kifejezés (pl. `_xx.termek_id`)
+     * @param string $termekmin a termék globális minimumát adó kifejezés (pl. `t.minboltikeszlet`)
+     * @param string $valtozatid a változat azonosítója (pl. `_xx.id`)
+     * @param string $valtozatmin a változat globális minimuma (pl. `_xx.minboltikeszlet`)
+     * @param string $raktarparam a raktár kötött paraméterének neve, kettőspont nélkül
+     *
+     * @return string
+     */
+    public static function getMinKeszletSql(
+        $termekid,
+        $termekmin,
+        $valtozatid = '',
+        $valtozatmin = '',
+        $raktarparam = ''
+    ) {
+        $agak = [];
+        if ($raktarparam) {
+            $agak[] = 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
+                . ' WHERE tmk.termek_id = ' . $termekid . ' AND tmk.raktar_id = :' . $raktarparam . '), 0)';
+            if ($valtozatid) {
+                $agak[] = 'NULLIF((SELECT vmk.minboltikeszlet FROM termekvaltozatminboltikeszlet vmk'
+                    . ' WHERE vmk.termekvaltozat_id = ' . $valtozatid . ' AND vmk.raktar_id = :' . $raktarparam . '), 0)';
+            }
+        }
+        $agak[] = 'NULLIF(' . $termekmin . ', 0)';
+        if ($valtozatmin) {
+            $agak[] = $valtozatmin;
+        }
+        $agak[] = '0';
+        return 'COALESCE(' . implode(',', $agak) . ')';
+    }
+
+    /**
      * A létra 1-2. lépése. null, ha egyik szinten sincs nem nulla raktáras érték.
      */
     private static function getRaktariErtek($termek, $valtozat, $raktarid)
