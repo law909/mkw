@@ -1,6 +1,7 @@
 <?php
 
-$router->map('GET', '/admin/cron', 'cronController#run', 'admincron');
+// A cron feladatoknak NINCS HTTP végpontja: a `php cron.php <feladat>` az egyetlen út
+// (lásd docs/cron.md). A régi, auth nélküli GET /admin/cron kivezetve.
 
 $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
@@ -1079,6 +1080,15 @@ $router->map('GET', '/admin/jelenletiiv/viewkarb', 'jelenletiivController#viewka
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/jelenletiiv/save', 'jelenletiivController#save', 'adminjelenletiivsave');
     $router->map('POST', '/admin/jelenletiiv/generatenapi', 'jelenletiivController#generatenapi', 'adminjelenletiivgeneratenapi');
+}
+
+$router->map('GET', '/admin/cronlog/viewlist', 'cronlogController#viewlist', 'admincronlogviewlist');
+$router->map('GET', '/admin/cronlog/getlistbody', 'cronlogController#getlistbody', 'admincronloggetlistbody');
+$router->map('GET', '/admin/cronlog/getkarb', 'cronlogController#getkarb', 'admincronloggetkarb');
+$router->map('GET', '/admin/cronlog/viewkarb', 'cronlogController#viewkarb', 'admincronlogviewkarb');
+if (!\mkw\store::isClosed()) {
+    // csak a törlés fut le rajta: a napló nem szerkeszthető (lásd cronlogController::setFields)
+    $router->map('POST', '/admin/cronlog/save', 'cronlogController#save', 'admincronlogsave');
 }
 
 $router->map('GET', '/admin/keresoszolog/viewlist', 'keresoszologController#viewlist', 'adminkeresoszologviewlist');

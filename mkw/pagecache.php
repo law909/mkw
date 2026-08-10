@@ -140,6 +140,37 @@ final class pagecache
         @file_put_contents($dir . 'VERSION', (string)time(), LOCK_EX);
     }
 
+    /**
+     * Drop expired page files and abandoned .tmp writes. The reader already treats
+     * anything older than the TTL as a miss, so this can never remove a live hit --
+     * but without it the directory grows forever, and one bumpVersion() orphans
+     * every file at once. Called from the `cleanup` cron task.
+     *
+     * @return array{fajl: int, tmp: int}
+     */
+    public static function gc(): array
+    {
+        $result = ['fajl' => 0, 'tmp' => 0];
+        $dir = self::dir();
+        if (!is_dir($dir)) {
+            return $result;
+        }
+        $now = time();
+        $ttl = self::ttl();
+        foreach (glob($dir . '*.html') ?: [] as $f) {
+            if ($now - (int)@filemtime($f) >= $ttl && @unlink($f)) {
+                $result['fajl']++;
+            }
+        }
+        // a .tmp csak a rename előtti pillanatig él: ami egy órája ott van, azt egy megölt kérés hagyta
+        foreach (glob($dir . '*.tmp') ?: [] as $f) {
+            if ($now - (int)@filemtime($f) >= 3600 && @unlink($f)) {
+                $result['tmp']++;
+            }
+        }
+        return $result;
+    }
+
     // -- internals ---------------------------------------------------------
 
     private static function isCandidate($match): bool

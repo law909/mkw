@@ -125,6 +125,9 @@ class store
     public static function getClientIp()
     {
         $ipaddress = '';
+        if (PHP_SAPI === 'cli') {
+            return 'cli';
+        }
         if (array_key_exists('HTTP_CLIENT_IP', $_SERVER) && $_SERVER['HTTP_CLIENT_IP']) {
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
         } else {

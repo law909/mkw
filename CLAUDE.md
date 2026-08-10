@@ -26,6 +26,8 @@ composer install                 # PHP deps (platform pinned to php 8.1)
 ./updateschema.sh                # apply entity changes to DB (orm:schema-tool:update --force)
 ./updatesql.sh                   # dump pending schema SQL to update.sql (no DB change)
 php vendor/bin/doctrine <cmd>    # any Doctrine ORM CLI command (cli-config.php wires the EM)
+php cron.php --list              # scheduled tasks + whether they are on for this deployment
+php cron.php <task> --quiet      # run one scheduled task (this is what crontab calls) — docs/cron.md
 npx grunt                        # bundle JS (concat) + CSS (less/sass) per theme
 docker compose up                # local apache + php-fpm 8.3 stack, exposes mkw.local via Traefik
 ```
@@ -148,5 +150,7 @@ Test: cover the comment — is it still clear from the next 3–4 lines? Then dr
 - **Owner-specific code is everywhere**: before changing shared code, grep for `is<Owner>()` and `getTheme()` to see who else depends on the path. The same
   controller method often branches on three or four flags.
 - **Sessions are split**: `main`, `admin`, and `pubadmin` are independent `session_namespace` instances — don't cross-read them.
+- **Scheduled work is CLI-only**: `cron.php` + `Services\CronService` + one `Services\Cron\*Task` class per job. There is no HTTP cron endpoint (the old
+  unauthenticated `GET /admin/cron` was removed in 2026-08) — adding one back would expose the job to anyone. See `docs/cron.md`.
 - **Proxies + cache**: stale proxy or metadata cache after entity changes is a common confusing failure in non-developer mode — regenerate proxies and clear the
   configured cache.

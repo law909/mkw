@@ -176,7 +176,6 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                     if (!in_array(
                         $match['name'],
                         [
-                            'admincron',
                             'adminshowlogin',
                             'adminlogin',
                             'adminrlbexport',
