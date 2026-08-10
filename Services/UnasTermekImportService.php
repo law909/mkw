@@ -81,6 +81,9 @@ class UnasTermekImportService
         'GetImage' => 1,
         'GetAddModDate' => 1,
         'GetURL' => 1,
+        'GetType' => 1,
+        'GetParam' => 1,
+        'GetCategory' => 1,
     ];
 
     /** @var UnasService */
@@ -220,10 +223,12 @@ class UnasTermekImportService
         // Folytatáskor az újraletöltés önellentmondás: a tól-ig számok a MEGLÉVŐ fájlra
         // vonatkoznak, egy új exportban egészen más sorok lennének ott.
         if ($this->isContinuation($opts) && $opts['ujraletoltes']) {
-            throw new \Exception(t(
-                'Folytatáshoz nem kérhető új fájl az UNAS-tól.'
-                . ' Vegye ki az újraletöltés pipát, vagy állítsa a sor tól-ig mezőket 0-0-ra.'
-            ));
+            throw new \Exception(
+                t(
+                    'Folytatáshoz nem kérhető új fájl az UNAS-tól.'
+                    . ' Vegye ki az újraletöltés pipát, vagy állítsa a sor tól-ig mezőket 0-0-ra.'
+                )
+            );
         }
         if ($opts['ujraletoltes']) {
             return null;
@@ -246,10 +251,12 @@ class UnasTermekImportService
             $data['fajl'] = $this->checkedFile($data['fajl']);
         } catch (\Exception $e) {
             if ($this->isContinuation($opts)) {
-                throw new \Exception(t(
-                    'A folytatáshoz szükséges termékadatbázis már nem érhető el.'
-                    . ' Állítsa a sor tól-ig mezőket 0-0-ra, és indítsa újra a menetet.'
-                ));
+                throw new \Exception(
+                    t(
+                        'A folytatáshoz szükséges termékadatbázis már nem érhető el.'
+                        . ' Állítsa a sor tól-ig mezőket 0-0-ra, és indítsa újra a menetet.'
+                    )
+                );
             }
             return null;
         }
@@ -445,15 +452,15 @@ class UnasTermekImportService
         }
 
         return [
-            'tol' => $from,
-            'kovetkezo' => $next,
-            'osszes' => $end,
-            'sorok' => (int)$meta['sorok'],
-            'feldolgozva' => count($rows),
-            'kesz' => $done,
-            'megszakadt' => $report['megszakadt'],
-            'uzenet' => $message,
-        ] + ($done ? $this->nextWindow($meta) : []);
+                'tol' => $from,
+                'kovetkezo' => $next,
+                'osszes' => $end,
+                'sorok' => (int)$meta['sorok'],
+                'feldolgozva' => count($rows),
+                'kesz' => $done,
+                'megszakadt' => $report['megszakadt'],
+                'uzenet' => $message,
+            ] + ($done ? $this->nextWindow($meta) : []);
     }
 
     /**
@@ -716,8 +723,13 @@ class UnasTermekImportService
         }
 
         return [
-            'statusz' => 'nincs', 'mod' => '', 'szint' => '',
-            'termekid' => null, 'valtozatid' => null, 'csere' => false, 'ok' => '',
+            'statusz' => 'nincs',
+            'mod' => '',
+            'szint' => '',
+            'termekid' => null,
+            'valtozatid' => null,
+            'csere' => false,
+            'ok' => '',
         ];
     }
 
@@ -833,11 +845,14 @@ class UnasTermekImportService
 
         $combinations = $this->cartesian($properties);
         if (count($combinations) > self::MAXCOMBINATIONS) {
-            $this->addError($report, sprintf(
-                t('A(z) %s cikkszámú terméknél %s változat-kombináció jött ki, ennyit nem párosítunk.'),
-                $cikkszam,
-                count($combinations)
-            ));
+            $this->addError(
+                $report,
+                sprintf(
+                    t('A(z) %s cikkszámú terméknél %s változat-kombináció jött ki, ennyit nem párosítunk.'),
+                    $cikkszam,
+                    count($combinations)
+                )
+            );
             return;
         }
 
