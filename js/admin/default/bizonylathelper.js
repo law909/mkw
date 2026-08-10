@@ -88,6 +88,16 @@ let bizonylathelper = function ($) {
             bruttohuf = bruttohuf + $('#BruttoegysarHufEdit' + id).val() * menny;
         });
 
+        // vonalkódos (POS) tételfelvitel
+        if (window.bizonylatpos) {
+            let arfolyam = $('#ArfolyamEdit').val() * 1 || 1,
+                pos = bizonylatpos.osszegek();
+            netto = netto + pos.netto;
+            brutto = brutto + pos.brutto;
+            nettohuf = nettohuf + pos.netto * arfolyam;
+            bruttohuf = bruttohuf + pos.brutto * arfolyam;
+        }
+
         $('.js-nettosum').text(accounting.formatNumber(tools.round(netto, -2), 2, ' '));
         $('.js-bruttosum').text(accounting.formatNumber(tools.round(brutto, -2), 2, ' '));
         $('.js-nettohufsum').text(accounting.formatNumber(tools.round(nettohuf, -2), 2, ' '));
@@ -1465,6 +1475,11 @@ let bizonylathelper = function ($) {
 
                 calcOsszesen();
 
+                // Vonalkódos tételfelvitel: a fej fölötte a klasszikus marad, csak a tételblokk más.
+                if (window.bizonylatpos && $('input[name="pos"]').val() == 1) {
+                    bizonylatpos.init(bizonylattipus, calcOsszesen);
+                }
+
                 // A már mentett tételek egyedi azonosító mezőire is rátesszük az autocomplete-et
                 // (negatív irányú bizonylaton), mert ezekre nem fut le a setEgyediAzonositoMezo().
                 if (isNegativIrany()) {
@@ -1510,6 +1525,21 @@ let bizonylathelper = function ($) {
                         parent.append('<input name="tetelkedvezmeny_' + $this.val() + '" type="hidden" value="' +
                             $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
+                }
+
+                // POS módban a tételeket nem a form, hanem a kereső viszi fel: üres kosárral
+                // a mentés csak egy tétel nélküli bizonylatot hozna létre
+                if (window.bizonylatpos && $('input[name="pos"]', f).val() == 1 && !bizonylatpos.vanTetel()) {
+                    $('#dialogcenter').html('Nincs tétel a bizonylaton!').dialog({
+                        resizable: false,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                    return false;
                 }
 
                 let hibak = checkBizonylatFej(bizonylattipus, $('input[name="id"]').val()),
@@ -1593,6 +1623,7 @@ let bizonylathelper = function ($) {
             datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
             mattableselect.mattable({
                 quickAddVisible: mattableselect.data('szamlazhat'),
+                posAddVisible: mattableselect.data('szamlazhat') && mattableselect.data('vonalkod'),
                 addVisible: mattableselect.data('szamlazhat'),
                 filter: {
                     fields: [

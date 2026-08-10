@@ -9,7 +9,8 @@
 
 {block "kozep"}
     <form id="exportform" method="POST"><input type="hidden" name="ids"></form>
-    <div id="mattable-select" data-theme="{$theme}" data-szamlazhat="{$csinalhatujszamlat}">
+    <div id="mattable-select" data-theme="{$theme}" data-szamlazhat="{$csinalhatujszamlat}"
+         data-vonalkod="{if ($setup.vonalkod)}1{else}0{/if}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{$pagetitle}"></div>
         <div id="mattable-filterwrapper">
             <label for="idfilter">{at('Sorszám')}:</label>

@@ -511,6 +511,14 @@ $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#get
 $router->map('GET', '/admin/bizonylattetel/valtozatlist', 'bizonylattetelController#valtozathtmllist', 'adminvaltozatlist');
 $router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelController#quickvaltozathtmllist', 'adminquickvaltozatlist');
 
+// a bizonylat karb vonalkódos tételfelvitele – csak ott, ahol a vonalkód egyáltalán használatban van
+if (\mkw\store::getSetupValue('vonalkod')) {
+    $router->map('GET', '/admin/bizonylatpos/findtermek', 'bizonylatposController#findtermek', 'adminbizonylatposfindtermek');
+    $router->map('GET', '/admin/bizonylatpos/kereses', 'bizonylatposController#kereses', 'adminbizonylatposkereses');
+    $router->map('GET', '/admin/bizonylatpos/gettermek', 'bizonylatposController#gettermek', 'adminbizonylatposgettermek');
+    $router->map('GET', '/admin/bizonylatpos/gettetel', 'bizonylatposController#gettetel', 'adminbizonylatposgettetel');
+}
+
 $router->map('GET', '/admin/boltieladas/getkarb', 'boltieladasController#getkarb', 'adminboltieladasgetkarb');
 $router->map('GET', '/admin/boltieladas/findtermek', 'boltieladasController#findtermek', 'adminboltieladasfindtermek');
 $router->map('GET', '/admin/boltieladas/kereses', 'boltieladasController#kereses', 'adminboltieladaskereses');
