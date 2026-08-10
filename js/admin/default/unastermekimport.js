@@ -57,6 +57,30 @@ $(document).ready(function () {
             });
     });
 
+    $('#unasgetproduct').on('submit', function (event) {
+        event.preventDefault();
+        var urlap = $(this),
+            gomb = urlap.find('button[type=submit]'),
+            valasz = $('#unasgetproductvalasz').text('...'),
+            eredmenyDoboz = $('#unasgetproducteredmeny').empty();
+        gomb.prop('disabled', true);
+        $.ajax({url: urlap.attr('action'), type: 'POST', data: urlap.serialize(), dataType: 'json'})
+            .done(function (data) {
+                if (!data.ok) {
+                    valasz.html($('<span>').addClass('ui-state-error-text').text(data.hiba));
+                    return;
+                }
+                valasz.empty();
+                eredmenyDoboz.html(data.html);
+            })
+            .fail(function () {
+                valasz.html($('<span>').addClass('ui-state-error-text').text('A lekérdezés nem futott le.'));
+            })
+            .always(function () {
+                gomb.prop('disabled', false);
+            });
+    });
+
     $('#unasriporttorles').on('click', function () {
         var gomb = $(this),
             valasz = $('#unasriporttorlesvalasz'),

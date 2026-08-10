@@ -67,6 +67,33 @@ class unastermekimportController extends \mkwhelpers\Controller
         $this->json(['ok' => true] + $result);
     }
 
+    /** Diagnosztika: egy termék az UNAS-ból, cikkszám vagy UNAS azonosító alapján. Semmit nem ír. */
+    public function queryProduct()
+    {
+        try {
+            $result = (new UnasTermekImportService())->queryProduct([
+                'cikkszam' => $this->params->getStringRequestParam('cikkszam'),
+                'unasid' => $this->params->getStringRequestParam('unasid'),
+                'contenttype' => $this->params->getStringRequestParam('contenttype', 'full'),
+                'state' => $this->params->getStringRequestParam('state', 'live'),
+                'lang' => $this->params->getStringRequestParam('lang'),
+            ]);
+        } catch (\Exception $e) {
+            $this->json(['ok' => false, 'hiba' => $e->getMessage()]);
+            return;
+        }
+
+        $view = $this->createView('unastermekimport_getproduct.tpl');
+        $view->setVar('keres', $result['keres']);
+        $view->setVar('termekek', $result['termekek']);
+        $view->setVar('nyers', $result['nyers']);
+        $view->setVar('nyersteljes', $result['nyersteljes']);
+        $view->setVar('dumpfajl', $result['dumpfajl']);
+        $view->setVar('tobbtermekes', $result['tobbtermekes']);
+        $view->setVar('keret', $result['keret']);
+        $this->json(['ok' => true, 'html' => $view->getTemplateResult()]);
+    }
+
     public function report()
     {
         $file = $this->params->getStringRequestParam('fajl');

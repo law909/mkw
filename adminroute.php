@@ -793,6 +793,7 @@ if (\mkw\store::isUnas()) {
         $router->map('POST', '/admin/unastermekimport/teszt', 'unastermekimportController#testConnection', 'adminunastermekimportteszt');
         $router->map('POST', '/admin/unastermekimport/letoltes', 'unastermekimportController#download', 'adminunastermekimportletoltes');
         $router->map('POST', '/admin/unastermekimport/koteg', 'unastermekimportController#processBatch', 'adminunastermekimportkoteg');
+        $router->map('POST', '/admin/unastermekimport/getproduct', 'unastermekimportController#queryProduct', 'adminunastermekimportgetproduct');
         $router->map('POST', '/admin/unastermekimport/riport', 'unastermekimportController#report', 'adminunastermekimportriport');
         $router->map('POST', '/admin/unastermekimport/riporttorles', 'unastermekimportController#deleteReports', 'adminunastermekimportriporttorles');
         $router->map('POST', '/admin/unastermekimport/stop', 'unastermekimportController#stop', 'adminunastermekimportstop');

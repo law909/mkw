@@ -34,6 +34,12 @@ class UnasTermekImportService
 
     private const MAXCOMBINATIONS = 500;
 
+    /** a diagnosztikai lekérdezés egy hívásban ennyi azonosítót enged */
+    private const QUERYMAX = 50;
+
+    /** ennyi karakter nyers XML megy vissza a képernyőre */
+    private const QUERYRAWMAX = 400000;
+
     /** ennyi ideig újrahasználjuk a már letöltött termékadatbázist */
     private const DOWNLOADMAXAGE = 3600;
 
@@ -1096,6 +1102,155 @@ class UnasTermekImportService
             $this->kepService = new UnasKepService();
         }
         return $this->kepService;
+    }
+
+    // ------------------------------------------------------------------
+    // Diagnosztikai lekérdezés
+    // ------------------------------------------------------------------
+
+    /**
+     * Egy vagy több UNAS termék lekérdezése cikkszám vagy UNAS azonosító alapján. Semmit nem ír –
+     * a nyers válasz és a belőle kiolvasott mezők a lényeg: a `getProductDB` üresen hagyja a
+     * változat-oszlopokat, és csak innen derül ki, van-e egyáltalán változata a terméknek.
+     *
+     * @return array{keres: array, nyers: string, nyersteljes: bool, dumpfajl: string|null,
+     *               termekek: array, tobbtermekes: bool, keret: array}
+     */
+    public function queryProduct(array $opts)
+    {
+        $sku = $this->splitIdList($opts['cikkszam'] ?? '');
+        $id = $this->splitIdList($opts['unasid'] ?? '');
+        if (!$sku && !$id) {
+            throw new \Exception(t('Adjon meg cikkszámot vagy UNAS azonosítót.'));
+        }
+        // „Ha ezt a mezőt kitöltöd, akkor az Sku mezőt figyelmen kívül hagyjuk" – és listát sem fogad
+        if ($id && count($id) > 1) {
+            throw new \Exception(t('UNAS azonosítóból egyszerre csak egy kérdezhető le. Több termékhez a cikkszám mezőt használja.'));
+        }
+        if (count($sku) > self::QUERYMAX) {
+            throw new \Exception(sprintf(t('Egyszerre legfeljebb %s cikkszám kérdezhető le.'), self::QUERYMAX));
+        }
+
+        $params = ['ContentType' => $this->checkedContentType($opts['contenttype'] ?? 'full')];
+        if ($id) {
+            $params['Id'] = $id[0];
+        } else {
+            $params['Sku'] = implode(',', $sku);
+        }
+        $params['State'] = ($opts['state'] ?? 'live') === 'deleted' ? 'deleted' : 'live';
+        $lang = trim((string)($opts['lang'] ?? ''));
+        if ($lang !== '') {
+            $params['Lang'] = $lang;
+        }
+
+        $api = $this->unas->getApi();
+        $response = $api->getProduct($params);
+        $dump = $api->getLastDumpFile();
+        if (!$response) {
+            throw new \Exception(
+                ($api->getLasterrorsAsString() ?: t('Az UNAS nem adott értelmezhető választ.'))
+                . ($dump ? ' (' . $dump . ')' : '')
+            );
+        }
+
+        $termekek = [];
+        foreach ($response->Product ?? [] as $product) {
+            $termekek[] = $this->summarizeProduct($product);
+        }
+
+        $raw = $this->readDump($dump) ?: (string)$response->asXML();
+        $teljes = mb_strlen($raw) <= self::QUERYRAWMAX;
+
+        return [
+            'keres' => $params,
+            'nyers' => $teljes ? $raw : mb_substr($raw, 0, self::QUERYRAWMAX),
+            'nyersteljes' => $teljes,
+            'dumpfajl' => $dump,
+            'termekek' => $termekek,
+            // a több termékes getProduct órás kerete jóval szűkebb (PREMIUM 30 vs. 1000)
+            'tobbtermekes' => !$id && count($sku) > 1,
+            'keret' => ['felhasznalt' => $api->rateCount('getProduct')],
+        ];
+    }
+
+    /**
+     * A képernyőn ez a lényeg: van-e `Variants` blokk, és ha igen, milyen értékekkel.
+     *
+     * @return array
+     */
+    private function summarizeProduct(\SimpleXMLElement $product)
+    {
+        $valtozatok = [];
+        foreach ($product->Variants->Variant ?? [] as $variant) {
+            $ertekek = [];
+            foreach ($variant->Values->Value ?? [] as $value) {
+                $ertekek[] = [
+                    'nev' => trim((string)($value->Name ?? '')),
+                    'arkulonbozet' => trim((string)($value->ExtraPrice ?? '')),
+                ];
+            }
+            $valtozatok[] = ['nev' => trim((string)($variant->Name ?? '')), 'ertekek' => $ertekek];
+        }
+
+        $keszletek = [];
+        foreach ($product->Stocks->Stock ?? [] as $stock) {
+            $kombinacio = [];
+            foreach ($stock->Variants->Variant ?? [] as $ertek) {
+                $kombinacio[] = trim((string)$ertek);
+            }
+            $keszletek[] = [
+                'kombinacio' => implode('|', $kombinacio),
+                'mennyiseg' => trim((string)($stock->Qty ?? '')),
+                'raktar' => trim((string)($stock->WarehouseId ?? '')),
+            ];
+        }
+
+        $statusz = '';
+        foreach ($product->Statuses->Status ?? [] as $status) {
+            if (strtolower(trim((string)($status->Type ?? ''))) === 'base') {
+                $statusz = trim((string)($status->Value ?? ''));
+            }
+        }
+
+        return [
+            'id' => trim((string)($product->Id ?? '')),
+            'cikkszam' => trim((string)($product->Sku ?? '')),
+            'nev' => trim((string)($product->Name ?? '')),
+            'statusz' => $statusz,
+            'me' => trim((string)($product->Unit ?? '')),
+            'modositas' => $this->timestampToStr((string)($product->LastModTime ?? '')),
+            'valtozatok' => $valtozatok,
+            'kepek' => UnasKepService::getKepekFromProduct($product),
+            'keszletek' => $keszletek,
+        ];
+    }
+
+    /** Vesszővel, pontosvesszővel, szóközzel vagy sortöréssel is elválasztható. */
+    private function splitIdList($value)
+    {
+        $parts = preg_split('/[\s,;]+/', trim((string)$value)) ?: [];
+        return array_values(array_filter(array_map('trim', $parts), static fn($v) => $v !== ''));
+    }
+
+    private function checkedContentType($value)
+    {
+        $value = strtolower(trim((string)$value));
+        return in_array($value, ['minimal', 'short', 'normal', 'full'], true) ? $value : 'full';
+    }
+
+    private function readDump($file)
+    {
+        if (!$file) {
+            return '';
+        }
+        $abs = \mkw\store::logsPath(basename($file));
+        return is_readable($abs) ? (string)file_get_contents($abs) : '';
+    }
+
+    private function timestampToStr($value)
+    {
+        $value = (int)trim((string)$value);
+        return $value > 0 ? date(\mkw\store::$DateTimeFormat, $value) : '';
     }
 
     // ------------------------------------------------------------------
