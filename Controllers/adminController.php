@@ -310,7 +310,7 @@ class adminController extends mkwhelpers\Controller
         $no->hello2();
         $hellores = json_decode($no->getResult(), true);
         $view->setVar('noerrors', $no->getErrors());
-        $view->setVar('noresult', $hellores['hello']);
+        $view->setVar('noresult', 'hello ' . $hellores['hello']);
         $view->setVar(
             'noversion',
             ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
