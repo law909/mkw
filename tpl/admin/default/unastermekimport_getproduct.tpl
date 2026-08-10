@@ -4,12 +4,14 @@
 <div style="margin:5px 0;">
     <strong>{at('Kérés')}:</strong>
     {foreach $keres as $kulcs => $ertek}{$kulcs|escape}={$ertek|escape}{if !$ertek@last}, {/if}{/foreach}
-    &mdash; {at('getProduct hívások ebben az órában')}: {$keret.felhasznalt}
+    &mdash; {at('getProduct hívások ebben az órában')}:
+    {at('egy termékes')} {$keret.egy}/{$keret.limitegy},
+    {at('több termékes')} {$keret.tobb}/{$keret.limittobb}
 </div>
 
 {if ($tobbtermekes)}
     <div class="matt-messagecenter ui-widget ui-state-highlight" style="padding:5px;margin:5px 0;">
-        {at('Több termékes getProduct: ebből PREMIUM csomagon óránként csak 30 hívás van (egy termék esetén 1000).')}
+        {at('Ez több termékes getProduct volt: abból PREMIUM csomagon óránként csak 30 hívás van, míg egy termék lekérdezéséből 1000.')}
     </div>
 {/if}
 

@@ -3,6 +3,10 @@
 namespace Services;
 
 use Entities\Termek;
+use Entities\Termekcimkekat;
+use Entities\Termekcimketorzs;
+use Entities\TermekFa;
+use Entities\TermekMenu;
 use Entities\TermekValtozat;
 
 /**
@@ -49,6 +53,32 @@ class UnasTermekImportService
     /**
      * Fejlécnév → logikai oszlop. Fix betű-index nem használható: az oszlopok helye a `Get*`
      * kapcsolóktól és a bolt beállításaitól függ. Az illesztés normalizált (lásd normalizeColumnName).
+     *
+     * Egy sor kétféle lehet:
+     *
+     * 1. **közvetlen mező** – `logikai név => [fejléc-alternatívák]`. Az értéket a {@see cell()}
+     *    adja vissza, a felhasználásáról a hívó dönt (lásd {@see writeFields()}).
+     * 2. **más entitásba menő oszlop** – `logikai név => ['fejlec' => [...], 'cel' => '...', ...]`.
+     *    Ezeket a {@see writeRelations()} dolgozza fel, a `cel` szerinti kezelővel. A `fejlec`
+     *    kulcs jelenléte a megkülönböztető.
+     *
+     * A `cel => 'termekcimke'` kezelő beállításai:
+     *
+     * | kulcs             | kötelező | jelentés                                                          |
+     * |-------------------|----------|-------------------------------------------------------------------|
+     * | `cimkekategoria`  | igen     | a `Termekcimkekat` neve, ami alá a címke kerül (létrejön, ha nincs) |
+     * | `elvalaszto`      | nem      | ha a cella több címkét tartalmaz, ez választja el őket              |
+     * | `utolsoszint`     | nem      | `|`-lal tagolt útvonalból csak az utolsó szint legyen a címke       |
+     * | `csere`           | nem      | a termék KATEGÓRIÁN BELÜLI címkéit előbb leszedi (egyértékű oszlop) |
+     *
+     * A `cel => 'termekfa'` kezelő a cellában érkező **útvonalból felépíti a teljes fát**, és a
+     * termékre a levelet teszi. A legfelső szint szülője mindig a gyökér (az egyetlen olyan sor,
+     * aminek nincs szülője). Beállításai:
+     *
+     * | kulcs              | kötelező | jelentés                                                            |
+     * |--------------------|----------|---------------------------------------------------------------------|
+     * | `mezo`             | igen     | `termekfa1` \| `termekfa2` \| `termekfa3` \| `termekmenu1` – ez dönti el az entitást is |
+     * | `szintelvalaszto`  | nem      | az útvonal szintjeinek elválasztója, alapból `|`                     |
      */
     private const COLUMNS = [
         'cikkszam' => ['Cikkszám', 'SKU'],
@@ -67,6 +97,32 @@ class UnasTermekImportService
         'seodescription' => ['SEO Description'],
         'seokeywords' => ['SEO Keywords'],
         'modositas' => ['Utolsó módosítás'],
+        'alaptipus' => ['Alap Típus'],
+        'szallitasiido' => ['Paraméter: Szállítási idő||text|1|0|1|0|0|0|||0|1|1'],
+        'gyartocimke' => [
+            'fejlec' => ['Paraméter: gyártó||text|1|0|1|1|0|0|||0|1|1'],
+            'cel' => 'termekcimke',
+            'cimkekategoria' => 'Gyártó',
+            // egy terméknek egy gyártója van: a régit le kell szedni, különben gyűlnek
+            'csere' => true,
+        ],
+        'kategoriafa' => [
+            // „Elektronika|Televíziók|LCD" – a `|` a kategória SZINTJEIT választja el
+            'fejlec' => ['Kategória'],
+            'cel' => 'termekfa',
+            'mezo' => 'termekfa1',
+        ],
+    ];
+
+    /** A `cel` értékei, amiket a {@see writeRelations()} ismer. */
+    private const RELATIONTARGETS = ['termekcimke', 'termekfa'];
+
+    /** A `termekfa` cél `mezo` értékei: melyik `Termek` mezőbe és melyik entitásba dolgozunk. */
+    private const TREEFIELDS = [
+        'termekfa1' => TermekFa::class,
+        'termekfa2' => TermekFa::class,
+        'termekfa3' => TermekFa::class,
+        'termekmenu1' => TermekMenu::class,
     ];
 
     /** ha legalább egy Get* be van kapcsolva, csak a jelölt oszlopok jönnek */
@@ -91,6 +147,18 @@ class UnasTermekImportService
 
     /** @var UnasKepService|null */
     private $kepService;
+
+    /** @var array<string,Termekcimkekat> a `clear()` eldobja – lásd getCimkekategoria() */
+    private $cimkekatCache = [];
+
+    /** @var array<string,Termekcimketorzs> */
+    private $cimkeCache = [];
+
+    /** @var array<string,object> entitásonként a gyökér */
+    private $faRootCache = [];
+
+    /** @var array<string,object> „entitás|szülőid|név" => csomópont */
+    private $faCache = [];
 
     public function __construct(?UnasService $unas = null)
     {
@@ -409,6 +477,7 @@ class UnasTermekImportService
      */
     public function processBatch($file, $from)
     {
+        $this->checkRelationColumns();
         $file = $this->checkedFile($file);
         $meta = $this->readMeta($file);
         $opts = $meta['opts'];
@@ -646,6 +715,7 @@ class UnasTermekImportService
         // változatszintű találatnál több UNAS termék írhatja ugyanazt
         if (!$opts['szarazfutas']) {
             $this->writeFields($termek, $row, $columns, $opts, $report);
+            $this->writeRelations($termek, $row, $columns, $opts, $report);
         }
 
         $this->matchTermekValtozatok($termek, $row, $columns, $opts, $report, $cikkszam, $nev);
@@ -1031,6 +1101,234 @@ class UnasTermekImportService
         }
     }
 
+    // ------------------------------------------------------------------
+    // Más entitásba menő oszlopok
+    // ------------------------------------------------------------------
+
+    /**
+     * A `COLUMNS` azon sorai, amik nem a `Termek` egy mezőjébe mennek. Üres cella itt sem töröl:
+     * a `csere` csak akkor lép életbe, ha van mit a helyére tenni.
+     */
+    private function writeRelations(Termek $termek, array $row, array $columns, array $opts, array &$report)
+    {
+        if (!$opts['editrelaciok']) {
+            return;
+        }
+        $cimkeChanged = false;
+        $faChanged = false;
+        foreach (self::relationColumns() as $logical => $definicio) {
+            $ertek = $this->cell($row, $columns, $logical);
+            if ($ertek === '') {
+                continue;
+            }
+            switch ($definicio['cel']) {
+                case 'termekcimke':
+                    $cimkeChanged = $this->writeCimke($termek, $ertek, $definicio, $report) || $cimkeChanged;
+                    break;
+                case 'termekfa':
+                    $faChanged = $this->writeFa($termek, $ertek, $definicio, $report) || $faChanged;
+                    break;
+            }
+        }
+        if ($cimkeChanged) {
+            $report['cimke_irva']++;
+        }
+        if ($faChanged) {
+            $report['kategoria_irva']++;
+        }
+    }
+
+    /**
+     * Az útvonalból (`Elektronika|Televíziók|LCD`) felépíti a hiányzó fa-szinteket, és a termékre
+     * a levelet teszi. A legfelső szint szülője a gyökér.
+     *
+     * @return bool változott-e a termék besorolása
+     */
+    private function writeFa(Termek $termek, $ertek, array $definicio, array &$report)
+    {
+        $mezo = $definicio['mezo'];
+        $entitas = self::TREEFIELDS[$mezo];
+        $elvalaszto = (string)($definicio['szintelvalaszto'] ?? '') ?: '|';
+
+        $szintek = array_values(array_filter(
+            array_map('trim', explode($elvalaszto, $ertek)),
+            static fn($v) => $v !== ''
+        ));
+        if (!$szintek) {
+            return false;
+        }
+
+        $node = $this->getFaRoot($entitas);
+        foreach ($szintek as $nev) {
+            $node = $this->getFaChild($entitas, $node, mb_substr($nev, 0, 255), $report);
+        }
+
+        $getter = 'get' . ucfirst($mezo);
+        if ($termek->$getter() === $node) {
+            return false;
+        }
+        // a setter a karkodot is átmásolja – ezért kell a friss csomópontnak már kész karkod
+        $termek->{'set' . ucfirst($mezo)}($node);
+        return true;
+    }
+
+    /** A gyökér az egyetlen szülő nélküli sor. Nem hozzuk létre: az a törzs alapja, nem importadat. */
+    private function getFaRoot($entitas)
+    {
+        if (isset($this->faRootCache[$entitas])) {
+            return $this->faRootCache[$entitas];
+        }
+        $root = \mkw\store::getEm()->getRepository($entitas)->findOneBy(['parent' => null], ['id' => 'ASC']);
+        if (!$root) {
+            throw new \Exception(sprintf(t('A(z) %s fának nincs gyökere, a kategóriák nem építhetők fel.'), $entitas));
+        }
+        return $this->faRootCache[$entitas] = $root;
+    }
+
+    /**
+     * Egy szint a szülő alatt, névre keresve. A `karkod` a szülőé + az öt jegyre töltött saját
+     * azonosító – ugyanaz a képlet, mint a `TermekFaRepository::regenerateKarKod()`-ban.
+     */
+    private function getFaChild($entitas, $parent, $nev, array &$report)
+    {
+        $kulcs = $entitas . '|' . $parent->getId() . '|' . $nev;
+        if (isset($this->faCache[$kulcs])) {
+            return $this->faCache[$kulcs];
+        }
+        $em = \mkw\store::getEm();
+        $node = $em->getRepository($entitas)->findOneBy(['parent' => $parent, 'nev' => $nev], ['id' => 'ASC']);
+        if (!$node) {
+            $node = new $entitas();
+            $node->setNev($nev);
+            // a `_l1`-nek nincs visszaesése a magyar mezőre, üresen az idegen nyelvű bolt
+            // névtelen kategóriát mutatna – az UNAS név jobb, mint a semmi
+            $node->setNevL1($nev);
+            $node->setParent($parent);
+            $em->persist($node);
+            // az azonosító kell a karkodhoz, azt pedig a setParent hibásan, tömés nélkül állította be
+            $em->flush();
+            $node->setKarkod($parent->getKarkod() . sprintf('%05d', $node->getId()));
+            $em->flush();
+            $report['fa_letrehozva']++;
+        }
+        return $this->faCache[$kulcs] = $node;
+    }
+
+    /** @return bool változott-e a termék címkézése */
+    private function writeCimke(Termek $termek, $ertek, array $definicio, array &$report)
+    {
+        $nevek = $this->cimkeValues($ertek, $definicio);
+        if (!$nevek) {
+            return false;
+        }
+        $kategoria = $this->getCimkekategoria($definicio['cimkekategoria'], $report);
+        $ujak = [];
+        foreach ($nevek as $nev) {
+            $ujak[] = $this->getCimke($nev, $kategoria, $report);
+        }
+
+        $changed = false;
+        if (!empty($definicio['csere'])) {
+            // csak EBBŐL a kategóriából, és csak amit nem teszünk vissza: különben minden
+            // ismételt futás fölöslegesen újraírná a kapcsolótábla sorait
+            foreach ($termek->getCimkek() as $regi) {
+                if ($this->sameCimkekategoria($regi, $kategoria) && !in_array($regi, $ujak, true)) {
+                    $termek->removeCimke($regi);
+                    $changed = true;
+                }
+            }
+        }
+        foreach ($ujak as $cimke) {
+            if (!$termek->getCimkek()->contains($cimke)) {
+                $termek->addCimke($cimke);
+                $changed = true;
+            }
+        }
+        return $changed;
+    }
+
+    /**
+     * Az azonosító itt nem elég: a most létrehozott kategóriáknak még nincs id-jük, és két
+     * `null` egyenlőnek látszana – így egy másik oszlop imént felrakott címkéjét szednénk le.
+     */
+    private function sameCimkekategoria($cimke, Termekcimkekat $kategoria)
+    {
+        $sajat = $cimke->getKategoria();
+        if (!$sajat) {
+            return false;
+        }
+        // menetenként egy példány kategórianevenként, tehát az azonosság a megbízható összevetés
+        return $sajat === $kategoria || ($kategoria->getId() && $sajat->getId() === $kategoria->getId());
+    }
+
+    /** @return string[] a cellából kiolvasott címkenevek */
+    private function cimkeValues($ertek, array $definicio)
+    {
+        $elvalaszto = (string)($definicio['elvalaszto'] ?? '');
+        $darabok = $elvalaszto !== '' ? explode($elvalaszto, $ertek) : [$ertek];
+
+        $nevek = [];
+        foreach ($darabok as $darab) {
+            if (!empty($definicio['utolsoszint'])) {
+                // „Elektronika|Televíziók|LCD" – a `|` itt a kategória SZINTJEIT választja el
+                $szintek = array_filter(array_map('trim', explode('|', $darab)), static fn($v) => $v !== '');
+                $darab = $szintek ? (string)end($szintek) : '';
+            }
+            $darab = trim($darab);
+            if ($darab !== '' && !in_array($darab, $nevek, true)) {
+                $nevek[] = mb_substr($darab, 0, 255);
+            }
+        }
+        return $nevek;
+    }
+
+    /**
+     * A kategória- és címke-példányok menetenként gyorsítótárazva, de a gyorsítótár a
+     * `flush()` + `clear()` párosnál eldobódik – a kiürített EntityManager után a bennragadt
+     * példány már detached volna, és az `addCimke()` némán elveszne.
+     *
+     * @return \Entities\Termekcimkekat
+     */
+    private function getCimkekategoria($nev, array &$report)
+    {
+        $nev = trim((string)$nev);
+        if (isset($this->cimkekatCache[$nev])) {
+            return $this->cimkekatCache[$nev];
+        }
+        $em = \mkw\store::getEm();
+        $kategoria = $em->getRepository(Termekcimkekat::class)->findOneBy(['nev' => $nev]);
+        if (!$kategoria) {
+            $kategoria = new Termekcimkekat();
+            $kategoria->setNev($nev);
+            $kategoria->setLathato(true);
+            $em->persist($kategoria);
+            $report['cimkekat_letrehozva']++;
+        }
+        return $this->cimkekatCache[$nev] = $kategoria;
+    }
+
+    /** @return \Entities\Termekcimketorzs */
+    private function getCimke($nev, Termekcimkekat $kategoria, array &$report)
+    {
+        $kulcs = $kategoria->getNev() . '|' . $nev;
+        if (isset($this->cimkeCache[$kulcs])) {
+            return $this->cimkeCache[$kulcs];
+        }
+        $em = \mkw\store::getEm();
+        // az új kategóriának még nincs id-je, tehát keresni sincs mit
+        $cimke = $kategoria->getId()
+            ? $em->getRepository(Termekcimketorzs::class)->getByNevAndKategoria($nev, $kategoria)
+            : false;
+        if (!$cimke) {
+            $cimke = new Termekcimketorzs();
+            $cimke->setNev($nev);
+            $cimke->setKategoria($kategoria);
+            $em->persist($cimke);
+            $report['cimke_letrehozva']++;
+        }
+        return $this->cimkeCache[$kulcs] = $cimke;
+    }
+
     /** Üres értékkel nem hívjuk a settert: a törzs értékét nem törölhetjük. */
     private function setIfNotEmpty(Termek $termek, $setter, $value, $maxLength = 0)
     {
@@ -1129,7 +1427,8 @@ class UnasTermekImportService
      * változat-oszlopokat, és csak innen derül ki, van-e egyáltalán változata a terméknek.
      *
      * @return array{keres: array, nyers: string, nyersteljes: bool, dumpfajl: string|null,
-     *               termekek: array, tobbtermekes: bool, keret: array}
+     *               termekek: array, tobbtermekes: bool,
+     *               keret: array{egy: int, tobb: int, limitegy: int, limittobb: int|null}}
      */
     public function queryProduct(array $opts)
     {
@@ -1184,7 +1483,7 @@ class UnasTermekImportService
             'termekek' => $termekek,
             // a több termékes getProduct órás kerete jóval szűkebb (PREMIUM 30 vs. 1000)
             'tobbtermekes' => !$id && count($sku) > 1,
-            'keret' => ['felhasznalt' => $api->rateCount('getProduct')],
+            'keret' => $api->rateInfo('getProduct'),
         ];
     }
 
@@ -1281,6 +1580,11 @@ class UnasTermekImportService
         try {
             $em->flush();
             $em->clear();
+            // a kiürítés után a gyorsítótárazott példányok detached-ek lennének
+            $this->cimkekatCache = [];
+            $this->cimkeCache = [];
+            $this->faRootCache = [];
+            $this->faCache = [];
             return true;
         } catch (\Exception $e) {
             $this->addError($report, $e->getMessage());
@@ -1439,7 +1743,8 @@ class UnasTermekImportService
 
         $columns = [];
         $missing = [];
-        foreach (self::COLUMNS as $logical => $valtozatok) {
+        foreach (self::COLUMNS as $logical => $definicio) {
+            $valtozatok = self::columnHeaders($definicio);
             foreach ($valtozatok as $valtozat) {
                 $n = $this->normalizeColumnName($valtozat);
                 if (isset($normHeader[$n])) {
@@ -1450,6 +1755,61 @@ class UnasTermekImportService
             $missing[] = $valtozatok[0];
         }
         return [$columns, $missing];
+    }
+
+    /** A fejléc-alternatívák mindkét sorformából. */
+    private static function columnHeaders($definicio)
+    {
+        return isset($definicio['fejlec']) ? (array)$definicio['fejlec'] : (array)$definicio;
+    }
+
+    /**
+     * A más entitásba menő oszlopok. Külön metódus, mert a `COLUMNS` konstansból nem derül ki
+     * magától, melyik sor melyik: a `fejlec` kulcs a jelölő.
+     *
+     * @return array logikai név => definíció
+     */
+    private static function relationColumns()
+    {
+        $result = [];
+        foreach (self::COLUMNS as $logical => $definicio) {
+            if (isset($definicio['fejlec'], $definicio['cel'])) {
+                $result[$logical] = $definicio;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * A `COLUMNS` hibás sora programozói hiba, nem adathiba – az első sor feldolgozása előtt
+     * derüljön ki, ne egy fél import után.
+     *
+     * @throws \Exception
+     */
+    private function checkRelationColumns()
+    {
+        foreach (self::relationColumns() as $logical => $definicio) {
+            if (!in_array($definicio['cel'], self::RELATIONTARGETS, true)) {
+                throw new \Exception(sprintf(
+                    t('A(z) "%s" oszlop ismeretlen célt kér: %s'),
+                    $logical,
+                    $definicio['cel']
+                ));
+            }
+            if ($definicio['cel'] === 'termekcimke' && trim((string)($definicio['cimkekategoria'] ?? '')) === '') {
+                throw new \Exception(sprintf(
+                    t('A(z) "%s" címke-oszlophoz nincs megadva címkekategória (cimkekategoria).'),
+                    $logical
+                ));
+            }
+            if ($definicio['cel'] === 'termekfa' && !isset(self::TREEFIELDS[$definicio['mezo'] ?? ''])) {
+                throw new \Exception(sprintf(
+                    t('A(z) "%s" fa-oszlop "mezo" beállítása hiányzik vagy ismeretlen. Használható: %s'),
+                    $logical,
+                    implode(', ', array_keys(self::TREEFIELDS))
+                ));
+            }
+        }
     }
 
     private function normalizeColumnName($nev)
@@ -1486,6 +1846,7 @@ class UnasTermekImportService
             'sortol' => max(0, (int)($opts['sortol'] ?? 0)),
             'sorig' => max(0, (int)($opts['sorig'] ?? 0)),
             'editmezok' => !empty($opts['editmezok']),
+            'editrelaciok' => !empty($opts['editrelaciok']),
             'ujraletoltes' => !empty($opts['ujraletoltes']),
             'kepek' => !empty($opts['kepek']),
             'kepekujra' => !empty($opts['kepekujra']),
@@ -1632,6 +1993,11 @@ class UnasTermekImportService
             'kihagyva_unasid' => 0,
             'valtozat_parositva' => 0,
             'mezo_irva' => 0,
+            'cimke_irva' => 0,
+            'cimke_letrehozva' => 0,
+            'cimkekat_letrehozva' => 0,
+            'kategoria_irva' => 0,
+            'fa_letrehozva' => 0,
             'kep_letoltve' => 0,
             'kep_kihagyva' => 0,
             // ahány kép ténylegesen a termékhez került (főkép + TermekKep sor)

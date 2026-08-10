@@ -57,7 +57,7 @@ class TermekFa
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
 
-    /** @ORM\Column(type="string",length=255,nullable=false) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $nev_l1;
 
     /** @ORM\Column(type="integer",nullable=true) */

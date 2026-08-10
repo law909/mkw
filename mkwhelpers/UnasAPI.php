@@ -35,17 +35,50 @@ class UnasAPI
     /**
      * Órás korlátok a szűkebb (PREMIUM) csomag szerint; a limiter a 90%-uknál fékez.
      * A `login` sor a SIKERTELEN hívásokra vonatkozik, ezért azt csak hibánál léptetjük.
+     *
+     * Ahol két szám áll, a hívás MÉRETE dönt: a `hatar`-ig (egy tétel a `get*`, 100 tétel a
+     * `set*` végpontokon) a bő keret él, fölötte a szűk. A két tier KÜLÖN számlálóban fut, mert
+     * az UNAS is külön méri őket – közös vödörben egyetlen kötegelt hívás vinné el a több száz
+     * egyterméses lekérdezés keretét.
      */
     private const HOURLYLIMIT = [
         'login' => 5,
         'getProductDB' => 10,
-        'getProduct' => 30,
-        'getOrder' => 30,
-        'setOrder' => 30,
-        'getStock' => 30,
-        'setStock' => 30,
-        'getCategory' => 30,
+        'getProduct' => ['hatar' => 1, 'kis' => 1000, 'nagy' => 30],
+        'setProduct' => ['hatar' => 100, 'kis' => 1000, 'nagy' => 30],
+        'getStock' => ['hatar' => 1, 'kis' => 1000, 'nagy' => 30],
+        'setStock' => ['hatar' => 100, 'kis' => 1000, 'nagy' => 30],
+        'getOrder' => ['hatar' => 1, 'kis' => 1000, 'nagy' => 30],
+        'setOrder' => ['hatar' => 100, 'kis' => 1000, 'nagy' => 30],
+        'getCategory' => ['hatar' => 1, 'kis' => 1000, 'nagy' => 30],
+        'setCategory' => ['hatar' => 100, 'kis' => 1000, 'nagy' => 30],
         'default' => 2000,
+    ];
+
+    /** A több tételes hívások számlálójának utótagja. */
+    private const MULTISUFFIX = '#tobb';
+
+    /**
+     * A `get*` hívás tételszáma ezekből a szűrőkből olvasható ki (vesszős lista). A sorrend
+     * számít: az UNAS az `Id`-t kitöltve az `Sku`-t figyelmen kívül hagyja, tehát az elsőként
+     * megtalált mező dönt. Ha egyik sincs kitöltve, a hívás szűrő nélküli – az a nagy tier.
+     */
+    private const RATEFILTER = [
+        'getProduct' => ['Id', 'Sku'],
+        'getStock' => ['Id', 'Sku'],
+        'getOrder' => ['Key', 'Id'],
+        'getCategory' => ['Id'],
+    ];
+
+    /**
+     * A `set*` hívások tétellistájának kulcsa. Végpontonként külön, mert ugyanaz a név mást
+     * jelenthet: a `getOrder`-ben az `Order` RENDEZÉST kér, nem rendeléslistát.
+     */
+    private const RATEBATCH = [
+        'setProduct' => 'Product',
+        'setStock' => 'Product',
+        'setOrder' => 'Order',
+        'setCategory' => 'Category',
     ];
 
     /**
@@ -276,7 +309,7 @@ class UnasAPI
             \mkw\store::writelog('callAPI(' . $endpoint . ') kihagyva: karbantartási ablak', self::LOGFILE);
             return false;
         }
-        if (!$this->rateOk($endpoint)) {
+        if (!$this->rateOk($endpoint, $params)) {
             return false;
         }
 
@@ -286,7 +319,8 @@ class UnasAPI
         }
 
         $req = $this->buildXml($params, self::ROOTELEMENT[$endpoint] ?? 'Params');
-        $this->rateInc($endpoint);
+        // ugyanaz a vödör, amit a rateOk ellenőrzött – a hívás mérete közben nem változik
+        $this->rateInc($this->rateBucket($endpoint, $params)['kulcs']);
         $response = $this->httpPost('/' . $endpoint, $req, $token);
 
         \mkw\store::writelog('callAPI(' . $endpoint . ') kérés: ' . $this->maskXml($req), self::LOGFILE);
@@ -605,22 +639,24 @@ class UnasAPI
     // ------------------------------------------------------------------
 
     /** A küszöb a korlát 90%-a: a maradék a kézi próbálkozásoké. */
-    public function rateOk($endpoint)
+    public function rateOk($endpoint, array $params = [])
     {
-        $limit = self::HOURLYLIMIT[$endpoint] ?? self::HOURLYLIMIT['default'];
-        $threshold = (int)floor($limit * 0.9);
+        $bucket = $this->rateBucket($endpoint, $params);
+        $threshold = (int)floor($bucket['limit'] * 0.9);
         if ($threshold < 1) {
             $threshold = 1;
         }
-        $used = $this->rateCount($endpoint);
+        $used = $this->rateCount($endpoint, $bucket['tobb']);
         if ($used >= $threshold) {
+            $megnevezes = $endpoint . ($bucket['tobb'] ? ' (több tételes)' : '');
             $this->addError(
                 'RATELIMIT',
-                'Az UNAS órás hívásszám korlátja elérve (' . $endpoint . ': ' . $used . '/' . $limit
+                'Az UNAS órás hívásszám korlátja elérve (' . $megnevezes . ': ' . $used . '/' . $bucket['limit']
                 . '). Próbálja újra a következő órában.'
             );
             \mkw\store::writelog(
-                'rate limit fék: ' . $endpoint . ' ' . $used . '/' . $limit . ' (küszöb ' . $threshold . ')',
+                'rate limit fék: ' . $megnevezes . ' ' . $used . '/' . $bucket['limit']
+                . ' (küszöb ' . $threshold . ')',
                 self::LOGFILE
             );
             $this->writeErrorLog($endpoint);
@@ -629,10 +665,75 @@ class UnasAPI
         return true;
     }
 
-    public function rateCount($endpoint)
+    /** @param bool $tobbtetel a több tételes hívások külön számlálóban futnak */
+    public function rateCount($endpoint, $tobbtetel = false)
     {
         $data = $this->readRateLimit();
-        return (int)($data['db'][$endpoint] ?? 0);
+        return (int)($data['db'][$endpoint . ($tobbtetel ? self::MULTISUFFIX : '')] ?? 0);
+    }
+
+    /**
+     * A végpont mindkét tierjének állása – a `limittobb` null, ha a végpontnak egy korlátja van.
+     *
+     * @return array{egy: int, tobb: int, limitegy: int, limittobb: int|null}
+     */
+    public function rateInfo($endpoint)
+    {
+        $rule = self::HOURLYLIMIT[$endpoint] ?? self::HOURLYLIMIT['default'];
+        return [
+            'egy' => $this->rateCount($endpoint),
+            'tobb' => $this->rateCount($endpoint, true),
+            'limitegy' => (int)(is_array($rule) ? $rule['kis'] : $rule),
+            'limittobb' => is_array($rule) ? (int)$rule['nagy'] : null,
+        ];
+    }
+
+    /**
+     * A hívás méretéhez tartozó számláló-kulcs és korlát.
+     *
+     * @return array{kulcs: string, limit: int, tobb: bool}
+     */
+    private function rateBucket($endpoint, array $params)
+    {
+        $rule = self::HOURLYLIMIT[$endpoint] ?? self::HOURLYLIMIT['default'];
+        if (!is_array($rule)) {
+            return ['kulcs' => $endpoint, 'limit' => (int)$rule, 'tobb' => false];
+        }
+        $tobb = $this->itemCount($endpoint, $params) > $rule['hatar'];
+        return [
+            'kulcs' => $endpoint . ($tobb ? self::MULTISUFFIX : ''),
+            'limit' => (int)($tobb ? $rule['nagy'] : $rule['kis']),
+            'tobb' => $tobb,
+        ];
+    }
+
+    /**
+     * Hány tételről szól a hívás. A szűrő nélküli `get*` (pl. dátumtartományos `getOrder`) az
+     * egész listát hozza, tehát biztosan a nagy tierbe tartozik.
+     */
+    private function itemCount($endpoint, array $params)
+    {
+        if (isset(self::RATEBATCH[$endpoint])) {
+            $items = $params[self::RATEBATCH[$endpoint]] ?? null;
+            if (is_array($items)) {
+                return array_is_list($items) ? count($items) : 1;
+            }
+            return $items === null || $items === '' ? 0 : 1;
+        }
+        if (isset(self::RATEFILTER[$endpoint])) {
+            foreach (self::RATEFILTER[$endpoint] as $key) {
+                $value = trim((string)($params[$key] ?? ''));
+                if ($value === '') {
+                    continue;
+                }
+                return count(array_filter(
+                    array_map('trim', explode(',', $value)),
+                    static fn($v) => $v !== ''
+                ));
+            }
+            return PHP_INT_MAX;
+        }
+        return 1;
     }
 
     private function rateInc($endpoint)

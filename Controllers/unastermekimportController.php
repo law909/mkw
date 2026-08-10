@@ -236,6 +236,7 @@ class unastermekimportController extends \mkwhelpers\Controller
             'sortol' => $this->params->getIntRequestParam('sortol', 0),
             'sorig' => $this->params->getIntRequestParam('sorig', 0),
             'editmezok' => $this->params->getBoolRequestParam('editmezok', false),
+            'editrelaciok' => $this->params->getBoolRequestParam('editrelaciok', false),
             'kepek' => $this->params->getBoolRequestParam('kepek', false),
             'kepekujra' => $this->params->getBoolRequestParam('kepekujra', false),
             'kepforras' => $this->params->getStringRequestParam('kepforras', 'auto'),

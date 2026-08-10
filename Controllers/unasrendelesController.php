@@ -317,12 +317,16 @@ class unasrendelesController extends \mkwhelpers\Controller
         );
     }
 
+    /** Végpontonként két korlát él, a hívás méretétől függően – mindkettő állását mutatjuk. */
     private function rateStatus()
     {
         $api = (new UnasService())->getApi();
         $result = [];
         foreach (['getOrder', 'setOrder', 'getOrderStatus', 'getMethod'] as $endpoint) {
-            $result[$endpoint] = $api->rateCount($endpoint);
+            $info = $api->rateInfo($endpoint);
+            $result[$endpoint] = $info['limittobb'] === null
+                ? $info['egy'] . '/' . $info['limitegy']
+                : $info['egy'] . '/' . $info['limitegy'] . ' + ' . $info['tobb'] . '/' . $info['limittobb'];
         }
         return $result;
     }

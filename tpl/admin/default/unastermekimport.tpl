@@ -117,6 +117,12 @@
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
+                            <label for="EditrelaciokEdit">{at('Címkék és kategóriák írása')}:</label>
+                            <input id="EditrelaciokEdit" name="editrelaciok" type="checkbox">
+                            <span>{at('A gyártó címkeként, a kategória a termékfába kerül – a hiányzó címke, címkekategória és fa-szint létrejön. Az UNAS kategória-útvonala teljes egészében felépül, a legfelső szint a gyökér alá. Üres UNAS érték itt sem töröl.')}</span>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
                             <label for="KepekEdit">{at('Képek letöltése')}:</label>
                             <input id="KepekEdit" name="kepek" type="checkbox">
                         </div>
