@@ -1,6 +1,7 @@
 <?php
 
-$router->map('GET', '/hiba', 'errortestController#run', 'mainhiba');
+// Csak akkor csinál bármit, ha a config.ini hiba.key értéke egyezik a ?key= paraméterrel.
+$router->map('GET', '/hiba', 'errortestController#publicRun', 'mainhiba');
 
 
 if (\mkw\store::isMindentkapni()) {
