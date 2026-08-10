@@ -3209,12 +3209,34 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function calcMinboltikeszlet($raktarid = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcMinboltikeszlet', [$raktarid]);
+
+        return parent::calcMinboltikeszlet($raktarid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setMinboltikeszlet($minboltikeszlet)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMinboltikeszlet', [$minboltikeszlet]);
 
         return parent::setMinboltikeszlet($minboltikeszlet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAvailableStock($datum = NULL, $raktarid = NULL, $kivevebiz = NULL, $clamp = true, $ignoreminkeszlet = false, $ignorefoglalas = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAvailableStock', [$datum, $raktarid, $kivevebiz, $clamp, $ignoreminkeszlet, $ignorefoglalas]);
+
+        return parent::getAvailableStock($datum, $raktarid, $kivevebiz, $clamp, $ignoreminkeszlet, $ignorefoglalas);
     }
 
     /**

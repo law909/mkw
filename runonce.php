@@ -1293,6 +1293,41 @@ if ($DBVersion < '0112') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0112');
 }
+
+if ($DBVersion < '0113') {
+    // a mai globális min.bolti készlet az alapraktár cellájába kerül, hogy a raktáras mátrix
+    // a jelenlegi állapotot mutassa; a globális oszlop marad a többi raktár fallbackje
+    $conn = \mkw\store::getEm()->getConnection();
+    // a runonce az első admin kérésen fut, ami megelőzheti a kézi ./updateschema.sh-t:
+    // hiányzó táblára az INSERT minden admin kérést fatalra vinne
+    $tablakvannak = $conn->executeQuery(
+        'SELECT COUNT(*) FROM information_schema.TABLES'
+        . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (?, ?)',
+        ['termekminboltikeszlet', 'termekvaltozatminboltikeszlet']
+    )->fetchOne();
+    if ($tablakvannak == 2) {
+        $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
+        $vanraktar = $raktarid
+            ? $conn->executeQuery('SELECT COUNT(*) FROM raktar WHERE id = ?', [$raktarid])->fetchOne()
+            : 0;
+        if ($vanraktar) {
+            // created kézzel, mert a nyers SQL megkerüli a Gedmo Timestampable-t
+            $conn->executeStatement(
+                'INSERT IGNORE INTO termekminboltikeszlet (termek_id, raktar_id, minboltikeszlet, created)'
+                . ' SELECT t.id, ?, t.minboltikeszlet, NOW() FROM termek t'
+                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)',
+                [$raktarid]
+            );
+            $conn->executeStatement(
+                'INSERT IGNORE INTO termekvaltozatminboltikeszlet (termekvaltozat_id, raktar_id, minboltikeszlet, created)'
+                . ' SELECT v.id, ?, v.minboltikeszlet, NOW() FROM termekvaltozat v'
+                . ' WHERE (v.minboltikeszlet IS NOT NULL) AND (v.minboltikeszlet <> 0)',
+                [$raktarid]
+            );
+        }
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0113');
+    }
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

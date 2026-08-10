@@ -1407,7 +1407,7 @@ class exportController extends \mkwhelpers\Controller
                         'valtertek1' => $valtozat->getErtek1(),
                         'valtertek2' => $valtozat->getErtek2(),
                         'vonalkod' => $valtozat->getVonalkod(),
-                        'keszlet' => max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0),
+                        'keszlet' => $valtozat->getAvailableStock(),
                         'retailprice' => $termekobj->getKedvezmenynelkuliNettoAr($valtozat, $fcmoto),
                         'discountprice' => $termekobj->getNettoAr($valtozat, $fcmoto),
                     ];
@@ -1574,7 +1574,7 @@ class exportController extends \mkwhelpers\Controller
                             'B' . $sor,
                             strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret()
                         )
-                        ->setCellValue('C' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
+                        ->setCellValue('C' . $sor, $valtozat->getAvailableStock());
                     $sor++;
                 }
             }
@@ -1631,7 +1631,7 @@ class exportController extends \mkwhelpers\Controller
                 foreach ($valtozatok as $valtozat) {
                     $excel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('B' . $sor, max($valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg() - $valtozat->calcMinboltikeszlet(), 0));
+                        ->setCellValue('B' . $sor, $valtozat->getAvailableStock());
                     $sor++;
                 }
             }

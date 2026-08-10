@@ -17,6 +17,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
 {
 
     private $datumstr;
+    private $raktar;
     private $raktarnev;
     private $nevfilter;
     private $foglalasstr;
@@ -53,6 +54,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
     {
         $this->raktarnev = t('Minden raktár');
         $raktar = $this->params->getIntRequestParam('raktar');
+        $this->raktar = $raktar;
         if ($raktar) {
             $r = $this->getRepo(Raktar::class)->find($raktar);
             if ($r) {
@@ -143,14 +145,35 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $termekfilter = $this->createTermekFilter();
 
+        $mkparams = [];
         $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
         if ($minkeszletszamit) {
             $this->minkeszletstr = 'Min.készlet számít';
-            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany) - IF((t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet<>0), t.minboltikeszlet, _xx.minboltikeszlet)'
+            // A feloldási létra SQL-be írt mása (a másik implementáció:
+            // \Services\MinBoltiKeszletService::getMinKeszlet). A NULLIF a „ha nem nulla"
+            // lépcső: a DECIMAL "0.00" numerikusan nulla, de nem NULL.
+            if ($this->raktar) {
+                $minexpr = 'COALESCE('
+                    . 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
+                    . ' WHERE tmk.termek_id = _xx.termek_id AND tmk.raktar_id = :mkraktar), 0),'
+                    . 'NULLIF((SELECT vmk.minboltikeszlet FROM termekvaltozatminboltikeszlet vmk'
+                    . ' WHERE vmk.termekvaltozat_id = _xx.id AND vmk.raktar_id = :mkraktar), 0),'
+                    . 'NULLIF(t.minboltikeszlet, 0),'
+                    . '_xx.minboltikeszlet,'
+                    . '0)';
+                // csak ebben az ágban köthető: a createNativeQuery hibát dob olyan paraméterre,
+                // ami nincs benne az SQL-ben
+                $mkparams = ['mkraktar' => $this->raktar];
+            } else {
+                $minexpr = 'COALESCE(NULLIF(t.minboltikeszlet, 0), _xx.minboltikeszlet, 0)';
+            }
+            // a minimum a külső SELECT-ben korrelál a külső _xx / t aliasra, ezért tűnt el
+            // az aggregáló alkérdésből az azt árnyékoló `LEFT JOIN termek t`
+            $keszletsql = ' ((SELECT SUM(bt.mennyiseg * bt.irany)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . ' LEFT JOIN termek t ON t.id=bt.termek_id'
-                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) '
+                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) )'
+                . ' - ' . $minexpr . ') '
                 . 'AS keszlet';
         } else {
             $this->minkeszletstr = '';
@@ -172,7 +195,11 @@ class keszletlistaController extends \mkwhelpers\MattableController
             $rsm
         );
 
-        $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
+        $q->setParameters(array_merge_recursive(
+            $filter->getQueryParameters('p'),
+            $termekfilter->getQueryParameters('r'),
+            $mkparams
+        ));
         $d = $q->getScalarResult();
 
         $nettobrutto = $this->params->getStringRequestParam('nettobrutto');

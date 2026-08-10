@@ -197,10 +197,11 @@ class boltieladasController extends \mkwhelpers\Controller
         }
         $cikkszam = ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam();
 
-        // Raktárkészlet a bolti eladás alapraktárában – "van-e raktáron".
+        // Szabad készlet a bolti eladás alapraktárában – "van-e raktáron". A polcon tartandó
+        // minimum a raktár saját értékével jön le, lásd \Services\MinBoltiKeszletService.
         $raktar = $this->getDefaultRaktar();
         $raktarid = $raktar ? $raktar->getId() : null;
-        $keszlet = $valtozat ? $valtozat->getKeszlet(null, $raktarid) : $termek->getKeszlet(null, $raktarid);
+        $keszlet = ($valtozat ?: $termek)->getAvailableStock(null, $raktarid);
 
         $view = $this->createView('boltieladastetel.tpl');
         $view->setVar('termekid', $termek->getId());

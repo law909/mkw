@@ -333,10 +333,7 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getSzinId()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getSzinId()]['keszlet'] += max(
-                                    $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(),
-                                    0
-                                );
+                                $vtt[$valt->getSzinId()]['keszlet'] += $valt->getAvailableStock();
                                 $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || (($valt->getBeerkezesdatumStr(
                                     )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getSzinId()]['link'] = \mkw\store::getRouter()->generate(
@@ -415,7 +412,8 @@ class mainController extends \mkwhelpers\Controller
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto() && $valt->getXLathato()) {
                     if ($valt->getSzinId() == $szinid) {
-                        $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet();
+                        // a sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
+                        $valtkeszlet = $valt->getAvailableStock(null, null, null, false);
                         $t['kepurllarge'] = $valt->getKepurlLarge();
                         $t['kepurlmedium'] = $valt->getKepurlMedium();
                         $vtt[] = [

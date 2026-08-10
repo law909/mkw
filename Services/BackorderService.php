@@ -20,18 +20,10 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             return false;
         }
         $v = $tetel->getTermekvaltozat();
-        if ($nominkeszlet && $t->isInTermekKategoria($nominkeszletkat)) {
-            if ($v) {
-                $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($biz->getId());
-            } else {
-                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($biz->getId());
-            }
-        } elseif ($v) {
-            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($biz->getId()) - $v->calcMinboltikeszlet();
-        } else {
-            $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($biz->getId()) - $t->getMinboltikeszlet();
-        }
-        return max($keszlet, 0);
+        // kategória nélkül a kapcsoló nem jelent semmit – beállított kategória nélküli
+        // nominkeszlet nem kapcsolhatja ki a minimumot minden termékre
+        $ignoreminkeszlet = $nominkeszlet && $nominkeszletkat && $t->isInTermekKategoria($nominkeszletkat);
+        return ($v ?: $t)->getAvailableStock(null, null, $biz->getId(), true, $ignoreminkeszlet);
     }
 
     /**

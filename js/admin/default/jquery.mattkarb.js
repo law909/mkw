@@ -94,6 +94,12 @@
                     }
                     return ret;
                 },
+                beforeSubmit: function (arr, form, opt) {
+                    if (typeof setup.beforeSubmit === 'function') {
+                        return setup.beforeSubmit.call(this, arr, form, opt);
+                    }
+                    return true;
+                },
                 success: function (data) {
                     if (typeof setup.beforeHide === 'function') {
                         setup.beforeHide.call(this);

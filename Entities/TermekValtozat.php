@@ -23,8 +23,8 @@ use mkwhelpers\FilterDescriptor;
 class TermekValtozat
 {
 
-    public $keszletinfo = false;
-    public $foglalasinfo = false;
+    private $keszletinfo = false;
+    private $foglalasinfo = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -338,7 +338,11 @@ class TermekValtozat
         if (!$this->keszletinfo) {
             $this->calcKeszletInfo($datum, $raktarid);
         }
-        return $this->keszletinfo['mozgasdb'];
+        $r = $this->keszletinfo['mozgasdb'];
+        // mint a getKeszlet(): a cache-t el kell dobni, különben egy másik $datum/$raktarid
+        // paraméterrel érkező következő hívás a szűretlen értéket kapná vissza
+        $this->keszletinfo = false;
+        return $r;
     }
 
     public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
@@ -356,7 +360,7 @@ class TermekValtozat
         return $r;
     }
 
-    public function getFoglaltMennyiseg($kivevebiz = null)
+    public function getFoglaltMennyiseg($kivevebiz = null, $datum = null, $raktarid = null)
     {
         if (\mkw\store::isFoglalas()) {
             if (is_a($kivevebiz, 'Bizonylatfej')) {
@@ -364,13 +368,37 @@ class TermekValtozat
             }
             $k = 0;
             if (!$this->foglalasinfo) {
-                $this->calcFoglalasInfo($kivevebiz);
+                $this->calcFoglalasInfo($kivevebiz, $datum, $raktarid);
             }
             $r = $this->foglalasinfo['foglalas'];
             $this->foglalasinfo = false;
             return $r;
         }
         return 0;
+    }
+
+    /**
+     * Szabad készlet: készlet − foglalt − min. bolti készlet.
+     * A számítás egyetlen helyen él, lásd \Services\MinBoltiKeszletService::calcAvailableStock().
+     */
+    public function getAvailableStock(
+        $datum = null,
+        $raktarid = null,
+        $kivevebiz = null,
+        $clamp = true,
+        $ignoreminkeszlet = false,
+        $ignorefoglalas = false
+    ) {
+        return \Services\MinBoltiKeszletService::calcAvailableStock(
+            $this->getTermek(),
+            $this,
+            $datum,
+            $raktarid,
+            $kivevebiz,
+            $clamp,
+            $ignoreminkeszlet,
+            $ignorefoglalas
+        );
     }
 
     public function getId()
@@ -964,13 +992,9 @@ class TermekValtozat
         return $this->minboltikeszlet;
     }
 
-    public function calcMinboltikeszlet()
+    public function calcMinboltikeszlet($raktarid = null)
     {
-        $tmbk = $this->getTermek()->getMinboltikeszlet() * 1;
-        if ($tmbk) {
-            return $tmbk;
-        }
-        return $this->minboltikeszlet;
+        return \Services\MinBoltiKeszletService::getMinKeszlet($this->getTermek(), $this, $raktarid);
     }
 
     /**

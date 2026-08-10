@@ -64,7 +64,8 @@ class listaController extends \mkwhelpers\Controller
         foreach ($keszletres as $kesz) {
             $valtozat = $rep->find($kesz['termekvaltozat_id']);
             if ($valtozat) {
-                $boltikeszlet = $valtozat->getKeszlet(null, $raktarid);
+                // a riport a bolt polckészletét nézi, nem a szabad készletet: a foglalás nem számít
+                $boltikeszlet = $valtozat->getAvailableStock(null, $raktarid, null, true, false, true);
                 if ($boltikeszlet <= $minkeszlet) {
                     $raktar = $raktarrepo->find($kesz['raktar_id']);
                     $termek = $termekrepo->find($kesz['termek_id']);

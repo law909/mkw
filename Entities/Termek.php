@@ -705,8 +705,7 @@ class Termek
                     $valtadat = [];
                     $valtadat['id'] = $valt->getId();
                     $valtadat['EAN'] = $valt->getVonalkod();
-                    $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
-                    $valtadat['stock'] = $keszlet;
+                    $valtadat['stock'] = $valt->getAvailableStock();
                     $valtadat['retail_price'] = $this->getKedvezmenynelkuliNettoAr($valt, $partner);
                     $valtadat['discount_price'] = $this->getNettoAr($valt, $partner);
                     if (\mkw\store::isFixSzinMode()) {
@@ -3411,12 +3410,41 @@ class Termek
         return $this->minboltikeszlet;
     }
 
+    public function calcMinboltikeszlet($raktarid = null)
+    {
+        return \Services\MinBoltiKeszletService::getMinKeszlet($this, null, $raktarid);
+    }
+
     /**
      * @param mixed $minboltikeszlet
      */
     public function setMinboltikeszlet($minboltikeszlet)
     {
         $this->minboltikeszlet = $minboltikeszlet;
+    }
+
+    /**
+     * Szabad készlet: készlet − foglalt − min. bolti készlet.
+     * A számítás egyetlen helyen él, lásd \Services\MinBoltiKeszletService::calcAvailableStock().
+     */
+    public function getAvailableStock(
+        $datum = null,
+        $raktarid = null,
+        $kivevebiz = null,
+        $clamp = true,
+        $ignoreminkeszlet = false,
+        $ignorefoglalas = false
+    ) {
+        return \Services\MinBoltiKeszletService::calcAvailableStock(
+            $this,
+            null,
+            $datum,
+            $raktarid,
+            $kivevebiz,
+            $clamp,
+            $ignoreminkeszlet,
+            $ignorefoglalas
+        );
     }
 
     /**
@@ -3486,9 +3514,13 @@ class Termek
 
     public function isInTermekKategoria($kat)
     {
-        return str_starts_with($this->termekfa1karkod, $kat) ||
-            str_starts_with($this->termekfa2karkod, $kat) ||
-            str_starts_with($this->termekfa3karkod, $kat);
+        // üres karkodra a str_starts_with minden termékre igaz lenne
+        if (!$kat) {
+            return false;
+        }
+        return str_starts_with($this->termekfa1karkod ?? '', $kat) ||
+            str_starts_with($this->termekfa2karkod ?? '', $kat) ||
+            str_starts_with($this->termekfa3karkod ?? '', $kat);
     }
 
     /**

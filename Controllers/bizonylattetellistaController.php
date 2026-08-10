@@ -167,11 +167,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         switch ($csoportositas) {
             case 1:
             case 2:
-                $raktarfilter = new \mkwhelpers\FilterDescriptor();
-                $raktarfilter->addFilter('archiv', '=', false);
-
                 if ($keszletkell) {
-                    $raktarak = $this->getRepo(Raktar::class)->getAll($raktarfilter);
+                    $raktarak = $this->getRepo(Raktar::class)->getAllActive();
                     foreach ($tetelek as $key => $tetel) {
                         $termekid = $tetel['termekid'];
                         $tvid = $tetel['termekvaltozat_id'];
@@ -197,7 +194,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
                     }
                 }
 
-                $raktarak = $this->getRepo(Raktar::class)->getAll($raktarfilter);
+                $raktarak = $this->getRepo(Raktar::class)->getAllActive();
                 $raktarlista = [];
                 foreach ($raktarak as $raktar) {
                     $raktarlista[] = $raktar->getNev();

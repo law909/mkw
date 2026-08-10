@@ -739,6 +739,19 @@ $(document).ready(function () {
             opt['data'] = x;
             return true;
         },
+        beforeSubmit: function (arr) {
+            // A min.bolti készlet mátrix önmagában több száz mező (változat × raktár), és a PHP
+            // a max_input_vars fölött csendben csonkolja a POST-ot. Az üres cellákat kihagyni
+            // biztonságos: a „hiányzik ⇒ törlés" és az „üres ⇒ törlés" ugyanaz a szabály.
+            // A rácsot leíró rejtett tömböket soha nem szűrjük.
+            var minboltimezo = /^(termekraktariminboltikeszlet_|valtozatraktariminboltikeszlet_|valtozatminboltikeszlet_)/;
+            for (var i = arr.length - 1; i >= 0; i--) {
+                if (arr[i].value === '' && minboltimezo.test(arr[i].name)) {
+                    arr.splice(i, 1);
+                }
+            }
+            return true;
+        },
         beforeHide: function () {
             var editor;
             if (!window.mkwIsMobile) {

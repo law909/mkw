@@ -131,11 +131,7 @@ class a2aController extends \mkwhelpers\Controller
                     if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
-                        $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
-                        if ($keszlet < 0) {
-                            $keszlet = 0;
-                        }
-                        $valtadat['stock'] = $keszlet;
+                        $valtadat['stock'] = $valt->getAvailableStock();
                         $x['variations'][] = $valtadat;
                     }
                 }
@@ -160,11 +156,7 @@ class a2aController extends \mkwhelpers\Controller
                     if ($valt->getLathato() && $valt->getElerheto()) {
                         $valtadat = [];
                         $valtadat['id'] = $valt->getId();
-                        $keszlet = max($valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet(), 0);
-                        if ($keszlet < 0) {
-                            $keszlet = 0;
-                        }
-                        $valtadat['stock'] = $keszlet;
+                        $valtadat['stock'] = $valt->getAvailableStock();
                         $x['variations'][] = $valtadat;
                     }
                 }
@@ -710,10 +702,7 @@ class a2aController extends \mkwhelpers\Controller
                                         $results['msg'][] = 'Product variation ' . $tetel['productvariation_id'] . ' is unknown.';
                                     }
                                     if ($termekvaltozat) {
-                                        $keszlet = $termekvaltozat->getKeszlet();
-                                        $foglalt = $termekvaltozat->getFoglaltMennyiseg();
-                                        $minbolt = $termekvaltozat->calcMinboltikeszlet();
-                                        if ($keszlet - $foglalt - $minbolt < $tetel['quantity']) {
+                                        if ($termekvaltozat->getAvailableStock(null, null, null, false) < $tetel['quantity']) {
                                             $results['msg'][] = $tetel['productvariation_id'] . ' not enough stock, refresh your stock data.';
                                         }
                                         if (!$termekvaltozat->getElerheto()) {

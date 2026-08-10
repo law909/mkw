@@ -18,8 +18,10 @@ use Entities\TermekFa;
 use Entities\TermekKapcsolodo;
 use Entities\TermekKep;
 use Entities\TermekMenu;
+use Entities\TermekMinboltikeszlet;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
+use Entities\TermekValtozatMinboltikeszlet;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
 use Entities\Vtsz;
@@ -116,6 +118,10 @@ class termekController extends \mkwhelpers\MattableController
             $x['valtozatkeszlet'] = $lvaltozat;
         }
         if ($forKarb) {
+            $matrix = $this->getMinBoltiKeszletMatrix($t);
+            $x['minboltikeszletraktarak'] = $matrix['raktarak'];
+            $x['minboltikeszletsorok'] = $matrix['sorok'];
+
             foreach ($t->getTermekKepek() as $kepje) {
                 $kep[] = $kepCtrl->loadVars($kepje);
             }
@@ -186,6 +192,212 @@ class termekController extends \mkwhelpers\MattableController
             }
         }
         return $x;
+    }
+
+    /**
+     * A „Min. bolti készlet" fül mátrixa: soronként a termék és a változatai, oszloponként a
+     * „Minden raktár" (globális) érték és a raktárak. Az üres cellák placeholderébe az öröklött,
+     * a feloldási létra szerint érvényes érték kerül – lásd \Services\MinBoltiKeszletService.
+     *
+     * Változatszámtól függetlenül két lekérdezés: egy a termék, egy az összes változat soraira.
+     *
+     * @param \Entities\Termek $t
+     *
+     * @return array ['raktarak' => [['id','nev'],…], 'sorok' => [['valtozatid','nev','globalis',…],…]]
+     */
+    private function getMinBoltiKeszletMatrix($t)
+    {
+        $termekid = $t->getId();
+        $valtozatok = [];
+        if ($termekid && \mkw\store::getSetupValue('termekvaltozat')) {
+            foreach ($t->getValtozatok() as $valtozat) {
+                $valtozatok[] = $valtozat;
+            }
+        }
+        $valtozatids = array_map(static fn($valtozat) => $valtozat->getId(), $valtozatok);
+
+        $termeksorok = $termekid
+            ? $this->getRepo(TermekMinboltikeszlet::class)->getRowsByTermek($termekid)
+            : [];
+        $valtozatsorok = $valtozatids
+            ? $this->getRepo(TermekValtozatMinboltikeszlet::class)->getRowsByTermekValtozatIds($valtozatids)
+            : [];
+
+        $raktarnevek = [];
+        foreach ($this->getRepo(Raktar::class)->getAllActive() as $raktar) {
+            $raktarnevek[$raktar->getId()] = $raktar->getNev();
+        }
+        // az archivált raktáron ragadt érték is jelenjen meg, különben csendben tovább élne
+        foreach ($termeksorok as $rid => $sor) {
+            $raktarnevek[$rid] ??= $sor->getRaktar()?->getNev();
+        }
+        foreach ($valtozatsorok as $sorok) {
+            foreach ($sorok as $rid => $sor) {
+                $raktarnevek[$rid] ??= $sor->getRaktar()?->getNev();
+            }
+        }
+
+        $raktarak = [];
+        foreach ($raktarnevek as $rid => $nev) {
+            $raktarak[] = ['id' => $rid, 'nev' => $nev];
+        }
+
+        $tglobalis = $t->getMinboltikeszlet();
+        $sorok = [];
+
+        $cellak = [];
+        foreach ($raktarnevek as $rid => $nev) {
+            $cellak[] = [
+                'raktarid' => $rid,
+                'ertek' => isset($termeksorok[$rid]) ? $termeksorok[$rid]->getMinboltikeszlet() : '',
+                'placeholder' => $this->firstNonZero([$tglobalis]),
+            ];
+        }
+        $sorok[] = [
+            'valtozatid' => null,
+            'nev' => t('Termék'),
+            'globalis' => $tglobalis,
+            'globalisplaceholder' => '',
+            'cellak' => $cellak,
+        ];
+
+        /** @var TermekValtozat $valtozat */
+        foreach ($valtozatok as $valtozat) {
+            $vid = $valtozat->getId();
+            $vglobalis = $valtozat->getMinboltikeszlet();
+            $cellak = [];
+            foreach ($raktarnevek as $rid => $nev) {
+                $traktari = isset($termeksorok[$rid]) ? $termeksorok[$rid]->getMinboltikeszlet() : null;
+                $cellak[] = [
+                    'raktarid' => $rid,
+                    'ertek' => isset($valtozatsorok[$vid][$rid])
+                        ? $valtozatsorok[$vid][$rid]->getMinboltikeszlet()
+                        : '',
+                    'placeholder' => $this->firstNonZero([$traktari, $tglobalis, $vglobalis]),
+                ];
+            }
+            $sorok[] = [
+                'valtozatid' => $vid,
+                'nev' => $this->getValtozatNev($valtozat),
+                'globalis' => $vglobalis,
+                'globalisplaceholder' => $this->firstNonZero([$tglobalis]),
+                'cellak' => $cellak,
+            ];
+        }
+
+        return ['raktarak' => $raktarak, 'sorok' => $sorok];
+    }
+
+    /**
+     * A „Min. bolti készlet" mátrix mentése. Csak a ténylegesen kirajzolt rácsot érintjük –
+     * ezt írja le a két rejtett tömb (minboltikeszletraktarid[], valtozatminboltikeszletid[]) –,
+     * a ki nem rajzolt sorok érintetlenek maradnak.
+     *
+     * Üres vagy nulla cella ⇒ a sor törlése: a létrában a tárolt 0 és a hiányzó sor azonos.
+     *
+     * @param \Entities\Termek $obj
+     */
+    private function saveMinBoltiKeszletMatrix($obj)
+    {
+        $em = $this->getEm();
+        $raktaridk = $this->getIdList('minboltikeszletraktarid');
+        $valtozatidk = $this->getIdList('valtozatminboltikeszletid');
+
+        $raktarmap = [];
+        if ($raktaridk) {
+            $rfilter = new FilterDescriptor();
+            $rfilter->addFilter('id', 'IN', $raktaridk);
+            foreach ($this->getRepo(Raktar::class)->getAll($rfilter, []) as $raktar) {
+                $raktarmap[$raktar->getId()] = $raktar;
+            }
+
+            $termeksorok = $this->getRepo(TermekMinboltikeszlet::class)->getRowsByTermek($obj->getId());
+            foreach ($raktarmap as $rid => $raktar) {
+                $ertek = $this->params->getNumRequestParam('termekraktariminboltikeszlet_' . $rid);
+                $sor = $termeksorok[$rid] ?? null;
+                if ($ertek * 1) {
+                    if (!$sor) {
+                        $sor = new TermekMinboltikeszlet();
+                        $sor->setTermek($obj);
+                        $sor->setRaktar($raktar);
+                    }
+                    $sor->setMinboltikeszlet($ertek);
+                    $em->persist($sor);
+                } elseif ($sor) {
+                    $em->remove($sor);
+                }
+            }
+        }
+
+        if (!$valtozatidk) {
+            return;
+        }
+        $vfilter = new FilterDescriptor();
+        $vfilter->addFilter('id', 'IN', $valtozatidk);
+        $valtozatmap = [];
+        /** @var TermekValtozat $valtozat */
+        foreach ($this->getRepo(TermekValtozat::class)->getAll($vfilter, []) as $valtozat) {
+            $valtozatmap[$valtozat->getId()] = $valtozat;
+        }
+
+        foreach ($valtozatmap as $vid => $valtozat) {
+            $valtozat->setMinboltikeszlet($this->params->getNumRequestParam('valtozatminboltikeszlet_' . $vid));
+            $em->persist($valtozat);
+        }
+
+        if (!$raktarmap) {
+            return;
+        }
+        $valtozatsorok = $this->getRepo(TermekValtozatMinboltikeszlet::class)
+            ->getRowsByTermekValtozatIds(array_keys($valtozatmap));
+        foreach ($valtozatmap as $vid => $valtozat) {
+            foreach ($raktarmap as $rid => $raktar) {
+                $ertek = $this->params->getNumRequestParam('valtozatraktariminboltikeszlet_' . $vid . '_' . $rid);
+                $sor = $valtozatsorok[$vid][$rid] ?? null;
+                if ($ertek * 1) {
+                    if (!$sor) {
+                        $sor = new TermekValtozatMinboltikeszlet();
+                        $sor->setTermekvaltozat($valtozat);
+                        $sor->setRaktar($raktar);
+                    }
+                    $sor->setMinboltikeszlet($ertek);
+                    $em->persist($sor);
+                } elseif ($sor) {
+                    $em->remove($sor);
+                }
+            }
+        }
+    }
+
+    private function getIdList($parameter): array
+    {
+        return array_values(array_unique(array_filter(array_map(
+            'intval',
+            $this->params->getArrayRequestParam($parameter)
+        ))));
+    }
+
+    private function getValtozatNev(TermekValtozat $valtozat)
+    {
+        if (\mkw\store::isFixSzinMode()) {
+            $nev = trim($valtozat->getSzinNev() . ' - ' . $valtozat->getMeretNev(), ' -');
+        } else {
+            $nev = trim($valtozat->getErtek1() . ' - ' . $valtozat->getErtek2(), ' -');
+        }
+        return $nev ?: ($valtozat->getCikkszam() ?: '#' . $valtozat->getId());
+    }
+
+    /**
+     * A létra „ha nem nulla" lépcsője: a decimal stringként hidratál, ezért a teszt numerikus.
+     */
+    private function firstNonZero(array $ertekek)
+    {
+        foreach ($ertekek as $ertek) {
+            if ($ertek * 1) {
+                return $ertek;
+            }
+        }
+        return '';
     }
 
     /**
@@ -295,7 +507,10 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setUnasalaptipus($this->params->getStringRequestParam('unasalaptipus'));
         }
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
-        $obj->setMinboltikeszlet($this->params->getFloatRequestParam('minboltikeszlet'));
+        // a mező nincs minden téma sablonjában (darshan) – enélkül minden mentés nullázná
+        if ($this->params->existsRequestParam('minboltikeszlet')) {
+            $obj->setMinboltikeszlet($this->params->getFloatRequestParam('minboltikeszlet'));
+        }
         $obj->setGarancia($this->params->getIntRequestParam('garancia'));
         $obj->setArukeresofanev($this->params->getStringRequestParam('arukeresofanev'));
 
@@ -773,16 +988,8 @@ class termekController extends \mkwhelpers\MattableController
                     }
                 }
             }
-            $valtozatmbkids = $this->params->getArrayRequestParam('valtozatminboltikeszletid');
-            foreach ($valtozatmbkids as $vmbkid) {
-                /** @var TermekValtozat $valtozat */
-                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($vmbkid);
-                if ($valtozat) {
-                    $valtozat->setMinboltikeszlet($this->params->getNumRequestParam('valtozatminboltikeszlet_' . $vmbkid));
-                    $this->getEm()->persist($valtozat);
-                }
-            }
         }
+        $this->saveMinBoltiKeszletMatrix($obj);
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
         $obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
         return $obj;
@@ -796,6 +1003,7 @@ class termekController extends \mkwhelpers\MattableController
      */
     protected function afterSave($o, $parancs = null)
     {
+        \Services\MinBoltiKeszletService::clearCache();
         if ($this->kaphatolett) {
             $tec = new termekertesitoController();
             $tec->sendErtesito($o);
@@ -1089,7 +1297,8 @@ class termekController extends \mkwhelpers\MattableController
                     'id' => $valt->getId(),
                     'caption' => $caption,
                     'selected' => false,
-                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet()
+                    // a méretválasztó sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
+                    'keszlet' => $valt->getAvailableStock(null, null, null, false)
                 ];
             }
         }
@@ -1137,7 +1346,8 @@ class termekController extends \mkwhelpers\MattableController
                     'id' => $valt->getId(),
                     'caption' => $valt->getMeretNev(),
                     'selected' => false,
-                    'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $valt->calcMinboltikeszlet()
+                    // a méretválasztó sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
+                    'keszlet' => $valt->getAvailableStock(null, null, null, false)
                 ];
             }
         }

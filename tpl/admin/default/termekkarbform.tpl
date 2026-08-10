@@ -20,9 +20,9 @@
             <li><a href="#KepTab">{at('Képek')}</a></li>
             {if ($setup.termekvaltozat)}
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
-                <li><a href="#ValtozatMinBoltiKeszletTab">{at('Változat min.bolti készlet')}</a></li>
                 <li><a href="#SzinKepTab">{at('Szín képek')}</a></li>
             {/if}
+            <li><a href="#MinBoltiKeszletTab">{at('Min. bolti készlet')}</a></li>
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
             {/if}
@@ -181,8 +181,6 @@
                     </tr>
                 {/if}
                 <tr>
-                    <td><label for="MinboltikeszletEdit">{at('Min. bolti készlet')}:</label></td>
-                    <td><input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any" value="{$egyed.minboltikeszlet}"></td>
                     <td><label for="GaranciaEdit">{at('Garancia')}:</label></td>
                     <td><input id="GaranciaEdit" name="garancia" type="number" step="any" value="{$egyed.garancia}"></td>
                 </tr>
@@ -490,17 +488,57 @@
                 <a class="js-valtozatnewbutton" href="#" title="{at('Új')}" data-termekid="{$egyed.id}"><span
                         class="ui-icon ui-icon-circle-plus"></span></a>
             </div>
-            <div id="ValtozatMinBoltiKeszletTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.valtozatok as $valtozat}
-                    <div>
-                        <label for="ValtozatMinBoltKeszletEdit_{$valtozat.id}">{$valtozat.ertek1} - {$valtozat.ertek2}</label>
-                        <input id="ValtozatMinBoltKeszletEdit_{$valtozat.id}" name="valtozatminboltikeszlet_{$valtozat.id}" type="number" step="any"
-                               value="{$valtozat.minboltikeszlet}">
-                        <input name="valtozatminboltikeszletid[]" type="hidden" value="{$valtozat.id}">
-                    </div>
-                {/foreach}
-            </div>
         {/if}
+        <div id="MinBoltiKeszletTab" class="mattkarb-page" data-visible="visible">
+            <table id="MinBoltiKeszletMatrix" class="mattkarb-matrix">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{at('Minden raktár')}</th>
+                    {foreach $egyed.minboltikeszletraktarak as $raktar}
+                        <th>{$raktar.nev}</th>
+                    {/foreach}
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $egyed.minboltikeszletsorok as $sor}
+                    <tr>
+                        <td>{$sor.nev}</td>
+                        <td>
+                            {if ($sor.valtozatid)}
+                                <input name="valtozatminboltikeszlet_{$sor.valtozatid}" type="number" step="any"
+                                       value="{$sor.globalis}" placeholder="{$sor.globalisplaceholder}">
+                                <input name="valtozatminboltikeszletid[]" type="hidden" value="{$sor.valtozatid}">
+                            {else}
+                                <input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any"
+                                       value="{$egyed.minboltikeszlet}">
+                            {/if}
+                        </td>
+                        {foreach $sor.cellak as $cella}
+                            <td>
+                                {if ($sor.valtozatid)}
+                                    <input name="valtozatraktariminboltikeszlet_{$sor.valtozatid}_{$cella.raktarid}"
+                                           type="number" step="any"
+                                           value="{$cella.ertek}" placeholder="{$cella.placeholder}">
+                                {else}
+                                    <input name="termekraktariminboltikeszlet_{$cella.raktarid}"
+                                           type="number" step="any"
+                                           value="{$cella.ertek}" placeholder="{$cella.placeholder}">
+                                {/if}
+                            </td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            {foreach $egyed.minboltikeszletraktarak as $raktar}
+                <input name="minboltikeszletraktarid[]" type="hidden" value="{$raktar.id}">
+            {/foreach}
+            <p class="mattkarb-hint">
+                {at('Üres cella: az öröklött érték él (szürkén látszik). 0 vagy üres = nincs beállítva.')}
+                {at('A termék sorában megadott érték felülírja az alatta lévő változatokat ugyanabban az oszlopban, a raktár oszlopa pedig a „Minden raktár” értéket.')}
+            </p>
+        </div>
         {if ($setup.kapcsolodotermekek)}
             <div id="KapcsolodoTab" class="mattkarb-page" data-visible="visible">
                 {foreach $egyed.kapcsolodok as $kapcsolodo}
