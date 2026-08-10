@@ -2,6 +2,7 @@
 
 $router->map('GET', '/hiba', 'errortestController#run', 'mainhiba');
 
+
 if (\mkw\store::isMindentkapni()) {
     $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
     $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
