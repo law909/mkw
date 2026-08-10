@@ -54,6 +54,38 @@ body {
     text-align: right;
 }
 
+/* Leltár felvételi lista vonalkódos rögzítése (leltarfelvetel.js). */
+.leltarfelvetel-tetelek {
+    width: 100%;
+}
+
+.leltarfelvetel-tetelek thead th {
+    text-align: left;
+}
+
+.leltarfelvetel-vonalkodsor {
+    margin-top: 5px;
+}
+
+.leltarfelvetel-num {
+    text-align: right;
+    width: 90px;
+}
+
+.leltarfelvetel-hiba {
+    color: #cc0000;
+    margin-left: 5px;
+}
+
+.leltarfelvetel-valtozattermeknev {
+    font-weight: bold;
+}
+
+/* A most beolvasott sor rövid kiemelése, hogy a lista tetején látszódjon, mi történt. */
+.leltarfelvetel-frissitve td {
+    background: #ffffcc;
+}
+
 .egyebadat-grid {
     margin-bottom: 5px;
 }

@@ -15,7 +15,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/leltarfej/getlistbody',
                 onStyle: function () {
-                    $('.js-export, .js-import, .js-zar').button();
+                    $('.js-felvetel, .js-export, .js-import, .js-zar').button();
                 }
             },
             karb: leltarfej

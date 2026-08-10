@@ -444,19 +444,24 @@ class leltarfejController extends \mkwhelpers\MattableController
                 $leltartetelek = $this->getRepo(Leltartetel::class)->getWithJoins($filter);
                 /** @var \Entities\Leltartetel $tetel */
                 foreach ($leltartetelek as $tetel) {
+                    $termek = $tetel->getTermek();
+                    if (!$termek) {
+                        continue;
+                    }
+                    // változat nélküli terméknél a termék készlete a viszonyítási alap
                     $valtozat = $tetel->getTermekvaltozat();
-                    $keszlet = $valtozat->getKeszlet($zarasstr, $raktarid);
+                    $keszlet = ($valtozat ?: $termek)->getKeszlet($zarasstr, $raktarid);
                     if ($keszlet < $tetel->getTenymennyiseg()) {
                         $tobbletek[] = [
-                            'termek' => $tetel->getTermek(),
-                            'valtozat' => $tetel->getTermekvaltozat(),
+                            'termek' => $termek,
+                            'valtozat' => $valtozat,
                             'keszlet' => $keszlet,
                             'teny' => $tetel->getTenymennyiseg()
                         ];
                     } elseif ($keszlet > $tetel->getTenymennyiseg()) {
                         $hianyok[] = [
-                            'termek' => $tetel->getTermek(),
-                            'valtozat' => $tetel->getTermekvaltozat(),
+                            'termek' => $termek,
+                            'valtozat' => $valtozat,
                             'keszlet' => $keszlet,
                             'teny' => $tetel->getTenymennyiseg()
                         ];

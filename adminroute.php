@@ -1164,6 +1164,15 @@ if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/leltarfej/viewimport', 'leltarfejController#viewImport', 'adminleltarfejviewimport');
     $router->map('POST', '/admin/leltarfej/import', 'leltarfejController#import', 'adminleltarfejimport');
     $router->map('POST', '/admin/leltarfej/zar', 'leltarfejController#zar', 'adminleltarfejzar');
+
+    // leltár felvételi lista vonalkódos rögzítése – az Excel-alapú felvételi ív / tény adat párja
+    $router->map('GET', '/admin/leltarfelvetel/view', 'leltarfelvetelController#view', 'adminleltarfelvetelview');
+    $router->map('GET', '/admin/leltarfelvetel/kereses', 'leltarfelvetelController#kereses', 'adminleltarfelvetelkereses');
+    $router->map('GET', '/admin/leltarfelvetel/findtermek', 'leltarfelvetelController#findtermek', 'adminleltarfelvetelfindtermek');
+    $router->map('GET', '/admin/leltarfelvetel/gettermek', 'leltarfelvetelController#gettermek', 'adminleltarfelvetelgettermek');
+    $router->map('GET', '/admin/leltarfelvetel/addtetel', 'leltarfelvetelController#addtetel', 'adminleltarfelveteladdtetel');
+    $router->map('POST', '/admin/leltarfelvetel/settetel', 'leltarfelvetelController#settetel', 'adminleltarfelvetelsettetel');
+    $router->map('POST', '/admin/leltarfelvetel/deltetel', 'leltarfelvetelController#deltetel', 'adminleltarfelveteldeltetel');
 }
 
 $router->map('GET', '/admin/termekcimke/viewlist', 'termekcimkeController#viewlist', 'admintermekcimkeviewlist');
