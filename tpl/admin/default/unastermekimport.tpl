@@ -113,13 +113,13 @@
                         <div>
                             <label for="EditmezokEdit">{at('Szöveges mezők felülírása')}:</label>
                             <input id="EditmezokEdit" name="editmezok" type="checkbox">
-                            <span>{at('Leírás, rövid leírás, SEO mezők és a kép ALT. Üres UNAS érték egyiket sem törli.')}</span>
+                            <span>{at('Leírás, rövid leírás, SEO mezők, a kép ALT, a szállítási idő és az alap típus. Üres UNAS érték egyiket sem törli.')}</span>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
                             <label for="EditrelaciokEdit">{at('Címkék és kategóriák írása')}:</label>
                             <input id="EditrelaciokEdit" name="editrelaciok" type="checkbox">
-                            <span>{at('A gyártó címkeként, a kategória a termékfába kerül – a hiányzó címke, címkekategória és fa-szint létrejön. Az UNAS kategória-útvonala teljes egészében felépül, a legfelső szint a gyökér alá. Üres UNAS érték itt sem töröl.')}</span>
+                            <span>{at('A gyártó címkeként, a kategória a termékmenübe kerül – a hiányzó címke, címkekategória és menüszint létrejön. Az UNAS kategória-útvonala teljes egészében felépül, a legfelső szint a gyökér alá. Üres UNAS érték itt sem töröl.')}</span>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>

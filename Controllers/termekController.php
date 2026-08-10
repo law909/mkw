@@ -287,6 +287,13 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
+        // a két mező csak `unas` kapcsolóval van a formon – hiányában ne írjuk felül az importált értéket
+        if ($this->params->existsRequestParam('szallitasiidostr')) {
+            $obj->setSzallitasiidostr($this->params->getStringRequestParam('szallitasiidostr'));
+        }
+        if ($this->params->existsRequestParam('unasalaptipus')) {
+            $obj->setUnasalaptipus($this->params->getStringRequestParam('unasalaptipus'));
+        }
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
         $obj->setMinboltikeszlet($this->params->getFloatRequestParam('minboltikeszlet'));
         $obj->setGarancia($this->params->getIntRequestParam('garancia'));
@@ -586,6 +593,7 @@ class termekController extends \mkwhelpers\MattableController
                     // ne nullázzuk a meglévő párosítást
                     if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
                         $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
+                        $valtozat->setUnasalaptipus($this->params->getStringRequestParam('valtozatunasalaptipus_' . $valtozatid));
                     }
                     $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 
@@ -693,6 +701,7 @@ class termekController extends \mkwhelpers\MattableController
                         // ne nullázzuk a meglévő párosítást
                         if ($this->params->existsRequestParam('valtozatunasid_' . $valtozatid)) {
                             $valtozat->setUnasid($this->params->getStringRequestParam('valtozatunasid_' . $valtozatid));
+                            $valtozat->setUnasalaptipus($this->params->getStringRequestParam('valtozatunasalaptipus_' . $valtozatid));
                         }
                         $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
 

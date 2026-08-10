@@ -148,6 +148,9 @@ class Termek
     /** UNAS "Azonosító a webáruházban". @ORM\Column(type="string",length=50,nullable=true) */
     private $unasid = '';
 
+    /** UNAS "Alap Típus". @ORM\Column(type="string",length=255,nullable=true) */
+    private $unasalaptipus = '';
+
     /**
      * @Gedmo\Slug(fields={"nev"})
      * @ORM\Column(type="string",length=255,nullable=true)
@@ -358,6 +361,9 @@ class Termek
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $szallitasiido;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $szallitasiidostr = '';
 
     /** @ORM\Column(type="text",nullable=true) */
     private $regikepurl = '';
@@ -1542,6 +1548,16 @@ class Termek
     public function setUnasid($unasid)
     {
         $this->unasid = $unasid;
+    }
+
+    public function getUnasalaptipus()
+    {
+        return $this->unasalaptipus;
+    }
+
+    public function setUnasalaptipus($unasalaptipus)
+    {
+        $this->unasalaptipus = $unasalaptipus;
     }
 
     public function getSlug()
@@ -2785,6 +2801,16 @@ class Termek
     public function setSzallitasiido($adat)
     {
         $this->szallitasiido = $adat;
+    }
+
+    public function getSzallitasiidostr()
+    {
+        return $this->szallitasiidostr;
+    }
+
+    public function setSzallitasiidostr($adat)
+    {
+        $this->szallitasiidostr = $adat;
     }
 
     public function getRegikepurl()

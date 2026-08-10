@@ -170,6 +170,16 @@
                     <td><input id="SzallitasiidoEdit" name="szallitasiido" type="number" step="any"
                                value="{$egyed.szallitasiido}" maxlength="5" size="5"></td>
                 </tr>
+                {if ($setup.unas)}
+                    <tr>
+                        <td><label for="SzallitasiidostrEdit">{at('Szállítási idő (szöveg)')}:</label></td>
+                        <td><input id="SzallitasiidostrEdit" name="szallitasiidostr" type="text" size="30" maxlength="255"
+                                   value="{$egyed.szallitasiidostr}"></td>
+                        <td><label for="UnasalaptipusEdit">{at('UNAS alap típus')}:</label></td>
+                        <td><input id="UnasalaptipusEdit" name="unasalaptipus" type="text" size="30" maxlength="255"
+                                   value="{$egyed.unasalaptipus}"></td>
+                    </tr>
+                {/if}
                 <tr>
                     <td><label for="MinboltikeszletEdit">{at('Min. bolti készlet')}:</label></td>
                     <td><input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any" value="{$egyed.minboltikeszlet}"></td>
@@ -434,6 +444,17 @@
                                    form="valtozatgeneratorform">
                         </td>
                     </tr>
+                    {if ($setup.unas)}
+                        <tr>
+                            <td class="mattable-cell">
+                                <label for="VUnasalaptipusGenEdit">{at('UNAS alap típus')}:</label>
+                            </td>
+                            <td class="mattable-cell" colspan="3">
+                                <input id="VUnasalaptipusGenEdit" name="valtozatunasalaptipusgen" type="text"
+                                       maxlength="255" form="valtozatgeneratorform">
+                            </td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td>
                             <label for="ValtozatTermekKepCB">{at('A kép a termék főképe')}:</label>

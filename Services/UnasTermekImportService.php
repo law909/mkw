@@ -110,7 +110,7 @@ class UnasTermekImportService
             // „Elektronika|Televíziók|LCD" – a `|` a kategória SZINTJEIT választja el
             'fejlec' => ['Kategória'],
             'cel' => 'termekfa',
-            'mezo' => 'termekfa1',
+            'mezo' => 'termekmenu1',
         ],
     ];
 
@@ -714,7 +714,7 @@ class UnasTermekImportService
         // a webes mezők mindig a TERMÉKRE mennek (a változatnak nincs leírása), így
         // változatszintű találatnál több UNAS termék írhatja ugyanazt
         if (!$opts['szarazfutas']) {
-            $this->writeFields($termek, $row, $columns, $opts, $report);
+            $this->writeFields($termek, $unasidGazda, $row, $columns, $opts, $report);
             $this->writeRelations($termek, $row, $columns, $opts, $report);
         }
 
@@ -1078,8 +1078,11 @@ class UnasTermekImportService
     /**
      * Kategória, láthatóság, státusz szándékosan NEM íródik. A `nev` sem: abból generálja a Gedmo
      * a slugot, tehát a termék publikus URL-je változna. Üres UNAS érték nem töröl.
+     *
+     * @param Termek|TermekValtozat $unasGazda ahol a párosítás volt – ide megy az UNAS saját
+     *                                         adata (alap típus), a webes mezők a termékre
      */
-    private function writeFields(Termek $termek, array $row, array $columns, array $opts, array &$report)
+    private function writeFields(Termek $termek, $unasGazda, array $row, array $columns, array $opts, array &$report)
     {
         $l1 = $opts['nyelvsuffix'] === '_l1';
         $written = false;
@@ -1088,10 +1091,12 @@ class UnasTermekImportService
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setLeirasL1' : 'setLeiras', $this->cell($row, $columns, 'leiras')) || $written;
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setRovidleirasL1' : 'setRovidleiras', $this->cell($row, $columns, 'rovidleiras')) || $written;
             $written = $this->setIfNotEmpty($termek, $l1 ? 'setOldalcimL1' : 'setOldalcim', $this->cell($row, $columns, 'seotitle'), 255) || $written;
-            // a seodescription-nek és a seokeywords-nek nincs _l1 párja
+            // ezeknek nincs _l1 párjuk, így csak az alapnyelvű menet írja őket
             if (!$l1) {
                 $written = $this->setIfNotEmpty($termek, 'setSeodescription', $this->cell($row, $columns, 'seodescription')) || $written;
                 $written = $this->setIfNotEmpty($termek, 'setSeokeywords', $this->cell($row, $columns, 'seokeywords'), 255) || $written;
+                $written = $this->setIfNotEmpty($termek, 'setSzallitasiidostr', $this->cell($row, $columns, 'szallitasiido'), 255) || $written;
+                $written = $this->setIfNotEmpty($unasGazda, 'setUnasalaptipus', $this->cell($row, $columns, 'alaptipus'), 255) || $written;
             }
             $written = $this->setIfNotEmpty($termek, 'setKepleiras', $this->cell($row, $columns, 'kepalt')) || $written;
         }
@@ -1150,10 +1155,12 @@ class UnasTermekImportService
         $entitas = self::TREEFIELDS[$mezo];
         $elvalaszto = (string)($definicio['szintelvalaszto'] ?? '') ?: '|';
 
-        $szintek = array_values(array_filter(
-            array_map('trim', explode($elvalaszto, $ertek)),
-            static fn($v) => $v !== ''
-        ));
+        $szintek = array_values(
+            array_filter(
+                array_map('trim', explode($elvalaszto, $ertek)),
+                static fn($v) => $v !== ''
+            )
+        );
         if (!$szintek) {
             return false;
         }
@@ -1330,7 +1337,7 @@ class UnasTermekImportService
     }
 
     /** Üres értékkel nem hívjuk a settert: a törzs értékét nem törölhetjük. */
-    private function setIfNotEmpty(Termek $termek, $setter, $value, $maxLength = 0)
+    private function setIfNotEmpty($entitas, $setter, $value, $maxLength = 0)
     {
         $value = trim((string)$value);
         if ($value === '') {
@@ -1339,7 +1346,7 @@ class UnasTermekImportService
         if ($maxLength > 0) {
             $value = mb_substr($value, 0, $maxLength);
         }
-        $termek->$setter($value);
+        $entitas->$setter($value);
         return true;
     }
 
@@ -1790,24 +1797,30 @@ class UnasTermekImportService
     {
         foreach (self::relationColumns() as $logical => $definicio) {
             if (!in_array($definicio['cel'], self::RELATIONTARGETS, true)) {
-                throw new \Exception(sprintf(
-                    t('A(z) "%s" oszlop ismeretlen célt kér: %s'),
-                    $logical,
-                    $definicio['cel']
-                ));
+                throw new \Exception(
+                    sprintf(
+                        t('A(z) "%s" oszlop ismeretlen célt kér: %s'),
+                        $logical,
+                        $definicio['cel']
+                    )
+                );
             }
             if ($definicio['cel'] === 'termekcimke' && trim((string)($definicio['cimkekategoria'] ?? '')) === '') {
-                throw new \Exception(sprintf(
-                    t('A(z) "%s" címke-oszlophoz nincs megadva címkekategória (cimkekategoria).'),
-                    $logical
-                ));
+                throw new \Exception(
+                    sprintf(
+                        t('A(z) "%s" címke-oszlophoz nincs megadva címkekategória (cimkekategoria).'),
+                        $logical
+                    )
+                );
             }
             if ($definicio['cel'] === 'termekfa' && !isset(self::TREEFIELDS[$definicio['mezo'] ?? ''])) {
-                throw new \Exception(sprintf(
-                    t('A(z) "%s" fa-oszlop "mezo" beállítása hiányzik vagy ismeretlen. Használható: %s'),
-                    $logical,
-                    implode(', ', array_keys(self::TREEFIELDS))
-                ));
+                throw new \Exception(
+                    sprintf(
+                        t('A(z) "%s" fa-oszlop "mezo" beállítása hiányzik vagy ismeretlen. Használható: %s'),
+                        $logical,
+                        implode(', ', array_keys(self::TREEFIELDS))
+                    )
+                );
             }
         }
     }

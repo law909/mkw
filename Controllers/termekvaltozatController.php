@@ -138,6 +138,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $brutto = $this->params->getNumRequestParam('valtozatbruttogen');
         $cikkszam = $this->params->getStringRequestParam('valtozatcikkszamgen');
         $idegencikkszam = $this->params->getStringRequestParam('valtozatidegencikkszamgen');
+        $unasalaptipus = $this->params->getStringRequestParam('valtozatunasalaptipusgen');
         $elerheto = $this->params->getBoolRequestParam('valtozatelerheto', false);
         $elerheto2 = $this->params->getBoolRequestParam('valtozatelerheto2', false);
         $elerheto3 = $this->params->getBoolRequestParam('valtozatelerheto3', false);
@@ -257,6 +258,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                                 $valtozat->setIdegencikkszam($idegencikkszamok[$cikl]);
                             }
                         }
+                        $valtozat->setUnasalaptipus($unasalaptipus);
                         if ($szin) {
                             $valtozat->setSzin($szin);
                             if ($atSzin) {
@@ -368,6 +370,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                             $valtozat->setIdegencikkszam($idegencikkszamok[$cikl]);
                         }
                     }
+                    $valtozat->setUnasalaptipus($unasalaptipus);
 
                     if ($at1 && $ertek1) {
                         $valtozat->setAdatTipus1($at1);

@@ -187,6 +187,9 @@ class TermekValtozat
      */
     private $unasvaltozat = '';
 
+    /** UNAS "Alap Típus", ha az UNAS termék nálunk EZ a változat. @ORM\Column(type="string",length=255,nullable=true) */
+    private $unasalaptipus = '';
+
     /** @ORM\Column(type="date",nullable=true) */
     private $beerkezesdatum;
 
@@ -716,6 +719,16 @@ class TermekValtozat
     public function setUnasvaltozat($unasvaltozat)
     {
         $this->unasvaltozat = $unasvaltozat;
+    }
+
+    public function getUnasalaptipus()
+    {
+        return $this->unasalaptipus;
+    }
+
+    public function setUnasalaptipus($unasalaptipus)
+    {
+        $this->unasalaptipus = $unasalaptipus;
     }
 
     public function getBeerkezesdatum()
