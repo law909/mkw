@@ -8,6 +8,7 @@ $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
 $router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
 $router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
+$router->map('GET', '/admin/hiba', 'errortestController#run', 'adminhiba');
 
 // --- Médiatár (a CKFinder helyett) ---
 // A kapcsoló mögé zárva: a "mediatar" egyetlen setup.ini-kulcsként kapcsolja a
