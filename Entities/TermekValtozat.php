@@ -151,8 +151,12 @@ class TermekValtozat
      */
     private $brutto = 0;
     /**
+     * A kép a saját termékéé is lehet: a termék törlésekor a kaszkád a képet és a változatot is
+     * viszi, de a sorrend nem garantált – restricttel a törlés FK-hibára fut. A TermekSzinKep
+     * ugyanezt a képet már eleve "set null"-lal fogja.
+     *
      * @ORM\ManyToOne(targetEntity="TermekKep",inversedBy="valtozatok")
-     * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="set null")
      */
     private $kep;
 
