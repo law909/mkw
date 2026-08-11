@@ -15,13 +15,15 @@
             funcnum: parseInt($root.data('funcnum'), 10) || 0,
             maxsize: parseInt($root.data('maxsize'), 10) || 0,
             writable: String($root.data('writable')) === '1',
+            termekid: parseInt($root.data('termekid'), 10) || 0,
             files: [],
             folders: [],
             from: 0,
             to: 0,
             filter: '',
             pending: '',
-            selected: null
+            // a kijelölt fájlok kattintási sorrendben; az utolsó a "fő" kijelölés
+            selection: []
         };
 
     var $grid = $('#mtGrid'),
@@ -182,6 +184,20 @@
         }
     }
 
+    /**
+     * A választón elvégzett művelet (nem fájlválasztás) végén: a hívó oldal frissít,
+     * a médiatár bezárul. A CKEditor popupjából ilyen művelet nem indítható.
+     */
+    function done(data) {
+        if (state.cb) {
+            try {
+                window.parent.CKFinder._done(state.cb, data);
+            } catch (e) {
+                message('Nem sikerült értesíteni a hívó oldalt.');
+            }
+        }
+    }
+
     function cancel() {
         if (state.funcnum) {
             window.close();
@@ -207,7 +223,7 @@
     function load(path, pending) {
         state.path = path || '/';
         state.pending = pending ? String(pending) : '';
-        state.selected = null;
+        state.selection = [];
         state.from = 0;
         state.to = 0;
         $grid.html('<div class="mt-empty">Betöltés…</div>');
@@ -281,7 +297,8 @@
     /** Újrarajzoláskor a még kijelölendő, annak híján a már kijelölt fájlra nyíljon az ablak. */
     function anchorIndex() {
         var i = indexOfName(state.pending);
-        return i !== -1 ? i : indexOfName(state.selected && state.selected.name);
+        var fo = lastSelected();
+        return i !== -1 ? i : indexOfName(fo && fo.name);
     }
 
     /**
@@ -448,9 +465,28 @@
      * vissza kell tenni a csempére. Ha a fájl épp kiszűrődött, a kijelölés akkor is marad.
      */
     function applySelection() {
-        if (state.selected) {
-            tileByName(state.selected.name).addClass('sel');
+        $grid.find('.mt-tile.sel').removeClass('sel');
+        $.each(state.selection, function (i, f) {
+            tileByName(f.name).addClass('sel');
+        });
+    }
+
+    /** A "fő" kijelölés: az egy fájlt váró műveletek (Kiválaszt, Átnevezés) erre néznek. */
+    function lastSelected() {
+        return state.selection.length ? state.selection[state.selection.length - 1] : null;
+    }
+
+    function selectionIndexOf(name) {
+        for (var i = 0; i < state.selection.length; i++) {
+            if (state.selection[i].name === name) {
+                return i;
+            }
         }
+        return -1;
+    }
+
+    function fileRec(f) {
+        return {name: String(f.name), url: String(f.url), size: parseInt(f.size, 10) || 0};
     }
 
     /**
@@ -507,28 +543,51 @@
         });
     }
 
-    function pick($tile) {
-        $grid.find('.mt-tile.sel').removeClass('sel');
-        if ($tile && $tile.length) {
-            $tile.addClass('sel');
-            state.selected = {
-                name: String($tile.data('name')),
-                url: String($tile.data('url')),
-                size: parseInt($tile.data('size'), 10) || 0
-            };
+    /**
+     * Kijelölés. Ctrl/Cmd+kattintás hozzáad vagy elvesz, Shift+kattintás a legutóbbi
+     * kijelöléstől tartományt jelöl, sima kattintás egyet választ.
+     */
+    function pick($tile, e) {
+        if (!$tile || !$tile.length) {
+            state.selection = [];
+        } else if (e && e.shiftKey && state.selection.length) {
+            var files = filtered(),
+                from = indexOfName(lastSelected().name),
+                to = indexOfName(String($tile.data('name')));
+            if (from === -1 || to === -1) {
+                state.selection = [fileRec($tile.data())];
+            } else {
+                var also = [];
+                for (var i = Math.min(from, to); i <= Math.max(from, to); i++) {
+                    also.push(fileRec(files[i]));
+                }
+                state.selection = also;
+            }
+        } else if (e && (e.ctrlKey || e.metaKey)) {
+            var idx = selectionIndexOf(String($tile.data('name')));
+            if (idx === -1) {
+                state.selection.push(fileRec($tile.data()));
+            } else {
+                state.selection.splice(idx, 1);
+            }
         } else {
-            state.selected = null;
+            state.selection = [fileRec($tile.data())];
         }
+        applySelection();
         updateFoot();
     }
 
     function updateFoot() {
-        var has = !!state.selected;
+        var db = state.selection.length,
+            fo = lastSelected();
         // .button('enable'/'disable') és nem .prop('disabled'): a jQuery UI widget a
         // .prop()-ról nem értesül, tehát a gomb tiltva lenne, de engedélyezettnek látszana.
-        $('#mtSelect, #mtRename, #mtDelete').button(has ? 'enable' : 'disable');
-        if (has) {
-            $info.text(state.selected.name + ' — ' + fmtSize(state.selected.size));
+        $('#mtSelect, #mtDelete, #mtToTermek').button(db ? 'enable' : 'disable');
+        $('#mtRename').button(db === 1 ? 'enable' : 'disable');
+        if (db > 1) {
+            $info.text(db + ' fájl kijelölve');
+        } else if (fo) {
+            $info.text(fo.name + ' — ' + fmtSize(fo.size));
         } else {
             $info.text($info.data('default') || '');
         }
@@ -628,7 +687,7 @@
     // ugyanaz a /themes/ui/<uitheme>/jquery-ui.css, amit ez az oldal is betölt.
     // Fontos, hogy ez a load() ELŐTT fusson: az updateFoot() a widget enable/disable
     // metódusát hívja, ami inicializálatlan elemen kivételt dobna.
-    $('#mtNewFolder, #mtUploadBtn, #mtRename, #mtDelete, #mtSelect, #mtCancel').button();
+    $('#mtNewFolder, #mtUploadBtn, #mtRename, #mtDelete, #mtSelect, #mtCancel, #mtToTermek').button();
     // A Kiválaszt kiemelve; a Mégse SZÁNDÉKOSAN nem kap ui-priority-secondary-t –
     // annak 0.7-es átlátszósága ugyanúgy nézne ki, mint a tiltott gombok mellette.
     $('#mtSelect').addClass('ui-priority-primary');
@@ -668,18 +727,19 @@
         });
     });
 
-    $grid.on('click', '.mt-tile.file', function () {
-        pick($(this));
+    $grid.on('click', '.mt-tile.file', function (e) {
+        pick($(this), e);
     });
 
     $grid.on('dblclick', '.mt-tile.file', function () {
         pick($(this));
-        finish(state.selected.url, state.selected.name);
+        finish(lastSelected().url, lastSelected().name);
     });
 
     $grid.on('keydown', function (e) {
-        if (e.which === 13 && state.selected) {
-            finish(state.selected.url, state.selected.name);
+        var fo = lastSelected();
+        if (e.which === 13 && fo) {
+            finish(fo.url, fo.name);
         }
     });
 
@@ -687,12 +747,41 @@
     $grid.on('click', '#mtPrevBar', renderPrev);
 
     $('#mtSelect').on('click', function () {
-        if (state.selected) {
-            finish(state.selected.url, state.selected.name);
+        var fo = lastSelected();
+        if (fo) {
+            finish(fo.url, fo.name);
         }
     });
 
     $('#mtCancel').on('click', cancel);
+
+    // A termék karbantartóból nyitva: a kijelölt képek felvétele a termék képei közé.
+    $('#mtToTermek').on('click', function () {
+        if (!state.selection.length || !state.termekid) {
+            return;
+        }
+        $.ajax({
+            url: '/admin/termekkep/addfrommediatar',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                termek: state.termekid,
+                urls: $.map(state.selection, function (f) {
+                    return f.url;
+                })
+            },
+            success: function (d) {
+                if (!d || !d.ok) {
+                    message((d && d.error) || 'A képek felvétele nem sikerült.');
+                    return;
+                }
+                done({termekid: state.termekid, added: d.added, skipped: d.skipped});
+            },
+            error: function () {
+                message('A képek felvétele nem sikerült.');
+            }
+        });
+    });
 
     $('#mtSearch').on('input keyup', function () {
         state.filter = $(this).val();
@@ -732,11 +821,12 @@
     });
 
     $('#mtRename').on('click', function () {
-        if (!state.selected) {
+        var fo = state.selection.length === 1 ? state.selection[0] : null;
+        if (!fo) {
             return;
         }
-        var cur = state.selected.name;
-        withUsage(state.selected.url, function (usage) {
+        var cur = fo.name;
+        withUsage(fo.url, function (usage) {
             askText({
                 title: 'Átnevezés',
                 okText: 'Átnevez',
@@ -768,11 +858,15 @@
     });
 
     $('#mtDelete').on('click', function () {
-        if (!state.selected) {
+        if (!state.selection.length) {
             return;
         }
-        var name = state.selected.name;
-        withUsage(state.selected.url, function (usage) {
+        var nevek = $.map(state.selection, function (f) {
+                return f.name;
+            }),
+            // a "hol használják" kérdés fájlonként megy; több kijelöltnél az elsőt nézzük meg
+            fo = state.selection[0];
+        withUsage(state.selection.length === 1 ? fo.url : '', function (usage) {
             askConfirm({
                 title: 'Törlés',
                 okText: 'Törlés',
@@ -780,13 +874,15 @@
                     ? 'Ez a fájl ' + usage.count + ' helyen használatban van ('
                     + usage.where.join(', ') + ').'
                     : '',
-                message: 'Biztosan törli a(z) „' + name + '” fájlt a származékaival együtt?'
+                message: nevek.length === 1
+                    ? 'Biztosan törli a(z) „' + nevek[0] + '” fájlt a származékaival együtt?'
+                    : 'Biztosan törli a kijelölt ' + nevek.length + ' fájlt a származékaikkal együtt?'
             }, function () {
                 $.ajax({
                     url: '/admin/mediatar/delete',
                     type: 'POST',
                     dataType: 'json',
-                    data: {type: state.type, path: state.path, names: [name]},
+                    data: {type: state.type, path: state.path, names: nevek},
                     success: function (d) {
                         if (d && d.ok) {
                             load(state.path);

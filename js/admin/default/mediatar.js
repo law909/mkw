@@ -62,6 +62,10 @@
         this.startupPath = '';
         this.resourceType = '';
         this.selectActionFunction = null;
+        // A választón elvégzett művelet (nem fájlválasztás) után hívódik – lásd _done.
+        this.doneActionFunction = null;
+        // Extra lekérdezési paraméterek a böngésző oldalnak (pl. termekid).
+        this.params = {};
     }
 
     /**
@@ -84,9 +88,20 @@
             url += '&sel=' + encodeURIComponent(parsed.file);
         }
 
+        $.each(this.params || {}, function (k, v) {
+            if (v !== null && v !== undefined && v !== '') {
+                url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(v);
+            }
+        });
+
         callbacks[cb] = function (fileUrl, data) {
             if (typeof self.selectActionFunction === 'function') {
                 self.selectActionFunction(fileUrl, data);
+            }
+        };
+        callbacks[cb].done = function (data) {
+            if (typeof self.doneActionFunction === 'function') {
+                self.doneActionFunction(data || {});
             }
         };
 
@@ -136,6 +151,26 @@
         var $d = fn.$dialog;
         try {
             fn(fileUrl, data || {});
+        } finally {
+            delete callbacks[cb];
+            if ($d) {
+                $d.dialog('close');
+            }
+        }
+    };
+
+    /**
+     * Az iframe-ből hívva, ha a választón elvégzett művelet befejeződött (nem fájlválasztás,
+     * hanem pl. a kijelölt képek felvétele a termékhez): a hívó frissít, a dialógus bezárul.
+     */
+    CKFinder._done = function (cb, data) {
+        var fn = callbacks[cb];
+        if (!fn) {
+            return;
+        }
+        var $d = fn.$dialog;
+        try {
+            fn.done(data || {});
         } finally {
             delete callbacks[cb];
             if ($d) {

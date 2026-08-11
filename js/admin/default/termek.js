@@ -1,6 +1,47 @@
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
 
+    /** A szerkesztett termék id-ja; új, még nem mentett terméken üres. */
+    function termekId() {
+        const id = $('#mattkarb-form input[name="id"]').val();
+        return (id && id * 1) ? id : '';
+    }
+
+    /**
+     * Médiatár a termék karbantartóból: a választó megkapja a termék id-ját, és ha van,
+     * felkínálja a kijelölt képek felvételét a termék képei közé. A felvétel után a
+     * Képek lap újratöltődik – a form többi, még nem mentett adata megmarad.
+     */
+    function termekFinder() {
+        const finder = new CKFinder();
+        finder.params = {termekid: termekId()};
+        finder.doneActionFunction = function () {
+            reloadKepek();
+        };
+        return finder;
+    }
+
+    function reloadKepek() {
+        const id = termekId();
+        if (!id) {
+            return;
+        }
+        $.ajax({
+            url: '/admin/termekkep/getrows',
+            type: 'GET',
+            data: {termek: id},
+            success: function (data) {
+                $('#KepTab').find('[id^="keptable_"], .js-kepnewbutton').remove();
+                $('#KepTab').append(data);
+                $('#KepTab').append('<a class="js-kepnewbutton" href="#" title="Új"><span class="ui-icon ui-icon-circle-plus"></span></a>');
+                $('.js-kepnewbutton,.js-kepdelbutton,.js-kepbrowsebutton').button();
+                if (!window.mkwIsMobile) {
+                    $('#KepTab .js-toflyout').flyout();
+                }
+            }
+        });
+    }
+
     function termekAutocompleteConfig() {
         return {
             minLength: 4,
@@ -226,7 +267,7 @@ $(document).ready(function () {
                 })
                 .on('click', '.js-dokbrowsebutton', function (e) {
                     e.preventDefault();
-                    var finder = new CKFinder(),
+                    var finder = termekFinder(),
                         $dokpathedit = $('#DokPathEdit_' + $(this).attr('data-id')),
                         path = $dokpathedit.val();
                     finder.resourceType = 'Images';
@@ -259,7 +300,7 @@ $(document).ready(function () {
             })
                 .on('click', '#FoKepBrowseButton', function (e) {
                     e.preventDefault();
-                    var finder = new CKFinder(),
+                    var finder = termekFinder(),
                         $kepurl = $('#KepUrlEdit'),
                         path = $kepurl.val();
                     if (path) {
@@ -312,7 +353,7 @@ $(document).ready(function () {
                 })
                 .on('click', '.js-kepbrowsebutton', function (e) {
                     e.preventDefault();
-                    var finder = new CKFinder(),
+                    var finder = termekFinder(),
                         $kepurledit = $('#KepUrlEdit_' + $(this).attr('data-id')),
                         path = $kepurledit.val();
                     if (path) {

@@ -967,8 +967,10 @@ if (!\mkw\store::isClosed()) {
 }
 
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
+$router->map('GET', '/admin/termekkep/getrows', 'termekkepController#getrows', 'admintermekkepgetrows');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
+    $router->map('POST', '/admin/termekkep/addfrommediatar', 'termekkepController#addFromMediatar', 'admintermekkepaddfrommediatar');
 }
 
 $router->map('GET', '/admin/termekdok/getemptyrow', 'termekdokController#getemptyrow', 'admintermekdokgetemptyrow');

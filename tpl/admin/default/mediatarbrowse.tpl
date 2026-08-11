@@ -19,6 +19,7 @@
      data-cb="{$mcb|default:0}"
      data-funcnum="{$mfuncnum|default:0}"
      data-maxsize="{$mmaxsize|default:0}"
+     data-termekid="{$mtermekid|default:0}"
      data-writable="{if $mwritable}1{else}0{/if}">
 
     {if $mimgpostwarnings}
@@ -59,6 +60,9 @@
             {if $mwritable}
                 <button type="button" id="mtRename" disabled="disabled">{at('Átnevezés')}</button>
                 <button type="button" id="mtDelete" disabled="disabled">{at('Törlés')}</button>
+            {/if}
+            {if ($mtermekid|default) && $mwritable}
+                <button type="button" id="mtToTermek" disabled="disabled">{at('Termékképek közé')}</button>
             {/if}
             <button type="button" id="mtSelect" class="mt-primary" disabled="disabled">{at('Kiválaszt')}</button>
             <button type="button" id="mtCancel">{at('Mégse')}</button>

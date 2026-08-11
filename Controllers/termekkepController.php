@@ -51,6 +51,93 @@ class termekkepController extends \mkwhelpers\MattableController
         echo $view->getTemplateResult();
     }
 
+    /**
+     * A médiatárban kijelölt képek felvétele a termék képei közé. Az azonos url-ű kép nem
+     * duplikálódik – a médiatár többször is megnyitható ugyanarra a mappára.
+     */
+    public function addFromMediatar()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        /** @var \Entities\Termek|null $termek */
+        $termek = $this->getRepo(\Entities\Termek::class)->find($this->params->getIntRequestParam('termek'));
+        if (!$termek) {
+            echo json_encode(['ok' => false, 'error' => t('Nincs ilyen termék.')]);
+            return;
+        }
+
+        // az url-t a tárolás elején lévő '/' és a kódolás is megkülönböztetheti, ezért
+        // a médiatár összehasonlító változataival nézzük, mi van már fent
+        $megvan = [];
+        foreach ($this->getRepo()->getByTermek($termek->getId()) as $kep) {
+            $megvan[$kep->getUrl('/')] = true;
+        }
+
+        $added = 0;
+        $skipped = 0;
+        foreach ($this->getUrls() as $url) {
+            $vanmar = false;
+            foreach (\Services\MediatarService::urlVariants($url) as $valtozat) {
+                if (isset($megvan['/' . ltrim($valtozat, '/')])) {
+                    $vanmar = true;
+                    break;
+                }
+            }
+            if ($vanmar) {
+                $skipped++;
+                continue;
+            }
+            $kep = new TermekKep();
+            $kep->setTermek($termek);
+            $kep->setUrl($url);
+            $this->getEm()->persist($kep);
+            $megvan['/' . ltrim($url, '/')] = true;
+            $added++;
+        }
+        $this->getEm()->flush();
+
+        echo json_encode(['ok' => true, 'added' => $added, 'skipped' => $skipped]);
+    }
+
+    /**
+     * A termék képsorai újrarajzolva – a médiatárból való felvétel után ezzel frissül a
+     * karbantartó Képek lapja, a form többi, még nem mentett adatának elvesztése nélkül.
+     */
+    public function getrows()
+    {
+        /** @var \Entities\Termek|null $termek */
+        $termek = $this->getRepo(\Entities\Termek::class)->find($this->params->getIntRequestParam('termek'));
+        if (!$termek) {
+            return;
+        }
+        foreach ($this->getRepo()->getByTermek($termek->getId()) as $kep) {
+            $view = $this->createView('termektermekkepkarb.tpl');
+            $view->setVar('kep', $this->loadVars($kep));
+            echo $view->getTemplateResult();
+        }
+    }
+
+    /**
+     * A kérésben érkező kép-url-ek. Nyersen olvassuk: a getStringRequestParam az &-et
+     * &amp;-re rontaná egy fájlnévben.
+     *
+     * @return string[]
+     */
+    private function getUrls()
+    {
+        $all = $this->params->asArray();
+        $v = $all['requestparams']['urls'] ?? [];
+        if (!is_array($v)) {
+            $v = [$v];
+        }
+        $out = [];
+        foreach ($v as $url) {
+            if (is_string($url) && trim($url) !== '') {
+                $out[] = trim($url);
+            }
+        }
+        return $out;
+    }
+
     public function getSelectList($termek, $selid)
     {
         $kepek = $this->getRepo()->getByTermek($termek);

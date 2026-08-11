@@ -50,6 +50,8 @@ class mediatarController extends \mkwhelpers\Controller
         $view->setVar('msel', $sel);
         $view->setVar('mcb', (int)$this->params->getRequestParam('cb', 0));
         $view->setVar('mfuncnum', (int)$this->params->getRequestParam('CKEditorFuncNum', 0));
+        // a termék karbantartóból nyitva: a kijelölt képek felvehetők a termék képei közé
+        $view->setVar('mtermekid', (int)$this->params->getRequestParam('termekid', 0));
         $view->setVar('mmaxsize', $mediatar->getEffectiveMaxSize());
         $view->setVar('mmaxsizetext', \Services\MediatarService::formatSize($mediatar->getEffectiveMaxSize()));
         $view->setVar('mextensions', implode(', ', $mediatar->getAllowedExtensions()));
