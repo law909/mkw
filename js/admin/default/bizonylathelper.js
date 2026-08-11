@@ -839,7 +839,12 @@ let bizonylathelper = function ($) {
                     importTetelek(bizonylattipus, tetelek);
                     uzen(tetelek.length + ' tétel betöltve, ' + hibak.length + ' sor nem azonosítható.', false);
                     if (hibak.length) {
-                        dialogcenter.html('<div>' + hibak.join('<br>') + '</div>').dialog({
+                        // a sorok a feltöltött fájlból jönnek: szövegként, nem html-ként
+                        let $lista = $('<div></div>');
+                        hibak.forEach(function (sor) {
+                            $lista.append($('<div></div>').text(sor));
+                        });
+                        dialogcenter.empty().append($lista).dialog({
                             title: 'Nem azonosítható sorok',
                             resizable: true,
                             width: 600,
