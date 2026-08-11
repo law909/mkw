@@ -287,12 +287,14 @@ class termekController extends \mkwhelpers\MattableController
      * Üres vagy nulla cella ⇒ a sor törlése: a létrában a tárolt 0 és a hiányzó sor azonos.
      *
      * @param \Entities\Termek $obj
+     * @param \Entities\TermekValtozat[] $valtozatmap űrlapkulcs => változat, a fenti ciklusból –
+     *        „mentés új termékként" esetén az űrlapon a RÉGI termék változatainak id-je jön vissza,
+     *        adatbázisból feloldva a régi termékre írnánk
      */
-    private function saveMinBoltiKeszletMatrix($obj)
+    private function saveMinBoltiKeszletMatrix($obj, array $valtozatmap)
     {
         $em = $this->getEm();
         $raktaridk = $this->getIdList('minboltikeszletraktarid');
-        $valtozatidk = $this->getIdList('valtozatminboltikeszletid');
 
         $raktarmap = [];
         if ($raktaridk) {
@@ -320,18 +322,19 @@ class termekController extends \mkwhelpers\MattableController
             }
         }
 
-        if (!$valtozatidk) {
+        // csak a kirajzolt rács változatai, és csak azok, amiket a fenti ciklus tényleg megtartott
+        $erintett = [];
+        foreach ($this->params->getArrayRequestParam('valtozatminboltikeszletid') as $vid) {
+            $vid = (string)$vid;
+            if (isset($valtozatmap[$vid])) {
+                $erintett[$vid] = $valtozatmap[$vid];
+            }
+        }
+        if (!$erintett) {
             return;
         }
-        $vfilter = new FilterDescriptor();
-        $vfilter->addFilter('id', 'IN', $valtozatidk);
-        $valtozatmap = [];
-        /** @var TermekValtozat $valtozat */
-        foreach ($this->getRepo(TermekValtozat::class)->getAll($vfilter, []) as $valtozat) {
-            $valtozatmap[$valtozat->getId()] = $valtozat;
-        }
 
-        foreach ($valtozatmap as $vid => $valtozat) {
+        foreach ($erintett as $vid => $valtozat) {
             $valtozat->setMinboltikeszlet($this->params->getNumRequestParam('valtozatminboltikeszlet_' . $vid));
             $em->persist($valtozat);
         }
@@ -339,12 +342,15 @@ class termekController extends \mkwhelpers\MattableController
         if (!$raktarmap) {
             return;
         }
-        $valtozatsorok = $this->getRepo(TermekValtozatMinboltikeszlet::class)
-            ->getRowsByTermekValtozatIds(array_keys($valtozatmap));
-        foreach ($valtozatmap as $vid => $valtozat) {
+        // az új változatnak még nincs id-je, arra nem is lehet meglévő sor
+        $valtozatsorok = $this->getRepo(TermekValtozatMinboltikeszlet::class)->getRowsByTermekValtozatIds(
+            array_filter(array_map(static fn($valtozat) => $valtozat->getId(), $erintett))
+        );
+        foreach ($erintett as $vid => $valtozat) {
             foreach ($raktarmap as $rid => $raktar) {
+                // a mezőnév az űrlapkulcsot viseli, a meglévő sorok viszont a valódi id-re állnak
                 $ertek = $this->params->getNumRequestParam('valtozatraktariminboltikeszlet_' . $vid . '_' . $rid);
-                $sor = $valtozatsorok[$vid][$rid] ?? null;
+                $sor = $valtozatsorok[$valtozat->getId()][$rid] ?? null;
                 if ($ertek * 1) {
                     if (!$sor) {
                         $sor = new TermekValtozatMinboltikeszlet();
@@ -552,6 +558,10 @@ class termekController extends \mkwhelpers\MattableController
         //$obj->setAkciosbrutto($this->params->getNumRequestParam('akciosbrutto'));
         $obj->setAkciostart($this->params->getStringRequestParam('akciostart'));
         $obj->setAkciostop($this->params->getStringRequestParam('akciostop'));
+        // űrlapkulcs => kép: a szín képek és a változat képe erre hivatkoznak. "Mentés új
+        // termékként" esetén minden kép ÚJ sorként jön létre, tehát az űrlapon lévő (régi
+        // termékhez tartozó) id-t nem szabad adatbázisból feloldani.
+        $kepmap = [];
         $kepids = $this->params->getArrayRequestParam('kepid');
         foreach ($kepids as $kepid) {
             if ($this->params->getStringRequestParam('kepurl_' . $kepid, '') !== '') {
@@ -563,6 +573,7 @@ class termekController extends \mkwhelpers\MattableController
                     $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
                     $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
                     $this->getEm()->persist($kep);
+                    $kepmap[(string)$kepid] = $kep;
                 } elseif ($oper == 'edit') {
                     /** @var TermekKep $kep */
                     $kep = \mkw\store::getEm()->getRepository(TermekKep::class)->find($kepid);
@@ -571,90 +582,7 @@ class termekController extends \mkwhelpers\MattableController
                         $kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
                         $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
                         $this->getEm()->persist($kep);
-                    }
-                }
-            }
-        }
-
-        $szinids = $this->params->getArrayRequestParam('szinkepid');
-        if ($szinids) {
-            $validSzinIds = [];
-            foreach ($obj->getValtozatok() as $valtozat) {
-                $valtozatSzinId = $valtozat->getSzinId();
-                if ($valtozatSzinId) {
-                    $validSzinIds[$valtozatSzinId] = true;
-                }
-            }
-            if ($validSzinIds) {
-                $szinids = array_values(array_filter($szinids, function ($szinId) use ($validSzinIds) {
-                    return isset($validSzinIds[(int)$szinId]);
-                }));
-            } else {
-                $szinids = [];
-            }
-            $szinrepo = $this->getEm()->getRepository(Szin::class);
-            $keprepo = $this->getEm()->getRepository(TermekKep::class);
-            $szinkepmap = [];
-            foreach ($obj->getTermekSzinKepek() as $szinkep) {
-                $szinid = $szinkep->getSzinId();
-                $kepid = $szinkep->getKepId();
-                if ($szinid && $kepid) {
-                    $szinkepmap[$szinid][$kepid] = $szinkep;
-                }
-            }
-            $szinidset = array_flip($szinids);
-            foreach ($szinkepmap as $szinid => $kepmap) {
-                if (!isset($szinidset[$szinid])) {
-                    foreach ($kepmap as $szinkep) {
-                        $obj->removeTermekSzinKep($szinkep);
-                        $this->getEm()->remove($szinkep);
-                    }
-                }
-            }
-            foreach ($szinids as $szinid) {
-                $szinid = (int)$szinid;
-                $kepids = $this->params->getArrayRequestParam('szinkepimg_' . $szinid);
-                $sorrendek = $this->params->getArrayRequestParam('szinkepsorrend_' . $szinid);
-                $kepids = array_values(array_unique(array_filter(array_map('intval', $kepids))));
-                $existing = $szinkepmap[$szinid] ?? [];
-
-                foreach ($existing as $existingKepid => $szinkep) {
-                    if (!in_array($existingKepid, $kepids, true)) {
-                        $obj->removeTermekSzinKep($szinkep);
-                        $this->getEm()->remove($szinkep);
-                    } else {
-                        // Update sorrend for existing
-                        $kepidIndex = array_search($existingKepid, $kepids);
-                        if ($kepidIndex !== false && isset($sorrendek[$kepidIndex])) {
-                            $szinkep->setSorrend((int)$sorrendek[$kepidIndex]);
-                            $this->getEm()->persist($szinkep);
-                        }
-                    }
-                }
-
-                if ($kepids) {
-                    $szin = $szinrepo->find($szinid);
-                    if ($szin) {
-                        foreach ($kepids as $index => $kepid) {
-                            if (!isset($existing[$kepid])) {
-                                $kep = $keprepo->find($kepid);
-                                if ($kep) {
-                                    $szinkep = new \Entities\TermekSzinKep();
-                                    $szinkep->setSzin($szin);
-                                    $szinkep->setKep($kep);
-                                    if (isset($sorrendek[$index])) {
-                                        $szinkep->setSorrend((int)$sorrendek[$index]);
-                                    }
-                                    $obj->addTermekSzinKep($szinkep);
-                                    $this->getEm()->persist($szinkep);
-                                }
-                            }
-                        }
-                    }
-                } elseif ($existing) {
-                    foreach ($existing as $szinkep) {
-                        $obj->removeTermekSzinKep($szinkep);
-                        $this->getEm()->remove($szinkep);
+                        $kepmap[(string)$kepid] = $kep;
                     }
                 }
             }
@@ -750,6 +678,9 @@ class termekController extends \mkwhelpers\MattableController
                 }
             }
         }
+        // űrlapkulcs => változat, ugyanazért, amiért a képeknél: "mentés új termékként" esetén a
+        // változatok is újként jönnek létre, a min.készlet mátrix viszont a régi id-ket küldi vissza
+        $valtozatmap = [];
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             $valtozatids = $this->params->getArrayRequestParam('valtozatid');
             foreach ($valtozatids as $valtozatid) {
@@ -853,13 +784,14 @@ class termekController extends \mkwhelpers\MattableController
                             $valtdb++;
                         }
                     }
-                    $at = $this->getEm()->getRepository(TermekKep::class)->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
+                    $at = $kepmap[$this->params->getStringRequestParam('valtozatkepid_' . $valtozatid)] ?? null;
                     if ($at) {
                         $valtozat->setKep($at);
                     }
 
                     if ($valtdb > 0) {
                         $this->getEm()->persist($valtozat);
+                        $valtozatmap[(string)$valtozatid] = $valtozat;
                     } else {
                         $obj->removeValtozat($valtozat);
                     }
@@ -967,7 +899,7 @@ class termekController extends \mkwhelpers\MattableController
                         if ($valtozat->getTermekfokep()) {
                             $valtozat->setKep(null);
                         } else {
-                            $at = $this->getEm()->getRepository(TermekKep::class)->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
+                            $at = $kepmap[$this->params->getStringRequestParam('valtozatkepid_' . $valtozatid)] ?? null;
                             if ($at) {
                                 $valtozat->setKep($at);
                             } else {
@@ -976,11 +908,100 @@ class termekController extends \mkwhelpers\MattableController
                         }
 
                         $this->getEm()->persist($valtozat);
+                        $valtozatmap[(string)$valtozatid] = $valtozat;
                     }
                 }
             }
         }
-        $this->saveMinBoltiKeszletMatrix($obj);
+
+        // A szín képek a változatok után: a szűrésük a változatok színéből indul, ami "mentés új
+        // termékként" esetén csak a fenti ciklusban jön létre.
+        $szinids = $this->params->getArrayRequestParam('szinkepid');
+        if ($szinids) {
+            $validSzinIds = [];
+            foreach ($obj->getValtozatok() as $valtozat) {
+                $valtozatSzinId = $valtozat->getSzinId();
+                if ($valtozatSzinId) {
+                    $validSzinIds[$valtozatSzinId] = true;
+                }
+            }
+            if ($validSzinIds) {
+                $szinids = array_values(array_filter($szinids, function ($szinId) use ($validSzinIds) {
+                    return isset($validSzinIds[(int)$szinId]);
+                }));
+            } else {
+                $szinids = [];
+            }
+            $szinrepo = $this->getEm()->getRepository(Szin::class);
+            $szinkepmap = [];
+            foreach ($obj->getTermekSzinKepek() as $szinkep) {
+                $szinid = $szinkep->getSzinId();
+                $kepid = $szinkep->getKepId();
+                if ($szinid && $kepid) {
+                    $szinkepmap[$szinid][$kepid] = $szinkep;
+                }
+            }
+            $szinidset = array_flip($szinids);
+            foreach ($szinkepmap as $szinid => $kepmap) {
+                if (!isset($szinidset[$szinid])) {
+                    foreach ($kepmap as $szinkep) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
+                    }
+                }
+            }
+            foreach ($szinids as $szinid) {
+                $szinid = (int)$szinid;
+                $kepids = $this->params->getArrayRequestParam('szinkepimg_' . $szinid);
+                $sorrendek = $this->params->getArrayRequestParam('szinkepsorrend_' . $szinid);
+                $kepids = array_values(array_unique(array_filter(array_map('intval', $kepids))));
+                $existing = $szinkepmap[$szinid] ?? [];
+
+                foreach ($existing as $existingKepid => $szinkep) {
+                    if (!in_array($existingKepid, $kepids, true)) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
+                    } else {
+                        // Update sorrend for existing
+                        $kepidIndex = array_search($existingKepid, $kepids);
+                        if ($kepidIndex !== false && isset($sorrendek[$kepidIndex])) {
+                            $szinkep->setSorrend((int)$sorrendek[$kepidIndex]);
+                            $this->getEm()->persist($szinkep);
+                        }
+                    }
+                }
+
+                if ($kepids) {
+                    $szin = $szinrepo->find($szinid);
+                    if ($szin) {
+                        foreach ($kepids as $index => $kepid) {
+                            if (!isset($existing[$kepid])) {
+                                // az űrlapon lévő kulcs alapján, nem az adatbázisból: új terméknél
+                                // a kép is most jött létre, és még nincs id-je
+                                $kep = $kepmap[(string)$kepid] ?? null;
+                                if ($kep) {
+                                    $szinkep = new \Entities\TermekSzinKep();
+                                    $szinkep->setSzin($szin);
+                                    $szinkep->setKep($kep);
+                                    if (isset($sorrendek[$index])) {
+                                        $szinkep->setSorrend((int)$sorrendek[$index]);
+                                    }
+                                    $obj->addTermekSzinKep($szinkep);
+                                    $this->getEm()->persist($szinkep);
+                                }
+                            }
+                        }
+                    }
+                } elseif ($existing) {
+                    foreach ($existing as $szinkep) {
+                        $obj->removeTermekSzinKep($szinkep);
+                        $this->getEm()->remove($szinkep);
+                    }
+                }
+            }
+        }
+
+        $this->saveMinBoltiKeszletMatrix($obj, $valtozatmap);
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
         $obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
         return $obj;
