@@ -1411,6 +1411,11 @@ $router->map('POST', '/admin/napijelentes2', 'adminController#printNapijelentes2
 $router->map('POST', '/admin/teljesitmenyjelentes', 'adminController#printTeljesitmenyJelentes', 'adminteljesitmenyjelentes');
 //$router->map('GET', '/admin/genfszla', 'adminController#generateFolyoszamla', 'admingeneratefolyoszamla');
 
+$router->map('GET', '/admin/minkeszletlista/view', 'minkeszletlistaController#view', 'adminminkeszletlistaview');
+$router->map('GET', '/admin/minkeszletlista/get', 'minkeszletlistaController#createLista', 'adminminkeszletlistaget');
+$router->map('GET', '/admin/minkeszletlista/export', 'minkeszletlistaController#exportLista', 'adminminkeszletlistaexport');
+$router->map('GET', '/admin/minkeszletlista/exportbizonylat', 'minkeszletlistaController#exportBizonylat', 'adminminkeszletlistaexportbizonylat');
+
 $router->map('GET', '/admin/keszletlista/view', 'keszletlistaController#view', 'adminkeszletlistaview');
 $router->map('GET', '/admin/keszletlista/get', 'keszletlistaController#createLista', 'adminkeszletlistaget');
 $router->map('GET', '/admin/keszletlista/export', 'keszletlistaController#exportLista', 'adminkeszletlistaexport');
