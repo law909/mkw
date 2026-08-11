@@ -24,6 +24,7 @@
                     <div>
                         <label for="RaktarEdit">{at('Raktár')}:</label>
                         <select id="RaktarEdit" name="raktar" class="mattable-important" required="required">
+                            <option value="0">{at('Céges készlet')}</option>
                             {foreach $raktarlist as $_mk}
                                 <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                             {/foreach}
@@ -31,11 +32,21 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="MasikRaktarEdit">{at('Másik raktár készlete')}:</label>
+                        <label for="MasikRaktarEdit">{at('Ebből a raktárból kiszolgálható')}:</label>
                         <select id="MasikRaktarEdit" name="masikraktar">
                             <option value="">{at('nem kell')}</option>
                             {foreach $masikraktarlist as $_mk}
                                 <option value="{$_mk.id}">{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="GyartoEdit">{at('Gyártó')}:</label>
+                        <select id="GyartoEdit" name="gyarto">
+                            <option value="">{at('mindegy')}</option>
+                            {foreach $gyartolist as $_gy}
+                                <option value="{$_gy.id}">{$_gy.caption}</option>
                             {/foreach}
                         </select>
                     </div>

@@ -29,6 +29,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private $raktarnev;
     private $masikraktar;
     private $masikraktarnev;
+    private $gyarto;
+    private $gyartonev;
 
     public function view()
     {
@@ -37,6 +39,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $rc = new raktarController();
         $view->setVar('raktarlist', $rc->getSelectList(\mkw\store::getParameter(\mkw\consts::Raktar)));
         $view->setVar('masikraktarlist', $rc->getSelectList());
+        $gyarto = new partnerController();
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
         $view->printTemplateResult();
     }
 
@@ -45,13 +49,18 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $this->datumstr = $this->params->getStringRequestParam('datum');
         $this->datumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->datumstr)));
 
+        // 0 = "Céges készlet": az összes raktár készlete a "Minden raktár" minimumhoz mérve
         $this->raktar = $this->params->getIntRequestParam('raktar');
         $r = $this->getRepo(Raktar::class)->find($this->raktar);
-        $this->raktarnev = $r ? $r->getNev() : '';
+        $this->raktarnev = $r ? $r->getNev() : t('Céges készlet');
 
         $this->masikraktar = $this->params->getIntRequestParam('masikraktar');
         $mr = $this->getRepo(Raktar::class)->find($this->masikraktar);
         $this->masikraktarnev = $mr ? $mr->getNev() : '';
+
+        $this->gyarto = $this->params->getIntRequestParam('gyarto');
+        $gy = $this->getRepo(\Entities\Partner::class)->find($this->gyarto);
+        $this->gyartonev = $gy ? $gy->getNev() : '';
     }
 
     /**
@@ -60,7 +69,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
      * végigviszi), ezért a tétel rontott jelzője elég.
      *
      * @param string $tetelfeltetel a tételt a sorhoz kötő SQL feltétel
-     * @param string $raktarparam a raktár kötött paraméterének neve, kettőspont nélkül
+     * @param string $raktarparam a raktár kötött paraméterének neve kettőspont nélkül,
+     *                            üresen az összes raktár együtt (céges készlet)
      */
     private function getKeszletSql($tetelfeltetel, $raktarparam)
     {
@@ -68,16 +78,16 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' FROM bizonylattetel bt'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
             . ' WHERE bt.mozgat = 1 AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
-            . ' AND bf.teljesites <= :datum AND bf.raktar_id = :' . $raktarparam
+            . ' AND bf.teljesites <= :datum'
+            . ($raktarparam ? ' AND bf.raktar_id = :' . $raktarparam : '')
             . ' AND ' . $tetelfeltetel . '), 0)';
     }
 
     protected function getData()
     {
         $this->readParams();
-        if (!$this->raktar) {
-            return [];
-        }
+        // céges készletnél nincs raktárszűrés, és a minimum a "Minden raktár" érték
+        $raktarparam = $this->raktar ? 'raktar' : '';
 
         $oszlopok = [
             'termek_id',
@@ -96,33 +106,37 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             $rsm->addScalarResult($oszlop, $oszlop);
         }
 
+        $gyartoszuro = $this->gyarto ? ' t.gyarto_id = :gyarto' : '';
+
         // változatos ág: a tétel a változatra hivatkozik
         $valtozatag = 'SELECT _xx.termek_id AS termek_id, _xx.id AS termekvaltozat_id,'
             . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
             . " COALESCE(NULLIF(_xx.vonalkod, ''), t.vonalkod) AS vonalkod,"
             . ' t.nev AS termeknev, _xx.ertek1 AS ertek1, _xx.ertek2 AS ertek2,'
-            . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'raktar') . ' AS keszlet,'
+            . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'masikraktar') . ' AS masikkeszlet,'
             . ' ' . \Services\KeszletService::getMinKeszletSql(
                 '_xx.termek_id',
                 't.minboltikeszlet',
                 '_xx.id',
                 '_xx.minboltikeszlet',
-                'raktar'
+                $raktarparam
             ) . ' AS minkeszlet'
             . ' FROM termekvaltozat _xx'
-            . ' LEFT JOIN termek t ON (t.id = _xx.termek_id)';
+            . ' LEFT JOIN termek t ON (t.id = _xx.termek_id)'
+            . ($gyartoszuro ? ' WHERE' . $gyartoszuro : '');
 
         // változat nélküli termékek: a tétel a termékre hivatkozik, változat nélkül
         $termekag = 'SELECT t.id AS termek_id, NULL AS termekvaltozat_id,'
             . ' t.cikkszam AS cikkszam, t.vonalkod AS vonalkod,'
             . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2,"
-            . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'raktar') . ' AS keszlet,'
+            . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minboltikeszlet', '', '', 'raktar')
+            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minboltikeszlet', '', '', $raktarparam)
             . ' AS minkeszlet'
             . ' FROM termek t'
-            . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)';
+            . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
+            . ($gyartoszuro ? ' AND' . $gyartoszuro : '');
 
         $q = $this->getEm()->createNativeQuery(
             'SELECT * FROM (' . $valtozatag . ' UNION ALL ' . $termekag . ') x'
@@ -130,11 +144,17 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' ORDER BY x.cikkszam, x.termeknev, x.ertek1, x.ertek2',
             $rsm
         );
-        $q->setParameters([
+        $parameterek = [
             'datum' => $this->datumstr,
-            'raktar' => $this->raktar,
             'masikraktar' => $this->masikraktar ?: 0,
-        ]);
+        ];
+        if ($raktarparam) {
+            $parameterek['raktar'] = $this->raktar;
+        }
+        if ($this->gyarto) {
+            $parameterek['gyarto'] = $this->gyarto;
+        }
+        $q->setParameters($parameterek);
 
         $ret = [];
         foreach ($q->getScalarResult() as $sor) {
@@ -152,6 +172,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $report->setVar('datumstr', $this->datumstr);
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('masikraktar', $this->masikraktarnev);
+        $report->setVar('gyarto', $this->gyartonev);
         $report->printTemplateResult();
     }
 
@@ -169,7 +190,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             ->setCellValue('E1', t('Készlet'))
             ->setCellValue('F1', t('Min. készlet'))
             ->setCellValue('G1', t('Hiány'))
-            ->setCellValue('H1', $this->masikraktarnev ?: t('Másik raktár'));
+            ->setCellValue('H1', $this->masikraktarnev ?: t('Ebből a raktárból kiszolgálható'));
 
         $sor = 2;
         foreach ($this->getData() as $item) {

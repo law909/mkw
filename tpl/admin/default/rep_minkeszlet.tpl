@@ -5,7 +5,10 @@
     <h5>{$datumstr}</h5>
     <h5>{$raktar}</h5>
     {if ($masikraktar)}
-        <h5>Másik raktár: {$masikraktar}</h5>
+        <h5>Ebből a raktárból kiszolgálható: {$masikraktar}</h5>
+    {/if}
+    {if ($gyarto)}
+        <h5>Gyártó: {$gyarto}</h5>
     {/if}
     <table>
         <thead>
