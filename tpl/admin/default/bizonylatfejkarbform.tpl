@@ -414,13 +414,41 @@
                     {/if}
                     </tbody>
                 </table>
-                <div>
-                    {foreach $egyed.tetelek as $tetel}
-                        {include 'bizonylattetelkarb.tpl'}
-                    {/foreach}
-                    <a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{at('Új')}"><span
-                            class="ui-icon ui-icon-circle-plus"></span></a>
-                </div>
+                {if ($pos|default)}
+                    {* Vonalkódos tételfelvitel: a fej fölötte változatlanul a klasszikus. *}
+                    <div class="js-bizonylatpos bizonylatpos">
+                        <table class="bizonylatpos-tetelek ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <thead>
+                            <tr>
+                                <th>{at('Cikkszám')}</th>
+                                <th>{at('Termék')}</th>
+                                <th>{at('Raktáron')}</th>
+                                <th>{at('Mennyiség')}</th>
+                                <th>{at('Kedvezmény')} %</th>
+                                <th>{at('Bruttó egységár')}</th>
+                                <th>{at('Bruttó')}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody class="js-postetelek"></tbody>
+                        </table>
+                        {* a kereső a tételek alatt, mint a bolti eladáson – a felvett sorok fölé nőnek *}
+                        <div class="bizonylatpos-keresosor">
+                            <label for="BizonylatposVonalkodEdit">{at('Vonalkód / keresés')}:</label>
+                            <input id="BizonylatposVonalkodEdit" class="js-poskereso" type="text" autocomplete="off">
+                            <span class="js-poskereshiba bizonylatpos-hiba"></span>
+                        </div>
+                        <div class="js-posvaltozatvalaszto bizonylatpos-valtozatvalaszto"></div>
+                    </div>
+                {else}
+                    <div>
+                        {foreach $egyed.tetelek as $tetel}
+                            {include 'bizonylattetelkarb.tpl'}
+                        {/foreach}
+                        <a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{at('Új')}"><span
+                                class="ui-icon ui-icon-circle-plus"></span></a>
+                    </div>
+                {/if}
                 <table class="js-bizonylatosszesito ui-widget-content bizonylatosszesito">
                     <thead>
                     <tr>
@@ -454,6 +482,7 @@
             </div>
         </div>
         <input name="quick" type="hidden" value="{$quick}">
+        <input name="pos" type="hidden" value="{if ($pos|default)}1{else}0{/if}">
         <input name="oper" type="hidden" value="{$oper}">
         <input name="id" type="hidden" value="{$egyed.id}">
         <input id="AfaellenorzesnemkellEdit" name="afaellenorzesnemkell" type="hidden" value="{if ($egyed.afaellenorzesnemkell|default)}1{else}0{/if}">

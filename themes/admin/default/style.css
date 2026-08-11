@@ -54,6 +54,33 @@ body {
     text-align: right;
 }
 
+/* Vonalkódos tételfelvitel a bizonylat karbon (bizonylatpos.js). */
+.bizonylatpos-tetelek {
+    width: 100%;
+}
+
+.bizonylatpos-tetelek thead th {
+    text-align: left;
+}
+
+.bizonylatpos-keresosor {
+    margin-top: 5px;
+}
+
+.bizonylatpos-num {
+    text-align: right;
+    width: 90px;
+}
+
+.bizonylatpos-hiba {
+    color: #cc0000;
+    margin-left: 5px;
+}
+
+.bizonylatpos-valtozattermeknev {
+    font-weight: bold;
+}
+
 .egyebadat-grid {
     margin-bottom: 5px;
 }

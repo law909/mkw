@@ -992,7 +992,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 break;
         }
 
-        $quick = $this->params->getBoolRequestParam('quick');
+        // a POS-sorok ugyanazt a mezőkészletet adják, mint a gyorsrögzítő, a többit a szerver számolja
+        $quick = $this->params->getBoolRequestParam('quick') || $this->params->getBoolRequestParam('pos');
         $tetelids = $this->params->getArrayRequestParam('tetelid');
         $biztetelcontroller = new bizonylattetelController();
         foreach ($tetelids as $tetelid) {
@@ -1566,6 +1567,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if (!$quick) {
             $quick = $this->params->getBoolRequestParam('quick');
         }
+        // vonalkódos (POS) tételfelvitel: a fej a klasszikus, csak a tételblokk más
+        $pos = \mkw\store::getSetupValue('vonalkod') && $this->params->getBoolRequestParam('pos');
         if (!$stornotip) {
             $stornotip = $this->params->getIntRequestParam('stornotip');
         }
@@ -1575,6 +1578,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('formaction', '/admin/' . $this->biztipusid . 'fej/save');
         $view->setVar('oper', $oper);
         $view->setVar('quick', $quick);
+        $view->setVar('pos', $pos);
         //       $this->setVars($view);
 
         /** @var \Entities\Bizonylatfej $record */

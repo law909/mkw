@@ -20,6 +20,8 @@
             delVisible: true,
             quickAddLink: '.mattable-quickaddlink',
             quickAddVisible: false,
+            posAddLink: '.mattable-posaddlink',
+            posAddVisible: false,
             filter: {
                 selector: '#mattable-filterwrapper',
                 fields: undefined,
@@ -55,6 +57,7 @@
                 add: 'Új',
                 addTitle: 'Új',
                 quickAddTitle: 'Gyors új',
+                posAddTitle: 'Új vonalkódos tételfelvitellel',
                 filterRefresh: 'Szűr',
                 filterRefreshTitle: 'Szűrő bekapcsolása',
                 filterClear: 'Töröl',
@@ -131,6 +134,10 @@
                         .append(pagerhidehtml);
                 } else {
                     pager.addClass('mattable-footerbar ui-widget-header ui-helper-clearfix');
+                    if (setup.posAddVisible) {
+                        // a jQuery UI készletben nincs vonalkód-ikon, ezért betűvel jelöljük
+                        pager.prepend('<a class="mattable-posaddlink mattable-left" href="#" data-oper="add" data-pos="1" title="' + setup.txt.posAddTitle + '">V</a>');
+                    }
                     if (setup.quickAddVisible) {
                         pager.prepend('<a class="mattable-quickaddlink mattable-left" href="#" data-oper="add" data-quick="1" title="' + setup.txt.quickAddTitle + '"><span class="ui-icon ui-icon-circle-triangle-e"></span></a>');
                     }
@@ -140,7 +147,7 @@
                     pager.append(pagerhtml);
                 }
             }
-            $(setup.addLink + ',' + setup.quickAddLink).button();
+            $(setup.addLink + ',' + setup.quickAddLink + ',' + setup.posAddLink).button();
             if (batch.length) {
                 batch.addClass('mattable-footerbar ui-widget-header ui-helper-clearfix');
             }
@@ -632,6 +639,7 @@
             // nem inline nyílnak meg.
             $(setup.addLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add');
             $(setup.quickAddLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add&quick=1');
+            $(setup.posAddLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add&pos=1');
             orderselect.change(function (e) {
                 orderselect.val(this.value);
                 reloadTbody();
