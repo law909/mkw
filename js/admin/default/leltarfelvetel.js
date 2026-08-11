@@ -236,10 +236,15 @@ var leltarfelvetel = (function ($) {
     }
 
     function init() {
-        var $cont = $('.js-leltarfelvetel');
-        if ($cont.length) {
-            wire($cont);
-        }
+        $('#mattkarb').mattkarb(new MattkarbConfig({
+            beforeShow: function () {
+                $('.js-leltarvissza').button();
+                var $cont = $('.js-leltarfelvetel');
+                if ($cont.length) {
+                    wire($cont);
+                }
+            }
+        }));
     }
 
     return {

@@ -45,7 +45,7 @@ class leltarfelvetelController extends \mkwhelpers\Controller
     {
         $leltar = $this->getNyitottLeltar();
         $view = $this->createView('leltarfelvetel.tpl');
-        $view->setVar('pagetitle', t('Leltár felvétel'));
+        $view->setVar('pagetitle', t('Vonalkódos leltár'));
         if (!$leltar) {
             $view->setVar('leltarhiba', t('Nincs ilyen nyitott leltár.'));
             $view->printTemplateResult();

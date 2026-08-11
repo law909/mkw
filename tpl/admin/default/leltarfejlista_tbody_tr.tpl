@@ -4,7 +4,7 @@
         <div>
             <a class="mattable-editlink" href="#" data-leltarfejid="{$_leltarfej.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_leltarfej.nev}</a>
             {if (!$_leltarfej.zarva)}
-                <a class="js-felvetel" href="/admin/leltarfelvetel/view?leltar={$_leltarfej.id}" target="_blank">{at('Felvétel')}</a>
+                <a class="js-felvetel" href="/admin/leltarfelvetel/view?leltar={$_leltarfej.id}" target="_blank">{at('Vonalkódos leltár')}</a>
             {/if}
             <a class="js-export" href="/admin/leltarfej/viewexport?leltar={$_leltarfej.id}" target="_blank">{at('Felvételi ív')}</a>
             <a class="js-import" href="/admin/leltarfej/viewimport?leltar={$_leltarfej.id}" target="_blank">{at('Tény adat betöltés')}</a>
