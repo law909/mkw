@@ -31,6 +31,7 @@ class CronService
         'unassetorder' => Cron\UnasSetOrderTask::class,
         'cleanup' => Cron\CleanupTask::class,
         'joga' => Cron\JogaBejelentkezesTask::class,
+        'arfolyam' => Cron\ArfolyamTask::class,
         'test' => Cron\TestTask::class,
     ];
 

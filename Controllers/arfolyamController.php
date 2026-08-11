@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Entities\Arfolyam;
-use Entities\Valutanem;
 
 class arfolyamController extends \mkwhelpers\MattableController
 {
@@ -107,50 +106,14 @@ class arfolyamController extends \mkwhelpers\MattableController
         }
     }
 
+    /**
+     * A letöltés maga a \Services\ArfolyamService-ben él, mert a `php cron.php arfolyam` is
+     * ugyanezt futtatja.
+     */
     public function downloadArfolyam()
     {
-        $datum = \mkw\store::convDate($this->params->getStringRequestParam('datum'));
-        $datum = date(\mkw\store::$DateFormat, strtotime($datum));
-        $rvaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
-        $vr = \mkw\store::getEm()->getRepository(Valutanem::class);
-
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('id', '<>', $rvaluta);
-
-        $valutak = $vr->getAll($filter);
-
-        $valutanevek = [];
-        foreach ($valutak as $v) {
-            $valutanevek[] = $v->getNev();
-        }
-        if ($valutanevek) {
-            $srv = new \SoapClient('http://www.mnb.hu/arfolyamok.asmx?WSDL');
-            $res = $srv->__soapCall('GetExchangeRates', [
-                'parameters' => [
-                    'startDate' => $datum,
-                    'endDate' => $datum,
-                    'currencyNames' => implode(',', $valutanevek)
-                ]
-            ]);
-            if ($res) {
-                $rates = simplexml_load_string($res->GetExchangeRatesResult);
-                $rates = $rates->Day;
-                foreach ($rates->Rate as $rate) {
-                    $valutanem = $vr->findOneBy(['nev' => $rate['curr']]);
-                    if ($valutanem) {
-                        $arf = $this->getRepo()->getArfolyam($valutanem, $datum);
-                        if (!$arf) {
-                            $arf = new \Entities\Arfolyam();
-                            $arf->setValutanem($valutanem);
-                            $arf->setDatum(new \DateTime(\mkw\store::convDate($datum)));
-                            $arf->setArfolyam((float)str_replace(',', '.', $rate));
-                            \mkw\store::getEm()->persist($arf);
-                            \mkw\store::getEm()->flush();
-                        }
-                    }
-                }
-            }
-        } else {
+        $result = (new \Services\ArfolyamService())->download($this->params->getStringRequestParam('datum'));
+        if (!$result['valutak']) {
             echo 'nincs valuta';
         }
     }
