@@ -576,7 +576,7 @@ nullázza, amit a `$ignoreminkeszlet = true` valósít meg. A paraméterkulcs so
     raktáras minimum jön le, a többire a globális.
 12. Bolti eladás (POS) a beállított raktárban: a „raktáron" jelzés a raktáras minimumot veszi.
 
-**Böngészős E2E**: `docker compose up`, `mkw.local`, `./galad.sh` az aktív deployment
+**Böngészős E2E**: `docker compose up`, `mkw.test`, `./galad.sh` az aktív deployment
 (jelenlegi `main.theme = galad`).
 
 ---

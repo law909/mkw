@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     php-iconv \
     php-mbstring \
     php-gd \
+    php-soap \
     php-bcmath \
     php-readline \
     php-opcache \

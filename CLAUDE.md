@@ -29,7 +29,7 @@ php vendor/bin/doctrine <cmd>    # any Doctrine ORM CLI command (cli-config.php 
 php cron.php --list              # scheduled tasks + whether they are on for this deployment
 php cron.php <task> --quiet      # run one scheduled task (this is what crontab calls) — docs/cron.md
 npx grunt                        # bundle JS (concat) + CSS (less/sass) per theme
-docker compose up                # local apache + php-fpm 8.3 stack, exposes mkw.local via Traefik
+docker compose up                # local apache + php-fpm 8.3 stack, exposes mkw.test via Traefik
 ```
 
 There is no formal test framework. Per `.junie/AGENTS.md`: do not create tests unless explicitly asked.
