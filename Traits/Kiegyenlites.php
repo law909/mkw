@@ -59,9 +59,11 @@ trait Kiegyenlites
      * A "Kiegyenlít" gombbal indított rögzítő előtöltendő adatai, vagy null, ha a kérés nem
      * onnan jött (illetve a bizonylat időközben kiegyenlítődött).
      *
+     * @param string $jogcimparameter a rögzítő automatikus jogcímének paraméterneve
+     *
      * @return array|null
      */
-    protected function kiegyenlitendo()
+    protected function kiegyenlitendo($jogcimparameter = \mkw\consts::AutoPenztarbizonylatJogcim)
     {
         $id = $this->params->getStringRequestParam(self::$kiegyenlitesParam);
         if (!$id) {
@@ -90,7 +92,7 @@ trait Kiegyenlites
             'osszeg' => round(abs($egyenleg), 4),
             'keltstr' => date(\mkw\store::$DateFormat),
             'esedekessegstr' => $bizonylat->getEsedekessegStr() ?: $bizonylat->getKeltStr(),
-            'jogcimid' => \mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatJogcim)
+            'jogcimid' => \mkw\store::getParameter($jogcimparameter)
         ];
     }
 }

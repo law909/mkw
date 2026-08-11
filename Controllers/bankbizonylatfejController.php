@@ -273,7 +273,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
 
         // a bizonylatlista "Kiegyenlít" gombjáról érkezve a form a kiegyenlítendő
         // bizonylat adataival indul
-        $kiegy = $record ? null : $this->kiegyenlitendo();
+        $kiegy = $record ? null : $this->kiegyenlitendo(\mkw\consts::AutoBankbizonylatJogcim);
         if ($kiegy) {
             $egyed['keltstr'] = $kiegy['keltstr'];
             $egyed['tetelek'] = [$this->kiegyenlitesTetel($kiegy)];
