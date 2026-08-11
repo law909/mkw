@@ -240,7 +240,9 @@ var bizonylatpos = (function ($) {
             onChange();
         });
 
-        $cont.find('.js-poskereso').focus();
+        // Betöltéskor a partner a soron következő, nem a vonalkód: a fej kitöltése az első lépés.
+        // A keresőre az első beolvasás után magától visszaáll a fókusz (addTetelRow).
+        $('#PartnerEdit').focus();
     }
 
     /**

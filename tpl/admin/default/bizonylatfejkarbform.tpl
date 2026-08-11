@@ -417,12 +417,6 @@
                 {if ($pos|default)}
                     {* Vonalkódos tételfelvitel: a fej fölötte változatlanul a klasszikus. *}
                     <div class="js-bizonylatpos bizonylatpos">
-                        <div class="bizonylatpos-keresosor">
-                            <label for="BizonylatposVonalkodEdit">{at('Vonalkód / keresés')}:</label>
-                            <input id="BizonylatposVonalkodEdit" class="js-poskereso" type="text" autocomplete="off">
-                            <span class="js-poskereshiba bizonylatpos-hiba"></span>
-                        </div>
-                        <div class="js-posvaltozatvalaszto bizonylatpos-valtozatvalaszto"></div>
                         <table class="bizonylatpos-tetelek ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <thead>
                             <tr>
@@ -438,6 +432,13 @@
                             </thead>
                             <tbody class="js-postetelek"></tbody>
                         </table>
+                        {* a kereső a tételek alatt, mint a bolti eladáson – a felvett sorok fölé nőnek *}
+                        <div class="bizonylatpos-keresosor">
+                            <label for="BizonylatposVonalkodEdit">{at('Vonalkód / keresés')}:</label>
+                            <input id="BizonylatposVonalkodEdit" class="js-poskereso" type="text" autocomplete="off">
+                            <span class="js-poskereshiba bizonylatpos-hiba"></span>
+                        </div>
+                        <div class="js-posvaltozatvalaszto bizonylatpos-valtozatvalaszto"></div>
                     </div>
                 {else}
                     <div>

@@ -17,6 +17,9 @@ a POS ennek a mintának a harmadik esete (`pos=1`). Ezért:
   sor kellett: `$quick = getBool('quick') || getBool('pos')`.
 - **A POS-sor eleve a klasszikus mezőneveket viseli** (`tetelid[]`, `tetel*_<uid>`), tehát nincs
   szükség a gyorsrögzítőnél használt `q…` → `tetel…` fordításra a `beforeSerialize`-ben.
+- **Csapda:** a mentés előtti `checkBizonylatFej()` nem a mezőnévből, hanem a **`js-termekid`
+  osztályból** számolja a tételeket. E nélkül a POS-sor mentése „Nincsenek tételek a bizonylaton"-nal
+  áll meg, pedig a sorok ott vannak. Új tételblokk-módnál erre gondolni kell.
 - A fej validációja (`checkBizonylatFej`) változatlanul fut. A tételösszeg-ellenőrzők
   (`checkTetelOsszegek`, egyedi azonosítós ellenőrzések) osztály szerint keresnek klasszikus
   sorokat, ezért POS módban üresen futnak – ahogy a gyorsrögzítőnél is.
@@ -37,6 +40,13 @@ fejfüggő. A keresési logika (változat → termék, vonalkód → cikkszám s
   Ma 1: `galad`, `darshan`, `b2bhungary`, `mugenrace`, `mugenrace2026`.
 - **Hol látszik:** ugyanott, ahol a „+" (`csinalhatUjSzamlat`), tehát minden bizonylattípus
   listáján – a `bizonylatfejlista.tpl` közös.
+- **A gombon `V` betű van**, nem ikon: a jQuery UI készletében nincs vonalkód-ikon.
+
+## Kezelés
+
+- A kereső a **tételek alatt** ül, mint a bolti eladáson – a felvett sorok fölé nőnek.
+- Betöltéskor a **partner mező** kapja a fókuszt, nem a kereső: a fej kitöltése az első lépés.
+  Az első beolvasás után a fókusz magától visszaáll a keresőre, tehát a szkennelés folyamatos.
 
 ## Érintett fájlok
 

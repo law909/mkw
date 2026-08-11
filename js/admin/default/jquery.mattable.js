@@ -135,7 +135,8 @@
                 } else {
                     pager.addClass('mattable-footerbar ui-widget-header ui-helper-clearfix');
                     if (setup.posAddVisible) {
-                        pager.prepend('<a class="mattable-posaddlink mattable-left" href="#" data-oper="add" data-pos="1" title="' + setup.txt.posAddTitle + '"><span class="ui-icon ui-icon-search"></span></a>');
+                        // a jQuery UI készletben nincs vonalkód-ikon, ezért betűvel jelöljük
+                        pager.prepend('<a class="mattable-posaddlink mattable-left" href="#" data-oper="add" data-pos="1" title="' + setup.txt.posAddTitle + '">V</a>');
                     }
                     if (setup.quickAddVisible) {
                         pager.prepend('<a class="mattable-quickaddlink mattable-left" href="#" data-oper="add" data-quick="1" title="' + setup.txt.quickAddTitle + '"><span class="ui-icon ui-icon-circle-triangle-e"></span></a>');

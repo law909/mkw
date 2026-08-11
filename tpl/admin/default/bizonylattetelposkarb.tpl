@@ -6,7 +6,9 @@
     <td>
         <input name="tetelid[]" type="hidden" value="{$tetelid}">
         <input name="teteloper_{$tetelid}" type="hidden" value="add">
-        <input name="teteltermek_{$tetelid}" type="hidden" value="{$termekid}">
+        {* a js-termekid osztályból számolja a checkBizonylatFej() a tételeket – e nélkül a
+           mentés "Nincsenek tételek a bizonylaton"-nal áll meg *}
+        <input class="js-termekid" name="teteltermek_{$tetelid}" type="hidden" value="{$termekid}">
         <input name="tetelvaltozat_{$tetelid}" type="hidden" value="{$valtozatid}">
         <input name="tetelafa_{$tetelid}" type="hidden" value="{$afaid}">
         <input class="js-posenettoegysar" name="tetelenettoegysar_{$tetelid}" type="hidden" value="{$enettoegysar}">
