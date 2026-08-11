@@ -507,23 +507,21 @@
                         <td>
                             {if ($sor.valtozatid)}
                                 <input name="valtozatminboltikeszlet_{$sor.valtozatid}" type="number" step="any"
-                                       value="{$sor.globalis}" placeholder="{$sor.globalisplaceholder}">
+                                       value="{$sor.globalis}">
                                 <input name="valtozatminboltikeszletid[]" type="hidden" value="{$sor.valtozatid}">
                             {else}
                                 <input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any"
-                                       value="{$egyed.minboltikeszlet}">
+                                       value="{$sor.globalis}">
                             {/if}
                         </td>
                         {foreach $sor.cellak as $cella}
                             <td>
                                 {if ($sor.valtozatid)}
                                     <input name="valtozatraktariminboltikeszlet_{$sor.valtozatid}_{$cella.raktarid}"
-                                           type="number" step="any"
-                                           value="{$cella.ertek}" placeholder="{$cella.placeholder}">
+                                           type="number" step="any" value="{$cella.ertek}">
                                 {else}
                                     <input name="termekraktariminboltikeszlet_{$cella.raktarid}"
-                                           type="number" step="any"
-                                           value="{$cella.ertek}" placeholder="{$cella.placeholder}">
+                                           type="number" step="any" value="{$cella.ertek}">
                                 {/if}
                             </td>
                         {/foreach}
@@ -535,7 +533,7 @@
                 <input name="minboltikeszletraktarid[]" type="hidden" value="{$raktar.id}">
             {/foreach}
             <p class="mattkarb-hint">
-                {at('Üres cella: az öröklött érték él (szürkén látszik). 0 vagy üres = nincs beállítva.')}
+                {at('Üres cella: nincs beállítva, az öröklött érték él.')}
                 {at('A termék sorában megadott érték felülírja az alatta lévő változatokat ugyanabban az oszlopban, a raktár oszlopa pedig a „Minden raktár” értéket.')}
             </p>
         </div>

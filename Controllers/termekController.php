@@ -196,8 +196,8 @@ class termekController extends \mkwhelpers\MattableController
 
     /**
      * A „Min. bolti készlet" fül mátrixa: soronként a termék és a változatai, oszloponként a
-     * „Minden raktár" (globális) érték és a raktárak. Az üres cellák placeholderébe az öröklött,
-     * a feloldási létra szerint érvényes érték kerül – lásd \Services\MinBoltiKeszletService.
+     * „Minden raktár" (globális) érték és a raktárak. Ami nincs beállítva, az üresen jelenik meg –
+     * a nulla a feloldási létrában is „nincs beállítva", ezért nem írjuk ki.
      *
      * Változatszámtól függetlenül két lekérdezés: egy a termék, egy az összes változat soraira.
      *
@@ -242,45 +242,36 @@ class termekController extends \mkwhelpers\MattableController
             $raktarak[] = ['id' => $rid, 'nev' => $nev];
         }
 
-        $tglobalis = $t->getMinboltikeszlet();
         $sorok = [];
 
         $cellak = [];
         foreach ($raktarnevek as $rid => $nev) {
             $cellak[] = [
                 'raktarid' => $rid,
-                'ertek' => isset($termeksorok[$rid]) ? $termeksorok[$rid]->getMinboltikeszlet() : '',
-                'placeholder' => $this->firstNonZero([$tglobalis]),
+                'ertek' => $this->beallitottErtek($termeksorok[$rid] ?? null),
             ];
         }
         $sorok[] = [
             'valtozatid' => null,
             'nev' => t('Termék'),
-            'globalis' => $tglobalis,
-            'globalisplaceholder' => '',
+            'globalis' => $this->beallitottErtek($t),
             'cellak' => $cellak,
         ];
 
         /** @var TermekValtozat $valtozat */
         foreach ($valtozatok as $valtozat) {
             $vid = $valtozat->getId();
-            $vglobalis = $valtozat->getMinboltikeszlet();
             $cellak = [];
             foreach ($raktarnevek as $rid => $nev) {
-                $traktari = isset($termeksorok[$rid]) ? $termeksorok[$rid]->getMinboltikeszlet() : null;
                 $cellak[] = [
                     'raktarid' => $rid,
-                    'ertek' => isset($valtozatsorok[$vid][$rid])
-                        ? $valtozatsorok[$vid][$rid]->getMinboltikeszlet()
-                        : '',
-                    'placeholder' => $this->firstNonZero([$traktari, $tglobalis, $vglobalis]),
+                    'ertek' => $this->beallitottErtek($valtozatsorok[$vid][$rid] ?? null),
                 ];
             }
             $sorok[] = [
                 'valtozatid' => $vid,
                 'nev' => $this->getValtozatNev($valtozat),
-                'globalis' => $vglobalis,
-                'globalisplaceholder' => $this->firstNonZero([$tglobalis]),
+                'globalis' => $this->beallitottErtek($valtozat),
                 'cellak' => $cellak,
             ];
         }
@@ -388,16 +379,16 @@ class termekController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A létra „ha nem nulla" lépcsője: a decimal stringként hidratál, ezért a teszt numerikus.
+     * A mátrix egy cellájának értéke: ami nincs beállítva, az üres. A nulla is „nincs beállítva”
+     * (a feloldási létra így kezeli), ezért nem íratjuk ki. A decimal stringként hidratál,
+     * ezért a teszt numerikus.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat|\Entities\TermekMinboltikeszlet|\Entities\TermekValtozatMinboltikeszlet|null $hordozo
      */
-    private function firstNonZero(array $ertekek)
+    private function beallitottErtek($hordozo)
     {
-        foreach ($ertekek as $ertek) {
-            if ($ertek * 1) {
-                return $ertek;
-            }
-        }
-        return '';
+        $ertek = $hordozo?->getMinboltikeszlet();
+        return ($ertek * 1) ? $ertek : '';
     }
 
     /**
